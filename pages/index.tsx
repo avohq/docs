@@ -1,19 +1,16 @@
-import Head from "next/head";
-import Logo from "../components/Logo";
+import Head from 'next/head';
 
-import styles from "./index.module.css";
+import { NextPage } from 'next';
 
-export default function Home() {
+const Home: NextPage = () => {
   return (
     <div className="container">
       <Head>
         <title>Avo Docs</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <div className={styles.center}>
-        <Logo />
-      </div>
     </div>
   );
-}
+};
+
+export default Home;

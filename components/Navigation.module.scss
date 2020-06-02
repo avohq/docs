@@ -1,0 +1,26 @@
+@use '../styles/brand';
+
+.root {
+}
+
+.group {
+  margin-top: 30px;
+}
+
+.parentLink {
+  color: brand.$black;
+  font-weight: 500;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.subroute {
+  color: brand.$gray-50;
+  font-weight: 300;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.activeLink {
+  color: brand.$avo-pink;
+}

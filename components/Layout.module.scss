@@ -1,0 +1,45 @@
+@use '../styles/brand';
+
+.root {
+  display: grid;
+
+  grid-template-areas:
+    'nav-header header'
+    'nav       content'
+    'nav       footer';
+
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-gap: 0 15px;
+
+  min-height: 100vh;
+}
+
+.navHeader {
+  grid-area: nav-header;
+  padding: 30px 15px;
+  margin-left: 15px;
+  border-right: brand.$hairline-border;
+}
+
+.header {
+  grid-area: header;
+  padding: 30px 15px;
+}
+
+.navigation {
+  grid-area: nav;
+  margin-left: 15px;
+
+  padding: 15px;
+  border-right: brand.$hairline-border;
+}
+
+.content {
+  grid-area: content;
+  padding: 15px;
+}
+
+.footer {
+  grid-area: footer;
+}
