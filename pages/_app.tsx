@@ -5,7 +5,7 @@ import '../styles/global.css';
 
 import Layout from '../components/Layout';
 
-const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
+const App = ({ Component, pageProps }) => (
   <Layout>
     <Component {...pageProps} />
   </Layout>
