@@ -1,6 +1,18 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const withMDX = require('@next/mdx')();
+const withMdxEnhanced = require('next-mdx-enhanced');
 
-module.exports = withMDX({
-  pageExtensions: ['js', 'jsx', 'tsx', 'ts', 'mdx'],
+const enhanceMdx = withMdxEnhanced({
+  layoutPath: 'layouts',
+  defaultLayout: true,
+  fileExtensions: ['mdx'],
+  remarkPlugins: [],
+  rehypePlugins: [],
+  extendFrontMatter: {
+    // process: (mdxContent, frontMatter) => {},
+    phase: 'prebuild|loader|both',
+  },
 });
+
+const config = {};
+
+module.exports = enhanceMdx(config);
