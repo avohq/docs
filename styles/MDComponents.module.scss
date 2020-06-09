@@ -1,18 +1,102 @@
 @use '../styles/brand';
 
-.h1, .h2, .h3, .h4, .h5, .h6 {
-    // color: grey;
+.p,
+.ul,
+.ol,
+.blockquote,
+.table,
+.pre {
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  margin-top: 40px;
+  margin-bottom: 15px;
+  line-height: 1.6em;
+}
+
+.h3,
+.h4,
+.h5 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  margin-top: 0px;
+  color: brand.$gray-50;
+}
+
+.p,
+.ul,
+.ol,
+.blockquote,
+.table {
+  font-size: 16px;
+  line-height: 1.6em;
+}
+
+.li {
+  margin-bottom: 5px;
+}
+
+.hr {
+  border: 0;
+  border-top: 1px solid brand.$gray-5;
+}
+
+.a {
+  color: brand.$black;
+  text-decoration-color: brand.$black;
+
+  transition: all 0.2s;
+
+  &:hover {
+    color: brand.$docs-accent;
+    text-decoration-color: brand.$docs-anti-accent;
+  }
 }
 
 .p {
-    font-size: 18px;
-    letter-spacing: -0.014em;
-    line-height: 1.4em;
+  font-size: 16px;
+  // letter-spacing: -0.014em;
+  line-height: 1.6em;
+}
+
+.strong {
+  color: brand.$gray-75;
 }
 
 .inlineCode {
-    padding: 5px;
-    border-radius: 3px;
-    display: inline;
-    background-color: lightgray;
+  padding: 5px;
+  border-radius: 3px;
+  display: inline;
+  border: 1px solid brand.$gray-5;
+}
+
+.pre {
+  border-radius: 5px;
+}
+
+.blockquote {
+  border-left: 5px solid brand.$gray-5;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  // margin-left: 10px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 10px 20px;
+  background-color: #fbfbfb;
+
+  .p {
+    color: brand.$gray-75;
+    margin-top: 0;
+    margin-bottom: 5px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }

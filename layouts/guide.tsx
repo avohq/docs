@@ -5,12 +5,15 @@ import styles from './guide.module.scss';
 
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   console.log(frontMatter);
-  
+
   return (
-    <div>
-      <h1 className={styles.title}>{frontMatter.title}</h1>
-      <p className={styles.abstract}>{frontMatter.abstract}</p>
-      {children}
+    <div className={styles.root}>
+      <div className={styles.content}>
+        <h1 className={styles.title}>{frontMatter.title}</h1>
+        <p className={styles.abstract}>{frontMatter.abstract}</p>
+        {children}
+      </div>
+      <div className={styles.sidebar}></div>
     </div>
   );
 };

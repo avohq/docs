@@ -26,58 +26,58 @@ const H6: FunctionComponent = (props) => (
 
 // const ThematicBreak: FunctionComponent = props => { return <thematicBreak {...props} />; }
 const Blockquote: FunctionComponent = (props) => {
-  return <blockquote {...props} />;
+  return <blockquote className={styles.blockquote} {...props} />;
 };
 const Ul: FunctionComponent = (props) => {
-  return <ul {...props} />;
+  return <ul className={styles.ul} {...props} />;
 };
 const Ol: FunctionComponent = (props) => {
-  return <ol {...props} />;
+  return <ol className={styles.ol} {...props} />;
 };
 const Li: FunctionComponent = (props) => {
-  return <li {...props} />;
+  return <li className={styles.li} {...props} />;
 };
 const Table: FunctionComponent = (props) => {
-  return <table {...props} />;
+  return <table className={styles.table} {...props} />;
 };
 const Thead: FunctionComponent = (props) => {
-  return <thead {...props} />;
+  return <thead className={styles.thead} {...props} />;
 };
 const Tbody: FunctionComponent = (props) => {
-  return <tbody {...props} />;
+  return <tbody className={styles.tbody} {...props} />;
 };
 const Tr: FunctionComponent = (props) => {
-  return <tr {...props} />;
+  return <tr className={styles.tr} {...props} />;
 };
 const Td: FunctionComponent = (props) => {
-  return <td {...props} />;
+  return <td className={styles.td} {...props} />;
 };
 const Th: FunctionComponent = (props) => {
-  return <th {...props} />;
+  return <th className={styles.th} {...props} />;
 };
 const Pre: FunctionComponent = (props) => {
-  return <pre {...props} />;
+  return <pre className={styles.pre} {...props} />;
 };
 const Em: FunctionComponent = (props) => {
-  return <em {...props} />;
+  return <em className={styles.em} {...props} />;
 };
 const Strong: FunctionComponent = (props) => {
-  return <strong {...props} />;
+  return <strong className={styles.strong} {...props} />;
 };
 const Del: FunctionComponent = (props) => {
-  return <del {...props} />;
+  return <del className={styles.del} {...props} />;
 };
 const InlineCode: FunctionComponent = (props) => {
   return <pre className={styles.inlineCode} {...props} />;
 };
 const Hr: FunctionComponent = (props) => {
-  return <hr {...props} />;
+  return <hr className={styles.hr} {...props} />;
 };
 const A: FunctionComponent = (props) => {
-  return <a {...props} />;
+  return <a className={styles.a} {...props} />;
 };
 const Img: FunctionComponent = (props) => {
-  return <img {...props} />;
+  return <img className={styles.img} {...props} />;
 };
 
 // Code highlighting

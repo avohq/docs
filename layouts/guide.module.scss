@@ -1,15 +1,33 @@
 @use '../styles/brand';
 
+.root {
+  display: flex;
+  margin-left: 30px;
+}
+
+.content {
+  flex: 1;
+  max-width: 550px;
+}
+
+.sidebar {
+  width: 350px;
+  margin-left: 20px;
+}
+
 .title {
-    font-size: 44px;
-    font-weight: 600;
-    line-height: 1.4em;
-    letter-spacing: -0.022em;
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.4em;
+  letter-spacing: -0.022em;
+  margin-bottom: 0;
 }
 
 .abstract {
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: -0.018em;
-    color: brand.$gray-50;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  color: brand.$gray-50;
+  margin-top: 10px;
+  margin-bottom: 50px;
 }
