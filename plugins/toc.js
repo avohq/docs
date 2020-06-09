@@ -1,13 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
+var unified = require('unified');
+var markdown = require('remark-parse');
 const visit = require('unist-util-visit');
 
-module.exports = () => (tree, file) => {
-  console.log(file);
-
+const toc = (tree) => {
   const headings = [];
 
   visit(tree, 'heading', (node) => {
-    console.log(node);
     headings.push({
       depth: node.depth,
       text: node.children
@@ -19,22 +18,24 @@ module.exports = () => (tree, file) => {
     });
   });
 
-  console.log(tree);
-
-  tree.children = [
-    ...tree.children,
-    {
-      type: 'jsx',
-      value: `<TOC headings={${JSON.stringify(headings)}} />`,
-      position: null,
-    },
-    {
-      type: 'jsx',
-      value: `<TOC headings={${JSON.stringify(headings)}} />`,
-      position: null,
-    },
-  ];
-
-  console.log(headings);
-  //console.log(tree);
+  return headings;
 };
+
+function toToc() {
+  this.Compiler = compiler;
+
+  function compiler(tree) {
+    return toc(tree);
+  }
+}
+
+const process = (md) => {
+  const file = unified()
+    .use(markdown, { commonmark: true })
+    .use(toToc)
+    .processSync(md);
+
+  return file.result;
+};
+
+module.exports = process;

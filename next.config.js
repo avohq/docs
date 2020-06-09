@@ -7,12 +7,15 @@ const enhanceMdx = withMdxEnhanced({
   layoutPath: 'layouts',
   defaultLayout: true,
   fileExtensions: ['mdx'],
-  remarkPlugins: [toc],
+  remarkPlugins: [],
   rehypePlugins: [],
-  /* extendFrontMatter: {
-    process: (mdxContent, frontMatter) => {},
-    phase: 'prebuild|loader|both',
-  }, */
+  extendFrontMatter: {
+    process: (mdxContent, frontMatter) => ({
+      ...frontMatter,
+      toc: toc(mdxContent),
+    }),
+    phase: 'loader',
+  },
 });
 
 const config = {};

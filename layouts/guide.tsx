@@ -4,8 +4,6 @@ import createLayout, { layoutProps } from './layout';
 import styles from './guide.module.scss';
 
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
-  console.log(frontMatter);
-
   return (
     <div className={styles.root}>
       <div className={styles.content}>
