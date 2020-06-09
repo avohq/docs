@@ -1,16 +1,18 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const withMdxEnhanced = require('next-mdx-enhanced');
+
+const toc = require('./plugins/toc');
 
 const enhanceMdx = withMdxEnhanced({
   layoutPath: 'layouts',
   defaultLayout: true,
   fileExtensions: ['mdx'],
-  remarkPlugins: [],
+  remarkPlugins: [toc],
   rehypePlugins: [],
-  extendFrontMatter: {
-    // process: (mdxContent, frontMatter) => {},
+  /* extendFrontMatter: {
+    process: (mdxContent, frontMatter) => {},
     phase: 'prebuild|loader|both',
-  },
+  }, */
 });
 
 const config = {};
