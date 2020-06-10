@@ -7,7 +7,6 @@ import Toc from '../components/Toc';
 
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const headings = generateToc(children);
-  console.log(headings);
 
   return (
     <div className={styles.root}>
