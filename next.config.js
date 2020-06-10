@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const withMdxEnhanced = require('next-mdx-enhanced');
 
-const toc = require('./plugins/toc');
+const headings = require('remark-autolink-headings');
+const slug = require('remark-slug');
 
 const enhanceMdx = withMdxEnhanced({
   layoutPath: 'layouts',
   defaultLayout: true,
   fileExtensions: ['mdx'],
-  remarkPlugins: [],
+  remarkPlugins: [slug, headings],
   rehypePlugins: [],
-  extendFrontMatter: {
-    process: (mdxContent, frontMatter) => ({
-      ...frontMatter,
-      toc: toc(mdxContent),
-    }),
-    phase: 'loader',
-  },
+  // extendFrontMatter: {
+  //   process: (mdxContent, frontMatter) => ({
+  //     ...frontMatter,
+  //     toc: toc(mdxContent),
+  //   }),
+  //   phase: 'loader',
+  // },
 });
 
 const config = {};

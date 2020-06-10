@@ -1,0 +1,29 @@
+@use '../styles/brand';
+
+.root {
+  margin-top: 200px;
+  position: fixed;
+  // top: 100;
+}
+
+.onThisPage {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  color: brand.$gray-50;
+  margin-bottom: 10px;
+}
+
+.item {
+  margin-bottom: 5px;
+
+  cursor: pointer;
+
+  &.active {
+    font-weight: 600;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
