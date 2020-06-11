@@ -20,6 +20,7 @@ interface navigationItem {
 }
 
 const navigation: navigationItem[] = [
+  { title: 'Test', path: '/test' },
   { title: 'Overview', path: '/' },
   {
     title: 'Quick start',
