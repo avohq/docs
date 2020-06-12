@@ -92,7 +92,7 @@ const Code: FunctionComponent<{
   return (
     <Highlight
       {...defaultProps}
-      theme={theme}
+      // theme={theme}
       code={children as string}
       language={language as Language}
     >
@@ -138,8 +138,8 @@ const MDComponents = {
 
   // Code
   pre: Pre,
-  inlineCode: InlineCode,
   code: Code,
+  inlineCode: InlineCode,
 
   // Font styles
   em: Em,

@@ -8,16 +8,18 @@ import Footer from './Footer';
 const Layout: FunctionComponent = ({ children }) => {
   return (
     <div className={styles.root}>
-      <div className={styles.navHeader}>
-        <Logo width={140} />
-      </div>
-      <div className={styles.header}>Search bar</div>
-      <div className={styles.navigation}>
-        <Navigation />
-      </div>
-      <div className={styles.content}>{children}</div>
-      <div className={styles.footer}>
-        <Footer />
+      <div className={styles.grid}>
+        <div className={styles.navHeader}>
+          <Logo width={140} />
+        </div>
+        <div className={styles.header}>Search bar</div>
+        <div className={styles.navigation}>
+          <Navigation />
+        </div>
+        <div className={styles.content}>{children}</div>
+        <div className={styles.footer}>
+          <Footer />
+        </div>
       </div>
     </div>
   );

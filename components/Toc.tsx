@@ -1,11 +1,11 @@
 import { FunctionComponent, useEffect, useState, useRef } from 'react';
+import StickyBox from 'react-sticky-box';
 import Link from 'next/link';
 
+import throttle from 'lodash.throttle';
 import { heading } from '../util/generateToc';
 
 import styles from './Toc.module.scss';
-
-import throttle from 'lodash.throttle';
 
 interface TocProps {
   headings: heading[];
@@ -55,21 +55,26 @@ const Toc: FunctionComponent<TocProps> = ({ headings }) => {
   }, [headings]);
 
   return (
-    <div className={styles.root}>
-      <div className={styles.onThisPage}>On this page</div>
-      {headings.map((heading, idx) => (
-        <Link href={`#${heading.id}`} key={heading.id}>
-          <div
-            className={[
-              styles.item,
-              idx === activeIndex ? styles.active : '',
-            ].join(' ')}
-          >
-            {heading.text}
-          </div>
-        </Link>
-      ))}
-    </div>
+    <StickyBox offsetTop={40} offsetBottom={20}>
+      <div className={styles.root}>
+        <div className={styles.onThisPage}>On this page</div>
+        {headings.map((heading, idx) => (
+          <Link href={`#${heading.id}`} key={heading.id}>
+            <div
+              className={[
+                styles.item,
+                idx === activeIndex ? styles.active : '',
+              ].join(' ')}
+              style={{
+                marginLeft: Math.max((heading.level - 2) * 15, 0),
+              }}
+            >
+              {heading.text}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </StickyBox>
   );
 };
 
