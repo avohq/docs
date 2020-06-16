@@ -1,0 +1,156 @@
+# Sending data to GameAnalytics with Avo
+
+
+**Table of Contents**
+
+- <a href="#creating-custom-destination">Creating the custom destination</a>
+- <a href="#designing-the-data">Designing the data</a>
+  - <a href="#game-analytics-events">Events</a>
+  - <a href="#game-analytics-properties">Event properties</a>
+- <a href="#implementing-in-code">Implementing in code</a>
+
+
+## <a name="creating-custom-destination"></a> Creating the custom destination
+Before you start it's good to head to the "Connections" tab and create the custom destination for GameAnalytics. It should look something like this:
+
+<left>
+  <img
+    src={require('../../images/game-analytics-custom-destination.png')}
+    width="50%"
+    alt="Adding name mapping"
+  />
+</left>
+
+Then you can enable the GameAnalytics destination on the source(s) from where you want to send data to GameAnalytics and add it to the events that should be sent there.
+
+## <a name="designing-the-data"></a> Designing the data
+
+The GameAnalytics platform is designed to receive five specific events that each has to be sent there with a specific name. The events can include 2-5 event properties that are specific for each event. Detailed information about the type of allowed events and properties can be found in the [GameAnalytics documentation](https://gameanalytics.com/docs/item/ga-data#)
+
+### <a name="game-analytics-events"></a> Events
+
+The following 5 events are accepted by GameAnalytics:
+
+1. **Business Events** should be named `addBusinessEvent`
+2. **Resource Events** should be named `addResourceEvent`
+3. **Progression Events** should be named `addProgressionEvent`
+4. **Error Events** should be named `addErrorEvent`
+5. **Design Events** should be named `addDesignEvent`
+
+You can still use your preferred naming convention by using the name mapping tool in Avo. Below is how to do that and the Progression event is used as an example:
+
+1. Create a new event with your preferred naming convention for the Progression event
+2. Click the tree dots for the event and click "Add Name Mapping"
+
+<left>
+  <img
+    src={require('../../images/name-mapping-game-analytics-1.png')}
+    width="50%"
+    alt="Adding name mapping"
+  />
+</left>
+
+3. Type `addProgressionEvent` into the send as field and select your Game Analytics Custom destination. Then the Progression event will be sent as `addProgressionEvent` to GameAnalytics
+
+<left>
+  <img
+    src={require('../../images/name-mapping-game-analytics-2.png')}
+    width="50%"
+    alt="Adding name mapping"
+  />
+</left>
+
+**Note** that events that are sent to analytics with other names than `addBusinessEvent`, `addResourceEvent`, `addProgressionEvent`, `addErrorEvent` and `addDesignEvent` will not be accepted by GameAnalytics.
+
+### <a name="game-analytics-properties"></a> Properties
+
+Each event allows specific properties to be attached to it. Please follow the [GameAnalytics documentation](https://gameanalytics.com/docs/item/ga-data#) on which properties are allowed and how they are spelled. 
+
+Same as with events, name mapping can be use to send properties on the accepted GameAnalyitcs format. An example for the Progression Status property onthe Progression Event:
+
+1. In the property modal for the property you want to send as progression status click "Add Name Mapping"
+2. Type `progressionStatus` into the property name
+3. Select your game analytics custom destination in the dropdown:
+
+<left>
+  <img
+    src={require('../../images/name-mapping-game-analytics-3.png')}
+    width="50%"
+    alt="Adding name mapping"
+  />
+</left>
+
+**Note** that events that are sent to analytics with other names are specified in the [GameAnalytics documentation](https://gameanalytics.com/docs/item/ga-data#) will not be accepted.
+
+
+## <a name="implementing-in-code"></a> Implementing in code
+
+
+To get started sending data to GameAnalytics via a custom destination you do the
+following:
+
+1. Pull the code for the destinations that are sending to GameAnalytics by doing `avo pull` in the Avo CLI
+2. Initialize Avo with a custom destination
+3. Fill in the empty methods for sending the data to your analytics destination
+
+### Example Implementation in JavaScript
+
+Import the Avo library into your code and implement a custom Avo logger which
+delivers data to GameAnalytics via their SDK:
+
+```
+import Avo from './Avo';
+
+// An example of a simple GameAnalytics integration
+// that you pass into initAvo():
+
+var gameAnalyticsAvoLogger = {
+  make: function(env) {},
+  logEvent: function(eventName, eventProperties) {
+    // example integration, connecting the Avo events
+    // Add Progression, Add Resource, Add Business to the
+    // GameAnalytics SDK
+    if (eventName === 'Add Progression') {
+      gameanalytics.GameAnalytics.addProgressionEvent(
+        gameanalytics.EGAProgressionStatus.Start,
+        eventProperties.progressionLocation,
+        eventProperties.progressionStage,
+        eventProperties.progressionLevel
+      );
+    } else if (eventName === 'Add Resource') {
+      gameanalytics.GameAnalytics.addProgressionEvent(
+        gameanalytics.EGAProgressionStatus.Start,
+        eventProperties.progressionLocation,
+        eventProperties.progressionStage,
+        eventProperties.progressionLevel
+      );
+      gameanalytics.GameAnalytics.addResourceEvent(
+        gameanalytics.EGAResourceFlowType.Source,
+        eventProperties.currency,
+        eventProperties.amount,
+        eventProperties.itemType,
+        eventProperties.itemId
+      );
+    } else if (eventName === 'Add Business') {
+      gameanalytics.GameAnalytics.addBusinessEvent(
+        eventProperties.currency,
+        eventProperties.amount,
+        eventProperties.itemType,
+        eventProperties.itemId,
+        eventProperties.cartType
+      );
+    }
+  },
+  setUserProperties: function(userId, userProperties) {},
+  identify: function(userId) {},
+  unidentify: function() {}
+};
+```
+
+Call the initAvo function:
+
+```
+Avo.initAvo({env: 'dev'}, gameAnalyticsAvoLogger);
+```
+
+Consult <a href="https://gameanalytics.com/docs">GameAnalytics documentation</a> for more ways to send data to their platform.

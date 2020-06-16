@@ -1,0 +1,112 @@
+---
+layout: 'guide'
+title: 'Mobile debuggers'
+# abstract: 'Learn how to use Avo to create a tracking plan and generate high quality, actionable data.'
+---
+
+When implementing analytics on mobile apps it’s hard to know if the events are being sent successfully or not, and if they are being sent at the correct time.
+
+Our **_Mobile Debuggers_** provide a visual way to control the events flow in your app, making implementing analytics way easier and pleasant in mobile products.
+
+They are distributed as a standalone open source libraries and are designed to be plugged in the **_Avo_** generated code. Each **_Avo_** function will automatically show events in the debugger with timestamp and all the properties.
+If **_Avo_** detects errors the mobile debugger will highlight those.
+
+# <a name="look"></a> How does it look
+
+<img
+  src={require('../images/mobile-debugger.png')}
+  height="500"
+  alt="React native debugger example"
+/>
+
+Here is a demonstration of the mobile debugger in a simple music player app.
+
+<br />
+
+<table>
+
+<tr>
+ <th scope="col">Android</th>
+ <th scope="col">iOS</th>
+ <th scope="col">React Native</th>
+</tr>
+<tr>
+ <td height="500" style={{"padding":10}}>
+  <img
+    src={require('../images/android-debugger-example.gif')}
+    height="500"
+    alt="Android debugger example"
+  />
+ </td>
+ <td height="500" style={{"padding":10}}>
+    <img
+      src={require('../images/ios-debugger-example.gif')}
+      height="500"
+      alt="iOS debugger example"
+    />
+ </td>
+ <td height="500" style={{"padding":10}}>
+  <img
+    src={require('../images/rn-debugger-example.gif')}
+    height="500"
+    alt="React native debugger example"
+  />
+ </td>
+</tr>
+</table>
+
+The debugger have 2 visual presentation modes - **_bubble_** and **_bar_**. Both are draggable, so you can place them at a suitable spot in your app.
+You can switch between presentation mods without loosing the data.
+
+**_Avo functions_** are triggered when player buttons are pressed and the events are shown in the **_Mobile Debugger_**. If an error event is registered the debugger will turn red.
+
+When the **_Mobile Debugger_** is clicked another screen opens with the list of all the events. Each event can be collapsed or expended to see the properties and error descriptions.
+
+> **_Note:_** <br/>
+> Source code of the app for each supported platform can be found in the git repositories.
+
+# <a name="how-to-enable"></a> How to enable the debugger
+
+The following pseudocode would give you the idea, head to <a href="#platform-docs">platform docs</a> for specific integration instructions.
+
+1. Create the debugger
+
+   `val debugger = Debugger()`
+
+2. Pass the debugger when you initialize Avo
+
+   `Avo.initAvo(Avo.AvoEnv.DEV, debugger)`
+
+3. Show the debugger
+
+```typescript
+debugger.showDebugger(this, DebuggerMode.bar)
+```
+
+4. Pass debugger to Avo, so Avo can show all tracked events
+
+```typescript
+Avo.initAvo(AvoEnv.DEV, myCustomDestination, debugger)
+```
+
+5. Post your own events
+
+```typescript
+   debugger.post(
+      timestamp,
+      "EventName",
+      errors: [{propertyId:"id0", message:"error in property 'event prop' with id 'id0'"}],
+      eventProperties: [{id:"id0", name:"event prop", value:"val"}],
+      userProperties: [{id:"id1", name:"user prop", value:"val"}]
+   );
+```
+
+# <a name="platform-docs"></a> Platform specific repositories and integration docs
+
+We store platform docs in the corresponding github repositories.
+
+- <a href="https://github.com/avohq/android-analytics-debugger">Android</a>
+- <a href="https://github.com/avohq/ios-analytics-debugger">iOS</a>
+- <a href="https://github.com/avohq/react-native-analytics-debugger">
+    React Native
+  </a>
