@@ -66,9 +66,15 @@ const Toc: FunctionComponent<TocProps> = ({ headings }) => {
                 idx === activeIndex ? styles.active : '',
               ].join(' ')}
               style={{
-                marginLeft: Math.max((heading.level - 2) * 15, 0),
+                marginLeft: Math.max(
+                  (heading.level - 2) * (15 - heading.level),
+                  0,
+                ),
               }}
             >
+              {heading.level > 2 ? (
+                <span style={{ color: 'lightgrey' }}>• </span>
+              ) : null}
               {heading.text}
             </div>
           </Link>
