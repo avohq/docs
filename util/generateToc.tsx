@@ -15,6 +15,7 @@ const generateToc = (children: layoutProps['children']): heading[] => {
   React.Children.forEach(children, (child) => {
     if (
       !child ||
+      !child.props ||
       !child.props.originalType ||
       !['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(child.props.originalType)
     )
