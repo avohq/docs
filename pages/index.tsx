@@ -4,7 +4,7 @@ import { NextPage } from 'next';
 
 import Link from 'next/link';
 
-function formatPath(p) {
+function formatPath(p: string) {
   return p.replace(/\.mdx$/, '');
 }
 
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         {docsPages.map((page) => (
           <li key={page.__resourcePath}>
             <Link href={formatPath(page.__resourcePath)}>
-              <a>{page.title}</a>
+              <a>{page.title || formatPath(page.__resourcePath)}</a>
             </Link>
           </li>
         ))}
