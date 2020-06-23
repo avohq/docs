@@ -1,34 +1,18 @@
-import {Link} from 'gatsby';
+---
+layout: 'guide'
+title: 'Connections'
+# abstract: 'Learn about the analytics tools avo supports'
+---
 
-# Connections
+import Link from 'next/link';
 
 The connection tab is where you configure your **sources** (programming languages and development platforms) and **destinations** (analytics platforms).
-
-- <a href="#sources">Sources</a>
-
-  - <a href="#web">Web</a>
-  - <a href="#mobile">Mobile</a>
-  - <a href="#backend">Backend</a>
-  - <a href="#game-engines">Game Engines</a>
-
-- <a href="#destinations">Destinations</a>
-
-  - <a href="#amplitude">Amplitude</a>
-  - <a href="#appsflyer">AppsFlyer</a>
-  - <a href="#facebook">Facebook Analytics</a>
-  - <a href="#firebase">Firebase Analytcs</a>
-  - <a href="#fullstory">FullStory</a>
-  - <a href="#intercom">Intercom</a>
-  - <a href="#mixpanel">Mixpanel</a>
-  - <a href="#segment">Segment</a>
-  - <a href="#custom">Custom Destination</a>
 
 ### <a name="sources"></a> Sources
 
 Sources represent where you send your data from. These can be mobile apps,
 websites, backends, etc. Each source has an identifiable name, a development
-platform, programming language and <Link
-to="/concepts/destinations">Destinations</Link> to send to.
+platform, programming language and <Link href="/concepts/destinations"><a>Destinations</a></Link> to send to.
 
 Avo uses these Sources to generate code based on your event schema.
 
@@ -295,7 +279,7 @@ Sometimes the best way to integrate Avo is through a custom destination. For exa
 - have a custom pipline
 - are sending data to analytics platforms through an API (not using their SDK)
 
-It's also sometimes possible to use a custom destination for language - analytics pairs that are not supported by Avo yet. Please <Link to="/help/troubleshooting">contact us</Link> if you are unsure of what is the best solution for you.
+It's also sometimes possible to use a custom destination for language - analytics pairs that are not supported by Avo yet. Please <Link href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is the best solution for you.
 
-Detailed instructions on how to set up a custom destination can be found in our <Link to="/custom-destinations">custom destination docs</Link>.
+Detailed instructions on how to set up a custom destination can be found in our <Link href="/custom-destinations"><a>custom destination docs</a></Link>.
 

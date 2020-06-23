@@ -1,6 +1,10 @@
-import {Link} from 'gatsby';
+---
+layout: 'guide'
+title: 'Your Avo Workspace'
+# abstract: 'Learn about the analytics tools avo supports'
+---
 
-# Your Avo Workspace
+import Link from 'next/link';
 
 The Avo workspace is where you define the data for your application. It contains
 detailed definitions of your tracking plan that will be used to generate
@@ -8,8 +12,8 @@ code from and validate your data against.
 
 The following sections build up your Avo workspace:
 
-- <Link to="/workspace/tracking-plan">Tracking Plan</Link>: where all actions, properties and metrics are defined
-- <Link to="/workspace/integration">Connections</Link>: configuring programming languages and analytics platforms
-- <Link to="/workspace/implement">Implement</Link>: source specific guide to implementing Avo
-- <Link to="/workspace/integrations">Integrations (beta)</Link>: sync your tracking plan with the one in your analytics platform
-- <Link to="/workspace/health">Health (beta)</Link>: monitor the health of your data
+- <Link href="/workspace/tracking-plan"><a>Tracking Plan</a></Link>: where all actions, properties and metrics are defined
+- <Link href="/workspace/integration"><a>Connections</a></Link>: configuring programming languages and analytics platforms
+- <Link href="/workspace/implement"><a>Implement</a></Link>: source specific guide to implementing Avo
+- <Link href="/workspace/integrations"><a>Integrations (beta)</a></Link>: sync your tracking plan with the one in your analytics platform
+- <Link href="/workspace/health"><a>Health (beta)</a></Link>: monitor the health of your data

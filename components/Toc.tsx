@@ -54,6 +54,10 @@ const Toc: FunctionComponent<TocProps> = ({ headings }) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, [headings]);
 
+  if (headings == null || headings.length === 0) {
+    return null;
+  }
+
   return (
     <StickyBox offsetTop={40} offsetBottom={20}>
       <div className={styles.root}>

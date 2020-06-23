@@ -6,36 +6,48 @@ title: 'Migrating to Avo'
 
 import Link from 'next/link';
 
+import SmallSteps, { Step } from '../components/SmallSteps';
+
 If you don't have existing tracking or want to start from scratch, you can take a look at our <Link href="/quickstart"><a>quickstart documentation</a></Link> to get started.
 
 If you are already doing some event based analytics in your product and want to migrate to using the type safe Avo custom tracking functions, then here is the recommended implementation process for Avo.
 
 ## What’s the best way to migrate to Avo?
 
-**Step 1:**<br/>
+<SmallSteps>
+<Step title="Add validateAvoEvent">
 
-<Link href="/quickstart#validate-current-events">
-  <a>Add the `validateAvoEvent` function</a>
-</Link> at the location in your code base that handles the emission of analytics
-events. Merge that code change into your git master to ensure that every time a user
-interacts with your product in development, event structures are being logged into
-Avo.
+Add the <Link href="/quickstart#validate-current-events" passHref><a>validateAvoEvent</a></Link> function
+at the **location** in your code base that handles the emission of analytics
+events. Merge that code change into your git master to ensure that every
+time a user interacts with your product in development, event structures are
+being logged into Avo.
 
-**Step 2:**<br/>
-Start using the type safe Avo custom tracking functions for changes made to tracking.
+Start using the type safe Avo custom tracking functions for changes made to
+tracking. The Avo web app can now be used as a source of truth for your
+tracking plan. PMs, analysts, and developers can start using Avo branches as
+workflows to prepare, implement and release tracking changes.
 
-The Avo web app can now be used as a source of truth for your tracking plan. PMs, analysts, and developers can start using Avo branches as workflows to prepare, implement and release tracking changes.
+</Step>
+<Step title="Incrementally adopt Avo functions">
 
-**Step 3:**<br/>
-Replace existing tracking calls with the type safe Avo custom tracking functions as necessary, for example, when modifying events or fixing tracking errors.
+Replace existing tracking calls with the type safe Avo custom tracking
+functions as necessary, for example, when modifying events or fixing
+tracking errors.
 
-**Step 4a:**<br/>
-When looking to replace all existing tracking, run codemods provided by the Avo engineering team, which finds tracking calls in the code base and replaces them with Avo custom tracking functions.
+</Step>
+<Step title="Run codemods">
 
-In a fairly straight forward tracking setup, with few complex abstractions and dynamic strings, this yields coverage from 40% to 90%.
+When looking to replace all existing tracking, run codemods provided by the
+Avo engineering team, which finds tracking calls in the code base and
+replaces them with Avo custom tracking functions. In a fairly straight
+forward tracking setup, with few complex abstractions and dynamic strings,
+this yields coverage from 40% to 90%.
 
-**Step 4b:**<br/>
 Replace the remaining tracking calls manually.
+
+</Step>
+</SmallSteps>
 
 ## What does the validateAvoEvent function do?
 

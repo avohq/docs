@@ -1,48 +1,26 @@
-import {Link} from 'gatsby';
+---
+layout: 'guide'
+title: 'Tracking plan'
+# abstract: 'Learn about the analytics tools avo supports'
+---
 
-# Tracking Plan
+import Link from 'next/link';
 
-** Table of Contents **
-
-The tracking plan tab consists of all your event, property and metric definitions.
-
-
-1. <a href="#events">Events</a>
-    
-    - <a href="#event-defintion">Event Definition</a>
-    - <a href="#actions">Actions</a>
-    
-      - <a href="#identify-user">Identify User</a>
-      - <a href="#update-user-props">Update User Properties</a>
-      - <a href="#log-event">Log Event</a>
-      - <a href="#log-revenue">Log Revenue</a>
-      - <a href="#log-page-view">Log Page View</a>
-      - <a href="#unidentify-user">Undentify User</a>
-2. <a href="#properties">Properties</a>
-    
-    - <a href="#event-properties">Event Properties</a>
-    - <a href="#user-properties">User Properties</a>
-    - <a href="#system-properties">System Properties</a>
-    - <a href="#property-groups">Property Groups</a>
-    - <a href="#property-types-and-constraints">Property Types and Constraints</a>
-3. <a href="#metrics">Metrics</a>
-
-
-## <a name="actions"></a> 1. Events
+## <a name="actions"></a> Events
 An event represents something that a user does or that happens to them. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
 
-## <a name="event-defintion"></a> Event Definition
+### <a name="event-defintion"></a> Event Definition
 
 An event is defined in the Events section of the Tracking plan and can be organized into categories. The definition of an event includes:
 - A descriptive _Event Name_
 - A _Description_ including the timing of when the event should be sent as well as other useful implementation details
-- The <Link to="/workspace/connections#sources">_Source(s)_</Link> that the event should be sent from
-- The <Link to="/workspace/workspace#actions">_Actions(s)_</Link> associated with the event
-- The <Link to="/workspace/workspace#metrics">_Metrics(s)_</Link> related to the event
+- The <Link href="/workspace/connections#sources">_Source(s)_</Link> that the event should be sent from
+- The <Link href="/workspace/workspace#actions">_Actions(s)_</Link> associated with the event
+- The <Link href="/workspace/workspace#metrics">_Metrics(s)_</Link> related to the event
 - The _category(s)_ that the event is a part of 
 
 
-## <a name="actions"></a> Actions
+### <a name="actions"></a> Actions
 Actions is an umbrella term over all the tracking methods the analytics platforms offer.  In Avo you can define your actions in the Actions part of the tracking plan and organize them into categories. Actions can be triggered on their own or together, for example it's common to trigger any of the actions along with logging an event.
 
 Below is a list of possible actions and supported platforms, in the order of which they are triggered:
@@ -56,7 +34,7 @@ Below is a list of possible actions and supported platforms, in the order of whi
 6. <a href="#unidentify-user">Undentify User</a>: Amplitude, Segment, Mixpanel and Fullstory
 
 
-### <a name="log-event"></a> Log Event
+#### <a name="log-event"></a> Log Event
 
 Logging an event is the fundamental action for behavioral analytics. An event describes an action that a user does in your application or something that happens for them. Additional information about the action, Event properties, can be logged with the event.
 
@@ -104,7 +82,7 @@ And here is a list of methods that are wrapped in each analytics tool when `Avo.
 
 
 
-### <a name="identify-user"></a> Identify User
+#### <a name="identify-user"></a> Identify User
 
 
 The Identify User action should be used when you want to identify users from your
@@ -125,7 +103,7 @@ When the Identify User action is selected, Avo will require a user property call
 
 
 
-### <a name="unidentify-user"></a> Unidentify User
+#### <a name="unidentify-user"></a> Unidentify User
 
 The Unidentify User action should be used when you want to unidentify users from
 your system in your analytics platform. This would typically be done when users
@@ -143,7 +121,7 @@ Below is a list of Undentify User methods used for each supported analytics plat
 - **Fullstory**: [identify](https://help.fullstory.com/develop-js/identify?from_search=30537829) with User Id as false 
 
 
-### <a name="update-user-props"></a> Update User Properties
+#### <a name="update-user-props"></a> Update User Properties
 
 The Update User Properties action is used when the state of the user in your analytics platform should be updated. User properties are often updated at the same time as logging an event but they can also be updated independently. 
 
@@ -159,7 +137,7 @@ User properties are updated with the following methods according to analytics pl
 - Segment: `identify` 
 
 
-### <a name="log-revenue"></a> Log Revenue
+#### <a name="log-revenue"></a> Log Revenue
 
 <a href="#revenue-amplitude">Amplitude</a>, <a
 href="#revenue-segment">Segment</a> and <a href="#revenue-mixpanel">Mixpanel</a>
@@ -168,7 +146,7 @@ with events that represent a successful purchase, such as `Purchase Completed`
 
 Below are details for what Avo automatically does for each analytics platform.
 
-#### <a name="revenue-amplitude"></a> Amplitude
+##### <a name="revenue-amplitude"></a> Amplitude
 
 For the Amplitude destination, Avo will add 4 event properties that match the
 [Amplitude logRevenue
@@ -183,7 +161,7 @@ with the prefix "Amplitude: ".
 Call logRevenueV2 with these properties as well as all other event properties,
 and then call logEvent.
 
-#### <a name="revenue-segment"></a> Segment
+##### <a name="revenue-segment"></a> Segment
 
 For the Segment destionation, Avo will add 2 event properties that match the
 [Segment revenue properties](https://segment.com/docs/spec/track/#properties)
@@ -202,7 +180,7 @@ Enums are currently not supported on Android and iOS.
 Call track with the Segment revenue properties set in the correct keys to make
 sure that Segment recognises the event as a Revenue event.
 
-#### <a name="revenue-mixpanel"></a> Mixpanel
+##### <a name="revenue-mixpanel"></a> Mixpanel
 
 For the Mixpanel destination, Avo will add 1 event property that matches the
 [Mixpanel track_charge
@@ -217,14 +195,14 @@ then call track
 
 
 
-### <a name="log-page-view"></a> Log Page View
+##### <a name="log-page-view"></a> Log Page View
 
 Adding the Log Page View action will trigger page tracking on web and screen
 tracking on mobile. Log Page View is only available in Segment, other supported platforms do not offer page tracking at the moment.
 
 When Log Page View is set on events, Avo will do the following for each platform
 
-#### Segment
+###### Segment
 
 For the Segment platform, Avo will add 1 property that matches the [Segment page
 property](https://segment.com/docs/spec/page/) with the prefix "Segment: ".
@@ -254,7 +232,7 @@ relevant for that specific event, when you analyse your data. You might be want 
 
 **Functionality**
 
-Event properties are sent with the event in the <Link to="/workspace/tracking-plan#log-event">event call</Link>. 
+Event properties are sent with the event in the <Link href="/workspace/tracking-plan#log-event">event call</Link>. 
 
 
 ### <a name="user-properties"></a> User Properties
@@ -275,7 +253,7 @@ along with your events when they actually change.
 
 **Functionality**
 
-User properties are updated with the <Link to="/workspace/tracking-plan#update-user-props">Update User Properties action</Link>.
+User properties are updated with the <Link href="/workspace/tracking-plan#update-user-props">Update User Properties action</Link>.
 
 
 ### <a name="system-properties"></a> System properties
@@ -297,7 +275,7 @@ System properties are set in the Avo.initAvo() function. They can be updated wit
 
 
 
-## <a name="property-groups"></a> Property groups
+### <a name="property-groups"></a> Property groups
 
 Property groups are a way to group two or more related properties to quickly and consistently add them to all related events.
 
@@ -311,7 +289,7 @@ An example property group could be "Product" containing the following properties
 
 
 
-## <a name="property-types-and-constraints"></a> Property types and constraints
+### <a name="property-types-and-constraints"></a> Property types and constraints
 
 In the property modal for event, user and system properties you need to define the type of the values allowed for the property. That definition is used to validate the property.
 
@@ -343,7 +321,7 @@ Proportion of daily active users that are signed up
 
 Events are tied to metrics and can be thought as the building blocks of the metrics - the events necessary to be able to visualize the metric in your analytics tool. The metrics are therefore not only visible in the Metrics tab, but also in the event view. That way everyone can easily understand why this particular event should be track - because it is associated with a metric which is a part of a goal.
 
-Read more about how to <Link to="/best-practices/organizing-metrics-and-events">organize metrics and events</Link>.
+Read more about how to <Link href="/best-practices/organizing-metrics-and-events">organize metrics and events</Link>.
 
 
 
