@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useState, useRef } from 'react';
 import StickyBox from 'react-sticky-box';
 import Link from 'next/link';
+import classNames from 'classnames';
 
 import throttle from 'lodash.throttle';
 import { heading } from '../util/generateToc';
@@ -62,27 +63,29 @@ const Toc: FunctionComponent<TocProps> = ({ headings }) => {
     <StickyBox offsetTop={40} offsetBottom={20}>
       <div className={styles.root}>
         <div className={styles.onThisPage}>On this page</div>
-        {headings.map((heading, idx) => (
-          <Link href={`#${heading.id}`} key={heading.id}>
-            <div
-              className={[
-                styles.item,
-                idx === activeIndex ? styles.active : '',
-              ].join(' ')}
-              style={{
-                marginLeft: Math.max(
-                  (heading.level - 2) * (15 - heading.level),
-                  0,
-                ),
-              }}
-            >
-              {heading.level > 2 ? (
-                <span style={{ color: 'lightgrey' }}>• </span>
-              ) : null}
-              {heading.text}
-            </div>
-          </Link>
-        ))}
+        {headings
+          .filter((heading) => heading.level < 5)
+          .map((heading, idx) => (
+            <Link href={`#${heading.id}`} key={heading.id}>
+              <div
+                className={classNames(styles.item, {
+                  [styles.topLevel]: heading.level <= 2,
+                  [styles.active]: idx === activeIndex,
+                })}
+                style={{
+                  marginLeft: Math.max(
+                    (heading.level - 2) * (15 - heading.level),
+                    0,
+                  ),
+                }}
+              >
+                {heading.level > 3 ? (
+                  <span style={{ color: 'lightgrey' }}>• </span>
+                ) : null}
+                {heading.text}
+              </div>
+            </Link>
+          ))}
       </div>
     </StickyBox>
   );

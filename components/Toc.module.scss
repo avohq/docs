@@ -16,16 +16,19 @@
 .item {
   margin-bottom: 10px;
   font-size: 14px;
+  color: brand.$gray-50;
 
   cursor: pointer;
 
   &.active {
     color: brand.$docs-accent;
-    font-weight: 600;
-    letter-spacing: -0.004em;
   }
 
   &:hover {
     opacity: 0.8;
   }
+}
+
+.topLevel {
+  font-weight: 600;
 }
