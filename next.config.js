@@ -11,13 +11,6 @@ const enhanceMdx = withMdxEnhanced({
   fileExtensions: ['mdx'],
   remarkPlugins: [slug, headings],
   rehypePlugins: [],
-  // extendFrontMatter: {
-  //   process: (mdxContent, frontMatter) => ({
-  //     ...frontMatter,
-  //     toc: toc(mdxContent),
-  //   }),
-  //   phase: 'loader',
-  // },
 });
 
 const compose = (...fns) => (x) => fns.reduceRight((y, f) => f(y), x);
