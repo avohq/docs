@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import glob from 'glob';
 import fs from 'fs';
 import remark from 'remark';
@@ -6,12 +7,9 @@ import { Node } from 'unist';
 import visit from 'unist-util-visit';
 import parseImports, { ImportStatement } from 'parse-es6-imports';
 import chalk from 'chalk';
-// import matter from 'gray-matter';
 
 import frontmatter from 'remark-frontmatter';
 import path from 'path';
-
-// components/SmallSteps.tsx:49:46 - error TS2769: No overload matches this call.
 
 const flexibleExists = (filename: string) => {
   return (
@@ -29,6 +27,7 @@ const resolveImport = (
   node: Node,
   filenamePrinted = false,
 ): boolean => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let module;
   try {
     module = require(item.fromModule);
@@ -44,7 +43,6 @@ const resolveImport = (
       filenamePrinted = true;
     }
 
-    // util/mdxLint.ts:18:5 - error TS2448: Block-scoped variable 'imports' used before its declaration.
     console.error(
       `  ${node.position?.start.line}:${node.position?.start.column}` +
         chalk.red('  error  ') +

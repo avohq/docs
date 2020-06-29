@@ -22,5 +22,6 @@ jobs:
         env:
           CI: true
       - run: yarn lint-mdx
+        if: ${{ always() }}
         env:
           CI: true
