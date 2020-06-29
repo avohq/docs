@@ -1,4 +1,4 @@
-import {Link} from 'gatsby';
+import { Link } from 'gatsby';
 
 # Setting up Custom Destinations
 
@@ -25,38 +25,38 @@ To get started using a custom destination you do the following:
 
 ## Custom Destinations overview
 
-We will be referencing Avo _functions_, _events_, _actions_ and other Avo concepts in this document. Please read <Link to="workspace/tracking-plan">the Tracking Plan doc</Link> to get familiar with Avo concepts.
+We will be referencing Avo _functions_, _events_, _actions_ and other Avo concepts in this document. Please read <Link passHref href="workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> to get familiar with Avo concepts.
 
 With a custom destination you'll get access to callback methods for Avo actions. The Avo generated code triggers the callbacks when corresponding Avo functions are called.
 
 ### Callback methods
 
-- `make`: Triggered during Avo initialization. 
-Here you will usually initialize an analytics library with a development or production key based on the `env` parameter.
+- `make`: Triggered during Avo initialization.
+  Here you will usually initialize an analytics library with a development or production key based on the `env` parameter.
 
 - `logEvent`: All your analytics events are managed in the Avo dashboard. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
-Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
+  Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
 
 - `identify`: You can add the Identify User action to an event in the Avo dashboard. When calling an Avo function that includes the Identify User action you'll need to provide a user ID. Calling an Avo function that has the Identify User action will trigger this callback.
-The main use cases are signup and login. 
-Here you would pass the user ID to the analytics library for it to create a new user or attach a session to an existing user.
+  The main use cases are signup and login.
+  Here you would pass the user ID to the analytics library for it to create a new user or attach a session to an existing user.
 
 - `unidentify`: If you call an Avo function with the Unidentify User action, this callback will be triggered.
-Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
+  Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
 
 - `setUserProperties`: You can add user properties to events in the Avo dashboard. When an Avo function with attached user properties is called, this callback is triggered.
-Here you would attach user properties to the currently identified user in your analytics platform.
+  Here you would attach user properties to the currently identified user in your analytics platform.
 
 ## Initialization instructions
 
 Below are instructions on how to initialize Avo with a custom destination for
 each of the supported languages:
 
-<br/>
+<br />
 
-<a href="#web">Web</a>
-- <a href="#javascript">JavaScript</a>
-- <a href="#typescript">TypeScript</a>
+<a href="#web">Web</a>- <a href="#javascript">JavaScript</a>- <a href="#typescript">
+  TypeScript
+</a>
 
 <a href="#mobile">Mobile</a>
 
@@ -65,6 +65,7 @@ each of the supported languages:
 
   - <a href="#obj-c">Objective-C</a>
   - <a href="#swift">Swift</a>
+
 - <a href="#android">Android</a>
 
   - <a href="#java-android">Java</a>
@@ -76,6 +77,7 @@ each of the supported languages:
 
   - <a href="#node-javascript">JavaScript</a>
   - <a href="#node-typescript">TypeScript</a>
+
 - <a href="#backend-java">Java</a>
 - <a href="#php">PHP</a>
 - <a href="#python">Python</a>
@@ -98,21 +100,21 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 var customAvoLogger = {
-  make: function(env) {
+  make: function (env) {
     // TODO implement
   },
-  logEvent: function(eventName, eventProperties) {
+  logEvent: function (eventName, eventProperties) {
     // TODO implement
   },
-  setUserProperties: function(userId, userProperties) {
+  setUserProperties: function (userId, userProperties) {
     // TODO implement
   },
-  identify: function(userId) {
+  identify: function (userId) {
     // TODO implement
   },
-  unidentify: function() {
+  unidentify: function () {
     // TODO implement
-  }
+  },
 };
 ```
 
@@ -131,7 +133,7 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 let customAvoLogger = {
-  make: function(env) {
+  make: function (env) {
     // TODO implement
   },
   logEvent: (eventName, eventProperties) => {
@@ -140,19 +142,19 @@ let customAvoLogger = {
   setUserProperties: (userId, userProperties) => {
     // TODO implement
   },
-  identify: userId => {
+  identify: (userId) => {
     // TODO implement
   },
   unidentify: () => {
     // TODO implement
-  }
+  },
 };
 ```
 
 Call the initAvo function:
 
 ```typescript
-Avo.initAvo({env: Avo.AvoEnv.Dev}, {}, customAvoLogger);
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customAvoLogger);
 ```
 
 ## <a name="mobile"></a> Mobile
@@ -321,19 +323,19 @@ var Avo = require('./Avo.js');
 // that you pass into initAvo():
 
 var customAvoLogger = {
-  logEvent: function(userId, eventName, eventProperties) {
+  logEvent: function (userId, eventName, eventProperties) {
     // TODO implement
   },
-  setUserProperties: function(userId, userProperties) {
+  setUserProperties: function (userId, userProperties) {
     // TODO implement
-  }
+  },
 };
 ```
 
 Call the initAvo() function:
 
 ```javascript
-Avo.initAvo({env: 'dev'}, {}, {}, customAvoLogger);
+Avo.initAvo({ env: 'dev' }, {}, {}, customAvoLogger);
 ```
 
 By passing in the `customAvoLogger` object, its `logEvent()` function can be used
@@ -348,19 +350,19 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 let customAvoLogger = {
-  logEvent: function(userId, eventName, eventProperties) {
+  logEvent: function (userId, eventName, eventProperties) {
     // TODO implement
   },
-  setUserProperties: function(userId, userProperties) {
+  setUserProperties: function (userId, userProperties) {
     // TODO implement
-  }
+  },
 };
 ```
 
 Call the initAvo function:
 
 ```typescript
-Avo.initAvo({env: Avo.AvoEnv.Dev}, {}, customAvoLogger);
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customAvoLogger);
 ```
 
 ### <a name="java"></a> Java

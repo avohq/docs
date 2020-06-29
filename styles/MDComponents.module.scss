@@ -85,6 +85,10 @@
 
   transition: all 0.1s;
 
+  &:empty {
+    visibility: hidden;
+  }
+
   &:hover {
     color: brand.$docs-accent;
     text-decoration-color: brand.$docs-accent-light;

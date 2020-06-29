@@ -1,12 +1,18 @@
-import {Link} from 'gatsby';
+import Link from 'next/link';
 
 # FAQ
 
 **Table of Contents**
 
-- <a href="#does-avo-send-my-events-to-its-server">Does Avo send my events to its servers?</a>
-- <a href="#why-api-keys">Why does Avo want me to input my analytics tool API keys?</a>
-- <a href="#custom-endpoint">My team has its own custom endpoint for analytics, can we use Avo?</a>
+- <a href="#does-avo-send-my-events-to-its-server">
+    Does Avo send my events to its servers?
+  </a>
+- <a href="#why-api-keys">
+    Why does Avo want me to input my analytics tool API keys?
+  </a>
+- <a href="#custom-endpoint">
+    My team has its own custom endpoint for analytics, can we use Avo?
+  </a>
 
 ## <a name="does-avo-send-my-events-to-its-server"></a> Does Avo send my events to its servers?
 
@@ -29,4 +35,6 @@ applications usually put these API keys directly in their `<head>` tag.
 
 Yes, Avo supports custom destinations or custom pipelines as destinations.
 
-<Link to="/help/troubleshooting">Get in touch</Link> for more information.
+<Link passHref href="/help/troubleshooting">
+  <a>Get in touch</a>
+</Link> for more information.

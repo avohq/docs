@@ -1,14 +1,16 @@
-import {Link} from 'gatsby';
+import { Link } from 'gatsby';
 
 # Defining descriptive events and properties
 
-When designing good event structures it's important to create a common understanding of meaning between the data designer, the data consumer and the instrumenting developers. This is for example to avoid duplicates of events and properties and an event being sent at different times between platorms. 
+When designing good event structures it's important to create a common understanding of meaning between the data designer, the data consumer and the instrumenting developers. This is for example to avoid duplicates of events and properties and an event being sent at different times between platorms.
 
 A few things to consider:
-- Descriptive event and property names that follow a consistant <a href="#naming-conventions">naming convention</a>
-- <a href="#descriptions">Descriptions</a> that provide important information beyond the event and property names
-- <a href="#property-constraints">Property Constraints</a> that limit the property values to the ones that are allowed
 
+- Descriptive event and property names that follow a consistant <a href="#naming-conventions">naming convention</a>
+- <a href="#descriptions">Descriptions</a> that provide important information beyond
+  the event and property names
+- <a href="#property-constraints">Property Constraints</a> that limit the property
+  values to the ones that are allowed
 
 ## <a name="naming-conventions"></a> Naming conventions for events and properties
 
@@ -57,11 +59,11 @@ selected or not? Therefore we recommend explicitly naming the property either "N
 of Passengers" or "Passenger Count" - or have a convention to shorten all number of properties to
 something like "Num Passengers".
 
-Another example is somthing that has perhaps a name, ID and a type. It can be tempting to create a property on the "Purchase Completed" event with the simple name "Product", as you want to know what product the user was purchasing. In that case it's hard to know whether the property is describing the product name, it's ID, the type or something else. There for we recommend naming properties explicitly what they refer to; 
+Another example is somthing that has perhaps a name, ID and a type. It can be tempting to create a property on the "Purchase Completed" event with the simple name "Product", as you want to know what product the user was purchasing. In that case it's hard to know whether the property is describing the product name, it's ID, the type or something else. There for we recommend naming properties explicitly what they refer to;
+
 - "Product Name"
 - "Product ID"
 - "Product Type"
-
 
 #### User property example
 
@@ -69,8 +71,7 @@ Often user teams like to track event and user properties that have the same name
 
 1. It's confusing to have two properties with the same name in many analytics platforms and one can be mistaken for the other, leading to a chart with not the desired results
 2. Event and user properties do not describe exactly the same value. Event properties describe the exact value at the time that the event was sent, but user properties generally describe the latest value.
-    - For example on the "UTM Medium" might be "Facebook" at the time that the user performed the "Signup Started" event and the user property would then be updated to "Facebook" as well. But when the user come back, the "UTM Medium" property can be a totally different one and the user property would be updated accordingly, for example to "Google". In this case, the user property is describing the latest UTM Medium and we would recommend naming the user property accordingly: "Latest UTM Medium".
-
+   - For example on the "UTM Medium" might be "Facebook" at the time that the user performed the "Signup Started" event and the user property would then be updated to "Facebook" as well. But when the user come back, the "UTM Medium" property can be a totally different one and the user property would be updated accordingly, for example to "Google". In this case, the user property is describing the latest UTM Medium and we would recommend naming the user property accordingly: "Latest UTM Medium".
 
 ## <a name="descriptions"></a> Descriptions for events and properties
 
@@ -78,8 +79,7 @@ Events an properties with a descriptive name get you far to create a common unde
 
 ### Events
 
-
-For <Link to="/workspace/tracking-plan#event-defintion">events</Link> we recommend adding a description to an event with all the information required for a developers to trigger an event by the same user action for all code paths, platforms and products.
+For <Link passHref href="/workspace/tracking-plan#event-defintion"><a>events</a></Link> we recommend adding a description to an event with all the information required for a developers to trigger an event by the same user action for all code paths, platforms and products.
 
 For example for the "Purchase completed" a good description would be: _Event sent when the client receives a successful responce when a user has completed a purchase._
 
@@ -93,9 +93,13 @@ For example for a "Search Result Position" property on a "Search Result Clicked"
 
 ## <a name="property-constraints"></a> Property constraints
 
-<Link to="/workspace/tracking-plan#property-types-and-constraints">Property constraints</Link> are very useful to ensure that the correct spelling or allowed numerical values are sent with the event.
+<Link passHref href="/workspace/tracking-plan#property-types-and-constraints">
+  <a>Property constraints</a>
+</Link> are very useful to ensure that the correct spelling or allowed numerical
+values are sent with the event.
 
-We recommend using property constraints whenever possible, specifically in cases when: 
+We recommend using property constraints whenever possible, specifically in cases when:
+
 - **Limited set of strings are possible for the property**.
   - "Authentication Method" can only be "Facebook", "Google" or "Email" for all code paths, platforms and products. No risk of Android sending "facebook", iOS sending "Facebook" and web sending "FB"
 - **Numerical value can not be lower and/or higher than some value**:
