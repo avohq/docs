@@ -1,10 +1,10 @@
 ---
-layout: "guide"
-title: "Data validation"
+layout: 'guide'
+title: 'Data validation'
 # abstract: 'Learn how to use Avo to create a tracking plan and generate high quality, actionable data.'
 ---
 
-import Link from "next/link";
+import Link from 'next/link';
 
 ## <a name="how-avo-validates"></a> How Avo validates data
 
@@ -37,9 +37,9 @@ For statically typed languages, much of the validation happens on compile time, 
 
 ### <a name="debuggers"></a> Web and Mobile debuggers
 
-### <Link href="/mobile-debuggers"><a>Complete mobile debuggers docs</a></Link>
+### <Link passHref href="/mobile-debuggers"><a>Complete mobile debuggers docs</a></Link>
 
-When developing on a front end application it can be useful to see the event stream while navigating through the product. Avo provides debuggers for the following platforms - some of them are currently in beta, <Link href="/help/troubleshooting">get in touch</Link> if you'd like access:
+When developing on a front end application it can be useful to see the event stream while navigating through the product. Avo provides debuggers for the following platforms - some of them are currently in beta, <Link passHref href="/help/troubleshooting"><a>get in touch</a></Link> if you'd like access:
 
 - Web - JavaScript, TypeScript and Reason ML
 - React Native - JavaScript, TypeScript and Reason ML [(implementation docs)](https://github.com/avohq/react-native-analytics-debugger)
@@ -54,7 +54,7 @@ The debugger displays the events triggered in chronological order with the prope
 
 <left>
   <img
-    src={require("../images/web-debugger-example.png")}
+    src={require('../images/web-debugger-example.png')}
     width="25%"
     alt="Web debugger example"
   />
@@ -62,7 +62,7 @@ The debugger displays the events triggered in chronological order with the prope
 
 <left>
   <img
-    src={require("../images/android-debugger-example.gif")}
+    src={require('../images/android-debugger-example.gif')}
     width="25%"
     alt="Web debugger example"
   />
@@ -76,13 +76,13 @@ The debuggers are on by default in development but can be accessed in production
 
 ### <a name="inspector"></a> Inspector
 
-The Avo <Link href="/inspector"><a>Inspector</a></Link> analyzes your current state of tracking and guides the way from your current messy taxonomy to more consistent and reliable tracking across teams, products, and platforms.
+The Avo <Link passHref href="/inspector"><a>Inspector</a></Link> analyzes your current state of tracking and guides the way from your current messy taxonomy to more consistent and reliable tracking across teams, products, and platforms.
 
 Start monitoring the health of your tracking today with Inspector.
 
 <p>
-  <Link href="/help/troubleshooting">
+  <Link passHref href="/help/troubleshooting">
     <a>Get in touch</a>
-  </Link>{" "}
+  </Link>{' '}
   if you want to learn more about Avo's data validation.
 </p>

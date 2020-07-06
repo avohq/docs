@@ -6,14 +6,13 @@ title: 'Integrations'
 
 import Link from 'next/link';
 
-The integrations tab is where Avo can be integrated with a production time validation tool or your own JSON schema. Please <Link href="/help/troubleshooting"><a>contact us</a></Link> if you want access to our Integrations beta.
+The integrations tab is where Avo can be integrated with a production time validation tool or your own JSON schema. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you want access to our Integrations beta.
 
 Available integrations are currently:
 
 - <a href="#segment-protocols">Segment Protocols</a>
 - <a href="#amplitude-taxonomy">Ampltitude Taxonomy</a>
 - <a href="#json-schema">JSON Schema</a>
-
 
 ## <a name="segment-protocols"></a> Segment Protocols
 
@@ -22,21 +21,21 @@ The integration to [Segment Protocols](https://segment.com/product/protocols/) a
 1. Published into Segment Protocols with a push of a button
 2. Copied or downloaded on the Segment Protocols format
 
-### Protocols Sync 
+### Protocols Sync
 
 Avo will override all events in the Protocols tracking plan that are being imported from Avo. So any changes made to an event in Protocols between Avo imports will be overridden on next Avo import.
 
 Avo will not override any events that are only defined in Protocols, or events that have not been added to the Protocols integration in Avo.
 
-### Enable the integration 
+### Enable the integration
 
 To enable the direct integration with Segment Protocols, you need to configure it with the following parameters from Segment. This step is not neccassary if you wish to copy or download the Protocols JSON file from the Avo UI.
 
 - **Segment Workspace Name**: Found in the URL when logged into Segment: `https://app.segment.com/{Segment workspace name}/...
-- **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_` 
+- **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_`
 - **Segment Access Token**: [Create new API tokens](https://segment.com/docs/config-api/authentication/#create-an-access-token) for Avo and limit the scope of its permissions to ‘Protocol Admin’.
 
-### Filtering events 
+### Filtering events
 
 You can customize which events in Avo are published to which tracking plan in Segment Protocols by using the events filter. Events can be filtered by Sources, Destinations and Tags. For example an integration to the iOS tracking plan in Protocols could look like this:
 
@@ -55,13 +54,11 @@ There are two ways to publish your selected events into Protocols:
 1. Publish directly from Avo to Protocols by clicking the "Publish to Protocols" button
 2. Copy or download the Protocols JSON and import it into Segment manually
 
-
 ## <a name="amplitude-taxonomy"></a> Amplitude Taxonomy
 
-The integration to [Ampltitude Taxonomy](https://amplitude.com/taxonomy) allows you to export all or a subset or your events to a CSV file on the Amplitdue Taxonomy format. The events can be filtered by Sources, Destinations and Tags. 
+The integration to [Ampltitude Taxonomy](https://amplitude.com/taxonomy) allows you to export all or a subset or your events to a CSV file on the Amplitdue Taxonomy format. The events can be filtered by Sources, Destinations and Tags.
 
 Unfortunately Taxonomy doesn't have an API for updating the tracking plan yet, but it can be [uploaded into Taxonomy](https://help.amplitude.com/hc/en-us/articles/115001477311#import-export-schema) manually.
-
 
 ## <a name="json-schema"></a> JSON Schema
 
@@ -88,5 +85,3 @@ The entire tracking plan or a subset of events can be exported on a JSON schema 
 </left>
 
 3. Do `avo pull` for the JSON source in the Avo CLI - or copy or download the JSON schema from the "Implement" tab
-
-
