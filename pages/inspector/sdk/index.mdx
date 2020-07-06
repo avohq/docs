@@ -1,6 +1,9 @@
-import {Link} from 'gatsby';
+---
+layout: 'guide'
+title: 'Avo Inspector SDK'
+---
 
-# Avo Inspector SDK
+import Link from 'next/link';
 
 **Avo Inspector** analyzes the analytics events sent from your app, without collecting the actual data (not yet another tool to add to your privacy policy). Based on that analysis Avo automatically builds a single source of truth tracking plan, covering all your products and platforms, giving you a complete overview of which is tracking what, and which is not.
 
@@ -12,13 +15,21 @@ The **Avo Inspector SDK** is designed to be small and easy to include in any pro
 - <a href="#standalone-usage">Usage overview</a>
 - <a href="#supported-types">Supported event schema types</a>
 - <a href="#batching">Batching</a>
-- <a href="#segment-middleware">Easy setup with Segment SDK on Android and iOS</a>
+- <a href="#segment-middleware">
+    Easy setup with Segment SDK on Android and iOS
+  </a>
 
 ## <a name="platform-docs"></a> Platform documentation
 
-- <Link to="/inspector/sdk/ios">iOS</Link>
-- <Link to="/inspector/sdk/android">Android</Link>
-- <Link to="/inspector/sdk/js">Web and React Native</Link>
+- <Link passHref href="/inspector/sdk/ios">
+    <a>iOS</a>
+  </Link>
+- <Link passHref href="/inspector/sdk/android">
+    <a>Android</a>
+  </Link>
+- <Link passHref href="/inspector/sdk/js">
+    <a>Web and React Native</a>
+  </Link>
 
 ## <a name="standalone-usage"></a> Usage overview
 
@@ -102,4 +113,3 @@ If you are using **Segment Analytics** for tracking integrating **_Avo Inspector
 We provide a code snippet to be used as middleware component that you supply to Segment during initialization. That will allow **_Avo_** to analyze schemas of all event tracked by **Segment**.
 
 Check platform docs for more information and actual code snippets.
-

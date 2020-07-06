@@ -1,16 +1,9 @@
-import {Link} from 'gatsby';
+---
+layout: 'guide'
+title: 'Avo Inspector iOS SDK'
+---
 
-# Avo Inspector iOS SDK
-
-**Table of Contents**
-
-- <a href="#quick-start">Quick Start Guide</a>
-- <a href="#installation">Installation</a>
-- <a href="#initialization">Initialization</a>
-- <a href="#event-tracking">Sending event schemas to Avo Inspector</a>
-- <a href="#other-methods">Other methods</a>
-- <a href="#visual-inspector">Using the Visual Inspector</a>
-- <a href="#segment-middleware">Auto inspection with Segment SDK</a>
+import Link from 'next/link';
 
 ## <a name="quick-start"></a>Quick Start Guide
 
@@ -50,7 +43,7 @@ init(apiKey: String?, env: AvoInspectorEnv)
 
 This is the core of the **Avo Inspector SDK**.
 
-Call __**one of the methods**__ in this section every time an event is tracked.
+Call \***\*one of the methods\*\*** in this section every time an event is tracked.
 
 ### Option 1
 
@@ -69,20 +62,24 @@ func trackSchema(fromEvent eventName: String?, eventParams params: [String : Any
 
 > Example format:
 
->```
-`swift
-let eventProperties: [String : Any] = [
+> ```
+> `swift
+> let eventProperties: [String : Any] = [
+> ```
+
     "userId": 1337,
     "emailAddress": "jane.doe@avo.app",
     "key": "value"
+
 ]
 `objectivec
 NSDictionary<NSString *, id> *eventProperties = @{
-    @"userId": @1337,
-    @"emailAddress": @"jane.doe@avo.app",
-    @"key": @"value"
+@"userId": @1337,
+@"emailAddress": @"jane.doe@avo.app",
+@"key": @"value"
 };
-```
+
+````
 
 > #### Return Type:
 
@@ -103,7 +100,7 @@ NSDictionary<NSString *, AvoEventSchemaType *> *eventSchema = @{
     @"emailAddress": [AvoString new],
     @"key": [AvoString new]
 };
-```
+````
 
 ### Option 2
 
@@ -114,7 +111,7 @@ func trackSchema(eventName: String, eventSchema: NSDictionary<String, AvoEventSc
 -(void) trackSchema:(NSString *) eventName eventSchema:(NSDictionary<NSString *, AvoEventSchemaType *> *) schema;
 ```
 
-This method allows you to process the event schema before sending it. 
+This method allows you to process the event schema before sending it.
 It's handy to extract the schema from your event properties with `extractSchema(eventProperties: NSDictionary<String, Any>)` (see below), process it and then provide it to this method.
 
 > #### Parameters:
@@ -125,33 +122,37 @@ It's handy to extract the schema from your event properties with `extractSchema(
 
 > Example format:
 
->```
-`swift
-let eventSchema: [String : AvoEventSchemaType] = [
+> ```
+> `swift
+> let eventSchema: [String : AvoEventSchemaType] = [
+> ```
+
     "userId": AvoInt(),
     "emailAddress": AvoString(),
     "key": AvoString()
+
 ]
 `objectivec
-NSDictionary<String *, AvoEventSchemaType *> *eventSchema = @{
-    @"userId": [AvoInt new],
-    @"emailAddress": [AvoString new],
-    @"key": [AvoString new]
+NSDictionary<String _, AvoEventSchemaType _> \*eventSchema = @{
+@"userId": [AvoInt new],
+@"emailAddress": [AvoString new],
+@"key": [AvoString new]
 };
+
 ```
 
-See <Link to="/inspector/sdk#standalone-usage">this</Link> for details about event schema structure and schema types.
+See <Link passHref href="/inspector/sdk#standalone-usage"><a>this</a></Link> for details about event schema structure and schema types.
 
 ## <a name="other-methods"></a>Other methods
 
 ### 1. Extract schema from event properties
 
 ```
-`swift
-func extractSchema(eventProperties: NSDictionary<String, Any>) -> NSDictionary<String, AvoEventSchemaType>
-`objectivec
--(NSDictionary<NSString *, AvoEventSchemaType *> *) extractSchema:(NSDictionary<NSString *, id> *) eventParams;
-```
+
+`swift func extractSchema(eventProperties: NSDictionary<String, Any>) -> NSDictionary<String, AvoEventSchemaType>`objectivec
+-(NSDictionary<NSString _, AvoEventSchemaType _> _) extractSchema:(NSDictionary<NSString _, id> \*) eventParams;
+
+````
 
 This is the method used by `trackSchemaFromEvent` internally. It extracts the event schema in form of an `NSDictionary` from an event properties NSDictionary.
 
@@ -178,7 +179,7 @@ NSDictionary<NSString *, AvoEventSchemaType *> *eventSchema = @{
     @"emailAddress": [AvoString new],
     @"key": [AvoString new]
 };
-```
+````
 
 ### 2. Print logs
 
@@ -231,7 +232,7 @@ In development mode default batch flush interval is 1 second.
 
 ## <a name="visual-inspector"></a> Using the Visual Inspector
 
-Visual inspector is actually our <Link to="/mobile-debuggers">Mobile Debugger</Link> integrated in the Avo Inspector SDK. 
+Visual inspector is actually our <Link passHref href="/mobile-debuggers"><a>Mobile Debugger</a></Link> integrated in the Avo Inspector SDK.
 
 Visual Inspector is enabled in development and staging environments by default.
 
@@ -263,7 +264,6 @@ func getVisualInspector(): AnalyticsDebugger?
 ```
 
 See more about the AnalyticsDebugger in it's <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/ios-analytics-debugger">Github repo.</a>
-
 
 ## <a name="segment-middleware"></a>Auto inspection with Segment SDK
 

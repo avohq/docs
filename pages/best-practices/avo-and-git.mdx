@@ -1,13 +1,11 @@
+---
+layout: 'guide'
+title: 'Avo and git'
+---
+
 import Link from 'next/link';
 
-# Avo and git
-
-**Table of Contents**
-
-- <a href="#workflow">Workflow</a>
-- <a href="#resolving-conflicts">Resolving Conflicts</a>
-
-## <a name="workflow"></a> Workflow
+## Workflow
 
 We recommend checking the generated code from Avo as well as avo.json into git. Git workflows vary between teams, but below is a workflow between Avo and git that we recommend for most teams. Check out our <Link passHref href="/commands#using-branches"><a>CLI documentation</a></Link> to learn more about the branch commands.
 
@@ -21,6 +19,6 @@ When changes are made to a tracking plan in Avo:
 
 Note: At this point avo.json on your git master is pointing to an Avo branch that has already been merged, which is perfectly fine! The Avo CLI will take care of automatically updating avo.json on next `avo pull`.
 
-## <a name="resolving-conflicts"></a> Resolving Conflicts
+## Resolving Conflicts
 
 As teams grow and more people are working on analytics implementation with Avo, chances are that conflicts in avo.json occur. The CLI is will help you resolve this conflicts, see more in the <Link passHref href="/commands#git-conflicts"><a>CLI documentation</a></Link>

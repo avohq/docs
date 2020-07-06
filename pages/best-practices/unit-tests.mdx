@@ -1,6 +1,9 @@
-import {Link} from 'gatsby';
+---
+layout: 'guide'
+title: 'Avo in unit tests'
+---
 
-# Avo in unit tests
+import Link from 'next/link';
 
 It can be useful to have your Avo functions running as a part of your test suite.
 
@@ -14,10 +17,10 @@ describe('Avo', () => {
   var Avo;
   beforeAll(() => {
     Avo = require('./Avo');
-    Avo.initAvo({env: 'dev', noop: true});
+    Avo.initAvo({ env: 'dev', noop: true });
   });
   test('signupStart() with email property is valid', () => {
-    Avo.signupCompleted({email: "test@test.com"});
+    Avo.signupCompleted({ email: 'test@test.com' });
   });
   test('signupStart() without email property throws', () => {
     expect(() => {

@@ -1,16 +1,10 @@
-# Sending data to GameAnalytics with Avo
-
-
-**Table of Contents**
-
-- <a href="#creating-custom-destination">Creating the custom destination</a>
-- <a href="#designing-the-data">Designing the data</a>
-  - <a href="#game-analytics-events">Events</a>
-  - <a href="#game-analytics-properties">Event properties</a>
-- <a href="#implementing-in-code">Implementing in code</a>
-
+---
+layout: 'guide'
+title: 'Sending data to GameAnalytics with Avo'
+---
 
 ## <a name="creating-custom-destination"></a> Creating the custom destination
+
 Before you start it's good to head to the "Connections" tab and create the custom destination for GameAnalytics. It should look something like this:
 
 <left>
@@ -64,7 +58,7 @@ You can still use your preferred naming convention by using the name mapping too
 
 ### <a name="game-analytics-properties"></a> Properties
 
-Each event allows specific properties to be attached to it. Please follow the [GameAnalytics documentation](https://gameanalytics.com/docs/item/ga-data#) on which properties are allowed and how they are spelled. 
+Each event allows specific properties to be attached to it. Please follow the [GameAnalytics documentation](https://gameanalytics.com/docs/item/ga-data#) on which properties are allowed and how they are spelled.
 
 Same as with events, name mapping can be use to send properties on the accepted GameAnalyitcs format. An example for the Progression Status property onthe Progression Event:
 
@@ -82,9 +76,7 @@ Same as with events, name mapping can be use to send properties on the accepted 
 
 **Note** that events that are sent to analytics with other names are specified in the [GameAnalytics documentation](https://gameanalytics.com/docs/item/ga-data#) will not be accepted.
 
-
 ## <a name="implementing-in-code"></a> Implementing in code
-
 
 To get started sending data to GameAnalytics via a custom destination you do the
 following:
@@ -98,7 +90,7 @@ following:
 Import the Avo library into your code and implement a custom Avo logger which
 delivers data to GameAnalytics via their SDK:
 
-```
+```JavaScript
 import Avo from './Avo';
 
 // An example of a simple GameAnalytics integration
@@ -149,7 +141,7 @@ var gameAnalyticsAvoLogger = {
 
 Call the initAvo function:
 
-```
+```JavaScript
 Avo.initAvo({env: 'dev'}, gameAnalyticsAvoLogger);
 ```
 

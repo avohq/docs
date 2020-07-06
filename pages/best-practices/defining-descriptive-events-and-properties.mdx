@@ -1,16 +1,13 @@
-import { Link } from 'gatsby';
+---
+layout: 'guide'
+title: 'Defining descriptive events and properties'
+---
 
-# Defining descriptive events and properties
+import Link from 'next/link';
 
 When designing good event structures it's important to create a common understanding of meaning between the data designer, the data consumer and the instrumenting developers. This is for example to avoid duplicates of events and properties and an event being sent at different times between platorms.
 
 A few things to consider:
-
-- Descriptive event and property names that follow a consistant <a href="#naming-conventions">naming convention</a>
-- <a href="#descriptions">Descriptions</a> that provide important information beyond
-  the event and property names
-- <a href="#property-constraints">Property Constraints</a> that limit the property
-  values to the ones that are allowed
 
 ## <a name="naming-conventions"></a> Naming conventions for events and properties
 

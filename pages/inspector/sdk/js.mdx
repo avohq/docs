@@ -1,14 +1,9 @@
-import {Link} from 'gatsby';
+---
+layout: 'guide'
+title: 'Avo Inspector Javascript SDK'
+---
 
-# Avo Inspector Javascript SDK for Web And React Native
-
-**Table of Contents**
-
-- <a href="#quick-start">Quick Start Guide</a>
-- <a href="#installation">Installation</a>
-- <a href="#initialization">Initialization</a>
-- <a href="#event-tracking">Sending event schemas to Avo Inspector</a>
-- <a href="#other-methods">Other methods</a>
+import Link from 'next/link';
 
 ## <a name="quick-start"></a>Quick Start Guide
 
@@ -21,7 +16,6 @@ The Inspector library is available through npm. Run the following command to ins
 ```
     yarn add avo-inspector
 ```
-
 
 ## <a name="initialization"></a>Initialization
 
@@ -54,7 +48,7 @@ All the following methods are available in the **AvoInspector** class.
 
 This is the core of the **Avo Inspector SDK**.
 
-Call __**one of the methods**__ in this section every time an event is tracked.
+Call \***\*one of the methods\*\*** in this section every time an event is tracked.
 
 #### Option 1
 
@@ -75,11 +69,15 @@ Extracts the event schema from event properties represented by the second parame
 > Example format:
 
 > ```
-var eventProperties = {
+> var eventProperties = {
+> ```
+
     'userId': 1337,
     'emailAddress': 'jane.doe@avo.app',
     'key': 'value',
+
 };
+
 ````
 
 #### Option 2
@@ -92,7 +90,7 @@ trackSchema(eventName: string, eventSchema: Array<{
       }>): void;
 ```
 
-This method allows you to process the event schema before sending it. 
+This method allows you to process the event schema before sending it.
 It's handy to extract the schema from your event properties with `extractSchema` (see below), process it, and then provide it to this method.
 
 > ### Parameters:
@@ -118,7 +116,7 @@ var returnedSchema = [
     },
 ];
 ```
-See supported schema types <Link to="/inspector/sdk#supported-types">here</Link>.
+See supported schema types <Link href passHref="/inspector/sdk#supported-types"><a>here</a></Link>.
 
 ## <a name="other-methods"></a>Other methods
 
@@ -182,3 +180,4 @@ In development mode default batch flush interval is 1 second.
 > #### Parameters:
 
 > - `int newBatchFlushSeconds` - sets batch flush time in seconds.
+````

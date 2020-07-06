@@ -1,6 +1,9 @@
-import { Link } from "gatsby";
+---
+layout: 'guide'
+title: 'Issues'
+---
 
-# Issues
+import Link from 'next/link';
 
 The **Inspector** monitors the health of your current tracking, catching common issues such as missing events or properties, casing inconsistencies, property type mismatches, significant difference in volumes between platforms and many more. The Inspector gives you insights into the health trends of your tracking and email alerts on any regressions. Enabling you to start improving your tracking in a data-driven way.
 
@@ -8,15 +11,25 @@ Here are the issue types that the **Inspector** can detect. You can enable any s
 
 ### Issue Types
 
-- <a href="#event-is-not-present-on-some-platforms">Event missing on some platforms</a>
-- <a href="#property-missing-on-some-platforms">Property missing on some platforms</a>
+- <a href="#event-is-not-present-on-some-platforms">
+    Event missing on some platforms
+  </a>
+- <a href="#property-missing-on-some-platforms">
+    Property missing on some platforms
+  </a>
 - <a href="#missing-usual-property-in-event">Property sometimes missing</a>
 - <a href="#event-property-type-inconsistency">Property type mismatch</a>
-- <a href="#event-volume-change-between-versions">Event volume change significant between versions</a>
-- <a href="#significant-volume-mismatch-between-platforms">Event volume significantly different between platforms</a>
+- <a href="#event-volume-change-between-versions">
+    Event volume change significant between versions
+  </a>
+- <a href="#significant-volume-mismatch-between-platforms">
+    Event volume significantly different between platforms
+  </a>
 - <a href="#event-name-casing">Event name casing (coming soon)</a>
 - <a href="#property-name-casing">Property name casing (coming soon)</a>
-- <a href="#global-property-type-inconsistency">Global property type mismatch (coming soon)</a>
+- <a href="#global-property-type-inconsistency">
+    Global property type mismatch (coming soon)
+  </a>
 
 #### <a name="event-is-not-present-on-some-platforms"></a>Event missing on some platforms
 
@@ -75,10 +88,16 @@ _**Example:** Inconsistent type of property revenue on events Purchase Completed
 ### Smart Issues (coming soon)
 
 - <a href="#similar-event-names">Similar event names</a>
-- <a href="#event-similar-property-names">Similar property names within event</a>
-- <a href="#property-expected-type-mismatch">Unexpected type based on property name</a>
+- <a href="#event-similar-property-names">
+    Similar property names within event
+  </a>
+- <a href="#property-expected-type-mismatch">
+    Unexpected type based on property name
+  </a>
 - <a href="#global-similar-property-names">Global similar property names</a>
-- <a href="#missing-usual-property-in-similar-events">Missing property based on property group pattern</a>
+- <a href="#missing-usual-property-in-similar-events">
+    Missing property based on property group pattern
+  </a>
 
 #### <a name="similar-event-names"></a>Similar event names
 
