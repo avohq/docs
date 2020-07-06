@@ -1,0 +1,16 @@
+---
+layout: 'guide'
+title: 'Multiple sources on Avo branches'
+---
+
+For teams that have more than one platform, it often occurs that changes are made to the tracking plan for more than one Avo source at the same time.
+
+We recommend creating one Avo branch that includes changes for all desired sources. When the changes has been implemented on one of the sources we recommend this workflow:
+
+1. tag the events (for example `re-add sources`) included in the change
+2. quickly remove the non-ready-source(s) from the event(s)
+3. merge the branch
+4. open another branch
+5. filter events with the tag you just created
+6. add the non-ready-source(s) again to the events
+7. the implementing dev on the non-ready-source(s) updates the branch they are working on to be the new branch

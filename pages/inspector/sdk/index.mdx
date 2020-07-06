@@ -1,0 +1,115 @@
+---
+layout: 'guide'
+title: 'Avo Inspector SDK'
+---
+
+import Link from 'next/link';
+
+**Avo Inspector** analyzes the analytics events sent from your app, without collecting the actual data (not yet another tool to add to your privacy policy). Based on that analysis Avo automatically builds a single source of truth tracking plan, covering all your products and platforms, giving you a complete overview of which is tracking what, and which is not.
+
+The **Avo Inspector SDK** is designed to be small and easy to include in any project.
+
+**Table of Contents**
+
+- <a href="#platform-docs">Platform documentation</a>
+- <a href="#standalone-usage">Usage overview</a>
+- <a href="#supported-types">Supported event schema types</a>
+- <a href="#batching">Batching</a>
+- <a href="#segment-middleware">
+    Easy setup with Segment SDK on Android and iOS
+  </a>
+
+## <a name="platform-docs"></a> Platform documentation
+
+- <Link passHref href="/inspector/sdk/ios">
+    <a>iOS</a>
+  </Link>
+- <Link passHref href="/inspector/sdk/android">
+    <a>Android</a>
+  </Link>
+- <Link passHref href="/inspector/sdk/js">
+    <a>Web and React Native</a>
+  </Link>
+
+## <a name="standalone-usage"></a> Usage overview
+
+### Initialization
+
+Before using the **_Avo Inspector SDK_** you need to obtain api key from the Avo dashboard and provide it to the initialization method.
+
+```
+AvoInspector(apiKey: "YOUR_API_KEY", isDev: devFlag)
+```
+
+### Inspecting events
+
+You need to call a method whenever event is tracked, either `trackSchemaFromEvent(eventName: String, eventParams: Map)` or `trackSchema(eventName: String, eventSchema: Map)`
+
+The difference is that in the first method the event object is transformed into event schema under the hood and in the second method you provide the event schema.
+Eventually in both methods the event schema is sent to **_Avo_** servers for analysis.
+
+The event schema format is a map, similar to the format most events use, but with type names instead of actual values. For example if you track **CheckoutCompleted** event
+
+```
+{
+	userId: 1337,
+	emailAddress: “jane.doe@avo.app”,
+	productId: 45,
+	revenue: 15.99,
+	timestamp: 1579263014,
+	deviceId: sdf-23-trr-456-0000,
+}
+```
+
+The following event schema would be sent to **_Avo_**:
+
+```
+{
+	userId: int,
+	emailAddress: string,
+	productId: int,
+	revenue: float,
+	timestamp: long,
+	deviceId: string,
+}
+```
+
+> Note:
+>
+> You can extract the schema separately with `extractSchema(eventParams: Map)`, the same method that's used by `trackSchemaFromEvent(eventName: String, eventParams: Map)`
+
+### Example
+
+```
+fun trackAppOpened(appOpenedEvent: Map) {
+	tracker.track(“App Opened”, appOpenedEvent);
+
+	avoInspector.trackSchemaFromEvent(“App Opened”, appOpenedEvent);
+}
+```
+
+## <a name="supported-types"></a> Supported event schema types
+
+Currently we support the following types:
+
+- null
+- int
+- float
+- boolean
+- string
+- combination of types, i.e. an optional integer would look like `integer | null`. If we've seen a mix of integers, strings and nulls it will be `integer | string | null`. List can be a part of combination.
+- parametrized list, i. e. `list<integer | null>`
+- nested objects
+
+## <a name="batching"></a> Batching
+
+In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. Default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
+You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlustSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
+
+## <a name="segment-middlewares"></a> Easy setup with Segment SDK on Android and iOS
+
+If you are using **Segment Analytics** for tracking integrating **_Avo Inspector SDK_** is even easier.
+
+We provide a code snippet to be used as middleware component that you supply to Segment during initialization. That will allow **_Avo_** to analyze schemas of all event tracked by **Segment**.
+
+Check platform docs for more information and actual code snippets.

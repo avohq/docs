@@ -1,0 +1,282 @@
+---
+layout: 'guide'
+title: 'Connections'
+# abstract: 'Learn about the analytics tools avo supports'
+---
+
+import Link from 'next/link';
+
+The connection tab is where you configure your **sources** (programming languages and development platforms) and **destinations** (analytics platforms).
+
+## <a name="sources"></a> Sources
+
+Sources represent where you send your data from. These can be mobile apps,
+websites, backends, etc. Each source has an identifiable name, a development
+platform, programming language and <Link href="/concepts/destinations"><a>Destinations</a></Link> to send to.
+
+Avo uses these Sources to generate code based on your event schema.
+
+Avo currently supports these development platforms and programming languages:
+
+### <a name="web"></a> Web
+
+- JavaScript
+- TypeScript
+- ReasonML
+
+### <a name="mobile"></a> Mobile
+
+- React Native
+- iOS
+  - Objective-C
+  - Swift
+- Android
+  - Java
+  - Kotlin
+
+### <a name="backend"></a> Backend
+
+- Node.js
+  - JavaScript
+  - TypeScript
+  - ReasonML
+- Python
+- Java
+- Ruby
+- PHP
+
+### <a name="game-engines"></a> Game Engines
+
+- Unity (C#)
+
+## <a name="destinations"></a> Destinations
+
+Destinations represent where your data should be sent. Your analytics platform
+of choice. Destinations have an identifiable name, analytics platform,
+development API key and production API key.
+
+We recommend using separate projects for development and production to make sure
+you don’t taint your production data while working on your product.
+
+Below are short description of each supported tool, with instructions on how to
+connect with Avo.
+
+### <a name="amplitude"></a> Amplitude
+
+[Amplitude](https://amplitude.com/) is a product analytics platform and is
+useful for analyzing behaviour across web, mobile and server.
+
+#### Connect Amplitude to Avo
+
+To connect your Amplitude project to Avo you need to [find your Amplitude API
+key](https://amplitude.zendesk.com/hc/en-us/articles/235649848#project-general-settings).
+
+_In Amplitude_:
+
+1. Go into the "Manage Data" tab
+2. Click the project you want to connect to Avo
+3. Copy the "API Key"
+
+_In Avo_:
+
+1. In the navigation panel on the left, go into Connections
+2. Select your Amplitude destination or click "Add Destination" to create a new one
+3. Paste the corresponding key into the development or production field
+
+It’s highly recommended to keep your development data separate from the
+production data by [creating a special development
+project](https://amplitude.zendesk.com/hc/en-us/articles/207108137-Introduction-Getting-Started#getting-started)
+in Amplitude.
+
+Further documentation for Amplitude can be found [on their
+helpdesk](https://amplitude.zendesk.com/hc/en-us/categories/200409887-Getting-Started)
+
+### <a name="appsflyer"></a> AppsFlyer
+
+[ApplsFlyer](https://www.appsflyer.com/) is a marketing tool useful for ad
+campaign attribution.
+
+#### Connect AppsFlyer to Avo
+
+To connect your AppsFlyer project to Avo you need to find your [AppsFlyer SDK
+Dev
+key](https://support.appsflyer.com/hc/en-us/articles/211719806-App-Settings#sdk-dev-key).
+
+_In AppsFlyer_:
+
+1. Go to the app settings page
+2. Copy the "Dev key"
+
+_In the Avo webapp_:
+
+1. In the navigation panel on the left, go into Connections
+2. Select your AppsFlyer destination or click "Add Destination" to create a new one
+3. Paste the corresponding key into the development or production field
+
+_In your React Native code_:
+
+For iOS apps, `appId` needs to be passed into `destinationOptions` in `initAvo`:
+
+```
+Avo.initAvo({env: "dev"}, {...systemProperties}, {appsFlyer: {appId: "XXXXXX"}})
+```
+
+Further documentation for AppsFlyer can be found [on their support
+page](https://support.appsflyer.com/hc/en-us)
+
+### <a name="facebook"></a> Facebook Analytics
+
+Avo supports [Facebook Analytics for
+web](https://developers.facebook.com/docs/javascript/quickstart)
+
+#### Connect Facebook Analytics to Avo
+
+To connect Facebook Analytics to Avo you need to find your [App
+ID](https://developers.facebook.com/docs/javascript/quickstart)
+
+_In Facebook Analytics_:
+
+1. Go to https://developers.facebook.com/apps
+2. Copy the App ID from the app that you want to connect to Avo
+
+_In Avo_:
+
+1. In the navigation panel on the left, go into Connections
+2. Select your AppsFlyer destination or click "Add Destination" to create a new one
+3. Paste the corresponding App ID into the development or production field
+
+Further documentation for Facebook Analytics can be found in their [help
+centre](https://www.facebook.com/help/analytics/?ref=analytics_marketing_site)
+
+### <a name="firebase"></a> Firebase Analytics
+
+Firebase analytics is Google Analytics for Firebase, focused on app tracking.
+
+#### Connect Firebase Analytics to Avo
+
+Follow the [Firebase Analytics
+instructions](https://firebase.google.com/docs/analytics/) to set up Firebase
+Analytics in your code. Then you can initialize Avo and are ready to go.
+
+### <a name="fullstory"></a> FullStory
+
+[Fullstory](https://www.fullstory.com/) is a session replay tool useful for
+looking deep into how each user behaves. Fullstory also accepts [custom events](https://help.fullstory.com/develop-js/363565-fs-event-api-sending-custom-event-data-into-fullstory) to enhance the session data.
+
+#### Connect FullStory to Avo:
+
+To connect your Fullstory project to Avo you need to find the Org ID:
+
+_In Fullstory_:
+
+1. Log in
+2. Copy the Org ID from the URL: `https://app.fullstory.com/ui/{OrgID}`
+
+_In Avo_:
+
+1. In the navigation panel on the left, go into Connections
+2. Select your AppsFlyer destination or click "Add Destination" to create a new one
+3. Paste the corresponding key into the development or production field
+
+Further documentation about FullStory can be found in their
+[helpdesk](https://help.fullstory.com/)
+
+### <a name="intercom"></a> Intercom
+
+Intercom is a customer messaging platform, useful for engaging with customer
+both manually and automatically.
+
+#### Connecting Intercom to Avo
+
+To connect your intercom project to Avo, you need to find your [workspace
+ID](https://www.intercom.com/help/faqs-and-troubleshooting/getting-set-up/where-can-i-find-my-workspace-id-app-id).
+
+_In Intercom_:
+
+1. Log in
+2. Copy the workspace ID from the URL: `https://app.intercom.io/a/apps/{workspaceID}`
+
+_In Avo_:
+
+1. In the navigation panel on the left, go into Connections
+2. Select your AppsFlyer destination or click "Add Destination" to create a new one
+3. Paste the corresponding key into the development or production field
+
+We also recommend [setting up a test workspace in
+Intercom](https://www.intercom.com/help/configure-intercom-for-your-product-or-site/create-a-test-version-of-intercom/create-a-test-workspace-in-intercom)
+to keep the development data separate from production data.
+
+Further documentation for Intercom can be found in their [Help
+Center](https://www.intercom.com/help)
+
+### <a name="mixpanel"></a> Mixpanel
+
+[Mixpanel](https://mixpanel.com/) is a product analytics platform and is useful
+for analyzing behaviour across web, mobile and server.
+
+#### Connect Mixpanel to Avo:
+
+To connect your Mixpanel project to Avo you need to [find your Mixpanel project
+token](https://help.mixpanel.com/hc/en-us/articles/115004490503-Project-Token-API-Key-API-Secret#project-token).
+
+_In Mixpanel_:
+
+1. Go into the "Manage Data" tab
+2. Click the project you want to connect to Avo
+3. Copy the "API Token"
+
+_In Avo_:
+
+1. In the navigation panel on the left, go into Connections
+2. Select your Mixpanel destination or click "Add Destination" to create a new one
+3. Paste the corresponding key into the development or production field
+
+It’s highly recommended to keep your development data separate from the
+production data by [by creating a special development
+environment](https://help.mixpanel.com/hc/en-us/articles/360001354886-Automatically-Separate-Development-Data)
+in Mixpanel.
+
+Further documentation for Mixpanel can be found [in their Help Center](https://help.mixpanel.com/hc/en-us)
+
+### <a name="segment"></a> Segment
+
+[Segment](https://segment.com/) is an infrastructure for customer data, useful
+for connecting multiple marketing and analytics platforms to your application.
+
+#### Connect Segment to Avo
+
+"
+To connect you Segment project to Avo need to find your [Segment write
+key](https://segment.com/docs/guides/setup/how-do-i-find-my-write-key/).
+"
+_In Segment_:
+
+1. Go into the "Sources" tab
+2. Click the source you want to connect to Avo
+3. Click API keys in the menu"
+4. Copy the "Write key"
+
+_In Avo_:
+
+1. In the navigation panel on the left, go into Connections
+2. Select your Amplitude destination or click "Add Destination" to create a new one
+3. Paste the corresponding key into the development or production field
+
+It’s highly recommended to keep your development data separate from the
+production data by [by creating a special development
+environment](https://segment.com/docs/guides/account-management/i-want-to-set-up-segment-for-multiple-environments-development-production-testing-etc-should-i-create-multiple-workspaces-or-multiple-sources/)
+in Segment.
+
+Further documentation for Segment can be found in their
+[Helpdesk](https://segment.com/docs/)
+
+### <a name="custom"></a> Custom Destination
+
+Sometimes the best way to integrate Avo is through a custom destination. For example for teams that:
+
+- have a custom pipline
+- are sending data to analytics platforms through an API (not using their SDK)
+
+It's also sometimes possible to use a custom destination for language - analytics pairs that are not supported by Avo yet. Please <Link href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is the best solution for you.
+
+Detailed instructions on how to set up a custom destination can be found in our <Link href="/custom-destinations"><a>custom destination docs</a></Link>.

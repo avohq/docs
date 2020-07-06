@@ -10,6 +10,26 @@
   margin-bottom: 30px;
 }
 
+.pre {
+  overflow-x: scroll;
+}
+
+.codeLine {
+  display: table-row;
+}
+
+.codeLineNumber {
+  display: table-cell;
+  text-align: right;
+  padding-right: 1em;
+  user-select: none;
+  opacity: 0.3;
+}
+
+.codeLineContent {
+  display: table-cell;
+}
+
 .h1,
 .h2,
 .h3,
@@ -27,7 +47,7 @@
   margin-top: 20px;
   margin-bottom: 5px;
   margin-top: 0px;
-  color: brand.$gray-50;
+  color: brand.$gray-75;
 }
 
 .p,
@@ -64,6 +84,10 @@
   text-decoration-color: brand.$black;
 
   transition: all 0.1s;
+
+  &:empty {
+    visibility: hidden;
+  }
 
   &:hover {
     color: brand.$docs-accent;
