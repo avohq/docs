@@ -9,10 +9,12 @@ import frontmatter from 'remark-frontmatter';
 import { Node, Position } from 'unist';
 
 import chalk from 'chalk';
+import { shouldCreateCheck, createCheck } from './github';
 
 export interface MDXError {
   message: string;
   position?: Position;
+  filePath: string;
 }
 
 export interface RuleFunctionMetadata {
@@ -64,6 +66,10 @@ const lintMdx = (rules: RuleFunction[]): number => {
   if (errorCount)
     console.log(`\n🚨 ${errorCount} error${errorCount > 1 ? 's' : ''} found\n`);
   else console.log('\n😁 No errors found\n');
+
+  if (shouldCreateCheck()) {
+    createCheck(results.flatMap((file) => file.errors));
+  }
 
   return errorCount;
 };

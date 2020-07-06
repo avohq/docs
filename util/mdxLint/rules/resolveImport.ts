@@ -35,6 +35,7 @@ const resolveImport = (
     return {
       message: `Module \'${item.fromModule}\' not found`,
       position: node.position,
+      filePath: filename,
     };
   }
 };
