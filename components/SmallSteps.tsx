@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement, useState } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 
 import classNames from 'classnames';
 
@@ -7,28 +7,19 @@ import styles from './SmallSteps.module.scss';
 interface StepProps {
   number: number;
   title: string;
-  collapsible: boolean;
 }
 
 export const Step: FunctionComponent<StepProps> = ({
   children,
   number,
   title,
-  collapsible,
 }) => {
-  const [open, setOpen] = useState(true);
-
   return (
     <div className={styles.step}>
-      <div className={classNames(styles.stepHeader, !open && styles.collapsed)}>
+      <div className={classNames(styles.stepHeader)}>
         <span className={styles.stepNumber}>{number}.</span> {title}
-        {collapsible && (
-          <span className={styles.collapse} onClick={() => setOpen(!open)}>
-            x
-          </span>
-        )}
       </div>
-      {open && <div className={styles.stepContent}>{children}</div>}
+      <div className={styles.stepContent}>{children}</div>
     </div>
   );
 };
@@ -38,18 +29,17 @@ interface SmallStepsProps {
   collapsible?: boolean | null;
 }
 
-const SmallSteps: FunctionComponent<SmallStepsProps> = ({
-  children,
-  collapsible = false,
-}) => {
+const SmallSteps: FunctionComponent<SmallStepsProps> = ({ children }) => {
   return (
     <React.Fragment>
       {React.Children.map(children, (child, i) => {
         if (child == null) return null;
-        return React.cloneElement<StepProps>(child, {
-          number: i + 1,
-          collapsible,
-        });
+        return React.cloneElement<StepProps>(
+          child as React.ReactElement<StepProps>,
+          {
+            number: i + 1,
+          },
+        );
       })}
     </React.Fragment>
   );
