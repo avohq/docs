@@ -2,7 +2,12 @@ import visit from 'unist-util-visit';
 import { RuleFunction, MDXError } from '../linter';
 import YAML from 'yaml';
 
-const lintYaml: RuleFunction = (node) => {
+const position = {
+  start: { line: 1, column: 1 },
+  end: { line: 1, column: 1 },
+};
+
+const lintYaml: RuleFunction = (node, { filePath }) => {
   let frontMatter: Record<string, unknown> = {};
 
   visit(node, 'yaml', (yamlNode) => {
@@ -14,12 +19,16 @@ const lintYaml: RuleFunction = (node) => {
 
   if (frontMatter.layout == null)
     errors.push({
-      message: 'Layout attribute missing from FrontMatter',
+      message: 'Layout attribute missing from front matter',
+      position,
+      filePath,
     });
 
   if (frontMatter.title == null)
     errors.push({
-      message: 'Title attribute missing from FrontMatter',
+      message: 'Title attribute missing from front matter',
+      position,
+      filePath,
     });
 
   return errors;

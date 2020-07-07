@@ -25,3 +25,6 @@ jobs:
         if: ${{ always() }}
         env:
           CI: true
+          GITHUB_SECRET: ${{secrets.GITHUB_TOKEN}}
+          OWNER: avohq
+          REPO: docs
