@@ -7,13 +7,10 @@ title: 'Sending data to GameAnalytics with Avo'
 
 Before you start it's good to head to the "Connections" tab and create the custom destination for GameAnalytics. It should look something like this:
 
-<left>
-  <img
-    src={require('../../images/game-analytics-custom-destination.png')}
-    width="50%"
-    alt="Adding name mapping"
-  />
-</left>
+<img
+  src={require('../../images/game-analytics-custom-destination.png')}
+  alt="Adding name mapping"
+/>
 
 Then you can enable the GameAnalytics destination on the source(s) from where you want to send data to GameAnalytics and add it to the events that should be sent there.
 
@@ -36,23 +33,19 @@ You can still use your preferred naming convention by using the name mapping too
 1. Create a new event with your preferred naming convention for the Progression event
 2. Click the tree dots for the event and click "Add Name Mapping"
 
-<left>
-  <img
-    src={require('../../images/name-mapping-game-analytics-1.png')}
-    width="50%"
-    alt="Adding name mapping"
-  />
-</left>
+{' '}
+
+<img
+  src={require('../../images/name-mapping-game-analytics-1.png')}
+  alt="Adding name mapping"
+/>
 
 3. Type `addProgressionEvent` into the send as field and select your Game Analytics Custom destination. Then the Progression event will be sent as `addProgressionEvent` to GameAnalytics
 
-<left>
-  <img
-    src={require('../../images/name-mapping-game-analytics-2.png')}
-    width="50%"
-    alt="Adding name mapping"
-  />
-</left>
+<img
+  src={require('../../images/name-mapping-game-analytics-2.png')}
+  alt="Adding name mapping"
+/>
 
 **Note** that events that are sent to analytics with other names than `addBusinessEvent`, `addResourceEvent`, `addProgressionEvent`, `addErrorEvent` and `addDesignEvent` will not be accepted by GameAnalytics.
 
@@ -66,13 +59,10 @@ Same as with events, name mapping can be use to send properties on the accepted 
 2. Type `progressionStatus` into the property name
 3. Select your game analytics custom destination in the dropdown:
 
-<left>
-  <img
-    src={require('../../images/name-mapping-game-analytics-3.png')}
-    width="50%"
-    alt="Adding name mapping"
-  />
-</left>
+<img
+  src={require('../../images/name-mapping-game-analytics-3.png')}
+  alt="Adding name mapping"
+/>
 
 **Note** that events that are sent to analytics with other names are specified in the [GameAnalytics documentation](https://gameanalytics.com/docs/item/ga-data#) will not be accepted.
 

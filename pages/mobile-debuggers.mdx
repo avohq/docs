@@ -11,11 +11,10 @@ Our **_Mobile Debuggers_** provide a visual way to control the events flow in yo
 They are distributed as a standalone open source libraries and are designed to be plugged in the **_Avo_** generated code. Each **_Avo_** function will automatically show events in the debugger with timestamp and all the properties.
 If **_Avo_** detects errors the mobile debugger will highlight those.
 
-# <a name="look"></a> How does it look
+## <a name="look"></a> How does it look
 
 <img
   src={require('../images/mobile-debugger.png')}
-  height="500"
   alt="React native debugger example"
 />
 
@@ -31,24 +30,21 @@ Here is a demonstration of the mobile debugger in a simple music player app.
  <th scope="col">React Native</th>
 </tr>
 <tr>
- <td height="500" style={{"padding":10}}>
+ <td style={{"padding":10}}>
   <img
     src={require('../images/android-debugger-example.gif')}
-    height="500"
     alt="Android debugger example"
   />
  </td>
- <td height="500" style={{"padding":10}}>
+ <td style={{"padding":10}}>
     <img
       src={require('../images/ios-debugger-example.gif')}
-      height="500"
       alt="iOS debugger example"
     />
  </td>
- <td height="500" style={{"padding":10}}>
+ <td style={{"padding":10}}>
   <img
     src={require('../images/rn-debugger-example.gif')}
-    height="500"
     alt="React native debugger example"
   />
  </td>
@@ -65,7 +61,7 @@ When the **_Mobile Debugger_** is clicked another screen opens with the list of 
 > **_Note:_** <br/>
 > Source code of the app for each supported platform can be found in the git repositories.
 
-# <a name="how-to-enable"></a> How to enable the debugger
+## <a name="how-to-enable"></a> How to enable the debugger
 
 The following pseudocode would give you the idea, head to <a href="#platform-docs">platform docs</a> for specific integration instructions.
 
@@ -101,7 +97,7 @@ Avo.initAvo(AvoEnv.DEV, myCustomDestination, debugger)
    );
 ```
 
-# <a name="platform-docs"></a> Platform specific repositories and integration docs
+## <a name="platform-docs"></a> Platform specific repositories and integration docs
 
 We store platform docs in the corresponding github repositories.
 
