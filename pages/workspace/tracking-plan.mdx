@@ -45,41 +45,83 @@ Avo wraps your the SDKs of your current analytics tools so you get one function 
 
 Here's how sending and event called "Signup Completed" would look like:
 
-`Avo.signupStarted({authenticationMethod: 'Facebook', email: 'hi@avo.sh'})`
+```javascript
+Avo.signupStarted({ authenticationMethod: 'Facebook', email: 'hi@avo.sh' });
+```
 
 And here is a list of methods that are wrapped in each analytics tool when `Avo.signupStarted` is called:
 
 **Amplitude**
 
-`logEvent('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+logEvent('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Appsflyer**
 
-`trackEvent('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+trackEvent('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Facebook Analytics**
 
-`fbq('trackCustom', 'Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+fbq('trackCustom', 'Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Firebase Analytics**
 
-`logEvent('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+logEvent('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Fullstory**
 
-`event('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+event('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Intercom**
 
-`Intercom('trackEvent', 'Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+Intercom('trackEvent', 'Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Mixpanel**
 
-`track('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+track('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Segment**
 
-`track('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+track('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 #### <a name="identify-user"></a> Identify User
 
@@ -205,7 +247,7 @@ property](https://segment.com/docs/spec/page/) with the prefix "Segment: ".
 Call either page or screen (depending on your apps platform) with the Page Name
 property and then call track. If you want to only log a page view, not an event, you can remove the Log Event action from the event.
 
-## <a name="properties"></a> 2. Properties
+## <a name="properties"></a> Properties
 
 Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, that describe the state of the user or the product at the time of the event. Avo allows you to define event, user and system properties - each category described below.
 
@@ -292,7 +334,7 @@ Properties values can also be a list of the above mentioned types:
 
 Properties can be marked as optional. That means that Avo will not give you an error if that property is missing from an event that the property is attached to.
 
-## <a name="metrics"></a> 3. Metrics
+## <a name="metrics"></a> Metrics
 
 Metrics are used to measure the success of a feature. Usually more than one metrics are necessary to be able to evaluate the success of a feature. Example metrics for a feature that is meant to improve signup experience are:
 Conversion to complete email step of the signup funnel
