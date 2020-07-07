@@ -14,6 +14,11 @@ export const shouldCreateCheck = (): boolean => {
   return GITHUB_SECRET != null && OWNER != null && REPO != null;
 };
 
+const statusText = (errors: MDXError[]): string => {
+  if (errors.length === 0) return '😁 No errors found';
+  else return `🚨 ${errors.length} error${errors.length > 1 ? 's' : ''} found`;
+};
+
 export const createCheck = async (errors: MDXError[]): Promise<void> => {
   const { GITHUB_SECRET, OWNER, REPO } = process.env;
   if (GITHUB_SECRET == null || OWNER == null || REPO == null) {
@@ -51,7 +56,7 @@ export const createCheck = async (errors: MDXError[]): Promise<void> => {
     conclusion: errors.length === 0 ? 'success' : 'failure',
     output: {
       title: 'MDXLint',
-      summary: "Here's a summary",
+      summary: statusText(errors),
       text: '',
       annotations,
     },

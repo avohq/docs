@@ -68,7 +68,16 @@ const lintMdx = (rules: RuleFunction[]): number => {
   else console.log('\n😁 No errors found\n');
 
   if (shouldCreateCheck()) {
-    createCheck(results.flatMap((file) => file.errors));
+    try {
+      createCheck(results.flatMap((file) => file.errors));
+    } catch (e) {
+      console.log(
+        chalk.gray(
+          'Encountered an error while trying to create a new check run.',
+        ),
+      );
+      console.error(e);
+    }
   }
 
   return errorCount;
