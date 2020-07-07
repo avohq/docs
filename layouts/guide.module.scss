@@ -1,12 +1,14 @@
 @use '../styles/brand';
 
 .root {
+  flex: 1;
   display: flex;
   // margin-left: 30px;
 }
 
 .content {
-  flex: 1;
+  flex: 1 1;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -29,4 +31,22 @@
   color: brand.$gray-50;
   margin-top: 10px;
   margin-bottom: 50px;
+}
+
+.minutes {
+  color: brand.$gray-50;
+  margin-top: 10px;
+}
+
+.inlineToc {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .sidebar {
+    display: none;
+  }
+  .inlineToc {
+    display: block;
+  }
 }
