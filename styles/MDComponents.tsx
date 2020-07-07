@@ -92,7 +92,7 @@ const Code: FunctionComponent<{
 
   const [shadowOpacity, setShadowOpacity] = useState(0);
 
-  const scrollContainer = useRef<HTMLDivElement>();
+  const scrollContainer = useRef<HTMLDivElement>(null);
   const onScrollThrottled = useRef(
     throttle(() => {
       if (!scrollContainer.current) return;
@@ -101,7 +101,6 @@ const Code: FunctionComponent<{
           ? 1
           : scrollContainer.current.scrollLeft / 20;
       setShadowOpacity(progress);
-      console.log(scrollContainer.current.scrollLeft);
     }, 150),
   );
 
