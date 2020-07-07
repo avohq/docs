@@ -14,6 +14,20 @@
   overflow-x: scroll;
 }
 
+.highlight {
+  overflow: hidden;
+  display: flex;
+}
+
+.highlightLineNumbers {
+  // box-shadow: 5px 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.highlightCode {
+  overflow-x: scroll;
+  padding-left: 5px;
+}
+
 .codeLine {
   display: table-row;
 }
