@@ -4,6 +4,7 @@ import Navigation from './Navigation';
 import styles from './Layout.module.scss';
 import Logo from './Logo';
 import Footer from './Footer';
+import Header from './Header';
 
 const Layout: FunctionComponent = ({ children }) => {
   return (
@@ -11,7 +12,9 @@ const Layout: FunctionComponent = ({ children }) => {
       <div className={styles.navHeader}>
         <Logo width={140} />
       </div>
-      <div className={styles.header}>Search bar</div>
+      <div className={styles.header}>
+        <Header />
+      </div>
       <div className={styles.nav}>
         <Navigation />
       </div>
