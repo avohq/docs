@@ -2,14 +2,14 @@
 const withMdxEnhanced = require('next-mdx-enhanced');
 const withImages = require('next-images');
 
-const headings = require('remark-autolink-headings');
+// const headings = require('remark-autolink-headings');
 const slug = require('remark-slug');
 
 const enhanceMdx = withMdxEnhanced({
   layoutPath: 'layouts',
   defaultLayout: true,
   fileExtensions: ['mdx'],
-  remarkPlugins: [slug, headings],
+  remarkPlugins: [slug],
   rehypePlugins: [],
 });
 
