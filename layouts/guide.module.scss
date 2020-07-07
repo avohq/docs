@@ -40,9 +40,14 @@
 
 .inlineToc {
   display: none;
+  background-color: brand.$gray-5;
+  border-radius: 8px;
+  margin: 50px 0;
+  padding: 10px;
+  padding-top: 1px;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1140px) {
   .sidebar {
     display: none;
   }
