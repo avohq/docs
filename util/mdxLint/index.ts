@@ -4,4 +4,4 @@ import lintYaml from './rules/frontMatter';
 
 const errorSeen = lintMdx([lintYaml, resolveImports]);
 
-if (errorSeen) process.exit(1);
+if (errorSeen) process.exitCode = 1;
