@@ -71,8 +71,12 @@ _In your React Native code_:
 
 For iOS apps, `appId` needs to be passed into `destinationOptions` in `initAvo`:
 
-```
-Avo.initAvo({env: "dev"}, {...systemProperties}, {appsFlyer: {appId: "XXXXXX"}})
+```javascript
+Avo.initAvo(
+  { env: 'dev' },
+  { ...systemProperties },
+  { appsFlyer: { appId: 'XXXXXX' } },
+);
 ```
 
 Further documentation for AppsFlyer can be found [on their support

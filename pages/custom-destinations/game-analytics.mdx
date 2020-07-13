@@ -33,8 +33,6 @@ You can still use your preferred naming convention by using the name mapping too
 1. Create a new event with your preferred naming convention for the Progression event
 2. Click the tree dots for the event and click "Add Name Mapping"
 
-{' '}
-
 <img
   src={require('../../images/name-mapping-game-analytics-1.png')}
   alt="Adding name mapping"
@@ -80,15 +78,15 @@ following:
 Import the Avo library into your code and implement a custom Avo logger which
 delivers data to GameAnalytics via their SDK:
 
-```JavaScript
+```javascript
 import Avo from './Avo';
 
 // An example of a simple GameAnalytics integration
 // that you pass into initAvo():
 
 var gameAnalyticsAvoLogger = {
-  make: function(env) {},
-  logEvent: function(eventName, eventProperties) {
+  make: function (env) {},
+  logEvent: function (eventName, eventProperties) {
     // example integration, connecting the Avo events
     // Add Progression, Add Resource, Add Business to the
     // GameAnalytics SDK
@@ -97,21 +95,21 @@ var gameAnalyticsAvoLogger = {
         gameanalytics.EGAProgressionStatus.Start,
         eventProperties.progressionLocation,
         eventProperties.progressionStage,
-        eventProperties.progressionLevel
+        eventProperties.progressionLevel,
       );
     } else if (eventName === 'Add Resource') {
       gameanalytics.GameAnalytics.addProgressionEvent(
         gameanalytics.EGAProgressionStatus.Start,
         eventProperties.progressionLocation,
         eventProperties.progressionStage,
-        eventProperties.progressionLevel
+        eventProperties.progressionLevel,
       );
       gameanalytics.GameAnalytics.addResourceEvent(
         gameanalytics.EGAResourceFlowType.Source,
         eventProperties.currency,
         eventProperties.amount,
         eventProperties.itemType,
-        eventProperties.itemId
+        eventProperties.itemId,
       );
     } else if (eventName === 'Add Business') {
       gameanalytics.GameAnalytics.addBusinessEvent(
@@ -119,20 +117,20 @@ var gameAnalyticsAvoLogger = {
         eventProperties.amount,
         eventProperties.itemType,
         eventProperties.itemId,
-        eventProperties.cartType
+        eventProperties.cartType,
       );
     }
   },
-  setUserProperties: function(userId, userProperties) {},
-  identify: function(userId) {},
-  unidentify: function() {}
+  setUserProperties: function (userId, userProperties) {},
+  identify: function (userId) {},
+  unidentify: function () {},
 };
 ```
 
 Call the initAvo function:
 
-```JavaScript
-Avo.initAvo({env: 'dev'}, gameAnalyticsAvoLogger);
+```javascript
+Avo.initAvo({ env: 'dev' }, gameAnalyticsAvoLogger);
 ```
 
 Consult <a href="https://gameanalytics.com/docs">GameAnalytics documentation</a> for more ways to send data to their platform.

@@ -37,8 +37,8 @@ The **Avo Inspector SDK** is designed to be small and easy to include in any pro
 
 Before using the **_Avo Inspector SDK_** you need to obtain api key from the Avo dashboard and provide it to the initialization method.
 
-```
-AvoInspector(apiKey: "YOUR_API_KEY", isDev: devFlag)
+```js
+AvoInspector((apiKey: 'YOUR_API_KEY'), (isDev: devFlag));
 ```
 
 ### Inspecting events
@@ -50,20 +50,20 @@ Eventually in both methods the event schema is sent to **_Avo_** servers for ana
 
 The event schema format is a map, similar to the format most events use, but with type names instead of actual values. For example if you track **CheckoutCompleted** event
 
-```
+```json
 {
-	userId: 1337,
-	emailAddress: “jane.doe@avo.app”,
-	productId: 45,
-	revenue: 15.99,
-	timestamp: 1579263014,
-	deviceId: sdf-23-trr-456-0000,
+  "userId": 1337,
+  "emailAddress": "jane.doe@avo.app",
+  "productId": 45,
+  "revenue": 15.99,
+  "timestamp": 1579263014,
+  "deviceId": "sdf-23-trr-456-0000"
 }
 ```
 
 The following event schema would be sent to **_Avo_**:
 
-```
+```java
 {
 	userId: int,
 	emailAddress: string,
@@ -74,17 +74,17 @@ The following event schema would be sent to **_Avo_**:
 }
 ```
 
-> Note:
+> **Note:**
 >
 > You can extract the schema separately with `extractSchema(eventParams: Map)`, the same method that's used by `trackSchemaFromEvent(eventName: String, eventParams: Map)`
 
 ### Example
 
-```
-fun trackAppOpened(appOpenedEvent: Map) {
-	tracker.track(“App Opened”, appOpenedEvent);
+```js
+function trackAppOpened(appOpenedEvent: Map) {
+  tracker.track('App Opened', appOpenedEvent);
 
-	avoInspector.trackSchemaFromEvent(“App Opened”, appOpenedEvent);
+  avoInspector.trackSchemaFromEvent('App Opened', appOpenedEvent);
 }
 ```
 
