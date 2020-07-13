@@ -1,0 +1,40 @@
+@use '../styles/brand';
+
+.root {
+  display: flex;
+}
+
+.button {
+  padding: 2px 15px;
+  background-color: brand.$gray-15;
+  border-radius: 5px;
+  margin-right: 5px;
+
+  cursor: pointer;
+
+  img {
+    margin-top: 3px;
+  }
+
+  transition: background-color 0.1s;
+
+  &:hover {
+    background-color: brand.$gray-75;
+  }
+
+  &.disabled {
+    background-color: brand.$gray-5;
+
+    &:hover {
+      background-color: brand.$gray-5;
+    }
+  }
+
+  &.chosen {
+    background-color: black;
+
+    &:hover {
+      background-color: black;
+    }
+  }
+}

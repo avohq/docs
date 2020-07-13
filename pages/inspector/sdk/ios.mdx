@@ -26,17 +26,17 @@ Obtain the API key in the Inspector tab in your <a target="_blank" rel="noopener
 
 You will need to create an instance of `AvoInspector` with the constructor.
 
-```
-`swift
+```swift
 init(apiKey: String?, env: AvoInspectorEnv)
-`objectivec
+```
+
+```objectivec
 -(instancetype) initWithApiKey: (NSString *) apiKey env: (AvoInspectorEnv) env;
 ```
 
 > #### Parameters:
-
+>
 > - `String apiKey` - the API key you get in the Inspector tab of your Avo workspace
-
 > - `AvoInspectorEnv env` - current environment: development, staging or production
 
 ## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
@@ -47,67 +47,66 @@ Call \***\*one of the methods\*\*** in this section every time an event is track
 
 ### Option 1
 
-```
-`swift
+```swift
 func trackSchema(fromEvent eventName: String?, eventParams params: [String : Any?]?) -> [String : AvoEventSchemaType]?
-`objectivec
+```
+
+```objectivec
 -(NSDictionary<NSString *, AvoEventSchemaType *> *) trackSchemaFromEvent:(NSString *) eventName eventParams:(NSDictionary<NSString *, id> *) params;
 ```
 
 > #### Parameters:
-
+>
 > - `eventName: String` - event name, sometimes referred as event type.
-
 > - `eventProperties: NSDictionary<NSString *, id> *` - event properties, which will be converted to event schema on the device and the event schema will be sent to **Avo**. Resulting keys will be the same and resulting values will be original value's types converted to schema types.
-
-> Example format:
-
-> ```
-> `swift
+>
+> ##### Example format:
+>
+> ```swift
 > let eventProperties: [String : Any] = [
+>    "userId": 1337,
+>    "emailAddress": "jane.doe@avo.app",
+>    "key": "value"
+> ]
 > ```
-
-    "userId": 1337,
-    "emailAddress": "jane.doe@avo.app",
-    "key": "value"
-
-]
-`objectivec
-NSDictionary<NSString *, id> *eventProperties = @{
-@"userId": @1337,
-@"emailAddress": @"jane.doe@avo.app",
-@"key": @"value"
-};
-
-````
+>
+> ```objectivec
+> NSDictionary<NSString *, id> *eventProperties = @{
+> @"userId": @1337,
+> @"emailAddress": @"jane.doe@avo.app",
+> @"key": @"value"
+> };
+> ```
 
 > #### Return Type:
-
+>
 > - `NSDictionary<NSString *, AvoEventSchemaType *> *` containing event schema, so you can verify that conversion was correct.
-
-> Example format:
-
->```
-`swift
-let eventSchema: [String : AvoEventSchemaType] = [
-    "userId": AvoInt(),
-    "emailAddress": AvoString(),
-    "key": AvoString()
-]
-`objectivec
-NSDictionary<NSString *, AvoEventSchemaType *> *eventSchema = @{
-    @"userId": [AvoInt new],
-    @"emailAddress": [AvoString new],
-    @"key": [AvoString new]
-};
-````
+>
+> ##### Example format:
+>
+> ```swift
+> let eventSchema: [String : AvoEventSchemaType] = [
+>     "userId": AvoInt(),
+>     "emailAddress": AvoString(),
+>     "key": AvoString()
+> ]
+> ```
+>
+> ```objectivec
+> NSDictionary<NSString _, AvoEventSchemaType _> \*eventSchema = @{
+> @"userId": [AvoInt new],
+> @"emailAddress": [AvoString new],
+> @"key": [AvoString new]
+> };
+> ```
 
 ### Option 2
 
-```
-`swift
+```swift
 func trackSchema(eventName: String, eventSchema: NSDictionary<String, AvoEventSchemaType>)
-`objectivec
+```
+
+```objectivec
 -(void) trackSchema:(NSString *) eventName eventSchema:(NSDictionary<NSString *, AvoEventSchemaType *> *) schema;
 ```
 
@@ -115,31 +114,27 @@ This method allows you to process the event schema before sending it.
 It's handy to extract the schema from your event properties with `extractSchema(eventProperties: NSDictionary<String, Any>)` (see below), process it and then provide it to this method.
 
 > #### Parameters:
-
+>
 > - `eventName: String` - event name, sometimes referred as event type.
-
 > - `eventSchema: NSDictionary<String *, AvoEventSchemaType *> *` - actual event schema that will be sent to **Avo**. Keys are event properties names and values are event properties types.
-
-> Example format:
-
-> ```
-> `swift
+>
+> ##### Example format:
+>
+> ```swift
 > let eventSchema: [String : AvoEventSchemaType] = [
+>    "userId": AvoInt(),
+>    "emailAddress": AvoString(),
+>    "key": AvoString()
+> ]
 > ```
-
-    "userId": AvoInt(),
-    "emailAddress": AvoString(),
-    "key": AvoString()
-
-]
-`objectivec
-NSDictionary<String _, AvoEventSchemaType _> \*eventSchema = @{
-@"userId": [AvoInt new],
-@"emailAddress": [AvoString new],
-@"key": [AvoString new]
-};
-
-```
+>
+> ```objectivec
+> NSDictionary<String _, AvoEventSchemaType _> \*eventSchema = @{
+> @"userId": [AvoInt new],
+> @"emailAddress": [AvoString new],
+> @"key": [AvoString new]
+> };
+> ```
 
 See <Link passHref href="/inspector/sdk#standalone-usage"><a>this</a></Link> for details about event schema structure and schema types.
 
@@ -147,46 +142,49 @@ See <Link passHref href="/inspector/sdk#standalone-usage"><a>this</a></Link> for
 
 ### 1. Extract schema from event properties
 
+```swift
+func extractSchema(eventProperties: NSDictionary<String, Any>) -> NSDictionary<String, AvoEventSchemaType>
 ```
 
-`swift func extractSchema(eventProperties: NSDictionary<String, Any>) -> NSDictionary<String, AvoEventSchemaType>`objectivec
+```objectivec
 -(NSDictionary<NSString _, AvoEventSchemaType _> _) extractSchema:(NSDictionary<NSString _, id> \*) eventParams;
-
-````
+```
 
 This is the method used by `trackSchemaFromEvent` internally. It extracts the event schema in form of an `NSDictionary` from an event properties NSDictionary.
 
 > #### Parameters:
-
+>
 > - `eventProperties: NSDictionary` - event properties object. Keys are event properties names and values are event properties values.
-
+>
 > #### Return Type:
-
+>
 > - `NSDictionary<NSString *, AvoEventSchemaType *> *` containing event schema of the given event properties. Keys are event properties names and values are event properties types.
-
-> Example format:
-
->```
-`swift
-let eventSchema: [String : AvoEventSchemaType] = [
-    "userId": AvoInt(),
-    "emailAddress": AvoString(),
-    "key": AvoString()
-]
-`objectivec
-NSDictionary<NSString *, AvoEventSchemaType *> *eventSchema = @{
-    @"userId": [AvoInt new],
-    @"emailAddress": [AvoString new],
-    @"key": [AvoString new]
-};
-````
+>   Example format:
+>
+> ```swift
+> let eventSchema: [String : AvoEventSchemaType] = [
+>    "userId": AvoInt(),
+>    "emailAddress": AvoString(),
+>    "key": AvoString()
+>
+> ]
+> ```
+>
+> ```objectivec
+> NSDictionary<NSString _, AvoEventSchemaType _> \*eventSchema = @{
+> @"userId": [AvoInt new],
+> @"emailAddress": [AvoString new],
+> @"key": [AvoString new]
+> };
+> ```
 
 ### 2. Print logs
 
-```
-`swift
+```swift
 func enableLogging(enable: Bool)
-`objectivec
+```
+
+```objectivec
 +(void) enableLogging:(BOOL) enable;
 ```
 
@@ -194,15 +192,16 @@ This is a class method.
 `enableLogging` controls printing of tracked event schemas and other helpful information. Enabled by default in development environments.
 
 > #### Parameters:
-
+>
 > - `enable: Bool` - sets whether **Avo Inspector SDK** will print logs.
 
 ### 3. Control batching size
 
-```
-`swift
+```swift
 func setBatchSize(newBatchSize: Int32)
-`objectivec
+```
+
+```objectivec
 +(void) setBatchSize:(int) newBatchSize;
 ```
 
@@ -210,15 +209,16 @@ This is a class method.
 Enables manual control over events batching. Default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas.
 
 > #### Parameters:
-
+>
 > - `newBatchSize: Int32` - sets batch size.
 
 ### 4. Control batching interval
 
-```
-`swift
+```swift
 func setBatchFlushSeconds(newBatchFlushSeconds: Int32)
-`objectivec
+```
+
+```objectivec
 +(void) setBatchFlushSeconds: (int) newBatchFlushSeconds;
 ```
 
@@ -227,7 +227,7 @@ Enables manual control over events batching. Default production batch flush inte
 In development mode default batch flush interval is 1 second.
 
 > #### Parameters:
-
+>
 > - `newBatchFlushSeconds: Int32` - sets batch flush time in seconds.
 
 ## <a name="visual-inspector"></a> Using the Visual Inspector
@@ -238,28 +238,31 @@ Visual Inspector is enabled in development and staging environments by default.
 
 ### Show
 
-```
-`swift
+```swift
 func showVisualInspector(type: AvoVisualInspectorType)
-`objectivec
+```
+
+```objectivec
 - (void) showVisualInspector: (AvoVisualInspectorType) type;
 ```
 
 ### Hide
 
-```
-`swift
+```swift
 func hideVisualInspector()
-`objectivec
+```
+
+```objectivec
 - (void) hideVisualInspector;
 ```
 
 ### Get instance of `AnalyticsDebugger`
 
-```
-`swift
+```swift
 func getVisualInspector(): AnalyticsDebugger?
-`objectivec
+```
+
+```objectivec
 - (AnalyticsDebugger *) getVisualInspector;
 ```
 
@@ -270,8 +273,7 @@ See more about the AnalyticsDebugger in it's <a target="_blank" rel="noopener no
 Here is a code snippet you can use to easily integrate with **Segment**.
 After registering this middleware every events sent to **Segment** will be automatically analyzed by **Avo**, i.e. you don't need to call `trackSchemaFromEvent` or `trackSchema` methods.
 
-```
-`swift
+```swift
 let config = SEGAnalyticsConfiguration(writeKey: "YOUR_WRITEKEY_HERE")
 let avoMiddleware = SEGBlockMiddleware { (context, next) in
   if let trackPayload = context.payload as? SEGTrackPayload {
@@ -282,7 +284,9 @@ let avoMiddleware = SEGBlockMiddleware { (context, next) in
 }
 config.middlewares = [ avoMiddleware ]
 SEGAnalytics.setup(with: config)
-`objectivec
+```
+
+```objectivec
 SEGAnalyticsConfiguration * config = [SEGAnalyticsConfiguration configurationWithWriteKey: @"YOUR_WRITEKEY_HERE"];
 SEGBlockMiddleware * avoMiddleware = [[SEGBlockMiddleware alloc] initWithBlock:^(SEGContext * _Nonnull context, SEGMiddlewareNext  _Nonnull next) {
   SEGPayload * payload = [context payload];

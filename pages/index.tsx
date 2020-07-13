@@ -21,7 +21,7 @@ const Home: NextPage = () => {
       <ul>
         {docsPages.map((page) => (
           <li key={page.__resourcePath}>
-            <Link href={formatPath(page.__resourcePath)}>
+            <Link passHref href={formatPath(page.__resourcePath)}>
               <a>{page.title || formatPath(page.__resourcePath)}</a>
             </Link>
           </li>

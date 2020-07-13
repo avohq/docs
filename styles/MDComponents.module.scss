@@ -6,12 +6,30 @@
 .blockquote,
 .table,
 .pre {
-  margin-top: 15px;
-  margin-bottom: 30px;
+  // margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .pre {
-  overflow-x: scroll;
+  overflow-x: auto;
+}
+
+.highlight {
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.2em;
+}
+
+.highlightLineNumbers {
+  // box-shadow: 5px 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.highlightCode {
+  overflow-x: auto;
+  padding-left: 5px;
+  padding-right: 10px;
 }
 
 .codeLine {
@@ -45,8 +63,7 @@
 .h4,
 .h5 {
   margin-top: 20px;
-  margin-bottom: 5px;
-  margin-top: 0px;
+  margin-bottom: 15px;
   color: brand.$gray-75;
 }
 
@@ -70,8 +87,12 @@
   // Fix linting before styling
 }
 
+.img {
+  max-width: 100%;
+}
+
 .li {
-  margin-bottom: 5px;
+  // margin-bottom: 5px;
 }
 
 .hr {
@@ -97,6 +118,7 @@
 
 .p {
   font-size: 16px;
+  margin-top: 0;
   // letter-spacing: -0.014em;
   line-height: 1.6em;
 }
@@ -113,6 +135,7 @@
 }
 
 .pre {
+  margin: 0;
   border-radius: 5px;
 }
 

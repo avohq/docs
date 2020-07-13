@@ -12,7 +12,7 @@ The connection tab is where you configure your **sources** (programming language
 
 Sources represent where you send your data from. These can be mobile apps,
 websites, backends, etc. Each source has an identifiable name, a development
-platform, programming language and <Link href="/concepts/destinations"><a>Destinations</a></Link> to send to.
+platform, programming language and <Link passHref href="/concepts/destinations"><a>Destinations</a></Link> to send to.
 
 Avo uses these Sources to generate code based on your event schema.
 
@@ -117,8 +117,12 @@ _In your React Native code_:
 
 For iOS apps, `appId` needs to be passed into `destinationOptions` in `initAvo`:
 
-```
-Avo.initAvo({env: "dev"}, {...systemProperties}, {appsFlyer: {appId: "XXXXXX"}})
+```js
+Avo.initAvo(
+  { env: 'dev' },
+  { ...systemProperties },
+  { appsFlyer: { appId: 'XXXXXX' } },
+);
 ```
 
 Further documentation for AppsFlyer can be found [on their support
@@ -245,10 +249,9 @@ for connecting multiple marketing and analytics platforms to your application.
 
 #### Connect Segment to Avo
 
-"
-To connect you Segment project to Avo need to find your [Segment write
-key](https://segment.com/docs/guides/setup/how-do-i-find-my-write-key/).
-"
+> To connect you Segment project to Avo need to find your [Segment write
+> key](https://segment.com/docs/guides/setup/how-do-i-find-my-write-key/).
+
 _In Segment_:
 
 1. Go into the "Sources" tab
@@ -277,6 +280,6 @@ Sometimes the best way to integrate Avo is through a custom destination. For exa
 - have a custom pipline
 - are sending data to analytics platforms through an API (not using their SDK)
 
-It's also sometimes possible to use a custom destination for language - analytics pairs that are not supported by Avo yet. Please <Link href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is the best solution for you.
+It's also sometimes possible to use a custom destination for language - analytics pairs that are not supported by Avo yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is the best solution for you.
 
-Detailed instructions on how to set up a custom destination can be found in our <Link href="/custom-destinations"><a>custom destination docs</a></Link>.
+Detailed instructions on how to set up a custom destination can be found in our <Link passHref href="/custom-destinations"><a>custom destination docs</a></Link>.

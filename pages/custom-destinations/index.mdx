@@ -5,8 +5,6 @@ title: 'Setting up custom destinations'
 
 import Link from 'next/link';
 
-# Setting up Custom Destinations
-
 Sometimes the best way to integrate Avo is through a custom destination. For
 example:
 
@@ -20,11 +18,8 @@ the best solution for you or if there are any analytics destinations you'd like 
 To get started using a custom destination you do the following:
 
 1. Create a Custom Destination in the Connections tab
-
 2. Pull the updated code by doing `avo pull` in the Avo CLI
-
 3. Initialize Avo with a custom destination
-
 4. Fill in the empty methods for sending the data to your analytics destination
 
 ## Custom Destinations overview
@@ -37,17 +32,13 @@ With a custom destination you'll get access to callback methods for Avo actions.
 
 - `make`: Triggered during Avo initialization.
   Here you will usually initialize an analytics library with a development or production key based on the `env` parameter.
-
 - `logEvent`: All your analytics events are managed in the Avo dashboard. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
   Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
-
 - `identify`: You can add the Identify User action to an event in the Avo dashboard. When calling an Avo function that includes the Identify User action you'll need to provide a user ID. Calling an Avo function that has the Identify User action will trigger this callback.
   The main use cases are signup and login.
   Here you would pass the user ID to the analytics library for it to create a new user or attach a session to an existing user.
-
 - `unidentify`: If you call an Avo function with the Unidentify User action, this callback will be triggered.
   Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
-
 - `setUserProperties`: You can add user properties to events in the Avo dashboard. When an Avo function with attached user properties is called, this callback is triggered.
   Here you would attach user properties to the currently identified user in your analytics platform.
 
@@ -56,40 +47,27 @@ With a custom destination you'll get access to callback methods for Avo actions.
 Below are instructions on how to initialize Avo with a custom destination for
 each of the supported languages:
 
-<br />
-
-<a href="#web">Web</a>- <a href="#javascript">JavaScript</a>- <a href="#typescript">
-  TypeScript
-</a>
-
-<a href="#mobile">Mobile</a>
-
-- <a href="#react-native">React Native</a>
-- <a href="#ios">iOS</a>
-
-  - <a href="#obj-c">Objective-C</a>
-  - <a href="#swift">Swift</a>
-
-- <a href="#android">Android</a>
-
-  - <a href="#java-android">Java</a>
-  - <a href="#kotlin">Kotlin</a>
-
-<a href="#backend">Backend</a>
-
-- <a href="#node-js">Node.js</a>
-
-  - <a href="#node-javascript">JavaScript</a>
-  - <a href="#node-typescript">TypeScript</a>
-
-- <a href="#backend-java">Java</a>
-- <a href="#php">PHP</a>
-- <a href="#python">Python</a>
-- <a href="#ruby">Ruby</a>
-
-<a href="#game-engines">Game Engines</a>
-
-- <a href="#unity">Unity (C#)</a>
+- [Web](#web)
+  - [JavaScript](#javascript)
+  - [TypeScript](#typescript)
+- [Mobile](#mobile)
+  - [React Native](#react-native)
+  - [iOS](#ios)
+    - [Objective-C](#obj-c)
+    - [Swift](#swift)
+  - [Android](#android)
+    - [Java](#java-android)
+    - [Kotlin](#kotlin)
+- [Backend](#backend)
+  - [Node.js](#node-js)
+    - [JavaScript](#node-javascript)
+    - [TypeScript](#node-typescript)
+  - [Java](#backend-java)
+  - [PHP](#php)
+  - [Python](#python)
+  - [Ruby](#ruby)
+- [Game Engines](#game-engines)
+  - [Unity (C#)](#unity)
 
 ## <a name="web"></a> Web
 
@@ -124,8 +102,8 @@ var customAvoLogger = {
 
 Call the initAvo function:
 
-```
-Avo.initAvo({env: 'dev'}, {}, {}, customAvoLogger);
+```javascript
+Avo.initAvo({ env: 'dev' }, {}, {}, customAvoLogger);
 ```
 
 ### <a name="typescript"></a> TypeScript

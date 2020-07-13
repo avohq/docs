@@ -7,32 +7,35 @@ title: 'Tracking plan'
 import Link from 'next/link';
 
 ## <a name="actions"></a> Events
+
 An event represents something that a user does or that happens to them. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
 
 ### <a name="event-defintion"></a> Event Definition
 
 An event is defined in the Events section of the Tracking plan and can be organized into categories. The definition of an event includes:
+
 - A descriptive _Event Name_
 - A _Description_ including the timing of when the event should be sent as well as other useful implementation details
-- The <Link href="/workspace/connections#sources">_Source(s)_</Link> that the event should be sent from
-- The <Link href="/workspace/workspace#actions">_Actions(s)_</Link> associated with the event
-- The <Link href="/workspace/workspace#metrics">_Metrics(s)_</Link> related to the event
-- The _category(s)_ that the event is a part of 
-
+- The <Link passHref href="/workspace/connections#sources">_Source(s)_</Link> that the event should be sent from
+- The <Link passHref href="/workspace/workspace#actions">_Actions(s)_</Link> associated with the event
+- The <Link passHref href="/workspace/workspace#metrics">_Metrics(s)_</Link> related to the event
+- The _category(s)_ that the event is a part of
 
 ### <a name="actions"></a> Actions
-Actions is an umbrella term over all the tracking methods the analytics platforms offer.  In Avo you can define your actions in the Actions part of the tracking plan and organize them into categories. Actions can be triggered on their own or together, for example it's common to trigger any of the actions along with logging an event.
+
+Actions is an umbrella term over all the tracking methods the analytics platforms offer. In Avo you can define your actions in the Actions part of the tracking plan and organize them into categories. Actions can be triggered on their own or together, for example it's common to trigger any of the actions along with logging an event.
 
 Below is a list of possible actions and supported platforms, in the order of which they are triggered:
 
-
-1. <a href="#identify-user">Identify User</a>: Amplitude, Segment, Mixpanel and Fullstory
-2. <a href="#update-user-props">Update User Properties</a>: Amplitude, Segment, Mixpanel and Fullstory
+1. <a href="#identify-user">Identify User</a>: Amplitude, Segment, Mixpanel and
+   Fullstory
+2. <a href="#update-user-props">Update User Properties</a>: Amplitude, Segment,
+   Mixpanel and Fullstory
 3. <a href="#log-event">Log Event</a> All supported analytics platforms
 4. <a href="#log-revenue">Log Revenue</a>: Amplitude, Segment and Mixpanel
 5. <a href="#log-page-view">Log Page View</a>: Segment
-6. <a href="#unidentify-user">Undentify User</a>: Amplitude, Segment, Mixpanel and Fullstory
-
+6. <a href="#unidentify-user">Undentify User</a>: Amplitude, Segment, Mixpanel
+   and Fullstory
 
 #### <a name="log-event"></a> Log Event
 
@@ -42,66 +45,99 @@ Avo wraps your the SDKs of your current analytics tools so you get one function 
 
 Here's how sending and event called "Signup Completed" would look like:
 
-`Avo.signupStarted({authenticationMethod: 'Facebook', email: 'hi@avo.sh'})`
-
+```javascript
+Avo.signupStarted({ authenticationMethod: 'Facebook', email: 'hi@avo.sh' });
+```
 
 And here is a list of methods that are wrapped in each analytics tool when `Avo.signupStarted` is called:
 
 **Amplitude**
 
-`logEvent('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+logEvent('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Appsflyer**
 
-`trackEvent('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+trackEvent('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Facebook Analytics**
 
-`fbq('trackCustom', 'Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+fbq('trackCustom', 'Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Firebase Analytics**
 
-`logEvent('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+logEvent('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Fullstory**
 
-`event('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+event('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Intercom**
 
-`Intercom('trackEvent', 'Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+Intercom('trackEvent', 'Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Mixpanel**
 
-`track('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
+```javascript
+track('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 **Segment**
 
-`track('Signup Completed', {'Authentication Method': 'Facebook', 'Email': 'hi@avo.sh'})`
-
-
-
+```javascript
+track('Signup Completed', {
+  'Authentication Method': 'Facebook',
+  Email: 'hi@avo.sh',
+});
+```
 
 #### <a name="identify-user"></a> Identify User
-
 
 The Identify User action should be used when you want to identify users from your
 system in your analytics platform. This would typically be on done when users
 either Sign up or Login or in other ways users are becoming authenticated users
 according your system.
 
-
-The Identify User action can be triggered individually or along with logging an event. It's common to trigger the Identify User action along with log  `Signup Completed` and a `Login Completed` events - in such cases, the Identify user call will occur first and then the log event call.
+The Identify User action can be triggered individually or along with logging an event. It's common to trigger the Identify User action along with log `Signup Completed` and a `Login Completed` events - in such cases, the Identify user call will occur first and then the log event call.
 When the Identify User action is selected, Avo will require a user property called
 `User Id`. Below is a list of Identify User methods used for each supported analytics platform:
 
-- **Amplitude**: [setUserId](https://amplitude.zendesk.com/hc/en-us/articles/115003135607-Tracking-Unique-Users#determining-unique-users) 
+- **Amplitude**: [setUserId](https://amplitude.zendesk.com/hc/en-us/articles/115003135607-Tracking-Unique-Users#determining-unique-users)
 - **Segment**: [identify](https://segment.com/docs/spec/identify/)
 - **Mixpanel**: [identify](https://help.mixpanel.com/hc/en-us/articles/360000865566-Set-up-Your-Tracking#user-and-identity-management)
 - **Fullstory**: Call [identify](https://help.fullstory.com/develop-js/identify?from_search=30537829)
-
-
-
 
 #### <a name="unidentify-user"></a> Unidentify User
 
@@ -118,31 +154,33 @@ Below is a list of Undentify User methods used for each supported analytics plat
 - **Amplitude**: [setUserId](https://amplitude.zendesk.com/hc/en-us/articles/115003135607-Tracking-Unique-Users#determining-unique-users) with User Id as null
 - **Segment**: [identify](https://segment.com/docs/spec/identify/) with User Id as null
 - **Mixpanel**: [identify](https://help.mixpanel.com/hc/en-us/articles/360000865566-Set-up-Your-Tracking#user-and-identity-management) with User Id as null
-- **Fullstory**: [identify](https://help.fullstory.com/develop-js/identify?from_search=30537829) with User Id as false 
-
+- **Fullstory**: [identify](https://help.fullstory.com/develop-js/identify?from_search=30537829) with User Id as false
 
 #### <a name="update-user-props"></a> Update User Properties
 
-The Update User Properties action is used when the state of the user in your analytics platform should be updated. User properties are often updated at the same time as logging an event but they can also be updated independently. 
+The Update User Properties action is used when the state of the user in your analytics platform should be updated. User properties are often updated at the same time as logging an event but they can also be updated independently.
 
 User properties are updated with the following methods according to analytics platform:
 
-- Amplitude: `setUserProperties` 
-- Appsflyer: *user properties not suppported*
-- Facebook Analytics: `fbq('setUserProperties')` 
+- Amplitude: `setUserProperties`
+- Appsflyer: _user properties not suppported_
+- Facebook Analytics: `fbq('setUserProperties')`
 - Firebase Analytics: `setUserProperty`
 - Fullstory: `setUserVars`
-- Intercom: `Intercom('update', userProperties)` 
-- Mixpanel: `people.set` 
-- Segment: `identify` 
-
+- Intercom: `Intercom('update', userProperties)`
+- Mixpanel: `people.set`
+- Segment: `identify`
 
 #### <a name="log-revenue"></a> Log Revenue
 
-<a href="#revenue-amplitude">Amplitude</a>, <a
-href="#revenue-segment">Segment</a> and <a href="#revenue-mixpanel">Mixpanel</a>
-support tracking revenue specifically. It's recommended to add the Log Revenue action
-with events that represent a successful purchase, such as `Purchase Completed`
+<a href="#revenue-amplitude">
+  Amplitude
+</a>, <a href="#revenue-segment">Segment</a> and <a href="#revenue-mixpanel">
+  Mixpanel
+</a>
+support tracking revenue specifically. It's recommended to add the Log Revenue
+action with events that represent a successful purchase, such as `Purchase
+Completed`
 
 Below are details for what Avo automatically does for each analytics platform.
 
@@ -192,9 +230,6 @@ with the prefix "Mixpanel: ".
 Call people.track_charge with the price and all additional event properties and
 then call track
 
-
-
-
 ##### <a name="log-page-view"></a> Log Page View
 
 Adding the Log Page View action will trigger page tracking on web and screen
@@ -212,13 +247,9 @@ property](https://segment.com/docs/spec/page/) with the prefix "Segment: ".
 Call either page or screen (depending on your apps platform) with the Page Name
 property and then call track. If you want to only log a page view, not an event, you can remove the Log Event action from the event.
 
-
-
-## <a name="properties"></a> 2. Properties
+## <a name="properties"></a> Properties
 
 Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, that describe the state of the user or the product at the time of the event. Avo allows you to define event, user and system properties - each category described below.
-
-
 
 ### <a name="event-properties"></a> Event properties
 
@@ -232,8 +263,7 @@ relevant for that specific event, when you analyse your data. You might be want 
 
 **Functionality**
 
-Event properties are sent with the event in the <Link href="/workspace/tracking-plan#log-event">event call</Link>. 
-
+Event properties are sent with the event in the <Link passHref href="/workspace/tracking-plan#log-event">event call</Link>.
 
 ### <a name="user-properties"></a> User Properties
 
@@ -253,8 +283,7 @@ along with your events when they actually change.
 
 **Functionality**
 
-User properties are updated with the <Link href="/workspace/tracking-plan#update-user-props">Update User Properties action</Link>.
-
+User properties are updated with the <Link passHref href="/workspace/tracking-plan#update-user-props">Update User Properties action</Link>.
 
 ### <a name="system-properties"></a> System properties
 
@@ -273,8 +302,6 @@ App", "Android App", etc.
 
 System properties are set in the Avo.initAvo() function. They can be updated with `Avo.setSystemProperties()` if needed, but otherwise the values persist during the lifecycle of the application.
 
-
-
 ### <a name="property-groups"></a> Property groups
 
 Property groups are a way to group two or more related properties to quickly and consistently add them to all related events.
@@ -286,8 +313,6 @@ An example property group could be "Product" containing the following properties
 - Product Name
 - Product Price
 - Product Quantity
-
-
 
 ### <a name="property-types-and-constraints"></a> Property types and constraints
 
@@ -309,10 +334,7 @@ Properties values can also be a list of the above mentioned types:
 
 Properties can be marked as optional. That means that Avo will not give you an error if that property is missing from an event that the property is attached to.
 
-
-
-
-## <a name="metrics"></a> 3. Metrics
+## <a name="metrics"></a> Metrics
 
 Metrics are used to measure the success of a feature. Usually more than one metrics are necessary to be able to evaluate the success of a feature. Example metrics for a feature that is meant to improve signup experience are:
 Conversion to complete email step of the signup funnel
@@ -321,7 +343,4 @@ Proportion of daily active users that are signed up
 
 Events are tied to metrics and can be thought as the building blocks of the metrics - the events necessary to be able to visualize the metric in your analytics tool. The metrics are therefore not only visible in the Metrics tab, but also in the event view. That way everyone can easily understand why this particular event should be track - because it is associated with a metric which is a part of a goal.
 
-Read more about how to <Link href="/best-practices/organizing-metrics-and-events">organize metrics and events</Link>.
-
-
-
+Read more about how to <Link passHref href="/best-practices/organizing-metrics-and-events">organize metrics and events</Link>.

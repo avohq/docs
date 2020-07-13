@@ -1,12 +1,14 @@
 @use '../styles/brand';
 
 .root {
+  flex: 1;
   display: flex;
   // margin-left: 30px;
 }
 
 .content {
-  flex: 1;
+  flex: 1 1;
+  overflow: hidden;
 }
 
 .sidebar {
@@ -28,5 +30,28 @@
   letter-spacing: -0.018em;
   color: brand.$gray-50;
   margin-top: 10px;
-  margin-bottom: 50px;
+}
+
+.minutes {
+  color: brand.$gray-50;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.inlineToc {
+  display: none;
+  background-color: brand.$gray-5;
+  border-radius: 8px;
+  margin: 50px 0;
+  padding: 10px;
+  padding-top: 1px;
+}
+
+@media (max-width: 1140px) {
+  .sidebar {
+    display: none;
+  }
+  .inlineToc {
+    display: block;
+  }
 }

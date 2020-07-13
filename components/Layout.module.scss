@@ -1,55 +1,35 @@
-@use '../styles/brand';
+.grid {
+  display: grid;
+  grid-template-columns: 300px 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+  gap: 15px 15px;
+  grid-template-areas:
+    'navHeader  header  header  header'
+    'nav        content content content'
+    'navFooter  footer  footer  footer';
 
-.root {
-  max-width: 1400px;
-
-  width: 100%;
+  max-width: 1300px;
   margin-left: auto;
   margin-right: auto;
-
-  display: flex;
-  flex-direction: column;
-}
-
-.grid {
-  display: inline-grid;
-
-  grid-template-areas:
-    'nav-header header'
-    'nav       content'
-    'nav       footer';
-
-  grid-template-columns: 250px 1fr;
-  grid-template-rows: auto 1fr auto;
-
-  grid-gap: 0 30px;
-
-  min-height: 100vh;
+  padding: 0 30px;
 }
 
 .navHeader {
-  grid-area: nav-header;
-  padding: 30px 15px;
-  margin-left: 15px;
-  border-right: brand.$hairline-border;
+  padding: 20px 0px;
+  grid-area: navHeader;
 }
 
 .header {
+  padding: 20px 0px;
   grid-area: header;
-  padding: 30px 15px;
-}
-
-.navigation {
-  grid-area: nav;
-  margin-left: 15px;
-
-  padding: 15px;
-  border-right: brand.$hairline-border;
 }
 
 .content {
   grid-area: content;
-  padding: 15px;
+}
+
+.nav {
+  grid-area: nav;
 }
 
 .footer {

@@ -71,8 +71,12 @@ _In your React Native code_:
 
 For iOS apps, `appId` needs to be passed into `destinationOptions` in `initAvo`:
 
-```
-Avo.initAvo({env: "dev"}, {...systemProperties}, {appsFlyer: {appId: "XXXXXX"}})
+```javascript
+Avo.initAvo(
+  { env: 'dev' },
+  { ...systemProperties },
+  { appsFlyer: { appId: 'XXXXXX' } },
+);
 ```
 
 Further documentation for AppsFlyer can be found [on their support
@@ -220,17 +224,14 @@ example:
 - When sending data to analytics platforms through an API (not using their SDK)
 - When using a combination of a programming language and analytics destination not yet directly supported by Avo
 
-Please <Link href="/help/troubleshooting">contact us</Link> if you are unsure of what is
+Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
 the best solution for you or if there are any analytics destinations you'd like to see supported in Avo.
 
 To get started using a custom destination you do the following:
 
 1. Create a Custom Destination in the Connections tab
-
 2. Pull the updated code by doing `avo pull` in the Avo CLI
-
 3. Initialize Avo with a custom destination
-
 4. Fill in the empty methods for sending the data to your analytics destination
 
-For detailed instructions on how to set up a custom destination, please see our <Link href="/custom-destinations"><a>custom destination docs</a></Link>.
+For detailed instructions on how to set up a custom destination, please see our <Link passHref href="/custom-destinations"><a>custom destination docs</a></Link>.
