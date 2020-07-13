@@ -104,12 +104,16 @@ const Code: FunctionComponent<{
     }, 150),
   );
 
+  const rawCode = children as string;
+  const lines = rawCode.split('\n');
+  const code = lines.slice(0, lines.length - 1).join('\n');
+
   const language = className.replace(/language-/, '');
   return (
     <Highlight
       {...defaultProps}
       theme={theme}
-      code={children as string}
+      code={code}
       language={language as Language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (

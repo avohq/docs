@@ -3,11 +3,20 @@
 .root {
   display: flex;
 
-  padding: 15px;
   padding-bottom: 40px;
+  margin-top: 30px;
 }
 
 .col {
   flex: 1;
-  padding: 15px;
+}
+
+.iconText {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  img {
+    margin-right: 10px;
+  }
 }

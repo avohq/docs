@@ -6,12 +6,12 @@
 .blockquote,
 .table,
 .pre {
-  margin-top: 15px;
-  margin-bottom: 30px;
+  // margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .pre {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .highlight {
@@ -24,8 +24,9 @@
 }
 
 .highlightCode {
-  overflow-x: scroll;
+  overflow-x: auto;
   padding-left: 5px;
+  padding-right: 10px;
 }
 
 .codeLine {
@@ -84,6 +85,10 @@
   // Fix linting before styling
 }
 
+.img {
+  max-width: 100%;
+}
+
 .li {
   margin-bottom: 5px;
 }
@@ -127,6 +132,7 @@
 }
 
 .pre {
+  margin: 0;
   border-radius: 5px;
 }
 

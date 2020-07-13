@@ -67,27 +67,31 @@ The following pseudocode would give you the idea, head to <a href="#platform-doc
 
 1. Create the debugger
 
-   `val debugger = Debugger()`
+   ```javascript
+   val debugger = Debugger()
+   ```
 
 2. Pass the debugger when you initialize Avo
 
-   `Avo.initAvo(Avo.AvoEnv.DEV, debugger)`
+   ```javascript
+   Avo.initAvo(Avo.AvoEnv.DEV, debugger)
+   ```
 
 3. Show the debugger
 
-```typescript
-debugger.showDebugger(this, DebuggerMode.bar)
-```
+   ```javascript
+   debugger.showDebugger(this, DebuggerMode.bar)
+   ```
 
 4. Pass debugger to Avo, so Avo can show all tracked events
 
-```typescript
-Avo.initAvo(AvoEnv.DEV, myCustomDestination, debugger)
-```
+   ```javascript
+   Avo.initAvo(AvoEnv.DEV, myCustomDestination, debugger)
+   ```
 
 5. Post your own events
 
-```typescript
+   ```javascript
    debugger.post(
       timestamp,
       "EventName",
@@ -95,7 +99,7 @@ Avo.initAvo(AvoEnv.DEV, myCustomDestination, debugger)
       eventProperties: [{id:"id0", name:"event prop", value:"val"}],
       userProperties: [{id:"id1", name:"user prop", value:"val"}]
    );
-```
+   ```
 
 ## <a name="platform-docs"></a> Platform specific repositories and integration docs
 
