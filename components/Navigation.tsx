@@ -20,33 +20,91 @@ interface navigationItem {
 }
 
 const navigation: navigationItem[] = [
-  { title: 'Test', path: '/test' },
-  { title: 'Overview', path: '/' },
+  { title: 'Getting started', path: '/quickstart' },
   {
-    title: 'Quick start',
-    path: '/quickstart',
+    title: 'Your Avo Workspace',
+    path: '/workspace',
     subroutes: [
-      { title: 'Avo for analytics managers', path: '/quickstart/pms' },
-      { title: 'Avo for developers', path: '/quickstart/developers' },
+      { title: 'Tracking Plan', path: '/workspace/tracking-plan' },
+      { title: 'Connections', path: '/workspace/connections' },
+      { title: 'Implement', path: '/workspace/implement' },
+      { title: 'Integrations (beta)', path: '/workspace/integrations' },
+      { title: 'Health (being deprecated)', path: '/workspace/health' },
     ],
   },
   {
-    title: 'Guides',
-    path: '/guides',
+    title: 'Developer Tools',
+    path: '/commands',
     subroutes: [
-      { title: 'The workflow', path: '/guides/workflow' },
-      { title: 'The inspector', path: '/guides/inspector' },
-      { title: 'Creating a tracking plan', path: '/guides/trackingplan' },
+      {
+        title: 'Command Line Tool',
+        path: '/commands',
+      },
+      {
+        title: 'Programming Languages',
+        path: '/languages',
+      },
+      {
+        title: 'Analytics Tools',
+        path: '/analytics',
+      },
+      {
+        title: 'Custom Destinations',
+        path: '/custom-destinations',
+      },
+      {
+        title: 'Regression Checking',
+        path: '/regression',
+      },
+      {
+        title: 'Data Validation',
+        path: '/data-validation',
+      },
+      {
+        title: 'Mobile Debuggers',
+        path: '/mobile-debuggers',
+      },
+    ],
+  },
+
+  {
+    title: 'Inspector',
+    path: '/inspector',
+    subroutes: [
+      { title: 'Inspector SDK', path: '/inspector/sdk' },
+      { title: 'Android', path: '/inspector/sdk/android' },
+      { title: 'iOS', path: '/inspector/sdk/ios' },
+      { title: 'Web', path: '/inspector/sdk/js' },
+      { title: 'Issues', path: '/inspector/issue-identifier' },
+      { title: 'FAQ', path: '/inspector/faq' },
     ],
   },
   {
-    title: 'Reference',
-    path: '/reference',
+    title: 'Best Practices',
+    path: '/best-practices',
     subroutes: [
-      { title: 'Avo CLI', path: '/reference/cli' },
-      { title: 'Avo workspace', path: '/reference/workspace' },
-      { title: 'Mobile debuggers', path: '/reference/debuggers' },
-      { title: 'Best practices', path: '/reference/bestpractices' },
+      { title: 'Avo and git', path: '/best-practices/avo-and-git' },
+      { title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
+      {
+        title: 'Multiple sources on Avo branches',
+        path: '/best-practices/multiple-sources-working-on-a-branch',
+      },
+      {
+        title: 'Descriptive events and properties',
+        path: '/best-practices/defining-descriptive-events-and-properties',
+      },
+      {
+        title: 'Organizing metrics and events',
+        path: '/best-practices/organizing-metrics-and-events',
+      },
+    ],
+  },
+  {
+    title: 'Help',
+    path: '/help/troubleshooting',
+    subroutes: [
+      { title: 'Troubleshooting & support', path: '/help/troubleshooting' },
+      { title: 'FAQ', path: '/help/faq' },
     ],
   },
 ];
@@ -98,13 +156,6 @@ const Navigation: FunctionComponent = () => {
       {navigation.map((item) => (
         <Group key={item.path} item={item}></Group>
       ))}
-
-      <div className={styles.group}>
-        <div className={styles.parentLink}>Your SDK</div>
-        <Note>
-          <b>Log in</b> to access your SDK docs
-        </Note>
-      </div>
     </div>
   );
 };

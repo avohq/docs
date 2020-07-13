@@ -21,8 +21,8 @@ const Footer: FunctionComponent = () => {
           </div>
         </a>
       </div>
-      <div>
-        <div className={styles.col}>Was this page helpful</div>
+      <div className={styles.feedback}>
+        <div className={styles.col}>Was this page helpful?</div>
         <FeedbackButtons />
       </div>
     </div>
