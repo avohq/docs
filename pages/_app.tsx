@@ -11,12 +11,7 @@ import MDComponents from '../styles/MDComponents';
 import useAvoPath from '../util/useAvoPath';
 
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
-  Avo.initAvo(
-    { env: Avo.AvoEnv.Dev },
-    { client: 'Docs', version: '2.0' },
-    {},
-    {},
-  );
+  Avo.initAvo({ env: Avo.AvoEnv.Dev }, { client: 'Docs', version: '2.0' }, {});
 
   const path = useAvoPath();
 

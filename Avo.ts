@@ -1143,10 +1143,10 @@ let Fullstory = {
   make: function make(apiKey: string, options: any) {
     if (typeof (window as any) === 'undefined') { console.warn('window.FS is not available in Node.js'); return; }
     if (typeof (window as any).FS === "undefined") {
-      window['_fs_debug'] = false;
-      window['_fs_host'] = 'fullstory.com';
-      window['_fs_org'] = apiKey;
-      window['_fs_namespace'] = 'FS';
+      (window as any)['_fs_debug'] = false;
+      (window as any)['_fs_host'] = 'fullstory.com';
+      (window as any)['_fs_org'] = apiKey;
+      (window as any)['_fs_namespace'] = 'FS';
       // @ts-ignore
       (function(m,n,e,t,l,o,g,y){
         // @ts-ignore
@@ -1215,17 +1215,17 @@ let Intercom = {
     (this as any).getInstance = () => (window as any).Intercom;
   },
 
-  logEvent: function logEvent(eventName, eventProperties) {
+  logEvent: function logEvent(eventName: any, eventProperties: any) {
     if (typeof (window as any) === 'undefined') { return; }
     (this as any).getInstance()("trackEvent", eventName, eventProperties);
   },
 
-  setUserProperties: function setUserProperties(userProperties) {
+  setUserProperties: function setUserProperties(userProperties: any) {
     if (typeof (window as any) === 'undefined') { return; }
     (this as any).getInstance()('update', userProperties);
   },
 
-  identify: function identify(userId) {
+  identify: function identify(userId: any) {
     if (typeof (window as any) === 'undefined') { return; }
     (this as any).getInstance()('update', {"user_id": userId});
   },
