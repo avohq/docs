@@ -1,6 +1,6 @@
 import styles from './Footer.module.scss';
 import { FunctionComponent } from 'react';
-import Link from 'next/link';
+import Link from '../components/Link';
 
 import FeedbackButtons from './FeedbackButtons';
 
