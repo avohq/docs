@@ -11,7 +11,7 @@ import MDComponents from '../styles/MDComponents';
 import useAvoPath from '../util/useAvoPath';
 
 const getAvoEnv = () => {
-  switch (process.env.NEXT_PUBLIC_ENV) {
+  switch (process.env.NEXT_PUBLIC_AVO_ENV) {
     case 'production':
       return AvoEnv.Prod;
     case 'staging':
