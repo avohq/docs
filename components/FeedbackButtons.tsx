@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useCallback } from 'react';
+import { FunctionComponent, useState, useCallback, useEffect } from 'react';
 import styles from './FeedbackButtons.module.scss';
 import classNames from 'classnames';
 
@@ -11,6 +11,10 @@ const FeedbackButtons: FunctionComponent = () => {
   );
 
   const path = useAvoPath();
+
+  useEffect(() => {
+    setOptionChosen(null);
+  }, [path]);
 
   const onClick = useCallback(
     (feedback: FeedbackValueType) => {
