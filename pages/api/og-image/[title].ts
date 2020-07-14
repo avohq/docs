@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import Puppeteer from 'puppeteer';
 import marked from 'marked';
 
+import chromium from 'chrome-aws-lambda';
+
 const generateHtml = (title: string): string => `
 <html>
 <head>
@@ -61,7 +63,18 @@ export default async (
     return;
   }
 
-  const browser = await Puppeteer.launch();
+  const options = !process.env.DEV
+    ? {
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+      }
+    : {};
+
+  const browser = await Puppeteer.launch(options);
+
   const page = await browser.newPage();
   await page.setContent(generateHtml(title));
   await page.setViewport({ width: 2048, height: 1170 });
