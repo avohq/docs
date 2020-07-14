@@ -2,7 +2,7 @@ import { FunctionComponent, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { MDXProvider } from '@mdx-js/react';
 
-import Avo from '../Avo';
+import Avo, { AvoEnv } from '../Avo';
 
 import '../styles/global.css';
 
@@ -10,8 +10,20 @@ import Layout from '../components/Layout';
 import MDComponents from '../styles/MDComponents';
 import useAvoPath from '../util/useAvoPath';
 
+const getAvoEnv = () => {
+  switch (process.env.NEXT_PUBLIC_ENV) {
+    case 'production':
+      return AvoEnv.Prod;
+    case 'staging':
+      return AvoEnv.Staging;
+    case 'development':
+    default:
+      return AvoEnv.Dev;
+  }
+};
+
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
-  Avo.initAvo({ env: Avo.AvoEnv.Dev }, { client: 'Docs', version: '2.0' }, {});
+  Avo.initAvo({ env: getAvoEnv() }, { client: 'Docs', version: '2.0' }, {});
 
   const path = useAvoPath();
 
