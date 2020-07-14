@@ -1,5 +1,4 @@
 import { FunctionComponent, useEffect, useState, useRef } from 'react';
-import Link from '../components/Link';
 import classNames from 'classnames';
 
 import throttle from 'lodash.throttle';
@@ -64,7 +63,7 @@ const Toc: FunctionComponent<TocProps> = ({ headings }) => {
       {headings
         .filter((heading) => heading.level < 5)
         .map((heading, idx) => (
-          <Link href={`#${heading.id}`} key={heading.id}>
+          <a href={`#${heading.id}`} key={heading.id} className={styles.link}>
             <div
               className={classNames(styles.item, {
                 [styles.topLevel]: heading.level <= 2,
@@ -82,7 +81,7 @@ const Toc: FunctionComponent<TocProps> = ({ headings }) => {
               ) : null}
               {heading.text}
             </div>
-          </Link>
+          </a>
         ))}
     </div>
   );
