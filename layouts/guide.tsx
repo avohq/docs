@@ -13,10 +13,18 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const headings = generateToc(children);
   const time = readingTime(innerText(children));
 
+  const ogImageTitle = encodeURIComponent(
+    frontMatter.mdTitle ? frontMatter.mdTitle : frontMatter.title,
+  );
+
   return (
     <div className={styles.root}>
       <Head>
         <title>{frontMatter.title} - Avo Docs</title>
+        <meta
+          property="og:image"
+          content={`https://docs.teamavo.now.sh/api/og-image/${ogImageTitle}`}
+        />
       </Head>
       <div className={styles.content}>
         <h1 className={styles.title}>{frontMatter.title}</h1>
