@@ -82,6 +82,10 @@ export default async (
 
   await browser.close();
 
+  res.setHeader(
+    'Cache-Control',
+    'public, immutable, no-transform, s-maxage=31536000, max-age=31536000',
+  );
   res.setHeader('Content-Type', 'image/png');
   res.status(200).end(file);
 };
