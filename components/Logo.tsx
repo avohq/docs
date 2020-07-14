@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import Link from 'next/link';
+import Link from '../components/Link';
 
 interface LogoProps {
   width?: number;
@@ -7,7 +7,11 @@ interface LogoProps {
 
 const Logo: FunctionComponent<LogoProps> = ({ width = 200 }) => (
   <Link href="/">
-    <img src="/docs_logo.svg" width={width} style={{ cursor: 'pointer' }} />
+    <img
+      src={require('../images/docs_logo.svg')}
+      width={width}
+      style={{ cursor: 'pointer' }}
+    />
   </Link>
 );
 

@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState, useRef } from 'react';
-import Link from 'next/link';
+import Link from '../components/Link';
 import classNames from 'classnames';
 
 import throttle from 'lodash.throttle';

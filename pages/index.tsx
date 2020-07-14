@@ -2,7 +2,7 @@ import Head from 'next/head';
 
 import { NextPage } from 'next';
 
-import Link from 'next/link';
+import Link from '../components/Link';
 
 function formatPath(p: string) {
   return p.replace(/\.mdx$/, '');

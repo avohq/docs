@@ -22,6 +22,18 @@ const resolveImport = (
   filename: string,
   node: Node,
 ): MDXError | undefined => {
+  if (item.defaultImport && item.fromModule === 'next/link') {
+    const relativeImport = path.relative(
+      path.dirname(path.resolve(filename)),
+      path.resolve('./components/Link'),
+    );
+    return {
+      message: `Vanilla next/link import not allowed. Please use ${relativeImport}`,
+      position: node.position,
+      filePath: filename,
+    };
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let module;
   try {

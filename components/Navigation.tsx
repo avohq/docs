@@ -4,7 +4,7 @@ import { FunctionComponent } from 'react';
 import classNames from 'classnames';
 
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import Link from '../components/Link';
 
 interface navigationItem {
   title: string;
