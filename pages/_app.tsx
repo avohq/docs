@@ -44,6 +44,13 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
     <MDXProvider components={MDComponents}>
       <Layout>
         <Head>
+          <meta name="theme-color" content="#000000" />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="96x96"
+            href={require('../images/favicon.png')}
+          />
           <script
             type="text/javascript"
             dangerouslySetInnerHTML={{

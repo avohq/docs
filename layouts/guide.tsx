@@ -17,7 +17,6 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
     <div className={styles.root}>
       <Head>
         <title>{frontMatter.title} - Avo Docs</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.content}>
         <h1 className={styles.title}>{frontMatter.title}</h1>
