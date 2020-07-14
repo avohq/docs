@@ -3,6 +3,7 @@ import { FunctionComponent, ReactElement } from 'react';
 export interface frontMatter {
   title: string;
   abstract?: string | null;
+  mdTitle?: string | null;
 }
 
 export type contentItem = ReactElement<{
