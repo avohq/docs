@@ -17,6 +17,12 @@
 .navHeader {
   padding: 20px 0px;
   grid-area: navHeader;
+  display: flex;
+  align-items: center;
+}
+
+.hamburgerButton {
+  display: none;
 }
 
 .header {
@@ -34,4 +40,40 @@
 
 .footer {
   grid-area: footer;
+}
+
+.mobileNav {
+  display: none;
+}
+
+@media (max-width: 840px) {
+  .grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    gap: 15px 15px;
+    grid-template-areas:
+      'navHeader  navHeader '
+      'nav        nav    '
+      'content    content'
+      'footer     footer ';
+    padding: 0 30px;
+    margin-bottom: 100px;
+  }
+  .nav {
+    display: none;
+  }
+  .mobileNav {
+    display: block;
+  }
+  .hamburgerButton {
+    display: block;
+  }
+  .header {
+    display: none;
+  }
+  .navHeader {
+    justify-content: space-between;
+    padding-bottom: 0;
+  }
 }

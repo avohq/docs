@@ -35,9 +35,11 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
           {Math.ceil(time.minutes)} minute read
         </div>
 
-        <div className={styles.inlineToc}>
-          <Toc headings={headings} />
-        </div>
+        {headings != null && headings.length !== 0 && (
+          <div className={styles.inlineToc}>
+            <Toc headings={headings} />
+          </div>
+        )}
 
         {children}
       </div>
