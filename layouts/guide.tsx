@@ -8,6 +8,7 @@ import styles from './guide.module.scss';
 import generateToc from '../util/generateToc';
 import Toc from '../components/Toc';
 import Head from 'next/head';
+import classNames from 'classnames';
 
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const headings = generateToc(children);
@@ -26,7 +27,7 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
           content={`https://docs.teamavo.now.sh/api/og-image/${ogImageTitle}`}
         />
       </Head>
-      <div className={styles.content}>
+      <div className={classNames(styles.content, 'docSearch-content')}>
         <h1 className={styles.title}>{frontMatter.title}</h1>
         {frontMatter.abstract && (
           <p className={styles.abstract}>{frontMatter.abstract}</p>
