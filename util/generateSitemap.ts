@@ -32,8 +32,16 @@ const generateSitemap = (routes: string[]) => {
 };
 
 (async () => {
+  const dryRun = process.argv.includes('--dry-run');
+
   const routes = await getRoutes();
   const sitemap = generateSitemap(routes);
+
+  if (dryRun) {
+    // eslint-disable-next-line no-console
+    console.log(sitemap);
+    return;
+  }
 
   fs.writeFileSync('./public/sitemap.xml', sitemap);
 })();
