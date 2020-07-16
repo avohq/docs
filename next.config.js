@@ -20,6 +20,15 @@ const config = {
   publicRuntimeConfig: {
     basePath: process.env.BASE_PATH || '',
   },
+
+  webpack: (config, { isServer }) => {
+    require('ts-node').register({
+      module: 'commonjs',
+    });
+    require('./util/generateSitemap.ts');
+
+    return config;
+  },
 };
 
 module.exports = compose(enhanceMdx, withImages)(config);
