@@ -1,8 +1,57 @@
 {
+  "functions": {
+    "pages/api/**": {
+      "memory": 3008
+    }
+  },
   "redirects": [
     {
-      "source": "/",
-      "destination": "/docs2/quickstart"
+      "source": "/quickstart",
+      "destination": "/docs"
+    },
+    {
+      "source": "/datascope/state-of-tracking",
+      "destination": "/docs/inspector/sdk"
+    },
+    {
+      "source": "/datascope/state-of-tracking/android",
+      "destination": "/docs/inspector/sdk/android"
+    },
+    {
+      "source": "/datascope/state-of-tracking/ios",
+      "destination": "/docs/inspector/sdk/ios"
+    },
+    {
+      "source": "/datascope/state-of-tracking/web",
+      "destination": "/docs/inspector/sdk/js"
+    },
+    {
+      "source": "/datascope",
+      "destination": "/docs/inspector"
+    },
+    {
+      "source": "/datascope/avo-inspector",
+      "destination": "/docs/inspector/sdk"
+    },
+    {
+      "source": "/datascope/avo-inspector/android",
+      "destination": "/docs/inspector/sdk/android"
+    },
+    {
+      "source": "/datascope/avo-inspector/ios",
+      "destination": "/docs/inspector/sdk/ios"
+    },
+    {
+      "source": "/datascope/avo-inspector/web",
+      "destination": "/docs/inspector/sdk/js"
+    },
+    {
+      "source": "/datascope/issue-identifier",
+      "destination": "/docs/inspector/issue-identifier"
+    },
+    {
+      "source": "/datascope/faq",
+      "destination": "/docs/inspector/faq"
     }
   ]
 }

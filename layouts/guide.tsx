@@ -8,18 +8,26 @@ import styles from './guide.module.scss';
 import generateToc from '../util/generateToc';
 import Toc from '../components/Toc';
 import Head from 'next/head';
+import classNames from 'classnames';
 
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const headings = generateToc(children);
   const time = readingTime(innerText(children));
 
+  const ogImageTitle = encodeURIComponent(
+    frontMatter.mdTitle ? frontMatter.mdTitle : frontMatter.title,
+  );
+
   return (
     <div className={styles.root}>
       <Head>
         <title>{frontMatter.title} - Avo Docs</title>
-        <link rel="icon" href="/favicon.ico" />
+        <meta
+          property="og:image"
+          content={`https://docs.teamavo.now.sh/api/og-image/${ogImageTitle}`}
+        />
       </Head>
-      <div className={styles.content}>
+      <div className={classNames(styles.content, 'docSearch-content')}>
         <h1 className={styles.title}>{frontMatter.title}</h1>
         {frontMatter.abstract && (
           <p className={styles.abstract}>{frontMatter.abstract}</p>
@@ -28,9 +36,11 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
           {Math.ceil(time.minutes)} minute read
         </div>
 
-        <div className={styles.inlineToc}>
-          <Toc headings={headings} />
-        </div>
+        {headings != null && headings.length !== 0 && (
+          <div className={styles.inlineToc}>
+            <Toc headings={headings} />
+          </div>
+        )}
 
         {children}
       </div>
