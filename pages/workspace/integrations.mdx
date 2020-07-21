@@ -11,6 +11,7 @@ The integrations tab is where Avo can be integrated with a production time valid
 Available integrations are currently:
 
 - <a href="#segment-protocols">Segment Protocols</a>
+- <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>
 - <a href="#amplitude-taxonomy">Amplitude Taxonomy</a>
 - <a href="#json-schema">JSON Schema</a>
 
@@ -53,6 +54,30 @@ There are two ways to publish your selected events into Protocols:
 
 1. Publish directly from Avo to Protocols by clicking the "Publish to Protocols" button
 2. Copy or download the Protocols JSON and import it into Segment manually
+
+## <a name="mixpanel-lexicon"></a> Mixpanel Lexicon
+
+The integration to [Mixpanel Lexicon](https://mixpanel.com/data-governance/) allows for your Tracking Plan to be published into Mixpanel Lexicon with a push of a button.
+
+### Enable the integration
+
+To enable the direct integration with Mixpanel Lexicon, you need to configure it with the following parameters from Mixpanel.
+
+- **Mixpanel Project Id**: Found in the URL when viewing your project in Mixpanel: `https://mixpanel.com/report/<Mixpanel Project Id>/...`
+- **Mixpanel Service Account Username**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference#service-accounts)
+- **Mixpanel Service Account Secret**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference#service-accounts)
+
+### Filtering events
+
+You can customize which events in Avo are published to Mixpanel Lexicon by using the events filter. Events can be filtered by Sources, Destinations and Tags.
+
+### Publishing to Lexicon
+
+To publish your Avo tracking plan to Lexicon, click the "Publish to Lexicon" button in the integration interface.
+
+On publish, Avo will merge your Avo tracking plan with any existing events in Lexicon. Any changes made to an event in Lexicon between Avo imports will be overridden on next Avo import.
+
+Avo will not impact any events that are only defined in Lexicon, or events that have not been added to the Lexicon integration in Avo.
 
 ## <a name="amplitude-taxonomy"></a> Amplitude Taxonomy
 
