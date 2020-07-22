@@ -5,10 +5,13 @@ import classNames from 'classnames';
 
 import { useRouter } from 'next/router';
 import Link from '../components/Link';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+import Icon from './Icon';
 
 interface navigationItem {
   title: string;
   path: string;
+  iconName?: IconName;
 
   subroutes?:
     | {
@@ -19,10 +22,11 @@ interface navigationItem {
 }
 
 const navigation: navigationItem[] = [
-  { title: 'Getting started', path: '/' },
+  { title: 'Getting started', path: '/', iconName: 'rocket' },
   {
     title: 'Your Avo Workspace',
     path: '/workspace',
+    iconName: 'home',
     subroutes: [
       { title: 'Tracking Plan', path: '/workspace/tracking-plan' },
       { title: 'Connections', path: '/workspace/connections' },
@@ -34,6 +38,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Developer Tools',
     path: '/commands',
+    iconName: 'terminal',
     subroutes: [
       {
         title: 'Command Line Tool',
@@ -69,6 +74,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Inspector',
     path: '/inspector',
+    iconName: 'heartbeat',
     subroutes: [
       { title: 'Inspector SDK', path: '/inspector/sdk' },
       { title: 'Android', path: '/inspector/sdk/android' },
@@ -81,6 +87,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Best Practices',
     path: '/best-practices',
+    iconName: 'award',
     subroutes: [
       { title: 'Avo and git', path: '/best-practices/avo-and-git' },
       { title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
@@ -101,6 +108,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Help',
     path: '/help/troubleshooting',
+    iconName: 'life-ring',
     subroutes: [
       { title: 'Troubleshooting & support', path: '/help/troubleshooting' },
       { title: 'FAQ', path: '/help/faq' },
@@ -125,6 +133,11 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
             [styles.activeLink]: rootActive,
           })}
         >
+          {item.iconName && (
+            <span className={styles.iconWrapper}>
+              <Icon name={item.iconName} />
+            </span>
+          )}
           {item.title}
         </div>
       </Link>

@@ -2,6 +2,7 @@
 
 .root {
   font-size: 14px;
+  margin-left: -25px;
 }
 
 .group {
@@ -15,11 +16,17 @@
   cursor: pointer;
 }
 
+.iconWrapper {
+  width: 25px;
+  display: inline-block;
+}
+
 .subroute {
   color: brand.$gray-50;
   font-weight: 300;
   margin-bottom: 5px;
   cursor: pointer;
+  margin-left: 25px;
 }
 
 .activeLink {
