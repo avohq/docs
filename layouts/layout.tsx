@@ -4,6 +4,7 @@ export interface frontMatter {
   title: string;
   abstract?: string | null;
   mdTitle?: string | null;
+  __resourcePath: string;
 }
 
 export type contentItem = ReactElement<{
