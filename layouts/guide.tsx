@@ -9,6 +9,7 @@ import generateToc from '../util/generateToc';
 import Toc from '../components/Toc';
 import Head from 'next/head';
 import classNames from 'classnames';
+import { setSourcePath } from '../util/useSourcePath';
 
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const headings = generateToc(children);
@@ -17,6 +18,8 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const ogImageTitle = encodeURIComponent(
     frontMatter.mdTitle ? frontMatter.mdTitle : frontMatter.title,
   );
+
+  setSourcePath(frontMatter.__resourcePath);
 
   return (
     <div className={styles.root}>

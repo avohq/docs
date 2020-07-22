@@ -1,8 +1,16 @@
 import { FunctionComponent } from 'react';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+// import { fab } from '@fortawesome/free-brands-svg-icons';
+import {
+  faHome,
+  faTerminal,
+  faAward,
+  faHeartbeat,
+  faLifeRing,
+  faRocket,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 
 import {
   FontAwesomeIcon,
@@ -10,7 +18,15 @@ import {
 } from '@fortawesome/react-fontawesome';
 import { IconName } from '@fortawesome/fontawesome-common-types';
 
-library.add(fab, fas);
+library.add(
+  faHome,
+  faTerminal,
+  faAward,
+  faHeartbeat,
+  faLifeRing,
+  faRocket,
+  faChevronLeft,
+);
 
 interface IconProps {
   name: IconName;
