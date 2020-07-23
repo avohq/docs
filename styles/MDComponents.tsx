@@ -70,7 +70,7 @@ const Del: FunctionComponent = (props) => {
   return <del className={styles.del} {...props} />;
 };
 const InlineCode: FunctionComponent = (props) => {
-  return <pre className={styles.inlineCode} {...props} />;
+  return <code className={styles.inlineCode} {...props} />;
 };
 const Hr: FunctionComponent = (props) => {
   return <hr className={styles.hr} {...props} />;
