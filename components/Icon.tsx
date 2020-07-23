@@ -10,6 +10,7 @@ import {
   faLifeRing,
   faRocket,
   faChevronLeft,
+  faToolbox,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -20,7 +21,7 @@ import { IconName } from '@fortawesome/fontawesome-common-types';
 
 library.add(
   faHome,
-  faTerminal,
+  faToolbox,
   faAward,
   faHeartbeat,
   faLifeRing,
