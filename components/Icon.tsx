@@ -4,12 +4,12 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 // import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
   faHome,
-  faTerminal,
   faAward,
   faHeartbeat,
   faLifeRing,
   faRocket,
   faChevronLeft,
+  faToolbox,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -20,7 +20,7 @@ import { IconName } from '@fortawesome/fontawesome-common-types';
 
 library.add(
   faHome,
-  faTerminal,
+  faToolbox,
   faAward,
   faHeartbeat,
   faLifeRing,
