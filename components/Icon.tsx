@@ -1,7 +1,13 @@
 import { FunctionComponent } from 'react';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-// import { fab } from '@fortawesome/free-brands-svg-icons';
+import { library, IconProp } from '@fortawesome/fontawesome-svg-core';
+import {
+  faJs,
+  faJava,
+  faSwift,
+  faPhp,
+  faPython,
+} from '@fortawesome/free-brands-svg-icons';
 import {
   faHome,
   faAward,
@@ -10,13 +16,15 @@ import {
   faRocket,
   faChevronLeft,
   faToolbox,
+  faCode,
+  faTerminal,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from '@fortawesome/react-fontawesome';
-import { IconName } from '@fortawesome/fontawesome-common-types';
+import { IconName, IconPrefix } from '@fortawesome/fontawesome-common-types';
 
 library.add(
   faHome,
@@ -26,10 +34,18 @@ library.add(
   faLifeRing,
   faRocket,
   faChevronLeft,
+  faCode,
+  faJs,
+  faJava,
+  faSwift,
+  faPhp,
+  faPython,
+  faTerminal,
 );
 
 interface IconProps {
   name: IconName;
+  pack?: IconPrefix;
   relativeSize?: FontAwesomeIconProps['size'];
   fontSize?: number;
   color?: string;
@@ -40,13 +56,19 @@ const Icon: FunctionComponent<IconProps> = ({
   relativeSize,
   color,
   fontSize,
-}) => (
-  <FontAwesomeIcon
-    icon={name}
-    size={relativeSize || '1x'}
-    fontSize={fontSize}
-    color={color || 'black'}
-  />
-);
+  pack,
+}) => {
+  const iconPack = pack || 'fas';
+  const icon = [iconPack, name];
+
+  return (
+    <FontAwesomeIcon
+      icon={icon as IconProp}
+      size={relativeSize || '1x'}
+      fontSize={fontSize}
+      color={color || 'black'}
+    />
+  );
+};
 
 export default Icon;
