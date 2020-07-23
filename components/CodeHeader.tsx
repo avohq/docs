@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 import Icon from './Icon';
-import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
+import { IconPrefix } from '@fortawesome/fontawesome-svg-core';
 
 import styles from './CodeHeader.module.scss';
 
@@ -11,7 +11,7 @@ interface CodeHeaderProps {
 
 interface NameAndIcon {
   name: string;
-  icon: IconName;
+  icon: string;
   iconPack?: IconPrefix;
 }
 
@@ -30,15 +30,18 @@ interface NameAndIcon {
 const parseLanguage = (language: string): NameAndIcon => {
   switch (language) {
     case 'javascript':
+    case 'js':
       return {
         name: 'JavaScript',
         icon: 'js',
         iconPack: 'fab',
       };
     case 'typescript':
+    case 'ts':
       return {
         name: 'TypeScript',
-        icon: 'code',
+        icon: 'typescript',
+        iconPack: 'fab',
       };
     case 'swift':
       return {
@@ -55,7 +58,8 @@ const parseLanguage = (language: string): NameAndIcon => {
     case 'kotlin':
       return {
         name: 'Kotlin',
-        icon: 'code',
+        icon: 'kotlin',
+        iconPack: 'fab',
       };
     case 'php':
       return {
@@ -72,17 +76,20 @@ const parseLanguage = (language: string): NameAndIcon => {
     case 'ruby':
       return {
         name: 'Ruby',
-        icon: 'code',
+        icon: 'ruby',
+        iconPack: 'fab',
       };
     case 'csharp':
       return {
         name: 'C#',
-        icon: 'code',
+        icon: 'csharp',
+        iconPack: 'fab',
       };
     case 'objectivec':
       return {
         name: 'Objective C',
-        icon: 'code',
+        icon: 'c',
+        iconPack: 'fab',
       };
     case 'sh':
     case 'bash':
