@@ -38,7 +38,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Developer Tools',
     path: '/commands',
-    iconName: 'terminal',
+    iconName: 'toolbox',
     subroutes: [
       {
         title: 'Command Line Tool',
