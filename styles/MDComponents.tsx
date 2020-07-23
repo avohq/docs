@@ -1,3 +1,4 @@
+import React, { useCallback } from 'react';
 import { FunctionComponent, useState, useRef } from 'react';
 import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 
@@ -5,6 +6,7 @@ import theme from 'prism-react-renderer/themes/nightOwl';
 import styles from './MDComponents.module.scss';
 import classNames from 'classnames';
 import throttle from 'lodash.throttle';
+import CodeHeader from '../components/CodeHeader';
 
 const P: FunctionComponent = (props) => <p className={styles.p} {...props} />;
 const H1: FunctionComponent = (props) => (
@@ -89,7 +91,6 @@ const Code: FunctionComponent<{
   if (className == null || !className.startsWith('language-')) {
     return <code className={className || undefined}>{children}</code>;
   }
-
   const [shadowOpacity, setShadowOpacity] = useState(0);
 
   const scrollContainer = useRef<HTMLDivElement>(null);
@@ -109,6 +110,11 @@ const Code: FunctionComponent<{
   const code = lines.slice(0, lines.length - 1).join('\n');
 
   const language = className.replace(/language-/, '');
+
+  const onCopy = useCallback(() => {
+    navigator.clipboard.writeText(rawCode);
+  }, [rawCode]);
+
   return (
     <Highlight
       {...defaultProps}
@@ -117,47 +123,49 @@ const Code: FunctionComponent<{
       language={language as Language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre
-          className={classNames(className, styles.highlight)}
-          style={{ ...style, padding: '20px', borderRadius: 5 }}
-        >
-          <div
-            className={styles.highlightLineNumbers}
-            style={{
-              boxShadow: `5px 0 10px -5px rgba(0, 0, 0, ${shadowOpacity})`,
-            }}
+        <div className={styles.highlightWrapper}>
+          <CodeHeader language={language} onCopy={onCopy} />
+          <pre
+            className={classNames(className, styles.highlight)}
+            style={{ ...style }}
           >
-            {tokens.map((line, i) => (
-              <div
-                key={i}
-                {...getLineProps({ line, key: i })}
-                className={styles.codeLine}
-              >
-                <div className={styles.codeLineNumber}>{i + 1}</div>
-              </div>
-            ))}
-            {/* <div className={styles.codeLineNumber}>{i + 1}</div></div> */}
-          </div>
-          <div
-            className={styles.highlightCode}
-            onScroll={onScrollThrottled.current}
-            ref={scrollContainer}
-          >
-            {tokens.map((line, i) => (
-              <div
-                key={i}
-                {...getLineProps({ line, key: i })}
-                className={styles.codeLine}
-              >
-                <div className={styles.codeLineContent}>
-                  {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({ token, key })} />
-                  ))}
+            <div
+              className={styles.highlightLineNumbers}
+              style={{
+                boxShadow: `5px 0 10px -5px rgba(0, 0, 0, ${shadowOpacity})`,
+              }}
+            >
+              {tokens.map((line, i) => (
+                <div
+                  key={i}
+                  {...getLineProps({ line, key: i })}
+                  className={styles.codeLine}
+                >
+                  <div className={styles.codeLineNumber}>{i + 1}</div>
                 </div>
-              </div>
-            ))}
-          </div>
-          {/* {tokens.map((line, i) => (
+              ))}
+              {/* <div className={styles.codeLineNumber}>{i + 1}</div></div> */}
+            </div>
+            <div
+              className={styles.highlightCode}
+              onScroll={onScrollThrottled.current}
+              ref={scrollContainer}
+            >
+              {tokens.map((line, i) => (
+                <div
+                  key={i}
+                  {...getLineProps({ line, key: i })}
+                  className={styles.codeLine}
+                >
+                  <div className={styles.codeLineContent}>
+                    {line.map((token, key) => (
+                      <span key={key} {...getTokenProps({ token, key })} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* {tokens.map((line, i) => (
             <div
               key={i}
               {...getLineProps({ line, key: i })}
@@ -171,7 +179,8 @@ const Code: FunctionComponent<{
               </div>
             </div>
           ))} */}
-        </pre>
+          </pre>
+        </div>
       )}
     </Highlight>
   );

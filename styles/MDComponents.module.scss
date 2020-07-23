@@ -14,13 +14,20 @@
   overflow-x: auto;
 }
 
+.highlightWrapper {
+  overflow: hidden;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
 .highlight {
   font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
   overflow: hidden;
   display: flex;
-  margin-bottom: 15px;
   font-size: 14px;
   line-height: 1.2em;
+  padding: 10px;
+  padding-bottom: 20px;
 }
 
 .highlightLineNumbers {
@@ -43,6 +50,7 @@
   padding-right: 1em;
   user-select: none;
   opacity: 0.3;
+  min-width: 32px;
 }
 
 .codeLineContent {
@@ -139,7 +147,6 @@
 
 .pre {
   margin: 0;
-  border-radius: 5px;
 }
 
 .blockquote {

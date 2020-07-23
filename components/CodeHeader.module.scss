@@ -1,0 +1,44 @@
+@use '../styles/brand';
+
+.root {
+  background-color: rgb(1, 22, 39);
+  color: rgb(163, 172, 185);
+  padding: 10px;
+  padding-left: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 16px;
+}
+
+.name {
+  margin-left: 15px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.copy {
+  color: white;
+  opacity: 0.5;
+
+  cursor: pointer;
+  transition: opacity 0.5s;
+
+  user-select: none;
+
+  &:hover {
+    transition: none;
+    opacity: 1;
+  }
+
+  &:active {
+    opacity: 0.75;
+  }
+}
