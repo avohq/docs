@@ -7,6 +7,8 @@ import styles from './MDComponents.module.scss';
 import classNames from 'classnames';
 import throttle from 'lodash.throttle';
 import CodeHeader from '../components/CodeHeader';
+import Avo from '../Avo';
+import useAvoPath from '../util/useAvoPath';
 
 const P: FunctionComponent = (props) => <p className={styles.p} {...props} />;
 const H1: FunctionComponent = (props) => (
@@ -103,6 +105,7 @@ const Code: FunctionComponent<{
     return <code className={className || undefined}>{children}</code>;
   }
   const [shadowOpacity, setShadowOpacity] = useState(0);
+  const avoPath = useAvoPath();
 
   const scrollContainer = useRef<HTMLDivElement>(null);
   const onScrollThrottled = useRef(
@@ -124,7 +127,15 @@ const Code: FunctionComponent<{
   const code = processLines(lines, isTerminal);
 
   const onCopy = useCallback(() => {
-    navigator.clipboard.writeText(rawCode);
+    const code = lines
+      .flatMap((line) => (line.startsWith('$ ') ? [line.substr(2)] : []))
+      .join('\n');
+
+    navigator.clipboard.writeText(code);
+    Avo.contentCopied({
+      path: avoPath,
+      content: code,
+    });
   }, [rawCode]);
 
   return (
