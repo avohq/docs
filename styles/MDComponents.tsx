@@ -127,14 +127,14 @@ const Code: FunctionComponent<{
   const code = processLines(lines, isTerminal);
 
   const onCopy = useCallback(() => {
-    const code = lines
+    const inputLines = lines
       .flatMap((line) => (line.startsWith('$ ') ? [line.substr(2)] : []))
       .join('\n');
 
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(isTerminal ? inputLines : rawCode);
     Avo.contentCopied({
       path: avoPath,
-      content: code,
+      content: isTerminal ? inputLines : rawCode,
     });
   }, [rawCode]);
 
