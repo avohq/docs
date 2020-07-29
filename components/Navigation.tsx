@@ -80,6 +80,7 @@ const navigation: navigationItem[] = [
       { title: 'Android', path: '/inspector/sdk/android' },
       { title: 'iOS', path: '/inspector/sdk/ios' },
       { title: 'Web', path: '/inspector/sdk/js' },
+      { title: 'React Native', path: '/inspector/sdk/react-native' },
       { title: 'Issues', path: '/inspector/issue-identifier' },
       { title: 'FAQ', path: '/inspector/faq' },
     ],
