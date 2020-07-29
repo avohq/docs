@@ -7,6 +7,8 @@ import styles from './MDComponents.module.scss';
 import classNames from 'classnames';
 import throttle from 'lodash.throttle';
 import CodeHeader from '../components/CodeHeader';
+import Avo from '../Avo';
+import useAvoPath from '../util/useAvoPath';
 
 const P: FunctionComponent = (props) => <p className={styles.p} {...props} />;
 const H1: FunctionComponent = (props) => (
@@ -84,6 +86,17 @@ const Img: FunctionComponent = (props) => {
   return <img className={styles.img} {...props} />;
 };
 
+const processLines = (lines: string[], isTerminal: boolean): string =>
+  lines
+    .slice(0, lines.length - 1)
+    .map((line) => {
+      if (isTerminal && line.startsWith('$ ')) {
+        return line.substring(2);
+      }
+      return line;
+    })
+    .join('\n');
+
 // Code highlighting
 const Code: FunctionComponent<{
   className?: string | null;
@@ -92,6 +105,7 @@ const Code: FunctionComponent<{
     return <code className={className || undefined}>{children}</code>;
   }
   const [shadowOpacity, setShadowOpacity] = useState(0);
+  const avoPath = useAvoPath();
 
   const scrollContainer = useRef<HTMLDivElement>(null);
   const onScrollThrottled = useRef(
@@ -105,14 +119,23 @@ const Code: FunctionComponent<{
     }, 150),
   );
 
+  const language = className.replace(/language-/, '');
+  const isTerminal = language === 'sh' || language === 'bash';
+
   const rawCode = children as string;
   const lines = rawCode.split('\n');
-  const code = lines.slice(0, lines.length - 1).join('\n');
-
-  const language = className.replace(/language-/, '');
+  const code = processLines(lines, isTerminal);
 
   const onCopy = useCallback(() => {
-    navigator.clipboard.writeText(rawCode);
+    const inputLines = lines
+      .flatMap((line) => (line.startsWith('$ ') ? [line.substr(2)] : []))
+      .join('\n');
+
+    navigator.clipboard.writeText(isTerminal ? inputLines : rawCode);
+    Avo.contentCopied({
+      path: avoPath,
+      content: isTerminal ? inputLines : rawCode,
+    });
   }, [rawCode]);
 
   return (
@@ -122,66 +145,63 @@ const Code: FunctionComponent<{
       code={code}
       language={language as Language}
     >
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <div className={styles.highlightWrapper}>
-          <CodeHeader language={language} onCopy={onCopy} />
-          <pre
-            className={classNames(className, styles.highlight)}
-            style={{ ...style }}
-          >
-            <div
-              className={styles.highlightLineNumbers}
-              style={{
-                boxShadow: `5px 0 10px -5px rgba(0, 0, 0, ${shadowOpacity})`,
-              }}
+      {({ className, style, tokens, getLineProps, getTokenProps }) => {
+        const lineNumbers = isTerminal
+          ? lines.map((line) => (line.startsWith('$ ') ? '$' : ''))
+          : lines.map((_, i) => i + 1);
+
+        return (
+          <div className={styles.highlightWrapper}>
+            <CodeHeader language={language} onCopy={onCopy} />
+            <pre
+              className={classNames(className, styles.highlight)}
+              style={{ ...style }}
             >
-              {tokens.map((line, i) => (
-                <div
-                  key={i}
-                  {...getLineProps({ line, key: i })}
-                  className={styles.codeLine}
-                >
-                  <div className={styles.codeLineNumber}>{i + 1}</div>
-                </div>
-              ))}
-              {/* <div className={styles.codeLineNumber}>{i + 1}</div></div> */}
-            </div>
-            <div
-              className={styles.highlightCode}
-              onScroll={onScrollThrottled.current}
-              ref={scrollContainer}
-            >
-              {tokens.map((line, i) => (
-                <div
-                  key={i}
-                  {...getLineProps({ line, key: i })}
-                  className={styles.codeLine}
-                >
-                  <div className={styles.codeLineContent}>
-                    {line.map((token, key) => (
-                      <span key={key} {...getTokenProps({ token, key })} />
-                    ))}
+              <div
+                className={styles.highlightLineNumbers}
+                style={{
+                  boxShadow: `5px 0 10px -5px rgba(0, 0, 0, ${shadowOpacity})`,
+                }}
+              >
+                {tokens.map((line, i) => (
+                  <div
+                    key={i}
+                    {...getLineProps({ line, key: i })}
+                    className={styles.codeLine}
+                  >
+                    <div className={styles.codeLineNumber}>
+                      {lineNumbers[i]}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            {/* {tokens.map((line, i) => (
-            <div
-              key={i}
-              {...getLineProps({ line, key: i })}
-              className={styles.codeLine}
-            >
-              <div className={styles.codeLineNumber}>{i + 1}</div>
-              <div className={styles.codeLineContent}>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token, key })} />
                 ))}
               </div>
-            </div>
-          ))} */}
-          </pre>
-        </div>
-      )}
+              <div
+                className={styles.highlightCode}
+                onScroll={onScrollThrottled.current}
+                ref={scrollContainer}
+              >
+                {tokens.map((line, i) => (
+                  <div
+                    key={i}
+                    {...getLineProps({ line, key: i })}
+                    className={styles.codeLine}
+                    style={{
+                      opacity:
+                        isTerminal && !lines[i].startsWith('$ ') ? 0.8 : 1,
+                    }}
+                  >
+                    <div className={styles.codeLineContent}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token, key })} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </pre>
+          </div>
+        );
+      }}
     </Highlight>
   );
 };

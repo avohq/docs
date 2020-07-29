@@ -25,6 +25,7 @@ import {
   FontAwesomeIconProps,
 } from '@fortawesome/react-fontawesome';
 import { IconName, IconPrefix } from '@fortawesome/fontawesome-common-types';
+import { faRuby, faCSharp, faTypescript, faKotlin, faC } from './customIcons';
 
 library.add(
   faHome,
@@ -41,10 +42,15 @@ library.add(
   faPhp,
   faPython,
   faTerminal,
+  faRuby,
+  faCSharp,
+  faTypescript,
+  faKotlin,
+  faC,
 );
 
 interface IconProps {
-  name: IconName;
+  name: string;
   pack?: IconPrefix;
   relativeSize?: FontAwesomeIconProps['size'];
   fontSize?: number;
@@ -59,7 +65,7 @@ const Icon: FunctionComponent<IconProps> = ({
   pack,
 }) => {
   const iconPack = pack || 'fas';
-  const icon = [iconPack, name];
+  const icon = [iconPack, name as IconName];
 
   return (
     <FontAwesomeIcon

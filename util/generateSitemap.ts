@@ -2,6 +2,7 @@ import fs from 'fs';
 import globby from 'globby';
 
 import XMLBuilder from 'xmlbuilder';
+import pager from './pager';
 
 const getRoutes = async (): Promise<string[]> => {
   const files = await globby([
@@ -38,8 +39,7 @@ const generateSitemap = (routes: string[]) => {
   const sitemap = generateSitemap(routes);
 
   if (dryRun) {
-    // eslint-disable-next-line no-console
-    console.log(sitemap);
+    pager(sitemap, 'xml');
     return;
   }
 

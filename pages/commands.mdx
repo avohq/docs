@@ -11,14 +11,14 @@ The [Avo command line interface](https://github.com/avohq/avo) provides a way to
 ### Step 1: Install the Avo CLI
 
 ```sh
-npm install -g avo
+$ npm install -g avo
 ```
 
 After installing, verify everything is in working order by running `avo --version`
 
 ```sh
-avo --version
-> 1.3.6
+$ avo --version
+1.3.6
 ```
 
 ### Step 2: Link your Avo account
@@ -26,14 +26,14 @@ avo --version
 Once you have installed the Avo CLI, run `avo login` to link your Avo account with the CLI.
 
 ```sh
-avo login
+$ avo login
 ```
 
 After you have successfully linked your account, run `avo whoami` to see the linked account.
 
 ```sh
-avo whoami
-> Logged in as my@account.com
+$ avo whoami
+Logged in as my@account.com
 ```
 
 ### Step 3: Pull generated analytics wrappers from Avo
@@ -45,7 +45,7 @@ When you run this command for the first time it will prompt you to select which 
 Please commit the `avo.json` file into your version control, in order to keep it in sync across your team.
 
 ```sh
-avo pull
+$ avo pull
 ```
 
 ### Step 4: Monitor the analytics implementation
@@ -55,7 +55,7 @@ Once you have implemented analytics with the Avo analytics wrappers, you can che
 The `status` command will report on where the analytics functions provided by Avo are being called, and which events have not been implemented yet.
 
 ```sh
-avo status
+$ avo status
 ```
 
 ## <a name="using-branches"></a> Using Avo Branches
@@ -63,13 +63,13 @@ avo status
 When editing your tracking plan on avo.app you can branch out from the master tracking plan to make changes in isolation, just like with git. To pull analytics wrappers from an open Avo branch you first need to switch to that branch with `avo checkout`.
 
 ```sh
-avo checkout my-branch-name
+$ avo checkout my-branch-name
 ```
 
 You can also pull from a specific branch by using the `--branch` flag when running `avo pull`
 
 ```sh
-avo pull [my-source-name] --branch my-branch-name
+$ avo pull [my-source-name] --branch my-branch-name
 ```
 
 ### Using an Avo branch with a git branch
@@ -79,14 +79,14 @@ Here is the workflow we recommend when working on Avo branches with git branches
 1. On your git branch, pull updated analytics wrappers from the Avo branch you would like to implement
 
 ```sh
-avo pull [my-source-name] --branch my-branch-name
+$ avo pull [my-source-name] --branch my-branch-name
 ```
 
 2. Once ready to merge, make sure your Avo branch is up to date with Avo master by pulling latest master changes into your branch. This can also be done from the branch review screen on avo.app.
    If any changes were pulled in, make sure to run `avo pull` again to update the analytics wrappers
 
 ```sh
-avo merge master
+$ avo merge master
 ```
 
 3. Review and merge your git branch
@@ -98,13 +98,13 @@ avo merge master
 To resolve git conflicts in `avo.json` run `avo pull`. It will attempt to resolve the git conflicts in `avo.json` automatically and check whether the incoming branch has been merge and if your current branch is up to date with Avo master before pulling latest analytics wrappers.
 
 ```sh
-avo pull
+$ avo pull
 ```
 
 As an alternative you can also run `avo conflict`, it will resolve any conflicts in `avo.json` without pulling latest analytics wrappers.
 
 ```sh
-avo conflict
+$ avo conflict
 ```
 
 ## <a name="complete-reference"></a> Complete Reference
@@ -113,6 +113,7 @@ Below is the complete documentation for all available commands:
 
 ```sh
 $ avo --help
+
 avo command
 
 Commands:
