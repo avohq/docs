@@ -27,6 +27,9 @@ export const createCheck = async (errors: MDXError[]): Promise<void> => {
     );
   }
 
+  // eslint-disable-next-line no-console
+  console.log('\nUploading status check to github.\n');
+
   const octokit = new Octokit({
     auth: GITHUB_SECRET,
   });
