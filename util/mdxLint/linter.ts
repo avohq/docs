@@ -5,6 +5,8 @@ import path from 'path';
 
 import remark from 'remark';
 import mdx from 'remark-mdx';
+import slug from 'remark-slug';
+import headingIds from 'remark-heading-id';
 import frontmatter from 'remark-frontmatter';
 import { Node, Position } from 'unist';
 
@@ -13,6 +15,7 @@ import { shouldCreateCheck, createCheck } from './github';
 
 export interface MDXError {
   message: string;
+  formattedMessage?: string;
   position?: Position;
   filePath: string;
 }
@@ -30,10 +33,15 @@ export const logError = (error: MDXError): void => {
   if (error.position == null) {
     console.error(chalk.gray(`  ---`) + chalk.red('  error  ') + error.message);
   } else {
+    const positionString = `${error.position.start.line}:${error.position.start.column}`;
+    const paddedPositionString = `${positionString}${' '.repeat(
+      Math.max(8 - positionString.length, 0),
+    )}`;
+
     console.error(
-      `  ${error.position.start.line}:${error.position.start.column}` +
+      `  ${paddedPositionString}` +
         chalk.red('  error  ') +
-        error.message,
+        (error.formattedMessage || error.message),
     );
   }
 };
@@ -45,9 +53,15 @@ const lintMdx = (rules: RuleFunction[]): number => {
 
   const results = files.map((filePath) => {
     const raw = fs.readFileSync(filePath);
-    const tree = remark().use(frontmatter, ['yaml']).use(mdx).parse(raw);
+    const processor = remark()
+      .use(frontmatter, ['yaml'])
+      .use(mdx)
+      .use(headingIds)
+      .use(slug);
+    const tree = processor.parse(raw);
+    const transformed = processor.runSync(tree);
 
-    const errors = rules.flatMap((rule) => rule(tree, { filePath }));
+    const errors = rules.flatMap((rule) => rule(transformed, { filePath }));
 
     return { filePath, errors };
   });

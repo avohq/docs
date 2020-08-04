@@ -4,13 +4,14 @@ const withImages = require('next-images');
 const childProcess = require('child_process');
 
 // const headings = require('remark-autolink-headings');
+const headingIds = require('remark-heading-id');
 const slug = require('remark-slug');
 
 const enhanceMdx = withMdxEnhanced({
   layoutPath: 'layouts',
   defaultLayout: true,
   fileExtensions: ['mdx'],
-  remarkPlugins: [slug],
+  remarkPlugins: [slug, headingIds],
   rehypePlugins: [],
 });
 
