@@ -1,0 +1,12 @@
+.row {
+  display: flex;
+  flex-direction: row;
+
+  margin-left: -5px;
+  margin-right: -5px;
+
+  & > * {
+    margin: 5px;
+    flex: 1;
+  }
+}

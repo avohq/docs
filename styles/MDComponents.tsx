@@ -10,83 +10,85 @@ import CodeHeader from '../components/CodeHeader';
 import Avo from '../Avo';
 import useAvoPath from '../util/useAvoPath';
 
-const P: FunctionComponent = (props) => <p className={styles.p} {...props} />;
-const H1: FunctionComponent = (props) => (
+export const P: FunctionComponent = (props) => (
+  <p className={styles.p} {...props} />
+);
+export const H1: FunctionComponent = (props) => (
   <h1 className={styles.h1} {...props} />
 );
-const H2: FunctionComponent = (props) => (
+export const H2: FunctionComponent = (props) => (
   <h2 className={styles.h2} {...props} />
 );
-const H3: FunctionComponent = (props) => (
+export const H3: FunctionComponent = (props) => (
   <h3 className={styles.h3} {...props} />
 );
-const H4: FunctionComponent = (props) => (
+export const H4: FunctionComponent = (props) => (
   <h4 className={styles.h4} {...props} />
 );
-const H5: FunctionComponent = (props) => (
+export const H5: FunctionComponent = (props) => (
   <h5 className={styles.h5} {...props} />
 );
-const H6: FunctionComponent = (props) => (
+export const H6: FunctionComponent = (props) => (
   <h6 className={styles.h6} {...props} />
 );
 
 // const ThematicBreak: FunctionComponent = props => { return <thematicBreak {...props} />; }
-const Blockquote: FunctionComponent = (props) => {
+export const Blockquote: FunctionComponent = (props) => {
   return <blockquote className={styles.blockquote} {...props} />;
 };
-const Ul: FunctionComponent = (props) => {
+export const Ul: FunctionComponent = (props) => {
   return <ul className={styles.ul} {...props} />;
 };
-const Ol: FunctionComponent = (props) => {
+export const Ol: FunctionComponent = (props) => {
   return <ol className={styles.ol} {...props} />;
 };
-const Li: FunctionComponent = (props) => {
+export const Li: FunctionComponent = (props) => {
   return <li className={styles.li} {...props} />;
 };
-const Table: FunctionComponent = (props) => {
+export const Table: FunctionComponent = (props) => {
   return <table className={styles.table} {...props} />;
 };
-const Thead: FunctionComponent = (props) => {
+export const Thead: FunctionComponent = (props) => {
   return <thead className={styles.thead} {...props} />;
 };
-const Tbody: FunctionComponent = (props) => {
+export const Tbody: FunctionComponent = (props) => {
   return <tbody className={styles.tbody} {...props} />;
 };
-const Tr: FunctionComponent = (props) => {
+export const Tr: FunctionComponent = (props) => {
   return <tr className={styles.tr} {...props} />;
 };
-const Td: FunctionComponent = (props) => {
+export const Td: FunctionComponent = (props) => {
   return <td className={styles.td} {...props} />;
 };
-const Th: FunctionComponent = (props) => {
+export const Th: FunctionComponent = (props) => {
   return <th className={styles.th} {...props} />;
 };
-const Pre: FunctionComponent = (props) => {
+export const Pre: FunctionComponent = (props) => {
   return <pre className={styles.pre} {...props} />;
 };
-const Em: FunctionComponent = (props) => {
+export const Em: FunctionComponent = (props) => {
   return <em className={styles.em} {...props} />;
 };
-const Strong: FunctionComponent = (props) => {
+export const Strong: FunctionComponent = (props) => {
   return <strong className={styles.strong} {...props} />;
 };
-const Del: FunctionComponent = (props) => {
+export const Del: FunctionComponent = (props) => {
   return <del className={styles.del} {...props} />;
 };
-const InlineCode: FunctionComponent = (props) => {
+export const InlineCode: FunctionComponent = (props) => {
   return <code className={styles.inlineCode} {...props} />;
 };
-const Hr: FunctionComponent = (props) => {
+export const Hr: FunctionComponent = (props) => {
   return <hr className={styles.hr} {...props} />;
 };
-const A: FunctionComponent = (props) => {
+export const A: FunctionComponent = (props) => {
   return <a className={styles.a} {...props} />;
 };
-const Img: FunctionComponent = (props) => {
+export const Img: FunctionComponent = (props) => {
   return <img className={styles.img} {...props} />;
 };
 
-const processLines = (lines: string[], isTerminal: boolean): string =>
+export const processLines = (lines: string[], isTerminal: boolean): string =>
   lines
     .slice(0, lines.length - 1)
     .map((line) => {
@@ -98,7 +100,7 @@ const processLines = (lines: string[], isTerminal: boolean): string =>
     .join('\n');
 
 // Code highlighting
-const Code: FunctionComponent<{
+export const Code: FunctionComponent<{
   className?: string | null;
 }> = ({ children, className }) => {
   if (className == null || !className.startsWith('language-')) {
