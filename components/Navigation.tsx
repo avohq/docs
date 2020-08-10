@@ -81,6 +81,7 @@ const navigation: navigationItem[] = [
       { title: 'iOS', path: '/inspector/sdk/ios' },
       { title: 'Web', path: '/inspector/sdk/js' },
       { title: 'React Native', path: '/inspector/sdk/react-native' },
+      { title: 'Using Inspector with Avo Functions', path: '/inspector/using-inspector-with-avo-functions' },
       { title: 'Issues', path: '/inspector/issue-identifier' },
       { title: 'FAQ', path: '/inspector/faq' },
     ],

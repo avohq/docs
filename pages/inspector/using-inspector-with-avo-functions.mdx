@@ -1,0 +1,144 @@
+---
+layout: 'guide'
+title: 'Using Avo Inspector with Avo Functions'
+---
+
+You need to do minor setup to enable **Avo Functions** reporting to **Avo Inspector**.
+
+Common steps for all platforms:
+
+1. Avo Inspector should be enabled for given source. Open `Inspector` in the side menu in your [Avo workspace](https://www.avo.app/schemas/), then press "Manage Sources" button at the top, choose your source from the grid and wait until you see the `API Key`. Once the `API Key` appears you source is considered Inspector-enabled.
+
+2. Your Avo generated file should use Avo version 63.10.0 or greater. You can find the version in the comment at the top of the generated file. If the version is older than 63.10.0 run `avo pull` again.
+
+
+Platform specific setup:
+
+<details>
+
+<summary><strong>iOS</strong></summary>
+<p/>
+Avo Functions report to Avo Inspector automatically starting with Avo version >= 63.10.0 and Inspector SDK version >= 1.2.0.
+
+> Make sure `AvoInspector` dependency in your podfile is equal or greater than 1.2.0.
+
+> You can use your own separate instance of Avo Inspector to analyze your tracking outside of Avo Functions, it will report the data correctly alongside the Avo Functions.
+ 
+</details>
+
+---
+
+<details>
+<summary><strong>Android</strong></summary>
+<p/>
+To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use 
+
+- Avo version >= 63.10.0 
+
+and 
+
+- Avo Inspector SDK version >= 1.2.0.
+
+      
+> Make sure `com.github.avohq:android-avo-inspector` dependency in your build.gradle file is equal or greater than 1.2.0.
+
+> Generated Avo file exposes **avoInspectorApiKey** constant that contains your Inspector API key.
+
+```kotlin
+val inspector = AvoInspector(avoInspectorApiKey, 
+    application, AvoInspectorEnv.Dev)
+
+Avo.initAvoWithInspector(inspector, ...)
+```
+
+```java
+AvoInspector inspector = new AvoInspector(StaticAvo.avoInspectorApiKey, getApplication(), AvoInspectorEnv.Dev);
+
+Avo.initAvoWithInspector(..., inspector);
+``` 
+
+> You can use the same instance of Avo Inspector to analyze your tracking outside of Avo Functions, it will report the data correctly alongside the Avo Functions.
+
+</details>
+
+---
+
+<details>
+<summary><strong>Web</strong></summary>
+<p/>
+To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use 
+
+- Avo version >= 63.10.0 
+
+and 
+
+- Avo Inspector SDK version >= 1.2.0.
+
+> `avo-inspector` dependency in your package.json file should be equal or greater than 1.2.0.
+
+> Generated Avo file exposes **avoInspectorApiKey** constant that contains your Inspector API key.
+
+```javascript
+const inspector = new Inspector.AvoInspector({
+  apiKey: Avo.avoInspectorApiKey,
+  env: env.DEV,
+  version: "1.0.0",
+  appName: "My App" 
+});
+Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
+```
+
+```typescript
+const inspector = new Inspector.AvoInspector({
+  apiKey: Avo.avoInspectorApiKey,
+  env: Inspector.AvoInspectorEnv.Dev,
+  version: "1.0.0",
+  appName: "My App"
+});
+Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
+``` 
+
+> You can use the same instance of Avo Inspector to analyze your tracking outside of Avo Functions, it will report the data correctly alongside the Avo Functions.
+
+</details>
+
+---
+
+<details>
+<summary><strong>React Native</strong></summary>
+<p/>
+To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use
+
+- Avo version >= 63.10.0 
+
+and 
+
+- Avo Inspector SDK version >= 1.2.0.
+
+> `react-native-avo-inspector` dependency in your package.json file should be equal or greater than 1.2.0.
+
+> Generated Avo file exposes **avoInspectorApiKey** constant that contains your Inspector API key.
+
+```javascript
+const inspector = new Inspector.AvoInspector({
+  apiKey: Avo.avoInspectorApiKey,
+  env: env.DEV,
+  version: "1.0.0",
+  appName: "My App"
+});
+Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
+```
+
+```typescript
+const inspector = new Inspector.AvoInspector({
+  apiKey: Avo.avoInspectorApiKey,
+  env: Inspector.AvoInspectorEnv.Dev,
+  version: "1.0.0",
+  appName: "My App"
+});
+Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
+```
+
+> You can use the same instance of Avo Inspector to analyze your tracking outside of Avo Functions, it will report the data correctly alongside the Avo Functions.
+
+</details>
