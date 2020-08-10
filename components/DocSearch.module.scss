@@ -1,0 +1,26 @@
+@use '../styles/brand';
+
+.root {
+  display: flex;
+  align-items: center;
+  color: brand.$gray-30;
+}
+
+.searchInput {
+  border: 0;
+  appearance: none;
+  outline: none;
+
+  padding: 5px;
+  margin-left: 5px;
+  font-size: 16px;
+
+  ::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+
+    color: brand.$gray-30;
+    opacity: 1; /* Firefox */
+  }
+
+  border-bottom: 2px solid transparent;
+}
