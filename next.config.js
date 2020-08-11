@@ -18,7 +18,7 @@ const enhanceMdx = withMdxEnhanced({
 const compose = (...fns) => (x) => fns.reduceRight((y, f) => f(y), x);
 
 // const basePath = process.env.BASE_PATH;
-const basePath = '/docsearch/';
+const basePath = '/docsearch';
 
 const config = {
   assetPrefix: basePath || '',
