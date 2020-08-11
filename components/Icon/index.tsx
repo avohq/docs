@@ -18,7 +18,6 @@ import {
   faToolbox,
   faCode,
   faTerminal,
-  faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -48,7 +47,6 @@ library.add(
   faTypescript,
   faKotlin,
   faC,
-  faSearch,
 );
 
 interface IconProps {
