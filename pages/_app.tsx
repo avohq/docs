@@ -33,6 +33,17 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   const path = useAvoPath();
 
   useEffect(() => {
+    if (window.docsearch) {
+      window.docsearch({
+        apiKey: 'db5ac03036725a2cd252824f49ab2b09',
+        indexName: 'avo',
+        inputSelector: '#algolia-avo-search', // the selector of my search input
+      });
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn('Docsearch has failed to load');
+    }
+
     const onCopy = () => {
       const content = window.getSelection()?.toString();
       Avo.contentCopied({ path, content });
@@ -74,6 +85,10 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
             src="//cdn.iubenda.com/cs/iubenda_cs.js"
             charSet="UTF-8"
             async
+          />
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
           />
         </Head>
         <Component {...pageProps} />
