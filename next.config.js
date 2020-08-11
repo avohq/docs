@@ -17,10 +17,13 @@ const enhanceMdx = withMdxEnhanced({
 
 const compose = (...fns) => (x) => fns.reduceRight((y, f) => f(y), x);
 
+// const basePath = process.env.BASE_PATH;
+const basePath = '/docsearch/';
+
 const config = {
-  assetPrefix: process.env.BASE_PATH || '',
+  assetPrefix: basePath || '',
   publicRuntimeConfig: {
-    basePath: process.env.BASE_PATH || '',
+    basePath: basePath || '',
   },
 
   webpack: (config, { isServer }) => {
