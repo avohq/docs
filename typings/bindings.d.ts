@@ -4,3 +4,7 @@ declare module '*.mdx' {
     title: string;
   }>;
 }
+
+interface Window extends Window {
+  docsearch: function;
+}
