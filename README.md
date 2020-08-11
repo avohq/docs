@@ -80,3 +80,7 @@ export type RuleFunction = (
 Where `node` is the root node of the parsed abstract syntax tree. The function should then run some checks on the tree, and return a list of `MDXError` objects. The rule is then registered in `util/mdxLint/index.ts`.
 
 Take a look at some of the rules in the `util/mdxLint/rules/` directory for inspiration.
+
+## Search
+
+We're using Algolia's free DocSearch. To update our scraping config send a pull request changing [avo.json](https://github.com/algolia/docsearch-configs/blob/master/configs/avo.json) in the DocSearch config repo. The documentation search index is updated every 24 hours.
