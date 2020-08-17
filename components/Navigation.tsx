@@ -94,7 +94,10 @@ const navigation: navigationItem[] = [
     path: '/best-practices',
     iconName: 'award',
     subroutes: [
-      { title: 'Day to day workflow', path: '/best-practices/day-to-day-workflow' },
+      {
+        title: 'Day to day workflow',
+        path: '/best-practices/day-to-day-workflow',
+      },
       { title: 'Avo and git', path: '/best-practices/avo-and-git' },
       { title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
       {
