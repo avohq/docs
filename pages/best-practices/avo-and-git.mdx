@@ -14,8 +14,9 @@ When changes are made to a tracking plan in Avo:
 1. Open a branch in Avo and make your changes
 2. Share the Avo branch with a developer
 3. Implement the changes in the Avo branch on a git branch. _We recommend having one git branch per source for each Avo branch_
-4. Merge the git branch
-5. Merge the Avo branch
+4. Before merging the git branch, make sure the git branch is up to date with the Avo branch. This can be done by running `avo pull`.
+5. Merge the git branch
+6. Merge the Avo branch
 
 Note: At this point avo.json on your git master is pointing to an Avo branch that has already been merged, which is perfectly fine! The Avo CLI will take care of automatically updating avo.json on next `avo pull`.
 
