@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Navigation from './Navigation';
 import { HamburgerButton } from 'react-hamburger-button';
 
@@ -13,19 +14,21 @@ import Icon from './Icon';
 
 const Layout: FunctionComponent = ({ children }) => {
   const [navigationOpened, setNavigationOpened] = useState(false);
-
+  const router = useRouter();
   const path = useAvoPath();
 
-  useEffect(() => {
-    setNavigationOpened(false);
-  }, [path]);
+  useEffect(() => setNavigationOpened(false), [path]);
 
   useEffect(() => {
     Avo.landingPageViewed({
       path: path,
       referrer: document.referrer,
+      utmCampaign: router.query.utm_campaign as string | undefined,
+      utmContent: router.query.utm_content as string | undefined,
+      utmMedium: router.query.utm_medium as string | undefined,
+      utmSource: router.query.utm_source as string | undefined,
     });
-  }, [children]);
+  }, [path]);
 
   return (
     <div className={styles.grid}>
