@@ -8,16 +8,20 @@ import Link from '../components/Link';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
 import Icon from './Icon';
 
+type subroutes = ({
+  title: string;
+  path: string;
+  subroutes?: subroutes
+} | {
+  group: string;
+})[];
+
 interface navigationItem {
   title: string;
   path: string;
   iconName?: IconName;
-
   subroutes?:
-    | {
-        title: string;
-        path: string;
-      }[]
+    | subroutes
     | null;
 }
 
@@ -28,11 +32,11 @@ const navigation: navigationItem[] = [
     path: '/workspace',
     iconName: 'home',
     subroutes: [
-      { title: 'Tracking Plan', path: '/workspace/tracking-plan' },
+      { title: 'Tracking plan', path: '/workspace/tracking-plan' },
       { title: 'Connections', path: '/workspace/connections' },
       { title: 'Implement', path: '/workspace/implement' },
-      { title: 'Integrations (beta)', path: '/workspace/integrations' },
-      { title: 'Health (being deprecated)', path: '/workspace/health' },
+      { title: 'Integrations beta', path: '/workspace/integrations' },
+      { title: 'Health being deprecated', path: '/workspace/health' },
     ],
   },
   {
@@ -41,31 +45,31 @@ const navigation: navigationItem[] = [
     iconName: 'toolbox',
     subroutes: [
       {
-        title: 'Command Line Tool',
+        title: 'Command line tool',
         path: '/commands',
       },
       {
-        title: 'Programming Languages',
+        title: 'Programming languages',
         path: '/languages',
       },
       {
-        title: 'Analytics Tools',
+        title: 'Analytics tools',
         path: '/analytics',
       },
       {
-        title: 'Custom Destinations',
+        title: 'Custom destinations',
         path: '/custom-destinations',
       },
       {
-        title: 'Regression Checking',
+        title: 'Regression checking',
         path: '/regression',
       },
       {
-        title: 'Data Validation',
+        title: 'Data validation',
         path: '/data-validation',
       },
       {
-        title: 'Mobile Debuggers',
+        title: 'Mobile debuggers',
         path: '/mobile-debuggers',
       },
     ],
@@ -76,13 +80,14 @@ const navigation: navigationItem[] = [
     path: '/inspector',
     iconName: 'heartbeat',
     subroutes: [
-      { title: 'Inspector SDK', path: '/inspector/sdk' },
-      { title: 'Android', path: '/inspector/sdk/android' },
-      { title: 'iOS', path: '/inspector/sdk/ios' },
-      { title: 'Web', path: '/inspector/sdk/js' },
-      { title: 'React Native', path: '/inspector/sdk/react-native' },
+      { title: 'Inspector SDK', path: '/inspector/sdk', subroutes: [
+        { title: 'Android', path: '/inspector/sdk/android' },
+        { title: 'iOS', path: '/inspector/sdk/ios' },
+        { title: 'Web', path: '/inspector/sdk/js' },
+        { title: 'React native', path: '/inspector/sdk/react-native' },
+      ]},
       {
-        title: 'Using Inspector with Avo Functions',
+        title: 'Using inspector with Avo functions',
         path: '/inspector/using-inspector-with-avo-functions',
       },
       { title: 'Issues', path: '/inspector/issue-identifier' },
@@ -95,19 +100,20 @@ const navigation: navigationItem[] = [
     iconName: 'award',
     subroutes: [
       {
+        group: "Plan"
+      },
+      {
         title: 'Day to day workflow',
         path: '/best-practices/day-to-day-workflow',
       },
       {
-        title: 'Documenting Purpose Meetings',
+        title: 'Documenting purpose meetings',
         path: '/best-practices/documenting-purpose-meetings-in-avo',
       },
       {
-        title: 'Documenting Downstream Dependancies',
+        title: 'Documenting downstream dependancies',
         path: '/best-practices/documenting-downstream-dependancies',
       },
-      { title: 'Avo and git', path: '/best-practices/avo-and-git' },
-      { title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
       {
         title: 'Multiple sources on Avo branches',
         path: '/best-practices/multiple-sources-working-on-a-branch',
@@ -120,6 +126,12 @@ const navigation: navigationItem[] = [
         title: 'Organizing metrics and events',
         path: '/best-practices/organizing-metrics-and-events',
       },
+      {
+        group: "Implement"
+      },
+      { title: 'Avo and git', path: '/best-practices/avo-and-git' },
+      { title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
+      { title: 'Avo functions alongside existing tracking', path: '/best-practices/avo-functions-alongside-existing-tracking' },
     ],
   },
   {
@@ -127,8 +139,8 @@ const navigation: navigationItem[] = [
     path: '/help/troubleshooting',
     iconName: 'life-ring',
     subroutes: [
-      { title: 'Troubleshooting & support', path: '/help/troubleshooting' },
-      { title: 'FAQ', path: '/help/faq' },
+      { title: 'Troubleshooting support', path: '/help/troubleshooting' },
+      { title: 'Faq', path: '/help/faq' },
     ],
   },
 ];
@@ -141,6 +153,41 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
   const router = useRouter();
 
   const rootActive = router.pathname === item.path;
+
+  const renderSubroutes = subroutes => {
+    return subroutes.map((subroute) => {
+      if (subroute.group) {
+        return (
+          <div
+              className={classNames(styles.subrouteGroup)}
+            >
+              {subroute.group}
+            </div>
+        );
+      } else {
+        const subrouteActive = router.pathname === subroute.path;
+
+        return (
+          <>
+          <Link href={subroute.path} key={subroute.path}>
+            <div
+              className={classNames(styles.subroute, {
+                [styles.activeLink]: subrouteActive,
+              })}
+            >
+              {subroute.title}
+            </div>
+            
+          </Link>
+          {
+              subroute.subroutes ? <div className={styles.subSubroute}> {renderSubroutes(subroute.subroutes)} </div> : null 
+            }
+          </>
+        );
+      }
+      
+    })
+  }
 
   return (
     <div className={styles.group}>
@@ -160,21 +207,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
       </Link>
 
       {item.subroutes &&
-        item.subroutes.map((subroute) => {
-          const subrouteActive = router.pathname === subroute.path;
-
-          return (
-            <Link href={subroute.path} key={subroute.path}>
-              <div
-                className={classNames(styles.subroute, {
-                  [styles.activeLink]: subrouteActive,
-                })}
-              >
-                {subroute.title}
-              </div>
-            </Link>
-          );
-        })}
+        renderSubroutes(item.subroutes)}
     </div>
   );
 };
