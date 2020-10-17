@@ -36,7 +36,7 @@ interface navigationItem {
 }
 
 const navigation: navigationItem[] = [
-  { title: 'Getting started', path: '/', iconName: 'rocket' },
+  { title: 'Getting Started', path: '/', iconName: 'rocket' },
   {
     title: 'Your Avo Workspace',
     path: '/workspace',
