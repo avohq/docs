@@ -8,7 +8,7 @@ import Link from '../../components/Link';
 Sometimes the best way to integrate Avo is through a custom destination. For
 example:
 
-- When using custom pipelines
+- When using custom destinations
 - When sending data to analytics platforms through an API (not using their SDK)
 - When using a combination of a programming language and analytics destination not yet directly supported by Avo
 
@@ -31,12 +31,12 @@ With a custom destination you'll get access to callback methods for Avo actions.
 ### Callback methods
 
 - `make`: Triggered during Avo initialization.
-  Here you will usually initialize an analytics library with a development or production key based on the `env` parameter.
+  Here you will usually initialize an analytics SDK with a development or production key based on the `env` parameter.
 - `logEvent`: All your analytics events are managed in the Avo dashboard. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
   Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
 - `identify`: You can add the Identify User action to an event in the Avo dashboard. When calling an Avo function that includes the Identify User action you'll need to provide a user ID. Calling an Avo function that has the Identify User action will trigger this callback.
   The main use cases are signup and login.
-  Here you would pass the user ID to the analytics library for it to create a new user or attach a session to an existing user.
+  Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
 - `unidentify`: If you call an Avo function with the Unidentify User action, this callback will be triggered.
   Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
 - `setUserProperties`: You can add user properties to events in the Avo dashboard. When an Avo function with attached user properties is called, this callback is triggered.
@@ -78,7 +78,7 @@ Import the Avo library into your code:
 ```javascript
 import Avo from './Avo';
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 
 var customAvoLogger = {
@@ -111,7 +111,7 @@ Avo.initAvo({ env: 'dev' }, {}, {}, customAvoLogger);
 ```typescript
 import Avo from './Avo';
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 
 let customAvoLogger = {
@@ -148,7 +148,7 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customAvoLogger);
 ```objectivec
 import Avo
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 
 @interface CustomAvoLogger : NSObject <AVOCustomDestination>
@@ -183,7 +183,7 @@ Import the Avo library into your code:
 ```swift
 import Avo
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 
 class CustomAvoLogger : AvoCustomDestination {
@@ -301,7 +301,7 @@ Import the Avo library into your code:
 ```javascript
 var Avo = require('./Avo.js');
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 
 var customAvoLogger = {
@@ -328,7 +328,7 @@ to deliver an event to any custom destination or pipeline.
 ```typescript
 import Avo from './Avo';
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 
 let customAvoLogger = {
@@ -379,7 +379,7 @@ Avo.initAvo(Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
 ```php
 require_once './Avo';
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 class CustomAvoLogger {
     public function make($env) {
@@ -414,7 +414,7 @@ from __future__ import print_function
 
 import avo
 
-# An object representing your custom pipeline
+# An object representing your custom destination
 # that you pass into init_avo():
 class CustomAvoLogger(object):
     def __init__(self):
@@ -444,7 +444,7 @@ where `custom_destination` is the name of the custom destination in Avo.
 ```ruby
 import Avo
 
-// An object representing your custom pipeline
+// An object representing your custom destination
 // that you pass into initAvo():
 class CustomAvoLogger
   def make(env:)
