@@ -9,20 +9,18 @@ import { IconName } from '@fortawesome/fontawesome-svg-core';
 import Icon from './Icon';
 
 type route = {
-  type: "route",
-  title: string,
-  path: string,
-  subroutes?: subroute[],
+  type: 'route';
+  title: string;
+  path: string;
+  subroutes?: subroute[];
 };
 
 type group = {
-  type: "group",
-  group: string,
+  type: 'group';
+  group: string;
 };
 
-type subroute = 
-  | route
-  | group;
+type subroute = route | group;
 
 type subroutes = subroute[];
 
@@ -30,9 +28,7 @@ interface navigationItem {
   title: string;
   path: string;
   iconName?: IconName;
-  subroutes?:
-    | subroutes
-    | null;
+  subroutes?: subroutes | null;
 }
 
 const navigation: navigationItem[] = [
@@ -42,11 +38,23 @@ const navigation: navigationItem[] = [
     path: '/workspace',
     iconName: 'home',
     subroutes: [
-      { type: 'route', title: 'Tracking plan', path: '/workspace/tracking-plan' },
+      {
+        type: 'route',
+        title: 'Tracking plan',
+        path: '/workspace/tracking-plan',
+      },
       { type: 'route', title: 'Connections', path: '/workspace/connections' },
       { type: 'route', title: 'Implement', path: '/workspace/implement' },
-      { type: 'route', title: 'Integrations beta', path: '/workspace/integrations' },
-      { type: 'route', title: 'Health being deprecated', path: '/workspace/health' },
+      {
+        type: 'route',
+        title: 'Integrations beta',
+        path: '/workspace/integrations',
+      },
+      {
+        type: 'route',
+        title: 'Health being deprecated',
+        path: '/workspace/health',
+      },
     ],
   },
   {
@@ -97,14 +105,23 @@ const navigation: navigationItem[] = [
     path: '/inspector',
     iconName: 'heartbeat',
     subroutes: [
-      { type: 'route', title: 'Inspector SDK', path: '/inspector/sdk', subroutes: [
-        { type: 'route', title: 'Android', path: '/inspector/sdk/android' },
-        { type: 'route', title: 'iOS', path: '/inspector/sdk/ios' },
-        { type: 'route', title: 'Web', path: '/inspector/sdk/js' },
-        { type: 'route', title: 'React native', path: '/inspector/sdk/react-native' },
-      ]},
       {
-        type: 'route', 
+        type: 'route',
+        title: 'Inspector SDK',
+        path: '/inspector/sdk',
+        subroutes: [
+          { type: 'route', title: 'Android', path: '/inspector/sdk/android' },
+          { type: 'route', title: 'iOS', path: '/inspector/sdk/ios' },
+          { type: 'route', title: 'Web', path: '/inspector/sdk/js' },
+          {
+            type: 'route',
+            title: 'React native',
+            path: '/inspector/sdk/react-native',
+          },
+        ],
+      },
+      {
+        type: 'route',
         title: 'Using inspector with Avo functions',
         path: '/inspector/using-inspector-with-avo-functions',
       },
@@ -118,16 +135,16 @@ const navigation: navigationItem[] = [
     iconName: 'award',
     subroutes: [
       {
-        type: 'group', 
-        group: "Plan"
+        type: 'group',
+        group: 'Plan',
       },
       {
-        type: 'route', 
+        type: 'route',
         title: 'Day to day workflow',
         path: '/best-practices/day-to-day-workflow',
       },
       {
-        type: 'route', 
+        type: 'route',
         title: 'Documenting purpose meetings',
         path: '/best-practices/documenting-purpose-meetings-in-avo',
       },
@@ -153,11 +170,23 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'group',
-        group: "Implement"
+        group: 'Implement',
       },
-      { type: 'route', title: 'Avo and git', path: '/best-practices/avo-and-git' },
-      { type: 'route', title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
-      { type: 'route', title: 'Avo functions alongside existing tracking', path: '/best-practices/avo-functions-alongside-existing-tracking' },
+      {
+        type: 'route',
+        title: 'Avo and git',
+        path: '/best-practices/avo-and-git',
+      },
+      {
+        type: 'route',
+        title: 'Avo in unit tests',
+        path: '/best-practices/unit-tests',
+      },
+      {
+        type: 'route',
+        title: 'Avo functions alongside existing tracking',
+        path: '/best-practices/avo-functions-alongside-existing-tracking',
+      },
     ],
   },
   {
@@ -165,8 +194,12 @@ const navigation: navigationItem[] = [
     path: '/help/troubleshooting',
     iconName: 'life-ring',
     subroutes: [
-      { type:'route', title: 'Troubleshooting support', path: '/help/troubleshooting' },
-      { type:'route', title: 'Faq', path: '/help/faq' },
+      {
+        type: 'route',
+        title: 'Troubleshooting support',
+        path: '/help/troubleshooting',
+      },
+      { type: 'route', title: 'Faq', path: '/help/faq' },
     ],
   },
 ];
@@ -183,36 +216,36 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
   const renderSubroutes = (subroutes: subroutes) => {
     return subroutes.map((subroute: subroute) => {
       switch (subroute.type) {
-        case "route": 
+        case 'route':
           const subrouteActive = router.pathname === subroute.path;
           return (
             <>
-            <Link href={subroute.path} key={subroute.path}>
-              <div
-                className={classNames(styles.subroute, {
-                  [styles.activeLink]: subrouteActive,
-                })}
-              >
-                {subroute.title}
-              </div>
-              
-            </Link>
-            {
-                subroute.subroutes ? <div className={styles.subSubroute}> {renderSubroutes(subroute.subroutes)} </div> : null 
-              }
+              <Link href={subroute.path} key={subroute.path}>
+                <div
+                  className={classNames(styles.subroute, {
+                    [styles.activeLink]: subrouteActive,
+                  })}
+                >
+                  {subroute.title}
+                </div>
+              </Link>
+              {subroute.subroutes ? (
+                <div className={styles.subSubroute}>
+                  {' '}
+                  {renderSubroutes(subroute.subroutes)}{' '}
+                </div>
+              ) : null}
             </>
           );
-        case "group": 
+        case 'group':
           return (
-            <div
-                className={classNames(styles.subrouteGroup)}
-              >
-                {subroute.group}
-              </div>
+            <div className={classNames(styles.subrouteGroup)}>
+              {subroute.group}
+            </div>
           );
       }
-    })
-  }
+    });
+  };
 
   return (
     <div className={styles.group}>
@@ -231,8 +264,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
         </div>
       </Link>
 
-      {item.subroutes &&
-        renderSubroutes(item.subroutes)}
+      {item.subroutes && renderSubroutes(item.subroutes)}
     </div>
   );
 };
