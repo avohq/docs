@@ -47,7 +47,8 @@ If a source doesn't already exist for your app or website, click "Add Source" to
 > 1. Let Avo fully manage the destination for you (everything from initializing to passing data into it), or
 > 2. Connect Avo to a destination (e.g. SDK) you already have initialized and ready to go in your app. This is what we call a Custom Destination.
 
-Now let's create a custom destination for every SDK we want to use in our Source. Head back to the Connections tab and click "Add Destination". To configure a destination:
+We already have an analytics SDK running in our app, it's initialized and already receiving data. Let's define a custom destination in Avo, to connect our Avo Functions to that existing SDK.
+Head back to the Connections tab and click "Add Destination". To configure a destination:
 
 1. Give the destination a name, e.g. _My Analytics SDK_
 2. Set the **Analytics Tool** to **Custom**
@@ -55,7 +56,7 @@ Now let's create a custom destination for every SDK we want to use in our Source
 
 Note that the _Production API Key_ and _Development API Key_ are not required for custom destinations.
 
-Repeate this process for every data destination you have in your app.
+If you have multiple SDKs in place, you can repeate this process and create a destination for every SDK.
 
 <img
   src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/destination-config.png')}
@@ -79,7 +80,7 @@ Here we've configured a Source, sending to three Destinations, an analytics SDK,
   alt="Connections configuration"
 />
 <center>
-  <i>Source configured to send to three Custom Destinations</i>
+  <i>Our Source and Destination</i>
 </center>
 
 ## 2. Install Avo to your project
