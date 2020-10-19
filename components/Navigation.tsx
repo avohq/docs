@@ -230,7 +230,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
                 </div>
               </Link>
               {subroute.subroutes ? (
-                <div className={styles.subSubroute}>
+                <div className={styles.subSubroute} key={subroute.path + "-subroutes"}>
                   {' '}
                   {renderSubroutes(subroute.subroutes)}{' '}
                 </div>
