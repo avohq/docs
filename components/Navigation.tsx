@@ -102,6 +102,10 @@ const navigation: navigationItem[] = [
         title: 'Documenting Purpose Meetings',
         path: '/best-practices/documenting-purpose-meetings-in-avo',
       },
+      {
+        title: 'Documenting Downstream Dependancies',
+        path: '/best-practices/documenting-downstream-dependancies',
+      },
       { title: 'Avo and git', path: '/best-practices/avo-and-git' },
       { title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
       {
