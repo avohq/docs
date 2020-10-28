@@ -34,9 +34,9 @@ const resolveImport = (
     };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let module;
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     module = require(item.fromModule);
   } catch (error) {
     const relativeResolved = path.resolve(filename, '../', item.fromModule);
