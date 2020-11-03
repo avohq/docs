@@ -96,6 +96,24 @@
   // Fix linting before styling
 }
 
+.table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.table,
+.table .td,
+.table .th {
+  border: thin solid brand.$gray-5;
+}
+
+.th,
+.td {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
 .img {
   max-width: 100%;
 }

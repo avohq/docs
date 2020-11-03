@@ -47,8 +47,8 @@ const navigation: navigationItem[] = [
       { type: 'route', title: 'Implement', path: '/workspace/implement' },
       {
         type: 'route',
-        title: 'Integrations beta',
-        path: '/workspace/integrations',
+        title: 'Publishing',
+        path: '/workspace/publishing',
       },
       {
         type: 'route',

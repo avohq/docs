@@ -1,0 +1,186 @@
+---
+layout: 'guide'
+title: 'Publishing'
+# abstract: 'Learn about how to publish your Tracking Plan to analytics platforms and APIs'
+---
+
+import Link from '../../components/Link';
+
+<p>
+  <img
+    src={require('../../images/publishing.svg')}
+    width="200px"
+    alt="Avo Publishing"
+/>
+
+</p>
+
+Publishing is where you can configure Avo to publish your Tracking Plan to your analytics platform, a production time validation tool or your own custom endpoint via webhook.
+
+Available publish integrations are currently:
+
+- <a href="#segment-protocols">Segment Protocols</a>
+- <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>
+- <a href="#amplitude-govern">Amplitude Govern</a>
+- <a href="#webhook">Webhook</a>
+
+## Publishing configuration
+
+### Filtering events for publishing
+
+You can customize which events in Avo are published to which publish integrations by using the events filter. Events can be filtered by Sources, Destinations and Tags. For example the following publish integration will only publish events sent from Web to Amplitude.
+
+<center>
+  <img
+    src={require('../../images/publish_filter.png')}
+    width="100%"
+    alt="Publish integration filter to publish only events sent from Web to Amplitude"
+  />
+</center>
+
+### Auto publishing
+
+When Auto Publishing is enabled all changes made on a branch will be published to the integration when the branch is merged.
+
+<center>
+  <img
+    src={require('../../images/auto_publishing.png')}
+    width="100%"
+    alt="Publish integration filter to publish only events sent from Web to Amplitude"
+  />
+</center>
+
+# Publishing integrations
+
+The following publish integrations are available in Avo
+
+- <a href="#segment-protocols">Segment Protocols</a>
+- <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>
+- <a href="#amplitude-govern">Amplitude Govern</a>
+- <a href="#webhook">Webhook</a>
+
+They enable your Tracking Plan to be
+
+- published with a push of a button
+- published whenever a branch is merged with Auto Publishing
+- downloaded from your Avo workspace on relevant format
+
+<img
+  src={require('../../images/publishing_protocols.svg')}
+  alt="Segment"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="segment-protocols"></a> Segment Protocols
+
+The publish integration to [Segment Protocols](https://segment.com/docs/protocols) allows for your Tracking Plan to be published into Segment Protocols whenever branches are merged in your workspace or with a push of a button.
+
+### Configure the Protocols integration
+
+To enable the direct publish integration with Segment Protocols, you need to configure it with the following parameters from Segment. This step is not neccassary if you only wish to download the Protocols JSON file from the Avo workspace.
+
+- **Segment Workspace Name**: Found in the URL when logged into Segment: `https://app.segment.com/{Segment workspace name}/...`
+- **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_`
+- **Segment Access Token**: [Create new API tokens](https://segment.com/docs/config-api/authentication/#create-an-access-token) for Avo and limit the scope of its permissions to ‘Protocol Admin’.
+
+### Publishing to Protocols
+
+Avo will override all events in the Protocols tracking plan that are being imported from Avo. Any changes made to an event in Protocols between Avo publish will be overridden on next Avo publish.
+
+Avo will not override any events that are only defined in Protocols, or events that have not been added to the Protocols integration in Avo.
+
+<img
+  src={require('../../images/publishing_lexicon.svg')}
+  alt="Mixpanel"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="mixpanel-lexicon"></a> Mixpanel Lexicon
+
+The publish integration to [Mixpanel Lexicon](https://mixpanel.com/data-governance/) allows for your Tracking Plan to be published into Mixpanel Lexicon whenever a branch is merged in your workspace or with a push of a button.
+
+### Configure the Lexicon integration
+
+To enable the direct publish integration with Mixpanel Lexicon, you need to configure it with the following parameters from Mixpanel.
+
+- **Mixpanel Project Id**: Found in the URL when viewing your project in Mixpanel: `https://mixpanel.com/report/<Mixpanel Project Id>/...`
+- **Mixpanel Service Account Username**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference#service-accounts)
+- **Mixpanel Service Account Secret**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference#service-accounts)
+
+### Publishing to Lexicon
+
+To publish your Avo tracking plan to Lexicon, click the "Publish to Lexicon" button in the integration interface, or enable Auto Publishing to publish the Tracking Plan whenever a branch has been merged.
+
+On publish, Avo will merge your Avo tracking plan with any existing events in Lexicon. Any changes made to an event in Lexicon between Avo publish will be overridden on next Avo publish.
+
+Avo will not impact any events that are only defined in Lexicon, or events that have not been added to the Lexicon integration in Avo.
+
+<img
+  src={require('../../images/publishing_govern.svg')}
+  alt="Amplitude"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="amplitude-govern"></a> Amplitude Govern
+
+The integration to [Ampltitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the publish integration screen or download a CSV file on the Amplitdue Govern format. The events to be published can be filtered by Sources, Destinations and Tags.
+
+### Configure the Govern integration
+
+To enable the direct publish integration with Amplitude Govern, you need to configure it with the following parameters from Amplitude. They can be found from the project settings in Amplitude. From the left sidebar in your Amplitude workspace click: Settings > Projects > [Your Project Name]. The URL should look like this: `https://analytics.amplitude.com/{org-name}/settings/projects/{project-id}/general`.
+
+- **Amplitude API Key**
+- **Amplitude Secret Key**
+
+### Publishing to Govern
+
+To publish your Avo tracking plan to Govern, click the "Publish to Govern" button in the integration interface, or enable Auto Publishing to publish the Tracking Plan whenever a branch has been merged.
+
+On publish, Avo will merge your Avo tracking plan with any existing events in Govern. Any changes made to an event in Govern between Avo publish will be overridden on next Avo publish.
+
+Avo will not impact any events or properties that are only defined in Govern, or events that have not been added to the Govern integration in Avo.
+
+<img
+  src={require('../../images/publishing_webhook.svg')}
+  alt="Webhook"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="webhook"></a> Webhook
+
+The Webhook publish integration is a way to get updated Tracking Plan delivered to an endpoint of your choice when a branch is merge, or when the publish button is clicked in the integration interface.
+
+### Configure the Webhook integration
+
+To enable the Webhook integration you need to configure it with a URL where you want the updated tracking plan to be delivered.
+
+The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a [JSON Schema](http://json-schema.org/draft-06/schema#) format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
+
+### Tracking Plan Model
+
+| Attribute | Type   | Description                    |
+| :-------- | :----- | :----------------------------- |
+| name      | string | The name of your Avo workspace |
+| events    | Events | Array of Tracking Plan events  |
+
+#### Events Model
+
+| Attribute   | Type   | Description       |
+| :---------- | :----- | :---------------- |
+| name        | string | Event name        |
+| description | string | Event description |
+| rules       | Rules  | Event JSON rules  |
+
+#### Rules Model
+
+| Attribute  | Type          | Description         |
+| :--------- | :------------ | :------------------ |
+| properties | PropertyRules | Property JSON rules |
+
+#### PropertyRule Model
+
+| Attribute   | Type          | Description          |
+| :---------- | :------------ | :------------------- |
+| description | string        | Property description |
+| type        | string        | Property type        |
+| ?enum       | array(string) | Allowed enum values  |
