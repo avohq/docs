@@ -50,11 +50,6 @@ const navigation: navigationItem[] = [
         title: 'Integrations beta',
         path: '/workspace/integrations',
       },
-      {
-        type: 'route',
-        title: 'Health being deprecated',
-        path: '/workspace/health',
-      },
     ],
   },
   {
