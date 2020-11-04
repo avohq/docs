@@ -50,11 +50,6 @@ const navigation: navigationItem[] = [
         title: 'Publishing',
         path: '/workspace/publishing',
       },
-      {
-        type: 'route',
-        title: 'Health being deprecated',
-        path: '/workspace/health',
-      },
     ],
   },
   {
