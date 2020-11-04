@@ -17,24 +17,30 @@ import Link from '../../components/Link';
 
 Publishing is where you can configure Avo to publish your Tracking Plan to your analytics platform, a production time validation tool or your own custom endpoint via webhook.
 
-Available publish integrations are currently:
+Available integrations are:
 
 - <a href="#segment-protocols">Segment Protocols</a>
 - <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>
 - <a href="#amplitude-govern">Amplitude Govern</a>
 - <a href="#webhook">Webhook</a>
 
+They enable your Tracking Plan to be:
+
+- Published whenever a branch is merged with Auto Publishing
+- Published with a push of a button
+- Downloaded from your Avo workspace on relevant format
+
 ## Publishing configuration
 
 ### Filtering events for publishing
 
-You can customize which events in Avo are published to which publish integrations by using the events filter. Events can be filtered by Sources, Destinations and Tags. For example the following publish integration will only publish events sent from Web to Amplitude.
+You can customize which events in Avo are published to which integrations by using the events filter. Events can be filtered by Sources, Destinations and Tags. For example the following integration will only publish events sent from Web to Amplitude.
 
 <center>
   <img
     src={require('../../images/publish_filter.png')}
     width="100%"
-    alt="Publish integration filter to publish only events sent from Web to Amplitude"
+    alt="Publishing filter to publish only events sent from Web to Amplitude"
   />
 </center>
 
@@ -46,24 +52,11 @@ When Auto Publishing is enabled all changes made on a branch will be published t
   <img
     src={require('../../images/auto_publishing.png')}
     width="100%"
-    alt="Publish integration filter to publish only events sent from Web to Amplitude"
+    alt="Publishing filter to publish only events sent from Web to Amplitude"
   />
 </center>
 
-# Publishing integrations
-
-The following publish integrations are available in Avo
-
-- <a href="#segment-protocols">Segment Protocols</a>
-- <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>
-- <a href="#amplitude-govern">Amplitude Govern</a>
-- <a href="#webhook">Webhook</a>
-
-They enable your Tracking Plan to be
-
-- published with a push of a button
-- published whenever a branch is merged with Auto Publishing
-- downloaded from your Avo workspace on relevant format
+# Integrations
 
 <img
   src={require('../../images/publishing_protocols.svg')}
@@ -73,11 +66,11 @@ They enable your Tracking Plan to be
 
 ## <a name="segment-protocols"></a> Segment Protocols
 
-The publish integration to [Segment Protocols](https://segment.com/docs/protocols) allows for your Tracking Plan to be published into Segment Protocols whenever branches are merged in your workspace or with a push of a button.
+The integration to [Segment Protocols](https://segment.com/docs/protocols) allows for your Tracking Plan to be published into Segment Protocols whenever branches are merged in your workspace or with a push of a button.
 
 ### Configure the Protocols integration
 
-To enable the direct publish integration with Segment Protocols, you need to configure it with the following parameters from Segment. This step is not neccassary if you only wish to download the Protocols JSON file from the Avo workspace.
+To enable the direct integration with Segment Protocols, you need to configure it with the following parameters from Segment.
 
 - **Segment Workspace Name**: Found in the URL when logged into Segment: `https://app.segment.com/{Segment workspace name}/...`
 - **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_`
@@ -97,11 +90,11 @@ Avo will not override any events that are only defined in Protocols, or events t
 
 ## <a name="mixpanel-lexicon"></a> Mixpanel Lexicon
 
-The publish integration to [Mixpanel Lexicon](https://mixpanel.com/data-governance/) allows for your Tracking Plan to be published into Mixpanel Lexicon whenever a branch is merged in your workspace or with a push of a button.
+The integration to [Mixpanel Lexicon](https://mixpanel.com/data-governance/) allows for your Tracking Plan to be published into Mixpanel Lexicon whenever a branch is merged in your workspace or with a push of a button.
 
 ### Configure the Lexicon integration
 
-To enable the direct publish integration with Mixpanel Lexicon, you need to configure it with the following parameters from Mixpanel.
+To enable the direct integration with Mixpanel Lexicon, you need to configure it with the following parameters from Mixpanel.
 
 - **Mixpanel Project Id**: Found in the URL when viewing your project in Mixpanel: `https://mixpanel.com/report/<Mixpanel Project Id>/...`
 - **Mixpanel Service Account Username**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference#service-accounts)
@@ -123,11 +116,11 @@ Avo will not impact any events that are only defined in Lexicon, or events that 
 
 ## <a name="amplitude-govern"></a> Amplitude Govern
 
-The integration to [Ampltitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the publish integration screen or download a CSV file on the Amplitdue Govern format. The events to be published can be filtered by Sources, Destinations and Tags.
+The integration to [Ampltitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the integration screen or download a CSV file on the Amplitdue Govern format. The events to be published can be filtered by Sources, Destinations and Tags.
 
 ### Configure the Govern integration
 
-To enable the direct publish integration with Amplitude Govern, you need to configure it with the following parameters from Amplitude. They can be found from the project settings in Amplitude. From the left sidebar in your Amplitude workspace click: Settings > Projects > [Your Project Name]. The URL should look like this: `https://analytics.amplitude.com/{org-name}/settings/projects/{project-id}/general`.
+To enable the direct integration with Amplitude Govern, you need to configure it with the following parameters from Amplitude. They can be found from the project settings in Amplitude. From the left sidebar in your Amplitude workspace click: Settings > Projects > [Your Project Name]. The URL should look like this: `https://analytics.amplitude.com/{org-name}/settings/projects/{project-id}/general`.
 
 - **Amplitude API Key**
 - **Amplitude Secret Key**
@@ -148,7 +141,7 @@ Avo will not impact any events or properties that are only defined in Govern, or
 
 ## <a name="webhook"></a> Webhook
 
-The Webhook publish integration is a way to get updated Tracking Plan delivered to an endpoint of your choice when a branch is merge, or when the publish button is clicked in the integration interface.
+The Webhook integration is a way to get updated Tracking Plan delivered to an endpoint of your choice when a branch is merge, or when the publish button is clicked in the integration interface.
 
 ### Configure the Webhook integration
 
