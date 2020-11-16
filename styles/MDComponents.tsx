@@ -143,7 +143,7 @@ const Code: FunctionComponent<{
       {...defaultProps}
       theme={theme}
       code={code}
-      language={language as Language}
+      language={((typeof language === "Language") ? language : "typescript") as Language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => {
         const lineNumbers = isTerminal
