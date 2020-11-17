@@ -314,6 +314,21 @@ var customAvoLogger = {
 };
 ```
 
+If you need to be able to pass an Anonymous Id from the Avo function to your custom destination, [reach out to us](https://www.avo.app/docs/help/troubleshooting) and we'll enable that functionality for your workspace. When the Anonymous Id pass through has been enabled for your workspace the custom destination interface will look like this:
+
+```javascript
+var Avo = require('./Avo.js');
+
+var customAvoLogger = {
+  logEvent: function (anonymousId, userId, eventName, eventProperties) {
+    // TODO implement
+  },
+  setUserProperties: function (anonymousId, userId, userProperties) {
+    // TODO implement
+  },
+};
+```
+
 Call the initAvo() function:
 
 ```javascript
