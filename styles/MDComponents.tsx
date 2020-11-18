@@ -138,12 +138,51 @@ const Code: FunctionComponent<{
     });
   }, [rawCode]);
 
+  function isOfTypeLanguage(inputLang: string): inputLang is Language {
+    return [
+      'markup',
+      'bash',
+      'clike',
+      'c',
+      'cpp',
+      'css',
+      'javascript',
+      'jsx',
+      'coffeescript',
+      'actionscript',
+      'css-extr',
+      'diff',
+      'git',
+      'go',
+      'graphql',
+      'handlebars',
+      'json',
+      'less',
+      'makefile',
+      'markdown',
+      'objectivec',
+      'ocaml',
+      'python',
+      'reason',
+      'sass',
+      'scss',
+      'sql',
+      'stylus',
+      'tsx',
+      'typescript',
+      'wasm',
+      'yaml',
+    ].includes(inputLang);
+  }
+
   return (
     <Highlight
       {...defaultProps}
       theme={theme}
       code={code}
-      language={((typeof language === "Language") ? language : "typescript") as Language}
+      language={
+        (isOfTypeLanguage(language) ? language : 'typescript') as Language
+      }
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => {
         const lineNumbers = isTerminal
