@@ -62,7 +62,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Tracking plan',
-        path: '/workspace/tracking-plan/',
+        path: '/workspace/tracking-plan/events',
         subroutes: [
           {
             type: 'route',
@@ -186,8 +186,8 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo Inspector SDKs reference',
-        path: '/implementation/avo-inspector-reference',
+        title: 'Avo Inspector SDK reference',
+        path: '/implementation/avo-inspector-sdk-reference',
         subroutes: [
           {
             type: 'route',
@@ -202,12 +202,12 @@ const navigation: navigationItem[] = [
           {
             type: 'route',
             title: 'Web',
-            path: '/implementation/inspector/sdk/js',
+            path: '/implementation/inspector/sdk/web',
           },
           {
             type: 'route',
             title: 'React native',
-            path: '/inspector/sdk/react-native',
+            path: '/implementation/inspector/sdk/react-native',
           },
         ],
       },
@@ -245,11 +245,6 @@ const navigation: navigationItem[] = [
         path: '/data-design/start-publishing',
       },
       {
-        type: 'route',
-        title: 'Set up slack alerts from inspector',
-        path: '/data-design/slack-alerts',
-      },
-      {
         type: 'group',
         group: 'Advanced guides and best practices',
       },
@@ -261,7 +256,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Documenting purpose meetings',
-        path: '/data-design/documenting-purpose-meetings',
+        path: '/data-design/documenting-purpose-meetings-in-avo',
       },
       {
         type: 'route',
@@ -304,6 +299,11 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Getting started using visual debuggers',
         path: '/explore-tracking-plan/start-using-visual-debuggers',
+      },
+      {
+        type: 'route',
+        title: 'Set up slack alerts from Inspector',
+        path: '/explore-tracking-plan/slack-alerts',
       },
     ],
   },
