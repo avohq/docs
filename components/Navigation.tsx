@@ -123,13 +123,13 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Getting started to use Visual Debuggers',
+        title: 'Getting started with the Avo Visual Debuggers',
         path: '/implementation/start-using-visual-debugger',
       },
       {
         type: 'route',
         title: 'Getting started to use standalone Inspector',
-        path: '/workspace/implementation/start-using-inspector',
+        path: '/implementation/start-using-inspector',
       },
       {
         type: 'route',
