@@ -123,6 +123,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Getting started to receive data with a Custom Destination',
+        path: '/implementation/start-custom-destination',
+      },
+      {
+        type: 'route',
         title: 'Getting started with the Avo Visual Debuggers',
         path: '/implementation/start-using-visual-debugger',
       },
@@ -174,6 +179,11 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Avo and unit tests',
         path: '/implementation/avo-and-unit-tests',
+      },
+      {
+        type: 'route',
+        title: 'Avo in the CI',
+        path: '/implementation/avo-in-the-ci',
       },
       {
         type: 'route',
@@ -243,6 +253,15 @@ const navigation: navigationItem[] = [
         title:
           'Getting started publishing your tracking plan to Amplitude Govern, Mixpanel Lexicon and Segment Protocols',
         path: '/data-design/start-publishing',
+      },
+      {
+        type: 'group',
+        group: 'Tools',
+      },
+      {
+        type: 'route',
+        title: 'Analytics tools',
+        path: '/data-design/analytics',
       },
       {
         type: 'group',
@@ -319,27 +338,7 @@ const navigation: navigationItem[] = [
       },
     ],
   },
-  { title: 'Old Docs Below VVV', path: '/old' },
-  { title: 'Getting Started', path: '/old-root', iconName: 'rocket' },
-  {
-    title: 'Your Avo Workspace',
-    path: '/workspace',
-    iconName: 'home',
-    subroutes: [
-      {
-        type: 'route',
-        title: 'Tracking plan',
-        path: '/workspace/tracking-plan',
-      },
-      { type: 'route', title: 'Connections', path: '/workspace/connections' },
-      { type: 'route', title: 'Implement', path: '/workspace/implement' },
-      {
-        type: 'route',
-        title: 'Publishing',
-        path: '/workspace/publishing',
-      },
-    ],
-  },
+
   {
     title: 'Developer Tools',
     path: '/commands',

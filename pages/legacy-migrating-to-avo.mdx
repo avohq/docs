@@ -8,7 +8,7 @@ import Link from '../components/Link';
 
 import SmallSteps, { Step } from '../components/SmallSteps';
 
-If you don't have existing tracking or want to start from scratch, you can take a look at our <Link passHref href="/quickstart"><a>quickstart documentation</a></Link> to get started.
+If you don't have existing tracking or want to start from scratch, you can take a look at our <Link passHref href="/"><a>quickstart documentation</a></Link> to get started.
 
 If you are already doing some event based analytics in your product and want to migrate to using the type safe Avo custom tracking functions, then here is the recommended implementation process for Avo.
 
@@ -16,6 +16,7 @@ If you are already doing some event based analytics in your product and want to 
 
 <SmallSteps collapsible>
 <Step title="Add validateAvoEvent">
+
 
 Add the <Link passHref href="/quickstart#validate-current-events" passHref><a>validateAvoEvent</a></Link> function
 at the **location** in your code base that handles the emission of analytics
@@ -31,12 +32,14 @@ workflows to prepare, implement and release tracking changes.
 </Step>
 <Step title="Incrementally adopt Avo functions">
 
+
 Replace existing tracking calls with the type safe Avo custom tracking
 functions as necessary, for example, when modifying events or fixing
 tracking errors.
 
 </Step>
 <Step title="Run codemods">
+
 
 When looking to replace all existing tracking, run codemods provided by the
 Avo engineering team, which finds tracking calls in the code base and
@@ -48,6 +51,7 @@ Replace the remaining tracking calls manually.
 
 </Step>
 </SmallSteps>
+
 
 ## What does the validateAvoEvent function do?
 
