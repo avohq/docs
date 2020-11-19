@@ -3,10 +3,64 @@ layout: 'guide'
 title: 'Subscribe to tracking plan changes webhook'
 ---
 
-Avo supports schema exports in the form of [JSON
-Schema](https://json-schema.org) webhook. This is useful if you are ingesting data
-and validating it with JSON Schema in your server API endpoints.
+After setting up Webhook integration in `Tracking Plan` - `Publishing` every time this integration is published your endpoint provided there will be called with a [JSON
+Schema](https://json-schema.org) payload representing the recent snapshot of your tracking plan.
 
-<Link passHref href="/help/troubleshooting">
-  <a>Get in touch</a>
-</Link> for more information.
+You can examine and download the exact JSON there.
+
+The format is similar to:
+
+```JSON
+{
+  "name": "Avo",
+  "events": [
+    {
+      "name": "Debugger Started",
+      "description": "Sent when the web debugger is started.",
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": [
+          "properties"
+        ],
+        "properties": {
+          "properties": {
+            "type": "object",
+            "properties": {
+              "Frame Location": {
+                "description": "Describes from where the debugger was started.",
+                "type": "string"
+              },
+              "Schema Id": {
+                "description": "The ID of the schema that this event is related to.",
+                "type": "string"
+              },
+              "Client": {
+                "description": "",
+                "type": "string",
+                "enum": [
+                  "Web Debugger",
+                  "Android Debugger",
+                  "Ios Debugger",
+                  "React Native Debugger (ios)",
+                  "React Native Debugger (android)"
+                ]
+              },
+              "Version": {
+                "description": "The client version that the user is on. This is the same version for web and desktop.",
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "Schema Id",
+              "Client",
+              "Version"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
+```
