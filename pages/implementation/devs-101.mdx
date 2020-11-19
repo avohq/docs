@@ -113,6 +113,8 @@ The keys are set up in the Avo web UI and automatically fetched by the codegen, 
 
 Avo functions are actual callable functions generated for events defined in the tracking plan.
 
+> On some server platforms Avo functions are async, i.e. on Node.js they return a Promise and on C# you can await on the Avo Functions
+
 For example if you have an event defined with name `Track Event with String Parameters` connected to your source, the Avo functions interface will look like
 
 ```swift

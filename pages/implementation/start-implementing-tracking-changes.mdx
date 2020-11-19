@@ -3,4 +3,85 @@ layout: 'guide'
 title: 'Getting started to implement tracking plan changes in code with Avo'
 ---
 
-Coming soon!
+import Link from '../../components/Link';
+
+Data design on the branch has been finished and it's time to implement new tracking in code.
+
+## Familiarize yourself with the changes
+
+First of all we recommend to open your Avo workspace and navigate to the branch you are about to implement, switch to the changes view and familiarize yourself with the changes happening.
+
+<img
+  src={require('../../images/implement/branch-changes-view-button-1.png')}
+  alt="Connections configuration"
+/>
+<center>
+  <i>Press `View changes` button</i>
+</center>
+<br />
+
+It's really valuable to understand what exactly needs to be tracked and clear all
+unknowns.
+
+We suggest using comments in the changes view to ask for any clarification before starting to implement.
+
+<img
+  src={require('../../images/implement/comment.png')}
+  alt="Connections configuration"
+/>
+<center>
+  <i>Figure out all the details before starting to imlement</i>
+</center>
+<br />
+
+## Pull the new code with Avo CLI
+
+### Install the [Avo CLI](https://www.npmjs.com/package/avo)
+
+Install the **Avo CLI** locally in your project, using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
+
+```bash
+npm install --save-dev avo
+```
+
+```bash
+yarn add --dev avo
+```
+
+or globally on your system, using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
+
+```bash
+npm install -g avo
+```
+
+```bash
+yarn global add -E avo
+```
+
+### Link your project to Avo
+
+Authenticate the **Avo CLI** with your Avo user:
+
+```bash
+avo login
+```
+
+Now you can pull the Avo Functions from your Avo workspace.
+
+```bash
+avo pull --branch your_branch_name
+```
+
+> When you run Avo pull for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with the Avo Functions file.
+
+## Implement new events
+
+Now your Avo file will have the changes from the `your_branch_name` branch. Call all the new Avo Functions in required places, update the new event properties.
+
+It might be useful to check the changes tab in your Avo workspace for overview while implementing.
+
+> If you are implementing the branch in multiple codebases we recommend you to read the <Link passHref href="/data-design/multiple-sources-on-avo-branches"><a>Multiple sources on Avo branches</a></Link> guide.
+
+## The most important part
+
+Once you are finished with implementing the code and your source control branch was merged remember to also **merge the Avo branch**!

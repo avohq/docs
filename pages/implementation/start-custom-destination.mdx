@@ -81,7 +81,7 @@ import Avo from './Avo';
 // An object representing your custom destination
 // that you pass into initAvo():
 
-var customAvoLogger = {
+var customDestination = {
   make: function (env) {
     // TODO implement
   },
@@ -103,7 +103,7 @@ var customAvoLogger = {
 Call the initAvo function:
 
 ```javascript
-Avo.initAvo({ env: 'dev' }, {}, {}, customAvoLogger);
+Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 ```
 
 ### <a name="typescript"></a> TypeScript
@@ -114,7 +114,7 @@ import Avo from './Avo';
 // An object representing your custom destination
 // that you pass into initAvo():
 
-let customAvoLogger = {
+let customDestination = {
   make: function (env) {
     // TODO implement
   },
@@ -136,7 +136,7 @@ let customAvoLogger = {
 Call the initAvo function:
 
 ```typescript
-Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customAvoLogger);
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
 ```
 
 ## <a name="mobile"></a> Mobile
@@ -151,11 +151,11 @@ import Avo
 // An object representing your custom destination
 // that you pass into initAvo():
 
-@interface CustomAvoLogger : NSObject <AVOCustomDestination>
+@interface CustomDestination : NSObject <AVOCustomDestination>
 
 @end
 
-@implementation CustomAvoLogger : NSObject
+@implementation CustomDestination : NSObject
 
 - (void)make:(AVOEnv)avoEnv
 {
@@ -171,9 +171,9 @@ import Avo
 Call the initAvo function:
 
 ```objectivec
-CustomAvoLogger * customAvoLogger = [[CustomAvoLogger alloc] init];
+CustomDestination * customDestination = [[CustomDestination alloc] init];
 [Avo initAvoWithEnv:AVOEnvDev
-  customDestination:customAvoLogger];
+  customDestination:customDestination];
 ```
 
 #### <a name="swift"></a> Swift
@@ -186,7 +186,7 @@ import Avo
 // An object representing your custom destination
 // that you pass into initAvo():
 
-class CustomAvoLogger : AvoCustomDestination {
+class CustomDestination : AvoCustomDestination {
     func make(env: AvoEnv) {
         // TODO implement
     }
@@ -216,7 +216,7 @@ Call the initAvo function:
 func application(
   _ application: UIApplication,
   didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-    Avo.initAvo(env: .dev, customDestination: CustomAvoLogger())
+    Avo.initAvo(env: .dev, customDestination: CustomDestination())
 }
 ```
 
@@ -304,8 +304,8 @@ var Avo = require('./Avo.js');
 // An object representing your custom destination
 // that you pass into initAvo():
 
-var customAvoLogger = {
-  logEvent: function (userId, eventName, eventProperties) {
+var customDestination = {
+  logEvent: async function (userId, eventName, eventProperties) {
     // TODO implement
   },
   setUserProperties: function (userId, userProperties) {
@@ -319,8 +319,8 @@ If you need to be able to pass an Anonymous Id from the Avo function to your cus
 ```javascript
 var Avo = require('./Avo.js');
 
-var customAvoLogger = {
-  logEvent: function (anonymousId, userId, eventName, eventProperties) {
+var customDestination = {
+  logEvent: async function (anonymousId, userId, eventName, eventProperties) {
     // TODO implement
   },
   setUserProperties: function (anonymousId, userId, userProperties) {
@@ -332,10 +332,10 @@ var customAvoLogger = {
 Call the initAvo() function:
 
 ```javascript
-Avo.initAvo({ env: 'dev' }, {}, {}, customAvoLogger);
+Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 ```
 
-By passing in the `customAvoLogger` object, its `logEvent()` function can be used
+By passing in the `customDestination` object, its `logEvent()` function can be used
 to deliver an event to any custom destination or pipeline.
 
 #### <a name="node-typescript"></a> TypeScript
@@ -346,8 +346,8 @@ import Avo from './Avo';
 // An object representing your custom destination
 // that you pass into initAvo():
 
-let customAvoLogger = {
-  logEvent: function (userId, eventName, eventProperties) {
+let customDestination = {
+  logEvent: async function (userId, eventName, eventProperties) {
     // TODO implement
   },
   setUserProperties: function (userId, userProperties) {
@@ -359,7 +359,7 @@ let customAvoLogger = {
 Call the initAvo function:
 
 ```typescript
-Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customAvoLogger);
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
 ```
 
 ### <a name="java"></a> Java
@@ -396,7 +396,7 @@ require_once './Avo';
 
 // An object representing your custom destination
 // that you pass into initAvo():
-class CustomAvoLogger {
+class CustomDestination {
     public function make($env) {
         // TODO implement
     }
@@ -416,7 +416,7 @@ Call the initAvo function:
 ```php
 Avo::initAvo([
   'env' => 'dev',
-  'customDestinationInstance' => new CustomAvoLogger,
+  'customDestinationInstance' => new CustomDestination,
 ]);
 ```
 
@@ -431,7 +431,7 @@ import avo
 
 # An object representing your custom destination
 # that you pass into init_avo():
-class CustomAvoLogger(object):
+class CustomDestination(object):
     def __init__(self):
         self.env = None
 
@@ -448,7 +448,7 @@ class CustomAvoLogger(object):
 Call the init_avo() function:
 
 ```python
-avo.init_avo(options={'env': 'dev'}, custom_destination=CustomAvoLogger())
+avo.init_avo(options={'env': 'dev'}, custom_destination=CustomDestination())
 
 ```
 
@@ -461,7 +461,7 @@ import Avo
 
 // An object representing your custom destination
 // that you pass into initAvo():
-class CustomAvoLogger
+class CustomDestination
   def make(env:)
     # TODO implement
   end
@@ -479,7 +479,7 @@ end
 Call the initAvo function:
 
 ```ruby
-Avo.init_avo(options: {:env => :dev}, custom_destination: CustomAvoLogger.new)
+Avo.init_avo(options: {:env => :dev}, custom_destination: CustomDestination.new)
 ```
 
 ## <a name="game-engines"></a> Game Engines
@@ -493,7 +493,7 @@ using Avo;
 Implement the custom destination:
 
 ```csharp
-class CustomAvoLogger : Avo.IDestination {
+class CustomDestination : Avo.IDestination {
     public void Make(Avo.AvoEnv env) {
         // TODO implement
     }
@@ -519,5 +519,5 @@ class CustomAvoLogger : Avo.IDestination {
 Call the initAvo function:
 
 ```csharp
-Avo.initAvo(env=Avo.AvoEnv.Dev, customDestination=new CustomAvoLogger());
+Avo.initAvo(env=Avo.AvoEnv.Dev, customDestination=new CustomDestination());
 ```

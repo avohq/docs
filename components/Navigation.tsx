@@ -117,14 +117,8 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title:
-          'Getting started to implement Avo in a project with existing tracking',
-        path: '/implementation/start-alongside-existing-tracking',
-      },
-      {
-        type: 'route',
-        title: 'Getting started to implement Avo in a new project',
-        path: '/implementation/start-in-new-project',
+        title: 'Getting started with Avo Functions',
+        path: '/implementation/start-using-avo-functions',
       },
       {
         type: 'route',

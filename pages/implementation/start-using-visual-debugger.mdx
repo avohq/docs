@@ -3,6 +3,8 @@ layout: 'guide'
 title: 'Start using Avo Visual Debugger in code'
 ---
 
+import Link from '../../components/Link';
+
 When implementing analytics on web and mobile apps it’s hard to know if the events are being sent successfully or not, and if they are being sent at the correct time.
 
 Our **_Visual Debuggers_** provide a way to control the events flow in your app, making implementing analytics way easier and pleasant in web and mobile products.
@@ -13,11 +15,21 @@ Each **_Avo_** function will automatically show events in the debugger with time
 
 If **_Avo_** detects errors the visual debugger will highlight those.
 
+> Debuggers are disabled in the <Link passHref href="/implementation/avo-and-unit-tests"><a>noop</a></Link> mode
+
 ### Accessing the web debugger
 
-The debuggers are on by default in development but can be accessed in production:
+The Web Debugger is on by default in development.
 
-Web: add the avo_debug=1 query parameter to the URL
+To disable the Web Debugger in development provide `webDebugger = false` to initAvo options:
+
+`Avo.initAvo({ webDebugger: false, ... }, ...);`
+
+To access it in production add the
+
+`avo_debug=1`
+
+query parameter to the URL
 
 ### Setting up the mobile debuggers
 
