@@ -6,20 +6,20 @@ title: 'Avo 101 for developers'
 
 import Link from '../../components/Link';
 
-From the code perspective Avo is 2 things that can be used independently, but when you have them both set up you can connect them together and it would enable full power of Avo.
+The use case of Avo for developers is twofold.
 
-The 2 things are:
-
-- Avo generated file containing Avo Functions
+- Avo generated file, which is the code representation of your tracking plan, containing Avo Functions
 - Avo Inspector SDKs
+
+Each can be used on its own, but together they unlock the full power of Avo.
 
 ## <a name="avo-generated-file"></a> Avo generated file containing Avo Functions
 
-This is the code representation of the tracking plan you define in Avo for given source. You can think of a source as a platform that sends events. For example if you set up an iOS/Swift source the generated file would be a `.swift` file. Since the tracking plans are very different for each customer the content of this file is also different. We generate the files and you can download them either with the Avo CLI(link) or in the Avo web interface in the Implement tab(link).
+This is the code representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events. For example if you set up an iOS/Swift source the generated file would be a `.swift` file. Since the tracking plans are different for each customer the content of this file is also different. We generate the files and you can download them either with the Avo CLI(link) or in the Avo web interface in the Implement tab(link).
 
-First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and the features might be a bit different from one platform to another and the generated file is the best source of truth!
+First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another. The generated file is the best source of truth when looking for implementation details!
 
-You can make changes to the generated file, but remember, that every time you pull the code from avo you would need to apply your changes separately. If you find yourself in this situation please contact us and we will make our best to make the generated code support your use case.
+You can make changes to the generated file, but remember, every time you pull the code from Фvo you would need to apply your changes separately. If you find yourself in this situation please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> and we will make our best to make the generated code support your use case.
 
 ### Avo Command Line Interface
 
@@ -43,14 +43,14 @@ And pull the Avo Generated file with the following command
 $ avo pull
 ```
 
-it will guide you through initial setup and will create a config file called `avo.json` in the directory. Next time when you pull the setup will be picked from that file.
+it will guide you through initial the setup and will create a config file called `avo.json` in the directory. Next time when you pull the setup will be picked from that file.
 Learn more about the CLI <Link passHref href="/implementation/cli"><a>here</a></Link>.
 
 ### <a name="avo-generated-file-init"></a> Initialization
 
 First thing you need to do after importing the generated file is to initialize Avo.
 There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to change the setup.
-Regardless of the option, the arguments you would need to provide are the same and are based on your tracking plan. Check out the <Link passHref href="/workspace/implement"><a>Implement tab</a></Link> for specific recommendations. Samples below are in Swift and the code is very similar in other programming languages:
+Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the <Link passHref href="/workspace/implement"><a>Implement tab</a></Link> for specific recommendations. Samples below are in Swift and the code is very similar in other programming languages:
 
 ```swift
 public static func initAvo(env: AvoEnv,
@@ -78,19 +78,18 @@ public static func setSystemProperties(
 Read more about property types later in the <Link passHref href="/implementation/devs-101#avo-generated-file-func-parameters"><a>Avo Functions section.</a></Link>
 
 - `custom destinations` - there are a few ways to manage how actual calls to analytics libraries are done.
-  One is to allow Avo to manage everything, in that case you only need to add tracking library dependency to your project, another is to manage the calls yourself.
-  This second option is called a Custom Destination. It's basically a callback Avo will make after an Avo function is triggered and Avo does all the validations and enrichment.
-  There is a third advanced mixed option, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you want to explore it.
-- `debugger` - mobile platforms (Android, iOS, React Native) support the Avo Analytics Debuggers(link), provide one here if you want to connect it to Avo events. You don't need to provide the debugger on web to use it there.
-- `strict` - if this set to true Avo would crash you app in the development environment when it sees errors.
+  One is to allow Avo to manage everything, in that case you only need to add tracking library dependency to your project. Another is to manage the calls yourself, using a Custom Destination. It's basically a callback Avo will make after an Avo function is triggered and Avo does all the validations and enrichment.
+  There is a third advanced mixed option, where you provide an initialized SDK to Avo, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you want to explore it.
+- `debugger` - mobile platforms (Android, iOS, React Native) support the Avo Analytics Debuggers(link), provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
+- `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors.
 - `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments.
 - `destination options` (not shown in the example) - some platforms, for example Javscript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization.
 
 ### <a name="avo-generated-file-init-inside"></a> What's inside the initAvo method / Avo constructor?
 
-There are a few things happening, like setting the flags, system properties and reporting function invocation in development mode to avo servers, so you can check whether the function had ever been successfully invoked in development on the Avo website.
+There are a few things happening, like setting the flags, system properties and reporting function invocation in development mode to the Avo servers, so you can check whether the function has ever been successfully invoked in development on the Avo website.
 
-But the most important part is initialization of the Avo-managed analytics SDKs. Depending on the setup of your tracking plan you might see something like
+But the most important part is initialization of the analytics destinations. Depending on the setup of your tracking plan you might see something like
 
 ```swift
 if __ENV__ == .prod {
@@ -111,7 +110,7 @@ The keys are set up in the Avo web UI and automatically fetched by the codegen, 
 
 ### Avo Functions
 
-Avo functions are actual callable functions generated for events defined in the tracking plan.
+Avo functions are actual callable functions generated for events defined in your tracking plan.
 
 > On some server platforms Avo functions are async, i.e. on Node.js they return a Promise and on C# you can await on the Avo Functions
 
@@ -173,7 +172,7 @@ object properties: exact structure of the allowed keys and types of values in th
 
 Avo makes sure that the provided properties are correct according to the tracking plan with runtime validations(link), development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
 If Avo Inspector is connected, the event shape is sent there. Read more about Avo Inspector and how to connect it to the Avo generated code later(link).
-The last step is actually sending the provided data to all the configured tracking destinations. There are different classes of events that can be tracked: identify, log event, update user properties, unidentify, log revenue, log page view, but everything is handled inside the Avo file and delivered in a correct form to your destinations. If you are using Custom Destination the data will be provided to the callback object you supplied during initialization.
+The last step is actually sending the provided data to all the configured tracking destinations. There are different classes of events that can be tracked: identify, log event, update user properties, unidentify, log revenue, log page view, but everything is handled inside the Avo file and delivered in a correct form to your destinations. If you are using a Custom Destination the data will be provided to the callback object you supplied during initialization.
 Tracking code would look similar to this:
 
 ```swift
@@ -194,13 +193,13 @@ customDest.logEvent(eventName: "Test Unidentify", eventProperties: customDestEve
 customDest.unidentify()
 ```
 
-This particular event has `log event` and `unidentify` actions. The methods called above will vary based on the actions of given event.
+This particular event has `log event` and `unidentify` actions. The methods called above will vary based on the actions of the given event.
 
 ### Data Validations
 
-Avo helps developers to avoid mistakes when implementing analytics, it makes sure that your code does exactly what it is supposed to do based on the tracking plan defined in Avo, in 2 ways.
-First way is utilizing the type system of a programming language you work with. For example in the code snippet above the opional properties are supported on the language level in Swift, so we make the interface in the way you can't provide null values where they are not expected. We try to do as much validations this way, so they are performed in the compile time.
-The second way is runtime validations. In cases when the language does not provide us with tool to check in the compile time, like in Javascript, we do runtime checks, looking like this
+Avo helps developers avoid mistakes when implementing analytics, it makes sure that your code does exactly what it is supposed to do based on the tracking plan defined in Avo, in two ways.
+First, Avo is utilizing the type system of a programming language you work with. For example in the code snippet above the optional properties are supported on the language level in Swift, so we make the interface in a way you can't provide null values where they are not expected. We try to do as many validations as possible this way, so they are performed in the compile time.
+Second, it'ss runtime validations. In cases when the language does not provide us with tool to check in the compile time, like in Javascript, we do runtime checks, looking like this
 
 ```swift
 assertString: function assertString(propertyId, propName, str) {
@@ -221,12 +220,12 @@ A check like this is run when the Avo function is triggered. Then the message is
 
 ## Avo Inspector
 
-Avo Inspector is an SDK that extracts tracking plan information from your tracking calls. It provides methods to get shape of an event you are going to send to the analytics platform and to send that shape alongside the vent name for analysis.
-The SDKs are distributed with standard mechanism of the platform, like npm package, gradle dependency or a cocoapod.
+Avo Inspector is an SDK that extracts tracking plan information from your tracking calls. It provides methods to get the shape of an event you are going to send to the analytics platform and then to send that shape alongside the event name for analysis.
+The SDKs are distributed with the standard mechanism of the platform, like npm package, gradle dependency or a cocoapod.
 
 ### Avo Inspector initialization
 
-Before using the Avo Inspector SDK you need to obtain api key from the Avo dashboard in the Inspector tab (link) and provide it to the initialization method.
+Before using the Avo Inspector SDK you need to obtain an API key from the Avo dashboard in the <Link passHref href="/workspace/inspector"><a>Inspector tab</a></Link> and provide it to the initialization method.
 
 Swift
 let avoInspector = AvoInspector(apiKey: "YOUR_API_KEY", env: AvoInspectorEnv.dev)
@@ -235,7 +234,7 @@ let avoInspector = AvoInspector(apiKey: "YOUR_API_KEY", env: AvoInspectorEnv.dev
 
 You need to call a method whenever event is tracked, either trackSchemaFromEvent(eventName: String, eventParams: Map) or trackSchema(eventName: String, eventSchema: Map)
 
-The difference is that in the first method the event object is transformed into event schema under the hood and in the second method you provide the event schema. Eventually in both methods the event schema is sent to Avo servers for analysis.
+The difference is that in the first method the event object is transformed into an event schema under the hood and in the second method you provide the event schema. Eventually in both methods the event schema is sent to Avo servers for analysis.
 
 The event schema format is a map, similar to the format most events use, but with type names instead of actual values. For example if you track CheckoutCompleted event
 
