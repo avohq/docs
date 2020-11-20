@@ -316,11 +316,6 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Set up slack alerts from Inspector',
-        path: '/explore-tracking-plan/slack-alerts',
-      },
-      {
-        type: 'route',
         title: 'Avo Notifications',
         path: '/explore-tracking-plan/avo-notifications',
       },
