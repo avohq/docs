@@ -38,11 +38,10 @@ const navigation: navigationItem[] = [
     iconName: 'rocket',
     subroutes: [
       { type: 'route', title: 'What is Avo?', path: '/' },
-      { type: 'route', title: 'Why Avo?', path: '/why' },
       {
         type: 'route',
         title: 'FAQs',
-        path: '/faqs/faq',
+        path: '/faqs/yes-you-can-faq',
         subroutes: [
           {
             type: 'route',
@@ -56,7 +55,7 @@ const navigation: navigationItem[] = [
           },
         ],
       },
-      //      { type: 'route', title: 'Glossary', path: '/glossary' },
+      //{ type: 'route', title: 'Glossary', path: '/glossary' },
     ],
   },
   {

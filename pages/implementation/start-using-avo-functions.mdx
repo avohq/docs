@@ -9,9 +9,9 @@ In this guide we'll cover all the required steps to start using Avo in your app 
 
 Integrating Avo with your app or website can begin as soon as you create an Avo account, and requires three steps:
 
-1. [Configure Connections in your Avo workspace](#configure-connections-in-your-avo-workspace)
+1. [Configure Connections in your Avo workspace](#1-configure-your-avo-workspace)
 2. [Install the Avo CLI](#install-the-avo-cli)
-3. [Initialize Avo and send your first event](#initialize-avo-and-send-your-first-event)
+3. [Initialize Avo and send your first event](#3-initialize-avo-and-send-an-event)
 
 ## 1. Configure your Avo workspace
 
@@ -204,11 +204,11 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, myAnalyticsSDKBridge);
 
 <br />
 
-Detailed instructions for all other programming languages and platforms supported by Avo [can be found here](/custom-destinations#initialization-instructions).
+Detailed instructions for all other programming languages and platforms supported by Avo <Link passHref href="/implementation/start-custom-destination"><a>can be found here</a></Link>.
 
 ### Send an event
 
-Now we're ready to start implemening reliably analytics tracking with Avo Functions. Every Event defined in our [Trackin Plan on avo.app](https://www.avo.app/welcome) has it's own functin in the Avo Functions file.
+Now we're ready to start implemening reliably analytics tracking with Avo Functions. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Trackin Plan on avo.app</a></Link> has it's own functin in the Avo Functions file.
 
 Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, with two Event Properties, "Client" and "Screen Name". Here's how we would send the event using Avo Functions:
 
@@ -220,4 +220,4 @@ Avo.appOpened({ client: 'Web', screenName: 'Home Screen' });
 
 When the Avo Function is called Avo will run validation on the event properties, making sure they fit the spec defined in the Tracking Plan in Avo. Note that this validation is only run in development mode. If you are using a Custom destination Avo passes the event name and properties to the logEvent function in the Custom Destination interface defined above, otherwise it will pass the event directly to the analytics tool defined in your destination.
 
-You can find tailor made documentation for your Avo Functions, based on your Tracking Plan, in the Implement tab in [your Avo workspace](https://www.avo.app/welcome).
+You can find tailor made documentation for your Avo Functions, based on your Tracking Plan, in the <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Implement tab</a></Link> in [your Avo workspace](https://www.avo.app/welcome).
