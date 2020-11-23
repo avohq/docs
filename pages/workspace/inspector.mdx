@@ -6,25 +6,125 @@ title: 'Inspector'
 
 import Link from '../../components/Link';
 
-The **Inspector** monitors the health of your current tracking, catching common issues such as missing events or properties, casing inconsistencies, property type mismatches, significant difference in volumes between platforms and many more. The Inspector gives you insights into the health trends of your tracking and email alerts on any regressions. Enabling you to start improving your tracking in a data-driven way.
+The inspector tab is where you configure your inspector sources, get API keys to send data form the clients, set up slack alerts and examine the issues that Inspector found.
 
-Here are the issue types that the **Inspector** can detect. You can enable any subset of them in your project.
+### Default view and switching between views
 
-### Issue Types
+If you have no sources set up you will thee the <Link passHref href="./inspector#manage-sources"><a>Sources screen</a></Link> as the default view of the Inspector Tab.
+If you already have set up a source you would see the <Link passHref href="./inspector#view-events"><a>Events screen</a></Link>.
+Use the button in the top left corner to switch between the Sources and the Events screens.
 
-- <a href="#event-is-not-present-on-some-platforms">
-    Event missing on some platforms
-  </a>
-- <a href="#property-missing-on-some-platforms">
-    Property missing on some platforms
-  </a>
+## Manage Sources
+
+### Sources
+
+Inspector shares sources with the <Link passHref href="/workspace/connections"><a>Connections</a></Link> tab.
+You'll see a grid of all sources set up in Avo in the connections tab.
+You can create new Inspector sources here, it will also appear in the Connections Tab.
+
+Source card have 3 states:
+
+- Receiving events - this source already received at least one event from the client SDK.
+
+<center>
+  <img
+    src={require('../../images/workspace/inspector/inspector-source-receiving.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+- Waiting for events - the source is available for Inspection, but have not received any events yet. Press
+  the Source card to see the implementations details and the API key for this source.
+
+<center>
+  <img
+    src={require('../../images/workspace/inspector/inspector-source-waiting.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+- Coming soon - this source is not supported, there is no client SDK yet. Please contact us
+  (link) to learn current status and planned release date.
+
+<center>
+  <img
+    src={require('../../images/workspace/inspector/inspector-source-not-available.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+### Issue alerts
+
+Here you can connect Inspector to your Slack to receive a notification when new issues appear.
+
+Press the `Connect to Slack` button and follow the instructions.
+
+Avo Inspector will post new issues it finds in production hourly to the specified slack channel.
+
+## View Events
+
+### Header filters
+
+Here you can choose which environment to examine, the time window and search for event name.
+
+#### Environments
+
+Currently Inspector supports 3 types of environments:
+
+- Development
+- Staging
+- Production
+
+The events are streamed to the Environment specified in the client, based on the environment constant provided when initializing the Avo Inspector SDK.
+
+> Development and Staging events appear in the dashboard in a few minutes after they are fired and Production events can take up to 2 hours.
+
+#### Time window
+
+Currently Inspector supports 4 types of time windows:
+
+- 1 hour
+- 24 hours
+- 7 days
+- 30 days
+
+All the time windows are updated hourly on Production and are close to real time in Development and Staging.
+
+#### Search for event name
+
+Type the vent name in the input field and only events with similar name will be shown.
+
+If you want an exact match put the event name in quotes, i.e. "App Opened".
+
+### Share current view of Inspector
+
+Notice that after you change the header filters the URL also changes. You can share this URL with a collegue and they would see exactly the same slice of inspector data as you filtered.
+
+### Events list
+
+The main part of the View Events screen is the list of all events seen, after the specified filters are applied.
+
+You can expand the events to see the event properties.
+
+If Inspector sees an event that is not yet in your tracking plan there is a shortcut to add it to your Tracking plan.
+
+If Inspector detects an issue it will indicate that in the list.
+
+#### Issue Types
+
 - <a href="#missing-usual-property-in-event">Property sometimes missing</a>
 - <a href="#event-property-type-inconsistency">Property type mismatch</a>
+- <a href="#event-is-not-present-on-some-platforms">
+    Event missing on some platforms (coming soon)
+  </a>
+- <a href="#property-missing-on-some-platforms">
+    Property missing on some platforms (coming soon)
+  </a>
 - <a href="#event-volume-change-between-versions">
-    Event volume change significant between versions
+    Event volume change significant between versions (coming soon)
   </a>
 - <a href="#significant-volume-mismatch-between-platforms">
-    Event volume significantly different between platforms
+    Event volume significantly different between platforms (coming soon)
   </a>
 - <a href="#event-name-casing">Event name casing (coming soon)</a>
 - <a href="#property-name-casing">Property name casing (coming soon)</a>
@@ -32,61 +132,61 @@ Here are the issue types that the **Inspector** can detect. You can enable any s
     Global property type mismatch (coming soon)
   </a>
 
-#### <a name="event-is-not-present-on-some-platforms"></a>Event missing on some platforms
-
-Detects events sent by one platform, but not sent by another. Can be a sign of missing tracking calls.
-
-_**Example:** iOS sends App Opened event, but Android does not._
-
-#### <a name="property-missing-on-some-platforms"></a>Property missing on some platforms
-
-Detects properties sent by one platform, but not sent by another.
-
-_**Example:** iOS sends user id with the App Opened event, but Android does not._
-
-#### <a name="missing-usual-property-in-event"></a>Property sometimes missing
+##### <a name="missing-usual-property-in-event"></a>Property sometimes missing
 
 Detects absence of event properties across tracking calls.
 
 _**Example:** Property onboarding status is not sent with 30% of the App Opened event._
 
-#### <a name="event-property-type-inconsistency"></a>Property type mismatch
+##### <a name="event-property-type-inconsistency"></a>Property type mismatch
 
 Detects type changes of event properties across tracking calls.
 
 _**Example:** Inconsistent type of property onboarding status on event App Opened: int (84%), string (16%)._
 
-#### <a name="event-volume-change-between-versions"></a>Event volume change significant between versions
+##### <a name="event-is-not-present-on-some-platforms"></a>Event missing on some platforms (coming soon)
+
+Detects events sent by one platform, but not sent by another. Can be a sign of missing tracking calls.
+
+_**Example:** iOS sends App Opened event, but Android does not._
+
+##### <a name="property-missing-on-some-platforms"></a>Property missing on some platforms (coming soon)
+
+Detects properties sent by one platform, but not sent by another.
+
+_**Example:** iOS sends user id with the App Opened event, but Android does not._
+
+##### <a name="event-volume-change-between-versions"></a>Event volume change significant between versions (coming soon)
 
 Detects significant changes in event volume between app versions.
 
 _**Example:** Volume of event App Opened drop by 25% between versions v1.3.2 and v1.3.3 on iOS_
 
-#### <a name="significant-volume-mismatch-between-platforms"></a>Event volume significantly different between platforms
+##### <a name="significant-volume-mismatch-between-platforms"></a>Event volume significantly different between platforms (coming soon)
 
 Detects events sent way more frequently by one platform versus another adjusted for sessions number. Can be a sign of duplicated or missing tracking calls.
 
 _**Example:** iOS is sending 10x more volume per session than Android of the App Opened event._
 
-#### <a name="event-name-casing"></a>Event name casing (coming soon)
+##### <a name="event-name-casing"></a>Event name casing (coming soon)
 
 Detects event names spelled in undesirable casing.
 
 _**Example:** Event open_app is snake case, expected title case (Open App)._
 
-#### <a name="property-name-casing"></a>Property name casing (coming soon)
+##### <a name="property-name-casing"></a>Property name casing (coming soon)
 
 Detects property names spelled in undesirable casing.
 
 _**Example:** The property onboarding_status on event App Opened is snake_case, expected camel case (onboardingStatus)._
 
-#### <a name="global-property-type-inconsistency"></a>Global property type mismatch (coming soon)
+##### <a name="global-property-type-inconsistency"></a>Global property type mismatch (coming soon)
 
 Detects properties with identical names and different types across all registered event schemas.
 
 _**Example:** Inconsistent type of property revenue on events Purchase Completed: int and Checkout Completed: string._
 
-### Smart Issues (coming soon)
+#### Smart Issues (coming soon)
 
 - <a href="#similar-event-names">Similar event names</a>
 - <a href="#event-similar-property-names">
@@ -100,31 +200,31 @@ _**Example:** Inconsistent type of property revenue on events Purchase Completed
     Missing property based on property group pattern
   </a>
 
-#### <a name="similar-event-names"></a>Similar event names
+##### <a name="similar-event-names"></a>Similar event names
 
 Detects similar event names, that can point to duplicate tracking.
 
 _**Example:** Potentially multiple events describing the same user action: App Opened, App Open, open_app + 2 more events._
 
-#### <a name="event-similar-property-names"></a>Similar property names within event
+##### <a name="event-similar-property-names"></a>Similar property names within event
 
 Detects similar property names in a single event.
 
 _**Example:** Potentially multiple versions of the same property: onboarding_status, onboardingStatus, and Onboarding State._
 
-#### <a name="property-expected-type-mismatch"></a>Unexpected type based on property name
+##### <a name="property-expected-type-mismatch"></a>Unexpected type based on property name
 
 Detects when a property name that is often associated with a specific type has some other type.
 
 _**Example:** Revenue property is string type (expected to be a number)._
 
-#### <a name="global-similar-property-names"></a>Global similar property names (low)
+##### <a name="global-similar-property-names"></a>Global similar property names (low)
 
 Detects similar property names across all registered event schemas.
 
 _**Example:** Potentially multiple versions of the same property: onboarding_status, onboardingStatus, and Onboarding State._
 
-#### <a name="missing-usual-property-in-similar-events"></a>Missing property based on property group pattern
+##### <a name="missing-usual-property-in-similar-events"></a>Missing property based on property group pattern
 
 Detects missing property in a group of similarly looking properties.
 
