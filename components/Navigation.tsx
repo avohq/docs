@@ -372,7 +372,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
     });
   };
 
-  let icon = locateIcon(item);
+  const icon = locateIcon(item);
 
   return (
     <div className={styles.group}>
@@ -407,7 +407,7 @@ const Navigation: FunctionComponent = () => {
 };
 
 function locateIcon(item: navigationItem) {
-  var icon = null;
+  let icon = null;
   switch (item.iconName) {
     case 'home': {
       icon = require('../images/home-icon.svg');
