@@ -12,6 +12,7 @@ import Link from '../../components/Link';
 
 ### What will you learn?
 - How to define metrics, events and properties step by step
+- The basic concepts in Avo and event design
 - What to look out for when designing data
 
 
@@ -158,6 +159,10 @@ We always recommend adding a descriptive description to every event, that descri
 
 Add a <Link passHref href="/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from"><a>source</a></Link> to your event to define where it should be sent from and in which programming language the tracking code will be generated in. If you have an established workspace you probably have the sources you need already set up and can select them from the drop down that appears when you click "+ Add Source". If not, you might need to set up and configure your sources and destinations in the <Link passHref href="/workspace/connections"><a>connections tab</a></Link>.
 
+#### Add actions and properties
+
+All events in Avo have the <Link passHref href="/workspace/tracking-plan/events#a-namelog-eventa-log-event"><a>"Log Event" action</a></Link>  by default, which means that a user action is logged as an event to the analytics platform. This is the most common use case and the one that we are focusing on in this guide. With the "Log Event" action you can add event properties, which allows you to attach detailed information about the action the user performed. See how to create, add and configure event properties in the section below.
+
 #### Add a category
 
 We recommend <Link passHref href="/data-design/organizing-metrics-and-events"><a>organizing your metrics and events</a></Link> by using categories. Add your event to a category by clicking "+ Add to Category" below the Actions section in the event. If a relevant category doesn't already exist, first create a new one by clicking "+ Add Category" next to the "+ Add Event" button, and then add your metric to the category.
@@ -173,12 +178,57 @@ Tags can be used to organize and your events further than with categories. For e
 
 _Example: Configuring an event._
 
-### Step 5 – Add event properties
+## Defining and configuring event properties
 
-In this guide we're focusing on adding 
-Add a <Link passHref href="/workspace/tracking-plan/properties#a-nameevent-propertiesa-event-properties"><a>event properties</a></Link> to events with the Log Event action, as that is the most common use case for beginners. There are a few more <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> available as well as two other kinds of properties (<Link passHref href="/workspace/tracking-plan/properties#a-nameuser-propertiesa-user-properties"><a>user properties</a></Link> and <Link passHref href="/workspace/tracking-plan/properties#a-namesystem-propertiesa-system-properties"><a>system properties</a></Link>).
+In this guide we're focusing on <Link passHref href="/workspace/tracking-plan/properties#a-nameevent-propertiesa-event-properties"><a>event properties</a></Link> on events with the Log Event action, as that is the most common use case for beginners. There are a few more <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> available as well as two other kinds of properties (<Link passHref href="/workspace/tracking-plan/properties#a-nameuser-propertiesa-user-properties"><a>user properties</a></Link> and <Link passHref href="/workspace/tracking-plan/properties#a-namesystem-propertiesa-system-properties"><a>system properties</a></Link>).
 
-#### Add existing event property to an event
+### Step 1 – Create a new event property
+
+To create a new event property and add it to an event, first open the event you want to add it to. Then click "+ Add Event Property" under the "Log Event" section of the actions and type the name of the property that you want to create. Then click "Create New Property" and review and confirm the name of the property in the naming editor that pops up. As with event names, the naming assistant will help you follow the casing in your workspace and prevent duplicate property names. Now you have created a new event property and added it to your event.
+
+<img
+  src={require('../../images/best-practices/getting-started-to-design-data/add-new-property-to-event.gif')}
+  alt="Creating a new event property for an event"
+/>
+
+_Example: Creating a new event property for an event._
+
+### Step 2 – Configure a property
+
+#### Add a description
+
+As with event, we highly recommend adding descriptions to all properties. That helps the ones that implement to know exactly what variable in their code they should assign to that property.
+
+#### Select the data type
+
+Change the data type of your property to match the one you need by clicking on where it says "String" below the description input. Then you will be able to pick from the following types:
+- string: only all string values are allowed
+- int:  only whole number values are allowed
+- float: only floating point values are allowed 
+- boolean: only `true` or `false` values are allowed
+- object (available upon request): only dictionary or nested object structures are allowed
+- any (available upon request): any data type is allowed and not type validation will occur
+
+#### Decide if it's optional or required
+
+All properties are required by default and we recommend trying to keep them required in as many cases a possible. That means that the Avo developer tools will throw and error if the property is not assigned a value in development, which reduces the risk of missing data significantly. You can however set a property to be optional by checking the "Optional" check box beside the data type, if it's not always relevant to send a value for that property.
+
+#### Add rules
+
+Properties don't have any rules by default, but we recommend setting rules that match the limitation of the possible values for every property.
+- String rules: you can pick exactly which string values are allowed for your property. We recommend doing so for all string properties that have a limited number of allowed values.
+- Int and Float rules: Numerical properties can have rules that limit the value to a range between a minimum and maximum value. We recommend to set a min and max where relevant, for example to prevent negative values for count properties.
+
+<img
+  src={require('../../images/best-practices/getting-started-to-design-data/configuring-an-event-property.gif')}
+  alt="Configuring a new property"
+/>
+
+_Example: Configuring a new property._
+
+
+
+### Step 3 – Add existing event property to an event
 
 We always recommend everyone that design data to first look into the existing events and properties to see if there are any that are relevant for your use case.
 
@@ -192,13 +242,4 @@ To add an existing event property to your event, click "+ Add Event Property" un
 _Example: Adding an existing property to an event._
 
 
-#### Add a new event property to an event
 
-To create a new event property and add it to your event, click "+ Add Event Property" under the "Log Event" section of the actions and type the name of the property that you want to create. Then click "Create New Property" and review and confirm the name of the property in the naming editor that pops up. As with event names, the naming assistant will help you follow the casing in your workspace and prevent duplicate property names.
-
-<img
-  src={require('../../images/best-practices/getting-started-to-design-data/add-new-property-to-event.gif')}
-  alt="Adding a new event property to an event"
-/>
-
-_Example: Adding an existing property to an event._
