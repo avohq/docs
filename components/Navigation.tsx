@@ -313,11 +313,6 @@ const navigation: navigationItem[] = [
         title: 'Getting started using visual debuggers',
         path: '/explore-tracking-plan/start-using-visual-debuggers',
       },
-      {
-        type: 'route',
-        title: 'Avo Notifications',
-        path: '/explore-tracking-plan/avo-notifications',
-      },
     ],
   },
   {
