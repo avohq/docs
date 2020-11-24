@@ -16,7 +16,9 @@ _Role: product (this initiative is usually led by a product oriented person)_
 
 This is usually the hardest part, deciding on what events and properties you need to measure the success of the change you are about to make. There are many paths you can take to lead you to a decision, but no matter which one you take, we recommend doing it as early as possible.
 
-We always recommend starting with formulating the metrics that you hope to move with your change. Our favorite way to do that is what we like to call a [“Purpose Meeting”](https://www.avo.app/blog/tracking-the-right-product-metrics). The outcomes of that meeting are:
+We always recommend starting with formulating the metrics that you hope to move with your change. Our favorite way to do that is what we like to call a “Purpose Meeting”. The outcomes of that meeting are:
+
+> [Learn what's the “Purpose Meeting”](https://www.avo.app/blog/tracking-the-right-product-metrics).
 
 1. **Goals** – what does success look like?
 2. **Metrics** – how will we measure how successful we are?
@@ -41,7 +43,7 @@ _Example: Opening a branch_
 
 _Role: product (usually the same person as performed step 1 and 2)_
 
-The results of the purpose meeting can all be documented in Avo in context with your event definitions. Check out our guide on <Link passHref href="/best-practices/documenting-purpose-meetings-in-avo"><a>using Categories and Metrics to document Purpose Meetings in Avo</a></Link> to learn more.
+The results of the purpose meeting can all be documented in Avo in context with your event definitions. Check out our guide on <Link passHref href="/data-design/documenting-purpose-meetings-in-avo"><a>using Categories and Metrics to document Purpose Meetings in Avo</a></Link> to learn more.
 
 <center>
   <img
@@ -69,9 +71,9 @@ There are a few things to keep in mind when doing so:
 
 - Check if there are any existing events that you can use or expand with additional properties
 - Check if there are any existing properties that you can use instead of defining new ones. The property library will help you find what you are looking for.
-- Make sure to follow the <Link passHref href="/best-practices/defining-descriptive-events-and-properties#a-namenaming-conventionsa-naming-conventions-for-events-and-properties"><a>naming convention</a></Link> used in your workspace. Our <Link passHref href="/workspace/tracking-plan/issue-reporter"><a>issue reporter</a></Link> and <Link passHref href="/best-practices/defining-descriptive-events-and-properties#a-namenaming-conventionsa-naming-conventions-for-events-and-properties"><a>naming assistant</a></Link> will help you do so.
-- Make sure to add <Link passHref href="/best-practices/defining-descriptive-events-and-properties#a-nameproperty-constraintsa-property-constraints"><a>descriptions</a></Link> to your events and properties to avoid any misunderstanding between those who design, implement and consume the data
-- Try to use <Link passHref href="/best-practices/defining-descriptive-events-and-properties#a-nameproperty-constraintsa-property-constraints"><a>constraints</a></Link> on your properties if possible. This is especially useful when you have a string property that has a finite number of possible values.
+- Make sure to follow the <Link passHref href="/data-design/defining-descriptive-events-and-properties#a-namenaming-conventionsa-naming-conventions-for-events-and-properties"><a>naming convention</a></Link> used in your workspace. Our <Link passHref href="/workspace/tracking-plan/issue-reporter"><a>issue reporter</a></Link> and <Link passHref href="/data-design/defining-descriptive-events-and-properties#a-namenaming-conventionsa-naming-conventions-for-events-and-properties"><a>naming assistant</a></Link> will help you do so.
+- Make sure to add <Link passHref href="/data-design/defining-descriptive-events-and-properties#a-namedescriptionsa-descriptions-for-events-and-properties"><a>descriptions</a></Link> to your events and properties to avoid any misunderstanding between those who design, implement and consume the data
+- Try to use <Link passHref href="/data-design/defining-descriptive-events-and-properties#a-nameproperty-constraintsa-property-constraints"><a>constraints</a></Link> on your properties if possible. This is especially useful when you have a string property that has a finite number of possible values.
 
 <center>
   <img
@@ -136,7 +138,7 @@ _Role: developer(s)_
 When you’ve reached consensus about the changes it’s time to start implementing.The typical implementation workflow looks like this:
 
 1. Open a git branch – if you have multiple development platforms (sources in Avo), we recommend having one git branch per source for each Avo branch.
-2. Use the <Link passHref href="/commands#step-3-pull-generated-analytics-wrappers-from-avo"><a>Avo CLI</a></Link> to pull the updated code from the branch
+2. Use the <Link passHref href="/implementation/cli#step-3-pull-generated-analytics-wrappers-from-avo"><a>Avo CLI</a></Link> to pull the updated code from the branch
 3. Use the Avo functions provided in the generated code to implement your events in your source code. The <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>implement tab</a></Link> in your workspace provides detailed instructions and code snippets)
 
 <img
@@ -153,19 +155,27 @@ _Roles: developers and QA_
 
 Avo provides a number of tools that help you verify that the events you’ve implemented are correct according to the definition made in Avo:
 
-- <Link passHref href="/commands#step-4-monitor-the-analytics-implementation">
+- <Link
+    passHref
+    href="/implementation/cli#step-4-monitor-the-analytics-implementation"
+  >
     <a>Avo status</a>
   </Link> command in the CLI that will report on where the analytics functions provided
   by Avo are being called, and which events have not been implemented yet.
-- <Link passHref href="/data-validation">
+- <Link passHref href="/implementation/devs-101#data-validations">
     <a>Data validation logs and warnings</a>
   </Link> that warn you whenever a mistake is made during implementation
-- Implementation status that shows you whether the event has been implemented correctly on your branch
-- <Link passHref href="/mobile-debuggers">
+- <Link
+    passHref
+    href="/workspace/implement#a-nameimplement-actionsa-implement-events"
+  >
+    <a>Implementation status checkmark</a>
+  </Link> that shows you whether the event has been seen in development on your branch
+- <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers">
     <a>Avo debuggers</a>
   </Link> that give extended feedback when triggering the events from your mobile
   or web application
-- <Link passHref href="/inspector">
+- <Link passHref href="/data-design/start-using-inspector">
     <a>Avo Inspector</a>
   </Link> that analyses the data coming in from development, staging and production
   and surfaces issues in the data

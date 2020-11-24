@@ -199,7 +199,7 @@ This particular event has `log event` and `unidentify` actions. The methods call
 
 Avo helps developers avoid mistakes when implementing analytics, it makes sure that your code does exactly what it is supposed to do based on the tracking plan defined in Avo, in two ways.
 First, Avo is utilizing the type system of a programming language you work with. For example in the code snippet above the optional properties are supported on the language level in Swift, so we make the interface in a way you can't provide null values where they are not expected. We try to do as many validations as possible this way, so they are performed in the compile time.
-Second, it'ss runtime validations. In cases when the language does not provide us with tool to check in the compile time, like in Javascript, we do runtime checks, looking like this
+Second, it's runtime validations. In cases when the language does not provide us with tool to check in the compile time, like in Javascript, we do runtime checks, looking like this
 
 ```swift
 assertString: function assertString(propertyId, propName, str) {
@@ -220,7 +220,7 @@ A check like this is run when the Avo function is triggered. Then the message is
 
 ## Avo Inspector
 
-Avo Inspector is an SDK that extracts tracking plan information from your tracking calls. It provides methods to get the shape of an event you are going to send to the analytics platform and then to send that shape alongside the event name for analysis.
+Avo Inspector includes an SDK that extracts tracking plan information from your tracking calls. It provides methods to get the shape of an event you are going to send to the analytics platform and then to send that shape alongside the event name for analysis.
 The SDKs are distributed with the standard mechanism of the platform, like npm package, gradle dependency or a cocoapod.
 
 ### Avo Inspector initialization
