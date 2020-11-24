@@ -53,7 +53,6 @@ const navigation: navigationItem[] = [
           },
         ],
       },
-      //{ type: 'route', title: 'Glossary', path: '/glossary' },
     ],
   },
   {
