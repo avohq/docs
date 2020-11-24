@@ -5,8 +5,6 @@ import classNames from 'classnames';
 
 import { useRouter } from 'next/router';
 import Link from '../components/Link';
-import { IconName } from '@fortawesome/fontawesome-svg-core';
-import Icon from './Icon';
 
 type route = {
   type: 'route';
@@ -27,7 +25,7 @@ type subroutes = subroute[];
 interface navigationItem {
   title: string;
   path: string;
-  iconName?: IconName;
+  iconName?: string | null;
   subroutes?: subroutes | null;
 }
 
@@ -35,7 +33,7 @@ const navigation: navigationItem[] = [
   {
     title: 'What is Avo',
     path: '/',
-    iconName: 'rocket',
+    iconName: 'home',
     subroutes: [
       { type: 'route', title: 'What is Avo?', path: '/' },
       {
@@ -61,7 +59,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Your Avo Workspace',
     path: '/workspace',
-    iconName: 'home',
+    iconName: 'toolbox',
     subroutes: [
       {
         type: 'route',
@@ -103,7 +101,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Implementation',
     path: '/implementation/devs-101',
-    iconName: 'toolbox',
+    iconName: 'implementation',
     subroutes: [
       {
         type: 'route',
@@ -224,7 +222,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Data Design',
     path: '/data-design/start-data-design',
-    iconName: 'award',
+    iconName: 'data-design',
     subroutes: [
       {
         type: 'group',
@@ -300,7 +298,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Explore the Tracking Plan',
     path: '/explore-tracking-plan/start-understandings-what-your-data-means',
-    iconName: 'award',
+    iconName: 'tracking-plan',
     subroutes: [
       {
         type: 'route',
@@ -318,7 +316,7 @@ const navigation: navigationItem[] = [
   {
     title: 'Help',
     path: '/help/troubleshooting',
-    iconName: 'life-ring',
+    iconName: 'help',
     subroutes: [
       {
         type: 'route',
@@ -375,6 +373,8 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
     });
   };
 
+  let icon = locateIcon(item);
+
   return (
     <div className={styles.group}>
       <Link href={item.path}>
@@ -385,7 +385,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
         >
           {item.iconName && (
             <span className={styles.iconWrapper}>
-              <Icon name={item.iconName} />
+              <img src={icon} alt="" />
             </span>
           )}
           {item.title}
@@ -406,5 +406,39 @@ const Navigation: FunctionComponent = () => {
     </div>
   );
 };
+
+function locateIcon(item: navigationItem) {
+  var icon = null;
+  switch (item.iconName) {
+    case 'home': {
+      icon = require('../images/home-icon.svg');
+      break;
+    }
+    case 'data-design': {
+      icon = require('../images/data-design-icon.svg');
+      break;
+    }
+    case 'help': {
+      icon = require('../images/help-icon.svg');
+      break;
+    }
+    case 'implementation': {
+      icon = require('../images/implementation-icon.svg');
+      break;
+    }
+    case 'toolbox': {
+      icon = require('../images/toolbox-icon.svg');
+      break;
+    }
+    case 'tracking-plan': {
+      icon = require('../images/tracking-plan-icon.svg');
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+  return icon;
+}
 
 export default Navigation;
