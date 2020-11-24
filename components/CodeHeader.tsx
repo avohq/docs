@@ -15,7 +15,7 @@ interface NameAndIcon {
   iconPack?: IconPrefix;
 }
 
-// script;
+// javascript;
 // objectivec;
 // swift;
 // java;
