@@ -124,7 +124,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Setting up the Inspector SDK',
-        path: '/implementation/start-using-inspector',
+        path: '/implementation/setup-inspector-sdk',
       },
       {
         type: 'route',
@@ -139,11 +139,6 @@ const navigation: navigationItem[] = [
       {
         type: 'group',
         group: 'Tools',
-      },
-      {
-        type: 'route',
-        title: 'Supported programming languages',
-        path: '/implementation/supported-programming-languages',
       },
       {
         type: 'route',
@@ -182,6 +177,11 @@ const navigation: navigationItem[] = [
       {
         type: 'group',
         group: 'Reference',
+      },
+      {
+        type: 'route',
+        title: 'Supported programming languages',
+        path: '/implementation/supported-programming-languages',
       },
       {
         type: 'route',
