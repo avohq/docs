@@ -180,18 +180,25 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Supported programming languages',
+        title: 'Avo Functions',
         path: '/implementation/supported-programming-languages',
-      },
-      {
-        type: 'route',
-        title: 'Mobile debuggers',
-        path: '/implementation/mobile-debuggers-reference',
-      },
-      {
-        type: 'route',
-        title: 'Custom Destinations',
-        path: '/implementation/start-custom-destination',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Programming languages',
+            path: '/implementation/supported-programming-languages',
+          },
+          {
+            type: 'route',
+            title: 'Mobile debuggers',
+            path: '/implementation/mobile-debuggers-reference',
+          },
+          {
+            type: 'route',
+            title: 'Custom Destinations',
+            path: '/implementation/start-custom-destination',
+          },
+        ],
       },
       {
         type: 'route',
