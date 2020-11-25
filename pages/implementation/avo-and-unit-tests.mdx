@@ -1,0 +1,33 @@
+---
+layout: 'guide'
+title: 'Avo in unit tests'
+---
+
+import Link from '../../components/Link';
+
+It can be useful to have your Avo functions running as a part of your test suite.
+
+To that end, Avo generated tracking libraries can be initialized with a `noop` flag
+that disables network requests and only run data validation.
+
+Below is an example of initializing Avo in a [jest](https://jestjs.io) test environment with JavaScript:
+
+```js
+describe('Avo', () => {
+  var Avo;
+  beforeAll(() => {
+    Avo = require('./Avo');
+    Avo.initAvo({ env: 'dev', noop: true });
+  });
+  test('signupStart() with email property is valid', () => {
+    Avo.signupCompleted({ email: 'test@test.com' });
+  });
+  test('signupStart() without email property throws', () => {
+    expect(() => {
+      Avo.signupCompleted();
+    }).toThrow();
+  });
+});
+```
+
+The `noop` flag is supported in JavaScript, TypeScript, Reason, Java, Objective-C, Swift and Python.

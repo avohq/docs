@@ -1,0 +1,54 @@
+---
+layout: 'guide'
+title: 'Avo Inspector SDK reference'
+---
+
+import Link from '../../components/Link';
+
+Avo Inspector analyzes the analytics events sent from your app, without collecting the actual data (not yet another tool to add to your privacy policy). Based on that analysis Avo automatically builds a single source of truth tracking plan, covering all your products and platforms, giving you a complete overview of which is tracking what, and which is not.
+
+The Avo Inspector SDK is designed to be small and easy to include in any project.
+
+**Table of Contents**
+
+- <a href="#platform-docs">Platform documentation</a>
+- <a href="#standalone-usage">Usage overview</a>
+- <a href="#supported-types">Supported event schema types</a>
+- <a href="#batching">Batching</a>
+- <a href="#segment-middleware">
+    Easy setup with Segment SDK on Android and iOS
+  </a>
+
+## <a name="platform-docs"></a> Platform documentation
+
+- <Link passHref href="/implementation/inspector/sdk/ios">
+    <a>iOS</a>
+  </Link>
+- <Link passHref href="/implementation/inspector/sdk/android">
+    <a>Android</a>
+  </Link>
+- <Link passHref href="/implementation/inspector/sdk/web">
+    <a>Web </a>
+  </Link>
+- <Link passHref href="/implementation/inspector/sdk/react-native">
+    <a>React Native</a>
+  </Link>
+
+## <a name="standalone-usage"></a> Usage overview
+
+Find the overview in <Link passHref href="/implementation/devs-101#avo-inspector"><a>the Inspector section in the Avo 101 for Developers</a></Link> guide.
+
+## <a name="batching"></a> Batching
+
+In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. Default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
+You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlustSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
+
+> When integrating the Avo Inspector for the first time and sending the first event it might not appear right away because of batching. Be sure to trigger a few events within a few seconds to make the batch go out to Avo servers. It will be reflected in the logs.
+
+## <a name="segment-middlewares"></a> Easy setup with Segment SDK on Android and iOS
+
+If you are using **Segment Analytics** for tracking integrating **_Avo Inspector SDK_** is even easier.
+
+We provide a code snippet to be used as middleware component that you supply to Segment during initialization. That will allow **_Avo_** to analyze schemas of all event tracked by **Segment**.
+
+Check platform docs for more information and actual code snippets.

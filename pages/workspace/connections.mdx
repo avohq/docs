@@ -8,7 +8,7 @@ import Link from '../../components/Link';
 
 The connection tab is where you configure your **sources** (programming languages and development platforms) and **destinations** (analytics platforms).
 
-## <a name="sources"></a> Sources
+## <a name="sources"></a> Sources: Where the data comes from
 
 Sources represent where you send your data from. These can be mobile apps,
 websites, backends, etc. Each source has an identifiable name, a development
@@ -27,6 +27,9 @@ Avo currently supports these development platforms and programming languages:
 ### <a name="mobile"></a> Mobile
 
 - React Native
+  - JavaScript
+  - TypeScript
+  - ReasonML
 - iOS
   - Objective-C
   - Swift
@@ -49,7 +52,7 @@ Avo currently supports these development platforms and programming languages:
 
 - Unity (C#)
 
-## <a name="destinations"></a> Destinations
+## <a name="destinations"></a> Destinations: Where the data gets published to
 
 Destinations represent where your data should be sent. Your analytics platform
 of choice. Destinations have an identifiable name, analytics platform,
@@ -282,4 +285,4 @@ Sometimes the best way to integrate Avo is through a custom destination. For exa
 
 It's also sometimes possible to use a custom destination for language - analytics pairs that are not supported by Avo yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is the best solution for you.
 
-Detailed instructions on how to set up a custom destination can be found in our <Link passHref href="/custom-destinations"><a>custom destination docs</a></Link>.
+Detailed instructions on how to set up a custom destination can be found in our <Link passHref href="/implementation/start-custom-destination"><a>custom destination docs</a></Link>.

@@ -1,0 +1,119 @@
+---
+layout: 'guide'
+title: 'Migrating to Avo'
+abstract: 'Migrate your legacy tracking to Avo in a few simple steps'
+---
+
+import Link from '../components/Link';
+
+import SmallSteps, { Step } from '../components/SmallSteps';
+
+If you don't have existing tracking or want to start from scratch, you can take a look at our <Link passHref href="/"><a>quickstart documentation</a></Link> to get started.
+
+If you are already doing some event based analytics in your product and want to migrate to using the type safe Avo custom tracking functions, then here is the recommended implementation process for Avo.
+
+## What’s the best way to migrate to Avo?
+
+<SmallSteps collapsible>
+<Step title="Add validateAvoEvent">
+
+
+Add the <Link passHref href="/quickstart#validate-current-events" passHref><a>validateAvoEvent</a></Link> function
+at the **location** in your code base that handles the emission of analytics
+events. Merge that code change into your git master to ensure that every
+time a user interacts with your product in development, event structures are
+being logged into Avo.
+
+Start using the type safe Avo custom tracking functions for changes made to
+tracking. The Avo web app can now be used as a source of truth for your
+tracking plan. PMs, analysts, and developers can start using Avo branches as
+workflows to prepare, implement and release tracking changes.
+
+</Step>
+<Step title="Incrementally adopt Avo functions">
+
+
+Replace existing tracking calls with the type safe Avo custom tracking
+functions as necessary, for example, when modifying events or fixing
+tracking errors.
+
+</Step>
+<Step title="Run codemods">
+
+
+When looking to replace all existing tracking, run codemods provided by the
+Avo engineering team, which finds tracking calls in the code base and
+replaces them with Avo custom tracking functions. In a fairly straight
+forward tracking setup, with few complex abstractions and dynamic strings,
+this yields coverage from 40% to 90%.
+
+Replace the remaining tracking calls manually.
+
+</Step>
+</SmallSteps>
+
+
+## What does the validateAvoEvent function do?
+
+- The `validateAvoEvent` function validates event structures (event name and properties) locally.
+- The validation logic is generated into the function based on the tracking plan documented in Avo.
+- The validateAvoEvent function emits two actions after running the validation:
+  1. Display the event in the <Link passHref href="/data-validation#health-dashboard"><a>mobile and web debuggers</a></Link>
+  2. Log the event structure and it’s validity into Avo
+
+## Why adding the validateAvoEvent function should be your first step?
+
+- With the `validateAvoEvent` function in the right place within the codebase, **the structure and validity of all tracked events that get triggered in development environment builds** will be documented into Avo.
+- Ensuring that all tracked events are documented in Avo creates a single **source of truth for your event schema**.
+  - This allows your team to start using the Avo web UI to suggest changes to the tracking plan.
+- Adding the `validateAvoEvent` is a low-effort way to activate the <Link passHref href="/data-validation#debuggers"><a>Data Health dashboard</a></Link>.
+  - The dashboard will **display tracking errors and tracking coverage**, and can act as a **powerful data QA tool**.
+- The `validateAvoEvent` function enables the <Link passHref href="/data-validation#health-dashboard"><a>mobile and web in-app debuggers</a></Link> , even before you replace the tracking calls with Avo custom tracking functions.
+  - The in-app debuggers display triggered analytics events in development environment builds.
+  - Developers have said things like “I just want to say that the debugger tool is super useful when adding events.” 👏
+  - The debuggers also give analytics managers and PM’s an in-app view into when events are triggered.
+
+## How is the validateAvoEvent function useful during migration over to using the type safe Avo custom tracking functions?
+
+- **Maintains an overview of the migration progress:**
+  - It can be cumbersome to migrate all tracking calls at once.
+  - Event structures coming through the `validateAvoEvent` are labelled as such in the Data Health dashboard.
+  - Having the `validateAvoEvent` function in parallel with the type safe Avo custom tracking functions will yield an **overview of the tracking calls that have been migrated to use Avo functions** and which calls are still coming through the `validateAvoEvent` function.
+  - This yields a clear list of tracking calls that are yet to be migrated.
+- **Powerful data QA tool:**
+  - QA processes become smoother through automation when adoption of the type safe Avo custom tracking functions begins.
+  - Having the `validateAvoEvent` will ensure that the team can have similar QA processes for the existing tracking that has not been migrated
+
+## Where should the validateAvoEvent function be placed in code?
+
+In general, the `validateAvoEvent` should be placed where the analytics event is emitted:
+
+- Most code bases have a “central wrapper” to handle the emission of analytics events.
+- This wrapper is then called in multiple call sites in the code base, to trigger events for a range of user interactions.
+- Add the `Avo.validateAvoEvent({eventName, eventProperties})` right after the line in the wrapper that emits the analytics event.
+
+Below is an examples of an“central wrapper” where the function would make sense where the event call is `AnalyticsNative.track()`:
+
+In _analytics.js_:
+
+```js
+// Avo.js is the file that contains the validateAvoEvent function.
+// It’s generated by running `avo pull` in the Avo CLI
+
+import Avo from './Avo.js';
+
+AnalyticsNative.track(eventName, params);
+// Given that env is a variable that is set to “dev” when the
+// app is running in development mode
+if (env == 'dev') {
+  Avo.validateAvoEvent({ eventName, eventProperties, env });
+}
+```
+
+## Setting up the validateAvoEvent function
+
+<Link passHref href="/quickstart#validate-current-events">
+  <a>Setup instructions for the validateAvoEvent function</a>
+</Link> can be found on our getting started docs.
+
+Got a question or a suggestion on how we can improve these instructions? Feel free to <Link passHref href="/help/troubleshooting"><a>reach out</a></Link>.

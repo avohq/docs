@@ -1,0 +1,122 @@
+---
+layout: 'guide'
+title: 'Inspector'
+# abstract: 'Learn about how to use the inspector dashboard'
+---
+
+import Link from '../../components/Link';
+
+The inspector tab is where you configure your inspector sources, get API keys to send data form the clients, set up slack alerts and examine the issues that Inspector found.
+
+### Default view and switching between views
+
+If you have no sources set up you will thee the <Link passHref href="./inspector#manage-sources"><a>Sources screen</a></Link> as the default view of the Inspector Tab.
+If you already have set up a source you would see the <Link passHref href="./inspector#view-events"><a>Events screen</a></Link>.
+Use the button in the top left corner to switch between the Sources and the Events screens.
+
+## Manage Sources
+
+### Sources
+
+Inspector shares sources with the <Link passHref href="/workspace/connections"><a>Connections</a></Link> tab.
+You'll see a grid of all sources set up in Avo in the connections tab.
+You can create new Inspector sources here, it will also appear in the Connections Tab.
+
+Source card have 3 states:
+
+- Receiving events - this source already received at least one event from the client SDK.
+
+<center>
+  <img
+    width="250"
+    src={require('../../images/workspace/inspector/inspector-source-receiving.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+- Waiting for events - the source is available for Inspection, but have not received any events yet. Press
+  the Source card to see the implementations details and the API key for this source.
+
+<center>
+  <img
+    width="250"
+    src={require('../../images/workspace/inspector/inspector-source-waiting.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+- Coming soon - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
+
+<center>
+  <img
+    width="250"
+    src={require('../../images/workspace/inspector/inspector-source-not-available.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+### Issue alerts
+
+Here you can connect Inspector to your Slack to receive a notification when new issues appear.
+
+Press the `Connect to Slack` button and follow the instructions.
+
+Avo Inspector will post new issues it finds in production hourly to the specified slack channel.
+
+## View Events
+
+### Header filters
+
+Here you can choose which environment to examine, the time window and search for event name.
+
+#### Environments
+
+Currently Inspector supports 3 types of environments:
+
+- Development
+- Staging
+- Production
+
+The events are streamed to the Environment specified in the client, based on the environment constant provided when initializing the Avo Inspector SDK.
+
+> Development and Staging events appear in the dashboard in a few minutes after they are fired and Production events can take up to 2 hours to show up.
+
+#### Time window
+
+Currently Inspector supports 4 types of time windows:
+
+- 1 hour
+- 24 hours
+- 7 days
+- 30 days
+
+All the time windows are updated hourly on Production and are close to real time in Development and Staging.
+
+#### Search for event name
+
+Type the vent name in the input field and only events with similar name will be shown.
+
+If you want an exact match put the event name in quotes, i.e. "App Opened".
+
+### Share current view of Inspector
+
+Notice that after you change the header filters the URL also changes. You can share this URL with a collegue and they would see exactly the same slice of inspector data as you filtered.
+
+### Events list
+
+The main part of the View Events screen is the list of all events seen, after the specified filters are applied.
+
+You can expand the events to see the event properties.
+
+If Inspector sees an event that is not yet in your tracking plan there is a shortcut to add it to your Tracking plan.
+
+If Inspector detects an issue it will indicate that in the list.
+
+If you select an event or property row a panel with detailed information will appear on the right. There you would be able to see extended information about the issues and edit the event or property in your tracking plan.
+
+<Link passHref href="/explore-tracking-plan/issue-types-in-inspector">
+  <a>
+    You can find the list of issue types which the Avo Inspector can detect here
+  </a>
+</Link>
+.

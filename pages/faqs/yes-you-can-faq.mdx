@@ -1,0 +1,196 @@
+---
+layout: 'guide'
+title: 'What can I do with Avo?'
+---
+
+import Link from '../../components/Link';
+
+Inspired by the amazing team at <a target="_blank" rel="noopener noreferrer" href="https://basecamp.com/yes">Basecamp</a>, we’d like to offer you our guide to all the ways Avo can work for you.
+
+### Can I use Avo to diagnose analytics issues?
+
+Yes, you can! The <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Avo Inspector SDK</a></Link> will automatically <Link passHref href="/workspace/inspector"><a>monitor the health of your current tracking</a></Link> and suggest fixes for issues such as missing events or properties, casing inconsistencies, property type mismatches, significant difference in volumes between platforms and many more.
+
+### Can I use Avo without adjusting my Privacy Policy?
+
+Yes, you can! Avo does not collect any user data. We only collect metadata about your user data. Avo doesn’t need to know the actual values, we only need to understand the shape of the data.
+
+### Can I use Avo to fix analytics issues?
+
+Yes, you can! The <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Avo Inspector SDK</a></Link> will automatically <Link passHref href="/workspace/inspector"><a>monitor the health of your current tracking</a></Link> and suggest fixes for issues such as missing events or properties, casing inconsistencies, property type mismatches, significant difference in volumes between platforms and many more.
+
+### Can I use Avo to generate analytics tracking code?
+
+Yes, you can! We offer a few different ways to do this. You can pull the <Link passHref href="/implementation/cli#step-3-pull-generated-analytics-wrappers-from-avo"><a>analytics wrappers from the CLI</a></Link>, or you can copy them from <Link passHref href="/workspace/implement#a-nameavo-filea-get-the-avo-file"><a>within the Avo UI</a></Link>.
+
+### Can I use the Inspector on my dev environment? What about production?
+
+Yes, you can! You can utilize Inspector in any environment. However, we suggest using Production data to surface issues accurately.
+
+### Can I use Avo in production without crashing my app?
+
+Yes, you can! Validation logs and warnings are by default only sent in the development environment, not in production. Strict mode validation can be enabled in development, which throws errors instead of logging them.
+
+### Can I sort and organize my events and analytics in Avo?
+
+Yes, you can! We recommend setting up and <Link passHref href="/data-design/organizing-metrics-and-events"><a>utilizing Categories</a></Link> and tags to keep track of events from different product features.
+
+### Can I implement platform-specific events or metrics?
+
+Yes, you can! Within the Avo UI, you will be able to select platform-specific sources and destinations if you are on the Growth or Enterprise Plans. For more information about source availablility, <Link passHref href="/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from"><a>check out what we support here</a></Link>.
+
+### Can I use Avo with my git workflow?
+
+Yes you can! Every team works differently, but we’ve put together an <Link passHref href="/implementation/avo-and-git"><a>example workflow here</a></Link>. Our <Link passHref href="/implementation/cli#using-avo-branches"><a>CLI documentation</a></Link> has more information on specific commands.
+
+### Can I use Avo to draft changes to my tracking plan in isolation?
+
+Yes, you can! We have a branched workflow and encourage all users to never directly edit the master branch. Avo’s Branched Workflow lets multiple teams work on conflicting metrics changes without disrupting each other’s work.
+
+### Can I use Avo to collaborate with my teammates?
+
+Yes, you can, and we hope you do! Check out <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/blog/introducing-branch-collaborators">this post</a> for how we support collaboration in our branches.
+
+### Can I use Avo with my existing analytics tracking?
+
+Yes, you can! The <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Avo Inspector SDK</a></Link> is designed to not require any changes to your existing tracking code.
+
+### Can I use Avo with custom analytics endpoints?
+
+Yes, you can! For custom pipelines and APIs, this is the perfect way to integrate with Avo. Check out our docs on it <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+
+### Can I use Avo with Segment?
+
+Yes, you can! <Link passHref href="/data-design/analytics#segment"><a>Check out our integration here</a></Link>.
+
+### Can I use Avo with Mixpanel?
+
+Yes, you can! <Link passHref href="/data-design/analytics#avo-mixpanel"><a>Check out our integration here</a></Link>.
+
+### Can I use Avo with Amplitude?
+
+Yes, you can! <Link passHref href="/data-design/analytics#avo-amplitude"><a>Check out our integration here</a></Link>.
+
+### Can I use Avo with AppsFlyer?
+
+Yes, you can! <Link passHref href="/data-design/analytics#appsflyer"><a>Check out our integration here</a></Link>.
+
+### Can I use Avo with Facebook Analytics?
+
+Yes, you can! <Link passHref href="/data-design/analytics#facebook-analytics"><a>Check out our integration here</a></Link>.
+
+### Can I use Avo with Firebase Analytics?
+
+Yes, you can! <Link passHref href="/data-design/analytics#firebase-analytics"><a>Check out our integration here</a></Link>.
+
+### Can I use Avo with FullStory?
+
+Yes, you can! <Link passHref href="/data-design/analytics#fullstory"><a>Check out our integration here</a></Link>.
+
+### Can I use Avo with Intercom?
+
+Yes, you can! <Link passHref href="/data-design/analytics#intercom"><a>Check out our integration here</a></Link>.
+
+### Can I publish my Avo tracking plan to Segment Protocols?
+
+Yes, you can! We integrate directly with Segment Protocols. <Link passHref href="/workspace/tracking-plan/publishing#a-namesegment-protocolsa-segment-protocols"><a>Find out more here</a></Link>.
+
+### Can I publish my Avo tracking plan to Mixpanel Lexicon?
+
+Yes, you can! We integrate with Mixpanel Lexicon. <Link passHref href="/workspace/tracking-plan/publishing#a-namemixpanel-lexicona-mixpanel-lexicon"><a>Find out more here</a></Link>.
+
+### Can I publish my Avo tracking plan to Amplitude Govern?
+
+Yes, you can! We integrate with Amplitude’s Govern (Taxonomy) tool. <Link passHref href="/workspace/tracking-plan/publishing#a-nameamplitude-governa-amplitude-govern"><a>Check out our integration here</a></Link>.
+
+### Can I publish my Avo tracking plan to my custom tracking tool?
+
+Yes, you can! <Link passHref href="/workspace/tracking-plan/publishing#a-namewebhooka-webhook"><a>Check out our Webhook integration here</a></Link>.
+
+### Can I implement Avo with Javascript?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with TypeScript?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with ReasonML?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with React Native?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Objective-C?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Swift?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Java?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Kotlin?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Node.js?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Python?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Ruby?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with PHP?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I implement Avo with Unity (C#)?
+
+Yes, you can! For more information on the languages we support, <Link passHref href="/implementation/supported-programming-languages"><a>check out our docs here</a></Link>.
+
+### Can I export my tracking plan from Avo?
+
+Yes, you can! You can use our <Link passHref href="/workspace/tracking-plan/publishing"><a>publishing feature</a></Link> to export it on either JSON schema format with a Webhook or the Amplitude/Mixpanel/Segment formats.
+
+### Can I document my metrics in context with my tracking plan?
+
+Yes, you can! We recommend <Link passHref href="/workspace/tracking-plan/metrics"><a>defining metrics</a></Link> before adding events to your tracking plan. In Avo, they are connected to events and help stakeholders understand why this event is being tracked.
+
+### Can I use Avo to QA my events?
+
+Yes you can! Avo’s <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers"><a>mobile debuggers</a></Link> make it easier than ever to test and QA event implementations.
+
+### Can I reuse a definition of a property in Avo?
+
+Yes you can! Avo’s property library is global in scope, so you don’t have to worry about multiple definitions for the same attribute.
+
+### Can I define what property values are allowed in Avo?
+
+Yes you can! <Link passHref href="/data-design/defining-descriptive-events-and-properties#a-nameproperty-constraintsa-property-constraints"><a>Property constraints</a></Link> within Avo allow you to create predefined rules about the values you will allow for any given property. Say goodbye to the days of nonsense metadata like “age” = “-1”.
+
+### Can I use Avo in my unit tests?
+
+Yes you can! <Link passHref href="/implementation/avo-and-unit-tests"><a>Avo in unit tests</a></Link> can be initialized with a noop flag that disables network requests and only run data validation.
+
+### Can I add descriptions to my events and properties with Avo?
+
+Yes you can! <Link passHref href="/data-design/defining-descriptive-events-and-properties#a-namedescriptionsa-descriptions-for-events-and-properties"><a>Defining descriptive events and properties</a></Link> is a best practice for keeping all your current and future teammates on the same page.
+
+### Can I use Avo to help stick to my naming convention?
+
+Yes, you can! In Inspector, you will see issues when naming conventions have been violated. You will also receive <Link passHref href="/data-design/defining-descriptive-events-and-properties#a-namenaming-conventionsa-naming-conventions-for-events-and-properties"><a>feedback in event and property naming modals</a></Link> and a summary in our <Link passHref href="/workspace/tracking-plan/issue-reporter"><a>issue reporter</a></Link> within your tracking plan.
+
+<Link passHref href="/help/troubleshooting">
+  <a>Get in touch</a>
+</Link> for more information.

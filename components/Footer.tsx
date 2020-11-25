@@ -16,13 +16,18 @@ const Footer: FunctionComponent = () => {
   return (
     <div className={styles.root}>
       <div className={styles.col}>
-        <Link href="/help/faq" passHref>
+        <Link href="/help/troubleshooting" passHref>
           <div className={classNames(styles.iconText, styles.link)}>
             <img src={require('../images/svg/faq.svg')}></img>
-            <div>FAQ and support</div>
+            <div>Support</div>
           </div>
         </Link>
-        <a href={gitHubPath} className={styles.link}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={gitHubPath}
+          className={styles.link}
+        >
           <div className={styles.iconText}>
             <img src={require('../images/svg/github.svg')}></img>
             <div>

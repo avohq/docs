@@ -1,0 +1,524 @@
+---
+layout: 'guide'
+title: 'Setting up custom destinations'
+---
+
+import Link from '../../components/Link';
+
+Sometimes the best way to integrate Avo is through a custom destination. For
+example:
+
+- When using Avo Functions alongside existing tracking implementation
+- When sending data to analytics platforms through an API (not using their SDK)
+- When using a combination of a programming language and analytics destination not yet directly supported by Avo
+- When you want to have controll over the initialization and the lifecycle of the Analytics SDK
+
+Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
+the best solution for you or if there are any analytics destinations you'd like to see supported in Avo.
+
+To get started using a custom destination you do the following:
+
+1. Create a Custom Destination in the Connections tab
+2. Pull the updated code by doing `avo pull` in the Avo CLI
+3. Initialize Avo with a custom destination
+4. Fill in the empty methods for sending the data to your analytics destination
+
+## Custom Destinations overview
+
+We will be referencing Avo _functions_, _events_, _actions_ and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> and subdocs to get familiar with Avo concepts.
+
+With a custom destination you'll get access to callback methods for Avo actions. The Avo generated code triggers the callbacks when corresponding Avo functions are called.
+
+### Callback methods
+
+- `make`: Triggered during Avo initialization.
+  Here you will usually initialize an analytics SDK with a development or production key based on the `env` parameter.
+- `logEvent`: All your analytics events are managed in the Avo dashboard. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
+  Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
+- `identify`: You can add the Identify User action to an event in the Avo dashboard. When calling an Avo function that includes the Identify User action you'll need to provide a user ID. Calling an Avo function that has the Identify User action will trigger this callback.
+  The main use cases are signup and login.
+  Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
+- `unidentify`: If you call an Avo function with the Unidentify User action, this callback will be triggered.
+  Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
+- `setUserProperties`: You can add user properties to events in the Avo dashboard. When an Avo function with attached user properties is called, this callback is triggered.
+  Here you would attach user properties to the currently identified user in your analytics platform.
+
+## Initialization instructions
+
+Below are instructions on how to initialize Avo with a custom destination for
+each of the supported languages:
+
+- [Web](#web)
+  - [JavaScript](#javascript)
+  - [TypeScript](#typescript)
+- [Mobile](#mobile)
+  - [React Native](#react-native)
+  - [iOS](#ios)
+    - [Objective-C](#obj-c)
+    - [Swift](#swift)
+  - [Android](#android)
+    - [Java](#java-android)
+    - [Kotlin](#kotlin)
+- [Backend](#backend)
+  - [Node.js](#node-js)
+    - [JavaScript](#node-javascript)
+    - [TypeScript](#node-typescript)
+  - [Java](#backend-java)
+  - [PHP](#php)
+  - [Python](#python)
+  - [Ruby](#ruby)
+- [Game Engines](#game-engines)
+  - [Unity (C#)](#unity)
+
+## <a name="web"></a> Web
+
+### <a name="javascript"></a> JavaScript
+
+Import the Avo library into your code:
+
+```javascript
+import Avo from './Avo';
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+var customDestination = {
+  make: function (env) {
+    // TODO implement
+  },
+  logEvent: function (eventName, eventProperties) {
+    // TODO implement
+  },
+  setUserProperties: function (userId, userProperties) {
+    // TODO implement
+  },
+  identify: function (userId) {
+    // TODO implement
+  },
+  unidentify: function () {
+    // TODO implement
+  },
+};
+```
+
+Call the initAvo function:
+
+```javascript
+Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
+```
+
+### <a name="typescript"></a> TypeScript
+
+```typescript
+import Avo from './Avo';
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+let customDestination = {
+  make: function (env) {
+    // TODO implement
+  },
+  logEvent: (eventName, eventProperties) => {
+    // TODO implement
+  },
+  setUserProperties: (userId, userProperties) => {
+    // TODO implement
+  },
+  identify: (userId) => {
+    // TODO implement
+  },
+  unidentify: () => {
+    // TODO implement
+  },
+};
+```
+
+Call the initAvo function:
+
+```typescript
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
+```
+
+## <a name="mobile"></a> Mobile
+
+### <a name="ios"></a> iOS
+
+#### <a name="obj-c"></a> Objective-C
+
+```objectivec
+import Avo
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+@interface CustomDestination : NSObject <AVOCustomDestination>
+
+@end
+
+@implementation CustomDestination : NSObject
+
+- (void)make:(AVOEnv)avoEnv
+{
+    // TODO implement
+}
+
+- (void)logEvent:(nonnull NSString*)eventName withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    // TODO implement
+}
+```
+
+Call the initAvo function:
+
+```objectivec
+CustomDestination * customDestination = [[CustomDestination alloc] init];
+[Avo initAvoWithEnv:AVOEnvDev
+  customDestination:customDestination];
+```
+
+#### <a name="swift"></a> Swift
+
+Import the Avo library into your code:
+
+```swift
+import Avo
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+class CustomDestination : AvoCustomDestination {
+    func make(env: AvoEnv) {
+        // TODO implement
+    }
+    
+    func logEvent(eventName: String, eventProperties: [String : Any]) {
+        // TODO implement
+    }
+    
+    func setUserProperties(userId: String, userProperties: [String : Any]) {
+        // TODO implement
+    }
+    
+    func identify(userId: String) {
+        // TODO implement
+    }
+    
+    func unidentify() {
+        // TODO implement
+    }
+}
+
+```
+
+Call the initAvo function:
+
+```swift
+func application(
+  _ application: UIApplication,
+  didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    Avo.initAvo(env: .dev, customDestination: CustomDestination())
+}
+```
+
+Where `customDestination` is the name of the destination in Avo.
+
+### <a name="android"></a> Android
+
+#### <a name="java"></a> Java
+
+Import the Avo library into your code:
+
+```java
+import Avo
+```
+
+Call the initAvo() function:
+
+```java
+Avo.initAvo(application, context, Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
+    public void make(Avo.AvoEnv env) {
+        // TODO implement
+    }
+
+    public void logEvent(String eventName, Map<String, Object> eventProperties) {
+        // TODO implement
+    }
+
+    public void setUserProperties(String userId, Map<String, Object> userProperties) {
+        // TODO implement
+    }
+
+    public void identify(String userId) {
+        // TODO implement
+    }
+
+    public void unidentify() {
+        // TODO implement
+    }
+});
+```
+
+#### <a name="kotlin"></a> Kotlin
+
+```kotlin
+import Avo
+```
+
+Call the initAvo function:
+
+```kotlin
+Avo.initAvo(application=application, context=this, env=AvoEnv.DEV, customDestination=object : ICustomDestination {
+    override fun make(env: AvoEnv) {
+        // TODO implement
+    }
+
+    override fun logEvent(eventName: String, eventProperties: Map<String, *>) {
+        // TODO implement
+    }
+
+    override fun setUserProperties(userId: String, userProperties: Map<String, *) {
+        // TODO implement
+    }
+
+    override fun identify(userId: String) {
+        // TODO implement
+    }
+
+    override fun unidentify() {
+        // TODO implement
+    }
+})
+```
+
+## <a name="backend"></a> Backend
+
+### <a name="node-js"></a> Node JS
+
+#### <a name="node-javascript"></a> JavaScript
+
+Import the Avo library into your code:
+
+```javascript
+var Avo = require('./Avo.js');
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+var customDestination = {
+  logEvent: async function (userId, eventName, eventProperties) {
+    // TODO implement
+  },
+  setUserProperties: function (userId, userProperties) {
+    // TODO implement
+  },
+};
+```
+
+If you need to be able to pass an Anonymous Id from the Avo function to your custom destination, [reach out to us](https://www.avo.app/docs/help/troubleshooting) and we'll enable that functionality for your workspace. When the Anonymous Id pass through has been enabled for your workspace the custom destination interface will look like this:
+
+```javascript
+var Avo = require('./Avo.js');
+
+var customDestination = {
+  logEvent: async function (anonymousId, userId, eventName, eventProperties) {
+    // TODO implement
+  },
+  setUserProperties: function (anonymousId, userId, userProperties) {
+    // TODO implement
+  },
+};
+```
+
+Call the initAvo() function:
+
+```javascript
+Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
+```
+
+By passing in the `customDestination` object, its `logEvent()` function can be used
+to deliver an event to any custom destination or pipeline.
+
+#### <a name="node-typescript"></a> TypeScript
+
+```typescript
+import Avo from './Avo';
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+let customDestination = {
+  logEvent: async function (userId, eventName, eventProperties) {
+    // TODO implement
+  },
+  setUserProperties: function (userId, userProperties) {
+    // TODO implement
+  },
+};
+```
+
+Call the initAvo function:
+
+```typescript
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
+```
+
+### <a name="java"></a> Java
+
+Import the Avo library into your code:
+
+```java
+import Avo
+
+```
+
+Call the initAvo() function:
+
+```java
+Avo.initAvo(Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
+  public void make(Avo.AvoEnv env) {
+      // TODO implement
+  }
+
+  public void logEvent(String anonymousId, String userId, String eventName, Map<String, Object> eventProperties) {
+      // TODO implement
+  }
+
+  public void setUserProperties(String userId, Map<String, Object> userProperties) {
+      // TODO implement
+  }
+});
+```
+
+### <a name="php"></a> PHP
+
+```php
+require_once './Avo';
+
+// An object representing your custom destination
+// that you pass into initAvo():
+class CustomDestination {
+    public function make($env) {
+        // TODO implement
+    }
+
+    public function logEvent($userId, $eventName, $eventProperties) {
+        // TODO implement
+    }
+
+    public function setUserProperties($userId, $userProperties) {
+        // TODO implement
+    }
+}
+```
+
+Call the initAvo function:
+
+```php
+Avo::initAvo([
+  'env' => 'dev',
+  'customDestinationInstance' => new CustomDestination,
+]);
+```
+
+### <a name="python"></a> Python
+
+Import the Avo library into your code:
+
+```python
+from __future__ import print_function
+
+import avo
+
+# An object representing your custom destination
+# that you pass into init_avo():
+class CustomDestination(object):
+    def __init__(self):
+        self.env = None
+
+    def make(self, env):
+        pass
+
+    def track_event(self, user_id, event_name, event_properties):
+        pass
+
+    def set_user_properties(self, user_id, user_properties):
+        pass
+```
+
+Call the init_avo() function:
+
+```python
+avo.init_avo(options={'env': 'dev'}, custom_destination=CustomDestination())
+
+```
+
+where `custom_destination` is the name of the custom destination in Avo.
+
+### <a name="ruby"></a> Ruby
+
+```ruby
+import Avo
+
+// An object representing your custom destination
+// that you pass into initAvo():
+class CustomDestination
+  def make(env:)
+    # TODO implement
+  end
+
+  def track_event(anonymous_id:, user_id:, event_name:, event_properties:)
+    # TODO implement
+  end
+
+  def set_user_properties(anonymous_id:, user_id:, user_properties:)
+    # TODO implement
+  end
+end
+```
+
+Call the initAvo function:
+
+```ruby
+Avo.init_avo(options: {:env => :dev}, custom_destination: CustomDestination.new)
+```
+
+## <a name="game-engines"></a> Game Engines
+
+### <a name="unity"></a> Unity (C#)
+
+```csharp
+using Avo;
+```
+
+Implement the custom destination:
+
+```csharp
+class CustomDestination : Avo.IDestination {
+    public void Make(Avo.AvoEnv env) {
+        // TODO implement
+    }
+
+    public async Task LogEvent(string eventName, IDictionary<string, object> eventProperties) {
+        // TODO implement
+    }
+
+    public async Task SetUserProperties(string userId, IDictionary<string, object> userProperties) {
+        // TODO implement
+    }
+
+    public async Task Identify(string userId) {
+        // TODO implement
+    }
+
+    public async Task Unidentify() {
+        // TODO implement
+    }
+}
+```
+
+Call the initAvo function:
+
+```csharp
+Avo.initAvo(env=Avo.AvoEnv.Dev, customDestination=new CustomDestination());
+```
