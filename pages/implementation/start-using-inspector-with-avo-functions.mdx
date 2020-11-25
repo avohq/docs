@@ -5,7 +5,7 @@ title: 'Getting started to use Inspector alongside Avo Functions'
 
 import Link from '../../components/Link';
 
-You need to do minor setup to enable **Avo Functions** reporting to **Avo Inspector**.
+You need to do minor setup to enable **Avo Functions** to start reporting to **Avo Inspector**.
 
 Common steps for all platforms:
 
@@ -22,10 +22,10 @@ Platform specific setup:
   <strong>iOS</strong>
 </summary>
 <p />
-Avo Functions report to Avo Inspector automatically starting with Avo version >=
-63.10.0 and Inspector SDK version >= 1.2.0.
+Avo Functions on iOS automatically report to Avo Inspector since Avo version >=
+`63.10.0` and Inspector SDK version >= `1.2.0`.
 
-> Make sure `AvoInspector` dependency in your podfile is equal or greater than 1.2.0.
+> Make sure `AvoInspector` dependency in your podfile is equal or greater than `1.2.0`.
 
 > You can use your own separate instance of Avo Inspector to analyze your tracking outside of Avo Functions, it will report the data correctly alongside the Avo Functions.
 
@@ -37,18 +37,14 @@ Avo Functions report to Avo Inspector automatically starting with Avo version >=
 <details>
 <summary><strong>Android</strong></summary>
 <p/>
-To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use
+To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use Avo version >= `63.10.0` and Avo Inspector SDK version >= `1.2.0`.
 
 
-- Avo version >= 63.10.0
-
-and
-
-- Avo Inspector SDK version >= 1.2.0.
-
-> Make sure `com.github.avohq:android-avo-inspector` dependency in your build.gradle file is equal or greater than 1.2.0.
+> Make sure `com.github.avohq:android-avo-inspector` dependency in your build.gradle file is equal or greater than `1.2.0`.
 
 > Generated Avo file exposes **avoInspectorApiKey** constant that contains your Inspector API key.
+
+This is how your Avo initialization code should look like:
 
 ```kotlin
 val inspector = AvoInspector(avoInspectorApiKey,
@@ -73,18 +69,14 @@ Avo.initAvoWithInspector(..., inspector);
 <details>
 <summary><strong>Web</strong></summary>
 <p/>
-To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use
+To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use Avo version >= `63.10.0` and Avo Inspector SDK version >= `1.2.0`.
 
-
-- Avo version >= 63.10.0
-
-and
-
-- Avo Inspector SDK version >= 1.2.0.
 
 > `avo-inspector` dependency in your package.json file should be equal or greater than 1.2.0.
 
 > Generated Avo file exposes **avoInspectorApiKey** constant that contains your Inspector API key.
+
+This is how your Avo initialization code should look like:
 
 ```javascript
 const inspector = new Inspector.AvoInspector({
@@ -116,18 +108,14 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
 <details>
 <summary><strong>React Native</strong></summary>
 <p/>
-To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use
+To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector when initializing Avo and use Avo version >= `63.10.0` and Avo Inspector SDK version >= `1.2.0`.
 
-
-- Avo version >= 63.10.0
-
-and
-
-- Avo Inspector SDK version >= 1.2.0.
 
 > `react-native-avo-inspector` dependency in your package.json file should be equal or greater than 1.2.0.
 
 > Generated Avo file exposes **avoInspectorApiKey** constant that contains your Inspector API key.
+
+This is how your Avo initialization code should look like:
 
 ```javascript
 const inspector = new Inspector.AvoInspector({

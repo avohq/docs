@@ -87,7 +87,7 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Issue Reporter',
+            title: 'Validation Warnings',
             path: '/workspace/tracking-plan/issue-reporter',
           },
         ],
@@ -113,33 +113,27 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Getting started with Avo Functions',
+        title: 'Using Avo Functions',
         path: '/implementation/start-using-avo-functions',
       },
       {
         type: 'route',
-        title: 'Getting started to receive data with a Custom Destination',
-        path: '/implementation/start-custom-destination',
-      },
-      {
-        type: 'route',
-        title: 'Getting started with the Avo Visual Debuggers',
+        title: 'Using the Avo Visual Debuggers',
         path: '/implementation/start-using-visual-debugger',
       },
       {
         type: 'route',
-        title: 'Getting started to use standalone Inspector',
+        title: 'Setting up the Inspector SDK',
         path: '/implementation/start-using-inspector',
       },
       {
         type: 'route',
-        title: 'Getting started to use Inspector alongside Avo Functions',
+        title: 'Using the Inspector SDK with Avo Functions',
         path: '/implementation/start-using-inspector-with-avo-functions',
       },
       {
         type: 'route',
-        title:
-          'Getting started to implement tracking plan changes in code with Avo',
+        title: 'Implementing tracking plan changes with Avo Functions',
         path: '/implementation/start-implementing-tracking-changes',
       },
       {
@@ -182,7 +176,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Subscribe to tracking plan changes webhook',
+        title: 'Subscribe to changes with webhooks',
         path: '/implementation/avo-tracking-plan-webhook',
       },
       {
@@ -191,7 +185,17 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo Inspector SDK reference',
+        title: 'Mobile debuggers',
+        path: '/implementation/mobile-debuggers-reference',
+      },
+      {
+        type: 'route',
+        title: 'Custom Destinations',
+        path: '/implementation/start-custom-destination',
+      },
+      {
+        type: 'route',
+        title: 'Avo Inspector SDK',
         path: '/implementation/avo-inspector-sdk-reference',
         subroutes: [
           {
@@ -229,24 +233,22 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Getting started to design data in Avo',
+        title: 'Design data in Avo',
         path: '/data-design/start-data-design',
       },
       {
         type: 'route',
-        title: 'Getting started to collaborate in Avo',
+        title: 'Collaborate in Avo',
         path: '/data-design/start-collaborating',
       },
       {
         type: 'route',
-        title:
-          'Getting started to use Inspector to help identify issues to fix in your legacy events',
+        title: 'Identify tracking issues with Inspector',
         path: '/data-design/start-using-inspector',
       },
       {
         type: 'route',
-        title:
-          'Getting started publishing your tracking plan to Amplitude Govern, Mixpanel Lexicon and Segment Protocols',
+        title: 'Publish your Tracking Plan to your schema management system',
         path: '/data-design/start-publishing',
       },
       {
@@ -296,19 +298,24 @@ const navigation: navigationItem[] = [
   },
   {
     title: 'Explore the Tracking Plan',
-    path: '/explore-tracking-plan/start-understandings-what-your-data-means',
+    path: '/explore-tracking-plan/start-using-visual-debuggers',
     iconName: 'tracking-plan',
     subroutes: [
-      {
+      /*       {
         type: 'route',
-        title: 'Getting started to understand what your data means with Avo',
+        title: 'Understanding what your data means with Avo',
         path:
           '/explore-tracking-plan/start-understandings-what-your-data-means',
+      }, */
+      {
+        type: 'route',
+        title: 'Using visual debuggers to understand tracking',
+        path: '/explore-tracking-plan/start-using-visual-debuggers',
       },
       {
         type: 'route',
-        title: 'Getting started using visual debuggers',
-        path: '/explore-tracking-plan/start-using-visual-debuggers',
+        title: 'Issue Types in the Avo Inspector',
+        path: '/explore-tracking-plan/issue-types-in-inspector',
       },
     ],
   },

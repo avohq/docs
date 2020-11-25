@@ -48,7 +48,7 @@ In Avo there are two options when it comes to destinations:
 **Option 2**. Let Avo fully manage the destination for you (everything from initializing to passing data into it).
 
 If you already have an analytics SDK running in our app, it's initialized and already receiving data, you should go with Option 1.
-If you don't have any existing tracking you can pick any option.
+If you don't have any existing tracking we recommend Option 2.
 
 Head back to the Connections tab and click "Add Destination". To configure a destination:
 
@@ -138,9 +138,9 @@ Before we can start using the Avo Functions to log events we first need to initi
 
 First we import the Avo Functions and set up the destinations.
 
-If we are using an Avo-managed tracking destination all we need to do is to import the corresponding SDK.
+If we are using an Avo-managed tracking destination (Option 2) all we need to do is to import the corresponding SDK.
 
-If we are using Custom Destinations we define an interface for each destination, where we connect it to our analytics SDK:
+If we are using Custom Destinations (Option 1) we define an interface for each destination, where we connect it to our analytics SDK:
 
 ```typescript
 import Avo from './Avo';
@@ -204,11 +204,11 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, myAnalyticsSDKBridge);
 
 <br />
 
-Detailed instructions for all other programming languages and platforms supported by Avo <Link passHref href="/implementation/start-custom-destination"><a>can be found here</a></Link>.
+Detailed instructions on how to initialize Avo with Custom Destinations for all other programming languages and platforms supported by Avo <Link passHref href="/implementation/start-custom-destination"><a>can be found here</a></Link>.
 
 ### Send an event
 
-Now we're ready to start implemening reliably analytics tracking with Avo Functions. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Trackin Plan on avo.app</a></Link> has it's own functin in the Avo Functions file.
+Now we're ready to start implementing reliably analytics tracking with Avo Functions. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Tracking Plan on avo.app</a></Link> has it's own function in the Avo Functions file.
 
 Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, with two Event Properties, "Client" and "Screen Name". Here's how we would send the event using Avo Functions:
 

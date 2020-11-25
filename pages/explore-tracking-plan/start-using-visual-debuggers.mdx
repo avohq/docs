@@ -7,17 +7,19 @@ import Link from '../../components/Link';
 
 When testing analytics on web and mobile apps it’s hard to know if the events are being sent successfully or not, and if they are being sent at the correct time.
 
-Our **_Visual Debuggers_** provide a way to control the events flow in your app, making testing analytics way easier and pleasant in web and mobile products.
+Our Visual Debuggers provide a way to control the events flow in your app, making testing analytics way easier and pleasant in web and mobile products.
 
 Each analyrtics event sent with Avo will automatically show up in the debugger with timestamp and all the properties.
 
-If **_Avo_** detects errors the visual debugger will highlight those.
+If Avo detects errors the visual debugger will highlight those.
 
 ### Accessing the web debugger
 
 The debuggers are on by default in development but can be accessed in production:
 
-Web: add the avo_debug=1 query parameter to the URL
+On web, add the `?avo_debug=1` query parameter to the URL.
+
+Example: `https://example.com/checkout?avo_debug=1`.
 
 <img
   src={require('../../images/web-debugger-example.png')}

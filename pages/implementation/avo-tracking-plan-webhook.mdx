@@ -1,16 +1,21 @@
 ---
 layout: 'guide'
-title: 'Subscribe to tracking plan changes webhook'
+title: 'Subscribe to changes with webhooks'
 ---
 
 import Link from '../../components/Link';
 
-After setting up Webhook integration in <Link passHref href="/workspace/tracking-plan/publishing"><a>Tracking Plan Publishing</a></Link>, your endpoint provided there will be called with a [JSON
-Schema](https://json-schema.org) payload representing the recent snapshot of your tracking plan when your tracking plan is published.
+After setting up Webhook integration in <Link passHref href="/workspace/tracking-plan/publishing"><a>Tracking Plan Publishing</a></Link>, your endpoint provided there will be called with a JSON
+Schema payload representing the recent snapshot of your tracking plan when your tracking plan is published.
 
 You can examine and download the exact JSON in the Publishing tab of your [Avo workspace](https://www.avo.app/schemas/).
 
-The format is similar to:
+<Link passHref href="/workspace/tracking-plan/publishing#tracking-plan-model">
+  <a>The format is documented here</a>
+</Link>
+, an example payload is:
+
+###
 
 ```JSON
 {

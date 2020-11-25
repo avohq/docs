@@ -6,10 +6,11 @@ title: 'Avo 101 for developers'
 
 import Link from '../../components/Link';
 
-The use case of Avo for developers is twofold.
+The use case of Avo for developers is twofold:
 
-- Avo generated file, which is the code representation of your tracking plan, containing Avo Functions
-- Avo Inspector SDKs
+- Avo generated file, which is the type-safe code representation of your tracking plan, containing Avo Functions, allows you to implementing reliable tracking fast.
+
+- Avo Inspector SDKs, allow you to plug in your existing tracking to Avo to analyze it and help you migrate to type-safe implementation.
 
 Each can be used on its own, but together they unlock the full power of Avo.
 
@@ -19,11 +20,11 @@ This is the code representation of the tracking plan you define in Avo for a giv
 
 First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another. The generated file is the best source of truth when looking for implementation details!
 
-You can make changes to the generated file, but remember, every time you pull the code from Фvo you would need to apply your changes separately. If you find yourself in this situation please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> and we will make our best to make the generated code support your use case.
+You should never have to make changes to the Avo generated file. If you find yourself in the situation where you have to edit the file please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link>.
 
 ### Avo Command Line Interface
 
-We created a CLI tool to interact with Avo from the command line.
+The Avo CLI is the easies way to interact with Avo from your development environment.
 Run
 
 ```sh
@@ -44,6 +45,9 @@ $ avo pull
 ```
 
 it will guide you through initial the setup and will create a config file called `avo.json` in the directory. Next time when you pull the setup will be picked from that file.
+
+Make sure to check the `avo.json` file in to your source control to keep the Avo configuration is in sync across your team.
+
 Learn more about the CLI <Link passHref href="/implementation/cli"><a>here</a></Link>.
 
 ### <a name="avo-generated-file-init"></a> Initialization
@@ -78,16 +82,16 @@ public static func setSystemProperties(
 Read more about property types later in the <Link passHref href="/implementation/devs-101#avo-generated-file-func-parameters"><a>Avo Functions section.</a></Link>
 
 - `custom destinations` - there are a few ways to manage how actual calls to analytics libraries are done.
-  One is to allow Avo to manage everything, in that case you only need to add tracking library dependency to your project. Another is to manage the calls yourself, using a Custom Destination. It's basically a callback Avo will make after an Avo function is triggered and Avo does all the validations and enrichment.
+  One is to allow Avo to manage everything, in that case you only need to add tracking library dependency to your project. Another is to manage the calls yourself, using a Custom Destination. It's basically a callback Avo will make after an Avo function is triggered. In that case Avo does all the validations and enrichment, but you take care of passing the data to your analytics destination.
   There is a third advanced mixed option, where you provide an initialized SDK to Avo, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you want to explore it.
 - `debugger` - mobile platforms (Android, iOS, React Native) support <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers"><a>the Avo Analytics Debuggers</a></Link>, provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
-- `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors.
-- `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments.
-- `destination options` (not shown in the example) - some platforms, for example Javscript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization.
+- `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors. Note that the Avo validation will never crash your app if env is set to Production.
+- `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is dismissed in production.
+- `destination options` (not shown in the example) - some platforms, for example Javscript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization. This allows you to pass config/options through Avo to the init functions of the underlying analytics SDKs.
 
 ### <a name="avo-generated-file-init-inside"></a> What's inside the initAvo method / Avo constructor?
 
-There are a few things happening, like setting the flags, system properties and reporting function invocation in development mode to the Avo servers, so you can check whether the function has ever been successfully invoked in development on the Avo website.
+There are a few things happening, like setting the flags, system properties and reporting implementation status in development mode to the Avo servers, so you can check whether the event has ever been successfully invoked in development, on the Avo website.
 
 But the most important part is initialization of the analytics destinations. Depending on the setup of your tracking plan you might see something like
 
@@ -106,7 +110,7 @@ if __ENV__ == .dev {
 }
 ```
 
-The keys are set up in the Avo web UI and automatically fetched by the codegen, so you don't need to do anything with this, just know that it is there.
+The keys are set up in the Avo web UI and automatically fetched by the codegen, so you don't need to do anything here, just know that it is there. The API keys in Avo are version controlled, and synced across all your sources, this way you don't need to worry if correct API key is being used or not, Avo takes care of it for you.
 
 ### Avo Functions
 
@@ -114,17 +118,17 @@ Avo functions are actual callable functions generated for events defined in your
 
 > On some server platforms Avo functions are async, i.e. on Node.js they return a Promise and on C# you can await on the Avo Functions
 
-For example if you have an event defined with name `Track Event with String Parameters` connected to your source, the Avo functions interface will look like
+For example if you have an event defined with name `App Opened` connected to your source, the Avo functions interface will look like
 
 ```swift
 /**
-    Track Event with String Parameters: Here goes the description from the Avo tracking plan
+    App Opened: This event is sent immediately after the user opens the app [This description is defined in the Tracking Plan on avo.app]
 
-    - SeeAlso: [Track Event with String Parameter](https://www.avo.app/link-to-the-event-in-your-tracking-plan)
+    - SeeAlso: [App Opened](https://www.avo.app/link-to-the-event-in-your-tracking-plan)
 */
-public func trackEventWithStringParameters(
-    requiredStringEventProperty: RequiredStringEventProperty,
-    optionalStringEventProperty: String?) {...}
+public func App Opened(
+    beverage: Beverage,
+    userId: String?) {...}
 ```
 
 #### <a name="avo-generated-file-func-parameters"></a> Property types
@@ -150,7 +154,7 @@ In Avo we made a design decision that you always need to provide a value of a pr
 You can notice that in the example above the first argument is not a `String`, but some other type. It happens because there is a constraint specified in the tracking plan that limits the possible values of this parameter. Avo has generated an enum for you:
 
 ```Swift
-public enum RequiredStringEventProperty : String {
+public enum Beverage : String {
     case beer = "beer"
     case wine = "wine"
     case cocktail = "cocktail"
@@ -163,7 +167,7 @@ The second parameter has no constraints, so it is a `String` (though it is optio
 In general, constraints can be added to properties to validate against:
 
 string properies: a finite list of allowed string values
-int and float properties: a minimum and/ maximum value
+int and float properties: a minimum and maximum value
 object properties: exact structure of the allowed keys and types of values in the object
 
 > Avo can add helper parameters that are not defined in the tracking plan, but are known to be required to make that specific call, for example in server environments Avo usually adds a userId parameter to each function, so server can provide user id to the analytics tracking services.
@@ -178,18 +182,18 @@ Tracking code would look similar to this:
 ```swift
 // destination Amplitude
 var amplitudeDestinationEventProperties: [String: Any] = [:]
-// amplitudeDestinationEventProperties will be populated with all the provided properies to this Avo Function and all the system properties.
-amplitudeDestination?.logEvent("Test Unidentify", amplitudeDestinationEventProperties)
+// amplitudeDestinationEventProperties will be populated with all the provided properties to this Avo Function and all the system properties.
+amplitudeDestination?.logEvent("Logged Out", amplitudeDestinationEventProperties)
 amplitudeDestination?.unidentify()
 // destination Mixpanel
 var mixpanelDestinationEventProperties: [String: Any] = [:]
-// mixpanelDestinationEventProperties will be populated with all the provided properies to this Avo Function and all the system properties.
-mixpanelDestination?.logEvent("Test Unidentify", mixpanelDestinationEventProperties)
+// mixpanelDestinationEventProperties will be populated with all the provided properties to this Avo Function and all the system properties.
+mixpanelDestination?.logEvent("Logged Out", mixpanelDestinationEventProperties)
 mixpanelDestination?.unidentify()
 // destination Custom dest
 var customDestEventProperties: [String: Any] = [:]
 // customDestEventProperties will be populated with all the provided properies to this Avo Function and all the system properties.
-customDest.logEvent(eventName: "Test Unidentify", eventProperties: customDestEventProperties)
+customDest.logEvent(eventName: "Logged Out", eventProperties: customDestEventProperties)
 customDest.unidentify()
 ```
 
@@ -284,3 +288,5 @@ func trackAppOpened(appOpenedEvent: Dictionary<String, Any>) {
 combination of types, i.e. an optional integer would look like integer | null. If we've seen a mix of integers, strings and nulls it will be integer | string | null. List can be a part of combination.
 parametrized list, i. e. list<integer | null>
 nested objects
+
+> Bonus: this docs you are reading <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/docs">are open sourced</a>, if you find anything wrong or missing, please open a pull request or an issue!

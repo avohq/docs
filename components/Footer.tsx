@@ -22,7 +22,12 @@ const Footer: FunctionComponent = () => {
             <div>Support</div>
           </div>
         </Link>
-        <a href={gitHubPath} className={styles.link}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={gitHubPath}
+          className={styles.link}
+        >
           <div className={styles.iconText}>
             <img src={require('../images/svg/github.svg')}></img>
             <div>
