@@ -50,6 +50,9 @@ To enable Avo Functions to report to Avo Inspector automatically you would need 
 This is how your Avo initialization code should look like:
 
 ```kotlin
+import app.avo.inspector.AvoInspector
+import app.avo.inspector.AvoInspectorEnv
+
 val inspector = AvoInspector(avoInspectorApiKey,
     application, AvoInspectorEnv.Dev)
 
@@ -57,6 +60,9 @@ Avo.initAvoWithInspector(inspector, ...)
 ```
 
 ```java
+import app.avo.inspector.AvoInspector;
+import app.avo.inspector.AvoInspectorEnv;
+
 AvoInspector inspector = new AvoInspector(StaticAvo.avoInspectorApiKey, getApplication(), AvoInspectorEnv.Dev);
 
 Avo.initAvoWithInspector(..., inspector);
@@ -82,6 +88,8 @@ To enable Avo Functions to report to Avo Inspector automatically you would need 
 This is how your Avo initialization code should look like:
 
 ```javascript
+const Inspector = require("avo-inspector");
+
 const inspector = new Inspector.AvoInspector({
   apiKey: Avo.avoInspectorApiKey,
   env: env.DEV,
@@ -92,6 +100,8 @@ Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
 ```
 
 ```typescript
+import * as Inspector from "avo-inspector";
+
 const inspector = new Inspector.AvoInspector({
   apiKey: Avo.avoInspectorApiKey,
   env: Inspector.AvoInspectorEnv.Dev,
@@ -105,6 +115,47 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
 
 </details>
 
+---
+
+<details>
+<summary><strong>Node</strong></summary>
+<p/>
+To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector, <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/node-avo-inspector">check the quick start guide for how to create one</a>, when initializing Avo and use Avo version >= `71.34.0` and Avo Inspector SDK version >= `0.1.0`.
+
+
+> `node-avo-inspector` dependency in your package.json file should be equal or greater than 0.1.0.
+
+> Generated Avo file exposes **avoInspectorApiKey** constant that contains your Inspector API key.
+
+This is how your Avo initialization code should look like:
+
+```javascript
+const Inspector = require("node-avo-inspector");
+
+const inspector = new Inspector.AvoInspector({
+  apiKey: Avo.avoInspectorApiKey,
+  env: env.DEV,
+  version: "1.0.0",
+  appName: "My App"
+});
+Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
+```
+
+```typescript
+import * as Inspector from "node-avo-inspector";
+
+const inspector = new Inspector.AvoInspector({
+  apiKey: Avo.avoInspectorApiKey,
+  env: Inspector.AvoInspectorEnv.Dev,
+  version: "1.0.0",
+  appName: "My App"
+});
+Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
+```
+
+> You can use the same instance of Avo Inspector to analyze your tracking outside of Avo Functions, it will report the data correctly alongside the Avo Functions.
+
+</details>
 
 ---
 
@@ -122,6 +173,8 @@ To enable Avo Functions to report to Avo Inspector automatically you would need 
 This is how your Avo initialization code should look like:
 
 ```javascript
+const Inspector = require("react-native-avo-inspector/dist-native");
+
 const inspector = new Inspector.AvoInspector({
   apiKey: Avo.avoInspectorApiKey,
   env: env.DEV,
@@ -132,6 +185,8 @@ Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
 ```
 
 ```typescript
+import * as Inspector from "react-native-avo-inspector/dist-native";
+
 const inspector = new Inspector.AvoInspector({
   apiKey: Avo.avoInspectorApiKey,
   env: Inspector.AvoInspectorEnv.Dev,
