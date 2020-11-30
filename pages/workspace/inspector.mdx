@@ -16,8 +16,6 @@ Use the button in the top left corner to switch between the Sources and the Even
 
 ## Manage Sources
 
-### Sources
-
 Inspector shares sources with the <Link passHref href="/workspace/connections"><a>Connections</a></Link> tab.
 You'll see a grid of all sources set up in Avo in the connections tab.
 You can create new Inspector sources here, it will also appear in the Connections Tab.
@@ -55,13 +53,28 @@ Source card have 3 states:
   />
 </center>
 
-### Issue alerts
+## Slack Integration
 
-Here you can connect Inspector to your Slack to receive a notification when new issues appear.
+On the Manage Sources screen you can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
 
 Press the `Connect to Slack` button and follow the instructions.
 
 Avo Inspector will post new issues it finds in production hourly to the specified slack channel.
+
+The Inspector Slack integration currently alerts on the following issues:
+
+- Property is sometimes not provided
+- Property is sent with inconsistent types
+- New event seen that is not in the Tracking Plan
+- New property seen that is not in the Tracking Plan
+- Property type does not match the Tracking Plan
+
+<center>
+  <img
+    src={require('../../images/workspace/inspector/inspector-slack-integration.png')}
+    alt="Inspector Slack Integration"
+  />
+</center>
 
 ## View Events
 
