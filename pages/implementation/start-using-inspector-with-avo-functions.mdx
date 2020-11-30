@@ -120,7 +120,7 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
 <details>
 <summary><strong>Node</strong></summary>
 <p/>
-To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector, <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/node-avo-inspector">check the quick start guide for how to create one</a>, when initializing Avo and use Avo version >= `71.34.0` and Avo Inspector SDK version >= `0.1.0`.
+To enable Avo Functions to report to Avo Inspector automatically you provide an instance of the Inspector when initializing Avo. This requires Avo version >= `71.34.0` and Avo Inspector SDK version >= `0.1.0`. <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/node-avo-inspector">Check the quick start guide for how to create an Avo Inspector instance</a>.
 
 
 > `node-avo-inspector` dependency in your package.json file should be equal or greater than 0.1.0.
@@ -199,4 +199,3 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
 > You can use the same instance of Avo Inspector to analyze your tracking outside of Avo Functions, it will report the data correctly alongside the Avo Functions.
 
 </details>
-
