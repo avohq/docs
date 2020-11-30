@@ -225,6 +225,11 @@ const navigation: navigationItem[] = [
             title: 'React native',
             path: '/implementation/inspector/sdk/react-native',
           },
+          {
+            type: 'route',
+            title: 'Node.js',
+            path: '/implementation/inspector/sdk/node',
+          },
         ],
       },
     ],
