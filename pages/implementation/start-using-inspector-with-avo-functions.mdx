@@ -78,8 +78,7 @@ Avo.initAvoWithInspector(..., inspector);
 <details>
 <summary><strong>Web</strong></summary>
 <p/>
-To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector, <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/js-avo-inspector">check the quick start guide for how to create one</a>, when initializing Avo and use Avo version >= `63.10.0` and Avo Inspector SDK version >= `1.2.0`.
-
+To enable Avo Functions to report to Avo Inspector automatically you provide an instance of the Inspector when initializing Avo. This requires Avo version >= `63.10.0` and Avo Inspector SDK version >= `1.2.0`. <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/js-avo-inspector/">Check the quick start guide for how to create an Avo Inspector instance</a>.
 
 > `avo-inspector` dependency in your package.json file should be equal or greater than 1.2.0.
 
@@ -92,11 +91,11 @@ const Inspector = require("avo-inspector");
 
 const inspector = new Inspector.AvoInspector({
   apiKey: Avo.avoInspectorApiKey,
-  env: env.DEV,
+  env: Inspector.AvoInspectorEnv.Dev,
   version: "1.0.0",
   appName: "My App"
 });
-Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
+Avo.initAvo( { env: "dev", inspector: inspector}, ...);
 ```
 
 ```typescript
@@ -134,11 +133,11 @@ const Inspector = require("node-avo-inspector");
 
 const inspector = new Inspector.AvoInspector({
   apiKey: Avo.avoInspectorApiKey,
-  env: env.DEV,
+  env: Inspector.AvoInspectorEnv.Dev,
   version: "1.0.0",
   appName: "My App"
 });
-Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
+Avo.initAvo( { env: "dev", inspector: inspector}, ...);
 ```
 
 ```typescript
@@ -162,9 +161,7 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev, inspector: inspector }, ...);
 <details>
 <summary><strong>React Native</strong></summary>
 <p/>
-To enable Avo Functions to report to Avo Inspector automatically you would need to provide an instance of Avo Inspector, <a target="\_blank" rel="noopener noreferrer"
-  href="https://github.com/avohq/js-avo-inspector/tree/react-native-node-package">check the quick start guide for how to create one</a>, when initializing Avo and use Avo version >= `63.10.0` and Avo Inspector SDK version >= `1.2.0`.
-
+To enable Avo Functions to report to Avo Inspector automatically you provide an instance of the Inspector when initializing Avo. This requires Avo version >= `63.10.0` and Avo Inspector SDK version >= `1.2.0`. <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/js-avo-inspector/tree/react-native-node-package">Check the quick start guide for how to create an Avo Inspector instance</a>.
 
 > `react-native-avo-inspector` dependency in your package.json file should be equal or greater than 1.2.0.
 
@@ -177,11 +174,11 @@ const Inspector = require("react-native-avo-inspector/dist-native");
 
 const inspector = new Inspector.AvoInspector({
   apiKey: Avo.avoInspectorApiKey,
-  env: env.DEV,
+  env: Inspector.AvoInspectorEnv.Dev,
   version: "1.0.0",
   appName: "My App"
 });
-Avo.initAvo( { env: env.DEV, inspector: inspector}, ...);
+Avo.initAvo( { env: "dev", inspector: inspector}, ...);
 ```
 
 ```typescript
