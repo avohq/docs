@@ -384,7 +384,10 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
           );
         case 'group':
           return (
-            <div key={"group-" + subroute.group} className={classNames(styles.subrouteGroup)}>
+            <div
+              key={'group-' + subroute.group}
+              className={classNames(styles.subrouteGroup)}
+            >
               {subroute.group}
             </div>
           );
