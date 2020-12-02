@@ -40,6 +40,10 @@ With a custom destination you'll get access to callback methods for Avo actions.
   Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
 - `unidentify`: If you call an Avo function with the Unidentify User action, this callback will be triggered.
   Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
+- `revenue`: If you add a `Log Revenue` action to Avo Function this callback will be invoked.
+  Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.
+- `page`: If you add a `Log Page View` action to Avo Function this callback will be invoked.
+  Here you would report navigation to your analytics destination.
 - `setUserProperties`: You can add user properties to events in the Avo dashboard. When an Avo function with attached user properties is called, this callback is triggered.
   Here you would attach user properties to the currently identified user in your analytics platform.
 
@@ -98,6 +102,12 @@ var customDestination = {
   unidentify: function () {
     // TODO implement
   },
+  revenue: function(amount, eventProperties) {
+    // TODO implement
+  },
+  page: function(pageName, eventProperties) {
+    // TODO implement
+  }
 };
 ```
 
