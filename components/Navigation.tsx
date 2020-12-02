@@ -5,6 +5,7 @@ import classNames from 'classnames';
 
 import { useRouter } from 'next/router';
 import Link from '../components/Link';
+import React from 'react';
 
 type route = {
   type: 'route';
@@ -360,7 +361,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
         case 'route':
           const subrouteActive = router.pathname === subroute.path;
           return (
-            <>
+            <React.Fragment key={subroute.path + ' ' + subroute.title}>
               <Link href={subroute.path} key={subroute.path}>
                 <div
                   className={classNames(styles.subroute, {
@@ -379,11 +380,14 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
                   {renderSubroutes(subroute.subroutes)}{' '}
                 </div>
               ) : null}
-            </>
+            </React.Fragment>
           );
         case 'group':
           return (
-            <div className={classNames(styles.subrouteGroup)}>
+            <div
+              key={'group-' + subroute.group}
+              className={classNames(styles.subrouteGroup)}
+            >
               {subroute.group}
             </div>
           );
