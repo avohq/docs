@@ -38,6 +38,30 @@ Avo.initAvo(...)
 Avo.avoLogger = MyAvoLogger()
 ```
 
+### JavaScript
+
+```JavaScript
+const avoLogger = {
+      logDebug: (env, message) => {
+        console.log("Avo Custom Logger Here!", message, env)
+        return true
+      },
+      logWarn: (env, message) => {
+        console.log("Avo Custom Logger Here!", message, env)
+        return true
+      },
+      logError: (env, message) => {
+        console.log("Avo Custom Logger Here!", message, env)
+        return true
+      }
+    };
+
+    Avo.initAvo(
+      { env: env.DEV, ..., avoLogger: avoLogger },
+      ...
+    );
+```
+
 > Avo Logger is not yet supported on all the platforms. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to use it on a particular platform that does not support it yet and we will enable the feature.
 
 ## Avo Inspector
