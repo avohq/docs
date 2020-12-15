@@ -265,6 +265,11 @@ const navigation: navigationItem[] = [
         path: '/data-design/start-publishing',
       },
       {
+        type: 'route',
+        title: 'Import your tracking plan into Avo',
+        path: '/data-design/import-tracking-plan',
+      },
+      {
         type: 'group',
         group: 'Tools',
       },
