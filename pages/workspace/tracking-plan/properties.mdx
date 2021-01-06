@@ -90,9 +90,11 @@ Properties values can also be a list of the above mentioned types:
 - [true, false, true, true, false]
 
 
-### <a name="property-presence-per-event"></a> Marking properties optional per event
+### <a name="property-presence-configuration"></a> Configuring when Properties are required
 
-Properties can be marked as optional. That means that Avo will not give you an error if that property is missing from an event that the property is attached to, in other words it will sometimes be sent.
+You can configure when Properties are required on a per-event and per-source basis. That means Avo will not give you an error if that property is missing from an event or source which the property is attached to, in other words it will sometimes be sent.
+
+For per-event granularity you can choose between _Sometimes Sent_ or _Always Sent_.
 
 <center>
   <img
@@ -102,9 +104,7 @@ Properties can be marked as optional. That means that Avo will not give you an e
   />
 </center>
 
-### <a name="property-presence-per-source-and-event"></a> Marking properties optional depending on source
-
-Properties can also be marked optional depending on source. As in the scenario above this additionally means Avo will not give you an error if that property is missing from an event which the property is attached to, for a given source.
+For configuring per-event and per-source you can change the overall setting for the property to _Depending on Source_, revealing the sources available for each event for even more granular control.
 
 <center>
   <img
