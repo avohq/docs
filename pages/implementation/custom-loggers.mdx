@@ -42,22 +42,22 @@ Avo.avoLogger = MyAvoLogger()
 
 ```JavaScript
 const avoLogger = {
-      logDebug: (env, message) => {
-        console.log("Avo Custom Logger Here!", message, env)
-        return true
-      },
-      logWarn: (env, message) => {
-        console.log("Avo Custom Logger Here!", message, env)
-        return true
-      },
-      logError: (env, message) => {
-        console.log("Avo Custom Logger Here!", message, env)
-        return true
-      }
-    };
+  logDebug: (env, message) => {
+    console.log("Avo Custom Logger Here!", message, env)
+    return true
+  },
+  logWarn: (env, message) => {
+    console.log("Avo Custom Logger Here!", message, env)
+    return true
+  },
+  logError: (env, message) => {
+    console.log("Avo Custom Logger Here!", message, env)
+    return true
+  }
+};
 
-    Avo.initAvo(
-      { env: env.DEV, ..., avoLogger: avoLogger },
-      ...
-    );
+Avo.initAvo(
+  { env: env.DEV, ..., avoLogger: avoLogger },
+  ...
+);
 ```
