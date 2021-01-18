@@ -191,6 +191,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Custom Loggers',
+            path: '/implementation/custom-loggers',
+          },
+          {
+            type: 'route',
             title: 'Mobile debuggers',
             path: '/implementation/mobile-debuggers-reference',
           },
