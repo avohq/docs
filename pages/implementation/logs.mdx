@@ -9,36 +9,7 @@ import Link from '../../components/Link';
 
 Avo functions print logs prefexed with `[avo]`
 
-To get fine control over the logs you can provide a custom logger to the Avo Functions.
-
-```Swift
-class MyAvoLogger : AvoLogger {
-    func logDebug(env: AvoEnv, message: String) -> Bool {
-        NSLog("[debug] My avo logger: " + String(describing: env) + " " + message)
-        return true
-    }
-    func logWarn(env: AvoEnv, message: String) -> Bool {
-        NSLog("[warn] My avo logger: " + String(describing: env) + " " + message)
-        return false
-    }
-    func logError(env: AvoEnv, message: String) -> Bool {
-        NSLog("[error] My avo logger: " + String(describing: env) + " " + message)
-        return false
-    }
-}
-```
-
-Notice the returned boolean, if you return `true` Avo Functions won't print the built-in logs.
-
-Then, after initializing Avo, you can provide your custom Avo logger.
-
-```Swift
-Avo.initAvo(...)
-
-Avo.avoLogger = MyAvoLogger()
-```
-
-> Avo Logger is not yet supported on all the platforms. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to use it on a particular platform that does not support it yet and we will enable the feature.
+Learn about controlling the logs output in Avo Functions <Link passHref href="/implementation/custom-loggers"><a>in the reference senction</a></Link>.
 
 ## Avo Inspector
 
