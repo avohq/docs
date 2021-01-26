@@ -13,7 +13,9 @@ import Link from '../../../components/Link';
     alt="Avo Publishing"
 />
 
+
 </p>
+
 
 Publishing is where you can configure Avo to publish your Tracking Plan to your analytics platform, a production time validation tool or your own custom endpoint via webhook.
 
@@ -132,6 +134,28 @@ To publish your Avo tracking plan to Govern, click the "Publish to Govern" butto
 On publish, Avo will merge your Avo tracking plan with any existing events in Govern. Any changes made to an event in Govern between Avo publish will be overridden on next Avo publish.
 
 Avo will not impact any events or properties that are only defined in Govern, or events that have not been added to the Govern integration in Avo.
+
+
+### Govern Publishing Errors
+
+The following errors might occur when publishing your tracking to Govern. When publishing errors occur the error message in the Avo UI will contain which items could not be updated along with the error codes.
+
+#### 404 Not Found
+
+We tried to update an event that doesn't exist in your Amplitude Govern Schema. If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema). If your Govern Schema has been initialized, and the error persists, please contact support.
+
+#### 408 Timeout
+
+The publishing operation took too long. This can happen when publishing large tracking plans for the first time. Click publish again to resume the publish, it will continue from where it left off.
+
+#### 409 Conflict
+
+We tried to update an item that doesn't exist in your Amplitude Govern Schema. This might be caused by an internal error. Please reach out to support so we can help you resolve the issue.
+
+#### 429 Too Many Requests
+
+We've exceeded the number of Govern requests we can make per hour for these API credentials. Please wait before trying to publish again. You can learn more about Amplitude Govern request limits [in the Amlitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360016606991-Taxonomy-API#h_53f1b7d4-ee8d-4a81-945b-e5a2909ddfad).
+
 
 <img
   src={require('../../../images/publishing_webhook.svg')}
