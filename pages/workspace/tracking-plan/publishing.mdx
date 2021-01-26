@@ -135,11 +135,6 @@ On publish, Avo will merge your Avo tracking plan with any existing events in Go
 
 Avo will not impact any events or properties that are only defined in Govern, or events that have not been added to the Govern integration in Avo.
 
-<img
-  src={require('../../../images/publishing_webhook.svg')}
-  alt="Webhook"
-  style={{ margin: '32px 0 -32px 0' }}
-/>
 
 ### Govern Publishing Errors
 
@@ -147,7 +142,7 @@ The following errors might occur when publishing your tracking to Govern. When p
 
 #### 404 Not Found
 
-We tried to update an event that doesn't exist in your Amplitud Govern Schema. If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema). If your Govern Schema has been initialized, and the error persists, please contact support.
+We tried to update an event that doesn't exist in your Amplitude Govern Schema. If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema). If your Govern Schema has been initialized, and the error persists, please contact support.
 
 #### 408 Timeout
 
@@ -155,12 +150,18 @@ The publishing operation took too long. This can happen when publishing large tr
 
 #### 409 Conflict
 
-We tried to update an item that doesn't exist in your Amplitud Govern Schema. This might be caused by an internal error. Please reach out to support so we can help you resolve the issue.
+We tried to update an item that doesn't exist in your Amplitude Govern Schema. This might be caused by an internal error. Please reach out to support so we can help you resolve the issue.
 
 #### 429 Too Many Requests
 
 We've exceeded the number of Govern requests we can make per hour for these API credentials. Please wait before trying to publish again. You can learn more about Amplitude Govern request limits [in the Amlitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360016606991-Taxonomy-API#h_53f1b7d4-ee8d-4a81-945b-e5a2909ddfad).
 
+
+<img
+  src={require('../../../images/publishing_webhook.svg')}
+  alt="Webhook"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
 
 ## <a name="webhook"></a> Webhook
 
