@@ -164,8 +164,11 @@ The array of context is then sent with the event where event call to Snowplow th
 
 ```javascript
 Snowplow.logEvent({
+  "schema": "'iglu:com.acme_company/event_action/jsonschema/2-0-0'",
   "data": {
-    "avo_event_name": "CART_UPDATED"
+      "avo_event_name": "CART_UPDATED",
+      "property_1": "property_value_1",
+      "property_2": "property_value_2",
   }
 }, [
     {
@@ -178,9 +181,9 @@ Snowplow.logEvent({
     },
     {
       "data": {
-        "page_name": properties.pageSnowplowContext.pageName,
-        "page_path": properties.pageSnowplowContext.pagePath,
-        "page_category": properties.pageSnowplowContext.pageCategory,
+        "page_name": pageName,
+        "page_path": pagePath,
+        "page_category": pageCategory,
       }
     }
   ]
