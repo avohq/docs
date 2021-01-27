@@ -112,3 +112,88 @@ For configuring per-event and per-source you can change the overall setting for 
     alt="Image shows how to change property presence between events"
   />
 </center>
+
+### <a name="snowplow-objects"></a> Snowplow Contexts
+
+To set up a Snowplow object, the property has to be attached to an event that is being sent to Snowplow. This can be configured in the source configuration of an event. Then you can create a property and set it's type to an object. When you do that, then the option appears on the property to make it a Snowplow context. When you check that box, the code will be generated such that the object is converted to a Snowplow object.
+You would need to define the schema id at this stage.
+
+<center>
+  <img
+    src={require('../../../images/workspace/properties/snowplow-context-example.png')}
+    width="60%"
+    alt="Example of a Snowplow context definition in Avo"
+  />
+</center>
+
+Here's how an individual Snowplow context is translated from what is defined in the UI to the context data structure:
+
+```json
+{
+  "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
+  "data": {
+    "product_name": "product_name_value",
+    "product_price": 10.0,
+    "product_id": "product_id_value",
+    "product_type": "product_type_value",
+  }
+}
+```  
+
+Each Snowplow context defined on an event in Avo then added to form an array of contexts:
+
+```json
+[
+  {
+    "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
+    "data": {
+      "product_name": "product_name_value",
+      "product_price": 10.0,
+      "product_id": "product_id_value",
+      "product_type": "product_type_value",
+    }
+  },
+  {
+    "schema": "iglu:com.acme_company/page_context/jsonschema/1-0-0",
+    "data": {
+      "page_name": "page_name_value",
+      "page_path": "page_path_value",
+      "page_category": "page_category_value",
+    }
+  }
+]
+```
+
+The array of context is then sent with the event where event call to Snowplow that looks like this:
+
+```javascript
+Snowplow.logEvent({
+  "schema": "iglu:com.acme_company/event_action/jsonschema/2-0-0",
+  "data": {
+      "avo_event_name": "CART_UPDATED",
+      "event_property_1": "event_property_value_1",
+      "event_property_2": "event_property_value_2",
+  }
+}, [
+    {
+      "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
+      "data": {
+        "product_name": "product_name_value",
+        "product_price": 10.0,
+        "product_id": "product_id_value",
+        "product_type": "product_type_value",
+      }
+    },
+    {
+      "schema": "iglu:com.acme_company/page_context/jsonschema/1-0-0",
+      "data": {
+        "page_name": "page_name_value",
+        "page_path": "page_path_value",
+        "page_category": "page_category_value",
+      }
+    }
+  ]
+)
+```
+
+The Snowplow object above is provided by you, so you get full access to this payload and can easily route it to Snowplow.
