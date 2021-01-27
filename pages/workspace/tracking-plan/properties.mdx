@@ -132,10 +132,10 @@ Here's how an individual Snowplow context is translated from what is defined in 
 {
   "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
   "data": {
-    "product_name": productName,
-    "product_price": productPrice,
-    "product_id": productId,
-    "product_type": productType,
+    "product_name": "product_name_value",
+    "product_price": 10.0,
+    "product_id": "product_id_value",
+    "product_type": "product_type_value",
   }
 }
 ```  
@@ -147,18 +147,18 @@ Each Snowplow context defined on an event in Avo then added to form an array of 
   {
     "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
     "data": {
-      "product_name": productName,
-      "product_price": productPrice,
-      "product_id": productId,
-      "product_type": productType,
+      "product_name": "product_name_value",
+      "product_price": 10.0,
+      "product_id": "product_id_value",
+      "product_type": "product_type_value",
     }
   },
   {
     "schema": "iglu:com.acme_company/page_context/jsonschema/1-0-0",
     "data": {
-      "page_name": pageName,
-      "page_path": pagePath,
-      "page_category": pageCategory,
+      "page_name": "page_name_value",
+      "page_path": "page_path_value",
+      "page_category": "page_category_value",
     }
   }
 ]
@@ -178,18 +178,18 @@ Snowplow.logEvent({
     {
       "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
       "data": {
-        "product_name": productName,
-        "product_price": productPrice,
-        "product_id": productId,
-        "product_type": productType,
+        "product_name": "product_name_value",
+        "product_price": 10.0,
+        "product_id": "product_id_value",
+        "product_type": "product_type_value",
       }
     },
     {
       "schema": "iglu:com.acme_company/page_context/jsonschema/1-0-0",
       "data": {
-        "page_name": pageName,
-        "page_path": pagePath,
-        "page_category": pageCategory,
+        "page_name": "page_name_value",
+        "page_path": "page_path_value",
+        "page_category": "page_category_value",
       }
     }
   ]
