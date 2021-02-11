@@ -1,0 +1,45 @@
+---
+layout: 'guide'
+title: 'Branches'
+abstract: 'Seamlessly work together on multiple fronts using branches'
+---
+
+## What are branches?
+
+In Avo you can collaborate in realtime on defining, expanding and implementing your tracking plan. But you might want to try out some changes or make sure that a change is implemented before you change your tracking plan source of truth. To capture this work in progress you can use branches.
+
+We highly recommend always creating a branch first before making changes to the tracking plan, no matter how small the changes are – in particular if the changes made require implementation. If changes are made directly on the main branch, then you risk someone else creating a branch that include your incomplete changes, which will very likely lead to conflicts in the future.
+
+## How to create branches
+
+To create a new branch, first make sure you are on the main branch. Then click the icon with the plus sign next to where it says `master`.
+
+<center>
+  <img
+    width="100%"
+    src={require('../../images/best-practices/day-to-day-workflow/open-branch.gif')}
+    alt="Opening a branch"
+  />
+</center>
+
+## How should branches be structured?
+
+We recommend setting up branches that have isolated changes that can be opened, implemented and merged within a few days. Typically there's a one to one mapping between Avo branches and git branches.
+
+Like in git, we recommend against creating big branches with a backlog of events and properties to be implemented. We'd rather recommend splitting them in to manageable chunks that will be implemented together in a single git branch.
+
+## Protected main branch 
+
+To make sure no one accidentally makes changes directly on the main brand and encourage peer review, you can opt in to protecting the main branch. That means:
+- Only admins can make changes directly on the main branch
+- Only admins can merge branches that haven't been approved by a collaborator
+
+To enable this configuration, click the settings wheel in your workspace, go into members and permissions and check "Protected Main Branch" in the permissions tab.
+
+<center>
+  <img
+    width="50%"
+    src={require('../../images/protected-main-branch.png')}
+    alt="Protecting the main branch"
+  />
+</center>
