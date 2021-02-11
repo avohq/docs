@@ -61,3 +61,27 @@ Avo.initAvo(
   ...
 );
 ```
+
+### TypeScript
+
+```TypeScript
+const avoLogger = {
+  logDebug: (env: AvoEnv, message: string): boolean => {
+    console.log("Avo Custom Logger Here!", message, env)
+    return true
+  },
+  logWarn: (env: AvoEnv, message: string): boolean => {
+    console.log("Avo Custom Logger Here!", message, env)
+    return true
+  },
+  logError: (env: AvoEnv, message: string): boolean => {
+    console.log("Avo Custom Logger Here!", message, env)
+    return true
+  }
+};
+
+Avo.initAvo(
+  { env: env.DEV, ..., avoLogger: avoLogger },
+  ...
+);
+```
