@@ -5,11 +5,13 @@ title: 'Custom Loggers'
 
 import Link from '../../components/Link';
 
-> Custom loggers are currently only supported in Swift and Javascript. <Link passHref href="/help/troubleshooting"><a>Reach out to us</a></Link> if you want access to custom loggers in your programming languages.
-
-### Swift
+> Custom loggers are currently only supported in Swift, JavaScript and TypeScript. <Link passHref href="/help/troubleshooting"><a>Reach out to us</a></Link> if you want access to custom loggers in your programming languages.
 
 To get fine control over the logs you can provide a custom logger to the Avo Functions.
+
+Notice the returned boolean, if you return `true` Avo Functions won't print the built-in logs.
+
+### Swift
 
 ```Swift
 class MyAvoLogger : AvoLogger {
@@ -26,13 +28,7 @@ class MyAvoLogger : AvoLogger {
         return false
     }
 }
-```
 
-Notice the returned boolean, if you return `true` Avo Functions won't print the built-in logs.
-
-Then, after initializing Avo, you can provide your custom Avo logger.
-
-```Swift
 Avo.initAvo(...)
 
 Avo.avoLogger = MyAvoLogger()
