@@ -98,6 +98,7 @@ const navigation: navigationItem[] = [
           },
         ],
       },
+      { type: 'route', title: 'Branches', path: '/workspace/branches' },
       { type: 'route', title: 'Connections', path: '/workspace/connections' },
       { type: 'route', title: 'Implement', path: '/workspace/implement' },
       { type: 'route', title: 'Inspector', path: '/workspace/inspector' },
