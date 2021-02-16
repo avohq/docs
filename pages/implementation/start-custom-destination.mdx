@@ -126,19 +126,19 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 let customDestination = {
-  make: function (env) {
+  make: function (env: AvoEnv) {
     // TODO implement
   },
-  logEvent: (eventName, eventProperties) => {
+  logEvent: function (eventName: string, eventProperties: any) {
     // TODO implement
   },
-  setUserProperties: (userId, userProperties) => {
+  setUserProperties: function (userId: string, userProperties: any) {
     // TODO implement
   },
-  identify: (userId) => {
+  identify: function (userId: string) {
     // TODO implement
   },
-  unidentify: () => {
+  unidentify: function () {
     // TODO implement
   },
 };
