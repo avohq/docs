@@ -53,12 +53,12 @@ You can receive email alerts when new issues are detected. Head to the Issues da
 
 ### When will the "bubble" from the In-App Inspector (aka Avo Debuggers) be visible in my app?
 
-The "bubble" of the [In-App Inspector (aka Avo Debuggers)](https://www.avo.app/docs/explore-tracking-plan/start-using-visual-debuggers) is visible when [the debugger is initialized](https://github.com/avohq/react-native-analytics-debugger) in a `dev` environment. Read more about the 
+The "bubble" of the [In-App Inspector (aka Avo Debuggers)](https://www.avo.app/docs/explore-tracking-plan/start-using-visual-debuggers) is visible when Avo is used in a `dev` environment. The details differ between platforms as follows:
+
+On Android and iOS the bubble will be shown if you unclude the Inspector SDK and initialize it in the `dev` environment.
+On Web the bubble will be shown if you are using Avo Functions in the `dev` environment.
+On react Native the bubble is not shown automatically. You would have to trigger it manually.
 
 ### If I ship the Inspector SDK to prod, will the In-App Inspector bubble be visible in prod?
 
-Nope! 
-
-First of all, [setting up the Inspector SDK](https://www.avo.app/docs/implementation/setup-inspector-sdk) does not automatically activate the [In-App Inspector (aka Avo Debuggers)](https://www.avo.app/docs/explore-tracking-plan/start-using-visual-debuggers). Instead, the Inspector SDK activates the [Inspector Dashboard](https://www.avo.app/inspector) so you get ongoing data observability and can start figuring out what is wrong with tracking 😅
-
-Second of all: The "bubble" is only on in `dev`. (More in above answer).
+Nope! The "bubble" is only on in `dev`. (More in above answer).
