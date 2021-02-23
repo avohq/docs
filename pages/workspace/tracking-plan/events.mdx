@@ -27,6 +27,19 @@ An event is defined in the Events section of the Tracking plan and can be organi
 - The <Link passHref href="/workspace/tracking-plan/metrics"><a>_Metrics(s)_</a></Link> related to the event
 - The _category(s)_ that the event is a part of
 
+### Sources
+
+Add all sources you want the event to be sent from to the event in Avo. If you want the event to be implemented with [Avo Functions](https://www.avo.app/docs/implementation/devs-101#a-nameavo-generated-filea-avo-generated-file-containing-avo-functions), make sure "Implement with Avo" is checked. Having "Implement with Avo" checked adds the event to your type-safe generated Avo Functions file for that source. If you don't want the event to be implemented with Avo Functions, leave "Implement with Avo" unchecked.
+
+<center>
+  <img
+    src={require('../../../images/workspace/tracking-plan/event-sources.png')}
+    alt="The sources the event should be sent from"
+    width="75%"
+  />
+</center>
+
+
 ### <a name="actions"></a> Actions
 
 Actions is an umbrella term over all the tracking methods the analytics platforms offer. In Avo you can define your actions in the Actions part of the tracking plan and organize them into categories. Actions can be triggered on their own or together, for example it's common to trigger any of the actions along with logging an event.
