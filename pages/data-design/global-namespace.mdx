@@ -1,0 +1,68 @@
+---
+layout: 'guide'
+title: 'Global Namespace'
+abstract: 'Global namespace for events and properties'
+---
+import Link from '../../components/Link';
+
+
+This guide is a part of our Avo Design Decision series, and it covers our decision for this:
+
+> 👉 Avo has a **global [namespace](https://en.wikipedia.org/wiki/Namespace)** to ensure that **all events and properties in the tracking plan have unique names** that they can be easily identified.
+
+Data design is a rising skill. Please check out our guide on <Link passHref href="/data-design/naming-conventions"><a>Naming conventions of events and properties</a></Link>.
+
+Naming inconsistencies often arise either during the "data design" step, not only implementation step. This is particularly true as product organizations scale up and multiple teams contribute to the tracking plan. (It's difficult enough to remember all the events you *yourself* created, let alone be aware of all the events other people have created).
+
+Having a global namespace for all events and properties allows Avo to support people in various ways in designing better data. 
+
+For example:
+
+1. Avo **prevents creating a duplicate event** whose only difference from an existing event is the *casing*. Same for property names. 
+
+    For example: Avo won't allow you create a `signupStart` event if `SIGNUP_START` already exists:
+
+    <img
+	  src={require('../../images/best-practices/naming-conventions/already_exists.png')}
+	  alt="Property already exists"
+	  width="75%"
+	/>
+
+2. Avo ***nudges* you if you try to create an event in a casing that contradicts** your tracking plan casing convention. Same for property names. 
+
+    For example: if the convention is `snake_case` and you type in `gameStarted` in the event creation modal, Avo will suggest the right casing to you before you create the event:
+
+    <img
+	  src={require('../../images/best-practices/naming-conventions/consistant_casing.png')}
+	  alt="Consistant casing suggestion"
+	  width="75%"
+	/>
+
+
+3. Avo ***nudges* you if you try to create an event with similar words as an event that already exists**.
+
+    For example: if you try to create `UPDATE_EMAIL` while `EMAIL_UPDATE` already exists.
+
+    <img
+	  src={require('../../images/best-practices/naming-conventions/similar_to.png')}
+	  alt="Similar to existing event"
+	  width="75%"
+	/>
+
+4. Avo ***prevents* you from creating properties with slightly different meaning depending on which event** they are sent from.
+
+    This is a source of many confusions for the "data consumers" (analysts, PMs, whoever is digging into the data).
+
+    For example, the data consumer may be used to `player_id` meaning *"id of the current player"*, but then all of a sudden a new event gets created with `player_id` referring to the opposing player. 🤯 The consequences are not only confusion, but also that the "normal"  `player_id` property cannot be added to the new event. With a global namespace for properties, this cannot happen*.
+
+    > ** Avo provides workarounds to bypass this, in case you have existing tracking that requires support for this. Email support@avo.sh for more info.*
+
+5. Avo ***enforces* mutually exclusive property names for event properties and user properties**. 
+
+    For example, if you have a ***user property*** called `player_id`, you won't be able to create an ***event property*** called `player_id`.
+
+    Why does this matter? Because "***user properties***" typically update and overwrite a ***state of the user*** (often referred to as CRUD; create, read, update, delete), while ***"event properties"*** are specific only to the ***event they are attached***. This means if you segment data by a user property, you are segmenting by the *most-recently-known state of the **user***, while if you segment data by an event property, you segment it by the *at-the-time-of-the-event state of the **event***. These are typically two different states. Segmenting by them can produce vastly different results, and it can be dangerously misleading if data consumers can't distinguish between these two.
+
+    For example: Let's say there is a ***user property*** called `role`, which is kept up to date to always represent the user's current role. Let's say someone creates a `payment method updated` event with an ***event property*** `role`, which represents the user's role at the time of the event. Then someone wants to verify that only admins have been able to update the payment method. If they segment `payment method updated`  by the `role` ***user property***, instead of the `role` ***event property***, they will miss out on any cases where a user was able to modify the payment method as non-admin, as long as the user has been made admin since.
+
+    That's why Avo doesn't allow you to create ***event properties*** and ***user properties*** that have the same name.
