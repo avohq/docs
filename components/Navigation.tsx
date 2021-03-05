@@ -291,12 +291,22 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'group',
-        group: 'Advanced guides and best practices',
+        group: 'Guides and best practices',
       },
       {
         type: 'route',
         title: 'Day to day workflow',
         path: '/data-design/day-to-day-workflow',
+      },
+      {
+        type: 'route',
+        title: 'Naming Conventions',
+        path: '/data-design/naming-conventions',
+      },
+      {
+        type: 'route',
+        title: 'Global Namespace for events and properties',
+        path: '/data-design/global-namespace',
       },
       {
         type: 'route',
