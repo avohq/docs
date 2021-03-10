@@ -50,3 +50,15 @@ Reach out to support@avo.app or on Intercom, we would love to help!
 ### What kind of alerts can I set, if any?
 
 You can receive email alerts when new issues are detected. Head to the Issues dashboard on avo.app to configure email alerts.
+
+### When will the "bubble" from the In-App Inspector (aka Avo Debuggers) be visible in my app?
+
+The "bubble" of the [In-App Inspector (aka Avo Debuggers)](https://www.avo.app/docs/explore-tracking-plan/start-using-visual-debuggers) is visible when Avo is initialized in `dev` mode. The details differ between platforms as follows:
+
+On Android and iOS the bubble will be shown if you include the Inspector SDK and initialize it with the environment parameter set to `dev`.
+On Web the bubble will be shown if you are using Avo Functions and the env parameter in `initAvo` is set to `dev`.
+On React Native the bubble is not shown automatically. You will have to trigger it manually.
+
+### If I ship the Inspector SDK to prod, will the In-App Inspector bubble be visible in prod?
+
+Nope! The "bubble" is only on when env is set to `dev`. (More in above answer).

@@ -28,7 +28,8 @@ and in your module build.gradle:
 
 ```groovy
 dependencies {
-    implementation 'com.github.avohq:android-avo-inspector:x.x.x'
+    debugImplementation 'com.github.avohq.android-avo-inspector:dev:TAG' // Includes the visual inspector, a tool useful to monitor your analytics calls when developing
+    releaseImplementation 'com.github.avohq.android-avo-inspector:prod:TAG' // Does not include the visual inspector 
 }
 ```
 
@@ -286,13 +287,14 @@ fun hideVisualInspector(rootActivity: Activity)
 ### Get instance of `DebuggerManager`
 
 ```java
-@Nullable DebuggerManager getVisualInspector();
+@Nullable Object getVisualInspector();
 ```
 
 ```kotlin
-fun getVisualInspector(): DebuggerManager?
+fun getVisualInspector(): Object?
 ```
 
+In the `:dev` dependency the returned object is a nullable `DebuggerManager`. In the `:prod` dependency it always returns null.
 See more about the DebuggerManager in it's <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/android-analytics-debugger">Github repo.</a>
 
 ## <a name="segment-middleware"></a>Auto inspection with Segment SDK
