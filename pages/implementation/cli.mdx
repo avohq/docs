@@ -60,7 +60,7 @@ $ avo status
 
 ## Using Avo Branches
 
-When editing your tracking plan on avo.app you can branch out from the master tracking plan to make changes in isolation, just like with git. To pull analytics wrappers from an open Avo branch you first need to switch to that branch with `avo checkout`.
+When editing your tracking plan on avo.app you can branch out from the main tracking plan to make changes in isolation, just like with git. To pull analytics wrappers from an open Avo branch you first need to switch to that branch with `avo checkout`.
 
 ```bash
 $ avo checkout my-branch-name
@@ -82,11 +82,11 @@ Here is the workflow we recommend when working on Avo branches with git branches
 $ avo pull [my-source-name] --branch my-branch-name
 ```
 
-2. Once ready to merge, make sure your Avo branch is up to date with Avo master by pulling latest master changes into your branch. This can also be done from the branch review screen on avo.app.
+2. Once ready to merge, make sure your Avo branch is up to date with Avo main by pulling latest main changes into your branch. This can also be done from the branch review screen on avo.app.
    If any changes were pulled in, make sure to run `avo pull` again to update the analytics wrappers
 
 ```bash
-$ avo merge master
+$ avo merge main
 ```
 
 3. Review and merge your git branch
@@ -95,7 +95,7 @@ $ avo merge master
 
 ## Git Conflicts in Avo Files
 
-To resolve git conflicts in `avo.json` run `avo pull`. It will attempt to resolve the git conflicts in `avo.json` automatically and check whether the incoming branch has been merge and if your current branch is up to date with Avo master before pulling latest analytics wrappers.
+To resolve git conflicts in `avo.json` run `avo pull`. It will attempt to resolve the git conflicts in `avo.json` automatically and check whether the incoming branch has been merge and if your current branch is up to date with Avo main before pulling latest analytics wrappers.
 
 ```bash
 $ avo pull
@@ -121,7 +121,7 @@ Commands:
   avo checkout [branch]  Switch branches [aliases: branch]
   avo source <command>   Manage sources for the current project
   avo status [source]    Show the status of the Avo implementation
-  avo merge master       Pull Avo master branch into your current branch
+  avo merge main         Pull Avo main branch into your current branch
   avo conflict           Resolve git conflicts in Avo files [aliases: resolve, conflicts]
   avo edit               Open the Avo workspace in your browser
   avo login              Log into the Avo platform
