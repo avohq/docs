@@ -164,7 +164,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo and git',
+        title: 'Using Avo in large development teams',
         path: '/implementation/avo-and-git',
       },
       {

@@ -1,25 +1,73 @@
 ---
 layout: 'guide'
-title: 'Avo and git'
+title: 'Using Avo in large development teams'
 ---
 
 import Link from '../../components/Link';
 
-## Workflow
+In this doc we’ll cover how you can use Avo in large development teams, where multiple teams are working on multiple conflicting analytics changes in parallel, across multiple platforms.
 
-We recommend checking the generated code from Avo as well as avo.json into git. Git workflows vary between teams, but below is a workflow between Avo and git that we recommend for most teams. Check out our <Link passHref href="/implementation/cli#using-avo-branches"><a>CLI documentation</a></Link> to learn more about the branch commands.
+## FAQs
 
-When changes are made to a tracking plan in Avo:
+#### Should the Avo generated code and the avo.json file be checked into git?
 
+Yes, the generated code from Avo as well as avo.json should be checked into your source control. With the avo.json file checked in the Avo CLI configuration is automatically shared within your team, and the Avo generated file is also checked in just like any other code in your project.
+
+#### Do I need to manually resolve git conflicts in the Avo generated code and avo.json?
+
+No, if you have git conflicts in any Avo related files, run `avo pull` and the Avo CLI will take care of resolving the conflicts automatically. Learn more in the <Link passHref href="/implementation/cli#using-avo-branches"><a>CLI documentation</a></Link>.
+
+#### The avo.json on my git main branch is pointing to an Avo branch that has already been merged, is that expected?
+
+Yes, that is expected! The Avo CLI uses this information to verify that the Avo branch has been merged, for example when automatically resolving git merge conflicts in the Avo generated files. The Avo CLI will take care of automatically updating avo.json on next avo pull.
+
+## Example workflow
+
+Let’s look at an example. In our fictional company we have two development teams, iOS and Android. Even though the iOS and Android teams have an almost identical longterm product roadmap, they don’t work on the same features at the same time. In addition to that, each platform team can also be working on multiple features at the same time. This means there are always multiple analytics tracking changes happening in the company simultaneously.
+
+How does that work in Avo, where there is a single tracking plan shared across the entire company, and directly connected to each codebase with code generated Avo Functions to ensure a single source of truth?
+
+### Branches in Avo 
+
+Developers have been using branches in git to work on multiple code changes simultaneously for almost 20 years. In Avo you can use branches too, to work on multiple tracking plan changes simultaneously.
+
+Let’s say the iOS team at our fictional company is working on an updated checkout flow. As part of this work they’ll need to add new events to their tracking plan and also add properties to some existing events.
+
+First, they <Link passHref href="/workspace/branches#how-to-create-branches"><a>open a new branch</a></Link> in their Avo tracking plan, where they can modify the tracking plan without changing it for anyone else. They <Link passHref href="/data-design/day-to-day-workflow#a-namestep-3-defining-events-and-propertiesa-step-3--define-events-and-properties"><a>create the new events</a></Link>, and mark them to be <Link passHref href="/workspace/tracking-plan/events#sources"><a>sent from the iOS source</a></Link>. They add the new properties to the existing events and <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional"><a>mark the properties to be always sent on iOS</a></Link>. 
+<center>
+<img
+  src={require('../../images/best-practices/avo-in-large-dev-teams/event-sent-from-ios.png')}
+  width="60%"
+  alt="Onboarding flow event in Avo, sent from iOS"
+/>
+
+_Onboarding flow event in Avo, sent from iOS_
+
+<img
+  src={require('../../images/best-practices/avo-in-large-dev-teams/property-sent-from-ios.png')}
+  width="60%"
+  alt="Property always sent from iOS, never from Android"
+/>
+
+_Property always sent from iOS, never from Android_
+</center>
+
+When the tracking plan changes made on the branch have been <Link passHref href="/data-design/day-to-day-workflow#a-namestep-4-ask-for-reviewa-step-4--ask-for-review"><a>peer-reviewed and approved</a></Link> in Avo, they can start the tracking implementation. Using <Link passHref href="/implementation/cli#using-avo-branches"><a>the Avo CLI</a></Link> the iOS developer can pull their type-safe generated Avo code based on the tracking plan from the Avo branch, into their feature branch on git.
+
+Once the tracking has been implemented, and the feature is ready to go, the developer gets their git branch merged like they usually would. As soon as the git branch is merged into the git main branch, they merge their Avo branch in the Avo main branch. By doing so, the Avo main branch always represents the current state of Avo tracking on the git main branch on every platform.
+
+When it’s time for the Android team to implement the same changes, they would go through the same flow, but instead of creating the events and properties in Avo, they would only need to add the Android source to the events they want to implement, and set the properties to be always sent from Android.
+
+### Workflow summary
+
+When changes are made to a tracking plan in Avo
 1. Open a branch in Avo and make your changes
-2. Share the Avo branch with a developer
-3. Implement the changes in the Avo branch on a git branch. _We recommend having one git branch per source for each Avo branch_
-4. Before merging the git branch, make sure the git branch is up to date with the Avo branch. This can be done by running `avo pull`.
-5. Merge the git branch
-6. Merge the Avo branch
+2. Get a peer-review and approval on the changes on your Avo branch
+3. Implement the changes from the Avo branch in your code on a git branch
+4. Merge the git branch
+5. Merge the Avo branch
 
-Note: At this point avo.json on your git main branch is pointing to an Avo branch that has already been merged, which is perfectly fine! The Avo CLI will take care of automatically updating avo.json on next `avo pull`.
-
-## Resolving Conflicts
-
-As teams grow and more people are working on analytics implementation with Avo, chances are that conflicts in avo.json occur. The CLI is will help you resolve this conflicts, see more in the <Link passHref href="/implementation/cli#git-conflicts-in-avo-files"><a>CLI documentation</a></Link>
+## Want to learn more?
+- <Link passHref href="/implementation/devs-101"><a>Avo 101 for developers</a></Link>
+- <Link passHref href="/data-design/day-to-day-workflow"><a>Day to day Avo workflow</a></Link>
+- <Link passHref href="/implementation/cli"><a>Using the Avo CLI</a></Link>
