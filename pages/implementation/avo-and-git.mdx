@@ -34,8 +34,23 @@ Developers have been using branches in git to work on multiple code changes simu
 Let’s say the iOS team at our fictional company is working on an updated checkout flow. As part of this work they’ll need to add new events to their tracking plan and also add properties to some existing events.
 
 First, they <Link passHref href="/workspace/branches#how-to-create-branches"><a>open a new branch</a></Link> in their Avo tracking plan, where they can modify the tracking plan without changing it for anyone else. They <Link passHref href="/data-design/day-to-day-workflow#a-namestep-3-defining-events-and-propertiesa-step-3--define-events-and-properties"><a>create the new events</a></Link>, and mark them to be <Link passHref href="/workspace/tracking-plan/events#sources"><a>sent from the iOS source</a></Link>. They add the new properties to the existing events and <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional"><a>mark the properties to be always sent on iOS</a></Link>. 
+<center>
+<img
+  src={require('../../images/best-practices/avo-in-large-dev-teams/event-sent-from-ios.png')}
+  width="60%"
+  alt="Onboarding flow event in Avo, sent from iOS"
+/>
 
-[screenshots]
+_Onboarding flow event in Avo, sent from iOS_
+
+<img
+  src={require('../../images/best-practices/avo-in-large-dev-teams/property-sent-from-ios.png')}
+  width="60%"
+  alt="Property always sent from iOS, never from Android"
+/>
+
+_Property always sent from iOS, never from Android_
+</center>
 
 When the tracking plan changes made on the branch have been <Link passHref href="/data-design/day-to-day-workflow#a-namestep-4-ask-for-reviewa-step-4--ask-for-review"><a>peer-reviewed and approved</a></Link> in Avo, they can start the tracking implementation. Using <Link passHref href="/implementation/cli#using-avo-branches"><a>the Avo CLI</a></Link> the iOS developer can pull their type-safe generated Avo code based on the tracking plan from the Avo branch, into their feature branch on git.
 
