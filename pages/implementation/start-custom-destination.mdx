@@ -33,19 +33,27 @@ With a custom destination you'll get access to callback methods for Avo actions.
 
 - `make`: Triggered during Avo initialization.
   Here you will usually initialize an analytics SDK with a development or production key based on the `env` parameter.
-- `logEvent`: All your analytics events are managed in the Avo dashboard. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
+  If analytics SDK has already been initialized before you can leave this function blank.
+  Example: `analytics.init(env)`
+- `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
   Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
-- `identify`: You can add the Identify User action to an event in the Avo dashboard. When calling an Avo function that includes the Identify User action you'll need to provide a user ID. Calling an Avo function that has the Identify User action will trigger this callback.
+  Example: `analytics.track(eventName, eventProperties)` 
+- `identify`: You can add the Identify User action to an event in the Trackin Plan in Avo. When calling an Avo function that includes the Identify User action you'll need to provide a user ID. Calling an Avo function that has the Identify User action will trigger this callback.
   The main use cases are signup and login.
   Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
+  Example: `analytics.identify(userId)`
 - `unidentify`: If you call an Avo function with the Unidentify User action, this callback will be triggered.
   Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
+  Example: `analytics.identify(null)`
 - `revenue`: If you add a `Log Revenue` action to Avo Function this callback will be invoked.
   Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.
+  Example: `analytics.revenue(productId, quantity, price)`
 - `page`: If you add a `Log Page View` action to Avo Function this callback will be invoked.
   Here you would report navigation to your analytics destination.
+  Example: `analytics.page(pageName, eventProperties)`
 - `setUserProperties`: You can add user properties to events in the Avo dashboard. When an Avo function with attached user properties is called, this callback is triggered.
   Here you would attach user properties to the currently identified user in your analytics platform.
+  Example: `analytics.setUserProperties(userId, userProperties)`
 
 ## Initialization instructions
 
