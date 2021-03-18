@@ -31,3 +31,31 @@ describe('Avo', () => {
 ```
 
 The `noop` flag is supported in JavaScript, TypeScript, Reason, Java, Objective-C, Swift and Python.
+
+
+### Unit tests in Koltin and Swift
+
+In the generated Avo file we provide wrapping interface/protocol with all the event methods.
+
+Kotlin:
+```
+interface Avo {
+    fun feedbackGiven(
+        path: String,
+        feedback: String
+    ) 
+}
+```
+Swift:
+```
+public protocol AvoProtocol {
+    init (env: AvoEnv, customDestination: AvoCustomDestination,
+        strict: Bool, noop: Bool);
+    
+    func feedbackGiven(
+      path: String,
+      feedback: String);
+}
+```
+
+We suggest to mock it in your tests and verify that desired method is called with particular parameters.
