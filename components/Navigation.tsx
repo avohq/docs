@@ -169,8 +169,13 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo and unit tests',
+        title: 'Avo and tests',
         path: '/implementation/avo-and-unit-tests',
+      },
+      {
+        type: 'route',
+        title: 'Avo and linters',
+        path: '/implementation/avo-and-linters',
       },
       {
         type: 'route',
