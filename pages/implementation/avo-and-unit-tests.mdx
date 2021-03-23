@@ -1,6 +1,6 @@
 ---
 layout: 'guide'
-title: 'Avo in unit tests'
+title: 'Avo and tests'
 ---
 
 import Link from '../../components/Link';
@@ -37,25 +37,23 @@ The `noop` flag is supported in JavaScript, TypeScript, Reason, Java, Objective-
 
 In the generated Avo file we provide wrapping interface/protocol with all the event methods.
 
-Kotlin:
-```
-interface Avo {
+```kotlin
+public interface Avo {
     fun feedbackGiven(
         path: String,
         feedback: String
     ) 
 }
 ```
-Swift:
-```
+
+```swift
 public protocol AvoProtocol {
-    init (env: AvoEnv, customDestination: AvoCustomDestination,
-        strict: Bool, noop: Bool);
-    
     func feedbackGiven(
-      path: String,
-      feedback: String);
+        path: String,
+        feedback: String
+    )
 }
 ```
+
 
 We suggest to mock it in your tests and verify that desired method is called with particular parameters.
