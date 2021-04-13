@@ -421,28 +421,28 @@ Avo.initAvo(Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
 require_once './Avo';
 
 // An object representing your custom destination
-// that you pass into initAvo():
+// that you pass into init_avo():
 class CustomDestination {
     public function make($env) {
         // TODO implement
     }
 
-    public function logEvent($userId, $eventName, $eventProperties) {
+    public function log_event($userId, $event_name, $event_properties) {
         // TODO implement
     }
 
-    public function setUserProperties($userId, $userProperties) {
+    public function set_user_properties($user_id, $user_properties) {
         // TODO implement
     }
 }
 ```
 
-Call the initAvo function:
+Call the init_avo function:
 
 ```php
-Avo::initAvo([
+Avo::init_avo([
   'env' => 'dev',
-  'customDestinationInstance' => new CustomDestination,
+  'custom_destination_instance' => new CustomDestination,
 ]);
 ```
 
