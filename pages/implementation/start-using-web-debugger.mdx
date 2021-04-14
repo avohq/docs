@@ -1,0 +1,26 @@
+---
+layout: 'guide'
+title: 'Start using Avo Visual Debugger in code'
+---
+
+import Link from '../../components/Link';
+
+Web Visual debugger is integrated into the Avo generated file.
+
+Each Avo function will automatically show events in the debugger with timestamp and all the properties.
+
+If Avo detects errors the visual debugger will highlight those.
+
+> Debuggers are disabled in the <Link passHref href="/implementation/avo-and-unit-tests"><a>noop</a></Link> mode
+
+### Accessing the web debugger
+
+The Web Debugger is on by default in development.
+
+To disable the Web Debugger in development provide `webDebugger = false` to initAvo options:
+
+```javascript
+Avo.initAvo({ webDebugger: false, ... }, ...);
+```
+
+To access it in production add the `?avo_debug=1` query parameter to the URL.

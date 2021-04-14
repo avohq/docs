@@ -1,34 +1,100 @@
 ---
 layout: 'guide'
-title: 'What is Avo?'
+title: 'Does Avo suit me?'
 ---
 
 import Link from '../components/Link';
-import YouTube from 'react-youtube';
 
-Avo lets companies ship clean and functional product analytics, so they can make informed decisions that drive growth in three steps:
+We distinguish 3 levels of Avo adoption, you don't need to go all the way, because every stage has value in itself. 
 
-1. Design and review your metrics and events in the Avo app.
-2. Implement the analytics from the Avo command line tool
-3. Avo validates your events and delivers the data to your product analytics provider of choice.
+> For example, if you already have a framework for analytics implementation and implementation data bugs is not a problem for you, you can stay at the second adoption stage.
 
-Because your whole team has access to the same interface designing and verifying the data, you trust that the insights in your product analytics provider are correct. Developers love it because what’s been boilerplate and tedious work has been made error-proof for them so they can go back to building features instead of sweating over breaking their analytics every time they ship.
+## 1. Avo as the source of truth of your tracking plan
 
-The Avo Analytics Governance Workflow is built to unlock the virtuous cycle of good analytics governance where anyone can access the insights they need and it’s easy to implement changes. Empower your team to understand what gets tracked, participate in the data design, and then line up the code and implement. Rinse, review and repeat!
+Use Avo instead of your spreadsheet to manage and discuss your tracking plan. Avo is designed for analytics, so it's way better than the spreadsheet for that use case.
 
-## Why Avo?
+This stage does not require any developer input, so you can adopt it in the data design team without getting developer buyin.
 
-Unlock the inventiveness of your team by democratizing what gets tracked in your product. It sounds unattainable but isn’t.
+**Creating tracking plan in Avo**
 
-By standardising your product analytics using The Avo Analytics Governance Workflow, the insights and intelligence in your data is protected with a single source of truth for your cross-platform analytics.
+|Data Managers|Developers|
+--- | ---
+|If you already have a tracking plan you can import it to Avo||
+|- <Link passHref href="/tracking-plan/importing"><a>Import existing csv spreadsheet, Amplitude or Mixpanel tracking plan</a></Link>||
+|Next step would be fine tuning it and adding new events for new features, or, if you don't have tracking plan yet, you can define it in Avo||
+|- <Link passHref href="/data-design/start-data-design"><a>Design data in Avo</a></Link>||
+|- //TODO Define sources and destinations for documentation||
 
-With Avo your whole team has access to the data in a navigable UI. It makes your product analytics accessible. Just that gets your team back to work on moving your business forward, instead of chasing down frustrating inefficiencies.
+**Branched workflows**
 
-What we find though is this democratized access to data is not that it just frees up time, but it empowers your team to drive your business forward using data.
+|Data Managers|Developers|
+--- | ---
+|One of the core features for effectiva data design in Avo is branched workflow. It allows you to see the changes for a single feature and provides implementation instructions that you can share with the developers working on the analytics implementation.||
+|- TODO How to create a branch, branch diff view and implementations instructions||
+|- TODO Add how to invite coworkers to the beginning <Link passHref href="/data-design/start-collaborating"><a>Discussions and collaboration on branches</a></Link>||
+|- <Link passHref href="/data-design/day-to-day-workflow#a-namestep-4-ask-for-reviewa-step-4--ask-for-review"><a>Approval workflows (Steps 4 and 5 of this guide)</a></Link>||
 
-## Walkthrough of the Avo workflow
+**Publish tracking plan from Avo to other analytics tools**
 
-<YouTube videoId="RfFwY3vnMnw" />
+You can set up your tracking plan to be automatically published to Segment Protocols, Amplitude and Mixpanel every time a branch is merged. We also provide a webhook for advanced automation.
+
+|Data Managers|Developers|
+--- | ---
+|- <Link passHref href="/workspace/tracking-plan/publishing"><a>Setting up publishing and auto publishing to Segment, Amplitude, Mixpanel and webhook</a></Link>|- <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>Advanced optional automation: Listen to the tracking plan changes with a webhook</a></Link>|
+
+## 2. Connect your tracking implementation with your Avo tracking plan
+Add a lightweight SDK to your code to learn how actual implementation compares with the defined tracking plan. 
+Get instant feedback on what tracking is implemented when working on new features with the Implementation status in your Avo workspace. 
+Observe your tracking calls on device in real time with the Avo Debuggers.
+
+This stage requires one time setup in each of your applications.
+It is not necessary to to set up all platforms at once, can start with a single platform.
+Once it's done the data design team will get the full power of Avo.
+
+> Level 1 is required, but levels 2 and 3 are interchangable, i.e. you can go directly to level 3 without going through level 2 if you platform does not yet have the Inspector SDK and start using the Inspector once it's available.
+
+|Data Managers|Developers|
+--- | ---
+|- TODO more detailed guide <Link passHref href="/data-design/start-using-inspector"><a>Using Avo Inspector</a></Link>|- <Link passHref href="/implementation/devs-101#avo-inspector-sdk"><a>How does Avo Inspector SDK work?</a></Link>|
+|- <Link passHref href="/explore-tracking-plan/issue-types-in-inspector"><a>Issue types in the Avo Inspector</a></Link>|Avo Inspector reference|
+|- <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers#accessing-mobile-debuggers"><a>Using Mobile Debuggers</a></Link>|- <Link passHref href="/implementation/inspector/sdk/android"><a>Android</a></Link>|
+|- TODO Using implementations status|- <Link passHref href="/implementation/inspector/sdk/ios"><a>iOS</a></Link>|
+||- <Link passHref href="/implementation/inspector/sdk/web"><a>Web</a></Link>|
+||- <Link passHref href="/implementation/inspector/sdk/react-native"><a>React Native</a></Link>|
+||- <Link passHref href="/implementation/inspector/sdk/node"><a>Node.js</a></Link>|
+||- <Link passHref href="/implementation/setup-mobile-debugger"><a>Set up Mobile Debuggers</a></Link> |
+
+## 3. Generate type safe analytics code from your tracking plan
+Avo generates human readable code, called Avo functions, that sends the data exactly as planned. No more data bugs in your code, even between platforms!
+
+This stage requires constant interaction with Avo from developers. 
+It's not necessary to swap all your tracking with Avo functions, can start with a single tracking call.
+It's not necessary to adopt Avo functions in all platforms at once, can start with a single platform.
+
+- <Link passHref href="/data-design/day-to-day-workflow"><a>Avo workflow extended with using Avo functions</a></Link>
+
+|Data Managers|Developers|
+--- | ---
+|- TODO Set up the tracking plan for Avo functions (description of "Implement with Avo checkbox", 'i' button in the event screens leads here)|- <Link passHref href="/implementation/devs-101#a-nameavo-generated-filea-avo-generated-file-containing-avo-functions"><a>How do Avo Functions work?</a></Link>|
+|- TODO improve this guide <Link passHref href="/data-design/analytics"><a>Sources and destinations for Avo functions</a></Link>|- <Link passHref href="/implementation/cli"><a>Avo Cli</a></Link>|
+||- <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>Using Avo Inspector with Avo Functions</a></Link>|
+||Avo functions reference|
+||- <Link passHref href="/implementation/supported-programming-languages"><a>Programming languages</a></Link>|
+||- <Link passHref href="/implementation/start-custom-destination"><a>Custom destinations</a></Link>|
+||- <Link passHref href="/implementation/custom-loggers"><a>Custom loggers</a></Link>|
+||- <Link passHref href="/implementation/start-using-web-debugger"><a>Web debugger</a></Link>|
+
+## Comprehensive guides
+
+|Data Design|Implementation|
+--- | ---
+|- Global namespace|- Logs|
+|- Naming conventions|- Using Avo in large development teams|
+|- Documention purpose meetings|- Avo and tests|
+|- Documenting Downstream Dependancies|- Avo and linters|
+|- Multiple sources on Avo branches|- Avo in the CI|
+|- Defining descriptive events and properties||
+|- Organizing metrics and events||
 
 <p>
   <Link passHref href="/help/troubleshooting">

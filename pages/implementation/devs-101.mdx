@@ -177,7 +177,7 @@ object properties: exact structure of the allowed keys and types of values in th
 #### What's happening inside the Avo Functions
 
 Avo makes sure that the provided properties are correct according to the tracking plan with runtime validations, development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
-If Avo Inspector is connected, the event shape is sent there. Read more about <Link passHref href="/implementation/devs-101#avo-inspector"><a>Avo Inspector</a></Link> and how to <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>connect it to the Avo generated code</a></Link>.
+If Avo Inspector is connected, the event shape is sent there. Read more about <Link passHref href="/implementation/devs-101#avo-inspector-sdk"><a>Avo Inspector</a></Link> and how to <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>connect it to the Avo generated code</a></Link>.
 The last step is actually sending the provided data to all the configured tracking destinations. There are different classes of events that can be tracked: identify, log event, update user properties, unidentify, log revenue, log page view, but everything is handled inside the Avo file and delivered in a correct form to your destinations. If you are using a Custom Destination the data will be provided to the callback object you supplied during initialization.
 Tracking code would look similar to this:
 
@@ -234,9 +234,9 @@ assertString: function assertString(propertyId, propName, str) {
 
 A check like this is run when the Avo function is triggered. Then the message is delivered to the logs, debugger or as a crash in the strict mode depending on your setup.
 
-## Avo Inspector
+## Avo Inspector SDK
 
-Avo Inspector includes an SDK that extracts tracking plan information from your existing tracking calls. It provides methods to get the shape of an event you are going to send to the analytics platform and then to send that shape alongside the event name for analysis.
+Avo Inspector SDK extracts tracking plan information from your existing tracking calls. It provides methods to get the shape of an event you are going to send to the analytics platform and then to send that shape alongside the event name for analysis.
 The SDKs are distributed with the standard mechanism of the platform, like npm package, gradle dependency or a cocoapod.
 
 ### Avo Inspector initialization

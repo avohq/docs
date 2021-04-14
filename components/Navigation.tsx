@@ -106,153 +106,6 @@ const navigation: navigationItem[] = [
     ],
   },
   {
-    title: 'Implementation',
-    path: '/implementation/devs-101',
-    iconName: 'implementation',
-    subroutes: [
-      {
-        type: 'route',
-        title: 'Avo 101 for developers',
-        path: '/implementation/devs-101',
-      },
-      {
-        type: 'group',
-        group: 'Getting started guides',
-      },
-      {
-        type: 'route',
-        title: 'Using Avo Functions',
-        path: '/implementation/start-using-avo-functions',
-      },
-      {
-        type: 'route',
-        title: 'Using the Avo Visual Debuggers',
-        path: '/implementation/start-using-visual-debugger',
-      },
-      {
-        type: 'route',
-        title: 'Setting up the Inspector SDK',
-        path: '/implementation/setup-inspector-sdk',
-      },
-      {
-        type: 'route',
-        title: 'Using the Inspector SDK with Avo Functions',
-        path: '/implementation/start-using-inspector-with-avo-functions',
-      },
-      {
-        type: 'route',
-        title: 'Implementing tracking plan changes with Avo Functions',
-        path: '/implementation/start-implementing-tracking-changes',
-      },
-      {
-        type: 'group',
-        group: 'Tools',
-      },
-      {
-        type: 'route',
-        title: 'Command line tool',
-        path: '/implementation/cli',
-      },
-      {
-        type: 'route',
-        title: 'Logs',
-        path: '/implementation/logs',
-      },
-      {
-        type: 'group',
-        group: 'Advanced guides and best practices',
-      },
-      {
-        type: 'route',
-        title: 'Using Avo in large development teams',
-        path: '/implementation/avo-and-git',
-      },
-      {
-        type: 'route',
-        title: 'Avo and tests',
-        path: '/implementation/avo-and-unit-tests',
-      },
-      {
-        type: 'route',
-        title: 'Avo and linters',
-        path: '/implementation/avo-and-linters',
-      },
-      {
-        type: 'route',
-        title: 'Avo in the CI',
-        path: '/implementation/avo-in-the-ci',
-      },
-      {
-        type: 'route',
-        title: 'Subscribe to changes with webhooks',
-        path: '/implementation/avo-tracking-plan-webhook',
-      },
-      {
-        type: 'group',
-        group: 'Reference',
-      },
-      {
-        type: 'route',
-        title: 'Avo Functions',
-        path: '/implementation/supported-programming-languages',
-        subroutes: [
-          {
-            type: 'route',
-            title: 'Programming languages',
-            path: '/implementation/supported-programming-languages',
-          },
-          {
-            type: 'route',
-            title: 'Custom Loggers',
-            path: '/implementation/custom-loggers',
-          },
-          {
-            type: 'route',
-            title: 'Mobile debuggers',
-            path: '/implementation/mobile-debuggers-reference',
-          },
-          {
-            type: 'route',
-            title: 'Custom Destinations',
-            path: '/implementation/start-custom-destination',
-          },
-        ],
-      },
-      {
-        type: 'route',
-        title: 'Avo Inspector SDK',
-        path: '/implementation/avo-inspector-sdk-reference',
-        subroutes: [
-          {
-            type: 'route',
-            title: 'Android',
-            path: '/implementation/inspector/sdk/android',
-          },
-          {
-            type: 'route',
-            title: 'iOS',
-            path: '/implementation/inspector/sdk/ios',
-          },
-          {
-            type: 'route',
-            title: 'Web',
-            path: '/implementation/inspector/sdk/web',
-          },
-          {
-            type: 'route',
-            title: 'React native',
-            path: '/implementation/inspector/sdk/react-native',
-          },
-          {
-            type: 'route',
-            title: 'Node.js',
-            path: '/implementation/inspector/sdk/node',
-          },
-        ],
-      },
-    ],
-  },
-  {
     title: 'Data Design',
     path: '/data-design/start-data-design',
     iconName: 'data-design',
@@ -338,6 +191,165 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Organizing metrics and events',
         path: '/data-design/organizing-metrics-and-events',
+      },
+    ],
+  },
+  {
+    title: 'Implementation',
+    path: '/implementation/devs-101',
+    iconName: 'implementation',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Avo 101 for developers',
+        path: '/implementation/devs-101',
+      },
+      {
+        type: 'group',
+        group: 'Getting started guides',
+      },
+      {
+        type: 'route',
+        title: 'Using Avo Functions',
+        path: '/implementation/start-using-avo-functions',
+      },
+      {
+        type: 'route',
+        title: 'Using the Avo Visual Debuggers',
+        path: '/implementation/start-using-visual-debugger',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Start using the Avo Web Visual Debuggers',
+            path: '/implementation/start-using-web-debugger',
+          },
+          {
+            type: 'route',
+            title: 'Set up the Avo Mobile Visual Debuggers',
+            path: '/implementation/setup-mobile-debugger',
+          }
+        ]
+      },
+      {
+        type: 'route',
+        title: 'Setting up the Inspector SDK',
+        path: '/implementation/setup-inspector-sdk',
+      },
+      {
+        type: 'route',
+        title: 'Using the Inspector SDK with Avo Functions',
+        path: '/implementation/start-using-inspector-with-avo-functions',
+      },
+      {
+        type: 'route',
+        title: 'Implementing tracking plan changes with Avo Functions',
+        path: '/implementation/start-implementing-tracking-changes',
+      },
+      {
+        type: 'group',
+        group: 'Tools',
+      },
+      {
+        type: 'route',
+        title: 'Command line tool',
+        path: '/implementation/cli',
+      },
+      {
+        type: 'route',
+        title: 'Logs',
+        path: '/implementation/logs',
+      },
+      {
+        type: 'group',
+        group: 'Advanced guides and best practices',
+      },
+      {
+        type: 'route',
+        title: 'Using Avo in large development teams',
+        path: '/implementation/avo-and-git',
+      },
+      {
+        type: 'route',
+        title: 'Avo and tests',
+        path: '/implementation/avo-and-unit-tests',
+      },
+      {
+        type: 'route',
+        title: 'Avo and linters',
+        path: '/implementation/avo-and-linters',
+      },
+      {
+        type: 'route',
+        title: 'Avo in the CI',
+        path: '/implementation/avo-in-the-ci',
+      },
+      {
+        type: 'route',
+        title: 'Subscribe to changes with webhooks',
+        path: '/implementation/avo-tracking-plan-webhook',
+      },
+      {
+        type: 'group',
+        group: 'Reference',
+      },
+      {
+        type: 'route',
+        title: 'Avo Functions',
+        path: '/implementation/supported-programming-languages',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Programming languages',
+            path: '/implementation/supported-programming-languages',
+          },
+          {
+            type: 'route',
+            title: 'Custom Loggers',
+            path: '/implementation/custom-loggers',
+          },
+          {
+            type: 'route',
+            title: 'Custom Destinations',
+            path: '/implementation/start-custom-destination',
+          },
+        ],
+      },
+      {
+        type: 'route',
+        title: 'Avo Inspector SDK',
+        path: '/implementation/avo-inspector-sdk-reference',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Android',
+            path: '/implementation/inspector/sdk/android',
+          },
+          {
+            type: 'route',
+            title: 'iOS',
+            path: '/implementation/inspector/sdk/ios',
+          },
+          {
+            type: 'route',
+            title: 'Web',
+            path: '/implementation/inspector/sdk/web',
+          },
+          {
+            type: 'route',
+            title: 'React native',
+            path: '/implementation/inspector/sdk/react-native',
+          },
+          {
+            type: 'route',
+            title: 'Node.js',
+            path: '/implementation/inspector/sdk/node',
+          },
+        ],
+      },
+      {
+        type: 'route',
+        title: 'Mobile debuggers',
+        path: '/implementation/mobile-debuggers-reference',
       },
     ],
   },
