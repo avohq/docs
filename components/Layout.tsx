@@ -60,10 +60,11 @@ const Layout: FunctionComponent = ({ children }) => {
       <div className={styles.nav}>
         <Navigation />
       </div>
-      <div className={styles.content}>{children}
-      <div className={styles.footer}>
-        <Footer />
-      </div>
+      <div className={styles.content}>
+        {children}
+        <div className={styles.footer}>
+          <Footer />
+        </div>
       </div>
       <div className={styles.mobileNav}>
         {navigationOpened && <Navigation />}

@@ -227,8 +227,8 @@ const navigation: navigationItem[] = [
             type: 'route',
             title: 'Set up the Avo Mobile Visual Debuggers',
             path: '/implementation/setup-mobile-debugger',
-          }
-        ]
+          },
+        ],
       },
       {
         type: 'route',

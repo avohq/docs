@@ -32,10 +32,6 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
 
   const path = useAvoPath();
 
-  console.log("Component", Component);
-  console.log("pageProps", pageProps);
-  console.log("path", path);
-
   useEffect(() => {
     if (window.docsearch) {
       window.docsearch({
