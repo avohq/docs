@@ -8,7 +8,7 @@ import Link from '../components/Link';
 
 We distinguish 3 levels of Avo adoption, you don't need to go all the way, because every stage has value in itself. 
 
-> For example, if you already have a framework for analytics implementation and implementation data bugs is not a problem for you, you can stay at the second adoption stage.
+> For example, if you already have a framework for analytics implementation and implementation data bugs are not a problem for you, you can stay at the second adoption stage.
 
 ## 1. Avo as the source of truth of your tracking plan - no-code solution
 
@@ -17,26 +17,28 @@ Use Avo instead of your spreadsheet to manage and discuss your tracking plan. Av
 This stage does not require any developer input, so you can adopt it in the data design team without getting developer buyin.
 
 <details>
-<summary><strong>Get started</strong></summary>
-<p/>
+<summary><strong>Get started</strong></summary>       
+<br />
 
 **Creating tracking plan in Avo**
 
 |Data Managers|Developers|
 --- | ---
 |If you already have a tracking plan you can import it to Avo||
-|- <Link passHref href="/tracking-plan/importing"><a>Import existing csv spreadsheet, Amplitude or Mixpanel tracking plan</a></Link>||
+|- <Link passHref href="/tracking-plan/importing"><a>Import existing csv spreadsheet, Amplitude or Mixpanel tracking plan</a></Link>|TODO How to read the implementation markdown diff|
 |Next step would be fine tuning it and adding new events for new features, or, if you don't have tracking plan yet, you can define it in Avo||
 |- <Link passHref href="/data-design/start-data-design"><a>Design data in Avo</a></Link>||
-|- //TODO Define sources and destinations for documentation||
+|- //TODO Define sources and destinations for documentation https://docs.google.com/document/d/1b8TLsNmbcz9_njzjprUJtadWd8P8rzooaNxmQdh_dx0/edit ||
 
 **Branched workflows**
 
+One of the core features for effective data design in Avo is branched workflow. It allows you to see the changes for a single feature and provides implementation instructions that you can share with the developers working on the analytics implementation.
+
 |Data Managers|Developers|
 --- | ---
-|One of the core features for effectiva data design in Avo is branched workflow. It allows you to see the changes for a single feature and provides implementation instructions that you can share with the developers working on the analytics implementation.||
-|- TODO How to create a branch, branch diff view and implementations instructions||
-|- TODO Add how to invite coworkers to the beginning <Link passHref href="/data-design/start-collaborating"><a>Discussions and collaboration on branches</a></Link>||
+|- TODO https://www.avo.app/docs/workspace/branches#how-to-create-branches + https://docs.google.com/document/d/1bAd_LnuCcd1-NoE27mZ5JQDL68F9B-IQ4C77l7q3ODs/edit How to create a branch, branch diff view and implementations instructions||
+|- <Link passHref href="/workspace/members"><a>Invite your coworkers to Avo</a></Link>||
+|- <Link passHref href="/data-design/start-collaborating"><a>Discussions and collaboration on branches</a></Link>||
 |- <Link passHref href="/data-design/day-to-day-workflow#a-namestep-4-ask-for-reviewa-step-4--ask-for-review"><a>Approval workflows (Steps 4 and 5 of this guide)</a></Link>||
 
 **Publish tracking plan from Avo to other analytics tools**
@@ -55,21 +57,21 @@ Get instant feedback on what tracking is implemented when working on new feature
 Observe your tracking calls on device in real time with the Avo Debuggers.
 
 This stage requires one time setup in each of your applications.
-It is not necessary to to set up all platforms at once, can start with a single platform.
+It is not necessary to set up all platforms at once, you can start with a single platform.
 Once it's done the data design team will get the full power of Avo.
 
-> Level 1 is required, but levels 2 and 3 are interchangable, i.e. you can go directly to level 3 without going through level 2 if you platform does not yet have the Inspector SDK and start using the Inspector once it's available.
+> Level 1 is required, but levels 2 and 3 are interchangable, i.e. you can go directly to level 3 without going through level 2 if your platform does not yet have the Inspector SDK and start using the Inspector once it's available.
 
 <details>
 <summary><strong>Get started</strong></summary>
-<p/>
+<br />
 
 |Data Managers|Developers|
 --- | ---
-|- TODO more detailed guide <Link passHref href="/data-design/start-using-inspector"><a>Using Avo Inspector</a></Link>|- <Link passHref href="/implementation/devs-101#avo-inspector-sdk"><a>How does Avo Inspector SDK work?</a></Link>|
+|- <Link passHref href="/data-design/start-using-inspector"><a>Use Inspector to monitor analytics implementation</a></Link>|- <Link passHref href="/implementation/devs-101#avo-inspector-sdk"><a>How does Avo Inspector SDK work?</a></Link>|
 |- <Link passHref href="/explore-tracking-plan/issue-types-in-inspector"><a>Issue types in the Avo Inspector</a></Link>|Avo Inspector reference|
 |- <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers#accessing-mobile-debuggers"><a>Using Mobile Debuggers</a></Link>|- <Link passHref href="/implementation/inspector/sdk/android"><a>Android</a></Link>|
-|- TODO Using implementations status|- <Link passHref href="/implementation/inspector/sdk/ios"><a>iOS</a></Link>|
+|- <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Check if a valid event was sent from code in the Avo UI</a></Link>|- <Link passHref href="/implementation/inspector/sdk/ios"><a>iOS</a></Link>|
 ||- <Link passHref href="/implementation/inspector/sdk/web"><a>Web</a></Link>|
 ||- <Link passHref href="/implementation/inspector/sdk/react-native"><a>React Native</a></Link>|
 ||- <Link passHref href="/implementation/inspector/sdk/node"><a>Node.js</a></Link>|
@@ -81,19 +83,19 @@ Once it's done the data design team will get the full power of Avo.
 Avo generates human readable code, called Avo functions, that sends the data exactly as planned. No more data bugs in your code, even between platforms!
 
 This stage requires constant interaction with Avo from developers. 
-It's not necessary to swap all your tracking with Avo functions, can start with a single tracking call.
-It's not necessary to adopt Avo functions in all platforms at once, can start with a single platform.
+It's not necessary to swap all your tracking with Avo functions, you can start with a single tracking call.
+It's not necessary to adopt Avo functions on all platforms at once, you can start with a single platform.
 
 <details>
 <summary><strong>Get started</strong></summary>
-<p/>
+<br />
 
 - <Link passHref href="/data-design/day-to-day-workflow"><a>Avo workflow extended with using Avo functions</a></Link>
 
 |Data Managers|Developers|
 --- | ---
-|- TODO Set up the tracking plan for Avo functions (description of "Implement with Avo checkbox", 'i' button in the event screens leads here)|- <Link passHref href="/implementation/devs-101#a-nameavo-generated-filea-avo-generated-file-containing-avo-functions"><a>How do Avo Functions work?</a></Link>|
-|- TODO improve this guide <Link passHref href="/data-design/analytics"><a>Sources and destinations for Avo functions</a></Link>|- <Link passHref href="/implementation/cli"><a>Avo Cli</a></Link>|
+|- TODO https://docs.google.com/document/d/1Rvsdt5HJSzqCWg6HbKFkZ2VaRUx6-mCxbrBI-3nV8C4/edit Set up the tracking plan for Avo functions (description of "Implement with Avo checkbox", 'i' button in the event screens leads here)|- <Link passHref href="/implementation/devs-101#a-nameavo-generated-filea-avo-generated-file-containing-avo-functions"><a>How do Avo Functions work?</a></Link>|
+|- |- <Link passHref href="/implementation/cli"><a>Avo Cli</a></Link>|
 ||- <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>Using Avo Inspector with Avo Functions</a></Link>|
 ||Avo functions reference|
 ||- <Link passHref href="/implementation/supported-programming-languages"><a>Programming languages</a></Link>|
@@ -113,8 +115,8 @@ It's not necessary to adopt Avo functions in all platforms at once, can start wi
 --- | ---
 |- Global namespace|- Logs|
 |- Naming conventions|- Using Avo in large development teams|
-|- Documention purpose meetings|- Avo and tests|
-|- Documenting Downstream Dependancies|- Avo and linters|
+|- Documentation purpose meetings|- Avo and tests|
+|- Documenting Downstream Dependencies|- Avo and linters|
 |- Multiple sources on Avo branches|- Avo in the CI|
 |- Defining descriptive events and properties||
 |- Organizing metrics and events||
