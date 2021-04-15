@@ -1,6 +1,7 @@
 ---
 layout: 'guide'
 title: 'Does Avo suit me?'
+showSidebar: false
 ---
 
 import Link from '../components/Link';
@@ -9,12 +10,15 @@ We distinguish 3 levels of Avo adoption, you don't need to go all the way, becau
 
 > For example, if you already have a framework for analytics implementation and implementation data bugs is not a problem for you, you can stay at the second adoption stage.
 
-## 1. Avo as the source of truth of your tracking plan
+## 1. Avo as the source of truth of your tracking plan - no-code solution
 
 Use Avo instead of your spreadsheet to manage and discuss your tracking plan. Avo is designed for analytics, so it's way better than the spreadsheet for that use case.
 
 This stage does not require any developer input, so you can adopt it in the data design team without getting developer buyin.
 
+<details>
+<summary><strong>Get started</strong></summary>
+<p/>
 **Creating tracking plan in Avo**
 
 |Data Managers|Developers|
@@ -42,6 +46,8 @@ You can set up your tracking plan to be automatically published to Segment Proto
 --- | ---
 |- <Link passHref href="/workspace/tracking-plan/publishing"><a>Setting up publishing and auto publishing to Segment, Amplitude, Mixpanel and webhook</a></Link>|- <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>Advanced optional automation: Listen to the tracking plan changes with a webhook</a></Link>|
 
+</details>
+
 ## 2. Connect your tracking implementation with your Avo tracking plan
 Add a lightweight SDK to your code to learn how actual implementation compares with the defined tracking plan. 
 Get instant feedback on what tracking is implemented when working on new features with the Implementation status in your Avo workspace. 
@@ -52,6 +58,10 @@ It is not necessary to to set up all platforms at once, can start with a single 
 Once it's done the data design team will get the full power of Avo.
 
 > Level 1 is required, but levels 2 and 3 are interchangable, i.e. you can go directly to level 3 without going through level 2 if you platform does not yet have the Inspector SDK and start using the Inspector once it's available.
+
+<details>
+<summary><strong>Get started</strong></summary>
+<p/>
 
 |Data Managers|Developers|
 --- | ---
@@ -64,12 +74,18 @@ Once it's done the data design team will get the full power of Avo.
 ||- <Link passHref href="/implementation/inspector/sdk/node"><a>Node.js</a></Link>|
 ||- <Link passHref href="/implementation/setup-mobile-debugger"><a>Set up Mobile Debuggers</a></Link> |
 
+</details>
+
 ## 3. Generate type safe analytics code from your tracking plan
 Avo generates human readable code, called Avo functions, that sends the data exactly as planned. No more data bugs in your code, even between platforms!
 
 This stage requires constant interaction with Avo from developers. 
 It's not necessary to swap all your tracking with Avo functions, can start with a single tracking call.
 It's not necessary to adopt Avo functions in all platforms at once, can start with a single platform.
+
+<details>
+<summary><strong>Get started</strong></summary>
+<p/>
 
 - <Link passHref href="/data-design/day-to-day-workflow"><a>Avo workflow extended with using Avo functions</a></Link>
 
@@ -83,6 +99,8 @@ It's not necessary to adopt Avo functions in all platforms at once, can start wi
 ||- <Link passHref href="/implementation/start-custom-destination"><a>Custom destinations</a></Link>|
 ||- <Link passHref href="/implementation/custom-loggers"><a>Custom loggers</a></Link>|
 ||- <Link passHref href="/implementation/start-using-web-debugger"><a>Web debugger</a></Link>|
+
+</details>
 
 ## Comprehensive guides
 

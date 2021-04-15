@@ -8,7 +8,7 @@ const DocSearch: FunctionComponent = () => {
       <Icon name="search" color="inherit" />
       <input
         id="algolia-avo-search"
-        placeholder="Search"
+        placeholder="Find anything"
         className={styles.searchInput}
       />
     </div>

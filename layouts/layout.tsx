@@ -2,6 +2,7 @@ import { FunctionComponent, ReactElement } from 'react';
 
 export interface frontMatter {
   title: string;
+  showSidebar?: boolean | null;
   abstract?: string | null;
   mdTitle?: string | null;
   __resourcePath: string;
