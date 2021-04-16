@@ -1,0 +1,26 @@
+---
+layout: 'guide'
+title: 'Logs'
+---
+
+import Link from '../../components/Link';
+
+## Avo Functions
+
+Avo functions print logs prefexed with `[avo]`
+
+Learn about controlling the logs output in Avo Functions <Link passHref href="/implementation/custom-loggers"><a>in the reference senction</a></Link>.
+
+## Avo Inspector
+
+Avo Inspector prints logs prefixed with
+
+`[avo] Avo Inspector`
+
+Logs are enabled by default in the development environment.
+
+You can enable or disable the logs with the following code:
+
+```Swift
+AvoInspector.setLogging(shouldPringLogs)
+```

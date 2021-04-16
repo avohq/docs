@@ -1,0 +1,227 @@
+---
+layout: 'guide'
+title: 'Start using Avo Functions'
+---
+
+import Link from '../../components/Link';
+
+In this guide we'll cover all the required steps to start using Avo in your app or website, both alongside existing tracking code and SDKs and in a new project.
+
+Integrating Avo with your app or website can begin as soon as you create an Avo account, and requires three steps:
+
+1. [Configure Connections in your Avo workspace](#1-configure-your-avo-workspace)
+2. [Install the Avo CLI](#install-the-avo-cli)
+3. [Initialize Avo and send your first event](#3-initialize-avo-and-send-an-event)
+
+## 1. Configure your Avo workspace
+
+In [your Avo workspace](https://avo.app/welcome) head to the Connections tab in the left sidebar. Here we'll create a Source for our app and a Destination for every SDK we want to pass data into.
+
+> 💡 **What are Connections?** <br />
+> In Avo you define from which apps, websites and servers your data is sent (_Sources_) and to which SDKs and APIs the data is passed into (_Destinations_). In Avo the relation between Sources and Destinations are called Connections.
+
+<br />
+
+### Configure a source
+
+If a source doesn't already exist for your app or website, click "Add Source" to create a new Source. Give it a name and define what development platform and programming language you'll be using. This configuration is used to tailor the Avo Functions to your stack.
+
+<img
+  src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/source-config.png')}
+  alt="Source configuration"
+/>
+<center>
+  <i>
+    A source configuration for MyApp.com, which is a Web app written in
+    TypeScript
+  </i>
+</center>
+
+<br />
+
+### Configure destinations
+
+In Avo there are two options when it comes to destinations:
+
+**Option 1**. Initialize the destination (e.g. SDK) on your own and connect Avo to it. This is what we call a Custom Destination.
+
+**Option 2**. Let Avo fully manage the destination for you (everything from initializing to passing data into it).
+
+If you already have an analytics SDK running in our app, it's initialized and already receiving data, you should go with Option 1.
+If you don't have any existing tracking we recommend Option 2.
+
+Head back to the Connections tab and click "Add Destination". To configure a destination:
+
+1. Give the destination a name, e.g. _My Analytics SDK_
+2. Check the **Analytics Tool** drop down list. If you decided to go with Option 1, choose **Custom**, otherwise choose the name of your analytics tool. If you don't see the tool you need use Option 1.
+3. Enable your source for the destination (there might be a case when your programming language and platform does not support given analytics platform, in this case you would need to go with Option 1)
+
+Note that the _Production API Key_ and _Development API Key_ are not required for custom destinations.
+
+If you use multiple analytics tools, you should repeate this process and create a destination for every analytics tool.
+
+<img
+  src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/destination-config.png')}
+  alt="Destination configuration"
+/>
+<center>
+  <i>
+    A Destination for My Analytics SDK, which is a destination used on MyApp.com
+  </i>
+</center>
+
+<br />
+<br />
+
+**All set!**
+
+Here we've configured a Source, sending to a Custom Destination called My Analytics SDK:
+
+<img
+  src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/connections.png')}
+  alt="Connections configuration"
+/>
+<center>
+  <i>Our Source and Destination</i>
+</center>
+
+### Configure events
+
+Head to the Tracking Plan tab. If no events exist in your tracking plan yet you can either [import your existing tracking plan](https://www.avo.app/docs/workspace/tracking-plan/importing) or [define events in the Tracking Plan](https://www.avo.app/docs/data-design/start-data-design#defining-and-configuring-events). Make sure to attach the source you'll be implementing to all events you want to implement. Learn more about [attaching sources to events here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
+
+## 2. Install Avo to your project
+
+> 💡 **How does Avo integrate with my project?**<br />
+> Avo code-generates a file based on the Tracking Plan in your Avo workspace. The file contains a function per each Event in the Tracking Plan that you use to send your events. We call these functions Avo Functions. Each Avo Function validates the event data before passing it forward to your Destinations.
+>
+> You can think about the Avo Functions like a utility file for your analytics. It should be placed somewhere in the source code directory of your Source and checked into git. Every time the tracking plan in Avo is updated, the Avo Functions are updated.
+>
+> To make the workflow of updating the Avo Functions as easy as possible we built the Avo CLI. By running `avo pull` the CLI will update the file containing the Avo Functions automatically.
+
+### Install the [Avo CLI](https://www.npmjs.com/package/avo)
+
+Install the **Avo CLI** locally in your project (recommended), using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
+
+```bash
+npm install --save-dev avo
+```
+
+```bash
+yarn add --dev avo
+```
+
+or globally on your system, using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
+
+```bash
+npm install -g avo
+```
+
+```bash
+yarn global add -E avo
+```
+
+### Link your project to Avo
+
+Authenticate the **Avo CLI** with your Avo user:
+
+```bash
+avo login
+```
+
+Now you can pull the Avo Functions from your Avo workspace. When you run Avo pull for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with the Avo Functions file.
+
+```bash
+avo pull
+```
+
+## 3. Initialize Avo and send an event
+
+### Initialize Avo
+
+Before we can start using the Avo Functions to log events we first need to initialize Avo by calling the `initAvo` function exported from the file. Avo is usually initializied in the same place you initialize all your other analytics SDKs, or as soon as possible in the runtime of your app.
+
+First we import the Avo Functions and set up the destinations.
+
+If we are using an Avo-managed tracking destination (Option 2) all we need to do is to import the corresponding SDK.
+
+If we are using Custom Destinations (Option 1) we define an interface for each destination, where we connect it to our analytics SDK:
+
+```typescript
+import Avo from './Avo';
+
+// An interface for your Custom Destination that you pass into initAvo():
+let myAnalyticsSDKBridge = {
+  make: function (env) {
+    /*
+      Triggered during Avo initialization. Here you can initialize an analytics SDK with a development or production key
+      based on the env parameter. If analytics SDK has already been initialized you can leave this function blank.
+
+      Example: analytics.init(env);      
+    */
+  },
+  logEvent: (eventName, eventProperties) => {
+    /*
+      All your events are managed in the Tracking Plan in Avo. Each event gets a generated Avo Function. Avo events can
+      have a Log Event action attached. This callback is triggered when an Avo Function with Log Event action is called.
+      Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event
+      properties are provided as parameters.
+
+      Example: analytics.track(eventName, eventProperties);  
+    */
+  },
+  setUserProperties: (userId, userProperties) => {
+    /*
+      You can add User Properties to events in the Trackin Plan in Avo. When an Avo Function with attached user properties
+      is called, this callback is triggered. Here you would attach user properties to the currently identified user in your
+      analytics platform.
+
+      Example: analytics.setUserProperties(userId, userProperties);  
+    */
+  },
+  identify: (userId) => {
+    /*
+      You can add the Identify User action to events in the Trackin Plan in Avo. When calling an Avo Function that includes
+      the Identify User action you'll need to provide a user ID. Calling an Avo Function that has the Identify User action
+      will trigger this callback. The main use cases are signup and login. Here you would pass the user ID to the analytics
+      SDK for it to create a new user or attach a session to an existing user.
+
+      Example: analytics.identify(userId);
+    */
+  },
+  unidentify: () => {
+    /*
+      You can add the Unidentify User action to events in the Trackin Plan in Avo When calling an Avo Function that includes
+      the Unidentify User action this callback will be triggered. Here you would call an analytics SDK method to detach subsequent
+      actions from the currently identified user.
+
+      Example: analytics.identify(null);
+    */
+  },
+};
+```
+
+Then we call the initAvo Function:
+
+```typescript
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, myAnalyticsSDKBridge);
+```
+
+<br />
+
+Detailed instructions on how to initialize Avo with Custom Destinations for all other programming languages and platforms supported by Avo <Link passHref href="/implementation/start-custom-destination"><a>can be found here</a></Link>.
+
+### Send an event
+
+Now we're ready to start implementing reliably analytics tracking with Avo Functions. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Tracking Plan on avo.app</a></Link> has it's own function in the Avo Functions file.
+
+Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, with two Event Properties, "Client" and "Screen Name". Here's how we would send the event using Avo Functions:
+
+```typescript
+Avo.appOpened({ client: 'Web', screenName: 'Home Screen' });
+```
+
+> On some server platforms Avo functions are async, i.e. on Node.js they return a Promise and on C# you can await on the Avo Functions
+
+When the Avo Function is called Avo will run validation on the event properties, making sure they fit the spec defined in the Tracking Plan in Avo. Note that this validation is only run in development mode. If you are using a Custom destination Avo passes the event name and properties to the logEvent function in the Custom Destination interface defined above, otherwise it will pass the event directly to the analytics tool defined in your destination.
+
+You can find tailor made documentation for your Avo Functions, based on your Tracking Plan, in the <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Implement tab</a></Link> in [your Avo workspace](https://www.avo.app/welcome).

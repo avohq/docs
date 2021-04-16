@@ -9,3 +9,7 @@ declare module '*.svg' {
   const content: any;
   export default content;
 }
+
+interface Window extends Window {
+  docsearch: function;
+}

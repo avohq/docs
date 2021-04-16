@@ -1,0 +1,180 @@
+---
+layout: 'guide'
+title: 'Importing'
+# abstract: 'Import your tracking plan from various sources to get started quickly'
+---
+
+import Link from '../../../components/Link';
+
+Import your existing tracking plan into Avo to get started quickly. The Importer supports multiple data formats and allows you to review and choose which events and properties you'd like to import.
+
+<img
+  src={require('../../../images/workspace/importing/avo-importer.png')}
+  width="100%"
+  alt="Screenshot of the Avo Importer"
+/>
+
+## Importing from Amplitude
+
+1. Export your Tracking Plan from Amplitude. Open up Govern (at the bottom of the left sidebar) and then click the download arrow:
+
+<img
+  src={require('../../../images/workspace/importing/govern-download.png')}
+  width="100%"
+  alt="Screenshot of Amplitude Govern"
+/>
+
+2. In the popup, select "Schema of all events and their properties" and click download:
+
+<img
+  src={require('../../../images/workspace/importing/govern-download-select-schema.png')}
+  width="100%"
+  alt="Screenshot of the download modal on Amplitude Govern"
+/>
+
+3. Finally open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+<img
+  src={require('../../../images/workspace/importing/importer-select.png')}
+  width="100%"
+  alt="Screenshot of the Avo Importer selecting files"
+/>
+
+4. Review your events and finish the import 🎉
+
+## Importing from Mixpanel
+
+1. Open up Mixpanel Lexicon (in the top right corner of your Mixpanel workspace click Data Management > Lexicon) and then click the export button:
+
+<img
+  src={require('../../../images/workspace/importing/lexicon-download.png')}
+  width="100%"
+  alt="Screenshot of Mixpanel Lexicon"
+/>
+
+2. In the popup, select "Events & Properties" and Send CSV:
+
+<img
+  src={require('../../../images/workspace/importing/lexicon-download-popup.png')}
+  width="100%"
+  alt="Screenshot of the download modal on Amplitude Govern"
+/>
+
+3. Within few minutes you should receive an email from Mixpanel with a CSV export. Open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+<img
+  src={require('../../../images/workspace/importing/importer-select.png')}
+  width="100%"
+  alt="Screenshot of the Avo Importer selecting files"
+/>
+
+4. Review your events and finish the import 🎉
+
+## Importing from a Google Sheet
+
+### Supported Formats
+
+Following are the spreadsheet formats the Avo Importer currently supports.
+
+We know that tracking plan spreadsheets come in all shapes and sizes. If you don't see your format
+below you can try converting your existing spreadsheet to one of these formats,
+by renaming columns etc, or you can [reach out to us](https://www.avo.app/docs/help/troubleshooting#contact-us) and we'll get the importing
+done for you.
+
+**Few things to note:**
+
+- The order of the columns in your sheet does not matter
+- There must be a header row in your sheet with the exact column names as described for one of the format below
+- Any additional columns are ignored
+
+You can learn more about common Tracking Plan spreadsheet formats [on our blog.](https://www.avo.app/blog/9-free-tracking-plan-templates-from-mixpanel-amplitude-segment-and-more)
+
+#### Avo's Ultimate Tracking Plan Template
+
+<img
+  src={require('../../../images/workspace/importing/avo-spreadsheet.png')}
+  width="100%"
+  alt="Screenshot of the Avo ultimate tracking plan spreadsheet template"
+/>
+
+[View example sheet](https://docs.google.com/spreadsheets/d/1oEbMAWQt7lFXVJtM8sMdTaqjoeVQvZok24o_lOtxCyI)
+
+##### Required columns
+
+| Column Name                  | Description                                                       | Example value                              |
+| :--------------------------- | :---------------------------------------------------------------- | :----------------------------------------- |
+| Event Name                   | The name of your event                                            | App Opened                                 |
+| Event Description            | The description of your event                                     | Sent when the user opens the app           |
+| Event Category               | The category your event belongs to, if any                        | App Lifecycle                              |
+| Platforms                    | The name of the platforms this event should be sent from          | iOS, Android, Web                          |
+| Event Property Name          | The name of a property that should be sent with your event        | Device Type                                |
+| Property Description         | The description of the property                                   | The type of client user is currently using |
+| Property Value Type          | The type of the property                                          | string                                     |
+| Is Property Requierd?        | True if the property should always be sent with your event        | true                                       |
+| Is Property Array?           | True if property should be array of values                        | false                                      |
+| Property Enumeration options | Finite list of all values allowed for the property, if applicable | iOS, Android, Web, Desktop, Fire           |
+
+#### Amplitude Taxonomy Template
+
+<img
+  src={require('../../../images/workspace/importing/amplitude-spreadsheet.png')}
+  width="100%"
+  alt="Screenshot of the Amplitude taxonomy spreadsheet template"
+/>
+
+[View example sheet](https://docs.google.com/spreadsheets/d/1-6rXRomzq05YDQ9A6QG9A2i-jez72amPw-Johhd-heQ/edit#gid=771066228)
+
+##### Required columns
+
+| Column Name                 | Description                                                                 | Example value                              |
+| :-------------------------- | :-------------------------------------------------------------------------- | :----------------------------------------- |
+| Event Name                  | The name of your event                                                      | App Opened                                 |
+| Trigger + Event Description | The description of your event and when it should be sent                    | Sent when the user opens the app           |
+| Event Category              | The category your event belongs to, if any                                  | App Lifecycle                              |
+| Platform                    | The name of the platforms this event should be sent from                    | iOS, Android, Web                          |
+| Property Name               | The name of a property that should be sent with your event                  | Device Type                                |
+| Property Description        | The description of the property                                             | The type of client user is currently using |
+| Property Type               | Control whether the event should be sent as Event property or User property | Event                                      |
+| Sample Values               | List of all values allowed for the property, if applicable                  | iOS, Android, Web, Desktop, Fire           |
+
+#### Mixpanel Tracking Plan Template
+
+<img
+  src={require('../../../images/workspace/importing/mixpanel-spreadsheet.png')}
+  width="100%"
+  alt="Screenshot of the Mixpanel tracking plan spreadsheet template"
+/>
+
+[View example sheet](https://mixpanel.app.box.com/s/1xou3n8z6a14igg3hiiuxs7ur15cii4y)
+
+##### Required columns
+
+| Column Name         | Description                                                | Example value                    |
+| :------------------ | :--------------------------------------------------------- | :------------------------------- |
+| Event Name          | The name of your event                                     | App Opened                       |
+| Event Definition    | The definition of your event and when it should be sent    | Sent when the user opens the app |
+| Platform            | The name of the platforms this event should be sent from   | iOS, Android, Web                |
+| Property Name       | The name of a property that should be sent with your event | Device Type                      |
+| Property Definition | The description of the property                            | The client type                  |
+| Data Type           | The type of the property                                   | string                           |
+| Sample Values       | List of all values allowed for the property, if applicable | iOS, Android, Web, Desktop, Fire |
+
+### How to import from a Google Sheet
+
+1. First open the sheet containing your Events and Event Properties. Then click File > Download > Comma-separated values (.csv)
+
+   <img
+     src={require('../../../images/workspace/importing/spreadsheet-download.png')}
+     width="100%"
+     alt="Screenshot of the Download CSV button in Google Sheets"
+   />
+
+2. Open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+<img
+  src={require('../../../images/workspace/importing/importer-select.png')}
+  width="100%"
+  alt="Screenshot of the Avo Importer selecting files"
+/>
+
+4. Review your events and finish the import 🎉

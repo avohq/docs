@@ -2,12 +2,17 @@ import { FunctionComponent } from 'react';
 
 import styles from './PageLink.module.scss';
 import Icon from './Icon';
+import Link from 'next/link';
+
+export class CallToAction {
+  constructor(readonly text: string, readonly path: string) {}
+}
 
 interface Props {
   title: string;
   description?: string;
   image?: any;
-  callToAction?: boolean;
+  callToAction?: CallToAction;
 }
 
 const PageLink: FunctionComponent<Props> = ({
@@ -27,7 +32,9 @@ const PageLink: FunctionComponent<Props> = ({
       <div className={styles.description}>{description}</div>
       {callToAction && (
         <div className={styles.callToAction}>
-          Get started{' '}
+          <Link href={callToAction.path}>
+            <a style={{ textDecoration: 'none', color: 'grey' }}>{callToAction.text} </a>
+          </Link>
           <Icon name="chevron-right" relativeSize="sm" color="inherit" />
         </div>
       )}

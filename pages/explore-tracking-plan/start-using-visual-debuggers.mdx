@@ -1,0 +1,83 @@
+---
+layout: 'guide'
+title: 'Visual debuggers'
+---
+
+import Link from '../../components/Link';
+
+When testing analytics on web and mobile apps it’s hard to know if the events are being sent successfully or not, and if they are being sent at the correct time.
+
+Our Visual Debuggers provide a way to control the events flow in your app, making testing analytics way easier and pleasant in web and mobile products.
+
+Each analyrtics event sent with Avo will automatically show up in the debugger with timestamp and all the properties.
+
+If Avo detects errors the visual debugger will highlight those.
+
+### Accessing the web debugger
+
+The debuggers are on by default in development but can be accessed in production:
+
+On web, add the `?avo_debug=1` query parameter to the URL.
+
+Example: `https://example.com/checkout?avo_debug=1`.
+
+<center>
+  <img
+    height="500"
+    src={require('../../images/web-debugger-example.png')}
+    alt="Web debugger example"
+  />
+</center>
+
+### Accessing mobile debuggers
+
+> If you have already initialized the Inspector SDK on iOS and Android, no further action is required to enable the Visual Debugger. See `showVisualInspector` and `hideVisualInspector` methods of the Inspector SDKs to start using the Visual Debugger.
+
+Ask a developer to integrate the debugger into your application and provide a way to toggle it following <Link passHref href="/implementation/start-using-visual-debugger"><a>this guide</a></Link>.
+
+## <a name="look"></a> How does it look
+
+<img
+  src={require('../../images/mobile-debugger.png')}
+  alt="React native debugger example"
+/>
+
+Here is a demonstration of the mobile debugger in a simple music player app.
+
+<br />
+
+<table>
+
+
+<tr>
+ <th scope="col">Android</th>
+ <th scope="col">iOS</th>
+ <th scope="col">React Native</th>
+</tr>
+<tr>
+ <td style={{"padding":10}}>
+  <img
+    src={require('../../images/android-debugger-example.gif')}
+    alt="Android debugger example"
+  />
+ </td>
+ <td style={{"padding":10}}>
+    <img
+      src={require('../../images/ios-debugger-example.gif')}
+      alt="iOS debugger example"
+    />
+ </td>
+ <td style={{"padding":10}}>
+  <img
+    src={require('../../images/rn-debugger-example.gif')}
+    alt="React native debugger example"
+  />
+ </td>
+</tr>
+</table>
+
+
+The debugger have 2 visual presentation modes - **_bubble_** and **_bar_**. Both are draggable, so you can place them at a suitable spot in your app.
+You can switch between presentation mods without loosing the data.
+
+Press the debugger to see the list of registered events.

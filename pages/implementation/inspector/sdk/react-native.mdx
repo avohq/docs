@@ -1,0 +1,181 @@
+---
+layout: 'guide'
+title: 'Avo Inspector React Native SDK'
+---
+
+import Link from '../../../../components/Link';
+
+## <a name="quick-start"></a>Quick Start Guide
+
+Find the Quick Start Guide in our <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/js-avo-inspector/tree/react-native-node-package">Github repo.</a>
+
+## <a name="installation"></a>Installation
+
+The Inspector library is available through npm. Run the following command to install it:
+
+```bash
+$ npm install react-native-avo-inspector
+```
+
+## <a name="import"></a>Import
+
+```ts
+import * as Inspector from "react-native-avo-inspector/dist-native";
+```
+
+## <a name="initialization"></a>Initialization
+
+Obtain the API key in the Inspector tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app</a> workspace.
+
+You will need to create an instance of **AvoInspector** with the constructor:
+
+```ts
+constructor(options: {
+    apiKey: string;
+    env: AvoInspectorEnv;
+    version: string;
+    appName?: string;
+});
+```
+
+All the following methods are available in the **AvoInspector** class.
+
+> #### Parameters:
+>
+> - `apiKey` - the API key you get in your Avo account
+> - `env` - current environment: `"dev"`, `"staging"` or `"prod"`
+> - `appVersion` - your application version. A lot of Inspector features rely on versioning and you need to provide a comparable string here to get value from them. We recommend using semantic versioning or integers.
+> - `appName` - your application name. Optional; Provide it to make it easier to distinguish between data from different apps.
+
+## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
+
+This is the core of the **Avo Inspector SDK**.
+
+Call \***\*one of the methods\*\*** in this section every time an event is tracked.
+
+#### Option 1
+
+```ts
+trackSchemaFromEvent(eventName: string, eventProperties: {
+    [propName: string]: any;
+}): void;
+```
+
+Extracts the event schema from event properties represented by the second parameter ({ [propName: string]: any; }) and sends the schema to **Avo** for analysis.
+
+> #### Parameters:
+>
+> - `eventName` - string event name, also known as event type.
+> - `eventProperties` - The actual event properties, which will be converted to an event schema on the device and the event schema sent to **Avo**. The resulting keys will be object field names and the values will be object field value types converted to schema types.
+>
+> ##### Example format:
+>
+> ```js
+> var eventProperties = {
+>   userId: 1337,
+>   emailAddress: 'jane.doe@avo.app',
+>   key: 'value',
+> };
+> ```
+
+#### Option 2
+
+```js
+trackSchema(eventName: string, eventSchema: Array<{
+    propertyName: string;
+    propertyType: string;
+    children?: any;
+}>): void;
+```
+
+This method allows you to process the event schema before sending it.
+It's handy to extract the schema from your event properties with `extractSchema` (see below), process it, and then provide it to this method.
+
+> #### Parameters:
+>
+> - `eventName` - string event name, also known as event type.
+> - `eventSchema` - actual event schema that will be sent to **Avo**. Keys are event parameters names and values are event parameters types.
+>
+> #### Example format:
+>
+> ```js
+> var returnedSchema = [
+>   {
+>       propertyName: 'userId';
+>       propertyType: 'int';
+>   },
+>   {
+>       propertyName: 'emailAddress';
+>       propertyType: 'string';
+>   },
+>   {
+>       propertyName: 'key';
+>       propertyType: 'string';
+>   },
+> ];
+> ```
+>
+> See supported schema types <Link passHref href="/inspector/sdk#supported-types"><a>here</a></Link>.
+
+## <a name="other-methods"></a>Other methods
+
+#### 1. Extract schema from event properties
+
+```ts
+extractSchema(eventProperties: {
+    [propName: string]: any;
+}): Array<{
+    propertyName: string;
+    propertyType: string;
+    children?: any;
+}>
+```
+
+This is the method used by `trackSchemaFromEvent` internally. The event schema is extracted from the event properties' JS object, itself in the form of a JS object as well.
+
+> #### Parameters:
+>
+> - `eventProperties` - An event properties object. Keys are event properties' names and values are event properties' values.
+>   The format is the same as the `eventProperties` parameter in the `trackSchemaFromEvent` method.
+>
+> #### Return Value:
+>
+> - A JS object containing the event schema of the given event properties. The keys are the event properties' names and the values are the event properties' types.
+>   The format is the same as `eventSchema` parameter in the `trackSchema` method.
+
+#### 2. Print logs
+
+```js
+enableLogging(enable: boolean): void;
+```
+
+`enableLogging` controls printing of tracked event schemas and other helpful information to logcat. Enabled by default in development environments.
+
+> #### Parameters:
+>
+> - `enable` - boolean flag that sets whether **Avo Inspector SDK** will print logs.
+
+### 3. Controlling the batch size
+
+```js
+setBatchSize(newBatchSize: number): void;
+```
+
+Enables manual control over events batching. The default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas.
+
+> #### Parameters:
+>
+> - `int newBatchSize` - sets batch size.
+
+### 4. Controlling the batching interval
+
+```js
+setBatchFlushSeconds(newBatchFlushSeconds: number): void;
+```
+
+Enables manual control over events batching. The default production batch flush interval is 30 seconds, i.e. the library attempts to send event schemas to the server when 30 or more seconds pass, given that there are unsent schemas.
+In development mode default batch flush interval is 1 second.
+
+> #### Parameters:
+>
+> - `int newBatchFlushSeconds` - sets batch flush time in seconds.

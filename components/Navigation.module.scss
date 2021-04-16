@@ -18,7 +18,8 @@
 
 .iconWrapper {
   width: 25px;
-  display: inline-block;
+  display: inline-flex;
+  vertical-align: top;
 }
 
 .subroute {
@@ -27,6 +28,21 @@
   margin-bottom: 5px;
   cursor: pointer;
   margin-left: 25px;
+}
+
+.subrouteGroup {
+  color: brand.$gray-30;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  margin-left: 25px;
+}
+
+.subSubroute {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 15px;
 }
 
 .activeLink {

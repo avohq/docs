@@ -5,114 +5,375 @@ import classNames from 'classnames';
 
 import { useRouter } from 'next/router';
 import Link from '../components/Link';
-import { IconName } from '@fortawesome/fontawesome-svg-core';
-import Icon from './Icon';
+import React from 'react';
+
+type route = {
+  type: 'route';
+  title: string;
+  path: string;
+  subroutes?: subroute[];
+};
+
+type group = {
+  type: 'group';
+  group: string;
+};
+
+type subroute = route | group;
+
+type subroutes = subroute[];
 
 interface navigationItem {
   title: string;
   path: string;
-  iconName?: IconName;
-
-  subroutes?:
-    | {
-        title: string;
-        path: string;
-      }[]
-    | null;
+  iconName?: string | null;
+  subroutes?: subroutes | null;
 }
 
 const navigation: navigationItem[] = [
-  { title: 'Getting started', path: '/', iconName: 'rocket' },
+  {
+    title: 'What is Avo',
+    path: '/',
+    iconName: 'home',
+    subroutes: [
+      { type: 'route', title: 'What is Avo?', path: '/' },
+      {
+        type: 'route',
+        title: 'FAQs',
+        path: '/faqs/yes-you-can-faq',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'What can I do with Avo',
+            path: '/faqs/yes-you-can-faq',
+          },
+          {
+            type: 'route',
+            title: 'Inspector FAQ',
+            path: '/faqs/faq-inspector',
+          },
+        ],
+      },
+    ],
+  },
   {
     title: 'Your Avo Workspace',
     path: '/workspace',
-    iconName: 'home',
-    subroutes: [
-      { title: 'Tracking Plan', path: '/workspace/tracking-plan' },
-      { title: 'Connections', path: '/workspace/connections' },
-      { title: 'Implement', path: '/workspace/implement' },
-      { title: 'Integrations (beta)', path: '/workspace/integrations' },
-      { title: 'Health (being deprecated)', path: '/workspace/health' },
-    ],
-  },
-  {
-    title: 'Developer Tools',
-    path: '/commands',
     iconName: 'toolbox',
     subroutes: [
       {
-        title: 'Command Line Tool',
-        path: '/commands',
+        type: 'route',
+        title: 'Tracking plan',
+        path: '/workspace/tracking-plan',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Events',
+            path: '/workspace/tracking-plan/events',
+          },
+          {
+            type: 'route',
+            title: 'Properties',
+            path: '/workspace/tracking-plan/properties',
+          },
+          {
+            type: 'route',
+            title: 'Metrics',
+            path: '/workspace/tracking-plan/metrics',
+          },
+          {
+            type: 'route',
+            title: 'Importing',
+            path: '/workspace/tracking-plan/importing',
+          },
+          {
+            type: 'route',
+            title: 'Publishing',
+            path: '/workspace/tracking-plan/publishing',
+          },
+          {
+            type: 'route',
+            title: 'Validation Warnings',
+            path: '/workspace/tracking-plan/issue-reporter',
+          },
+        ],
+      },
+      { type: 'route', title: 'Branches', path: '/workspace/branches' },
+      { type: 'route', title: 'Connections', path: '/workspace/connections' },
+      { type: 'route', title: 'Implement', path: '/workspace/implement' },
+      { type: 'route', title: 'Inspector', path: '/workspace/inspector' },
+      { type: 'route', title: 'Members', path: '/workspace/members' },
+    ],
+  },
+  {
+    title: 'Implementation',
+    path: '/implementation/devs-101',
+    iconName: 'implementation',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Avo 101 for developers',
+        path: '/implementation/devs-101',
       },
       {
-        title: 'Programming Languages',
-        path: '/languages',
+        type: 'group',
+        group: 'Getting started guides',
       },
       {
-        title: 'Analytics Tools',
-        path: '/analytics',
+        type: 'route',
+        title: 'Using Avo Functions',
+        path: '/implementation/start-using-avo-functions',
       },
       {
-        title: 'Custom Destinations',
-        path: '/custom-destinations',
+        type: 'route',
+        title: 'Using the Avo Visual Debuggers',
+        path: '/implementation/start-using-visual-debugger',
       },
       {
-        title: 'Regression Checking',
-        path: '/regression',
+        type: 'route',
+        title: 'Setting up the Inspector SDK',
+        path: '/implementation/setup-inspector-sdk',
       },
       {
-        title: 'Data Validation',
-        path: '/data-validation',
+        type: 'route',
+        title: 'Using the Inspector SDK with Avo Functions',
+        path: '/implementation/start-using-inspector-with-avo-functions',
       },
       {
-        title: 'Mobile Debuggers',
-        path: '/mobile-debuggers',
+        type: 'route',
+        title: 'Implementing tracking plan changes with Avo Functions',
+        path: '/implementation/start-implementing-tracking-changes',
+      },
+      {
+        type: 'group',
+        group: 'Tools',
+      },
+      {
+        type: 'route',
+        title: 'Command line tool',
+        path: '/implementation/cli',
+      },
+      {
+        type: 'route',
+        title: 'Logs',
+        path: '/implementation/logs',
+      },
+      {
+        type: 'group',
+        group: 'Advanced guides and best practices',
+      },
+      {
+        type: 'route',
+        title: 'Using Avo in large development teams',
+        path: '/implementation/avo-and-git',
+      },
+      {
+        type: 'route',
+        title: 'Avo and tests',
+        path: '/implementation/avo-and-unit-tests',
+      },
+      {
+        type: 'route',
+        title: 'Avo and linters',
+        path: '/implementation/avo-and-linters',
+      },
+      {
+        type: 'route',
+        title: 'Avo in the CI',
+        path: '/implementation/avo-in-the-ci',
+      },
+      {
+        type: 'route',
+        title: 'Subscribe to changes with webhooks',
+        path: '/implementation/avo-tracking-plan-webhook',
+      },
+      {
+        type: 'group',
+        group: 'Reference',
+      },
+      {
+        type: 'route',
+        title: 'Avo Functions',
+        path: '/implementation/supported-programming-languages',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Programming languages',
+            path: '/implementation/supported-programming-languages',
+          },
+          {
+            type: 'route',
+            title: 'Custom Loggers',
+            path: '/implementation/custom-loggers',
+          },
+          {
+            type: 'route',
+            title: 'Mobile debuggers',
+            path: '/implementation/mobile-debuggers-reference',
+          },
+          {
+            type: 'route',
+            title: 'Custom Destinations',
+            path: '/implementation/start-custom-destination',
+          },
+        ],
+      },
+      {
+        type: 'route',
+        title: 'Avo Inspector SDK',
+        path: '/implementation/avo-inspector-sdk-reference',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Android',
+            path: '/implementation/inspector/sdk/android',
+          },
+          {
+            type: 'route',
+            title: 'iOS',
+            path: '/implementation/inspector/sdk/ios',
+          },
+          {
+            type: 'route',
+            title: 'Web',
+            path: '/implementation/inspector/sdk/web',
+          },
+          {
+            type: 'route',
+            title: 'React native',
+            path: '/implementation/inspector/sdk/react-native',
+          },
+          {
+            type: 'route',
+            title: 'Node.js',
+            path: '/implementation/inspector/sdk/node',
+          },
+        ],
       },
     ],
   },
-
   {
-    title: 'Inspector',
-    path: '/inspector',
-    iconName: 'heartbeat',
+    title: 'Data Design',
+    path: '/data-design/start-data-design',
+    iconName: 'data-design',
     subroutes: [
-      { title: 'Inspector SDK', path: '/inspector/sdk' },
-      { title: 'Android', path: '/inspector/sdk/android' },
-      { title: 'iOS', path: '/inspector/sdk/ios' },
-      { title: 'Web', path: '/inspector/sdk/js' },
-      { title: 'React Native', path: '/inspector/sdk/react-native' },
-      { title: 'Issues', path: '/inspector/issue-identifier' },
-      { title: 'FAQ', path: '/inspector/faq' },
-    ],
-  },
-  {
-    title: 'Best Practices',
-    path: '/best-practices',
-    iconName: 'award',
-    subroutes: [
-      { title: 'Avo and git', path: '/best-practices/avo-and-git' },
-      { title: 'Avo in unit tests', path: '/best-practices/unit-tests' },
       {
+        type: 'group',
+        group: 'Getting started guides',
+      },
+      {
+        type: 'route',
+        title: 'Design data in Avo',
+        path: '/data-design/start-data-design',
+      },
+      {
+        type: 'route',
+        title: 'Collaborate in Avo',
+        path: '/data-design/start-collaborating',
+      },
+      {
+        type: 'route',
+        title: 'Identify tracking issues with Inspector',
+        path: '/data-design/start-using-inspector',
+      },
+      {
+        type: 'route',
+        title: 'Publish your Tracking Plan to your schema management system',
+        path: '/data-design/start-publishing',
+      },
+      {
+        type: 'route',
+        title: 'Import your tracking plan into Avo',
+        path: '/workspace/tracking-plan/importing',
+      },
+      {
+        type: 'group',
+        group: 'Tools',
+      },
+      {
+        type: 'route',
+        title: 'Analytics tools',
+        path: '/data-design/analytics',
+      },
+      {
+        type: 'group',
+        group: 'Guides and best practices',
+      },
+      {
+        type: 'route',
+        title: 'Day to day workflow',
+        path: '/data-design/day-to-day-workflow',
+      },
+      {
+        type: 'route',
+        title: 'Naming Conventions',
+        path: '/data-design/naming-conventions',
+      },
+      {
+        type: 'route',
+        title: 'Global Namespace for events and properties',
+        path: '/data-design/global-namespace',
+      },
+      {
+        type: 'route',
+        title: 'Documenting purpose meetings',
+        path: '/data-design/documenting-purpose-meetings-in-avo',
+      },
+      {
+        type: 'route',
+        title: 'Documenting downstream dependancies',
+        path: '/data-design/documenting-downstream-dependancies',
+      },
+      {
+        type: 'route',
         title: 'Multiple sources on Avo branches',
-        path: '/best-practices/multiple-sources-working-on-a-branch',
+        path: '/data-design/multiple-sources-on-avo-branches',
       },
       {
-        title: 'Descriptive events and properties',
-        path: '/best-practices/defining-descriptive-events-and-properties',
+        type: 'route',
+        title: 'Defining descriptive events and properties',
+        path: '/data-design/defining-descriptive-events-and-properties',
       },
       {
+        type: 'route',
         title: 'Organizing metrics and events',
-        path: '/best-practices/organizing-metrics-and-events',
+        path: '/data-design/organizing-metrics-and-events',
+      },
+    ],
+  },
+  {
+    title: 'Explore the Tracking Plan',
+    path: '/explore-tracking-plan/start-using-visual-debuggers',
+    iconName: 'tracking-plan',
+    subroutes: [
+      /*       {
+        type: 'route',
+        title: 'Understanding what your data means with Avo',
+        path:
+          '/explore-tracking-plan/start-understandings-what-your-data-means',
+      }, */
+      {
+        type: 'route',
+        title: 'Using visual debuggers to understand tracking',
+        path: '/explore-tracking-plan/start-using-visual-debuggers',
+      },
+      {
+        type: 'route',
+        title: 'Issue Types in the Avo Inspector',
+        path: '/explore-tracking-plan/issue-types-in-inspector',
       },
     ],
   },
   {
     title: 'Help',
     path: '/help/troubleshooting',
-    iconName: 'life-ring',
+    iconName: 'help',
     subroutes: [
-      { title: 'Troubleshooting & support', path: '/help/troubleshooting' },
-      { title: 'FAQ', path: '/help/faq' },
+      {
+        type: 'route',
+        title: 'Troubleshooting support',
+        path: '/help/troubleshooting',
+      },
     ],
   },
 ];
@@ -126,6 +387,48 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
 
   const rootActive = router.pathname === item.path;
 
+  const renderSubroutes = (subroutes: subroutes) => {
+    return subroutes.map((subroute: subroute) => {
+      switch (subroute.type) {
+        case 'route':
+          const subrouteActive = router.pathname === subroute.path;
+          return (
+            <React.Fragment key={subroute.path + ' ' + subroute.title}>
+              <Link href={subroute.path} key={subroute.path}>
+                <div
+                  className={classNames(styles.subroute, {
+                    [styles.activeLink]: subrouteActive,
+                  })}
+                >
+                  {subroute.title}
+                </div>
+              </Link>
+              {subroute.subroutes ? (
+                <div
+                  className={styles.subSubroute}
+                  key={subroute.path + '-subroutes'}
+                >
+                  {' '}
+                  {renderSubroutes(subroute.subroutes)}{' '}
+                </div>
+              ) : null}
+            </React.Fragment>
+          );
+        case 'group':
+          return (
+            <div
+              key={'group-' + subroute.group}
+              className={classNames(styles.subrouteGroup)}
+            >
+              {subroute.group}
+            </div>
+          );
+      }
+    });
+  };
+
+  const icon = locateIcon(item);
+
   return (
     <div className={styles.group}>
       <Link href={item.path}>
@@ -136,29 +439,14 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
         >
           {item.iconName && (
             <span className={styles.iconWrapper}>
-              <Icon name={item.iconName} />
+              <img src={icon} alt="" />
             </span>
           )}
           {item.title}
         </div>
       </Link>
 
-      {item.subroutes &&
-        item.subroutes.map((subroute) => {
-          const subrouteActive = router.pathname === subroute.path;
-
-          return (
-            <Link href={subroute.path} key={subroute.path}>
-              <div
-                className={classNames(styles.subroute, {
-                  [styles.activeLink]: subrouteActive,
-                })}
-              >
-                {subroute.title}
-              </div>
-            </Link>
-          );
-        })}
+      {item.subroutes && renderSubroutes(item.subroutes)}
     </div>
   );
 };
@@ -172,5 +460,39 @@ const Navigation: FunctionComponent = () => {
     </div>
   );
 };
+
+function locateIcon(item: navigationItem) {
+  let icon = null;
+  switch (item.iconName) {
+    case 'home': {
+      icon = require('../images/home-icon.svg');
+      break;
+    }
+    case 'data-design': {
+      icon = require('../images/data-design-icon.svg');
+      break;
+    }
+    case 'help': {
+      icon = require('../images/help-icon.svg');
+      break;
+    }
+    case 'implementation': {
+      icon = require('../images/implementation-icon.svg');
+      break;
+    }
+    case 'toolbox': {
+      icon = require('../images/toolbox-icon.svg');
+      break;
+    }
+    case 'tracking-plan': {
+      icon = require('../images/tracking-plan-icon.svg');
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+  return icon;
+}
 
 export default Navigation;
