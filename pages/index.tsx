@@ -498,7 +498,7 @@ const LandingPage: FunctionComponent = () => {
             new CallToAction('Learn', '/implementation/avo-and-git')
           }
         />
-                <PageLink
+        <PageLink
           image={DevIcon}
           title="Avo and linters"
           description=""

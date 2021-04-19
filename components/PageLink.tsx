@@ -33,7 +33,9 @@ const PageLink: FunctionComponent<Props> = ({
       {callToAction && (
         <div className={styles.callToAction}>
           <Link href={callToAction.path}>
-            <a style={{ textDecoration: 'none', color: 'grey' }}>{callToAction.text} </a>
+            <a style={{ textDecoration: 'none', color: 'grey' }}>
+              {callToAction.text}{' '}
+            </a>
           </Link>
           <Icon name="chevron-right" relativeSize="sm" color="inherit" />
         </div>
