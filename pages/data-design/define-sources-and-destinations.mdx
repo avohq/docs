@@ -1,0 +1,101 @@
+---
+layout: 'guide'
+title: 'Sources and destinations for documentation'
+---
+
+import Link from '../../components/Link';
+
+If you open the “Connections” <Link passHref href="/workspace/connections"><a>tab</a></Link> you’ll find yourself in a place to define sources and destinations.  
+
+Sources and destinations are an important part of your tracking plan, and crutial for implementation, so we recommend maintaining an up-to-date list of them and attaching relevant sources and destinations to events. If you use Avo Functions the same data is used to generate the tracking code.
+
+### Sources
+
+The sources are code bases that you send events from, for example your website, mobile application or your server.
+
+The sources help you understand what app is sending particular events and they will also help you to locate a subset of changes to give to the platform developers to implement. Either using the “Copy instructions for developers” (on adoption steps 1 and 2) or the generated code (on adoption step 3) Avo will automatically select relevant changes for a particular platform and will help the developer to orient in the tracking plan.
+
+#### Creating a source
+
+To create a source press “Add Source” button in the “Connections” tab.
+
+<center>
+  <img
+    src={require('../../images/add-source.png')}
+    alt="Add Source button"
+    width="75%"
+  />
+</center>
+
+Then you’ll see a configuration dialog, define necessary config and press “Create Source”.
+
+<center>
+  <img
+    src={require('../../images/source-configuration.png')}
+    alt="Source configuration"
+    width="75%"
+  />
+</center>  
+
+#### Managing sources in the tracking plan
+
+What sources are sending an event is defined on the event level.    
+
+When creating an event we recommend to add it to all the existing sources where it’s sent from. This information is also used by the codegen to automatically create the tracking code if you are using the Avo functions.
+
+<center>
+  <img
+    src={require('../../images/import-completed-event.png')}
+    alt="Source configuration"
+    width="75%"
+  />
+</center>
+
+Think “Import Completed event is sent from our web site”.
+
+### Destinations
+
+Destinations are analytics platforms you send events to.  
+In Avo you can use **any** event-based analytics destination.
+
+#### Creating a destination
+
+To create a destination press “Add Destination” button in the “Connections” tab
+
+<center>
+  <img
+    src={require('../../images/add-destination.png')}
+    alt="Add Destination button"
+    width="75%"
+  />
+</center>
+
+Then you’ll see a configuration dialog, define necessary config and press “Create Destination”
+
+<center>
+  <img
+    src={require('../../images/destination-configuration.png')}
+    alt="Destination configuration"
+    width="75%"
+  />
+</center>
+
+#### Managing destinations in the tracking plan
+
+What destinations you send data to is defined on the source level. 
+
+If you press the source name in the “Connections” tab it will open the source details where you’ll be able to pick destinations this source sends data to.
+
+<center>
+  <img
+    src={require('../../images/web-source.png')}
+    alt="Web source details"
+    width="75%"
+  />
+</center>
+
+Think “Our web app sends data to Amplitude”.
+
+## What's next?
+
+Now you know how to define and maintain sources and destinations in Avo. Next thing to learn is <Link passHref href="/workspace/branches"><a>the branched workflows</a></Link>. 

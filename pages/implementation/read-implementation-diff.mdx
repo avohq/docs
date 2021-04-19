@@ -1,0 +1,71 @@
+---
+layout: 'guide'
+title: 'How to read the implementation diff'
+---
+
+### Sources
+
+All the changes are grouped by sources, so you can pick the source you work on and ignore other sources, since they usually are separate codebases.  
+If you have multiple sources in your codebase you can pick multiple sources.  
+
+### Events
+
+Below sources we see events. Since implementation is happening on the events level all changes on a single source are represented as event changes.  
+There are 3 categories of events in the diff: New, Removed and Updated, so you can easily understand what kind of implementation is required.  
+Every event has description and a link to Avo.  
+
+### Properties
+
+Then each event in the diff has a list of properties. Properties can be: new, removed, updated and existing.  
+If the event is new, then all properties are new. If the event is removed then you don’t need to care about the properties. If the event is updated, then you’d change the updated properties, delete the removed props and keep the existing.  
+Each property includes a description from Avo.  
+
+### Destinations
+
+Then we list the destinations of the event - new, removed and existing.
+
+### An example
+
+># Source: Landing
+>
+>## New Events:
+>
+>### Event "Add Seat Prompt Interaction" ([View full event in Avo](https://www.avo.app/schemas/schemaId/events/mwmA0kzw4B))
+>
+>##### This event should be implemented with Avo generated code. [See implement instructions here](http://avo.app/schemas/schemaId/branches/qgrYDHloO/implement/sources/2oAo04qsX#mwmA0kzw4B)  
+>
+>Description: Event sent when a user interacts with an add seat prompt  
+>
+>#### New properties on this event
+>
+>- Add Seat Prompt Interaction
+>  - **Description**: -  
+>  - **Value Type**: string matches Proceed, Dismiss
+>
+>#### New destinations on this event
+>
+>- segment
+>- mixpanel
+>- fullstory
+>- amplitude
+>
+>
+># Source: iOS Mobile Debugger
+>
+>## New Events:
+>
+>### Event "Add Seat Prompt Interaction" ([View full event in Avo](https://www.avo.app/schemas/schemaId/events/mwmA0kzw4B))
+>
+>##### This event should be implemented with Avo generated code. [See implement instructions here](http://avo.app/schemas/schemaId/branches/qgrYDHloO/implement/sources/6nSgGof_U#mwmA0kzw4B)  
+>
+>Description: Event sent when a user interacts with an add seat prompt  
+>
+>#### New properties on this event
+>
+>- Add Seat Prompt Interaction
+>  - **Description**: -  
+>  - **Value Type**: string matches Proceed, Dismiss
+>
+>#### New destinations on this event
+>
+>- Custom Node JS

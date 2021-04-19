@@ -27,7 +27,6 @@ const config = {
 
   webpack: (config, { isServer }) => {
     if (isServer) childProcess.execSync('yarn run generate-sitemap');
-
     return config;
   },
 };

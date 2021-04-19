@@ -121,6 +121,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Managing Sources and Destinations',
+        path: '/data-design/define-sources-and-destinations',
+      },
+      {
+        type: 'route',
         title: 'Collaborate in Avo',
         path: '/data-design/start-collaborating',
       },
@@ -207,6 +212,11 @@ const navigation: navigationItem[] = [
       {
         type: 'group',
         group: 'Getting started guides',
+      },
+      {
+        type: 'route',
+        title: 'Reading the implementation diff',
+        path: '/implementation/read-implementation-diff',
       },
       {
         type: 'route',
