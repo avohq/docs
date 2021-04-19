@@ -25,7 +25,7 @@ const LandingPage: FunctionComponent = () => {
         implementation and implementation data bugs are not a problem for you,
         you can stay at the second adoption stage.
       </p>
-      <H2>1. Better tracking plan management today</H2>
+      <H2>1. Better tracking plan management today - no code solution</H2>
       <p className={styles.text}>
         Use Avo instead of your spreadsheet to manage and discuss your tracking
         plan. Avo is designed for analytics, so it's way better than the
