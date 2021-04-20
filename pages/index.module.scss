@@ -1,3 +1,5 @@
+@use '../styles/brand';
+
 .row {
   display: flex;
   flex-direction: row;
@@ -8,6 +10,38 @@
   & > * {
     margin: 5px;
     flex: 1;
+  }
+}
+
+.tocBg {
+  width: 70%;
+  background-color: brand.$gray-5;
+  border-radius: 8px;
+  margin: 50px 0;
+  padding: 10px;
+  padding-top: 1px;
+}
+
+.avoPink {
+  color: brand.$avo-pink;
+}
+
+.avoGrey {
+  color: brand.$gray-75;
+}
+
+.tocItem {
+  margin-bottom: 10px;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  &.active {
+    color: brand.$docs-accent;
+  }
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 

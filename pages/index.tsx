@@ -20,12 +20,35 @@ const LandingPage: FunctionComponent = () => {
         We distinguish 3 levels of Avo adoption, you don't need to go all the
         way, because every stage has value in itself.
       </p>
+
+      <div className={styles.tocBg}>
+        <p> 
+          <a href="#stage1" className={[styles.tocItem, styles.avoPink].join(" ")}>
+            1. Better tracking plan management today - no code solution
+          </a>
+        </p>
+        <p>
+          <a href="#stage2" className={[styles.tocItem, styles.avoPink].join(" ")}>2. Better tracking validation</a>
+        </p>
+        <p>
+          <a href="#stage3" className={[styles.tocItem, styles.avoPink].join(" ")}>3. Better tracking implementation</a>
+        </p>
+        <p>
+          <a href="#workspace" className={[styles.tocItem, styles.avoGrey].join(" ")}>Explore the Avo workspace</a>
+        </p>
+        <p>
+          <a href="#guides" className={[styles.tocItem, styles.avoGrey].join(" ")}>Comprehensive guides</a>
+        </p>
+      </div>
+
       <p className={styles.text}>
         For example, if you already have a framework for analytics
         implementation and implementation data bugs are not a problem for you,
         you can stay at the second adoption stage.
       </p>
-      <H2>1. Better tracking plan management today - no code solution</H2>
+      <h2 id="stage1">
+        1. Better tracking plan management today - no code solution
+      </h2>
       <p className={styles.text}>
         Use Avo instead of your spreadsheet to manage and discuss your tracking
         plan. Avo is designed for analytics, so it's way better than the
@@ -167,7 +190,7 @@ const LandingPage: FunctionComponent = () => {
           }
         />
       </div>
-      <H2>2. Better tracking validation</H2>
+      <h2 id="stage2">2. Better tracking validation</h2>
       <p className={styles.text}>
         Add a lightweight SDK to your code to learn how actual implementation
         compares with the defined tracking plan. Get instant feedback on what
@@ -270,7 +293,7 @@ const LandingPage: FunctionComponent = () => {
         />
       </div>
 
-      <H2>3. Better tracking implementation</H2>
+      <h2 id="stage3">3. Better tracking implementation</h2>
 
       <p className={styles.text}>
         Avo generates human readable code, called Avo functions, that sends the
@@ -385,11 +408,11 @@ const LandingPage: FunctionComponent = () => {
         />
       </div>
 
-      <H2>Explore the Avo workspace</H2>
+      <h2 id="workspace">Explore the Avo workspace</h2>
 
       <a href="/workspace">Get started {'>'}</a>
 
-      <H2>Comprehensive guides</H2>
+      <h2 id="guides">Comprehensive guides</h2>
       <div className={styles.row}>
         <PageLink
           image={AnalyticsManagerIcon}
