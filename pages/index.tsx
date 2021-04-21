@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react';
 
-import { H1, H2, H3 } from '../styles/MDComponents';
+import { H1, H3 } from '../styles/MDComponents';
 import PageLink, { CallToAction } from '../components/PageLink';
 
 import AnalyticsManagerIcon from '../images/svg/analyticsmanager.svg';
@@ -17,27 +17,50 @@ const LandingPage: FunctionComponent = () => {
     <div style={{ width: '85%' }}>
       <H1>Getting started with Avo</H1>
       <p className={styles.text}>
-        We distinguish 3 levels of Avo adoption, you don't need to go all the
-        way, because every stage has value in itself.
+        We distinguish 3 levels of Avo adoption, you don&apos;t need to go all
+        the way, because every stage has value in itself.
       </p>
 
       <div className={styles.tocBg}>
-        <p> 
-          <a href="#stage1" className={[styles.tocItem, styles.avoPink].join(" ")}>
+        <p>
+          <a
+            href="#stage1"
+            className={[styles.tocItem, styles.avoPink].join(' ')}
+          >
             1. Better tracking plan management today - no code solution
           </a>
         </p>
         <p>
-          <a href="#stage2" className={[styles.tocItem, styles.avoPink].join(" ")}>2. Better tracking validation</a>
+          <a
+            href="#stage2"
+            className={[styles.tocItem, styles.avoPink].join(' ')}
+          >
+            2. Better tracking validation
+          </a>
         </p>
         <p>
-          <a href="#stage3" className={[styles.tocItem, styles.avoPink].join(" ")}>3. Better tracking implementation</a>
+          <a
+            href="#stage3"
+            className={[styles.tocItem, styles.avoPink].join(' ')}
+          >
+            3. Better tracking implementation
+          </a>
         </p>
         <p>
-          <a href="#workspace" className={[styles.tocItem, styles.avoGrey].join(" ")}>Explore the Avo workspace</a>
+          <a
+            href="#workspace"
+            className={[styles.tocItem, styles.avoGrey].join(' ')}
+          >
+            Explore the Avo workspace
+          </a>
         </p>
         <p>
-          <a href="#guides" className={[styles.tocItem, styles.avoGrey].join(" ")}>Comprehensive guides</a>
+          <a
+            href="#guides"
+            className={[styles.tocItem, styles.avoGrey].join(' ')}
+          >
+            Comprehensive guides
+          </a>
         </p>
       </div>
 
@@ -51,7 +74,7 @@ const LandingPage: FunctionComponent = () => {
       </h2>
       <p className={styles.text}>
         Use Avo instead of your spreadsheet to manage and discuss your tracking
-        plan. Avo is designed for analytics, so it's way better than the
+        plan. Avo is designed for analytics, so it&apos;s way better than the
         spreadsheet for that use case.
       </p>
 
@@ -62,8 +85,8 @@ const LandingPage: FunctionComponent = () => {
       <H3>Creating tracking plan in Avo</H3>
       <p className={styles.text}>
         If you already have a tracking plan you can import it to Avo, or you can
-        create your plan in Avo from scratch. In any case you'll be able to fine
-        tune it and add new events for new features in Avo.
+        create your plan in Avo from scratch. In any case you&apos;ll be able to
+        fine tune it and add new events for new features in Avo.
       </p>
       <div className={styles.row}>
         <div style={{ display: 'flex' }}>
@@ -200,16 +223,16 @@ const LandingPage: FunctionComponent = () => {
       </p>
       <p className={styles.text}>
         This stage requires one time setup in each of your applications. The
-        setup is simple and shouldn't take more than 30 minutes. It is not
+        setup is simple and shouldn&apos;t take more than 30 minutes. It is not
         necessary to set up all platforms at once, you can start with a single
-        platform. Once it's done the data design team will get the full power of
-        Avo.
+        platform. Once it&apos;s done the data design team will get the full
+        power of Avo.
       </p>
       <p className={styles.text}>
         {'> '}Level 1 is required, but levels 2 and 3 are interchangable, i.e.
         you can go directly to level 3 without going through level 2 if your
         platform does not yet have the Inspector SDK and start using the
-        Inspector once it's available.
+        Inspector once it&apos;s available.
       </p>
       <div className={styles.row}>
         <div style={{ display: 'flex' }}>
@@ -305,12 +328,12 @@ const LandingPage: FunctionComponent = () => {
         This stage requires constant interaction with Avo from developers.
       </p>
       <p className={styles.text}>
-        It's not necessary to swap all your tracking with Avo functions, you can
-        start with a single tracking call.
+        It&apos;s not necessary to swap all your tracking with Avo functions,
+        you can start with a single tracking call.
       </p>
       <p className={styles.text}>
-        It's not necessary to adopt Avo functions on all platforms at once, you
-        can start with a single platform.
+        It&apos;s not necessary to adopt Avo functions on all platforms at once,
+        you can start with a single platform.
       </p>
 
       <div className={styles.row}>

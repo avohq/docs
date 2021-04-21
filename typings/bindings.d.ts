@@ -6,7 +6,7 @@ declare module '*.mdx' {
 }
 
 declare module '*.svg' {
-  const content: any;
+  const content: string;
   export default content;
 }
 

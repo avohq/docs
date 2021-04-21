@@ -20,7 +20,7 @@ const Layout: FunctionComponent = ({ children }) => {
   useEffect(() => setNavigationOpened(false), [path]);
 
   useEffect(() => {
-    Avo.landingPageViewed({
+    Avo.docsPageViewed({
       path: path,
       referrer: document.referrer,
       utmCampaign: router.query.utm_campaign as string | undefined,

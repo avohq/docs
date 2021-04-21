@@ -11,7 +11,7 @@ export class CallToAction {
 interface Props {
   title: string;
   description?: string;
-  image?: any;
+  image?: string;
   callToAction?: CallToAction;
 }
 
