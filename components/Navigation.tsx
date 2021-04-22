@@ -101,7 +101,7 @@ const navigation: navigationItem[] = [
       { type: 'route', title: 'Branches', path: '/workspace/branches' },
       { type: 'route', title: 'Connections', path: '/workspace/connections' },
       { type: 'route', title: 'Implement', path: '/workspace/implement' },
-      { type: 'route', title: 'Inspector', path: '/workspace/inspector' },
+      { type: 'route', title: 'Inspect', path: '/workspace/inspector' },
       { type: 'route', title: 'Members', path: '/workspace/members' },
     ],
   },
@@ -273,7 +273,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Identify tracking issues with Inspector',
+        title: 'Use Inspector',
         path: '/data-design/start-using-inspector',
       },
       {
@@ -284,7 +284,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Import your tracking plan into Avo',
-        path: '/workspace/tracking-plan/importing',
+        path: '/data-design/import-tracking-plan',
       },
       {
         type: 'group',

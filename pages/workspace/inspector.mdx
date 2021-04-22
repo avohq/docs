@@ -1,20 +1,14 @@
 ---
 layout: 'guide'
-title: 'Inspector'
+title: 'Inspect'
 # abstract: 'Learn about how to use the inspector dashboard'
 ---
 
 import Link from '../../components/Link';
 
-The inspector tab is where you configure your inspector sources, get API keys to send data form the clients, set up slack alerts and examine the issues that Inspector found.
+The inspect tab is where you configure your inspector sources, get API keys to send data from the clients, set up slack alerts and examine the issues that Inspector found.
 
-### Default view and switching between views
-
-If you have no sources set up you will see the <Link passHref href="#manage-sources"><a>Sources screen</a></Link> as the default view of the Inspector Tab.
-If you already have set up a source you would see the <Link passHref href="#view-events"><a>Events screen</a></Link>.
-Use the button in the top left corner to switch between the Sources and the Events screens.
-
-## Manage Sources
+## Sources
 
 Inspector shares sources with the <Link passHref href="/workspace/connections"><a>Connections</a></Link> tab.
 You'll see a grid of all sources set up in Avo in the connections tab.
@@ -53,7 +47,7 @@ Source card have 3 states:
   />
 </center>
 
-## Slack Integration
+### Slack Integration
 
 On the Manage Sources screen you can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
 
@@ -76,7 +70,7 @@ The Inspector Slack integration currently alerts on the following issues:
   />
 </center>
 
-## View Events
+## Overview
 
 ### Header filters
 
