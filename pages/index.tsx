@@ -17,8 +17,8 @@ const LandingPage: FunctionComponent = () => {
     <div style={{ width: '85%' }}>
       <H1>Getting started with Avo</H1>
       <p className={styles.text}>
-        We distinguish 3 levels of Avo adoption, you don&apos;t need to go all
-        the way, because every stage has value in itself.
+        We distinguish 3 steps to adopt Avo. You don't need to go through all
+        the steps to receive value, because every step has value in itself.
       </p>
 
       <div className={styles.tocBg}>
@@ -67,7 +67,7 @@ const LandingPage: FunctionComponent = () => {
       <p className={styles.text}>
         For example, if you already have a framework for analytics
         implementation and implementation data bugs are not a problem for you,
-        you can stay at the second adoption stage.
+        you can stay at the second adoption step.
       </p>
       <h2 id="stage1">
         1. Better tracking plan management today - no code solution
@@ -75,18 +75,18 @@ const LandingPage: FunctionComponent = () => {
       <p className={styles.text}>
         Use Avo instead of your spreadsheet to manage and discuss your tracking
         plan. Avo is designed for analytics, so it&apos;s way better than the
-        spreadsheet for that use case.
+        spreadsheet for managing your tracking plan.
       </p>
 
       <p className={styles.text}>
-        This stage does not require any developer input, so you can adopt it in
-        the data design team without getting developer buyin.
+        This adoption step does not require any developer input, so you can adopt it in
+        the data design team without getting a developer buy-in.
       </p>
       <H3>Creating tracking plan in Avo</H3>
       <p className={styles.text}>
         If you already have a tracking plan you can import it to Avo, or you can
         create your plan in Avo from scratch. In any case you&apos;ll be able to
-        fine tune it and add new events for new features in Avo.
+        fine tune it and add new events for every feature release in Avo.
       </p>
       <div className={styles.row}>
         <div style={{ display: 'flex' }}>
@@ -229,8 +229,8 @@ const LandingPage: FunctionComponent = () => {
         power of Avo.
       </p>
       <p className={styles.text}>
-        {'> '}Level 1 is required, but levels 2 and 3 are interchangable, i.e.
-        you can go directly to level 3 without going through level 2 if your
+        {'> '}Adoption step 1 is required, but steps 2 and 3 are interchangable, i.e.
+        you can go directly to step 3 without going through step 2 if your
         platform does not yet have the Inspector SDK and start using the
         Inspector once it&apos;s available.
       </p>
@@ -319,13 +319,11 @@ const LandingPage: FunctionComponent = () => {
       <h2 id="stage3">3. Better tracking implementation</h2>
 
       <p className={styles.text}>
-        Avo generates human readable code, called Avo functions, that sends the
-        data exactly as planned. No more data bugs in your code, even between
-        platforms!
+        Avo generates human readable, type-safe, tracking code called Avo Functions, that sends the data exactly as planned. No more data bugs or cross-platform discrepancies in your analytics tracking!
       </p>
 
       <p className={styles.text}>
-        This stage requires constant interaction with Avo from developers.
+        This step requires developers to adopt Avo into their tracking implementation workflow.
       </p>
       <p className={styles.text}>
         It&apos;s not necessary to swap all your tracking with Avo functions,
