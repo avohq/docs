@@ -19,8 +19,10 @@ const LandingPage: FunctionComponent = () => {
       <div>
         <h1 className={styles.label}>Getting started with Avo</h1>
         <p className={styles.text}>
-          We distinguish 3 steps to adopt Avo. You don't need to go through all
-          the steps to receive value, because every step has value in itself.
+          The Avo workflows are layered. The 3 steps to adopt Avo can be adopted
+          as a whole or in part – depending on your use case. Each layer of the
+          workflow provides value and each of them requires different amount of
+          engineering contibution.
         </p>
 
         <p className={styles.text}>
@@ -29,11 +31,11 @@ const LandingPage: FunctionComponent = () => {
           you can stay at the second adoption step.
         </p>
         <h2 id="stage1" className={styles.label}>
-          1. Better tracking plan management today - no code required
+          1. Tracking plan management – no engineering required
         </h2>
         <p className={styles.text}>
           Use Avo instead of your spreadsheet to manage and discuss your
-          tracking plan. Avo is designed for analytics, so it&apos;s way better
+          tracking plan changes. Avo is designed for analytics, so it&apos;s way better
           than the spreadsheet for managing your tracking plan.
         </p>
 
@@ -162,13 +164,13 @@ const LandingPage: FunctionComponent = () => {
           />
         </div>
         <h2 id="stage2" className={styles.label}>
-          2. Better tracking validation
+          2. Tracking plan management with validation – one time SDK install required
         </h2>
         <p className={styles.text}>
           Add a lightweight SDK to your code to learn how actual implementation
           compares with the defined tracking plan. Get instant feedback on what
           tracking is implemented when working on new features with the
-          Implementation status in your Avo workspace. Observe your tracking
+          Implementation status in your Avo workspace soon. Observe your tracking
           calls on device in real time with the Avo Debuggers.
         </p>
         <p className={styles.text}>
@@ -179,7 +181,7 @@ const LandingPage: FunctionComponent = () => {
           full power of Avo.
         </p>
         <p className={styles.text}>
-          {'> '}Adoption step 1 is required, but steps 2 and 3 are
+          Adoption step 1 is required, but steps 2 and 3 are
           interchangable, i.e. you can go directly to step 3 without going
           through step 2 if your platform does not yet have the Inspector SDK
           and start using the Inspector once it&apos;s available.
@@ -261,7 +263,7 @@ const LandingPage: FunctionComponent = () => {
         </div>
 
         <h2 id="stage3" className={styles.label}>
-          3. Better tracking implementation
+          3. End-to-end tracking plan collaboration and implementation workflows – requires engineers to adopt Avo into their workflow
         </h2>
 
         <p className={styles.text}>
@@ -276,9 +278,10 @@ const LandingPage: FunctionComponent = () => {
         </p>
         <p className={styles.text}>
           It&apos;s not necessary to swap all your tracking with Avo functions,
-          you can start with a single tracking call.
+          in fact we recommend starting by only using Avo functions for new events.
         </p>
         <p className={styles.text}>
+          It&apos;s not necessary to adopt Avo functions on all platforms at
           It&apos;s not necessary to adopt Avo functions on all platforms at
           once, you can start with a single platform.
         </p>
@@ -373,7 +376,7 @@ const LandingPage: FunctionComponent = () => {
         </div>
 
         <h2 id="workspace" className={styles.label}>
-          Explore the Avo workspace
+          Explore your Avo workspace
         </h2>
 
         <div className={styles.row}>
@@ -386,24 +389,20 @@ const LandingPage: FunctionComponent = () => {
         </div>
 
         <h2 id="guides" className={styles.label}>
-          Comprehensive guides
+          Comprehensive data design and implemenation guides
         </h2>
         <div className={styles.row}>
           <PageLink
             image={AnalyticsManagerIcon}
             title="Global namespace"
             description="Learn why events and properties are global in Avo"
-            callToAction={
-              new CallToAction('/data-design/global-namespace')
-            }
+            callToAction={new CallToAction('/data-design/global-namespace')}
           />
           <PageLink
             image={AnalyticsManagerIcon}
             title="Naming conventions"
             description="One of the most important things in a tracking plan"
-            callToAction={
-              new CallToAction('/data-design/naming-conventions')
-            }
+            callToAction={new CallToAction('/data-design/naming-conventions')}
           />
           <PageLink
             image={DevIcon}
@@ -448,9 +447,7 @@ const LandingPage: FunctionComponent = () => {
             title="Multiple sources on Avo branches"
             description="Best practices in working with multiple platforms"
             callToAction={
-              new CallToAction(
-                '/data-design/multiple-sources-on-avo-branches',
-              )
+              new CallToAction('/data-design/multiple-sources-on-avo-branches')
             }
           />
           <PageLink
@@ -467,9 +464,7 @@ const LandingPage: FunctionComponent = () => {
             image={DevIcon}
             title="Avo in the CI"
             description="Use Avo in your continuous integration pipeline"
-            callToAction={
-              new CallToAction('/implementation/avo-in-the-ci')
-            }
+            callToAction={new CallToAction('/implementation/avo-in-the-ci')}
           />
         </div>
         <div className={styles.row}>
@@ -478,26 +473,20 @@ const LandingPage: FunctionComponent = () => {
             title="Organizing metrics and events"
             description="Categories, metrics and naming conventions for events and properties"
             callToAction={
-              new CallToAction(
-                '/data-design/organizing-metrics-and-events',
-              )
+              new CallToAction('/data-design/organizing-metrics-and-events')
             }
           />
           <PageLink
             image={DevIcon}
             title="Using Avo in large development teams"
             description="Learn how seamless it is"
-            callToAction={
-              new CallToAction('/implementation/avo-and-git')
-            }
+            callToAction={new CallToAction('/implementation/avo-and-git')}
           />
           <PageLink
             image={DevIcon}
             title="Avo functions and linters"
             description="Set up your linter to work with Avo functions"
-            callToAction={
-              new CallToAction('/implementation/avo-and-linters')
-            }
+            callToAction={new CallToAction('/implementation/avo-and-linters')}
           />
         </div>
       </div>
@@ -505,27 +494,27 @@ const LandingPage: FunctionComponent = () => {
       <StickyBox className={styles.tocBg}>
         <p>
           <a href="#stage1" className={styles.tocItem}>
-            1. Better tracking plan management today - no code required
+            1. Tracking plan management – no engineering required
           </a>
         </p>
         <p>
           <a href="#stage2" className={styles.tocItem}>
-            2. Better tracking validation
+            2. Tracking plan management with validation – one time SDK install required
           </a>
         </p>
         <p>
           <a href="#stage3" className={styles.tocItem}>
-            3. Better tracking implementation
+            3. End-to-end tracking plan collaboration and implementation workflows
           </a>
         </p>
         <p>
           <a href="#workspace" className={styles.tocItem}>
-            Explore the Avo workspace
+            Explore your Avo workspace
           </a>
         </p>
         <p>
           <a href="#guides" className={styles.tocItem}>
-            Comprehensive guides
+            Comprehensive data design and implemenation guides 
           </a>
         </p>
       </StickyBox>
