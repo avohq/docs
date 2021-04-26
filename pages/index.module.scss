@@ -1,11 +1,21 @@
 @use '../styles/brand';
 
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: 1fr;
+  gap: 10px 15px;
+  grid-template-areas:
+    'content  toc';
+}
+
 .row {
   display: flex;
   flex-direction: row;
-
   margin-left: -5px;
   margin-right: -5px;
+
+  grid-area: content;
 
   & > * {
     margin: 5px;
@@ -14,25 +24,20 @@
 }
 
 .tocBg {
-  width: 70%;
-  background-color: brand.$gray-5;
+  width: 280px;
+  height: auto;
   border-radius: 8px;
-  margin: 50px 0;
   padding: 10px;
-  padding-top: 1px;
-}
-
-.avoPink {
-  color: brand.$avo-pink;
-}
-
-.avoGrey {
-  color: brand.$gray-75;
+  margin: 8px;
+  padding-top: 18px;
+  grid-area: toc;
+  height: 300px;
 }
 
 .tocItem {
   margin-bottom: 10px;
   font-size: 14px;
+  color: brand.$gray-50;
 
   cursor: pointer;
 
@@ -42,7 +47,45 @@
 }
 
 .text {
-  width: 70%;
-  font-size: 14px;
+  width: 85%;
   line-height: 150%;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  grid-area: content;
+}
+
+.tableLabels {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: brand.$gray-75;
+}
+
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  width: 85%;
+  font-weight: 600;
+  grid-area: content;
+}
+
+
+@media (max-width: 840px) {
+  .tocBg {
+    display: none;
+  }
+
+  .text {
+    width: 100%;
+    font-size: 14px;
+    line-height: 150%;
+  }
+
+  .row {
+    width: 100%;
+  }
+
+  .label {
+    width: 100%;
+  }
 }

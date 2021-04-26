@@ -32,11 +32,10 @@ interface navigationItem {
 
 const navigation: navigationItem[] = [
   {
-    title: 'What is Avo',
+    title: 'Getting started with Avo',
     path: '/',
     iconName: 'home',
     subroutes: [
-      { type: 'route', title: 'What is Avo?', path: '/' },
       {
         type: 'route',
         title: 'FAQs',

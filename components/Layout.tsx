@@ -2,6 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Navigation from './Navigation';
 import { HamburgerButton } from 'react-hamburger-button';
+import StickyBox from 'react-sticky-box';
 
 import Avo from '../Avo';
 
@@ -58,7 +59,7 @@ const Layout: FunctionComponent = ({ children }) => {
         <Header />
       </div>
       <div className={styles.nav}>
-        <Navigation />
+          <Navigation />
       </div>
       <div className={styles.content}>
         {children}

@@ -5,7 +5,7 @@ import Icon from './Icon';
 import Link from 'next/link';
 
 export class CallToAction {
-  constructor(readonly text: string, readonly path: string) {}
+  constructor(readonly path: string) {}
 }
 
 interface Props {
@@ -20,28 +20,36 @@ const PageLink: FunctionComponent<Props> = ({
   description,
   image,
   callToAction,
-}) => (
-  <div className={styles.root}>
-    {image && (
-      <div className={styles.image}>
-        <img src={image} />
-      </div>
-    )}
-    <div className={styles.text}>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.description}>{description}</div>
-      {callToAction && (
-        <div className={styles.callToAction}>
-          <Link href={callToAction.path}>
-            <a style={{ textDecoration: 'none', color: 'grey' }}>
-              {callToAction.text}{' '}
-            </a>
-          </Link>
-          <Icon name="chevron-right" relativeSize="sm" color="inherit" />
+}) => {
+  let returnDiv = (
+    <div className={styles.root}>
+      {image && (
+        <div className={styles.image}>
+          <img src={image} />
         </div>
       )}
+      <div className={styles.text}>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.description}>{description}</div>
+        {callToAction && (
+          <div className={styles.callToAction}>
+            <a style={{ textDecoration: 'none', color: 'grey' }}>{'Read '}</a>
+            <Icon name="chevron-right" relativeSize="sm" color="inherit" />
+          </div>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+
+  if (callToAction) {
+    return (
+      <Link passHref scroll={true} href={callToAction ? callToAction.path : ''}>
+        {returnDiv}
+      </Link>
+    );
+  } else {
+    return returnDiv;
+  }
+};
 
 export default PageLink;

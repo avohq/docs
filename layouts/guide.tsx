@@ -49,7 +49,7 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
 
         {children}
       </div>
-      {showSidebar && headings.length > 0 ? (
+      {showSidebar ? (
         <div className={styles.sidebar}>
           <StickyBox offsetTop={40} offsetBottom={20}>
             <Toc headings={headings} />
