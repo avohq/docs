@@ -23,15 +23,18 @@
   }
 }
 
-.tocBg {
+.tocSidebar {
   width: 280px;
-  height: auto;
   border-radius: 8px;
   padding: 10px;
   margin: 8px;
   padding-top: 18px;
   grid-area: toc;
   height: 300px;
+}
+
+.tocInline {
+  display: none;
 }
 
 .tocItem {
@@ -70,9 +73,27 @@
 }
 
 
-@media (max-width: 840px) {
-  .tocBg {
+@media (max-width: 1140px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+      'content';
+  }
+
+  .tocSidebar {
     display: none;
+  }
+
+  .tocInline {
+    width: 420px;
+    display: block;
+    background-color: brand.$gray-5;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+    height: 268px;
   }
 
   .text {

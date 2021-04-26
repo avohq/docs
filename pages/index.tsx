@@ -14,6 +14,38 @@ function emptyRowElement() {
 }
 
 const LandingPage: FunctionComponent = () => {
+  const tocContent = (
+    <div>
+      {' '}
+      <p>
+        <a href="#stage1" className={styles.tocItem}>
+          1. Tracking plan management – no engineering required
+        </a>
+      </p>
+      <p>
+        <a href="#stage2" className={styles.tocItem}>
+          2. Tracking plan management with validation – one time SDK install
+          required
+        </a>
+      </p>
+      <p>
+        <a href="#stage3" className={styles.tocItem}>
+          3. End-to-end tracking plan collaboration and implementation workflows
+        </a>
+      </p>
+      <p>
+        <a href="#workspace" className={styles.tocItem}>
+          Explore your Avo workspace
+        </a>
+      </p>
+      <p>
+        <a href="#guides" className={styles.tocItem}>
+          Comprehensive data design and implemenation guides
+        </a>
+      </p>
+    </div>
+  );
+
   return (
     <div className={styles.grid}>
       <div>
@@ -30,13 +62,16 @@ const LandingPage: FunctionComponent = () => {
           implementation and implementation data bugs are not a problem for you,
           you can stay at the second adoption step.
         </p>
+
+        <div className={styles.tocInline}>{tocContent}</div>
+
         <h2 id="stage1" className={styles.label}>
           1. Tracking plan management – no engineering required
         </h2>
         <p className={styles.text}>
           Use Avo instead of your spreadsheet to manage and discuss your
-          tracking plan changes. Avo is designed for analytics, so it&apos;s way better
-          than the spreadsheet for managing your tracking plan.
+          tracking plan changes. Avo is designed for analytics, so it&apos;s way
+          better than the spreadsheet for managing your tracking plan.
         </p>
 
         <p className={styles.text}>
@@ -164,14 +199,15 @@ const LandingPage: FunctionComponent = () => {
           />
         </div>
         <h2 id="stage2" className={styles.label}>
-          2. Tracking plan management with validation – one time SDK install required
+          2. Tracking plan management with validation – one time SDK install
+          required
         </h2>
         <p className={styles.text}>
           Add a lightweight SDK to your code to learn how actual implementation
           compares with the defined tracking plan. Get instant feedback on what
           tracking is implemented when working on new features with the
-          Implementation status in your Avo workspace soon. Observe your tracking
-          calls on device in real time with the Avo Debuggers.
+          Implementation status in your Avo workspace soon. Observe your
+          tracking calls on device in real time with the Avo Debuggers.
         </p>
         <p className={styles.text}>
           This stage requires one time setup in each of your applications. The
@@ -181,10 +217,10 @@ const LandingPage: FunctionComponent = () => {
           full power of Avo.
         </p>
         <p className={styles.text}>
-          Adoption step 1 is required, but steps 2 and 3 are
-          interchangable, i.e. you can go directly to step 3 without going
-          through step 2 if your platform does not yet have the Inspector SDK
-          and start using the Inspector once it&apos;s available.
+          Adoption step 1 is required, but steps 2 and 3 are interchangable,
+          i.e. you can go directly to step 3 without going through step 2 if
+          your platform does not yet have the Inspector SDK and start using the
+          Inspector once it&apos;s available.
         </p>
         <div className={styles.row}>
           <div style={{ display: 'flex' }}>
@@ -263,7 +299,8 @@ const LandingPage: FunctionComponent = () => {
         </div>
 
         <h2 id="stage3" className={styles.label}>
-          3. End-to-end tracking plan collaboration and implementation workflows – requires engineers to adopt Avo into their workflow
+          3. End-to-end tracking plan collaboration and implementation workflows
+          – requires engineers to adopt Avo into their workflow
         </h2>
 
         <p className={styles.text}>
@@ -278,7 +315,8 @@ const LandingPage: FunctionComponent = () => {
         </p>
         <p className={styles.text}>
           It&apos;s not necessary to swap all your tracking with Avo functions,
-          in fact we recommend starting by only using Avo functions for new events.
+          in fact we recommend starting by only using Avo functions for new
+          events.
         </p>
         <p className={styles.text}>
           It&apos;s not necessary to adopt Avo functions on all platforms at
@@ -491,33 +529,7 @@ const LandingPage: FunctionComponent = () => {
         </div>
       </div>
 
-      <StickyBox className={styles.tocBg}>
-        <p>
-          <a href="#stage1" className={styles.tocItem}>
-            1. Tracking plan management – no engineering required
-          </a>
-        </p>
-        <p>
-          <a href="#stage2" className={styles.tocItem}>
-            2. Tracking plan management with validation – one time SDK install required
-          </a>
-        </p>
-        <p>
-          <a href="#stage3" className={styles.tocItem}>
-            3. End-to-end tracking plan collaboration and implementation workflows
-          </a>
-        </p>
-        <p>
-          <a href="#workspace" className={styles.tocItem}>
-            Explore your Avo workspace
-          </a>
-        </p>
-        <p>
-          <a href="#guides" className={styles.tocItem}>
-            Comprehensive data design and implemenation guides 
-          </a>
-        </p>
-      </StickyBox>
+      <StickyBox className={styles.tocSidebar}>{tocContent}</StickyBox>
     </div>
   );
 };
