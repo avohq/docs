@@ -21,7 +21,7 @@ const PageLink: FunctionComponent<Props> = ({
   image,
   callToAction,
 }) => {
-  let returnDiv = (
+  const returnDiv = (
     <div className={styles.root}>
       {image && (
         <div className={styles.image}>

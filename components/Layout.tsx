@@ -59,7 +59,7 @@ const Layout: FunctionComponent = ({ children }) => {
         <Header />
       </div>
       <StickyBox className={styles.nav}>
-          <Navigation />
+        <Navigation />
       </StickyBox>
       <div className={styles.content}>
         {children}
