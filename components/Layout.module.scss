@@ -2,12 +2,12 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 300px 1fr 1fr 1fr;
+  grid-template-columns: 300px 1fr;
   grid-template-rows: auto 1fr;
   gap: 10px 15px;
   grid-template-areas:
-    'navHeader  header  header  header'
-    'nav        content content content';
+    'navHeader  header'
+    'nav        content';
 
   max-width: 1400px;
   margin-left: auto;

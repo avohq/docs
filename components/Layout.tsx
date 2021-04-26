@@ -58,9 +58,9 @@ const Layout: FunctionComponent = ({ children }) => {
       <div className={styles.header}>
         <Header />
       </div>
-      <div className={styles.nav}>
+      <StickyBox className={styles.nav}>
           <Navigation />
-      </div>
+      </StickyBox>
       <div className={styles.content}>
         {children}
         <div className={styles.footer}>
