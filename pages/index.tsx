@@ -40,7 +40,7 @@ const LandingPage: FunctionComponent = () => {
       </p>
       <p>
         <a href="#guides" className={styles.tocItem}>
-          Comprehensive data design and implemenation guides
+          Comprehensive data design and implementation guides
         </a>
       </p>
     </div>
@@ -54,7 +54,7 @@ const LandingPage: FunctionComponent = () => {
           The Avo workflows are layered. The 3 steps to adopt Avo can be adopted
           as a whole or in part – depending on your use case. Each layer of the
           workflow provides value and each of them requires different amount of
-          engineering contibution.
+          engineering contribution.
         </p>
 
         <p className={styles.text}>
@@ -407,7 +407,7 @@ const LandingPage: FunctionComponent = () => {
 
           <PageLink
             image={DevIcon}
-            title="Controling the console logs"
+            title="Controlling the console logs"
             description="Disable or write your own logs"
             callToAction={new CallToAction('/implementation/custom-loggers')}
           />
@@ -427,7 +427,7 @@ const LandingPage: FunctionComponent = () => {
         </div>
 
         <h2 id="guides" className={styles.label}>
-          Comprehensive data design and implemenation guides
+          Comprehensive data design and implementation guides
         </h2>
         <div className={styles.row}>
           <PageLink
@@ -463,7 +463,7 @@ const LandingPage: FunctionComponent = () => {
           <PageLink
             image={AnalyticsManagerIcon}
             title="Downstream deps"
-            description="How to document dependancies of your analytics events in Avo"
+            description="How to document dependencies of your analytics events in Avo"
             callToAction={
               new CallToAction(
                 '/data-design/documenting-downstream-dependancies',
