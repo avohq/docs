@@ -17,39 +17,42 @@ const LandingPage: FunctionComponent = () => {
   const tocContent = (
     <div>
       {' '}
-      <p>
-        <a href="#stage1" className={styles.tocItem}>
-          1. Tracking plan management – no engineering required
-        </a>
-      </p>
-      <p>
-        <a href="#stage2" className={styles.tocItem}>
-          2. Tracking plan management with validation – one time SDK install
-          required
-        </a>
-      </p>
-      <p>
-        <a href="#stage3" className={styles.tocItem}>
-          3. End-to-end tracking plan collaboration and implementation workflows
-        </a>
-      </p>
-      <p>
-        <a href="#workspace" className={styles.tocItem}>
-          Explore your Avo workspace
-        </a>
-      </p>
-      <p>
-        <a href="#guides" className={styles.tocItem}>
-          Comprehensive data design and implementation guides
-        </a>
-      </p>
+      <ol>
+        <p>
+          <a href="#stage1" className={styles.tocItem}>
+            Step 1. Tracking plan management – no engineering required
+          </a>
+        </p>
+        <p>
+          <a href="#stage2" className={styles.tocItem}>
+            Step 2. Tracking plan validation – one time SDK install
+          </a>
+        </p>
+        <p>
+          <a href="#stage3" className={styles.tocItem}>
+            Step 3. Tracking plan implementation workflow for your team
+          </a>
+        </p>
+        <p>
+          <a href="#workspace" className={styles.tocItem}>
+            Explore your Avo workspace
+          </a>
+        </p>
+        <p>
+          <a href="#guides" className={styles.tocItem}>
+            Comprehensive data design and implementation guides
+          </a>
+        </p>
+      </ol>
     </div>
   );
 
   return (
     <div className={styles.grid}>
       <div>
-        <h1 className={styles.label}>Getting started with Avo</h1>
+        <h1 className={[styles.label, styles.heading1].join(' ')}>
+          Getting started with Avo
+        </h1>
         <p className={styles.text}>
           The Avo workflows are layered. The 3 steps to adopt Avo can be adopted
           as a whole or in part – depending on your use case. Each layer of the
@@ -65,8 +68,8 @@ const LandingPage: FunctionComponent = () => {
 
         <div className={styles.tocInline}>{tocContent}</div>
 
-        <h2 id="stage1" className={styles.label}>
-          1. Tracking plan management – no engineering required
+        <h2 id="stage1" className={[styles.label, styles.heading2].join(' ')}>
+          Step 1. Tracking plan management – no engineering required
         </h2>
         <p className={styles.text}>
           Use Avo instead of your spreadsheet to manage and discuss your
@@ -78,7 +81,9 @@ const LandingPage: FunctionComponent = () => {
           This adoption step does not require any developer input, so you can
           adopt it in the data design team without getting a developer buy-in.
         </p>
-        <h3 className={styles.label}>Creating tracking plan in Avo</h3>
+        <h3 className={[styles.label, styles.heading3].join(' ')}>
+          Creating tracking plan in Avo
+        </h3>
         <p className={styles.text}>
           If you already have a tracking plan you can import it to Avo, or you
           can create your plan in Avo from scratch. In any case you&apos;ll be
@@ -131,7 +136,9 @@ const LandingPage: FunctionComponent = () => {
           />
           {emptyRowElement()}
         </div>
-        <h3 className={styles.label}>Branched workflows</h3>
+        <h3 className={[styles.label, styles.heading3].join(' ')}>
+          Branched workflows
+        </h3>
         <p className={styles.text}>
           One of the core features for effective data design in Avo is branched
           workflow. It allows you to see the changes for a single feature and
@@ -175,7 +182,7 @@ const LandingPage: FunctionComponent = () => {
             }
           />
         </div>
-        <h3 className={styles.label}>
+        <h3 className={[styles.label, styles.heading3].join(' ')}>
           Publish tracking plan from Avo to other analytics tools
         </h3>
         <p className={styles.text}>
@@ -198,9 +205,8 @@ const LandingPage: FunctionComponent = () => {
             }
           />
         </div>
-        <h2 id="stage2" className={styles.label}>
-          2. Tracking plan management with validation – one time SDK install
-          required
+        <h2 id="stage2" className={[styles.label, styles.heading2].join(' ')}>
+          Step 2. Tracking plan validation – one time SDK install
         </h2>
         <p className={styles.text}>
           Add a lightweight SDK to your code to learn how actual implementation
@@ -283,7 +289,9 @@ const LandingPage: FunctionComponent = () => {
             image={DevIcon}
             title="Avo Inspector SDK reference"
             description="Methods and parameters of the Inspector SDK on all platforms"
-            callToAction={new CallToAction('/implementation/avo-inspector-sdk-reference')}
+            callToAction={
+              new CallToAction('/implementation/avo-inspector-sdk-reference')
+            }
           />
         </div>
         <div className={styles.row}>
@@ -298,9 +306,8 @@ const LandingPage: FunctionComponent = () => {
           />
         </div>
 
-        <h2 id="stage3" className={styles.label}>
-          3. End-to-end tracking plan collaboration and implementation workflows
-          – requires engineers to adopt Avo into their workflow
+        <h2 id="stage3" className={[styles.label, styles.heading2].join(' ')}>
+          Step 3. Tracking plan implementation workflow for your team
         </h2>
 
         <p className={styles.text}>
@@ -382,7 +389,9 @@ const LandingPage: FunctionComponent = () => {
           />
         </div>
 
-        <h3 className={styles.label}>Avo functions reference</h3>
+        <h3 className={[styles.label, styles.heading3].join(' ')}>
+          Avo functions reference
+        </h3>
 
         <div className={styles.row}>
           <PageLink
@@ -413,7 +422,10 @@ const LandingPage: FunctionComponent = () => {
           />
         </div>
 
-        <h2 id="workspace" className={styles.label}>
+        <h2
+          id="workspace"
+          className={[styles.label, styles.heading2].join(' ')}
+        >
           Explore your Avo workspace
         </h2>
 
@@ -426,7 +438,7 @@ const LandingPage: FunctionComponent = () => {
           />
         </div>
 
-        <h2 id="guides" className={styles.label}>
+        <h2 id="guides" className={[styles.label, styles.heading2].join(' ')}>
           Comprehensive data design and implementation guides
         </h2>
         <div className={styles.row}>
