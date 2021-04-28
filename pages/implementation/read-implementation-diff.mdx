@@ -3,6 +3,11 @@ layout: 'guide'
 title: 'How to read the implementation diff'
 ---
 
+import Link from '../../components/Link';
+
+First thing you need to know is that tracking design happens on branches. When a new feature is built, the analytics manager opens a branch in Avo and plans all the new tracking there.
+This allows us to show you the diff - what should be implemented for a specific feature. 
+
 ### Sources
 
 All the changes are grouped by sources, so you can pick the source you work on and ignore other sources, since they usually are separate codebases.  
@@ -26,7 +31,7 @@ Then we list the destinations of the event - new, removed and existing.
 
 ### An example
 
-># Source: Landing
+># Source: Web
 >
 >## New Events:
 >
@@ -50,7 +55,7 @@ Then we list the destinations of the event - new, removed and existing.
 >- amplitude
 >
 >
-># Source: iOS Mobile Debugger
+># Source: iOS
 >
 >## New Events:
 >
@@ -69,3 +74,8 @@ Then we list the destinations of the event - new, removed and existing.
 >#### New destinations on this event
 >
 >- Custom Node JS
+
+## What's next?
+
+Next feature we recommend to explore is setting up <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>the webhook</a></Link> that's triggered when a branch is merged. 
+

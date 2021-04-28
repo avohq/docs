@@ -283,7 +283,7 @@ const LandingPage: FunctionComponent = () => {
             image={DevIcon}
             title="Avo Inspector SDK reference"
             description="Methods and parameters of the Inspector SDK on all platforms"
-            callToAction={new CallToAction('/implementation/inspector/sdk/')}
+            callToAction={new CallToAction('/implementation/avo-inspector-sdk-reference')}
           />
         </div>
         <div className={styles.row}>
