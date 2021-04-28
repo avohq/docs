@@ -1,0 +1,76 @@
+---
+layout: 'guide'
+title: 'Set up Avo Mobile Visual Debugger in code'
+---
+
+import Link from '../../components/Link';
+
+Mobile debuggers are distributed as standalone open source libraries.
+
+Each Avo function will automatically show events in the debugger with timestamp and all the properties.
+
+If Avo detects errors the visual debugger will highlight those.
+
+> Debuggers are disabled in the <Link passHref href="/implementation/avo-and-unit-tests"><a>noop</a></Link> mode
+
+### Setting up the mobile debuggers
+
+> If you have already initialized the Inspector SDK on iOS and Android, no further action is required to enable the Visual Debugger. See `showVisualInspector` and `hideVisualInspector` methods of the Inspector SDKs to start using the Visual Debugger.
+
+The following pseudocode would give you the idea, head to <a href="#platform-docs">platform docs</a> for specific integration instructions.
+
+1. Create the debugger
+
+```javascript
+val debugger = Debugger()
+```
+
+2. Pass debugger when you initialize Avo, so Avo can show all tracked events
+
+```javascript
+Avo.initAvo(AvoEnv.DEV, ..., debugger)
+```
+
+3. Show the debugger
+
+```javascript
+debugger.showDebugger(this, DebuggerMode.bar)
+```
+
+4. Post your own events
+
+```javascript
+debugger.post(
+    timestamp,
+    "EventName",
+    errors: [{propertyId:"id0", message:"error in property 'event prop' with id 'id0'"}],
+    eventProperties: [{id:"id0", name:"event prop", value:"val"}],
+    userProperties: [{id:"id1", name:"user prop", value:"val"}]
+);
+```
+
+## <a name="platform-docs"></a> Open source repositories and platform specific integration docs
+
+We store the source code, platform docs and example apps in the corresponding github repositories.
+
+- <a
+    target="_blank"
+    rel="noopener noreferrer"
+    href="https://github.com/avohq/android-analytics-debugger"
+  >
+    Android
+  </a>
+- <a
+    target="_blank"
+    rel="noopener noreferrer"
+    href="https://github.com/avohq/ios-analytics-debugger"
+  >
+    iOS
+  </a>
+- <a
+    target="_blank"
+    rel="noopener noreferrer"
+    href="https://github.com/avohq/react-native-analytics-debugger"
+  >
+    React Native
+  </a>

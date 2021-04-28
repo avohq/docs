@@ -1,0 +1,125 @@
+@use '../styles/brand';
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: 1fr;
+  gap: 10px 15px;
+  grid-template-areas:
+    'content  toc';
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  margin-left: -5px;
+  margin-right: -5px;
+
+  grid-area: content;
+
+  & > * {
+    margin: 5px;
+    flex: 1;
+  }
+}
+
+.tocSidebar {
+  width: 280px;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 8px;
+  padding-top: 18px;
+  grid-area: toc;
+  height: 300px;
+}
+
+.tocInline {
+  display: none;
+}
+
+.tocItem {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: brand.$gray-50;
+
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.text {
+  width: 85%;
+  line-height: 150%;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  grid-area: content;
+}
+
+.tableLabels {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: brand.$gray-75;
+}
+
+.label {
+  font-family: 'Inter', sans-serif;
+  width: 85%;
+  grid-area: content;
+}
+
+.heading1 {
+  font-size: 36px;
+  font-weight: 600;
+}
+
+.heading2 {
+  font-size: 28px;
+  font-weight: 500;
+}
+
+.heading3 {
+  font-weight: 500;
+  font-size: 22px;
+}
+
+@media (max-width: 1140px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+      'content';
+  }
+
+  .tocSidebar {
+    display: none;
+  }
+
+  .tocInline {
+    max-width: 420px;
+    width: 85%;
+    display: block;
+    background-color: brand.$gray-5;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+    height: 268px;
+  }
+
+  .text {
+    width: 100%;
+    font-size: 14px;
+    line-height: 150%;
+  }
+
+  .row {
+    width: 100%;
+  }
+
+  .label {
+    width: 100%;
+  }
+}

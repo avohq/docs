@@ -2,6 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Navigation from './Navigation';
 import { HamburgerButton } from 'react-hamburger-button';
+import StickyBox from 'react-sticky-box';
 
 import Avo from '../Avo';
 
@@ -20,7 +21,7 @@ const Layout: FunctionComponent = ({ children }) => {
   useEffect(() => setNavigationOpened(false), [path]);
 
   useEffect(() => {
-    Avo.landingPageViewed({
+    Avo.docsPageViewed({
       path: path,
       referrer: document.referrer,
       utmCampaign: router.query.utm_campaign as string | undefined,
@@ -32,13 +33,13 @@ const Layout: FunctionComponent = ({ children }) => {
 
   return (
     <div className={styles.grid}>
-      <div className={styles.topBar}>
-        <a className={styles.backToAvo} href="https://avo.app">
-          <Icon name="chevron-left" relativeSize="sm" color="inherit" /> Avo
-          home
-        </a>
-      </div>
       <div className={styles.navHeader}>
+        <div className={styles.topBar}>
+          <a className={styles.backToAvo} href="https://avo.app">
+            <Icon name="chevron-left" relativeSize="sm" color="inherit" /> Avo
+            home
+          </a>
+        </div>
         <div className={styles.logoWrapper}>
           <Logo width={140} />
           <div className={styles.hamburgerButton}>
@@ -57,12 +58,14 @@ const Layout: FunctionComponent = ({ children }) => {
       <div className={styles.header}>
         <Header />
       </div>
-      <div className={styles.nav}>
+      <StickyBox className={styles.nav}>
         <Navigation />
-      </div>
-      <div className={styles.content}>{children}</div>
-      <div className={styles.footer}>
-        <Footer />
+      </StickyBox>
+      <div className={styles.content}>
+        {children}
+        <div className={styles.footer}>
+          <Footer />
+        </div>
       </div>
       <div className={styles.mobileNav}>
         {navigationOpened && <Navigation />}

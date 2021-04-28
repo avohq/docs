@@ -34,6 +34,33 @@ To compare the changes drafted on a branch to the source of truth on the main br
   />
 </center>
 
+## Share the implementation instructions
+
+While the diff view is handy for understanding the changes done in the tracking plan, it’s not very convenient for implementation.  
+For implementation we divide the changes per source and then group them by events, so developers can pick their platform and implement events once by one.  
+
+If your branch includes changes on at least one source then the implementation instructions will be available on the diff screen
+
+<center>
+  <img
+    width="100%"
+    src={require('../../images/implementation-diff-panel.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+You can copy the instruction and pass then to developers for implementation in your communication tool of choice.
+
+<center>
+  <img
+    width="100%"
+    src={require('../../images/implementation-diff-expended.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+Here is the <Link passHref href="/implementation/read-implementation-diff"><a>developer's guide on reading the diff</a></Link>
+
 ## How should branches be structured?
 
 We recommend setting up branches that have isolated changes that can be opened, implemented and merged within a few days. Typically there's a one to one mapping between Avo branches and git branches.
@@ -55,3 +82,7 @@ To enable this configuration, click the settings wheel in your workspace, go int
     alt="Protecting the main branch"
   />
 </center>
+
+## What's next?
+
+Now when you know how to use branches it's time to <Link passHref href="/workspace/members"><a>invite coworkers</a></Link>. 

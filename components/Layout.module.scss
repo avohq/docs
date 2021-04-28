@@ -2,29 +2,27 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 300px 1fr 1fr 1fr;
-  grid-template-rows: auto auto 1fr auto;
-  gap: 15px 15px;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 10px 15px;
   grid-template-areas:
-    'topBar     topBar  topBar  topBar'
-    'navHeader  header  header  header'
-    'nav        content content content'
-    'navFooter  footer  footer  footer';
+    'navHeader  header'
+    'nav        content';
 
-  max-width: 1300px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   padding: 0 30px;
+  height: 100vh;
 }
 
 .topBar {
-  grid-area: topBar;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .navHeader {
-  padding-bottom: 20px;
+  padding-bottom: 8px;
   grid-area: navHeader;
 }
 
@@ -38,7 +36,7 @@
 }
 
 .header {
-  padding-bottom: 20px;
+  margin-top: 40px;
   grid-area: header;
 }
 
@@ -48,9 +46,11 @@
 
 .nav {
   grid-area: nav;
+  overflow-y: auto;
 }
 
 .footer {
+  margin-top: 32px;
   grid-area: footer;
 }
 
@@ -69,13 +69,11 @@
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto;
-    gap: 15px 15px;
+    gap: 10px 15px;
     grid-template-areas:
-      'topBar     topBar'
       'navHeader  navHeader '
       'nav        nav    '
-      'content    content'
-      'footer     footer ';
+      'content    content';
     padding: 0 30px;
     margin-bottom: 100px;
   }

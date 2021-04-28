@@ -14,6 +14,8 @@ import { setSourcePath } from '../util/useSourcePath';
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const headings = generateToc(children);
   const time = readingTime(innerText(children));
+  const showSidebar =
+    frontMatter.showSidebar === undefined || frontMatter.showSidebar;
 
   const ogImageTitle = encodeURIComponent(
     frontMatter.mdTitle ? frontMatter.mdTitle : frontMatter.title,
@@ -47,11 +49,13 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
 
         {children}
       </div>
-      <div className={styles.sidebar}>
-        <StickyBox offsetTop={40} offsetBottom={20}>
-          <Toc headings={headings} />
-        </StickyBox>
-      </div>
+      {showSidebar ? (
+        <div className={styles.sidebar}>
+          <StickyBox offsetTop={40} offsetBottom={20}>
+            <Toc headings={headings} />
+          </StickyBox>
+        </div>
+      ) : null}
     </div>
   );
 };

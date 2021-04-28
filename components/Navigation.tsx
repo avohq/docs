@@ -32,11 +32,10 @@ interface navigationItem {
 
 const navigation: navigationItem[] = [
   {
-    title: 'What is Avo',
+    title: 'Getting started with Avo',
     path: '/',
     iconName: 'home',
     subroutes: [
-      { type: 'route', title: 'What is Avo?', path: '/' },
       {
         type: 'route',
         title: 'FAQs',
@@ -106,6 +105,100 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Data Design',
+    path: '/data-design/start-data-design',
+    iconName: 'data-design',
+    subroutes: [
+      {
+        type: 'group',
+        group: 'Getting started guides',
+      },
+      {
+        type: 'route',
+        title: 'Design data in Avo',
+        path: '/data-design/start-data-design',
+      },
+      {
+        type: 'route',
+        title: 'Managing Sources and Destinations',
+        path: '/data-design/define-sources-and-destinations',
+      },
+      {
+        type: 'route',
+        title: 'Collaborate in Avo',
+        path: '/data-design/start-collaborating',
+      },
+      {
+        type: 'route',
+        title: 'Use Inspector',
+        path: '/data-design/start-using-inspector',
+      },
+      {
+        type: 'route',
+        title: 'Publish your Tracking Plan to your schema management system',
+        path: '/data-design/start-publishing',
+      },
+      {
+        type: 'route',
+        title: 'Import your tracking plan into Avo',
+        path: '/workspace/tracking-plan/importing',
+      },
+      {
+        type: 'group',
+        group: 'Tools',
+      },
+      {
+        type: 'route',
+        title: 'Analytics tools',
+        path: '/data-design/analytics',
+      },
+      {
+        type: 'group',
+        group: 'Guides and best practices',
+      },
+      {
+        type: 'route',
+        title: 'Day to day workflow',
+        path: '/data-design/day-to-day-workflow',
+      },
+      {
+        type: 'route',
+        title: 'Naming Conventions',
+        path: '/data-design/naming-conventions',
+      },
+      {
+        type: 'route',
+        title: 'Global Namespace for events and properties',
+        path: '/data-design/global-namespace',
+      },
+      {
+        type: 'route',
+        title: 'Documenting purpose meetings',
+        path: '/data-design/documenting-purpose-meetings-in-avo',
+      },
+      {
+        type: 'route',
+        title: 'Documenting downstream dependancies',
+        path: '/data-design/documenting-downstream-dependancies',
+      },
+      {
+        type: 'route',
+        title: 'Multiple sources on Avo branches',
+        path: '/data-design/multiple-sources-on-avo-branches',
+      },
+      {
+        type: 'route',
+        title: 'Defining descriptive events and properties',
+        path: '/data-design/defining-descriptive-events-and-properties',
+      },
+      {
+        type: 'route',
+        title: 'Organizing metrics and events',
+        path: '/data-design/organizing-metrics-and-events',
+      },
+    ],
+  },
+  {
     title: 'Implementation',
     path: '/implementation/devs-101',
     iconName: 'implementation',
@@ -121,6 +214,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Reading the implementation diff',
+        path: '/implementation/read-implementation-diff',
+      },
+      {
+        type: 'route',
         title: 'Using Avo Functions',
         path: '/implementation/start-using-avo-functions',
       },
@@ -128,6 +226,18 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Using the Avo Visual Debuggers',
         path: '/implementation/start-using-visual-debugger',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Start using the Avo Web Visual Debuggers',
+            path: '/implementation/start-using-web-debugger',
+          },
+          {
+            type: 'route',
+            title: 'Set up the Avo Mobile Visual Debuggers',
+            path: '/implementation/setup-mobile-debugger',
+          },
+        ],
       },
       {
         type: 'route',
@@ -208,11 +318,6 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Mobile debuggers',
-            path: '/implementation/mobile-debuggers-reference',
-          },
-          {
-            type: 'route',
             title: 'Custom Destinations',
             path: '/implementation/start-custom-destination',
           },
@@ -250,94 +355,10 @@ const navigation: navigationItem[] = [
           },
         ],
       },
-    ],
-  },
-  {
-    title: 'Data Design',
-    path: '/data-design/start-data-design',
-    iconName: 'data-design',
-    subroutes: [
-      {
-        type: 'group',
-        group: 'Getting started guides',
-      },
       {
         type: 'route',
-        title: 'Design data in Avo',
-        path: '/data-design/start-data-design',
-      },
-      {
-        type: 'route',
-        title: 'Collaborate in Avo',
-        path: '/data-design/start-collaborating',
-      },
-      {
-        type: 'route',
-        title: 'Use Inspector',
-        path: '/data-design/start-using-inspector',
-      },
-      {
-        type: 'route',
-        title: 'Publish your Tracking Plan to your schema management system',
-        path: '/data-design/start-publishing',
-      },
-      {
-        type: 'route',
-        title: 'Import your tracking plan into Avo',
-        path: '/workspace/tracking-plan/importing',
-      },
-      {
-        type: 'group',
-        group: 'Tools',
-      },
-      {
-        type: 'route',
-        title: 'Analytics tools',
-        path: '/data-design/analytics',
-      },
-      {
-        type: 'group',
-        group: 'Guides and best practices',
-      },
-      {
-        type: 'route',
-        title: 'Day to day workflow',
-        path: '/data-design/day-to-day-workflow',
-      },
-      {
-        type: 'route',
-        title: 'Naming Conventions',
-        path: '/data-design/naming-conventions',
-      },
-      {
-        type: 'route',
-        title: 'Global Namespace for events and properties',
-        path: '/data-design/global-namespace',
-      },
-      {
-        type: 'route',
-        title: 'Documenting purpose meetings',
-        path: '/data-design/documenting-purpose-meetings-in-avo',
-      },
-      {
-        type: 'route',
-        title: 'Documenting downstream dependancies',
-        path: '/data-design/documenting-downstream-dependancies',
-      },
-      {
-        type: 'route',
-        title: 'Multiple sources on Avo branches',
-        path: '/data-design/multiple-sources-on-avo-branches',
-      },
-      {
-        type: 'route',
-        title: 'Defining descriptive events and properties',
-        path: '/data-design/defining-descriptive-events-and-properties',
-      },
-      {
-        type: 'route',
-        title: 'Organizing metrics and events',
-        path: '/data-design/organizing-metrics-and-events',
+        title: 'Mobile debuggers',
+        path: '/implementation/mobile-debuggers-reference',
       },
     ],
   },
