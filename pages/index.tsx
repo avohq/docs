@@ -9,6 +9,8 @@ import StickyBox from 'react-sticky-box';
 
 import styles from './index.module.scss';
 
+import Head from 'next/head';
+
 function emptyRowElement() {
   return <div style={{ display: 'flex', padding: '15px' }} />;
 }
@@ -49,6 +51,9 @@ const LandingPage: FunctionComponent = () => {
 
   return (
     <div className={styles.grid}>
+      <Head>
+        <title>Getting started with Avo</title>
+      </Head>
       <div>
         <h1 className={[styles.label, styles.heading1].join(' ')}>
           Getting started with Avo
