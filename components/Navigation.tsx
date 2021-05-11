@@ -265,7 +265,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo and parallel workflows',
+        title: 'Avo and parallel tracking changes',
         path: '/implementation/avo-and-git',
       },
       {
