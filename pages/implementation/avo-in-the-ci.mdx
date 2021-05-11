@@ -1,36 +1,26 @@
 ---
 layout: 'guide'
-title: 'Regression checking'
+title: 'Avo in CI/CD'
 # abstract: 'Learn how to use Avo to create a tracking plan and generate high quality, actionable data.'
 ---
 
 import Link from '../../components/Link';
 
-## Generated code
+You can add the `avo status` CLI command to your CI/CD workflows to regression check your tracking plan implementation.
 
-Avo implements different types of regression checking for your analytics. First
-one is constantly validating your data during development in the code generated
-analytics wrapper.
+The `avo status` command errors if no tracking call is found for any of the events defined in the Tracking Plan pinned in `avo.json`. It can be added to a your CI to make sure you always complete implementing all events, and to spot if tracking implementation is accidentally removed.
 
-## CLI command
-
-The second form of regression checking Avo provides is in the form of linting
-via the `avo status` command.
-
-The `avo status` command errors if no tracking call is found for any of the events on your current Avo Branch per Source. It can added to a your continuous integration to make sure you always "finish" implementing a specific source, and never remove an event implementation.
-
-This is an early iteration of the `avo status` command and therefore it has a few caveats:
-
-- It will only process Avo tracking calls (not any analytics calls)
-- It will only error if the tracking call is not at all there. This means two things:
+Currently the `avo status` command works as following:
+- It validates tracking calls implemented with Avo Function (the Avo generated code)
+- It will error if no instance of the event is found in your code. This means two things:
   1. It will not error if one tracking call instance is removed for a specific event, but there are still some tracking calls for this event remaining
-  2. It will not error if the tracking call remains in the code but is commented out
+  2. It will not error if the tracking call remains in a dead code path
 
 <center>
   <img
     src={require('../../images/regression.png')}
     width="75%"
-    alt="Avo CLI showing regression"
+    alt="Avo CLI showing regression via avo status"
   />
 </center>
 

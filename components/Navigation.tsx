@@ -92,7 +92,7 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Validation Warnings',
+            title: 'Tracking plan validation',
             path: '/workspace/tracking-plan/issue-reporter',
           },
         ],
@@ -214,8 +214,8 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Reading the implementation diff',
-        path: '/implementation/read-implementation-diff',
+        title: 'Using the Inspector SDK',
+        path: '/implementation/setup-inspector-sdk',
       },
       {
         type: 'route',
@@ -224,25 +224,35 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Using the Avo CLI',
+        path: '/implementation/cli',
+      },
+      {
+        type: 'route',
         title: 'Using the Avo Visual Debuggers',
         path: '/implementation/start-using-visual-debugger',
         subroutes: [
           {
             type: 'route',
-            title: 'Start using the Avo Web Visual Debuggers',
+            title: 'Web',
             path: '/implementation/start-using-web-debugger',
           },
           {
             type: 'route',
-            title: 'Set up the Avo Mobile Visual Debuggers',
+            title: 'Mobile',
             path: '/implementation/setup-mobile-debugger',
           },
         ],
       },
       {
         type: 'route',
-        title: 'Setting up the Inspector SDK',
-        path: '/implementation/setup-inspector-sdk',
+        title: 'Implementing tracking plan changes',
+        path: '/implementation/start-implementing-tracking-changes',
+      },
+      {
+        type: 'route',
+        title: 'Sharing implementation instructions',
+        path: '/implementation/read-implementation-diff',
       },
       {
         type: 'route',
@@ -250,36 +260,17 @@ const navigation: navigationItem[] = [
         path: '/implementation/start-using-inspector-with-avo-functions',
       },
       {
-        type: 'route',
-        title: 'Implementing tracking plan changes with Avo Functions',
-        path: '/implementation/start-implementing-tracking-changes',
-      },
-      {
-        type: 'group',
-        group: 'Tools',
-      },
-      {
-        type: 'route',
-        title: 'Command line tool',
-        path: '/implementation/cli',
-      },
-      {
-        type: 'route',
-        title: 'Logs',
-        path: '/implementation/logs',
-      },
-      {
         type: 'group',
         group: 'Advanced guides and best practices',
       },
       {
         type: 'route',
-        title: 'Using Avo in large development teams',
+        title: 'Avo and parallel workflows',
         path: '/implementation/avo-and-git',
       },
       {
         type: 'route',
-        title: 'Avo and tests',
+        title: 'Avo and unit tests',
         path: '/implementation/avo-and-unit-tests',
       },
       {
@@ -289,7 +280,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo in the CI',
+        title: 'Avo and CI/CD',
         path: '/implementation/avo-in-the-ci',
       },
       {
@@ -313,13 +304,13 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Custom Loggers',
-            path: '/implementation/custom-loggers',
+            title: 'Custom Destinations',
+            path: '/implementation/start-custom-destination',
           },
           {
             type: 'route',
-            title: 'Custom Destinations',
-            path: '/implementation/start-custom-destination',
+            title: 'Configuring logging',
+            path: '/implementation/custom-loggers',
           },
         ],
       },
@@ -330,27 +321,27 @@ const navigation: navigationItem[] = [
         subroutes: [
           {
             type: 'route',
-            title: 'Android',
+            title: 'Android SDK',
             path: '/implementation/inspector/sdk/android',
           },
           {
             type: 'route',
-            title: 'iOS',
+            title: 'iOS SDK',
             path: '/implementation/inspector/sdk/ios',
           },
           {
             type: 'route',
-            title: 'Web',
+            title: 'Web SDK',
             path: '/implementation/inspector/sdk/web',
           },
           {
             type: 'route',
-            title: 'React native',
+            title: 'React Native SDK',
             path: '/implementation/inspector/sdk/react-native',
           },
           {
             type: 'route',
-            title: 'Node.js',
+            title: 'Node.js SDK',
             path: '/implementation/inspector/sdk/node',
           },
         ],
