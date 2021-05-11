@@ -15,7 +15,7 @@ How does that work in Avo, where there is a single tracking plan shared across t
 
 ### Avo branches 
 
-Developers have been using branches in git to work on multiple code changes simultaneously for almost 20 years. In Avo you can use branches too, to work on multiple tracking plan changes simultaneously, both when designing your tracking plan and when implementing the tracking in code.
+Developers have been using branches in Git to work on multiple code changes simultaneously for almost 20 years. In Avo you can use branches too, to work on multiple tracking plan changes simultaneously, both when designing your tracking plan and when implementing the tracking in code.
 
 Let’s say the iOS team at our fictional company is working on an updated checkout flow. As part of this work they’ll need to add new events to their tracking plan and add properties to some existing events. They are also going to implement the tracking plan changes in code using Avo Functions.
 
@@ -52,7 +52,7 @@ Once the tracking has been implemented, and the feature is ready to go, the deve
 
 When it’s time for the Android team to implement the same changes, they would go through the same flow, but instead of creating the events and properties in Avo, they would only need to add the Android source to the events they want to implement, set the properties to be always sent from Android and run `avo pull` from their Avo branch to implement the tracking changes.
 
-Previously merged Avo branches can always be viewed back in time. That means you can always see what changes were made when, and by whom.
+Previously merged Avo branches can always be viewed back in time. That means you can always see the state of your tracking plan at that point, what changes were made when, and by whom.
 
 #### Branched tracking plan changes and implementation within one platform
 
