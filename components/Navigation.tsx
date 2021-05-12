@@ -285,6 +285,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Avo and monorepos',
+        path: '/implementation/avo-in-monorepo',
+      },
+      {
+        type: 'route',
         title: 'Subscribe to changes with webhooks',
         path: '/implementation/avo-tracking-plan-webhook',
       },
