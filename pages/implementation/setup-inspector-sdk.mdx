@@ -7,15 +7,6 @@ import Link from '../../components/Link';
 
 We recommend to familiarize yourself with <Link passHref href="/implementation/devs-101#avo-inspector-sdk"><a>the Inspector section of the Avo 101 for Developers</a></Link> guide first.
 
-And the concept batching used in the SDKs.
-
-#### <a name="batching"></a> Batching
-
-In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. Default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
-You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlustSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
-
-> When integrating the Avo Inspector for the first time and sending the first event it might not appear right away because of batching. Be sure to trigger a few events within a few seconds to make the batch go out to Avo servers. It will be reflected in the logs.
-
 ### Impelmentation
 
 Then proceed to platform specific quick start guide in one of our GitHub repos:

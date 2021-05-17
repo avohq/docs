@@ -43,10 +43,9 @@ Find the overview in <Link passHref href="/implementation/devs-101#avo-inspector
 
 ## <a name="batching"></a> Batching
 
-In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. Default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
+In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. In production, default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
+In development every event is sent as soon as it's provided to the Inspector by default.
 You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlustSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
-
-> When integrating the Avo Inspector for the first time and sending the first event it might not appear right away because of batching. Be sure to trigger a few events within a few seconds to make the batch go out to Avo servers. It will be reflected in the logs.
 
 ## <a name="segment-middlewares"></a> Easy setup with Segment SDK on Android and iOS
 
