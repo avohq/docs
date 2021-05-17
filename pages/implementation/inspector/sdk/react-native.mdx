@@ -162,7 +162,7 @@ setBatchSize(newBatchSize: number): void;
 ```
 
 Enables manual control over events batching. The default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas.
-In development the events are sent as soon as they are provided to the Inspector by default.
+In development batching is disabled by default.
 
 > #### Parameters:
 >
