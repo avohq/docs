@@ -235,7 +235,8 @@ static public void setBatchSize(int newBatchSize) // static method on AvoInspect
 fun setBatchSize(newBatchSize: Int) // static method on AvoInspector
 ```
 
-Enables manual control over events batching. Default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas.
+Enables manual control over events batching. Default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas. 
+In development batching is disabled by default.
 
 > #### Parameters:
 >
@@ -252,7 +253,6 @@ fun setBatchFlushSeconds(newBatchFlushSeconds: Int) // static method on AvoInspe
 ```
 
 Enables manual control over events batching. Default production batch flush interval is 30 seconds, i.e. the library attempts to send event schemas to the server when 30 or more seconds pass, given there are unsent schemas.
-In development mode default batch flush interval is 1 second.
 
 > #### Parameters:
 >

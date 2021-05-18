@@ -304,6 +304,12 @@ nested objects
 
 > Bonus: this docs you are reading <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/docs">are open sourced</a>, if you find anything wrong or missing, please open a pull request or an issue!
 
+#### <a name="batching"></a> Batching
+
+In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. In producition, default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
+In development batching is disabled by default.
+You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlustSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
+
 ### Impelement the Inspector SDK
 
 Now when you know how the Inspector SDK works it's good time to implement it in your application. Here is <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>the documentation</a></Link>.
