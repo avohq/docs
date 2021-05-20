@@ -95,12 +95,23 @@ const navigation: navigationItem[] = [
             title: 'Tracking plan validation',
             path: '/workspace/tracking-plan/issue-reporter',
           },
+          {
+            type: 'route',
+            title: 'Implementation status',
+            path: '/workspace/tracking-plan/implementation-status',
+          },
         ],
       },
       { type: 'route', title: 'Branches', path: '/workspace/branches' },
       { type: 'route', title: 'Connections', path: '/workspace/connections' },
       { type: 'route', title: 'Implement', path: '/workspace/implement' },
-      { type: 'route', title: 'Inspect', path: '/workspace/inspector' },
+      { type: 'route', title: 'Inspector', path: '/workspace/inspector', subroutes: [
+        {
+          type: 'route',
+          title: 'Issue types',
+          path: '/explore-tracking-plan/issue-types-in-inspector'
+        },
+      ]},
       { type: 'route', title: 'Members', path: '/workspace/members' },
     ],
   },
@@ -321,7 +332,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo Inspector SDK',
+        title: 'Avo Inspector SDKs',
         path: '/implementation/avo-inspector-sdk-reference',
         subroutes: [
           {
@@ -377,7 +388,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Issue Types in the Avo Inspector',
-        path: '/explore-tracking-plan/issue-types-in-inspector',
+        path: '/',
       },
     ],
   },

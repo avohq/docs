@@ -1,55 +1,43 @@
 ---
 layout: 'guide'
-title: 'Inspect'
-# abstract: 'Learn about how to use the inspector dashboard'
+title: 'Inspector'
+# abstract: 'Learn about how to use the Inspector dashboard'
 ---
 
 import Link from '../../components/Link';
 
-The inspect tab is where you configure your inspector sources, get API keys to send data from the clients, set up slack alerts and examine the issues that Inspector found.
+The first step to better analytics governance is knowing what's wrong with your data today.
 
-## Sources
+We built the Inspector to help you understand how your current tracking is performing. The Inspector both identifies <Link passHref href="/explore-tracking-plan/issue-types-in-inspector">common issues in your existing tracking</Link>, such as inconsistent properties and types, and provides implemention status in the Avo Tracking Plan, so you always know the state of your tracking implementation in your app.
+
+In this doc we'll be covering how to configure and use the Inspector in your workspace. You can learn about <Link passHref href="/implementation/avo-inspector-sdk-reference">how to install the Inspector SDKs in your sources here</Link>.
+
+## Configuring Sources
+
+The first step to start using the Inspector, is installing it on your sources. The Inspector source configuration can be found in the workspace sidebar under Inspect > Sources.
 
 Inspector shares sources with the <Link passHref href="/workspace/connections"><a>Connections</a></Link> tab.
-You'll see a grid of all sources set up in Avo in the connections tab.
-You can create new Inspector sources here, it will also appear in the Connections Tab.
 
-Source card have 3 states:
+In the Sources screen you'll see a grid of all sources you've already configured in the Connections tab.
 
-- Receiving events - this source already received at least one event from the client SDK.
+You can create new Inspector sources here, they will also appear in the Connections tab.
 
-<center>
-  <img
-    width="250"
-    src={require('../../images/workspace/inspector/inspector-source-receiving.png')}
-    alt="Opening a branch"
-  />
-</center>
-
-- Waiting for events - the source is available for Inspection, but have not received any events yet. Press
+Each Inspector source has 3 states:
+1. Receiving events - this source already received at least one event from the client SDK.
+2. Waiting for events - the source is available for Inspection, but have not received any events yet. Press
   the Source card to see the implementations details and the API key for this source.
+3. Not available - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
 
 <center>
   <img
-    width="250"
-    src={require('../../images/workspace/inspector/inspector-source-waiting.png')}
+    src={require('../../images/workspace/inspector/inspector-source-states.png')}
     alt="Opening a branch"
   />
 </center>
 
-- Coming soon - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
+## Connect to Slack
 
-<center>
-  <img
-    width="250"
-    src={require('../../images/workspace/inspector/inspector-source-not-available.png')}
-    alt="Opening a branch"
-  />
-</center>
-
-### Slack Integration
-
-On the Manage Sources screen you can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
+On the Sources screen you can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
 
 Press the `Connect to Slack` button and follow the instructions.
 
@@ -70,16 +58,17 @@ The Inspector Slack integration currently alerts on the following issues:
   />
 </center>
 
-## Overview
+## Inspector Dashboard
 
-### Header filters
+The Inspector dashboard provides a report on all tracking the Inspector has seen in your development, staging and production environment. You can use the dashboard to evaluate the health of your tracking implementation and prioritize issues.
+
+### Filters
 
 Here you can choose which environment to examine, the time window and search for event name.
 
 #### Environments
 
 Currently Inspector supports 3 types of environments:
-
 - Development
 - Staging
 - Production
@@ -101,7 +90,7 @@ All the time windows are updated hourly on Production and are close to real time
 
 #### Search for event name
 
-Type the vent name in the input field and only events with similar name will be shown.
+Type the event name in the input field and only events with similar name will be shown.
 
 If you want an exact match put the event name in quotes, i.e. "App Opened".
 
@@ -111,7 +100,7 @@ Notice that after you change the header filters the URL also changes. You can sh
 
 ### Events list
 
-The main part of the View Events screen is the list of all events seen, after the specified filters are applied.
+The main part of the Inspector dashboard screen is the list of all events seen.
 
 You can expand the events to see the event properties.
 
@@ -121,9 +110,11 @@ If Inspector detects an issue it will indicate that in the list.
 
 If you select an event or property row a panel with detailed information will appear on the right. There you would be able to see extended information about the issues and edit the event or property in your tracking plan.
 
-<Link passHref href="/explore-tracking-plan/issue-types-in-inspector">
-  <a>
-    You can find the list of issue types which the Avo Inspector can detect here
-  </a>
-</Link>
-.
+### Inspector issues
+
+You can learn more about the <Link passHref href="/explore-tracking-plan/issue-types-in-inspector">issue types the Inspector can detect in your tracking here</Link>.
+
+## Inspector Implementation Status
+
+You can learn more about <Link passHref href="/tracking-plan/implementation-status">how the Inspector works with your Tracking Plan implementation status here</Link>.
+

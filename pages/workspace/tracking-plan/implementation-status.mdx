@@ -1,0 +1,77 @@
+---
+layout: 'guide'
+title: 'Implementation Status'
+---
+
+import Link from '../../../components/Link';
+
+When looking at from which sources an  event is sent from in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
+
+Inside the indicator light is a letter, either "P" or "D", which represents "Production" or "Development" respectively. These indicators tell us where we are getting the data from. When looking at the Inspector Implementation Status, we currently only provide production, with development and staging coming soon – let us know if you want to be part of the beta (at support@avo.app). 
+
+<center>
+  <img
+    src={require('../../../images/workspace/tracking-plan/implementation-status.png')}
+    alt="Implementation status in a tracking plan"
+    width="75%"
+  />
+</center>
+
+
+The implementation status is twofold. If you're using Avo Functions, you can see the state of implementation in your development environments (D). If you have Avo Inspector installed, you can see the state of implementation in your production environments (P).
+
+## Avo Functions implementation status
+
+  <img
+    src={require('../../../images/workspace/tracking-plan/functions-implementation-status.png')}
+    alt="Event always sent correctly using Avo Functions"
+    width="50%"
+  />
+
+
+The Avo Functions implementation status reports on how you Avo Functions implementation is performing in development, compared to your Tracking Plan.
+
+The Avo Functions implementation status can have four states:
+1. Always sent correctly
+2. Sometimes sent correctly
+3. Never sent correctly
+4. Never seen
+
+Learn more about <Link passHref href="/implementation/start-using-avo-functions">how to start using Avo Functions in this doc</Link>.
+
+
+## Inspector implementation status
+
+  <img
+    src={require('../../../images/workspace/tracking-plan/inspector-implementation-status.png')}
+    alt="Event always sent correctly in a previous version"
+    width="50%"
+  />
+
+The Inspector implementation status reports on how your tracking implementation is performing in production, compared to your Tracking Plan. Note that the Inspector implementation status can report on implementation status for all of your existing tracking code, and does not require the adoption of Avo Functions to work.
+
+For each source we check the following for all events in your Tracking Plan:
+1. Have we seen the event on this source?
+2. Is the most recent version we have seen the event on, the most recent version we have seen for this source?
+3. Is the event being sent according to the event definition in the tracking plan?
+
+Based on these checks we report the implementation status using one of the following states:
+- Event is always sent correctly in the latest version
+- Event is sometimes sent correctly in the latest version
+- Event is never sent correctly in the latest version
+- Event has never been seen in the latest version, last seen in version [version number] where it was [always, sometimes or never] sent correctly
+- Never seen this even
+
+> Note that since the Inspector does only process your event metadata, and not customer data such as property values, it can not validate property value rules such as matches, min and max. However, it does validate property types, so if a property is defined as int in your tracking plan but is being sent as string, the Inspector implementation status will highlight that issue. 
+
+
+### App versions
+
+By default the Inspector implementation status reports on how your tracking is performing in the latest version of your app. As we all know apps and websites can be running on multiple versions simultaneously, and since our tracking code changes with every release, the events can differ between versions. 
+
+If you have changed your event in the tracking plan, old versions of the event are expected to not match the current version of the tracking plan, and become noise. That’s why we built the Inspector Implementation Status to focus on the tracking from your latest versions
+
+We recommend using semantic versions **("1.0.0")** which get incremented on every release, but any type of incremental string or number will do (e.g. build number), to learn check out the Inspector docs. Providing a version to the Inspector will help get the cleanest output from the status report and help you understand how your tracking is performing in your latest versions.
+
+Learn more about <Link passHref href="/implementation/avo-inspector-sdk-reference">how to install the Inspector in this doc</Link>.
+
