@@ -374,21 +374,10 @@ const navigation: navigationItem[] = [
     path: '/explore-tracking-plan/start-using-visual-debuggers',
     iconName: 'tracking-plan',
     subroutes: [
-      /*       {
-        type: 'route',
-        title: 'Understanding what your data means with Avo',
-        path:
-          '/explore-tracking-plan/start-understandings-what-your-data-means',
-      }, */
       {
         type: 'route',
         title: 'Using visual debuggers to understand tracking',
         path: '/explore-tracking-plan/start-using-visual-debuggers',
-      },
-      {
-        type: 'route',
-        title: 'Issue Types in the Avo Inspector',
-        path: '/',
       },
     ],
   },
