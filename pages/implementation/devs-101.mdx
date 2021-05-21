@@ -307,7 +307,7 @@ nested objects
 #### <a name="batching"></a> Batching
 
 In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. In producition, default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
-In development events are sent as soon as they are provided to the Inspector by default.
+In development batching is disabled by default.
 You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlushSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
 
 ### Impelement the Inspector SDK

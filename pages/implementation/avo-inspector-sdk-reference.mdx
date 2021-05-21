@@ -1,6 +1,6 @@
 ---
 layout: 'guide'
-title: 'Avo Inspector SDK reference'
+title: 'Avo Inspector SDKs'
 ---
 
 import Link from '../../components/Link';
@@ -44,8 +44,27 @@ Find the overview in <Link passHref href="/implementation/devs-101#avo-inspector
 ## <a name="batching"></a> Batching
 
 In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. In production, default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
-In development every event is sent as soon as it's provided to the Inspector by default.
+In development batching is disabled by default.
 You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlushSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
+
+## <a name="versions"></a> App versions
+
+When initializing the Inspector SDK you'll be prompted to provide the current app version. Providing correct app version is not required, but doing so significantly improves the Inspector issue reporting. By providing app version the Inspector is able to tell in what version an issue was first seen, and in what version the issue was fixed. Versions also allow the Inspector to report more accurately on the implementation status of your events, by focusing on the implementation status in your latest app version for every source.
+
+We recommend using semantic versioning (e.g. "1.0.0") or other types of numeric versioning (e.g. build number) which get incremented on every release.
+
+Examples of great app versions, incremented with every feature release:
+- 4.11.2 
+- 1.110.0
+- 1452
+- 42
+
+Examples of bad app versions:
+- 0f5d04ddbb401971b2f9c7f6186f58161692c3d8
+- prod.commit.b401971
+
+Don't have versioning for your app in place? Reach out to us and we'll help you set up versioning in your app.
+
 
 ## <a name="segment-middlewares"></a> Easy setup with Segment SDK on Android and iOS
 
