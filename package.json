@@ -7,6 +7,7 @@
     "dev": "DEV=true next dev",
     "build": "next build",
     "start": "next start",
+    "spellcheck": "yarn mdspell 'pages/*.mdx' 'pages/*/*.mdx' 'pages/*/*.mdx' --en-us -x -n",
     "lint": "eslint '*/**/*.{js,ts,tsx}' && tsc --noEmit",
     "lint-mdx": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/mdxLint/index.ts",
     "generate-sitemap": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/generateSitemap.ts"
@@ -32,6 +33,7 @@
     "classnames": "^2.2.6",
     "eslint-plugin-react": "^7.20.0",
     "lodash.throttle": "^4.1.1",
+    "markdown-spellcheck": "^1.3.1",
     "marked": "^2.0.0",
     "next": "9.4.4",
     "next-images": "^1.4.0",

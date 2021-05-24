@@ -26,7 +26,7 @@ You should never have to make changes to the Avo generated file. If you find you
 
 ### Avo Command Line Interface
 
-The Avo CLI is the easies way to interact with Avo from your development environment.
+The Avo CLI is the easiest way to interact with Avo from your development environment.
 Run
 
 ```sh
@@ -89,7 +89,7 @@ Read more about property types later in the <Link passHref href="/implementation
 - `debugger` - mobile platforms (Android, iOS, React Native) support <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers"><a>the Avo Analytics Debuggers</a></Link>, provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
 - `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors. Note that the Avo validation will never crash your app if env is set to Production.
 - `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is dismissed in production.
-- `destination options` (not shown in the example) - some platforms, for example Javscript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization. This allows you to pass config/options through Avo to the init functions of the underlying analytics SDKs.
+- `destination options` (not shown in the example) - some platforms, for example JavaScript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization. This allows you to pass config/options through Avo to the init functions of the underlying analytics SDKs.
 
 ### <a name="avo-generated-file-init-inside"></a> What's inside the initAvo method / Avo constructor?
 
@@ -118,7 +118,7 @@ The keys are set up in the Avo web UI and automatically fetched by the codegen, 
 
 Avo functions are actual callable functions generated for events defined in your tracking plan.
 
-> On some server platforms Avo functions are async, i.e. on Node.js they return a Promise and on C# you can await on the Avo Functions
+> On some server platforms Avo functions are async, e.g. on Node.js they return a Promise and on C# you can await on the Avo Functions
 
 For example if you have an event defined with name `App Opened` connected to your source, the Avo functions interface will look like
 
@@ -168,7 +168,7 @@ The second parameter has no constraints, so it is a `String` (though it is optio
 
 In general, constraints can be added to properties to validate against:
 
-string properies: a finite list of allowed string values
+string properties: a finite list of allowed string values
 int and float properties: a minimum and maximum value
 object properties: exact structure of the allowed keys and types of values in the object
 
@@ -207,7 +207,7 @@ Avo helps developers avoid mistakes when implementing analytics, it makes sure t
 
 First, Avo is utilizing the type system of a programming language you work with. For example in the code snippet above the optional properties are supported on the language level in Swift, so we make the interface in a way you can't provide null values where they are not expected. We try to do as many validations as possible this way, so they are performed in the compile time.
 
-Second, it's runtime validations. In cases when the language does not provide us with tool to check in the compile time, like in Javascript, we do runtime checks, looking like this
+Second, it's runtime validations. In cases when the language does not provide us with tool to check in the compile time, like in JavaScript, we do runtime checks, looking like this
 
 ```javascript
 assertString: function assertString(propertyId, propName, str) {
@@ -298,7 +298,7 @@ func trackAppOpened(appOpenedEvent: Dictionary<String, Any>) {
 `float`
 `boolean`
 `string`
-combination of types, i.e. an optional integer would look like integer | null. If we've seen a mix of integers, strings and nulls it will be integer | string | null. List can be a part of combination.
+combination of types, e.g. an optional integer would look like integer | null. If we've seen a mix of integers, strings and nulls it will be integer | string | null. List can be a part of combination.
 parametrized list, i. e. list<integer | null>
 nested objects
 
@@ -310,6 +310,6 @@ In order to ensure our SDK doesn't have a large impact on performance or battery
 In development batching is disabled by default.
 You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlushSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
 
-### Impelement the Inspector SDK
+### Implement the Inspector SDK
 
 Now when you know how the Inspector SDK works it's good time to implement it in your application. Here is <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>the documentation</a></Link>.

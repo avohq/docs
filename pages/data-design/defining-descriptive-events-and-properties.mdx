@@ -5,7 +5,7 @@ title: 'Defining descriptive events and properties'
 
 import Link from '../../components/Link';
 
-When designing good event structures it's important to create a common understanding of meaning between the data designer, the data consumer and the instrumenting developers. This is for example to avoid duplicates of events and properties and an event being sent at different times between platorms.
+When designing good event structures it's important to create a common understanding of meaning between the data designer, the data consumer and the instrumenting developers. This is for example to avoid duplicates of events and properties and an event being sent at different times between platforms.
 
 A few things to consider:
 
@@ -64,7 +64,7 @@ selected or not? Therefore we recommend explicitly naming the property either "N
 of Passengers" or "Passenger Count" - or have a convention to shorten all number of properties to
 something like "Num Passengers".
 
-Another example is somthing that has perhaps a name, ID and a type. It can be tempting to create a property on the "Purchase Completed" event with the simple name "Product", as you want to know what product the user was purchasing. In that case it's hard to know whether the property is describing the product name, it's ID, the type or something else. There for we recommend naming properties explicitly what they refer to;
+Another example is something that has perhaps a name, ID and a type. It can be tempting to create a property on the "Purchase Completed" event with the simple name "Product", as you want to know what product the user was purchasing. In that case it's hard to know whether the property is describing the product name, it's ID, the type or something else. There for we recommend naming properties explicitly what they refer to;
 
 - "Product Name"
 - "Product ID"
@@ -86,13 +86,13 @@ Events an properties with a descriptive name get you far to create a common unde
 
 For <Link passHref href="/workspace/tracking-plan/events#a-nameevent-defintiona-event-definition"><a>events</a></Link> we recommend adding a description to an event with all the information required for a developers to trigger an event by the same user action for all code paths, platforms and products.
 
-For example for the "Purchase completed" a good description would be: _Event sent when the client receives a successful responce when a user has completed a purchase._
+For example for the "Purchase completed" a good description would be: _Event sent when the client receives a successful response when a user has completed a purchase._
 
 This is to avoid a situation where for example an Android developer sends the "Purchase Completed" event when a user taps a purchase button and an iOS developer sending the same event when the client gets a response from the server about the purchase being successful. In this case iOS would include all purchase attempts, successful or not, while Android only includes successful ones.
 
 ### Properties
 
-For properties we recommend adding a description to suppliment the event name - that describes exactly which value is in the property so that the developers know what value to send and the data consumer knows for sure what it means.
+For properties we recommend adding a description to supplement the event name - that describes exactly which value is in the property so that the developers know what value to send and the data consumer knows for sure what it means.
 
 For example for a "Search Result Position" property on a "Search Result Clicked" event the property name is pretty descriptive on what it means, but still further information is required to know exactly which value it's referring to. A good description in this case would be: _Which search result the user selected. 1 for the top search result, 2 for the one below and so on._
 
