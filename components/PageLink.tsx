@@ -43,7 +43,7 @@ const PageLink: FunctionComponent<Props> = ({
 
   if (callToAction) {
     return (
-      <Link /* passHref */ scroll={true} href={callToAction ? callToAction.path : ''}>
+      <Link scroll={true} href={callToAction ? callToAction.path : ''}>
         {returnDiv}
       </Link>
     );
