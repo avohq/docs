@@ -869,7 +869,7 @@ _avo_invoke = function _avo_invoke(env: string, eventId: string, hash: string, m
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          "ac": "2UyNdYioGjtgEtfVTVwV",
+          "ac": "HUnhSVk6KnzCvNPQEZ6f",
           "br": "_mRb_f-za",
           "en": env,
           "ev": eventId,
@@ -896,7 +896,7 @@ _avo_invoke_meta = function _avo_invoke_meta(env: string, type: string, messages
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          "ac": "2UyNdYioGjtgEtfVTVwV",
+          "ac": "HUnhSVk6KnzCvNPQEZ6f",
           "br": "_mRb_f-za",
           "en": env,
           "ty": type,
@@ -1029,7 +1029,13 @@ let SegmentInspectorForDocs = {
   /* Segment does not have revenue api, @see https://segment.com/docs/spec/track/#properties */
   logEvent: function logEvent(eventName: any, eventProperties: any, integrations: any) {
     if (typeof (window as any) === 'undefined') { return; }
-    (this as any).getInstance().track(eventName, eventProperties, Object.assign({}, {integrations: integrations}));
+    try {
+      (this as any).getInstance().track(eventName, eventProperties, Object.assign({}, {integrations: integrations}));
+    } catch(e) {
+      if(console && console.error) { 
+        console.error('Segment track error', e);
+      }
+    }
   },
 
   setUserProperties: function setUserProperties(userProperties: any, integrations: any) {
