@@ -58,7 +58,7 @@ Head back to the Connections tab and click "Add Destination". To configure a des
 
 Note that the _Production API Key_ and _Development API Key_ are not required for custom destinations.
 
-If you use multiple analytics tools, you should repeate this process and create a destination for every analytics tool.
+If you use multiple analytics tools, you should repeat this process and create a destination for every analytics tool.
 
 <img
   src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/destination-config.png')}
@@ -138,7 +138,7 @@ avo pull
 
 ### Initialize Avo
 
-Before we can start using the Avo Functions to log events we first need to initialize Avo by calling the `initAvo` function exported from the file. Avo is usually initializied in the same place you initialize all your other analytics SDKs, or as soon as possible in the runtime of your app.
+Before we can start using the Avo Functions to log events we first need to initialize Avo by calling the `initAvo` function exported from the file. Avo is usually initialized in the same place you initialize all your other analytics SDKs, or as soon as possible in the runtime of your app.
 
 First we import the Avo Functions and set up the destinations.
 
@@ -220,7 +220,7 @@ Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, wi
 Avo.appOpened({ client: 'Web', screenName: 'Home Screen' });
 ```
 
-> On some server platforms Avo functions are async, i.e. on Node.js they return a Promise and on C# you can await on the Avo Functions
+> On some server platforms Avo functions are async, e.g. on Node.js they return a Promise and on C# you can await on the Avo Functions
 
 When the Avo Function is called Avo will run validation on the event properties, making sure they fit the spec defined in the Tracking Plan in Avo. Note that this validation is only run in development mode. If you are using a Custom destination Avo passes the event name and properties to the logEvent function in the Custom Destination interface defined above, otherwise it will pass the event directly to the analytics tool defined in your destination.
 
