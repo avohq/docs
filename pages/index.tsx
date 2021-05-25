@@ -386,6 +386,19 @@ const LandingPage: FunctionComponent = () => {
           {emptyRowElement()}
           <PageLink
             image={DevIcon}
+            title="Avo Inspector and Avo Functions"
+            description="Setting up Avo Inspector and Avo Functions to work together"
+            callToAction={
+              new CallToAction(
+                '/implementation/start-using-inspector-with-avo-functions',
+              )
+            }
+          />
+        </div>
+        <div className={styles.row}>
+          {emptyRowElement()}
+          <PageLink
+            image={DevIcon}
             title="Web Debugger"
             description="Monitor events flow visually on your website"
             callToAction={
