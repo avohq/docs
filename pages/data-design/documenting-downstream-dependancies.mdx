@@ -6,13 +6,13 @@ abstract: 'Using Categories, Metrics and tags'
 
 import Link from '../../components/Link';
 
-A lot of teams want to be able to document their downstream dependancies in context with their events. Important depandancies can for example be marketing campaigns, KPI dashboards, email triggers and more. It can be important to make sure that someone that is making changes to an event, knows what depends on it, such that they can make sure to talk to the right people or be extra careful if the dependancies are important.
+A lot of teams want to be able to document their downstream dependencies in context with their events. Important dependencies can for example be marketing campaigns, KPI dashboards, email triggers and more. It can be important to make sure that someone that is making changes to an event, knows what depends on it, such that they can make sure to talk to the right people or be extra careful if the dependencies are important.
 
-In this best practice guide we'll take a couple of examples on how these depandencies can be documented in context with the analytics events in Avo, using categories, metrics and tags.
+In this best practice guide we'll take a couple of examples on how these dependencies can be documented in context with the analytics events in Avo, using categories, metrics and tags.
 
 ## Marketing campaigns
 
-This is a very common dependancy that we don't want to mess up. If we're spending money on a marketing campaign, we want to know how it's doing. Depending on how granuraly you want to document your marketing campaings, you can create a single marketing capaign category or have a category per campaign. We'll take examples of both below:
+This is a very common dependency that we don't want to mess up. If we're spending money on a marketing campaign, we want to know how it's doing. Depending on how granularly you want to document your marketing campaigns, you can create a single marketing campaign category or have a category per campaign. We'll take examples of both below:
 
 
 ### Single Marketing Campaign Category
@@ -22,7 +22,7 @@ One way to associate a marketing campaign with your events in Avo is to create a
 To create a single marketing campaign category:
 1. Go into the Metrics tab of the Tracking Plan
 2. Click "+ Add Category"
-3. Give your category a name (e.g Marketing Campaigns) and a description
+3. Give your category a name (e.g. Marketing Campaigns) and a description
 4. Create metrics for the marketing campaigns you want to document in the category
 5. (Optional) Add events that are significant for marketing campaigns to the category
 
@@ -63,7 +63,7 @@ _Example: Event view for a high level marketing category_
 
 Another way to associate marketing campaigns with your events in Avo is to create a category per marketing campaign. That is a good way for teams that want more granular campaign documentation and have more than one metric they want to document for each marketing campaign.
 
-To create a catecory per marketing campaign:
+To create a category per marketing campaign:
 1. Go into the Metrics tab of the Tracking Plan
 2. Click "+ Add Category"
 3. Give your category a name (e.g 2020 – Tournaments Campaign) and a description
@@ -95,7 +95,7 @@ _Example: Event view for a marketing campaign per category_
 
 ## KPI dashboards
 
-Another common dependacy are KPI dashboards that use data from your product analytics. Those kind of dashboards are very important not to mess up and it's good to make that clear in context with the event definitions that this event is used in a KPI dashboards so it needs extra caution when making changes to it. In the examples below we will both be using categories and tags to document KPI dashboard dependancies.
+Another common dependency are KPI dashboards that use data from your product analytics. Those kind of dashboards are very important not to mess up and it's good to make that clear in context with the event definitions that this event is used in a KPI dashboards so it needs extra caution when making changes to it. In the examples below we will both be using categories and tags to document KPI dashboard dependencies.
 
 
 ### KPI dashboard as a category
@@ -105,9 +105,9 @@ This way you have a category that contains all the KPIs as metrics, and both the
 To create a KPI dashboard category:
 1. Go into the Metrics tab of the Tracking Plan
 2. Click "+ Add Category"
-3. Give your category a name (e.g KPI dasboard) and a description
-4. Create metrics for each indivifual KPI
-5. (Optional) Add events that are significant for the KPI dasbhoard to the category
+3. Give your category a name (e.g KPI dashboard) and a description
+4. Create metrics for each individual KPI
+5. (Optional) Add events that are significant for the KPI dashboard to the category
 
 <center>
 	<img
@@ -137,17 +137,17 @@ _Example: A metric representing one KPI of the KPI dashboard_
 	/>
 </center>
 
-_Example: Event view for a KPI dasbhoard category_
+_Example: Event view for a KPI dashboard category_
 
 
 ### KPI dashboard as a tag
 
-Another way to indicate that a KPI dashboard depends on an event is using tags. We still recommend defining each KPI as a metric, but they don't neccessarily have to be in a KPI ddashboard category.
+Another way to indicate that a KPI dashboard depends on an event is using tags. We still recommend defining each KPI as a metric, but they don't necessarily have to be in a KPI dashboard category.
 
 To create a KPI dashboard tag:
 1. Go into the desired event
 2. Scroll down to the bottom of the event view and click "Add tag..."
-3. Give the tag a name (eg. KPI dasbhboard)
+3. Give the tag a name (e.g.. KPI dashboard)
 
 
 <center>
@@ -158,5 +158,5 @@ To create a KPI dashboard tag:
 	/>
 </center>
 
-_Example: Event view for a KPI dasbhoard tag_
+_Example: Event view for a KPI dashboard tag_
 
