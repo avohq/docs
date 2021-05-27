@@ -87,6 +87,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Exporting',
+            path: '/workspace/tracking-plan/exporting',
+          }
+          {
+            type: 'route',
             title: 'Publishing',
             path: '/workspace/tracking-plan/publishing',
           },
