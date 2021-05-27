@@ -1,0 +1,52 @@
+---
+layout: 'guide'
+title: 'Exporting'
+# abstract: 'Export your entire or partial tracking plan'
+---
+
+import Link from '../../../components/Link';
+
+We recommend setting up <Link passHref href="/workspace/tracking-plan/publishing"><a>Publishing</a></Link> if you need your tracking plan to consistently stay up to date with a downstream tool such as your analytics platform, your production time validation solution, your SQL table management, etc.
+
+In addition to that, you can always perform ad-hoc partial or full exports of your tracking plan in a CSV or JSON format. (In beta, request access via support@avo.sh).
+
+## Exporting
+
+- Open **Settings** ⚙️ > **Export**
+
+<center>
+  <img
+    src={require('../../../images/auto_publishing.png')}
+    width="100%"
+    alt="Publishing filter to publish only events sent from Web to Amplitude"
+  />
+</center>
+
+### Filtering events for exporting
+
+You can customize which events in Avo are published to which integrations by using the events filter. Events can be filtered by Sources, Destinations and Tags. For example the following integration will only publish events sent from Web to Amplitude.
+
+<center>
+  <img
+    src={require('../../../images/publish_filter.png')}
+    width="100%"
+    alt="Publishing filter to publish only events sent from Web to Amplitude"
+  />
+</center>
+
+#### Filtering and source specific property presence
+How is source specific property presence exported?
+- If you don't filter by any source, the property presence is set to the _"lowest common denominator"_ (see below) for all sources the property is sent from
+- If you filter by one source, the property presence is set to the presence configured for that source on the property
+- If you filter by more than one source, the property presence is set to the "lowest common denominator" for the sources you're filtering by and are sending the property
+
+What does the _"lowest common denominator"_ mean? 
+- If the property is `Always sent` on all sources being published, the property presence is set to `Always sent` (required)
+- If the property is `Sometimes sent` on one or more sources being published, the property presence is set to `Sometimes sent` (optional)
+- If property is `Never sent` on all sources being published, the property is not included in the publishing
+
+You can learn more about <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional"><a>Property Presence (configuring when Properties are required or optional) here</a></Link>.
+
+## What's next?
+
+If you're regularly exporting, you might want to <Link passHref href="/workspace/tracking-plan/publishing"><a>configure Publishing or Auto-Publishing</a></Link> for your tracking plan to consistently stay up to date with a downstream tool such as your analytics platform, your production time validation solution, your SQL table management, etc.
