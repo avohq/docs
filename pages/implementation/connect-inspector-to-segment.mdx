@@ -1,0 +1,227 @@
+---
+layout: 'guide'
+title: 'Send data from Segment to Avo Inspector (no code needed)'
+---
+
+import Link from '../../components/Link';
+
+# Enabling Avo Inspector without code changes
+
+## Use Avo Inspector as Segment destination
+
+If you are sending your data to Segment you can route it to Avo Inspector without adding any code to your codebase.
+
+You'll need to create a Segment Destination powered by Segment Function with a code snippet provided in your Avo workspace for each app and environment combination.
+
+In Segment you usually have different sources for each app environment, for example if you have a single web app, you probably have Web App Dev and Web App Production sources in Segment.
+
+Unlike Segment, Avo sources contain environments in them, so you will only need to create an Avo source per app, in our example you'll need a single Avo source called Web App.
+
+After connecting your Segment Source to corresponding code snippet the event schemas of all events seen in Segment will automatically be sent to Avo Inspector and you'll be able to monitor the quality of your tracking implementation without any changes in your code!
+
+> Remember that production data takes up to 2 hours to appear in the Inspector dashboard
+
+> Development data is available without any delay
+
+## Diagram of the data flow when sending directly to Segment
+
+<center>
+  <img
+    height="500"
+    src={require('../../images/chart-segment-to-inspector.png')}
+    alt="Data flow from Segment to Avo Inspector"
+  />
+</center>
+
+## Diagram of the data flow when sending to Segment with Avo generated code
+
+<center>
+  <img
+    height="500"
+    src={require('../../images/chart-avo-to-segment-to-inspector.png')}
+    alt="Data flow from Segment to Avo Inspector with Avo Functions"
+  />
+</center>
+
+## Guide to connect Segment and Avo Inspector
+
+### Create an Avo source to get the code snippets for your Segment integration
+
+#### Step 1. Set up your Avo source
+
+An Avo Source is the first thing you need to connect your Segment data to avo Inspector.
+
+Open `Inspect - Sources` in the Avo sidebar
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/inspect-sources.png')}
+    alt="Navigation to the Inspector sources screen in Avo"
+  />
+</center>
+
+If you already have the source, pick it. If you don’t have the source corresponding to your app, add a new one.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/add-source.png')}
+    alt="Image of the Add Source button in Avo"
+  />
+</center>
+
+On the opened screen you’ll see options to integrate Inspector. Pick Middleware and Segment to see the integration code snippets.
+
+<center>
+  <img
+    height="500"
+    src={require('../../images/guide-segment-to-inspector/source-setup.png')}
+    alt="Source settings in Avo"
+  />
+</center>
+
+Use the copy buttons to copy the full snippets to clipboard when you need to paste them into Segment on the next step.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/code-snippets.png')}
+    alt="Development and production code snippets to integrate with Inspector"
+  />
+</center>
+
+#### Step 2. Create Segment destinations with the provided code snippets
+
+Open Segment and log in into your workspace.
+
+Go to `Connections -> Catalog -> Functions` in Segment.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/segment-functions-menu.png')}
+    alt="Segment navigation to the functions menu"
+  />
+</center>
+
+And press the `+ New Function` button
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/segment-new-function-button.png')}
+    alt="Segment button to create a function"
+  />
+</center>
+
+We are interested in a destination function.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/segment-create-destination-function.png')}
+    alt="Segment create destination screen"
+  />
+</center>
+
+After creating a destination function you’ll find yourself in the web code editor provided by Segment.
+Here you would paste one of the code snippets we’ve seen in Avo on the 1st step. You'll need to create 2 separate segment functions for each code snippet, one for development and one for production.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/code-snippet-in-segment.png')}
+    alt="Example of code snippet in the Segment UI"
+  />
+</center>
+
+Save it by pressing `Configure` in the right bottom corner, filling the info in the next screen and pressing `Create Function`.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/create-function.png')}
+    alt="Segment create function modal"
+  />
+</center>
+
+Create 2 separate Segment functions for development and production environments
+
+#### Step 3. Test your development Segment Function (Optional)
+
+> You can test the production Segment function in the same way, but keep in mind that the production data shows with a ~2 hours delay in the Inspector dashboard
+
+If you press “Use Sample Event” you’ll be able to pick one of the existing events that Segment saw in your workspace before.
+
+<center>
+  <img
+    height="500"
+    src={require('../../images/guide-segment-to-inspector/use-sample-event.png')}
+    alt="Segment pick sample event modal"
+  />
+</center>
+
+Pick an event and press Run in the top right corner. The request will be executed. The result in Segment should look similar to this:
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/segment-output-success.png')}
+    alt="Segment success output of the test run of the function"
+  />
+</center>
+
+Then navigate to Avo, `Inspect - Overview`.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/inspect-overview.png')}
+    alt="Navigation to the Inspector overview screen in Avo"
+  />
+</center>
+
+Pick Development environment
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/inspector-development-env.png')}
+    alt="Environment picker in Inspector"
+  />
+</center>
+
+And you’ll see the event in your dashboard under the source from where you got the snippet from.
+
+<center>
+  <img
+    height="500"
+    src={require('../../images/guide-segment-to-inspector/source-in-inspector.png')}
+    alt="Source overview in Inspector"
+  />
+</center>
+
+This means that the Segment function is working.
+
+#### Step 4. Connect the Segment Functions to your Segment Sources
+
+Go back to `Connections -> Catalog -> Functions` in Segment. Pick the newly created Segment function and choose `+ Connect Destination` in the sidebar.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/segment-connect-destination.png')}
+    alt="Connect destination button in the Segment UI"
+  />
+</center>
+
+Pick a source that would be analyzed by the Avo Inspector and press `Confirm Source` in the top right corner. Double check that you source and destination environments match.
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/segment-pick-source-for-function.png')}
+    alt="Picking a source for the destination function in Segment UI"
+  />
+</center>
+
+Make sure to enable the destination using the toggle in the next screen
+
+<center>
+  <img
+    src={require('../../images/guide-segment-to-inspector/segment-destination-toggle.png')}
+    alt="Enabling a destination in Segment"
+  />
+</center>
+
+Now your Segment events stream to this source is analyzed by the Avo Inspector.
+
+Connect both development and production Segment Functions to your development and production Segment Sources.

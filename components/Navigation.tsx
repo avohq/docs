@@ -235,6 +235,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Connect Inspector to Segment (no code needed)',
+        path: '/implementation/connect-inspector-to-segment',
+      },
+      {
+        type: 'route',
         title: 'Using Avo Functions',
         path: '/implementation/start-using-avo-functions',
       },
