@@ -123,10 +123,10 @@ const navigation: navigationItem[] = [
         ],
       },
       { type: 'route', title: 'Members', path: '/workspace/members' },
-      { 
-        type: 'route', 
-        title: 'Integrate with other tools', 
-        path: '/workspace/integrations' 
+      {
+        type: 'route',
+        title: 'Integrate with other tools',
+        path: '/workspace/integrations',
       },
     ],
   },
