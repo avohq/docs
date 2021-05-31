@@ -245,7 +245,8 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Connect Inspector to Segment (no code needed)',
+        title:
+          'Stream data from Segment to Inspector (no code changes required)',
         path: '/implementation/connect-inspector-to-segment',
       },
       {

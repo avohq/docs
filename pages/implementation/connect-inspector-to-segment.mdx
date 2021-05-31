@@ -5,11 +5,9 @@ title: 'Send data from Segment to Avo Inspector (no code needed)'
 
 import Link from '../../components/Link';
 
-# Enabling Avo Inspector without code changes
+## Use Avo Inspector as a Segment destination
 
-## Use Avo Inspector as Segment destination
-
-If you are sending your data to Segment you can route it to Avo Inspector without adding any code to your codebase.
+If you are sending your data to Segment you can stream it to Avo Inspector without adding any code to your codebase.
 
 You'll need to create a Segment Destination powered by Segment Function with a code snippet provided in your Avo workspace for each app and environment combination.
 
@@ -19,15 +17,12 @@ Unlike Segment, Avo sources contain environments in them, so you will only need 
 
 After connecting your Segment Source to corresponding code snippet the event schemas of all events seen in Segment will automatically be sent to Avo Inspector and you'll be able to monitor the quality of your tracking implementation without any changes in your code!
 
-> Remember that production data takes up to 2 hours to appear in the Inspector dashboard
-
-> Development data is available without any delay
+> Remember that production data takes up to 2 hours to appear in the Inspector dashboard, while development data is available without any delay
 
 ## Diagram of the data flow when sending directly to Segment
 
 <center>
   <img
-    height="500"
     src={require('../../images/chart-segment-to-inspector.png')}
     alt="Data flow from Segment to Avo Inspector"
   />
@@ -37,7 +32,6 @@ After connecting your Segment Source to corresponding code snippet the event sch
 
 <center>
   <img
-    height="500"
     src={require('../../images/chart-avo-to-segment-to-inspector.png')}
     alt="Data flow from Segment to Avo Inspector with Avo Functions"
   />
@@ -55,6 +49,7 @@ Open `Inspect - Sources` in the Avo sidebar
 
 <center>
   <img
+    width="400"
     src={require('../../images/guide-segment-to-inspector/inspect-sources.png')}
     alt="Navigation to the Inspector sources screen in Avo"
   />
@@ -73,7 +68,7 @@ On the opened screen you’ll see options to integrate Inspector. Pick Middlewar
 
 <center>
   <img
-    height="500"
+    height="400"
     src={require('../../images/guide-segment-to-inspector/source-setup.png')}
     alt="Source settings in Avo"
   />
@@ -142,7 +137,7 @@ Create 2 separate Segment functions for development and production environments
 
 #### Step 3. Test your development Segment Function (Optional)
 
-> You can test the production Segment function in the same way, but keep in mind that the production data shows with a ~2 hours delay in the Inspector dashboard
+> You can test the production Segment function in the same way, but keep in mind that the production data shows with a ~2 hours delay in the Inspector dashboard, while development data is shown without delay
 
 If you press “Use Sample Event” you’ll be able to pick one of the existing events that Segment saw in your workspace before.
 
