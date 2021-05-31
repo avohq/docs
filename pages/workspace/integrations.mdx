@@ -1,0 +1,95 @@
+---
+layout: 'guide'
+title: 'Integrate with other tools'
+# abstract: 'You can integrate Avo with your existing tools to streamline your analytics workflow'
+---
+
+import Link from '../../components/Link';
+
+You can integrate Avo with your existing tools to streamline your analytics workflow:
+
+<a href="#schema-management">Schema management</a>:
+
+- <a href="#webhook">Webhook</a>: Sync your analytics schema to any endpoint to manage downstream schemas such as ingestion time validation or SQL table structures  
+- <a href="#segment-protocols">Segment Protocols</a>: Sync your analytics schema to Segment Protocols  
+- <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>: Sync your analytics schema to Mixpanel Lexicon  
+- <a href="#amplitude-govern">Amplitude Govern</a>: Sync your analytics schema to Amplitude Govern  
+
+<a href="#workflow">Workflow</a>:
+
+- <a href="#slack">Slack</a>: Configure notifications to be sent to a Slack channel.  
+- <a href="#jira">Jira</a>: Automatically create tickets with instrumentation instructions and a list of changes for review or implementation.
+- <a href="#github">GitHub</a>: Automatically create pull requests with an updated tracking library.
+
+## Schema Management
+
+With Avo you can _<Link passHref href="/workspace/tracking-plan/publishing">Publish</Link>_ your tracking plan to any downstream schema management to keep everything in sync, such as your analytics platforms, your production time validation schemas, your SQL table structures, etc. Go to <Link passHref href="/workspace/tracking-plan/publishing">Publishing</Link> to read more.
+
+### Webhook
+<Link passHref href="/workspace/tracking-plan/publishing#webhook">Publish to Webhook</Link> to post your JSON schema to any endpoint and sync your analytics schema with internal schema management such as production time validation, your SQL tables, etc.  
+
+### Segment Protocols
+<Link passHref href="/workspace/tracking-plan/publishing#segment-protocols">Publish to Segment Protocols</Link> to sync your analytics schema downstream
+
+### Mixpanel Lexicon
+<Link passHref href="/workspace/tracking-plan/publishing#mixpanel-lexicon">Publish to Mixpanel Lexicon</Link> to sync your analytics schema downstream
+
+
+### Amplitude Govern
+<Link passHref href="/workspace/tracking-plan/publishing#amplitude-govern">Publish to Amplitude Govern</Link> to sync your analytics schema to downstream
+
+
+## Workflow
+
+### Slack
+
+_In beta. Request access via support@avo.sh or Intercom._
+
+Configure notifications to be sent to a Slack channel:
+
+1. Create a new Webhook inside of Slack, which Avo will use to send notifications:
+
+- In the Slack app menu, click **Settings & administration** > **Manage Apps**
+- Select **Custom Integrations** > **Incoming Webhooks** > **Add to Slack**
+- Choose a **Channel** to receive notifications
+- Copy the **Webhook URL**
+
+2. Enable Slack notifications in your Avo Settings
+
+- Open **Settings** ⚙️ > **Notifications**
+- Select **Connect to Slack**
+- Insert the **Webhook URL**
+- Save and enjoy!
+
+#### Notifications
+
+- Branches:
+    - New branch opened
+    - Ready for review
+    - Approved
+    - Request changes
+    - Merged
+    - Closed
+    - Example:
+        - Solvi approved the `onboarding-funnel` branch 🎉
+- Comments: 
+    - New comment added
+    - Examples:
+        - Solvi commented on the `Account Created` event on the `onboarding-funnel` branch: _“Should we include the `role` property?”_
+        - Stefania commented on the `authentication config` property on the `main` branch: _“Should we have `auto login` as a property value here when we auto login the customer from the landing page?”_
+- Collaborators: 
+    - Collaborator added
+    - Collaborator removed
+    - Example:
+        - Stefania added Solvi as a collaborator on the `onboarding-funnel` branch
+
+### Jira
+
+When you make changes to your tracking plan on a an Avo branch, Avo automatically generates <Link passHref href="implementation/read-implementation-diff">implementation instructions</Link> that details all changes in your tracking plan branch, with deeplinks directly to the respective event and property in Avo. When your tracking plan branch is ready for review or implementation, with the push of a button you can copy/paste the instructions directly into a Jira ticket.
+
+**Coming Soon:** When a tracking plan branch is ready for review, Avo will automatically create a Jira ticket for the reviewer. When a tracking plan branch is ready for implementation, Avo will automatically create Jira tickets with instrumentation instructions.
+
+### GitHub
+
+**Coming Soon:** When a tracking plan branch is ready to implement Avo will auto create a pull request for your development team that includes the latest analytics changes.
+
