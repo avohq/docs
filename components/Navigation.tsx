@@ -117,6 +117,11 @@ const navigation: navigationItem[] = [
         subroutes: [
           {
             type: 'route',
+            title: 'Send data from Segment (no code)',
+            path: '/workspace/connect-inspector-to-segment',
+          },
+          {
+            type: 'route',
             title: 'Issue types',
             path: '/explore-tracking-plan/issue-types-in-inspector',
           },
@@ -242,12 +247,6 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Using the Inspector SDK',
         path: '/implementation/setup-inspector-sdk',
-      },
-      {
-        type: 'route',
-        title:
-          'Stream data from Segment to Inspector (no code changes required)',
-        path: '/implementation/connect-inspector-to-segment',
       },
       {
         type: 'route',
