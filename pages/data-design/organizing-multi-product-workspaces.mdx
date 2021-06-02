@@ -1,0 +1,49 @@
+---
+layout: 'guide'
+title: 'Organizing Multi-Product Workspaces'
+---
+
+For companies that have multiple products or multiple games, we recommend using a single workspace in Avo for the tracking plans for all of them. Having a single workspace enables companies to reuse events and properties across products/games and that way prevent discrepancies between them. 
+
+To organize the events and properties; sources, categories, tags and property groups can be used. All of those ways to organize can also be used to filter, to create a relevant view for each use case.
+
+**Sources** represent each codebase, whether the code base is shared across products or individual for each product x platform. You can use sources to configure whether properties are always, sometimes or never sent with an event and configure string constraints that are applicable for each product. So you'll have a source for each product and each platform like:
+- Product A – iOS
+- Product A – Android
+- Product A – Web
+- Product B – iOS
+- Product B – Android
+- Product B – Web
+- etc…
+
+**Categories** could be used to make collections of events such as:
+- Core events – a category of events that are applicable for all products/games
+- Genre specific events – a category per group of events that are applicable for specific genres or subject matter (in a game exaple there could be "Battle events", "Puzzle events" etc.)
+- Product/Game specific events – events that are specific for each individual product or game
+
+**Tags** could be used for anything else that you would like to organize your events by. Examples of how tags have been used:
+– Countries that the events are applicable for
+– Team ownership of the events
+– User journeys
+
+**Property groups** can be used in a similar way as the categories, grouping properties together that are commonly used together on events
+
+Below is an example of a tracking plan for a game company that has 3 games; Game A, Game B and Game C:
+
+<img
+  src={require('../../images/data-design/multiple-products-tracking-plan.png')}
+  alt="Multi-product tracking plan"
+  width="100%"
+/>
+
+*Example tracking plan for a game compnay with three games in one Avo Workspace.*
+
+And below is an example of the tracking plan being filtered on events for Game A and Discovery team only:
+
+<img
+  src={require('../../images/data-design/multiple-products-tracking-plan-filtered.png')}
+  alt="Multi-product tracking plan filtered"
+  width="100%"
+/>
+
+*Example tracking plan for a game compnay with three games in one Avo Workspace filtered to view only events sent from Game A and tagged for the Discovery team.*
