@@ -190,8 +190,6 @@ _Role: developers and/or Avo admins_
 
 When you have finished the implementation and verified it’s correctness you are ready to merge your Avo feature branch.
 
-However, **we recommend merging the git branch first and then the Avo branch**. The reason for that is that a git branches often
-
 That is because if an Avo branch is merged first and the git branch lives for an extended period of time after the Avo branch was merged, conflicts can arise. The conflicts happen when other people create new Avo branches after the Avo branch has been merged to Avo main, while the git branch is still open so the code changes have not reached git main.
 
 > Note: At this point avo.json on your git main branch is pointing to an Avo branch that has already been merged, which is perfectly fine! The Avo CLI will take care of automatically updating avo.json on next avo pull.

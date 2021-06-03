@@ -227,6 +227,11 @@ const navigation: navigationItem[] = [
         title: 'Organizing metrics and events',
         path: '/data-design/organizing-metrics-and-events',
       },
+      {
+        type: 'route',
+        title: 'Organizing multi-product workspaces',
+        path: '/data-design/organizing-multi-product-workspaces',
+      },
     ],
   },
   {
