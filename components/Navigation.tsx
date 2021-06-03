@@ -117,6 +117,11 @@ const navigation: navigationItem[] = [
         subroutes: [
           {
             type: 'route',
+            title: 'Send data from Segment (no code)',
+            path: '/workspace/connect-inspector-to-segment',
+          },
+          {
+            type: 'route',
             title: 'Issue types',
             path: '/explore-tracking-plan/issue-types-in-inspector',
           },
