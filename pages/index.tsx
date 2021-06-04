@@ -99,9 +99,6 @@ const LandingPage: FunctionComponent = () => {
           <div style={{ display: 'flex' }}>
             <b className={styles.tableLabels}>Data managers</b>
           </div>
-          <div style={{ display: 'flex' }}>
-            <b className={styles.tableLabels}>Developers</b>
-          </div>
         </div>
         <div className={styles.row}>
           <PageLink
@@ -113,11 +110,11 @@ const LandingPage: FunctionComponent = () => {
             }
           />
           <PageLink
-            image={DevIcon}
-            title="How to read the implementation markdown diff"
-            description="Avo represents tracking changes in a way optimized for implementation, learn how to understand it"
+            image={AnalyticsManagerIcon}
+            title="Define sources and destinations for documentation"
+            description="Define what platforms send particular events and list the relevant analytics destinations"
             callToAction={
-              new CallToAction('/implementation/read-implementation-diff')
+              new CallToAction('/data-design/define-sources-and-destinations')
             }
           />
         </div>
@@ -128,19 +125,31 @@ const LandingPage: FunctionComponent = () => {
             description="Create and modify your events, properties and metrics"
             callToAction={new CallToAction('/data-design/start-data-design')}
           />
-          {emptyRowElement()}
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="Stream Segment data to Avo Inspector"
+            description="Inspect your analytics implementation without any code changes"
+            callToAction={
+              new CallToAction('/workspace/connect-inspector-to-segment')
+            }
+          />
+        </div>
+        <div className={styles.row}>
+          <div style={{ display: 'flex' }}>
+            <b className={styles.tableLabels}>Developers</b>
+          </div>
         </div>
         <div className={styles.row}>
           <PageLink
-            image={AnalyticsManagerIcon}
-            title="Define sources and destinations for documentation"
-            description="Define what platforms send particular events and list the relevant analytics destinations"
+            image={DevIcon}
+            title="How to read the implementation markdown diff"
+            description="Avo represents tracking changes in a way optimized for implementation, learn how to understand it"
             callToAction={
-              new CallToAction('/data-design/define-sources-and-destinations')
+              new CallToAction('/implementation/read-implementation-diff')
             }
           />
-          {emptyRowElement()}
         </div>
+
         <h3 className={[styles.label, styles.heading3].join(' ')}>
           Branched workflows
         </h3>
