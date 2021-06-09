@@ -68,20 +68,22 @@ Below are instructions on how to initialize Avo with a custom destination for
 each of the supported languages:
 
 - [Web](#web)
-  - [JavaScript](#javascript)
-  - [TypeScript](#typescript)
+  - [Javascript](#javascript)
+  - [Typescript](#typescript)
 - [Mobile](#mobile)
-  - [React Native](#typescript)
   - [iOS](#ios)
     - [Objective-C](#obj-c)
     - [Swift](#swift)
   - [Android](#android)
     - [Java](#java-android)
     - [Kotlin](#kotlin)
+  - [React Native](#react-native)
+    - [Javascript](#react-native-javascript)
+    - [Typescript](#react-native-typescript)
 - [Backend](#backend)
   - [Node.js](#node-js)
-    - [JavaScript](#node-javascript)
-    - [TypeScript](#node-typescript)
+    - [Javascript](#node-javascript)
+    - [Typescript](#node-typescript)
   - [Java](#backend-java)
   - [PHP](#php)
   - [Python](#python)
@@ -91,7 +93,7 @@ each of the supported languages:
 
 ## <a name="web"></a> Web
 
-### <a name="javascript"></a> JavaScript
+### <a name="javascript"></a> Javascript
 
 Import the Avo library into your code:
 
@@ -132,7 +134,7 @@ Call the initAvo function:
 Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 ```
 
-### <a name="typescript"></a> TypeScript
+### <a name="typescript"></a> Typescript
 
 ```typescript
 import Avo from './Avo';
@@ -323,11 +325,132 @@ Avo.initAvo(application=application, context=this, env=AvoEnv.DEV, customDestina
 })
 ```
 
+### <a name="react-native"></a> React Native
+
+#### <a name="react-native-javascript"></a> Javascript
+
+Import the Avo library into your code:
+
+```javascript
+import Avo from './Avo';
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+var customDestination = {
+  make: function (env) {
+    // TODO implement
+  },
+  logEvent: function (eventName, eventProperties) {
+    // TODO implement
+  },
+  setUserProperties: function (userId, userProperties) {
+    // TODO implement
+  },
+  identify: function (userId) {
+    // TODO implement
+  },
+  unidentify: function () {
+    // TODO implement
+  },
+  revenue: function(amount, eventProperties) {
+    // TODO implement
+  },
+  page: function(pageName, eventProperties) {
+    // TODO implement
+  }
+};
+```
+
+Call the initAvo function:
+
+```javascript
+Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
+```
+
+#### Javascript to Mixpanel
+
+Here is a more specific example of how you can use a custom destination in Javascript on React Native to integrate with your Mixpanel SDK. In this example we're using the official [mixpanel-react-native](https://github.com/mixpanel/mixpanel-react-native) SDK.
+
+```javascript
+import { Mixpanel } from 'mixpanel-react-native';
+import Avo from './Avo';
+
+// An object representing your Mixpanel destination
+// that you pass into initAvo():
+
+var mixpanelDestination = {
+  make: function (env) {
+    Mixpanel.init(env == "dev" ? "<Your Mixpanel dev token>" : "<Your Mixpanel prod token>");
+  },
+  logEvent: function (eventName, eventProperties) {
+    mixpanel.track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    mixpanel.identify(userId);
+    Object.keys(userProperties).forEach(key => mixpanel.getPeople().set(key, userProperties[key]));
+  },
+  identify: function (userId) {
+    mixpanel.identify(userId);
+  },
+  unidentify: function () {
+    mixpanel.reset();
+  },
+  revenue: function(amount, eventProperties) {
+    mixpanel.getPeople().trackCharge(amount, eventProperties);
+  },
+  page: function(pageName, eventProperties) {
+    console.log("The React Native Mixpanel SDK does not provide native page or screen tracking");
+  }
+};
+```
+
+Call the `initAvo` method and pass in your `mixpanelDestination`:
+```javascript
+Avo.initAvo({ env: 'dev' }, {}, {}, mixpanelDestination);
+```
+
+#### <a name="react-native-typescript"></a> Typescript
+
+```typescript
+import Avo from './Avo';
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+let customDestination = {
+  make: function (env: AvoEnv) {
+    // TODO implement
+  },
+  logEvent: function (eventName: string, eventProperties: any) {
+    // TODO implement
+  },
+  setUserProperties: function (userId: string, userProperties: any) {
+    // TODO implement
+  },
+  identify: function (userId: string) {
+    // TODO implement
+  },
+  unidentify: function () {
+    // TODO implement
+  },
+  logPage: function(pageName: string, eventProperties: object) {
+    // TODO implement
+  }
+};
+```
+
+Call the initAvo function:
+
+```typescript
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
+```
+
 ## <a name="backend"></a> Backend
 
 ### <a name="node-js"></a> Node JS
 
-#### <a name="node-javascript"></a> JavaScript
+#### <a name="node-javascript"></a> Javascript
 
 Import the Avo library into your code:
 
@@ -371,7 +494,7 @@ Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 By passing in the `customDestination` object, its `logEvent()` function can be used
 to deliver an event to any custom destination or pipeline.
 
-#### <a name="node-typescript"></a> TypeScript
+#### <a name="node-typescript"></a> Typescript
 
 ```typescript
 import Avo from './Avo';
