@@ -381,14 +381,14 @@ import Avo from './Avo';
 
 var mixpanelDestination = {
   make: function (env) {
-    Mixpanel.init("<Your Mixpanel token>");
+    Mixpanel.init(env == "dev" ? "<Your Mixpanel dev token>" : "<Your Mixpanel prod token>");
   },
   logEvent: function (eventName, eventProperties) {
     mixpanel.track(eventName, eventProperties);
   },
   setUserProperties: function (userId, userProperties) {
     mixpanel.identify(userId);
-    Object.keys(userProperties).map(key => mixpanel.getPeople().set(key, userProperties[key]));
+    Object.keys(userProperties).forEach(key => mixpanel.getPeople().set(key, userProperties[key]));
   },
   identify: function (userId) {
     mixpanel.identify(userId);
