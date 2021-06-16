@@ -347,7 +347,6 @@ const LandingPage: FunctionComponent = () => {
         </p>
         <p className={styles.text}>
           It&apos;s not necessary to adopt Avo functions on all platforms at
-          It&apos;s not necessary to adopt Avo functions on all platforms at
           once, you can start with a single platform.
         </p>
 
