@@ -10,12 +10,17 @@ import StickyBox from 'react-sticky-box';
 import styles from './index.module.scss';
 
 import Head from 'next/head';
+import { GitHubLinkStore } from '../util/gitHubLinkStore';
 
 function emptyRowElement() {
   return <div style={{ display: 'flex', padding: '15px' }} />;
 }
 
 const LandingPage: FunctionComponent = () => {
+  GitHubLinkStore.update((s) => {
+    s.path = 'index.tsx';
+  });
+
   const tocContent = (
     <div>
       {' '}
