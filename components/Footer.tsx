@@ -3,11 +3,11 @@ import { FunctionComponent } from 'react';
 import Link from '../components/Link';
 
 import FeedbackButtons from './FeedbackButtons';
-import useSourcePath from '../util/useSourcePath';
+import { GitHubLinkStore } from '../util/gitHubLinkStore';
 import classNames from 'classnames';
 
 const Footer: FunctionComponent = () => {
-  const sourcePath = useSourcePath();
+  const sourcePath = GitHubLinkStore.useState((s) => s.path);
 
   const gitHubPath = sourcePath
     ? `https://github.com/avohq/docs/tree/master/pages/${sourcePath}`

@@ -9,7 +9,7 @@ import generateToc from '../util/generateToc';
 import Toc from '../components/Toc';
 import Head from 'next/head';
 import classNames from 'classnames';
-import { setSourcePath } from '../util/useSourcePath';
+import { GitHubLinkStore } from '../util/gitHubLinkStore';
 
 const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
   const headings = generateToc(children);
@@ -21,7 +21,9 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
     frontMatter.mdTitle ? frontMatter.mdTitle : frontMatter.title,
   );
 
-  setSourcePath(frontMatter.__resourcePath);
+  GitHubLinkStore.update((s) => {
+    s.path = frontMatter.__resourcePath;
+  });
 
   return (
     <div className={styles.root}>
