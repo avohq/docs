@@ -7,7 +7,7 @@ import { GitHubLinkStore } from '../util/gitHubLinkStore';
 import classNames from 'classnames';
 
 const Footer: FunctionComponent = () => {
-  const sourcePath = GitHubLinkStore.useState(s => s.path);
+  const sourcePath = GitHubLinkStore.useState((s) => s.path);
 
   const gitHubPath = sourcePath
     ? `https://github.com/avohq/docs/tree/master/pages/${sourcePath}`

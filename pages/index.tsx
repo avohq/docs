@@ -17,9 +17,8 @@ function emptyRowElement() {
 }
 
 const LandingPage: FunctionComponent = () => {
-
-  GitHubLinkStore.update(s => {
-    s.path = "index.tsx";
+  GitHubLinkStore.update((s) => {
+    s.path = 'index.tsx';
   });
 
   const tocContent = (

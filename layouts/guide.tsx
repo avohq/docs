@@ -21,7 +21,7 @@ const Guide: FunctionComponent<layoutProps> = ({ frontMatter, children }) => {
     frontMatter.mdTitle ? frontMatter.mdTitle : frontMatter.title,
   );
 
-  GitHubLinkStore.update(s => {
+  GitHubLinkStore.update((s) => {
     s.path = frontMatter.__resourcePath;
   });
 
