@@ -191,10 +191,15 @@ The Tracking Plan will be delivered with a `POST` request containing the Trackin
 
 ### Tracking Plan Model
 
-| Attribute | Type         | Description                    |
-| :-------- | :----------- | :----------------------------- |
-| name      | string       | The name of your Avo workspace |
-| events    | array(Event) | Array of Tracking Plan events  |
+| Attribute      | Type                               | Description                    |
+| :--------      | :-----------                       | :----------------------------- |
+| name           | string                             | The name of your Avo workspace |
+| events         | array(Event)                       | Array of Tracking Plan events  |
+| metrics        | { metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids |
+| sources        | { sourceId: Source ... }           | Objet where each Tracking Plan source is a field, keys are source ids |
+| destinations   | { destinationId: Destination ... } | Objet where each Tracking Plan destination is a field, keys are destination ids |
+| categories     | { categoryId: Category ... }       | Objet where each Tracking Plan metric is a field, keys are category ids |
+| context        | { publishInfo: PublishInfo }       | Metadata about the webhook call |
 
 #### Event Model
 
@@ -217,3 +222,14 @@ The Tracking Plan will be delivered with a `POST` request containing the Trackin
 | description | string        | Property description |
 | type        | string        | Property type        |
 | ?enum       | array(string) | Allowed enum values  |
+
+#### Metric Model
+
+| Attribute   | Type   | Description       |
+| :---------- | :----- | :---------------- |
+| id          | string | Metric name        |
+| name        | string | Metric name        |
+| description | string | Metric description |
+| categories  | array(string)  | category ids where this metric is included |
+| type        | string | One of Proportion / EventSegmentation / Funnel / Retention |
+| items       | array of  | Event JSON rules  |

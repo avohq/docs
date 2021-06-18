@@ -22,8 +22,13 @@ You can examine and download the exact JSON in the Publishing tab of your [Avo w
   "name": "Avo",
   "events": [
     {
+      "id": "_",
       "name": "Debugger Started",
       "description": "Sent when the web debugger is started.",
+      "tags": [],
+      "categories": [
+        "categoryId"
+      ],
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
@@ -34,41 +39,191 @@ You can examine and download the exact JSON in the Publishing tab of your [Avo w
           "properties": {
             "type": "object",
             "properties": {
-              "Frame Location": {
+              "Property Name 1": {
+                "id": "_",
                 "description": "Describes from where the debugger was started.",
                 "type": "string"
               },
-              "Schema Id": {
-                "description": "The ID of the schema that this event is related to.",
-                "type": "string"
-              },
-              "Client": {
+              "Property Name 2": {
+                "id": "_",
                 "description": "",
                 "type": "string",
                 "enum": [
-                  "Web Debugger",
-                  "Android Debugger",
-                  "Ios Debugger",
-                  "React Native Debugger (ios)",
-                  "React Native Debugger (android)"
+                  "Option 1",
+                  "Option 2"
                 ]
-              },
-              "Version": {
-                "description": "The client version that the user is on. This is the same version for web and desktop.",
-                "type": "string"
               }
             },
             "additionalProperties": false,
             "required": [
-              "Schema Id",
-              "Client",
-              "Version"
+              "Property Name 1",
+              "Property Name 2"
             ]
           }
         }
       }
     }
-  ]
+  ],
+  "metrics": {
+    "metricId": {
+      "id": "metricId",
+      "name": "Proportion of weekly active workspaces with published integrations",
+      "description": "",
+      "categories": [
+        "categoryId"
+      ],
+      "type": "Proportion",
+      "items": [
+        {
+          "eventId": "_",
+          "where": [
+            {
+              "propertyId": "_",
+              "operation": "greater",
+              "values": [
+                0
+              ]
+            }
+          ],
+          "groupBy": []
+        },
+        {
+          "eventId": "_",
+          "where": [],
+          "groupBy": []
+        }
+      ]
+    },
+    "anotherMethicId": {
+      "id": "anotherMethicId",
+      "name": "Number of integrations – segmented by integration type",
+      "description": "",
+      "categories": [
+        "categoryId"
+      ],
+      "type": "EventSegmentation",
+      "items": [
+        {
+          "eventId": "_",
+          "where": [],
+          "groupBy": [
+            {
+              "propertyId": "_"
+            }
+          ]
+        }
+      ]
+    },
+    "yetAnotherMetricId": {
+      "id": "yetAnotherMetricId",
+      "name": "Data Design Funnel",
+      "description": "",
+      "categories": [
+        "categoryId"
+      ],
+      "type": "Funnel",
+      "items": [
+        {
+          "eventId": "_",
+          "where": [],
+          "groupBy": []
+        },
+        {
+          "eventId": "_",
+          "where": [],
+          "groupBy": []
+        },
+        {
+          "eventId": "_",
+          "where": [],
+          "groupBy": []
+        },
+        {
+          "eventId": "_",
+          "where": [],
+          "groupBy": []
+        },
+        {
+          "eventId": "_",
+          "where": [],
+          "groupBy": []
+        }
+      ]
+    }
+  },
+  "sources": {
+    "sourceId": {
+      "id": "sourceId",
+      "name": "Web",
+      "programmingLanguage": "Reason_V2",
+      "developmentPlatform": "Web",
+      "destinations": [
+        "destinationId",
+        "anotherdestinationId"
+      ]
+    },
+    "anotherSourceId": {
+      "id": "anotherSourceId",
+      "name": "Functions",
+      "programmingLanguage": "Reason_V2",
+      "developmentPlatform": "Node",
+      "destinations": [
+        "destinationId",
+        "anotherdestinationId"
+      ]
+    }
+  },
+  "destinations": {
+    "destinationId": {
+      "id": "mixpanel",
+      "type": "Mixpanel"
+    },
+    "anotherDestinationId": {
+      "id": "anotherDestinationId",
+      "name": "segment",
+      "type": "Segment"
+    }
+  },
+  "categories": {
+    "categoryId": {
+      "id": "categoryId",
+      "name": "Onboarding",
+      "description": "",
+      "metrics": [
+        "metricId",
+        "anotherMetricId"
+      ],
+      "events": [
+        "eventId",
+        "anotherEventId"
+      ]
+    },
+    "anotherCategoryId": {
+      "id": "anotherCategoryId",
+      "name": "CLI",
+      "description": "",
+      "metrics": [
+        "metricId",
+        "anotherMetricId"
+      ],
+      "events": [
+        "eventId",
+        "anotherEventId"
+      ]
+    }
+  },
+  "context": {
+    "publishInfo": {
+      "branchId": "master",
+      "branchName": "main",
+      "integrationId": "_",
+      "integrationName": "Webhook",
+      "publishDate": "Fri, 18 Jun 2021 13:54:01 GMT",
+      "publishMethod": {
+        "type": "Manual"
+      }
+    }
+  }
 }
 ```
 
