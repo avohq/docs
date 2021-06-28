@@ -241,9 +241,20 @@ To see your exact Webhook payload choose `Tracking plan` - `Publishing` in the s
 | Attribute | Type       | Description |
 | :-------- | :--------- | :---------- |
 | eventId   | string     | Event id    |
-| where     | array(???) | ???         |
-| groupBy   | array(???) | ???         |
+| where     | array(whereFilter) |  Array of  where filters    |
+| groupBy   | array(groupByFilter)| array of objects containing property ids to group by |
 
+##### groupByFilter
+| Attribute      | Type       | Description                                              |
+| :----------- | :-------  | :-----------------------------------  |
+| propertyId   | string     | property Id being used in group filter   |
+
+#### Where filter
+| Attribute | Type | Description |
+|  :-------- | :------- | :----------------------------- |
+| propertyId | string |  property id |
+| operation | string | binary operation as string | 
+| values | array(t) | array of values of the same type | 
 #### Source Model
 
 | Attribute           | Type          | Description                                                   |
@@ -278,7 +289,7 @@ To see your exact Webhook payload choose `Tracking plan` - `Publishing` in the s
 | :-------------- | :--------------- | :------------------------------------------------------------------------ |
 | branchId        | id               | Branch id                                                                 |
 | branchName      | string           | Branch name                                                               |
-| integrationId   | string           | ???                                                                       |
-| integrationName | string           | ???                                                                       |
+| integrationId   | string           |    Id of the publish integration (conistently the same for this integration) |
+| integrationName | string           | Name of the publish integration (seen in Tracking Plan -> publishing -> <IntegrationName>                                                                      |
 | publishDate     | Date string      | Timestamp when the webhook was triggered                                  |
 | publishMethod   | { "type": type } | Desctiprion of the publish method, type can be "Manual" and "BranchMerge" |
