@@ -13,7 +13,6 @@ import Link from '../../../components/Link';
     alt="Avo Publishing"
 />
 
-
 </p>
 
 
@@ -59,18 +58,20 @@ You can customize which events in Avo are published to which integrations by usi
 </center>
 
 #### Filtering and source specific property presence
+
 How is source specific property presence published?
+
 - If you don't filter the integration by any source, the property presence is set to the "lowest common denominator" for all sources the property is sent from
 - If you filter the integration with one source, the property presence is set to the presence configured for that source on the property
 - If you filter by more than one source, the property presence is set to the "lowest common denominator" for the sources you're filtering by and are sending the property
 
-What does the "lowest common denominator" mean? 
+What does the "lowest common denominator" mean?
+
 - If the property is "Always sent" on all sources being published, the property presence is set to "Always sent" (required)
 - If the property is "Sometimes sent" on one or more sources being published, the property presence is set to "Sometimes sent" (optional)
 - If property is "Never sent" on all sources being published, the property is not included in the publishing
 
 You can learn more on <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional"><a>configuring when Properties are required or optional here</a></Link>.
-
 
 # Integrations
 
@@ -149,7 +150,6 @@ On publish, Avo will merge your Avo tracking plan with any existing events in Go
 
 Avo will not impact any events or properties that are only defined in Govern, or events that have not been added to the Govern integration in Avo.
 
-
 ### Govern Publishing Errors
 
 The following errors might occur when publishing your tracking to Govern. When publishing errors occur the error message in the Avo UI will contain which items could not be updated along with the error codes.
@@ -164,14 +164,13 @@ The publishing operation took too long. This can happen when publishing large tr
 
 #### 409 Conflict
 
-We tried to update an item that doesn't exist in your Amplitude Govern Schema. 
+We tried to update an item that doesn't exist in your Amplitude Govern Schema.
 We noticed that this error may happen if the entity has a non-default state in your Govern schema, i.e. it is marked as "Unexpected" or "Blocked". Try setting the state to "Expected" in Govern and unblock erroring entities and publish again.
 If that does not help this might be caused by an internal error. Please reach out to support so we can help you resolve the issue.
 
 #### 429 Too Many Requests
 
 We've exceeded the number of Govern requests we can make per hour for these API credentials. Please wait before trying to publish again. You can learn more about Amplitude Govern request limits [in the Amlitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360016606991-Taxonomy-API#h_53f1b7d4-ee8d-4a81-945b-e5a2909ddfad).
-
 
 <img
   src={require('../../../images/publishing_webhook.svg')}
@@ -187,14 +186,23 @@ The Webhook integration is a way to get updated Tracking Plan delivered to an en
 
 To enable the Webhook integration you need to configure it with a URL where you want the updated tracking plan to be delivered.
 
-The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a [JSON Schema](http://json-schema.org/draft-06/schema#) format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
+The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a JSON format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
 
 ### Tracking Plan Model
 
-| Attribute | Type         | Description                    |
-| :-------- | :----------- | :----------------------------- |
-| name      | string       | The name of your Avo workspace |
-| events    | array(Event) | Array of Tracking Plan events  |
+> To see your exact Webhook payload in your Avo workspace choose `Tracking plan` - `Publishing` in the sidebar, then pick you Webhook in the menu and expand the `Payload preview` section.
+
+Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>can be found here</a></Link>
+
+| Attribute    | Type                               | Description                                                                     |
+| :----------- | :--------------------------------- | :------------------------------------------------------------------------------ |
+| name         | string                             | The name of your Avo workspace                                                  |
+| events       | array(Event)                       | Array of Tracking Plan events                                                   |
+| metrics      | { metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids           |
+| sources      | { sourceId: Source ... }           | Objet where each Tracking Plan source is a field, keys are source ids           |
+| destinations | { destinationId: Destination ... } | Objet where each Tracking Plan destination is a field, keys are destination ids |
+| categories   | { categoryId: Category ... }       | Objet where each Tracking Plan metric is a field, keys are category ids         |
+| context      | { publishInfo: PublishInfo }       | Metadata about the webhook call                                                 |
 
 #### Event Model
 
@@ -217,3 +225,75 @@ The Tracking Plan will be delivered with a `POST` request containing the Trackin
 | description | string        | Property description |
 | type        | string        | Property type        |
 | ?enum       | array(string) | Allowed enum values  |
+
+#### Metric Model
+
+| Attribute   | Type                  | Description                                                |
+| :---------- | :-------------------- | :--------------------------------------------------------- |
+| id          | string                | Metric id                                                  |
+| name        | string                | Metric name                                                |
+| description | string                | Metric description                                         |
+| categories  | array(string)         | Category ids where this metric is included                 |
+| type        | string                | One of Proportion / EventSegmentation / Funnel / Retention |
+| items       | array of Nested Event | Event descriptions                                         |
+
+#### Nested Event Model
+
+| Attribute | Type                 | Description                                          |
+| :-------- | :------------------- | :--------------------------------------------------- |
+| eventId   | string               | Event id                                             |
+| where     | array(whereFilter)   | Array of where filters                               |
+| groupBy   | array(groupByFilter) | array of objects containing property ids to group by |
+
+##### groupByFilter
+
+| Attribute  | Type   | Description                            |
+| :--------- | :----- | :------------------------------------- |
+| propertyId | string | property Id being used in group filter |
+
+#### Where filter
+
+| Attribute  | Type     | Description                      |
+| :--------- | :------- | :------------------------------- |
+| propertyId | string   | property id                      |
+| operation  | string   | binary operation as string       |
+| values     | array(t) | array of values of the same type |
+
+#### Source Model
+
+| Attribute           | Type          | Description                                                   |
+| :------------------ | :------------ | :------------------------------------------------------------ |
+| id                  | string        | Source id                                                     |
+| name                | string        | Source name                                                   |
+| programmingLanguage | string        | Name of programming language (e.g. "Javascript", "Python")    |
+| developmentPlatform | string        | Name of development platroft platform (e.g. "Web", "Android") |
+| destinations        | array(string) | Destination ids where this source sends data to               |
+
+#### Destination Model
+
+| Attribute | Type   | Description                                                                                                        |
+| :-------- | :----- | :----------------------------------------------------------------------------------------------------------------- |
+| id        | string | Destination id                                                                                                     |
+| name      | string | Destination name                                                                                                   |
+| type      | string | Name of the provider (e.g. "Segment", "Mispanel") where the data is sent to if managed by Avo, "Custom" otherwise. |
+
+#### Category Model
+
+| Attribute   | Type          | Description                        |
+| :---------- | :------------ | :--------------------------------- |
+| id          | string        | Category id                        |
+| name        | string        | Category name                      |
+| description | string        | Category description               |
+| metrics     | array(string) | Metric ids belonging this category |
+| events      | array(string) | Event ids belonging this category  |
+
+#### PublishInfo Model
+
+| Attribute       | Type             | Description                                                                               |
+| :-------------- | :--------------- | :---------------------------------------------------------------------------------------- |
+| branchId        | id               | Branch id                                                                                 |
+| branchName      | string           | Branch name                                                                               |
+| integrationId   | string           | Id of the publish integration (conistently the same for this integration)                 |
+| integrationName | string           | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName' |
+| publishDate     | Date string      | Timestamp when the webhook was triggered                                                  |
+| publishMethod   | { "type": type } | Desctiprion of the publish method, type can be "Manual" and "BranchMerge"                 |
