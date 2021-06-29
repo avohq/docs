@@ -13,7 +13,6 @@ import Link from '../../../components/Link';
     alt="Avo Publishing"
 />
 
-
 </p>
 
 
@@ -187,11 +186,13 @@ The Webhook integration is a way to get updated Tracking Plan delivered to an en
 
 To enable the Webhook integration you need to configure it with a URL where you want the updated tracking plan to be delivered.
 
-The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a [JSON Schema](http://json-schema.org/draft-06/schema#) format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
+The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a JSON format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
 
 ### Tracking Plan Model
 
 To see your exact Webhook payload choose `Tracking plan` - `Publishing` in the sidebar, then pick you Webhook in the menu and expand the `Payload preview` section.
+
+Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>can be found here</a></Link>
 
 | Attribute    | Type                               | Description                                                                     |
 | :----------- | :--------------------------------- | :------------------------------------------------------------------------------ |
