@@ -162,7 +162,7 @@ var googleAnalyticsDestination = {
     gtag('event', 'purchase', {...eventProperties, amount});
   },
   page: function(screenName, eventProperties) {
-    gtag('screen_view', {...eventProperties, screen_name: screenName});
+    gtag('event', 'screen_view', {...eventProperties, screen_name: screenName});
   }
 };
 ```
