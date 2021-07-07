@@ -37,6 +37,8 @@ The Avo Functions implementation status can have four states:
 3. Never sent correctly
 4. Never seen
 
+Learn more about <Link passHref href="/implementation/start-using-avo-functions">how to start using Avo Functions in this doc</Link>.
+
 
 ## Inspector implementation status
 
@@ -73,8 +75,6 @@ If you have changed your event in the tracking plan, old versions of the event a
 
 We recommend using semantic versioning (e.g. "1.0.0") or other types of numeric versioning (e.g. build number) which get incremented on every release. Providing a version to the Inspector will help get the cleanest output from the status report and help you understand how your tracking is performing in your latest versions.
 
-Learn more about <Link passHref href="/implementation/avo-inspector-sdk-reference">how to install the Inspector in this doc</Link>.
-
 
 ### Development and Staging
 
@@ -100,5 +100,7 @@ Based on these checks we report the implementation status using one of the follo
 - Event is sometimes sent correctly
 - Event is never sent correctly
 
+> Inspector monitors events from all branches, so it may report 'Sometimes sent correctly' for the correctly implemented events if old version is still sent from main or other branches.
+> In order to make sure the inspector is reporting correctly for your branch, we suggest to decrease the time window to have it catch only a time where you are triggering the events changed.
 
-Learn more about <Link passHref href="/implementation/start-using-avo-functions">how to start using Avo Functions in this doc</Link>.
+Learn more about <Link passHref href="/implementation/avo-inspector-sdk-reference">how to install the Inspector in this doc</Link>.
