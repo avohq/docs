@@ -134,6 +134,45 @@ Call the initAvo function:
 Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 ```
 
+#### Javascript to Google Analytics 4
+
+Here is a more specific example of how you can use a custom destination in Javascript on Web to integrate with your Google Analytics 4 SDK to implement custom event tracking with Avo.
+
+```javascript
+import Avo from './Avo';
+
+// An object representing your Google Analytics destination that you pass into initAvo():
+var googleAnalyticsDestination = {
+  make: function (env) {
+    // If your gtag SDK is not already initialized you can intialize it here
+  },
+  logEvent: function (eventName, eventProperties) {
+    gtag('event', eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    // Todo: Pass user properties to Google Analytics
+  },
+  identify: function (userId) {
+    // Todo: Identify user in Google Analytics
+  },
+  unidentify: function () {
+    // Todo: Unidentify currently identified user in Google Analytics
+  },
+  revenue: function(amount, eventProperties) {
+    gtag('event', 'purchase', {...eventProperties, amount});
+  },
+  page: function(screenName, eventProperties) {
+    gtag('event', 'screen_view', {...eventProperties, screen_name: screenName});
+  }
+};
+```
+
+Call the `initAvo` method and pass in your `googleAnalyticsDestination`:
+```javascript
+Avo.initAvo({ env: 'dev' }, {}, {}, googleAnalyticsDestination);
+```
+
+
 ### <a name="typescript"></a> Typescript
 
 ```typescript
