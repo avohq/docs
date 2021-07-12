@@ -348,7 +348,7 @@ const navigation: navigationItem[] = [
                 title: 'JavaScript',
                 path: '/implementation/reference/javascript',
               },
-            ]
+            ],
           },
           {
             type: 'route',
