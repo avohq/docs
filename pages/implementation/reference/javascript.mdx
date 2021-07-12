@@ -1,0 +1,201 @@
+---
+layout: 'guide'
+title: 'JavaScript'
+---
+
+import Link from '../../../components/Link';
+
+### Avo can generate JavaScript code based on your tracking plan.
+
+The code gives you access to JavaScript functions, each function representing an event, identification, user properties update, page view, revenue or mix of those.
+
+We call those functions Avo functions.
+
+You invoke the Avo functions, provide tracking parameters and 
+- Avo takes care of verifying that your tracking call is correct according to the defined tracking plan
+- Avo also tracks your functions usage in development and reports if a call of particular function was seen or not. 
+
+> It's useful to get the overview of the tracking implementartion when working on new tracking. 
+You can also get more insights into dev implementation and actual production state of your tracking with <Link passHref href="/workspace/tracking-plan/implementation-status#inspector-implementation-status"><a>the Inspector implementation status</a></Link>
+
+- Eventually Avo sends the data to the destinations it manages and calls the callbacks (called custom destinations) you provided when initializing
+
+### Handling tracking plan changes
+
+When tracking plan changes, you generate the file again and swap the old file with the new one. Avo manages the merge conflicts inside the file.
+Then, if the existing events changed, you'll have to update your Avo functions calls according to the new tracking plan to pass the runtime checks in the Avo file.
+You'll also get access to the new events defined in your tracking plan after the previous generated code update.
+
+### Platforms
+
+Avo can generate JavaScript code targeted at the following platforms
+
+- Web
+- React Native 
+- Node.js
+
+### Destinations
+
+You can send your data from Javascript to any event based analytics destionation, including
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- Rudderstack
+- Freshpaint
+- Posthog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+
+### How to track
+
+Avo functions usage consists of 3 steps.
+
+#### Step 1. Include the Avo file 
+
+It can be done with the Avo CLI or manually
+
+##### Avo CLI is available through npm
+
+To install it and get the generated Avo file run the following commands.
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli"><a>the CLI here</a></Link>.
+
+##### To download the file manually navigate to Implementat tab in the side menu, then pick your source and press "Click to generate your Avo file" panel
+
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../../images/generate-avo-file-manually.png')}
+    alt="Implementation - Click to generate your Avo file"
+  />
+</center>
+
+Your file will be generated after that and you'll be able to download or copy it from there.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file
+
+```javascript
+import Avo from './Avo';
+```
+
+Before tracking anything with Avo you need to initialize it be calling the `initAvo` method, that looks similar to this
+
+```javascript
+function initAvo(options, systemProperties, destinationOptions, customDestDestination)
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/devs-101#avo-generated-file-init"><a>the initialization overview</a></Link>
+
+and you call it like this
+
+```javascript
+Avo.initAvo(
+  { env: 'dev', noop: false, strict: false, avoLogger: avoLogger, inspector: avoInspector },
+  { ...systemProperties },
+  { appsFlyer: { appId: 'XXXXXX' } },
+  customDestination
+);
+```
+
+#### About the custom destinations
+
+The last parameter in `initAvo` is special. If you choose to send your tracking to a custom destination in the Avo UI, it will be generated.
+Custom destination is a callback that Avo calls after all the checks. It provides the data ready to be sent to any analytics destination.
+
+The callback methods mirror the actions you set up for given event in your tracking plan
+
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../../images/event-actions.png')}
+    alt="List of event actions in Avo: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View"
+  />
+</center>
+
+```javascript
+import Avo from './Avo';
+
+// An object representing your custom destination
+// that you pass into initAvo():
+
+var customDestination = {
+  make: function (env) {
+    // called at the end of the initAvo call
+    // You should initialize your analytics destination here, if you have not doen it before
+    analytics.load(apiKey, options);
+  },
+  logEvent: function (eventName, eventProperties) {
+    // called when you invoke Avo functions with the Log Event action
+    analytics.track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+   // called when you invoke Avo functions with the Update User Propreties action
+   analytics.identify(userProperties);
+  },
+  identify: function (userId) {
+    // called when you invoke Avo functions with the Identify User action
+    analytics.identify(userId, {});
+  },
+  unidentify: function () {
+    // called when you invoke Avo functions with the Unidentify User action
+    analytics.identify(null, {});
+  },
+  revenue: function(amount, eventProperties) {
+    // called when you invoke Avo functions with the Log Revenue action
+    analytics.track("revenue", {"revenue": amount});
+  },
+  page: function(pageName, eventProperties) {
+    // called when you invoke Avo functions with the Log Page View action
+    analytics.page(eventName, eventProperties);
+  }
+};
+```
+
+#### Step 3. Call Avo functions to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Avo" checkmark, gets a function in the generated code, name according to the event name, in lower camel case.
+
+For example, if you have an event defined like this in Avo
+
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../../images/signup-start-ui.png')}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Avo check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```javascript
+Avo.signupStart({ referral: "direct" });
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+You can update the system properties with `setSystemProperties` function.
+
+
+
+

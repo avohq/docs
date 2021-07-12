@@ -342,6 +342,13 @@ const navigation: navigationItem[] = [
             type: 'route',
             title: 'Programming languages',
             path: '/implementation/supported-programming-languages',
+            subroutes: [
+              {
+                type: 'route',
+                title: 'JavaScript',
+                path: '/implementation/reference/javascript',
+              },
+            ]
           },
           {
             type: 'route',
