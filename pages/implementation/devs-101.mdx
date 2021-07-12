@@ -90,7 +90,7 @@ Read more about property types later in the <Link passHref href="/implementation
 - `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors. Note that the Avo validation will never crash your app if env is set to Production.
 - `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is dismissed in production.
 - `destination options` (not shown in the example) - some platforms, for example JavaScript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization. This allows you to pass config/options through Avo to the init functions of the underlying analytics SDKs.
-- `avoLogger` (not shown in the example) - custom logger implementation to controll logs logic. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>.
+- `avoLogger` (not shown in the example) - custom logger implementation to control logs logic. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>.
 - `inspector` (not shown in the example) - instance of the Avo Inspector to automatically send Avo functions data to the Avo Inspector (on the supported platforms)
 
 ### <a name="avo-generated-file-init-inside"></a> What's inside the initAvo method / Avo constructor?
