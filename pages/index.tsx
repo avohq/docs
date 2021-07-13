@@ -375,9 +375,7 @@ const LandingPage: FunctionComponent = () => {
             title="How do Avo Functions work?"
             description="Learn what's inside the Avo functions"
             callToAction={
-              new CallToAction(
-                '/implementation/avo-functions-overview',
-              )
+              new CallToAction('/implementation/avo-functions-overview')
             }
           />
         </div>
