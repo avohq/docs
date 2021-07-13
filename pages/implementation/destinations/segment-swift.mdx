@@ -1,0 +1,42 @@
+---
+layout: 'guide'
+title: 'Use Segment in Swift'
+---
+
+Custom destination to send data from Swift to Segment
+
+```swift
+// An class representing your custom destination, object of that class is passed into the Avo constructor
+class CustomDestination: AvoCustomDestination {
+    func make(env: AvoEnv) {
+        // called at the end of the initAvo call
+        // You should initialize your analytics destination here, if you have not done it before
+        let configuration = SEGAnalyticsConfiguration(writeKey: env == .dev ? "devApiKey" : "prodApiKey")
+        SEGAnalytics.setup(with: configuration)
+    }
+
+    func logEvent(eventName: String, eventProperties: [String: Any]) {
+        // called when you invoke Avo functions with the Log Event action
+        SEGAnalytics.shared()?.track(eventName, properties: eventProperties)
+    }
+
+    func setUserProperties(userId: String, userProperties: [String: Any]) {
+        // called when you invoke Avo functions with the Update User Propreties action
+        if !userProperties.isEmpty {
+            SEGAnalytics.shared()?.identify(userId, traits: userProperties)
+        }
+    }
+
+    func identify(userId: String) {
+        // called when you invoke Avo functions with the Identify User action
+        SEGAnalytics.shared()?.identify(userId)
+    }
+
+    func unidentify() {
+        // called when you invoke Avo functions with the Unidentify User action
+        SEGAnalytics.shared()?.reset()
+    }
+}
+
+let avo = Avo(env: .dev, customDestination: CustomDestination())
+```

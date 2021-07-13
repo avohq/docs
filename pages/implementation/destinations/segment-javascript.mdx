@@ -1,0 +1,97 @@
+---
+layout: 'guide'
+title: 'Use Segment in JavaScript'
+---
+
+Custom destination to send data from JavaScript to Segment
+
+### Web and React Native
+
+```javascript
+import Avo from './Avo';
+// An object representing your custom destination that you pass into initAvo()
+var customDestination = {
+  make: function (env) {
+    // called at the end of the initAvo call
+    // You should initialize your analytics destination here, if you have not done it before
+    analytics.load(env === AvoEnv.Prod ? prodApiKey : devApiKey, options);
+  },
+  logEvent: function (eventName, eventProperties) {
+    // called when you invoke Avo functions with the Log Event action
+    analytics.track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+   // called when you invoke Avo functions with the Update User Propreties action
+   analytics.identify(userProperties);
+  },
+  identify: function (userId) {
+    // called when you invoke Avo functions with the Identify User action
+    analytics.identify(userId, {});
+  },
+  unidentify: function () {
+    // called when you invoke Avo functions with the Unidentify User action
+    analytics.identify(null, {});
+  },
+  revenue: function(amount, eventProperties) {
+    // called when you invoke Avo functions with the Log Revenue action
+    analytics.track("revenue", {"revenue": amount});
+  },
+  page: function(pageName, eventProperties) {
+    // called when you invoke Avo functions with the Log Page View action
+    analytics.page(eventName, eventProperties);
+  }
+};
+
+Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
+```
+
+### Node
+
+```javascript
+const Avo = require('./src/Avo').default;
+// An object representing your custom destination that you pass into initAvo()
+var customDestination = {
+  make: function(env) {
+     var Segment = require('analytics-node');
+    var options = options || {"flushAt": 1};
+    this.segment = new Segment(apiKey, options);
+  },
+  logEvent: async function(anonymousId, userId, eventName, eventProperties) {
+    var segment = this.segment;
+    return new Promise(function(resolve, reject) {
+      segment.track({
+        anonymousId: anonymousId,
+        userId: userId,
+        event: eventName,
+        properties: eventProperties
+      }, function(error) {
+        if (error) {
+          console.error(
+            "Error when tracking event with Segment: " + error
+          );
+        };
+        resolve();
+      });
+    });
+  },
+  setUserProperties: async function(anonymousId, userId, userProperties) {
+    var segment = this.segment;
+    return new Promise(function(resolve, reject) {
+      segment.identify({
+        anonymousId: anonymousId,
+        userId: userId,
+        traits: userProperties
+      }, function(error) {
+        if (error) {
+          console.error(
+            "Error when tracking event with Segment: " + error
+          );
+        };
+        resolve();
+      });
+    });
+  },
+}
+
+Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
+```

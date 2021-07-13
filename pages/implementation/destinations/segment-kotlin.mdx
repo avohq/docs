@@ -1,0 +1,60 @@
+---
+layout: 'guide'
+title: 'Use Segment in Kotlin'
+---
+
+Custom destination to send data from Kotlin to Segment
+
+```kotlin
+// An object representing your custom destination that you pass into the Avo constructor
+val customDestination = object : ICustomDestination {
+    // Helper method to convert to Segment's internal data type
+    fun hashMapToProperties(map: Map<String, *>): Properties {
+        val properties = Properties()
+        for ((k, v) in map) {
+            properties.putValue(k, v)
+        }
+        return properties
+    }
+    // Helper method to convert to Segment's internal data type
+    fun hashMapToTraits(map: Map<String, *>): Traits {
+        val traits = Traits()
+        for ((k, v) in map) {
+            traits.putValue(k, v)
+        }
+        return traits
+    }
+
+    // called at the end of the initAvo call
+    // you should initialize your analytics destination here, if you have not done it before
+    override fun make(env: AvoEnv) {
+        val analytics = Analytics.Builder(context, if (env == AvoEnv.DEV) "devApiKey" else "profApiKey")
+            .trackApplicationLifecycleEvents()
+            .recordScreenViews()
+            .build()
+        Analytics.setSingletonInstance(analytics)
+    }
+
+    // called when you invoke Avo functions with the Log Event action
+    override fun logEvent(eventName: String, eventProperties: Map<String, *>) {
+        Analytics.with(context).track(eventName, hashMapToProperties(eventProperties))
+    }
+
+    // called when you invoke Avo functions with the Update User Propreties action
+    override fun setUserProperties(userId: String, userProperties: Map<String, *>) {
+        Analytics.with(context).identify(hashMapToTraits(userProperties))
+    }
+
+    // called when you invoke Avo functions with the Identify User action
+    override fun identify(userId: String) {
+        Analytics.with(context).identify(userId)
+    }
+
+    // called when you invoke Avo functions with the Unidentify User action
+    override fun unidentify() {
+        Analytics.with(context).reset()
+    }
+}
+
+val avo = Avo(AvoEnv.DEV, customDestination)
+```
