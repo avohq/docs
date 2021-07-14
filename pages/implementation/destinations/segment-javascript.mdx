@@ -14,7 +14,7 @@ var customDestination = {
   make: function (env) {
     // called at the end of the initAvo call
     // You should initialize your analytics destination here, if you have not done it before
-    analytics.load(env === AvoEnv.Prod ? prodApiKey : devApiKey, options);
+    analytics.load(env === "prod" ? prodApiKey : devApiKey, options);
   },
   logEvent: function (eventName, eventProperties) {
     // called when you invoke Avo functions with the Log Event action
