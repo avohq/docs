@@ -9,7 +9,7 @@ import Link from '../../../components/Link';
 
 <Link passHref href="/workspace/connect-inspector-to-segment"><a>Stream Segment data to Inspector</a></Link>
 
-## Stream app data to Inspector with an SDK
+## Send app data to Inspector with the SDK
 
 <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Stream app data to Inspector with an SDK</a></Link>
 
@@ -21,8 +21,12 @@ import Link from '../../../components/Link';
 
 You can use Avo Functions with Segment.
 
-To do that create a Custom destinations, name it Segment and generate the code.
+To do that either:
+
+1. For full control, create a Custom destinations, name it "Segment", connect to your source and  generate the code.
 
 Then, when you initialize Avo you'll see additional parameter in the initialization method, the custom destination object.
 
 See the custom destination examples for different languages in <Link passHref href="/implementation/destinations/segment"><a>the Segment destination section</a></Link>.
+
+2. Create a managed Segment destination, connect it to your source and generate the code for that source. Then Avo will take care of initializing Segment SDK and sending data to it.
