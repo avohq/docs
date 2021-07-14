@@ -239,8 +239,13 @@ const navigation: navigationItem[] = [
     subroutes: [
       {
         type: 'route',
-        title: 'Avo 101 for developers',
-        path: '/implementation/devs-101',
+        title: 'Avo Functions overview',
+        path: '/implementation/avo-functions-overview',
+      },
+      {
+        type: 'route',
+        title: 'Avo Inspector overview',
+        path: '/implementation/avo-inspector-overview',
       },
       {
         type: 'group',
