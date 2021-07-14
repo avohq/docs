@@ -54,7 +54,7 @@ Avo.initAvo({ env: 'dev' }, { ...systemProperties }, {});
 
 #### Step 3. Call Avo functions to track your product usage
 
-Every event in your tracking plan, marked with the "Implement with Avo" checkmark, gets a function in the generated code, named according to the event name, in lower camel case.
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in lower camel case.
 
 For example, if you have an event defined like this in Avo
 
@@ -85,29 +85,30 @@ Avo.initAvo(options, systemProperties, destinationOptions, customDestination);
 
 Initializes Avo, needs to be called before the tracking methods
 
-> **Arguments**
->
-> `options`: `{env, [noop], [strict], [avoLogger], [inspector], [mobileDebugger]}`
->   - `env`: string, one of 'dev', 'prod' or 'staging'. 
->  - `[noop = false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production. 
->   - `[strict = false]`: optional bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the noop flag is ignored in production. 
->   - `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>  
->   - `[inspector]`: optional Avo Inspector object. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector. 
->   - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
->
-> `systemProperties`: an object where each field represents a system propety in your tracking plan. 
-> When you define system properties in your Avo workspace you set name and type - the fileds of this object are named the same as system propertyies, in lower camel case, and you should provide corresponding types.
->
-> `destinationOptions`: `{[segment], [amplitude], [mixpanel]}`
->   - `mixpanel`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
->   - `amplitude`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
->   - `segment`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
->
-> `customDestination`: required if given source has a custom destination set up in Avo. Otherwise ignored.
->
-> Read more about custom destinations <Link passHref href="/implementation/strat-custom-destination"><a>here</a></Link>.
->
-> Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.
+**Arguments**
+
+  `options`: `{env, [noop], [strict], [avoLogger], [inspector], [mobileDebugger]}`
+  - `env`: string, one of 'dev', 'prod' or 'staging'. 
+  - `[noop = false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production. 
+  - `[strict = false]`: optional bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the noop flag is ignored in production. 
+  - `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>  
+  - `[inspector]`: optional Avo Inspector object. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector. 
+  - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
+
+`systemProperties`: an object where each field represents a system property in your tracking plan. 
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in lower camel case, and you should provide corresponding types.
+
+`destinationOptions`: `{[segment], [amplitude], [mixpanel]}`
+
+  - `mixpanel`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
+  - `amplitude`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
+  - `segment`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
+
+`customDestination`: required if given source has a custom destination set up in Avo. Otherwise ignored.
+
+Read more about custom destinations <Link passHref href="/implementation/strat-custom-destination"><a>here</a></Link>.
+
+Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.
 
 ##### setAvoLogger
 
@@ -115,7 +116,7 @@ Initializes Avo, needs to be called before the tracking methods
 Avo.setAvoLogger(avoLogger)
 ```
 
-Separarte method to set custom logger
+Separate method to set custom logger
 
 > **Arguments**
 >
@@ -131,8 +132,8 @@ A method to update system properties. If you provide undefined values here corre
 
 >**Arguments**
 >
->`systemProperties`: an object where each field represents a system propety in your tracking plan. 
->When you define system properties in your Avo workspace you set name and type - the fileds of this object are named the same as system propertyies, in lower camel case, and you should provide corresponding types.
+>`systemProperties`: an object where each field represents a system property in your tracking plan. 
+>When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in lower camel case, and you should provide corresponding types.
 
 ##### Event tracking functions
 
@@ -156,11 +157,11 @@ Every event you define in your tracking plan in Avo gets a function named after 
 > `userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any
 > This is a user property that should be updated with given event. Pass the value of the property to update here.
 >
-> `segmentContext_`: object, Node.js only, passed down to Segment as the Segment constext, e.g. `segment.track({..., context: context})`
+> `segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
 
 ### Destinations
 
-You can send your data from Javascript to any event based analytics destionation, including
+You can send your data from JavaScript to any event based analytics destination, including
 
 - Amplitude
 - FacebookAnalytics

@@ -53,7 +53,7 @@ Below is a list of possible actions and supported platforms, in the order of whi
 3. <a href="#log-event">Log Event</a> All supported analytics platforms
 4. <a href="#log-revenue">Log Revenue</a>: Amplitude, Segment and Mixpanel
 5. <a href="#log-page-view">Log Page View</a>: Segment
-6. <a href="#unidentify-user">Undentify User</a>: Amplitude, Segment, Mixpanel
+6. <a href="#unidentify-user">Unidentify User</a>: Amplitude, Segment, Mixpanel
    and Fullstory
 
 #### <a name="log-event"></a> Log Event
@@ -168,7 +168,7 @@ If you forget to unidentify users in your analytics platform you could
 potentially track two or more users as the same user in your analytics platform
 if they share a computer.
 
-Below is a list of Undentify User methods used for each supported analytics platform:
+Below is a list of Unidentify User methods used for each supported analytics platform:
 
 - **Amplitude**: [setUserId](https://amplitude.zendesk.com/hc/en-us/articles/115003135607-Tracking-Unique-Users#determining-unique-users) with User Id as null
 - **Segment**: [identify](https://segment.com/docs/spec/identify/) with User Id as null
@@ -220,7 +220,7 @@ and then call logEvent.
 
 ##### <a name="revenue-segment"></a> Segment
 
-For the Segment destionation, Avo will add 2 event properties that match the
+For the Segment destination, Avo will add 2 event properties that match the
 [Segment revenue properties](https://segment.com/docs/spec/track/#properties)
 with the prefix "Segment: ".
 
@@ -229,13 +229,13 @@ with the prefix "Segment: ".
 
 Segment currency will have constraint that the currencies need to be in a valid
 ISO format. For compiled languages this will generate an enum to guarantee that
-the currency is a valid ISO format, for Javascript this will be validated during
+the currency is a valid ISO format, for JavaScript this will be validated during
 runtime.
 
 Enums are currently not supported on Android and iOS.
 
 Call track with the Segment revenue properties set in the correct keys to make
-sure that Segment recognises the event as a Revenue event.
+sure that Segment recognizes the event as a Revenue event.
 
 ##### <a name="revenue-mixpanel"></a> Mixpanel
 
