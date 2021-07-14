@@ -411,6 +411,11 @@ const navigation: navigationItem[] = [
         title: 'Using visual debuggers to understand tracking',
         path: '/explore-tracking-plan/start-using-visual-debuggers',
       },
+      {
+        type: 'route',
+        title: 'Download or copy Avo file manually',
+        path: '/explore-tracking-plan/download-or-copy-avo-file-manually',
+      },
     ],
   },
   {
