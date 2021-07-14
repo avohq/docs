@@ -32,7 +32,7 @@ interface navigationItem {
 
 const navigation: navigationItem[] = [
   {
-    title: 'Getting started with Avo',
+    title: 'Getting Started',
     path: '/',
     iconName: 'home',
     subroutes: [
@@ -420,6 +420,70 @@ const navigation: navigationItem[] = [
   },
 ];
 
+interface SubroutesProps {
+  routes: Array<subroute>;
+}
+
+const Subroutes: FunctionComponent<SubroutesProps> = ({ root, routes }) => {
+  return (
+    <div className={classNames(styles.subroutesContainer, {
+      [styles.subroutesContainerRoot]: root,
+    })}>
+      {routes.map((route: subroute) => {
+        return <Subroute route={route} />;
+      })}
+    </div>
+  );
+};
+
+interface SubrouteProps {
+  route: subroute;
+}
+
+const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
+  const router = useRouter();
+  const isActive = router.pathname.indexOf(route.path) > -1;
+  const [isExpanded, setExpanded] = React.useState(isActive);
+  switch (route.type) {
+    case 'route':
+      const subrouteActive = router.pathname === route.path;
+      return (
+        <React.Fragment key={route.path + ' ' + route.title}>
+          <Link href={route.path} key={route.path}>
+            <div
+              onClick={() => setExpanded((isExpanded) => !isExpanded)}
+              className={classNames(styles.subroute, {
+                [styles.activeLink]: subrouteActive,
+              })}
+            >
+              {route.title}
+              <div className={styles.subrouteExpandIcon}>
+               {route.subroutes && (isExpanded ? '▲' : '▼')}
+              </div>
+              
+            </div>
+            
+          </Link>
+          {isExpanded && route.subroutes ? (
+            <div className={styles.subSubroute} key={route.path + '-subroutes'}>
+              {' '}
+              <Subroutes routes={route.subroutes} />
+            </div>
+          ) : null}
+        </React.Fragment>
+      );
+    case 'group':
+      return (
+        <div
+          key={'group-' + route.group}
+          className={classNames(styles.subrouteGroup)}
+        >
+          {route.group}
+        </div>
+      );
+  }
+};
+
 interface GroupProps {
   item: navigationItem;
 }
@@ -427,47 +491,8 @@ interface GroupProps {
 const Group: FunctionComponent<GroupProps> = ({ item }) => {
   const router = useRouter();
 
-  const rootActive = router.pathname === item.path;
-
-  const renderSubroutes = (subroutes: subroutes) => {
-    return subroutes.map((subroute: subroute) => {
-      switch (subroute.type) {
-        case 'route':
-          const subrouteActive = router.pathname === subroute.path;
-          return (
-            <React.Fragment key={subroute.path + ' ' + subroute.title}>
-              <Link href={subroute.path} key={subroute.path}>
-                <div
-                  className={classNames(styles.subroute, {
-                    [styles.activeLink]: subrouteActive,
-                  })}
-                >
-                  {subroute.title}
-                </div>
-              </Link>
-              {subroute.subroutes ? (
-                <div
-                  className={styles.subSubroute}
-                  key={subroute.path + '-subroutes'}
-                >
-                  {' '}
-                  {renderSubroutes(subroute.subroutes)}{' '}
-                </div>
-              ) : null}
-            </React.Fragment>
-          );
-        case 'group':
-          return (
-            <div
-              key={'group-' + subroute.group}
-              className={classNames(styles.subrouteGroup)}
-            >
-              {subroute.group}
-            </div>
-          );
-      }
-    });
-  };
+  const rootActive = router.pathname.indexOf(item.path) > -1;
+  const [isExpanded, setExpanded] = React.useState(rootActive);
 
   const icon = locateIcon(item);
 
@@ -475,11 +500,12 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
     <div className={styles.group}>
       <Link href={item.path}>
         <div
+          onClick={() => setExpanded((isExpanded) => !isExpanded)}
           className={classNames(styles.parentLink, {
-            [styles.activeLink]: rootActive,
+            [styles.activeLink]: isExpanded,
           })}
         >
-          {item.iconName && (
+          {icon && (
             <span className={styles.iconWrapper}>
               <img src={icon} alt="" />
             </span>
@@ -488,7 +514,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
         </div>
       </Link>
 
-      {item.subroutes && renderSubroutes(item.subroutes)}
+      {isExpanded && item.subroutes && <Subroutes root={true} routes={item.subroutes} />}
     </div>
   );
 };
