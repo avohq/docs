@@ -1,11 +1,9 @@
-import styles from './Navigation.module.scss';
-import { FunctionComponent } from 'react';
-
+import React, { FunctionComponent } from 'react';
 import classNames from 'classnames';
-
 import { useRouter } from 'next/router';
+
 import Link from '../components/Link';
-import React from 'react';
+import styles from './Navigation.module.scss';
 
 type route = {
   type: 'route';
