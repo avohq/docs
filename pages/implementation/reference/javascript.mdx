@@ -105,15 +105,9 @@ Initializes Avo, needs to be called before the tracking methods
 >
 > `customDestination`: required if given source has a custom destination set up in Avo. Otherwise ignored.
 >
-> Custom destination is an object with callbacks that Avo triggers when you call the Avo functions to send events. It provides the data ready to be sent to any analytics destination.
-> The callback methods mirror the actions you set up for given event in your tracking plan on avo.app.
-> <center style={{marginBottom: 16 + "px"}}>
-  <img style={{height: 300 + "px"}}
-    src={require('../../../images/event-actions.png')}
-    alt="List of event actions in Avo: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View"
-  />
-</center>
-> Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>
+> Read more about custom destinations <Link passHref href="/implementation/strat-custom-destination"><a>here</a></Link>.
+>
+> Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.
 
 ##### setAvoLogger
 
