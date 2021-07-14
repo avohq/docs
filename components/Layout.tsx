@@ -36,7 +36,9 @@ const Layout: FunctionComponent = ({ children }) => {
       <div className={styles.navHeader}>
         <div className={styles.topBar}>
           <a className={styles.backToAvo} href="https://avo.app">
-            <span className={styles.backToAvoIcon}><Icon name="chevron-left" relativeSize="sm" color="inherit" /></span>
+            <span className={styles.backToAvoIcon}>
+              <Icon name="chevron-left" relativeSize="sm" color="inherit" />
+            </span>
             Back to Avo.app
           </a>
         </div>
