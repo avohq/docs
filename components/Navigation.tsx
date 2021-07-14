@@ -1,9 +1,11 @@
-import React, { FunctionComponent } from 'react';
-import classNames from 'classnames';
-import { useRouter } from 'next/router';
-
 import styles from './Navigation.module.scss';
+import { FunctionComponent } from 'react';
+
+import classNames from 'classnames';
+
+import { useRouter } from 'next/router';
 import Link from '../components/Link';
+import React from 'react';
 
 type route = {
   type: 'route';
@@ -425,55 +427,62 @@ interface SubroutesProps {
 
 const Subroutes: FunctionComponent<SubroutesProps> = ({ root, routes }) => {
   return (
-    <div
-      className={classNames(styles.subroutesContainer, {
-        [styles.subroutesContainerRoot]: root,
-      })}
-    >
+    <div className={classNames(styles.subroutesContainer, {
+      [styles.subroutesContainerRoot]: root,
+    })}>
       {routes.map((route: subroute) => {
-        switch (route.type) {
-          case 'route':
-            return <Subroute route={route} />;
-          case 'group':
-            return null;
-        }
+        return <Subroute route={route} />;
       })}
     </div>
   );
 };
 
 interface SubrouteProps {
-  route: route;
+  route: subroute;
 }
 
 const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
   const router = useRouter();
-  const isActive = router.pathname.indexOf(route.path) > -1;
+  const isActive = route.type == "route" ? router.pathname.indexOf(route.path) > -1 : false;
   const [isExpanded, setExpanded] = React.useState(isActive);
-  const subrouteActive = router.pathname === route.path;
-  return (
-    <React.Fragment key={route.path + ' ' + route.title}>
-      <Link href={route.path} key={route.path}>
+  switch (route.type) {
+    case 'route':
+      const subrouteActive = router.pathname === route.path;
+      return (
+        <React.Fragment key={route.path + ' ' + route.title}>
+          <Link href={route.path} key={route.path}>
+            <div
+              onClick={() => setExpanded((currentIsExpanded) => !currentIsExpanded)}
+              className={classNames(styles.subroute, {
+                [styles.activeLink]: subrouteActive,
+              })}
+            >
+              {route.title}
+              <div className={styles.subrouteExpandIcon}>
+               {route.subroutes && (isExpanded ? '▲' : '▼')}
+              </div>
+              
+            </div>
+            
+          </Link>
+          {isExpanded && route.subroutes ? (
+            <div className={styles.subSubroute} key={route.path + '-subroutes'}>
+              {' '}
+              <Subroutes root={false} routes={route.subroutes} />
+            </div>
+          ) : null}
+        </React.Fragment>
+      );
+    case 'group':
+      return (
         <div
-          onClick={() => setExpanded((isExpanded) => !isExpanded)}
-          className={classNames(styles.subroute, {
-            [styles.activeLink]: subrouteActive,
-          })}
+          key={'group-' + route.group}
+          className={classNames(styles.subrouteGroup)}
         >
-          {route.title}
-          <div className={styles.subrouteExpandIcon}>
-            {route.subroutes && (isExpanded ? '▲' : '▼')}
-          </div>
+          {route.group}
         </div>
-      </Link>
-      {isExpanded && route.subroutes ? (
-        <div className={styles.subSubroute} key={route.path + '-subroutes'}>
-          {' '}
-          <Subroutes root={false} routes={route.subroutes} />
-        </div>
-      ) : null}
-    </React.Fragment>
-  );
+      );
+  }
 };
 
 interface GroupProps {
@@ -489,7 +498,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
   const icon = locateIcon(item);
 
   return (
-    <div>
+    <div className={styles.group}>
       <Link href={item.path}>
         <div
           onClick={() => setExpanded((isExpanded) => !isExpanded)}
@@ -506,9 +515,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
         </div>
       </Link>
 
-      {isExpanded && item.subroutes && (
-        <Subroutes root={true} routes={item.subroutes} />
-      )}
+      {isExpanded && item.subroutes && <Subroutes root={true} routes={item.subroutes} />}
     </div>
   );
 };
