@@ -77,7 +77,7 @@ Avo.signupStart({ referral: 'direct' });
 
 ### Reference
 
-##### initAvo
+#### initAvo
 
 ```javascript
 Avo.initAvo(options, systemProperties, destinationOptions, customDestination);
@@ -85,7 +85,7 @@ Avo.initAvo(options, systemProperties, destinationOptions, customDestination);
 
 Initializes Avo, needs to be called before the tracking methods
 
-**Arguments**
+##### Arguments
 
   `options`: `{env, [noop], [strict], [avoLogger], [inspector], [mobileDebugger]}`
   - `env`: string, one of 'dev', 'prod' or 'staging'. 
@@ -110,7 +110,7 @@ Read more about custom destinations <Link passHref href="/implementation/strat-c
 
 Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.
 
-##### setAvoLogger
+#### setAvoLogger
 
 ```javascript
 Avo.setAvoLogger(avoLogger)
@@ -118,11 +118,11 @@ Avo.setAvoLogger(avoLogger)
 
 Separate method to set custom logger
 
-> **Arguments**
->
-> `avoLogger`: custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>  
+##### Arguments
 
-##### setSystemProperties
+`avoLogger`: custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>  
+
+#### setSystemProperties
 
 ```javascript
 Avo.setSystemProperties(systemProperties)
@@ -130,12 +130,12 @@ Avo.setSystemProperties(systemProperties)
 
 A method to update system properties. If you provide undefined values here corresponding properties won't be updated
 
->**Arguments**
->
->`systemProperties`: an object where each field represents a system property in your tracking plan. 
->When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in lower camel case, and you should provide corresponding types.
+##### Arguments
 
-##### Event tracking functions
+`systemProperties`: an object where each field represents a system property in your tracking plan. 
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in lower camel case, and you should provide corresponding types.
+
+#### Event tracking functions
 
 ```javascript
 Avo.yourEventName(properties: { [anonymousUserId_], [userId_], [segmentContext_], [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ... })
@@ -143,21 +143,21 @@ Avo.yourEventName(properties: { [anonymousUserId_], [userId_], [segmentContext_]
 
 Every event you define in your tracking plan in Avo gets a function named after the event in lower camel case. The arguments of the function depend on how it's defined in your tracking plan 
 
-> **Arguments**
->
-> `anonymousUserId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, user to track anonymous users
->
-> `userId_`: string
-> Node.js: added to all events, you have to either provide it or the `anonymousUserId_`
-> Web and React Native: Added if the event has the Identify User action
->
-> `eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any
-> This is an event property that should be tracked with given event. Pass the value of the property to track here.
->
-> `userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any
-> This is a user property that should be updated with given event. Pass the value of the property to update here.
->
-> `segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
+##### Arguments
+
+`anonymousUserId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, user to track anonymous users
+
+`userId_`: string
+Node.js: added to all events, you have to either provide it or the `anonymousUserId_`
+Web and React Native: Added if the event has the Identify User action
+
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any
+This is an event property that should be tracked with given event. Pass the value of the property to track here.
+
+`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any
+This is a user property that should be updated with given event. Pass the value of the property to update here.
+
+`segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
 
 ### Destinations
 
