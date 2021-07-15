@@ -398,28 +398,6 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Segment',
         path: '/integrations/segment',
-        subroutes: [
-          {
-            type: 'route',
-            title: 'Stream Segment data to Inspector',
-            path: '/workspace/connect-inspector-to-segment',
-          },
-          {
-            type: 'route',
-            title: 'Stream data to Inspector with an SDK',
-            path: '/implementation/avo-inspector-sdk-reference',
-          },
-          {
-            type: 'route',
-            title: 'Publish tracking plan to Protocols',
-            path: '/workspace/tracking-plan/publishing',
-          },
-          {
-            type: 'route',
-            title: 'Avo Functions to Segment',
-            path: '/implementation/destinations/segment',
-          },
-        ],
       },
     ],
   },

@@ -3,9 +3,17 @@ layout: 'guide'
 title: 'Use Segment in JavaScript'
 ---
 
+Segment destination allows both automatic and custom SDK management
+
+- Learn more about automatic SDK management <Link passHref href="/implementation/destinations/managed-destinations"><a>here</a></Link>
+
+- Learn more about manual SDK management with <Link passHref href="/implementation/start-cutstom-destination"><a>custom destinations</a></Link>
+
+#### Custom destinations code snippets
+
 Custom destination to send data from JavaScript to Segment
 
-### Web
+##### Web
 
 ```javascript
 import Avo from './Avo';
@@ -38,14 +46,14 @@ var customDestination = {
   },
   page: function(pageName, eventProperties) {
     // called when you invoke Avo functions with the Log Page View action
-    analytics.page(eventName, eventProperties);
+    analytics.page(pageName, eventProperties);
   }
 };
 
 Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
 ```
 
-### React Native
+##### React Native
 
 ```javascript
 import Avo from './Avo';
@@ -75,14 +83,14 @@ var customDestination = {
   },
   page: function(pageName, eventProperties) {
     // called when you invoke Avo functions with the Log Page View action
-    this.segment.screen(eventName, eventProperties);
+    this.segment.screen(pageName, eventProperties);
   }
 };
 
 Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
 ```
 
-### Node
+##### Node
 
 ```javascript
 const Avo = require('./src/Avo').default;
