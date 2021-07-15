@@ -447,18 +447,38 @@ const Subroutes: FunctionComponent<SubroutesProps> = ({ root, routes }) => {
   );
 };
 
+const isActiveRoute = (currentPath: string, route: route): boolean => {
+  return route.path === currentPath;
+};
+
+const hasActiveRoute = (currentPath: string, routes: subroutes): boolean => {
+  return routes.some((route) => {
+    switch (route.type) {
+      case 'route': {
+        if (route.subroutes === undefined) {
+          return isActiveRoute(currentPath, route);
+        } else {
+          return (
+            isActiveRoute(currentPath, route) ||
+            hasActiveRoute(currentPath, route.subroutes)
+          );
+        }
+      }
+      case 'group':
+        return false;
+    }
+  });
+};
 interface SubrouteProps {
   route: subroute;
 }
 
 const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
   const router = useRouter();
-  const isActive =
-    route.type == 'route' ? router.pathname.indexOf(route.path) > -1 : false;
+  const isActive = hasActiveRoute(router.pathname, [route]);
   const [isExpanded, setExpanded] = React.useState(isActive);
   switch (route.type) {
     case 'route':
-      const subrouteActive = router.pathname === route.path;
       return (
         <React.Fragment key={route.path + ' ' + route.title}>
           <Link href={route.path} key={route.path}>
@@ -467,7 +487,7 @@ const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
                 setExpanded((currentIsExpanded) => !currentIsExpanded)
               }
               className={classNames(styles.subroute, {
-                [styles.activeLink]: subrouteActive,
+                [styles.activeLink]: isExpanded,
               })}
             >
               {route.title}
@@ -503,8 +523,10 @@ interface GroupProps {
 const Group: FunctionComponent<GroupProps> = ({ item }) => {
   const router = useRouter();
 
-  const rootActive = router.pathname.indexOf(item.path) > -1;
-  const [isExpanded, setExpanded] = React.useState(rootActive);
+  const isRootActive =
+    item.path === router.pathname ||
+    (item.subroutes && hasActiveRoute(router.pathname, item.subroutes));
+  const [isExpanded, setExpanded] = React.useState(isRootActive);
 
   const icon = locateIcon(item);
 
