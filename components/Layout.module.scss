@@ -17,7 +17,7 @@
 }
 
 .topBar {
-  margin-top: 8px;
+  margin-top: 5px;
   margin-bottom: 8px;
 }
 
@@ -36,8 +36,12 @@
 }
 
 .header {
-  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   grid-area: header;
+  width: 100%;
+  margin-top: 30px;
 }
 
 .content {
@@ -46,7 +50,6 @@
 
 .nav {
   grid-area: nav;
-  overflow-y: auto;
 }
 
 .footer {
@@ -60,8 +63,13 @@
 }
 
 .backToAvo {
-  color: brand.$gray-15;
+  font-size: 13px;
+  color: brand.$avo-medium-gray-secondary;
   text-decoration: none;
+  margin-left: 12px;
+}
+.backToAvoIcon {
+  margin-right: 5px;
 }
 
 @media (max-width: 840px) {
