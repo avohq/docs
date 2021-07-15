@@ -35,7 +35,6 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   color: brand.$avo-dark-gray;
   font-weight: 300;
   padding-bottom: 8px;
@@ -46,6 +45,10 @@
   &:hover {
     color: brand.$avo-pink;
   }
+}
+
+.subrouteExpand {
+  padding-left: 15px;
 }
 
 .subrouteExpandIcon {
@@ -61,13 +64,11 @@
   font-weight: 500;
   padding-top: 10px;
   padding-bottom: 5px;
-  padding-left: 25px;
+  padding-left: 35px;
 }
 
 .subSubroute {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 15px;
+  margin-left: 8px;
 }
 
 .activeLink {

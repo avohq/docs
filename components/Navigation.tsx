@@ -488,12 +488,13 @@ const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
               }
               className={classNames(styles.subroute, {
                 [styles.activeLink]: isActive,
+                [styles.subrouteExpand]: route.subroutes,
               })}
             >
-              {route.title}
               <div className={styles.subrouteExpandIcon}>
                 {route.subroutes && (isExpanded ? '▲' : '▼')}
               </div>
+              {route.title}
             </div>
           </Link>
           {isExpanded && route.subroutes ? (
