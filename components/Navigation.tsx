@@ -487,7 +487,7 @@ const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
                 setExpanded((currentIsExpanded) => !currentIsExpanded)
               }
               className={classNames(styles.subroute, {
-                [styles.activeLink]: isExpanded,
+                [styles.activeLink]: isActive,
               })}
             >
               {route.title}
@@ -536,7 +536,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
         <div
           onClick={() => setExpanded((currentIsExpanded) => !currentIsExpanded)}
           className={classNames(styles.parentLink, {
-            [styles.activeLink]: isExpanded,
+            [styles.activeLink]: isRootActive,
           })}
         >
           {icon && (
