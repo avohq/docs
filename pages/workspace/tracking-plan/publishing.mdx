@@ -133,7 +133,7 @@ Avo will not impact any events that are only defined in Lexicon, or events that 
 
 ## <a name="amplitude-govern"></a> Amplitude Govern
 
-The integration to [Ampltitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the integration screen or download a CSV file on the Amplitdue Govern format. The events to be published can be filtered by Sources, Destinations and Tags.
+The integration to [Amplitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the integration screen or download a CSV file on the Amplitude Govern format. The events to be published can be filtered by Sources, Destinations and Tags.
 
 ### Configure the Govern integration
 
@@ -170,7 +170,7 @@ If that does not help this might be caused by an internal error. Please reach ou
 
 #### 429 Too Many Requests
 
-We've exceeded the number of Govern requests we can make per hour for these API credentials. Please wait before trying to publish again. You can learn more about Amplitude Govern request limits [in the Amlitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360016606991-Taxonomy-API#h_53f1b7d4-ee8d-4a81-945b-e5a2909ddfad).
+We've exceeded the number of Govern requests we can make per hour for these API credentials. Please wait before trying to publish again. You can learn more about Amplitude Govern request limits [in the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360016606991-Taxonomy-API#h_53f1b7d4-ee8d-4a81-945b-e5a2909ddfad).
 
 <img
   src={require('../../../images/publishing_webhook.svg')}
@@ -265,7 +265,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 | :------------------ | :------------ | :------------------------------------------------------------ |
 | id                  | string        | Source id                                                     |
 | name                | string        | Source name                                                   |
-| programmingLanguage | string        | Name of programming language (e.g. "Javascript", "Python")    |
+| programmingLanguage | string        | Name of programming language (e.g. "JavaScript", "Python")    |
 | developmentPlatform | string        | Name of development platroft platform (e.g. "Web", "Android") |
 | destinations        | array(string) | Destination ids where this source sends data to               |
 
@@ -275,7 +275,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 | :-------- | :----- | :----------------------------------------------------------------------------------------------------------------- |
 | id        | string | Destination id                                                                                                     |
 | name      | string | Destination name                                                                                                   |
-| type      | string | Name of the provider (e.g. "Segment", "Mispanel") where the data is sent to if managed by Avo, "Custom" otherwise. |
+| type      | string | Name of the provider (e.g. "Segment", "Mixpanel") where the data is sent to if managed by Avo, "Custom" otherwise. |
 
 #### Category Model
 
@@ -293,7 +293,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 | :-------------- | :--------------- | :---------------------------------------------------------------------------------------- |
 | branchId        | id               | Branch id                                                                                 |
 | branchName      | string           | Branch name                                                                               |
-| integrationId   | string           | Id of the publish integration (conistently the same for this integration)                 |
+| integrationId   | string           | Id of the publish integration (consistently the same for this integration)                 |
 | integrationName | string           | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName' |
 | publishDate     | Date string      | Timestamp when the webhook was triggered                                                  |
-| publishMethod   | { "type": type } | Desctiprion of the publish method, type can be "Manual" and "BranchMerge"                 |
+| publishMethod   | { "type": type } | Description of the publish method, type can be "Manual" and "BranchMerge"                 |
