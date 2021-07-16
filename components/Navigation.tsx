@@ -440,6 +440,11 @@ const navigation: navigationItem[] = [
         title: 'Segment',
         path: '/integrations/segment',
       },
+      {
+        type: 'route',
+        title: 'Amplitude',
+        path: '/integrations/amplitude',
+      },
     ],
   },
   {

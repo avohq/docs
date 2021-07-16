@@ -1,0 +1,126 @@
+---
+layout: 'guide'
+title: 'Use Amplitude in JavaScript'
+---
+
+Custom destination to send data from JavaScript to Amplitude
+
+### Web
+
+```javascript
+import Avo from './Avo';
+// An object representing your custom destination that you pass into initAvo()
+var customDestination = {
+  make: function (env) {
+    // called at the end of the initAvo call
+    // You should initialize your analytics destination here, if you have not done it before
+    this.apiKey = env === "prod" ? prodApiKey : devApiKey;
+
+    window.amplitude.getInstance(this.apiKey).init(this.apiKey, null, options);
+  },
+  logEvent: function (eventName, eventProperties) {
+    // called when you invoke Avo functions with the Log Event action
+    window.amplitude.getInstance(this.apiKey).logEvent(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+   // called when you invoke Avo functions with the Update User Propreties action
+   window.amplitude.getInstance(this.apiKey).setUserProperties(userProperties);
+  },
+  identify: function (userId) {
+    // called when you invoke Avo functions with the Identify User action
+    window.amplitude.getInstance(this.apiKey).setUserId(userId);
+  },
+  unidentify: function () {
+    // called when you invoke Avo functions with the Unidentify User action
+    window.amplitude.getInstance(this.apiKey).setUserId(null);
+    window.amplitude.getInstance(this.apiKey).regenerateDeviceId();
+  },
+  revenue: function(amount, eventProperties) {
+    // called when you invoke Avo functions with the Log Revenue action
+    var revenue = new window.amplitude.Revenue().setQuantity(quantity).setPrice(price);
+    if (productId !== null && productId !== undefined && productId.length !== 0) {
+      revenue.setProductId(productId);
+    }
+    if (
+      revenueType !== null &&
+      revenueType !== undefined &&
+      revenueType.length !== 0
+    ) {
+      revenue.setRevenueType(revenueType);
+    }
+    if (eventProperties !== null && eventProperties !== undefined) {
+      revenue.setEventProperties(eventProperties);
+    }
+
+    window.amplitude.getInstance(this.apiKey).logRevenueV2(revenue);
+  },
+};
+
+Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
+```
+
+### React Native
+
+```javascript
+import Avo from './Avo';
+// An object representing your custom destination that you pass into initAvo()
+var customDestination = {
+  make: function (env) {
+    // called at the end of the initAvo call
+    // You should initialize your analytics destination here, if you have not done it before
+    var Amplitude = require('react-native-amplitude-analytics').default;
+    this.amplitude = new Amplitude(apiKey);
+  },
+  logEvent: function (eventName, eventProperties) {
+    // called when you invoke Avo functions with the Log Event action
+    this.amplitude.logEvent(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    // called when you invoke Avo functions with the Update User Propreties action
+    this.amplitude.setUserProperties(userProperties);
+  },
+  identify: function (userId) {
+    // called when you invoke Avo functions with the Identify User action
+    this.amplitude.setUserId(userId);
+  },
+  unidentify: function () {
+    // called when you invoke Avo functions with the Unidentify User action
+    this.amplitude.setUserId(null);
+  },
+  revenue: function(amount, eventProperties) {
+    // called when you invoke Avo functions with the Log Revenue action
+    this.amplitude.logRevenue(productId, quantity, price);
+  },
+};
+
+Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
+```
+
+### Node
+
+```javascript
+const Avo = require('./src/Avo').default;
+// An object representing your custom destination that you pass into initAvo()
+var customDestination = {
+  make: function(env) {
+    // called at the end of the initAvo call
+    // You should initialize your analytics destination here, if you have not done it before
+    var Amplitude = require('amplitude');
+    this.amplitude = new Amplitude(apiKey, options);
+  },
+  logEvent: async function(anonymousId, userId, eventName, eventProperties) {
+    // called when you invoke Avo functions with the Log Event action
+    return this.amplitude.track({user_id: userId, device_id: anonymousId, event_type: eventName, event_properties: eventProperties});
+  },
+  setUserProperties: async function(anonymousId, userId, userProperties) {
+    // called when you invoke Avo functions with the Update User Propreties action
+    return this.amplitude.identify({
+      device_id: anonymousId,
+      user_id: userId,
+      user_properties: userProperties,
+    });
+  },
+}
+
+Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
+```

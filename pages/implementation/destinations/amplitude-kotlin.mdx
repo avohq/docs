@@ -1,0 +1,42 @@
+---
+layout: 'guide'
+title: 'Use Amplitude in Kotlin'
+---
+
+Custom destination to send data from Kotlin to Amplitude
+
+```kotlin
+// An object representing your custom destination that you pass into the Avo constructor
+val customDestination = object : ICustomDestination {
+    // called at the end of the initAvo call
+    // you should initialize your analytics destination here, if you have not done it before
+    override fun make(env: AvoEnv) {
+        val apiKey = if (env == AvoEnv.DEV) "devApiKey" else "profApiKey"
+
+        Amplitude.getInstance().initialize(context, apiKey).enableForegroundTracking(application)
+    }
+
+    // called when you invoke Avo functions with the Log Event action
+    override fun logEvent(eventName: String, eventProperties: Map<String, *>) {
+        Amplitude.getInstance().logEvent(eventName, eventProperties)
+    }
+
+    // called when you invoke Avo functions with the Update User Propreties action
+    override fun setUserProperties(userId: String, userProperties: Map<String, *>) {
+        Amplitude.getInstance().setUserProperties(userProperties)
+    }
+
+    // called when you invoke Avo functions with the Identify User action
+    override fun identify(userId: String) {
+        Amplitude.getInstance().setUserId(userId)
+    }
+
+    // called when you invoke Avo functions with the Unidentify User action
+    override fun unidentify() {
+        Amplitude.getInstance().setUserId(null)
+        Amplitude.getInstance().regenerateDeviceId()
+    }
+}
+
+val avo = Avo(AvoEnv.DEV, customDestination)
+```

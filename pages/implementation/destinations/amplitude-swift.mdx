@@ -1,0 +1,43 @@
+---
+layout: 'guide'
+title: 'Use Amplitude in Swift'
+---
+
+Custom destination to send data from Swift to Amplitude
+
+```swift
+// An class representing your custom destination, object of that class is passed into the Avo constructor
+class CustomDestination: AvoCustomDestination {
+    func make(env: AvoEnv) {
+        // called at the end of the initAvo call
+        // You should initialize your analytics destination here, if you have not done it before
+        let apiKey = env == .dev ? "devApiKey" : "prodApiKey"
+        Amplitude.instance().initializeApiKey(apiKey)
+    }
+
+    func logEvent(eventName: String, eventProperties: [String: Any]) {
+        // called when you invoke Avo functions with the Log Event action
+        Amplitude.instance().logEvent(eventName, withEventProperties: eventProperties)
+    }
+
+    func setUserProperties(userId: String, userProperties: [String: Any]) {
+        // called when you invoke Avo functions with the Update User Propreties action
+        if !userProperties.isEmpty {
+            Amplitude.instance().setUserProperties(userProperties)
+        }
+    }
+
+    func identify(userId: String) {
+        // called when you invoke Avo functions with the Identify User action
+        Amplitude.instance().setUserId(userId, startNewSession:false)
+    }
+
+    func unidentify() {
+        // called when you invoke Avo functions with the Unidentify User action
+        Amplitude.instance().setUserId(nil, startNewSession:false)
+        Amplitude.instance().regenerateDeviceId()
+    }
+}
+
+let avo = Avo(env: .dev, customDestination: CustomDestination())
+```

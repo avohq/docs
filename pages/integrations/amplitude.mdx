@@ -1,0 +1,28 @@
+---
+layout: 'guide'
+title: 'Amplitude integrations'
+---
+
+import Link from '../../../components/Link';
+
+## Publish tracking plan to Govern
+
+<Link passHref href="/workspace/tracking-plan/publishing#amplitude-govern"><a> Publish tracking plan to Govern</a></Link>
+
+## Generate code to send data to Amplitude
+
+You can use Avo Functions with Amplitude.
+
+To do that either:
+
+1. For full control, create a custom destinations, name it "Amplitude", connect to your source and generate the code for that source.
+
+Then, when you initialize Avo you'll see additional parameter in the initialization method, the custom destination object.
+
+See the custom destination examples for different languages in <Link passHref href="/implementation/destinations/amplitude"><a>the Amplitude destination section</a></Link>.
+
+2. Create a managed Amplitude destination, connect it to your source and generate the code for that source. Then Avo will take care of initializing Amplitude SDK and sending data to it.
+
+## Send app data to Inspector with the SDK
+
+<Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Stream app data to Inspector with an SDK</a></Link>
