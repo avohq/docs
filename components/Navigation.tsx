@@ -61,6 +61,22 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Tracking Plan Audit',
+    iconName: 'health',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Quickstart: Audit in 5 minutes',
+        path: '/audit/quickstart',
+      },
+      {
+        type: 'route',
+        title: 'Audit rules',
+        path: '/audit/rules',
+      },
+    ]
+  },
+  {
     title: 'Your Avo Workspace',
     iconName: 'toolbox',
     subroutes: [
@@ -630,6 +646,10 @@ function locateIcon(item: navigationItem) {
     }
     case 'tracking-plan': {
       icon = require('../images/tracking-plan-icon.svg');
+      break;
+    }
+    case 'health': {
+      icon = require('../images/audit/health.svg');
       break;
     }
     default: {

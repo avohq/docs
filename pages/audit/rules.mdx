@@ -1,0 +1,75 @@
+---
+layout: 'guide'
+title: 'Avo tracking plan audit rules'
+abstract: 'Learn how to read and fix your tracking plan audit'
+---
+
+import Link from '../../components/Link';
+
+# Audit rules
+
+Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see <Link passHref href="/audit/quickstart"><a>Quickstart: Audit in 5 minutes</a></Link>
+
+<center>
+  <img width="400" src={require('../../images/audit/audit.png')} />
+</center>
+
+
+## Event Rules
+
+### All events have unique names
+
+Checks if any two event names in the tracking plan conflict with each other. For event name to be unique, no other event can have the same name, independent from their case. Example of conflicting event names:
+- "App Opened", "app opened", "app_opened", "app-opened"
+- "Add to Cart", "Add to cart", "add_to_cart", "add-to-cart"
+- "Checkout Started", "checkout started", "checkout-started"
+- "Checkout Completed", "checkout completed", "checkout-completed"
+
+> **Best practice:** Have all event names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.
+
+### Casing of event names is consistent
+
+Checks if the casing of event names in the tracking plan is consistent. For event name to be consistent, it should be the same casing across all events. Example of inconsistent event names:
+- "App Opened", "checkoutStarted", "checkout_completed"
+- "Add to Cart", "addToCart", "add-to-cart"
+
+> **Best practice:** Have all event names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the event name they are looking for, but also the casing of the event name.
+
+### All events have description
+
+Checks if all events in the tracking plan have a description.
+
+> **Best practice:** A well defined event description contains information such as when the event should be sent and why it's being tracked.
+
+## Property Rules
+
+### No conflicting properties
+
+
+### All property names are unique
+
+Checks if any two property names in the tracking plan conflict with each other. For property name to be unique, no other property can have the same name, independent from their case. Example of conflicting property names:
+- "User ID", "User Id", "user_id", "user-id"
+- "email_adddress", "Email Address", "email_address", "Email-address"
+
+> **Best practice:** Have all property names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.
+
+### Casing of property names is consistent
+
+Checks if the casing of property names in the tracking plan is consistent. For property name to be consistent, it should be the same casing across all properties. Example of inconsistent property names:
+- "User Id", "userId", "USER_ID"
+- "Product Name", "product_name", "product-name"
+
+> **Best practice:** Have all property names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the property name they are looking for, but also the casing of the property name.
+
+### All properties have defined types
+
+Checks if all properties in the tracking plan have a defined type. Every property should at least have their base type defined, one of: string, int, float, boolean or object. In Avo you can in addition to the base types define a list of possible values for string properties, and min and max values for numeric properties.
+
+> **Best practice:** Have well defined types for all properties to increase the quality of the tracking implementation. Having well define types is the prerequisit for having your tracking consistent across all products and platforms.
+
+### All properties have description
+
+Checks if all properties in the tracking plan have a description.
+
+> **Best practice:** A well defined property description contains detailed description of what the property is describing, and how it's value should be fetched.

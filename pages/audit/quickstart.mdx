@@ -1,0 +1,59 @@
+---
+layout: 'guide'
+title: 'Audit your existing tracking plan'
+abstract: 'Learn how to use Avo to identify issues in your existing tracking plan'
+---
+
+import Link from '../../components/Link';
+
+## What's a tracking plan audit?
+
+The Avo tracking plan audit reviews your event and property definitions and flags issues such as unexpected naming or inconsistent types — helping you keep your tracking plan clean and consistent.
+
+The tracking plan audit monitors every change you make in your Avo Tracking Plan and highlights if new issues arise. You can think about the tracking plan audit like a spell-checker for your tracking plan.
+
+You can get a tracking plan audit for your existing tracking plan today by importing it into Avo. Follow the quickstart guide below to learn how to import your existing tracking plan into Avo and review your first tracking plan audit.
+
+To learn more about the audit rules, see <Link passHref href="/audit/rules"><a>Avo's tracking plan audit rules</a></Link>.
+
+> **Note:** The tracking plan audit only audits the _plan_. If you want to identify issues in your current tracking implementation and data streams, check out <Link passHref href="/workspace/inspector"><a>Tracking Observability</a></Link>.
+
+## Audit Quickstart
+
+### Step 1: Create an Avo workspace
+
+If you already have an Avo workspace, you can skip this step. If you don't have an Avo workspace yet, create one by following the <a target="blank" href="https://avo.app/onboarding">workspace onboarding flow</a>.
+
+### Step 2: Import your tracking plan
+
+If you have a tracking plan defined in a Excel or Google Sheet spreadsheet, or in a tool like Mixpanel Lexicon or Amplitude Govern, you can import it into Avo by clicking the **Import** button in the Tracking Plan settings menu in the top left corner of the Avo workspace.
+
+<center>
+  <img width="400" src={require('../../images/audit/import-button.png')} />
+</center>
+
+<br />
+<br />
+To learn more about importing your existing tracking plan to Avo, see the <Link
+  passHref
+  href="/workspace/tracking-plan/importing"
+>
+  importing your tracking plan
+</Link> guide.
+
+### Step 3: Review the tracking plan audit
+
+As soon as you have imported your tracking plan to Avo, the tracking plan audit is ready for review. You can find your tracking plan audit next to the **Tracking Plan** tab in the sidebar of the Avo workspace. Click the yellow pill to open the report. If no issues were found you'll see a green checkmark instead of the yellow pill.
+
+<center>
+  <img width="400" src={require('../../images/audit/audit.png')} />
+</center>
+
+<br />
+<br />
+
+To learn more about how to review your tracking plan audit, and how to resolve issues, see <Link passHref href="/audit/rules"><a>Avo's tracking plan audit rules</a></Link>.
+
+## What's next?
+
+Open a branch in Avo and start suggesting changes to resolve your top priority issues. To learn more about branches see <Link passHref href="/workspace/branches">Branches</Link>.
