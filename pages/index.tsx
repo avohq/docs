@@ -23,35 +23,32 @@ const LandingPage: FunctionComponent = () => {
 
   const tocContent = (
     <div>
-      {' '}
-      <ol>
-        <p>
-          <a href="#stage1" className={styles.tocItem}>
-            Step 1. Tracking plan management – no engineering required
-          </a>
-        </p>
-        <p>
-          <a href="#stage2" className={styles.tocItem}>
-            Step 2. Tracking validation – one time SDK install or add as Segment
-            Destination
-          </a>
-        </p>
-        <p>
-          <a href="#stage3" className={styles.tocItem}>
-            Step 3. Tracking implementation workflow for your team
-          </a>
-        </p>
-        <p>
-          <a href="#workspace" className={styles.tocItem}>
-            Explore your Avo workspace
-          </a>
-        </p>
-        <p>
-          <a href="#guides" className={styles.tocItem}>
-            Comprehensive data design and implementation guides
-          </a>
-        </p>
-      </ol>
+      <p>
+        <a href="#stage1" className={styles.tocItem}>
+          Step 1. Tracking plan management – no engineering required
+        </a>
+      </p>
+      <p>
+        <a href="#stage2" className={styles.tocItem}>
+          Step 2. Tracking validation – one time SDK install or add as Segment
+          Destination
+        </a>
+      </p>
+      <p>
+        <a href="#stage3" className={styles.tocItem}>
+          Step 3. Tracking implementation workflow for your team
+        </a>
+      </p>
+      <p>
+        <a href="#workspace" className={styles.tocItem}>
+          Explore your Avo workspace
+        </a>
+      </p>
+      <p>
+        <a href="#guides" className={styles.tocItem}>
+          Comprehensive data design and implementation guides
+        </a>
+      </p>
     </div>
   );
 
@@ -293,7 +290,7 @@ const LandingPage: FunctionComponent = () => {
             title="How does Avo Inspector SDK work?"
             description="Learn the technical part of the Inspector SDK"
             callToAction={
-              new CallToAction('/implementation/devs-101#avo-inspector-sdk')
+              new CallToAction('/implementation/avo-inspector-overview')
             }
           />
         </div>
@@ -375,9 +372,7 @@ const LandingPage: FunctionComponent = () => {
             title="How do Avo Functions work?"
             description="Learn what's inside the Avo functions"
             callToAction={
-              new CallToAction(
-                '/implementation/devs-101#a-nameavo-generated-filea-avo-generated-file-containing-avo-functions',
-              )
+              new CallToAction('/implementation/avo-functions-overview')
             }
           />
         </div>

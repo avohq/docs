@@ -70,7 +70,7 @@ const DocSearch: FunctionComponent = () => {
       <Icon name="search" color="inherit" />
       <input
         id="algolia-avo-search"
-        placeholder="Find anything"
+        placeholder="Search the documentation"
         className={styles.searchInput}
         onFocus={() => {
           setSearchStatus(Status.Focused);
