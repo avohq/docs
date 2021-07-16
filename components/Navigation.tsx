@@ -74,7 +74,7 @@ const navigation: navigationItem[] = [
         title: 'Audit rules',
         path: '/audit/rules',
       },
-    ]
+    ],
   },
   {
     title: 'Your Avo Workspace',
