@@ -440,23 +440,6 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Amplitude',
         path: '/integrations/amplitude',
-        subroutes: [
-          {
-            type: 'route',
-            title: 'Import tracking plan from Govern',
-            path: '/workspace/tracking-plan/importing',
-          },
-          {
-            type: 'route',
-            title: 'Publish tracking plan to Govern',
-            path: '/workspace/tracking-plan/publishing',
-          },
-          {
-            type: 'route',
-            title: 'Avo Functions to Amplitude',
-            path: '/implementation/destinations/amplitude',
-          },
-        ],
       },
     ],
   },
