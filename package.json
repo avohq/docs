@@ -7,7 +7,8 @@
     "dev": "DEV=true next dev",
     "build": "next build",
     "start": "next start",
-    "spellcheck": "yarn mdspell 'pages/*.mdx' 'pages/*/*.mdx' 'pages/*/*.mdx' --en-us -x -n",
+    "spellcheck": "yarn mdspell 'pages/*.mdx' 'pages/*/*.mdx' 'pages/*/*/*/*.mdx' 'pages/*/*/*/*.mdx' --en-us -x -n -r",
+    "fix-spelling": "yarn mdspell 'pages/*.mdx' 'pages/*/*.mdx' 'pages/*/*/*.mdx' 'pages/*/*/*/*.mdx' --en-us -x -n",
     "lint": "eslint '*/**/*.{js,ts,tsx}' && tsc --noEmit",
     "lint-mdx": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/mdxLint/index.ts",
     "generate-sitemap": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/generateSitemap.ts"

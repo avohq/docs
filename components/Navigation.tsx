@@ -389,6 +389,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Managed Destinations',
+            path: '/implementation/destinations/managed-destinations',
+          },
+          {
+            type: 'route',
             title: 'Custom Destinations',
             path: '/implementation/start-custom-destination',
           },
@@ -450,6 +455,11 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Using visual debuggers to understand tracking',
         path: '/explore-tracking-plan/start-using-visual-debuggers',
+      },
+      {
+        type: 'route',
+        title: 'Download or copy Avo file manually',
+        path: '/explore-tracking-plan/download-or-copy-avo-file-manually',
       },
     ],
   },

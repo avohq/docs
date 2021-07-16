@@ -1,0 +1,31 @@
+---
+layout: 'guide'
+title: 'Destinations managed by Avo'
+---
+
+import Link from '../../../components/Link';
+
+When creating a destination in the Avo UI you can pick whether you'll manage sending data to the destination yourself or Avo will manage it for you.
+
+Avo can manage a limited set of Analytics destination, but you can use **any** event-based analytics destination if you manage it yourself.
+
+<center>
+  <img
+    src={require('../../../images/add-destination.png')}
+    alt="Add Destination button"
+    width="75%"
+  />
+</center>
+
+If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View, will be handled by the Avo generated code, so you don't need to think about that.
+
+- Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specified environment when you initialize Avo
+- Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call
+- Avo will call the user properties method of the analytics SDK (e.g. `identify(userId, userProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Update User Properties` action is called and will include the user properties in the call
+- Avo will call the identify method of the analytics SDK (e.g. `identify(userId)` in the Segment SDK) when an Avo Function corresponding to an event with `Identify User` action is called
+- Avo will call the unidentify method of the analytics SDK (e.g. `identify(null)` in the Segment SDK) when an Avo Function corresponding to an event with `Unidentify User` action is called
+- Avo will call the revenue method of the analytics SDK (e.g. `track("revenue", {"revenue": amount})` in the Segment SDK) when an Avo Function corresponding to an event with `Log Revenue` action is called
+- Avo will call the page method of the analytics SDK (e.g. `page(pageName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Page View` action is called and will include the event and system properties in the call
+
+If you choose to manage the analytics SDK yourself, for example because you are already using the analytics SDK somewhere else, or your SDK is not available as Avo managed destination, you can implement a custom destination.
+Find code snippets of Custom Destinations for different programming languages and analytics tools <Link passHref href="/implementation/start-custom-destination.mdx"><a>here</a></Link>.
