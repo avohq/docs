@@ -1,45 +1,50 @@
-import styles from './Navigation.module.scss';
-import { FunctionComponent } from 'react';
-
+import React, { FunctionComponent } from 'react';
 import classNames from 'classnames';
-
 import { useRouter } from 'next/router';
+
 import Link from '../components/Link';
-import React from 'react';
+import styles from './Navigation.module.scss';
 
 type route = {
   type: 'route';
   title: string;
   path: string;
-  subroutes?: subroute[];
+};
+
+type section = {
+  type: 'section';
+  group: string;
 };
 
 type group = {
   type: 'group';
-  group: string;
+  title: string;
+  subroutes: subroute[];
 };
 
-type subroute = route | group;
+type subroute = route | section | group;
 
 type subroutes = subroute[];
 
 interface navigationItem {
   title: string;
-  path: string;
-  iconName?: string | null;
-  subroutes?: subroutes | null;
+  iconName: string;
+  subroutes: subroutes;
 }
 
 const navigation: navigationItem[] = [
   {
-    title: 'Getting started with Avo',
-    path: '/',
+    title: 'Home',
     iconName: 'home',
     subroutes: [
       {
         type: 'route',
+        title: 'Getting Started',
+        path: '/',
+      },
+      {
+        type: 'group',
         title: 'FAQs',
-        path: '/faqs/yes-you-can-faq',
         subroutes: [
           {
             type: 'route',
@@ -57,14 +62,22 @@ const navigation: navigationItem[] = [
   },
   {
     title: 'Your Avo Workspace',
-    path: '/workspace',
     iconName: 'toolbox',
     subroutes: [
       {
         type: 'route',
+        title: 'Overview',
+        path: '/workspace',
+      },
+      {
+        type: 'group',
         title: 'Tracking plan',
-        path: '/workspace/tracking-plan',
         subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/workspace/tracking-plan',
+          },
           {
             type: 'route',
             title: 'Events',
@@ -111,10 +124,14 @@ const navigation: navigationItem[] = [
       { type: 'route', title: 'Connections', path: '/workspace/connections' },
       { type: 'route', title: 'Implement', path: '/workspace/implement' },
       {
-        type: 'route',
+        type: 'group',
         title: 'Inspector',
-        path: '/workspace/inspector',
         subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/workspace/inspector',
+          },
           {
             type: 'route',
             title: 'Send data from Segment (no code)',
@@ -137,11 +154,10 @@ const navigation: navigationItem[] = [
   },
   {
     title: 'Data Design',
-    path: '/data-design/start-data-design',
     iconName: 'data-design',
     subroutes: [
       {
-        type: 'group',
+        type: 'section',
         group: 'Getting started guides',
       },
       {
@@ -175,7 +191,7 @@ const navigation: navigationItem[] = [
         path: '/workspace/tracking-plan/importing',
       },
       {
-        type: 'group',
+        type: 'section',
         group: 'Tools',
       },
       {
@@ -184,7 +200,7 @@ const navigation: navigationItem[] = [
         path: '/data-design/analytics',
       },
       {
-        type: 'group',
+        type: 'section',
         group: 'Guides and best practices',
       },
       {
@@ -236,9 +252,13 @@ const navigation: navigationItem[] = [
   },
   {
     title: 'Implementation',
-    path: '/implementation/devs-101',
     iconName: 'implementation',
     subroutes: [
+      {
+        type: 'route',
+        title: 'Avo 101 for developers',
+        path: '/implementation/devs-101',
+      },
       {
         type: 'route',
         title: 'Avo Functions overview',
@@ -250,7 +270,7 @@ const navigation: navigationItem[] = [
         path: '/implementation/avo-inspector-overview',
       },
       {
-        type: 'group',
+        type: 'section',
         group: 'Getting started guides',
       },
       {
@@ -269,10 +289,14 @@ const navigation: navigationItem[] = [
         path: '/implementation/cli',
       },
       {
-        type: 'route',
+        type: 'group',
         title: 'Using the Avo Visual Debuggers',
-        path: '/implementation/start-using-visual-debugger',
         subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/implementation/start-using-visual-debugger',
+          },
           {
             type: 'route',
             title: 'Web',
@@ -301,7 +325,7 @@ const navigation: navigationItem[] = [
         path: '/implementation/start-using-inspector-with-avo-functions',
       },
       {
-        type: 'group',
+        type: 'section',
         group: 'Advanced guides and best practices',
       },
       {
@@ -335,13 +359,12 @@ const navigation: navigationItem[] = [
         path: '/implementation/avo-tracking-plan-webhook',
       },
       {
-        type: 'group',
+        type: 'section',
         group: 'Reference',
       },
       {
-        type: 'route',
+        type: 'group',
         title: 'Avo Functions',
-        path: '/implementation/supported-programming-languages',
         subroutes: [
           {
             type: 'route',
@@ -366,10 +389,14 @@ const navigation: navigationItem[] = [
         ],
       },
       {
-        type: 'route',
+        type: 'group',
         title: 'Avo Inspector SDKs',
-        path: '/implementation/avo-inspector-sdk-reference',
         subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/implementation/avo-inspector-sdk-reference',
+          },
           {
             type: 'route',
             title: 'Android SDK',
@@ -406,7 +433,6 @@ const navigation: navigationItem[] = [
   },
   {
     title: 'Explore the Tracking Plan',
-    path: '/explore-tracking-plan/start-using-visual-debuggers',
     iconName: 'tracking-plan',
     subroutes: [
       {
@@ -418,7 +444,6 @@ const navigation: navigationItem[] = [
   },
   {
     title: 'Help',
-    path: '/help/troubleshooting',
     iconName: 'help',
     subroutes: [
       {
@@ -430,6 +455,117 @@ const navigation: navigationItem[] = [
   },
 ];
 
+interface SubroutesProps {
+  routes: Array<subroute>;
+  root: boolean;
+}
+
+const Subroutes: FunctionComponent<SubroutesProps> = ({ root, routes }) => {
+  return (
+    <div
+      className={classNames(styles.subroutesContainer, {
+        [styles.subroutesContainerRoot]: root,
+      })}
+    >
+      {routes.map((route: subroute) => {
+        return (
+          <Subroute
+            key={
+              route.type == 'route'
+                ? route.path
+                : route.type == 'group'
+                ? route.title
+                : route.group
+            }
+            route={route}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+const isActiveRoute = (currentPath: string, route: route): boolean => {
+  return route.path === currentPath;
+};
+
+const hasActiveRoute = (currentPath: string, routes: subroutes): boolean => {
+  return routes.some((route) => {
+    switch (route.type) {
+      case 'route':
+        return isActiveRoute(currentPath, route);
+      case 'group':
+        return hasActiveRoute(currentPath, route.subroutes);
+      case 'section':
+        return false;
+    }
+  });
+};
+interface SubrouteProps {
+  route: subroute;
+}
+
+const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
+  const router = useRouter();
+  const isActive = hasActiveRoute(router.pathname, [route]);
+  const [isExpanded, setExpanded] = React.useState(isActive);
+  switch (route.type) {
+    case 'route':
+      return (
+        <React.Fragment key={route.path + ' ' + route.title}>
+          <Link href={route.path} key={route.path}>
+            <div
+              onClick={() =>
+                setExpanded((currentIsExpanded) => !currentIsExpanded)
+              }
+              className={classNames(styles.subroute, {
+                [styles.activeLink]: isActive,
+              })}
+            >
+              {route.title}
+            </div>
+          </Link>
+        </React.Fragment>
+      );
+    case 'group':
+      return (
+        <React.Fragment key={route.title}>
+          <div
+            onClick={() =>
+              setExpanded((currentIsExpanded) => !currentIsExpanded)
+            }
+            className={classNames(styles.subroute, {
+              [styles.activeLink]: isActive,
+              [styles.subrouteExpand]: true,
+            })}
+          >
+            <div className={styles.subrouteExpandIcon}>
+              {route.subroutes && (isExpanded ? '▲' : '▼')}
+            </div>
+            {route.title}
+          </div>
+          {isExpanded && route.subroutes ? (
+            <div
+              className={styles.subSubroute}
+              key={route.title + '-subroutes'}
+            >
+              <Subroutes root={false} routes={route.subroutes} />
+            </div>
+          ) : null}
+        </React.Fragment>
+      );
+    case 'section':
+      return (
+        <div
+          key={'group-' + route.group}
+          className={classNames(styles.subrouteGroup)}
+        >
+          {route.group}
+        </div>
+      );
+  }
+};
+
 interface GroupProps {
   item: navigationItem;
 }
@@ -437,68 +573,29 @@ interface GroupProps {
 const Group: FunctionComponent<GroupProps> = ({ item }) => {
   const router = useRouter();
 
-  const rootActive = router.pathname === item.path;
-
-  const renderSubroutes = (subroutes: subroutes) => {
-    return subroutes.map((subroute: subroute) => {
-      switch (subroute.type) {
-        case 'route':
-          const subrouteActive = router.pathname === subroute.path;
-          return (
-            <React.Fragment key={subroute.path + ' ' + subroute.title}>
-              <Link href={subroute.path} key={subroute.path}>
-                <div
-                  className={classNames(styles.subroute, {
-                    [styles.activeLink]: subrouteActive,
-                  })}
-                >
-                  {subroute.title}
-                </div>
-              </Link>
-              {subroute.subroutes ? (
-                <div
-                  className={styles.subSubroute}
-                  key={subroute.path + '-subroutes'}
-                >
-                  {' '}
-                  {renderSubroutes(subroute.subroutes)}{' '}
-                </div>
-              ) : null}
-            </React.Fragment>
-          );
-        case 'group':
-          return (
-            <div
-              key={'group-' + subroute.group}
-              className={classNames(styles.subrouteGroup)}
-            >
-              {subroute.group}
-            </div>
-          );
-      }
-    });
-  };
+  const isRootActive = hasActiveRoute(router.pathname, item.subroutes);
+  const [isExpanded, setExpanded] = React.useState(isRootActive);
 
   const icon = locateIcon(item);
 
   return (
-    <div className={styles.group}>
-      <Link href={item.path}>
-        <div
-          className={classNames(styles.parentLink, {
-            [styles.activeLink]: rootActive,
-          })}
-        >
-          {item.iconName && (
-            <span className={styles.iconWrapper}>
-              <img src={icon} alt="" />
-            </span>
-          )}
-          {item.title}
-        </div>
-      </Link>
-
-      {item.subroutes && renderSubroutes(item.subroutes)}
+    <div>
+      <div
+        onClick={() => setExpanded((currentIsExpanded) => !currentIsExpanded)}
+        className={classNames(styles.parentLink, {
+          [styles.activeLink]: isRootActive,
+        })}
+      >
+        {icon && (
+          <span className={styles.iconWrapper}>
+            <img src={icon} alt="" />
+          </span>
+        )}
+        {item.title}
+      </div>
+      {isExpanded && item.subroutes && (
+        <Subroutes root={true} routes={item.subroutes} />
+      )}
     </div>
   );
 };
@@ -507,7 +604,7 @@ const Navigation: FunctionComponent = () => {
   return (
     <div className={styles.root}>
       {navigation.map((item) => (
-        <Group key={item.path} item={item}></Group>
+        <Group key={item.title} item={item}></Group>
       ))}
     </div>
   );
