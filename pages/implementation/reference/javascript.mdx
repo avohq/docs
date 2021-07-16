@@ -51,7 +51,7 @@ The actual parameters depend on your tracking plan setup, see the parameters exp
 
 #### Step 3. Call Avo functions to track your product usage
 
-Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in lower camel case.
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
 
 [//]: # (TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management")
 
@@ -99,7 +99,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
   - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
 
 `systemProperties`: an object where each field represents a system property in your tracking plan. 
-When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in lower camel case, and you should provide corresponding types.
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
 
 `destinationOptions`: `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
@@ -162,17 +162,19 @@ Every event you define in your tracking plan in Avo gets a function named after 
 
 ##### Arguments
 
-`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. The argument key is camelCase version of the property name defined in the Avo UI.
-This is an event property that should be tracked with given event. Pass the value of the property to track here. 
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. 
+Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to track here. 
 
-`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. The argument key is camelCase version of the property name defined in the Avo UI.
-This is a user property that should be updated with given event. Pass the value of the property to update here. 
+`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. 
+Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to update here. 
 
 `userId_`: string
 Web and React Native: Added if the event has the `Identify User` action
 Node.js: added to all events, you have to either provide it or the `anonymousUserId_`
 
-###### Additional properties
+###### Additional arguments
 
 `anonymousUserId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
 
