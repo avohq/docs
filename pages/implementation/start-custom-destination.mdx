@@ -5,13 +5,15 @@ title: 'Setting up custom destinations'
 
 import Link from '../../components/Link';
 
-Sometimes the best way to integrate Avo is through a custom destination. For
+Often the best way to integrate Avo is through a custom destination. For
 example:
 
+- When you want to have control over the initialization and the lifecycle of the Analytics SDK
 - When using Avo Functions alongside existing tracking implementation
 - When sending data to analytics platforms through an API (not using their SDK)
 - When using a combination of a programming language and analytics destination not yet directly supported by Avo
-- When you want to have control over the initialization and the lifecycle of the Analytics SDK
+
+Custom destination is an object with callbacks that Avo triggers when you call the Avo functions to send events. It provides the data ready to be sent to any analytics destination.
 
 Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
 the best solution for you or if there are any analytics destinations you'd like to see supported in Avo.
@@ -28,6 +30,47 @@ To get started using a custom destination you do the following:
 We will be referencing Avo _functions_, _events_, _actions_ and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> and subdocs to get familiar with Avo concepts.
 
 With a custom destination you'll get access to callback methods for Avo actions. The Avo generated code triggers the callbacks when corresponding Avo functions are called.
+
+### Available event actions in Avo
+
+The callback methods mirror the actions you set up for given event in your tracking plan on avo.app.
+
+<center style={{marginBottom: 16 + "px"}}>
+  <img style={{height: 300 + "px"}}
+    src={require('../../images/event-actions.png')}
+    alt="List of event actions in Avo: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View"
+  />
+</center>
+
+- Log Event
+
+  Avo will log/track this as an event in your analytics tool.
+  
+- Update User Properties
+  
+  Avo will update the following user properties when this event is sent.
+
+- Identify User
+
+  Avo will identify the user in your analytics tool when this event is sent. All events
+  sent after this event will be tied to the identified user. Usually set on sign in
+  events.
+
+- Unidentify User
+
+  Avo will unidentify the user in your analytics tool when this event is sent. All
+  events sent after this event will not be tied to the previously identified user.
+  Usually set on sign out events.
+
+- Log Revenue
+
+  Avo will use revenue APIs provided by your analytics tool to log revenue when
+  this event is sent. Usually set on checkout events.
+
+- Log Page View
+
+  Avo will log page view in your analytics tool when this event is sent. Usually set
+  on events that are sent on screen/page navigation.
 
 ### Callback methods
 
@@ -68,7 +111,7 @@ Below are instructions on how to initialize Avo with a custom destination for
 each of the supported languages:
 
 - [Web](#web)
-  - [Javascript](#javascript)
+  - [JavaScript](#javascript)
   - [Typescript](#typescript)
 - [Mobile](#mobile)
   - [iOS](#ios)
@@ -78,11 +121,11 @@ each of the supported languages:
     - [Java](#java-android)
     - [Kotlin](#kotlin)
   - [React Native](#react-native)
-    - [Javascript](#react-native-javascript)
+    - [JavaScript](#react-native-javascript)
     - [Typescript](#react-native-typescript)
 - [Backend](#backend)
   - [Node.js](#node-js)
-    - [Javascript](#node-javascript)
+    - [JavaScript](#node-javascript)
     - [Typescript](#node-typescript)
   - [Java](#backend-java)
   - [PHP](#php)
@@ -93,7 +136,7 @@ each of the supported languages:
 
 ## <a name="web"></a> Web
 
-### <a name="javascript"></a> Javascript
+### <a name="javascript"></a> JavaScript
 
 Import the Avo library into your code:
 
@@ -134,9 +177,9 @@ Call the initAvo function:
 Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 ```
 
-#### Javascript to Google Analytics 4
+#### JavaScript to Google Analytics 4
 
-Here is a more specific example of how you can use a custom destination in Javascript on Web to integrate with your Google Analytics 4 SDK to implement custom event tracking with Avo.
+Here is a more specific example of how you can use a custom destination in JavaScript on Web to integrate with your Google Analytics 4 SDK to implement custom event tracking with Avo.
 
 ```javascript
 import Avo from './Avo';
@@ -171,7 +214,6 @@ Call the `initAvo` method and pass in your `googleAnalyticsDestination`:
 ```javascript
 Avo.initAvo({ env: 'dev' }, {}, {}, googleAnalyticsDestination);
 ```
-
 
 ### <a name="typescript"></a> Typescript
 
@@ -366,7 +408,7 @@ Avo.initAvo(application=application, context=this, env=AvoEnv.DEV, customDestina
 
 ### <a name="react-native"></a> React Native
 
-#### <a name="react-native-javascript"></a> Javascript
+#### <a name="react-native-javascript"></a> JavaScript
 
 Import the Avo library into your code:
 
@@ -407,9 +449,9 @@ Call the initAvo function:
 Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 ```
 
-#### Javascript to Mixpanel
+#### JavaScript to Mixpanel
 
-Here is a more specific example of how you can use a custom destination in Javascript on React Native to integrate with your Mixpanel SDK. In this example we're using the official [mixpanel-react-native](https://github.com/mixpanel/mixpanel-react-native) SDK.
+Here is a more specific example of how you can use a custom destination in JavaScript on React Native to integrate with your Mixpanel SDK. In this example we're using the official [mixpanel-react-native](https://github.com/mixpanel/mixpanel-react-native) SDK.
 
 ```javascript
 import { Mixpanel } from 'mixpanel-react-native';
@@ -489,7 +531,7 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
 
 ### <a name="node-js"></a> Node JS
 
-#### <a name="node-javascript"></a> Javascript
+#### <a name="node-javascript"></a> JavaScript
 
 Import the Avo library into your code:
 
