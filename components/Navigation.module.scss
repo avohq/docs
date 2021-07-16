@@ -2,19 +2,18 @@
 
 .root {
   font-size: 14px;
-  margin-left: -25px;
-  overflow-y: scroll;
-}
-
-.group {
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .parentLink {
   color: brand.$black;
   font-weight: 500;
-  margin-bottom: 5px;
+  padding: 15px 10px;
   cursor: pointer;
+  border-left: 2px solid transparent;
+  &:hover {
+    background-color: brand.$avo-light-gray;
+  }
 }
 
 .iconWrapper {
@@ -23,27 +22,53 @@
   vertical-align: top;
 }
 
+.subroutesContainer {
+  margin-left: 11px;
+  padding-left: 0px;
+  border-left: 1px solid brand.$avo-light-gray;
+}
+.subroutesContainerRoot {
+  margin-left: 20px;
+}
+
 .subroute {
-  color: brand.$gray-50;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: brand.$avo-dark-gray;
   font-weight: 300;
-  margin-bottom: 5px;
+  padding-bottom: 8px;
+  padding-left: 25px;
   cursor: pointer;
-  margin-left: 25px;
+  font-size: 13px;
+  letter-spacing: -0.0025em;
+  &:hover {
+    color: brand.$avo-pink;
+  }
+}
+
+.subrouteExpand {
+  padding-left: 5px;
+}
+
+.subrouteExpandIcon {
+  font-size: 9px;
+  color: brand.$avo-medium-gray-secondary;
+  margin-top: 2px;
+  padding-right: 10px;
 }
 
 .subrouteGroup {
-  color: brand.$gray-30;
+  color: brand.$avo-dark-gray;
   font-size: 12px;
   font-weight: 500;
-  margin-top: 15px;
-  margin-bottom: 5px;
-  margin-left: 25px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 25px;
 }
 
 .subSubroute {
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 15px;
+  margin-left: 8px;
 }
 
 .activeLink {
