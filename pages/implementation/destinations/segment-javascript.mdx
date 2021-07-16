@@ -3,9 +3,17 @@ layout: 'guide'
 title: 'Use Segment in JavaScript'
 ---
 
+Segment destination allows both automatic and custom SDK management
+
+- Learn more about automatic SDK management <Link passHref href="/implementation/destinations/managed-destinations"><a>here</a></Link>
+
+- Learn more about manual SDK management with <Link passHref href="/implementation/start-cutstom-destination"><a>custom destinations</a></Link>
+
+#### Custom destinations code snippets
+
 Custom destination to send data from JavaScript to Segment
 
-### Web and React Native
+##### Web
 
 ```javascript
 import Avo from './Avo';
@@ -14,7 +22,7 @@ var customDestination = {
   make: function (env) {
     // called at the end of the initAvo call
     // You should initialize your analytics destination here, if you have not done it before
-    analytics.load(env === "prod" ? prodApiKey : devApiKey, options);
+    analytics.load(env === "prod" ? prodApiKey : devApiKey);
   },
   logEvent: function (eventName, eventProperties) {
     // called when you invoke Avo functions with the Log Event action
@@ -38,25 +46,65 @@ var customDestination = {
   },
   page: function(pageName, eventProperties) {
     // called when you invoke Avo functions with the Log Page View action
-    analytics.page(eventName, eventProperties);
+    analytics.page(pageName, eventProperties);
   }
 };
 
 Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
 ```
 
-### Node
+##### React Native
+
+```javascript
+import Avo from './Avo';
+// An object representing your custom destination that you pass into initAvo()
+var customDestination = {
+  make: function (env) {
+    // called at the end of the initAvo call
+    // You should initialize your analytics destination here, if you have not done it before
+    this.segment = require('@segment/analytics-react-native').default;
+    this.segment.setup(env === AvoEnv.Prod ? prodApiKey : devApiKey);
+  },
+  logEvent: function (eventName, eventProperties) {
+    // called when you invoke Avo functions with the Log Event action
+    this.segment.track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    // called when you invoke Avo functions with the Update User Propreties action
+    this.segment.identify(userId, userProperties);
+  },
+  identify: function (userId) {
+    // called when you invoke Avo functions with the Identify User action
+    this.segment.identify(userId);
+  },
+  unidentify: function () {
+    // called when you invoke Avo functions with the Unidentify User action
+    this.segment.reset();
+  },
+  page: function(pageName, eventProperties) {
+    // called when you invoke Avo functions with the Log Page View action
+    this.segment.screen(pageName, eventProperties);
+  }
+};
+
+Avo.initAvo({ env: "dev" }, {}, {}, customDestination);
+```
+
+##### Node
 
 ```javascript
 const Avo = require('./src/Avo').default;
 // An object representing your custom destination that you pass into initAvo()
 var customDestination = {
   make: function(env) {
-     var Segment = require('analytics-node');
+    // called at the end of the initAvo call
+    // You should initialize your analytics destination here, if you have not done it before
+    var Segment = require('analytics-node');
     var options = options || {"flushAt": 1};
     this.segment = new Segment(apiKey, options);
   },
   logEvent: async function(anonymousId, userId, eventName, eventProperties) {
+    // called when you invoke Avo functions with the Log Event action
     var segment = this.segment;
     return new Promise(function(resolve, reject) {
       segment.track({
@@ -75,6 +123,7 @@ var customDestination = {
     });
   },
   setUserProperties: async function(anonymousId, userId, userProperties) {
+    // called when you invoke Avo functions with the Update User Propreties action
     var segment = this.segment;
     return new Promise(function(resolve, reject) {
       segment.identify({
