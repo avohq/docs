@@ -19,7 +19,7 @@ Avo can manage a limited set of Analytics destination, but you can use **any** e
 
 If you choose Avo to manage your destination, you'll still have to include the SDK into your application, but the initialization of the library and all event actions: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View, will be handled by the generated code, so you don't need to think about that.
 
-- Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specofoed environment when you initialize Avo
+- Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specified environment when you initialize Avo
 - Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call
 - Avo will call the user properties method of the analytics SDK (e.g. `identify(userId, userProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Update User Properties` action is called and will include the user properties in the call
 - Avo will call the identify method of the analytics SDK (e.g. `identify(userId)` in the Segment SDK) when an Avo Function corresponding to an event with `Identify User` action is called
