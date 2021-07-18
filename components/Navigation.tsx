@@ -66,6 +66,11 @@ const navigation: navigationItem[] = [
     subroutes: [
       {
         type: 'route',
+        title: 'What is tracking plan audit?',
+        path: '/audit/index',
+      },
+      {
+        type: 'route',
         title: 'Quickstart: Audit in 5 minutes',
         path: '/audit/quickstart',
       },
