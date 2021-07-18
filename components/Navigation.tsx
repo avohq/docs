@@ -71,7 +71,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Quickstart: Audit in 5 minutes',
+        title: 'Quickstart: Get your first audit',
         path: '/audit/quickstart',
       },
       {
