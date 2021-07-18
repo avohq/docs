@@ -126,11 +126,6 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Tracking plan validation',
-            path: '/workspace/tracking-plan/issue-reporter',
-          },
-          {
-            type: 'route',
             title: 'Implementation status',
             path: '/workspace/tracking-plan/implementation-status',
           },
