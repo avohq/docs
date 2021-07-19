@@ -1,0 +1,187 @@
+---
+layout: 'guide'
+title: 'Python'
+---
+
+import Link from '../../../components/Link';
+
+### Platforms
+
+Avo can generate Python code for your server side tracking.
+Avo supports Python 2 and Python 3.
+
+### Quickstart
+
+Avo functions usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Python file you must be a member of an Avo workspace with a Python source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli"><a>the CLI here</a></Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually"><a>download the file manually</a></Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file and initialize it by calling the `init_avo` method before tracking
+
+```python
+import avo
+
+avo.init_avo({'env': 'dev'}, [system_properties], [custom_destination])
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/python#init_avo"><a>the reference below</a></Link>.
+
+#### Step 3. Call Avo functions to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in snake_case.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={require('../../../images/signup-start-ui.png')}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Avo check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```python
+avo.signup_start(referral = 'direct')
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace to verify that your implementation is correct.
+
+### Reference
+
+#### init_avo
+
+```python
+avo.init_avo(options, [system_properties], [mixpanel_object], [custom_destination])
+```
+
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env)` callback in the provided custom destinations.
+
+##### Arguments
+
+`options (dict)`: a dictionary with env (one of: 'dev', 'prod'), strict bool, verbose bool, noop bool
+
+- `env`: string, one of 'dev' or 'prod'.
+- `[noop = false]`: bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+- `[strict = true]`: bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+- `[verbose = true]`: bool, if set and strict is false, will print the error messages to console.
+
+`system_properties (dict)`: a dictionary containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
+
+`[mixpanel_object (object)]`: if you have set up a Mixpanel destination for this source, an instance of the <a href="https://developer.mixpanel.com/docs/python">Mixpanel library object</a>.
+
+`[custom_destination (object)]`: if you have set up a custom destination for this source, an object with callbacks for the custom destination.
+
+Custom destination object format:
+
+```python
+class CustomDestination(object):
+    def __init__(self):
+        self.env = None
+
+    def make(self, env):
+        pass
+
+    def track_event(self, user_id, event_name, event_properties):
+        pass
+
+    def set_user_properties(self, user_id, user_properties):
+        pass
+```
+
+Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+
+[//]: # 'TODO: Find examples of Python custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
+
+#### set_system_properties
+
+```python
+avo.set_system_properties(system_props)
+```
+
+A method to update system properties.
+
+##### Arguments
+
+`system_props (dict)`: a dictionary containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types.
+
+#### Event tracking functions
+
+```pyhton
+avo.your_event_name([event_property_0], [event_property_1], ..., [user_property_0], [user_property_1], ..., [user_Id_], [anonymous_id_] })
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in snake_case. The arguments of the function depend on how it's defined in your tracking plan.
+
+##### Arguments
+
+`event_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any. The argument key is snake_case version of the property name defined in the Avo UI.
+This is an event property that should be tracked with given event. Pass the value of the property to track here.
+
+`user_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any. The argument key is snake_case version of the property name defined in the Avo UI.
+This is a user property that should be updated with given event. Pass the value of the property to update here.
+
+`userId_`: string
+added to all events, used to connect event to specific user, you have to either provide it or the `anonymousId_`
+
+`anonymousId_`: string, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
+
+### Destinations
+
+You can send your data using the Avo generated JavaScript code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- Rudderstack
+- Freshpaint
+- Posthog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API
