@@ -61,6 +61,27 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Tracking Plan Audit',
+    iconName: 'health',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'What is tracking plan audit?',
+        path: '/audit/index',
+      },
+      {
+        type: 'route',
+        title: 'Quickstart: Get your first audit',
+        path: '/audit/quickstart',
+      },
+      {
+        type: 'route',
+        title: 'Audit rules',
+        path: '/audit/rules',
+      },
+    ],
+  },
+  {
     title: 'Your Avo Workspace',
     iconName: 'toolbox',
     subroutes: [
@@ -107,11 +128,6 @@ const navigation: navigationItem[] = [
             type: 'route',
             title: 'Publishing',
             path: '/workspace/tracking-plan/publishing',
-          },
-          {
-            type: 'route',
-            title: 'Tracking plan validation',
-            path: '/workspace/tracking-plan/issue-reporter',
           },
           {
             type: 'route',
@@ -640,6 +656,10 @@ function locateIcon(item: navigationItem) {
     }
     case 'tracking-plan': {
       icon = require('../images/tracking-plan-icon.svg');
+      break;
+    }
+    case 'health': {
+      icon = require('../images/audit/health.svg');
       break;
     }
     default: {
