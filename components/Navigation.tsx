@@ -448,6 +448,22 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Integrations',
+    iconName: 'tracking-plan',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Overview',
+        path: '/integrations/integrations',
+      },
+      {
+        type: 'route',
+        title: 'Segment',
+        path: '/integrations/segment',
+      },
+    ],
+  },
+  {
     title: 'Explore the Tracking Plan',
     iconName: 'tracking-plan',
     subroutes: [
