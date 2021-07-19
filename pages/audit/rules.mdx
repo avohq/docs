@@ -8,7 +8,7 @@ import Link from '../../components/Link';
 
 # Audit rules
 
-Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see <Link passHref href="/audit/quickstart"><a>Quickstart: Audit in 5 minutes</a></Link>.
+Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see <Link passHref href="/audit/quickstart"><a>Quickstart: Get your first audit</a></Link>.
 
 You will recognize the Tracking Plan Audit by the yellow exclamation point next to the Tracking Plan item in the sidebar. It’s meant to help teams follow their naming convention and surface issues like when a type is missing from a property.
 
@@ -31,7 +31,7 @@ Checks if any two event names in the tracking plan conflict with each other. For
 
 ##### How to resolve
 
-Pick the casing that matches the one that is dominant one in your workspace and fix the implementation of those that don't fit your standards. Note that changing your existing tracking might cause issues in downstream tools and metrics. Make sure to discuss with the consumers of the data before making such change.
+Pick the casing that matches the one that is dominant one in your workspace and fix the implementation of those that don't fit your standards. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
 > **Best practice:** Have all event names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.
 
@@ -46,7 +46,7 @@ Checks if the casing of event names in the tracking plan is consistent. For even
 
 ##### How to resolve
 
-Fix the names and implementation of the events that don't fit your standards. Note that this will only be fixed for the data going forward, not historical data. Note that changing your existing tracking might cause issues in downstream tools and metrics. Make sure to discuss with the consumers of the data before making such change.
+Fix the names and implementation of the events that don't fit your standards. Note that this will only be fixed for the data going forward, not historical data. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
 ### All events have description
 
@@ -76,7 +76,7 @@ Checks if any two property names in the tracking plan conflict with each other. 
 
 ##### How to resolve
 
-Pick the casing that matches the one that is dominant one in your workspace and fix the implementation of those that don't fit your standards. Note that changing your existing tracking might cause issues in downstream tools and metrics. Make sure to discuss with the consumers of the data before making such change.
+Pick the casing that matches the one that is dominant one in your workspace and fix the implementation of those that don't fit your standards. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
 > **Best practice:** Have all property names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.
 
@@ -89,7 +89,7 @@ Checks if the casing of property names in the tracking plan is consistent. For p
 
 ##### How to resolve
 
-Fix the names and implementation of the properties that don't fit your standards. Note that this will only be fixed for the data going forward, not historical data. Note that changing your existing tracking might cause issues in downstream tools and metrics. Make sure to discuss with the consumers of the data before making such change.
+Fix the names and implementation of the properties that don't fit your standards. Note that this will only be fixed for the data going forward, not historical data. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
 > **Best practice:** Have all property names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the property name they are looking for, but also the casing of the property name.
 
