@@ -7,7 +7,7 @@ import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can generate JavaScript code targeted at the following platforms
+Avo can code generate Avo Functions in JavaScript targeted at the following platforms
 
 - Web
 - React Native
@@ -95,7 +95,7 @@ Avo.initAvo(
 );
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all custom destinations.
+Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in the provided custom destinations.
 
 ##### Arguments
 
@@ -109,7 +109,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
 
 `systemProperties`: an object where each field represents a system property in your tracking plan.
-When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
 
 `destinationOptions`: `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
@@ -166,28 +166,30 @@ When you define system properties in your Avo workspace you set name and type - 
 #### Event tracking functions
 
 ```javascript
-Avo.yourEventName(properties: { [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ..., [userId_], [anonymousUserId_], [segmentContext_], })
+Avo.yourEventName(properties: { [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ..., [userId_], [anonymousId_], [segmentContext_] })
 ```
 
 Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
 
 ##### Arguments
 
-`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any.
-Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every event property attached to the event in the Avo UI gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
 Pass the value of the property to track here.
 
-`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any.
-Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every user property attached to the event in the Avo UI gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
 Pass the value of the property to update here.
 
-`userId_`: string
+`userId_`: string, used to connect event to specific user
 Web and React Native: Added if the event has the `Identify User` action
-Node.js: added to all events, you have to either provide it or the `anonymousUserId_`
+Node.js: added to all events, you have to either provide it or the `anonymousId_`
 
 ###### Additional arguments
 
-`anonymousUserId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
+`anonymousId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
 
 `segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
 
