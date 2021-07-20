@@ -1,13 +1,13 @@
 ---
 layout: 'guide'
-title: 'Swift'
+title: 'Avo Functions in Swift'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can generate Swift code targeted at the following platforms
+Avo can code generate Avo Functions in Swift targeted at the following platforms
 
 - iOS
 - macOS
@@ -23,7 +23,7 @@ Avo functions usage consists of 4 steps.
 
 ##### Pull the generated code with the Avo CLI
 
-To get the Avo generated Kotlin file you must be a member of an Avo workspace with a Kotlin source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+To get the Avo generated Swift file you must be a member of an Avo workspace with a Swift source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
 
 ```bash
 $ npm install -g avo
@@ -72,7 +72,7 @@ avo.signupStart(referral: "direct")
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct.
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/ios-analytics-debugger">standalone visual debugger</a>.
 
 ### Reference
 
@@ -80,9 +80,10 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 
 ```swift
 init(env: AvoEnv,
+    // Other parameters may not be present, depending on your tracking plan
     systemProprty0: Int, systemProperty1: Bool,
     customDestDestination: AvoCustomDestination,
-    strict: Bool, noop: Bool);
+    strict: Bool, noop: Bool)
 ```
 
 Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all provided custom destinations.
@@ -158,7 +159,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 #### Event tracking functions
 
 ```swift
-avo.yourEventName(eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Bool?, userProperty1: [Int], ..., userId_: String)
+avo.[yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Bool?, userProperty1: [Int], ..., userId_: String)
 ```
 
 Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
@@ -178,7 +179,7 @@ Added if the event has the `Identify User` action
 
 ### Destinations
 
-You can send your data using the Avo generated Kotlin code to any data destination that accepts custom events, including:
+You can send your data using the Avo generated Swift code to any data destination that accepts custom events, including:
 
 - Amplitude
 - FacebookAnalytics
