@@ -1,0 +1,199 @@
+---
+layout: 'guide'
+title: 'Avo Functions in C#'
+---
+
+import Link from '../../../components/Link';
+
+### Platforms
+
+Avo can code generate Avo Functions in C# targeted at the following platforms
+
+- .NET Server
+- Unity
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated C# file you must be a member of an Avo workspace with a C# source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli"><a>the CLI here</a></Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually"><a>download the file manually</a></Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Initialize Avo by creating an object using constructor from the generated Avo file
+
+```csharp
+using Avo;
+
+Avo.Avo avo = new Avo.Avo(Avo.AvoEnv.Dev/*, other parameters depending on your tracking plan setup*/);
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/csharp#constructor"><a>the reference below</a></Link>.
+
+#### Step 3. Call Avo functions to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in PasclaCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={require('../../../images/signup-start-ui.png')}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Avo check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```csharp
+avo.SignupStart(referral = "direct")
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace to verify that your implementation is correct.
+
+### Reference
+
+#### Constructor
+
+```csharp
+public Avo(AvoEnv env,
+    // Other parameters may not be present, depending on your tracking plan
+    int systemProprty0, bool systemProperty1,
+    IDestination customDestDestination,
+    bool strict = true
+)
+```
+
+Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `Make(env)` callback in all custom destinations.
+
+##### Arguments
+
+`AvoEnv env`: Can be set to dev, prod and staging.
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+
+`IDestination customDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
+
+Custom destination interface format:
+
+```csharp
+interface ICustomDestination {
+    void Make(AvoEnv env);
+
+    void LogEvent(string eventName, IDictionary<string, object> eventProperties);
+
+    void SetUserProperties(string userId, IDictionary<string, object> userProperties);
+
+    void Identify(string userId);
+
+    void Unidentify();
+}
+```
+
+Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+
+[//]: # 'TODO Find examples of C# custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
+
+`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+#### setAvoLogger
+
+```csharp
+public static ILogger __LOGGER__ = null;
+```
+
+This filed allows you to provide custom implementation of the logger used by the Avo Functions.
+Can for example be used to disable logs or change which logging method is used.
+
+##### Arguments
+
+`Microsoft.Extensions.Logging.ILogger __LOGGER__`: custom implementation of the logger.
+
+#### setSystemProperties
+
+```csharp
+ public void SetSystemProperties(int systemProprty0, bool systemProperty1, ...)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+
+#### Event tracking functions
+
+```csharp
+public void [YourEventName](int eventProperty0, double? eventProperty1, ..., bool? userProperty0, IList<int> userProperty1, ..., string userId_, string anonymousId_)
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in PascalCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list, object and any`:
+Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to track here.
+
+`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list, object and any`:
+Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to update here.
+
+`userId_: String`: used to connect event to specific user.
+Unity: Added if the event has the `Identify User` action
+.NET: added to all events, you have to either provide it or the `anonymousId_`
+
+###### Additional arguments
+
+`anonymousId_`: string, .NET only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
+
+### Destinations
+
+You can send your data using the Avo generated C# code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- Rudderstack
+- Freshpaint
+- Posthog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API
