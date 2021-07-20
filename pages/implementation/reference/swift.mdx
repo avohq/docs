@@ -1,0 +1,209 @@
+---
+layout: 'guide'
+title: 'Avo Functions in Swift'
+---
+
+import Link from '../../../components/Link';
+
+### Platforms
+
+Avo can code generate Avo Functions in Swift targeted at the following platforms
+
+- iOS
+- macOS
+
+### Quickstart
+
+Avo functions usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Swift file you must be a member of an Avo workspace with a Swift source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli"><a>the CLI here</a></Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually"><a>download the file manually</a></Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Initialize Avo by creating an object using constructor from the generated Avo file
+
+```swift
+val avo = Avo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/swift#constructor"><a>the reference below</a></Link>.
+
+#### Step 3. Call Avo functions to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={require('../../../images/signup-start-ui.png')}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Avo check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```swift
+avo.signupStart(referral: "direct")
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/ios-analytics-debugger">standalone visual debugger</a>.
+
+### Reference
+
+#### Constructor
+
+```swift
+init(env: AvoEnv,
+    // Other parameters may not be present, depending on your tracking plan
+    systemProprty0: Int, systemProperty1: Bool,
+    customDestDestination: AvoCustomDestination,
+    strict: Bool, noop: Bool)
+```
+
+Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all provided custom destinations.
+
+##### Arguments
+
+`env: AvoEnv`: Can be set to dev, prod and staging.
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+
+`customDestination: AvoCustomDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
+
+Custom destination protocol format:
+
+```swift
+public protocol AvoCustomDestination {
+    func make(env: AvoEnv)
+    func logEvent(eventName: String, eventProperties: [String:Any])
+    func setUserProperties(userId: String, userProperties: [String:Any])
+    func identify(userId: String)
+    func unidentify()
+}
+```
+
+Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+
+[//]: # 'TODO Find examples of Swift custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
+
+`strict: Bool`: optional bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+`noop: Bool`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+
+> Note that you do not need to pass the Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>Read more here</a></Link>.
+
+#### avoLogger
+
+```swift
+avo?.avoLogger = MyAvoLogger()
+```
+
+where `MyAvoLogger` conforms to a protocol
+
+```swift
+public protocol AvoLogger {
+    func logDebug(env: AvoEnv, message: String) -> Bool
+    func logWarn(env: AvoEnv, message: String) -> Bool
+    func logError(env: AvoEnv, message: String) -> Bool
+}
+```
+
+Allows you to provide custom implementation of the logger used by the Avo Functions.
+Can for example be used to disable logs or change which logging method is used.
+
+<Link passHref href="/implementation/custom-loggers#swift">
+  <a>Find the code snippet here</a>
+</Link>
+.
+
+#### setSystemProperties
+
+```swift
+avo.setSystemProperties(systemProprty0: Int, systemProperty1: Bool?, ...)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+
+#### Event tracking functions
+
+```swift
+avo.[yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Bool?, userProperty1: [Int], ..., userId_: String)
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list, object and any`:
+Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to track here.
+
+`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list, object and any`:
+Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to update here.
+
+`userId_: String`:
+Added if the event has the `Identify User` action
+
+### Destinations
+
+You can send your data using the Avo generated Swift code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- Rudderstack
+- Freshpaint
+- Posthog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

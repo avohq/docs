@@ -1,0 +1,213 @@
+---
+layout: 'guide'
+title: 'Avo Functions in Kotlin'
+---
+
+import Link from '../../../components/Link';
+
+### Platforms
+
+Avo can code generate Avo Functions in Kotlin targeted at the following platforms
+
+- Android
+- Server is coming soon, for now we recommend using the `Java` generated code for backend JVM projects
+
+> <Link passHref href="/help/troubleshooting">
+>   <a>Reach out</a>
+> </Link> if you want to use Avo Functions in Kotlin server
+
+### Quickstart
+
+Avo functions usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Kotlin file you must be a member of an Avo workspace with a Kotlin source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli"><a>the CLI here</a></Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually"><a>download the file manually</a></Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Initialize Avo by creating an object using constructor from the generated Avo file
+
+```kotlin
+val avo = AvoImpl(env = AvoEnv.DEV/*, other parameters depending on your tracking plan setup*/)
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/kotlin#constructor"><a>the reference below</a></Link>.
+
+#### Step 3. Call Avo functions to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={require('../../../images/signup-start-ui.png')}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Avo check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```kotlin
+avo.signupStart(referral = "direct")
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a>.
+
+### Reference
+
+#### Constructor
+
+```kotlin
+class AvoImpl(env: AvoEnv,
+    // Other parameters may not be present, depending on your tracking plan
+    systemProprty0: int, systemProperty1: bool,
+    customDestDestination: ICustomDestination,
+    avoInspector: Any? = null,
+    strict: Boolean = true,
+    application: Application, context: Context
+)
+```
+
+Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all custom destinations.
+
+##### Arguments
+
+`env: AvoEnv`: Can be set to dev, prod and staging.
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+
+`customDestination: ICustomDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
+
+Custom destination interface format:
+
+```kotlin
+interface ICustomDestination {
+    fun make(env: AvoEnv)
+
+    fun logEvent(eventName: String, eventProperties: Map<String, *>)
+
+    fun logPage(pageName: String, eventProperties: Map<String, *>) {}
+
+    fun setUserProperties(userId: String, userProperties: Map<String, *>)
+
+    fun identify(userId: String)
+
+    fun unidentify()
+}
+```
+
+Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+
+[//]: # 'TODO Find examples of Kotlin custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
+
+`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
+
+`strict: Boolean`: optional bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+###### Additional arguments
+
+`application: Application` and `context: Context` are required by some analytics destinations.
+
+#### setAvoLogger
+
+```kotlin
+avo.setAvoLogger { logMessage: String -> Log.d(this.localClassName, logMessage) }
+```
+
+This method allows you to provide custom implementation of the logger used by the Avo Functions.
+Can for example be used to disable logs or change which logging method is used.
+
+##### Arguments
+
+`avoLogger: (String) -> Unit`: custom implementation of the logger.
+
+#### setSystemProperties
+
+```kotlin
+avo.setSystemProperties(systemProprty0: Int, systemProperty1: Boolean?, ...)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+
+#### Event tracking functions
+
+```kotlin
+avo.[yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Boolean?, userProperty1: List<Int>, ..., userId_: String)
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list, object and any`:
+Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to track here.
+
+`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list, object and any`:
+Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to update here.
+
+`userId_: String`:
+Added if the event has the `Identify User` action
+
+### Destinations
+
+You can send your data using the Avo generated Kotlin code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- Rudderstack
+- Freshpaint
+- Posthog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API
