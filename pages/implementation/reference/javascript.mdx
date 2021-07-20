@@ -1,6 +1,6 @@
 ---
 layout: 'guide'
-title: 'JavaScript'
+title: 'Avo Functions in JavaScript'
 ---
 
 import Link from '../../../components/Link';
@@ -18,8 +18,7 @@ Avo can generate JavaScript code targeted at the following platforms
 Avo functions usage consists of 4 steps.
 
 [//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
-
-[//]: # (TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.)
+[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
 
 #### Step 1. Include the Avo file
 
@@ -44,7 +43,12 @@ Import Avo from the generated file and initialize it by calling the `initAvo` me
 ```javascript
 import Avo from './Avo';
 
-Avo.initAvo({ env: 'dev' }, [systemProperties], [destinationOptions], [customDestDestination]);
+Avo.initAvo(
+  { env: 'dev' },
+  [systemProperties],
+  [destinationOptions],
+  [customDestDestination],
+);
 ```
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/javascript#initavo"><a>the reference below</a></Link>.
@@ -53,7 +57,7 @@ The actual parameters depend on your tracking plan setup, see the parameters exp
 
 Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
 
-[//]: # (TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management")
+[//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
 
 For example, if you have a "Signup Start" event defined like this in Avo:
 
@@ -83,33 +87,40 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 #### initAvo
 
 ```javascript
-Avo.initAvo(options, [systemProperties], [destinationOptions], [customDestination]);
+Avo.initAvo(
+  options,
+  [systemProperties],
+  [destinationOptions],
+  [customDestination],
+);
 ```
 
 Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all custom destinations.
 
 ##### Arguments
 
-  `options`: `{env, [noop], [strict], [avoLogger], [inspector], [mobileDebugger]}`
-  - `env`: string, one of 'dev', 'prod' or 'staging'. 
-  - `[noop = false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production. 
-  - `[strict = false]`: optional bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production. 
-  - `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers#javascript"><a>Find the code snippet here</a></Link>. 
-  - `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector. 
-  - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
+`options`: `{env, [noop], [strict], [avoLogger], [inspector], [mobileDebugger]}`
 
-`systemProperties`: an object where each field represents a system property in your tracking plan. 
+- `env`: string, one of 'dev', 'prod' or 'staging'.
+- `[noop = false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+- `[strict = false]`: optional bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+- `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers#javascript"><a>Find the code snippet here</a></Link>.
+- `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
+- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
+
+`systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
 
 `destinationOptions`: `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
-  - `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
-  - `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
-  - `segmentDestinationName`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
+- `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
+- `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
+- `segmentDestinationName`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
 
 `customDestination`: object, required if given source has a custom destination set up in Avo. Otherwise ignored.
 
 Custom destination object format:
+
 ```javascript
 {
   make: function (env),
@@ -124,15 +135,15 @@ Custom destination object format:
 
 Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
-[//]: # (TODO: Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.)
+[//]: # 'TODO: Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
 #### setAvoLogger
 
 ```javascript
-Avo.setAvoLogger(avoLogger)
+Avo.setAvoLogger(avoLogger);
 ```
 
-This method allows you to provide custom implementation of the logger used by the Avo Functions, same as the `avoLogger` parameter in the `initAvo` call. 
+This method allows you to provide custom implementation of the logger used by the Avo Functions, same as the `avoLogger` parameter in the `initAvo` call.
 Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments
@@ -142,14 +153,14 @@ Can for example be used to disable logs or change which logging method is used.
 #### setSystemProperties
 
 ```javascript
-Avo.setSystemProperties(systemProperties)
+Avo.setSystemProperties(systemProperties);
 ```
 
 A method to update system properties. If you provide undefined values here corresponding properties won't be updated
 
 ##### Arguments
 
-`systemProperties`: an object where each field represents a system property in your tracking plan. 
+`systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
 
 #### Event tracking functions
@@ -158,17 +169,17 @@ When you define system properties in your Avo workspace you set name and type - 
 Avo.yourEventName(properties: { [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ..., [userId_], [anonymousUserId_], [segmentContext_], })
 ```
 
-Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan 
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
 
 ##### Arguments
 
-`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. 
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any.
 Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
-Pass the value of the property to track here. 
+Pass the value of the property to track here.
 
-`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. 
+`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any.
 Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
-Pass the value of the property to update here. 
+Pass the value of the property to update here.
 
 `userId_`: string
 Web and React Native: Added if the event has the `Identify User` action

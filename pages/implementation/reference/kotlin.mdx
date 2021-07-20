@@ -1,16 +1,20 @@
 ---
 layout: 'guide'
-title: 'Kotlin'
+title: 'Avo Functions in Kotlin'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can generate Kotlin code targeted at the following platforms
+Avo can code generate Avo Functions in Kotlin targeted at the following platforms
 
 - Android
 - Server is coming soon, for now we recommend using the `Java` generated code for backend JVM projects
+
+> <Link passHref href="/help/troubleshooting">
+>   <a>Reach out</a>
+> </Link> if you want to use Avo Functions in Kotlin server
 
 ### Quickstart
 
@@ -72,7 +76,7 @@ avo.signupStart(referral = "direct")
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct.
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a>.
 
 ### Reference
 
@@ -80,6 +84,7 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 
 ```kotlin
 class AvoImpl(env: AvoEnv,
+    // Other parameters may not be generated depending on your tracking plan
     systemProprty0: int, systemProperty1: bool,
     customDestDestination: ICustomDestination,
     avoInspector: Any? = null,
@@ -95,7 +100,7 @@ Creates the Avo object that will be used to track. This method will initialize t
 `env: AvoEnv`: Can be set to dev, prod and staging.
 
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
-The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list or any.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
 
 `customDestination: ICustomDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
 
@@ -153,25 +158,25 @@ A method to update system properties after initialization.
 ##### Arguments
 
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
-The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list or any.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
 
 #### Event tracking functions
 
 ```kotlin
-avo.yourEventName(eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Boolean?, userProperty1: List<Int>, ..., userId_: String)
+avo.[yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Boolean?, userProperty1: List<Int>, ..., userId_: String)
 ```
 
-Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan 
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
 
 ##### Arguments
 
-`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list and any`:
+`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list, object and any`:
 Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
-Pass the value of the property to track here. 
+Pass the value of the property to track here.
 
-`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list and any`: 
+`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list, object and any`:
 Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
-Pass the value of the property to update here. 
+Pass the value of the property to update here.
 
 `userId_: String`:
 Added if the event has the `Identify User` action
