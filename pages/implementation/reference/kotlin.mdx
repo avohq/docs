@@ -128,7 +128,7 @@ Read more about custom destinations <Link passHref href="/implementation/start-c
 
 `avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
 
-`strict: Boolean`: optional bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 
 ###### Additional arguments
 
@@ -178,7 +178,7 @@ Pass the value of the property to track here.
 Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
 Pass the value of the property to update here.
 
-`userId_: String`:
+`userId_: String`: used to connect event to specific user.
 Added if the event has the `Identify User` action
 
 ### Destinations
