@@ -60,11 +60,11 @@ Initialize the destination (e.g. SDK) on your own and pass it to the Avo SDK. Th
 
 _Step 1: **Implement a bridge interface** between your existing analytics SDK instance and the Avo Functions._
 
-- This enables you to use the same analytics SDK instance across all tracking calls (using the same session IDs and any other details that your analytics instance keeps track of), so that your users will be identified in the same way across both Avo Functions and your existing analytics implementation.
+- This enables you to use the same analytics SDK instance across all tracking calls (using the same session IDs and any other details that your analytics instance keeps track of), so that your users will be identified in the same way across both the tracking implemented with Avo Functions and your existing analytics implementation.
 - This is a one-time setup per codebase.
 - [See example of a Python -> Segment bridge interface.](../implementation/start-custom-destination#python)
 
-_Step 2: **Initialize Avo and pass in initialized analytics SDK instance**._ 
+_Step 2: **Initialize Avo and pass in the bridge interface**._ 
 - See how you [initialize Avo and send your first event using a custom destination](#3-initialize-avo-and-send-an-event).
 
 
@@ -76,9 +76,9 @@ Avo supports the following analytics destinations out of the box. If your destin
 
 > 💡  **Fully Avo managed destinations are great for:**
 > 
-> Great if you don't have any existing tracking in place for this destination, and particularly for the SDK for this destination.
+> Great if you don't have any existing tracking in place for this destination yet.
 >
-> If you have existing tracking in place using this SDK, you can migrate to fully Avo managed destination as soon as you've deprecated all existing calls to it that don't use Avo Functions.
+> If you have existing tracking in place using this SDK, you can migrate to fully Avo managed destination as soon as you've deprecated all existing calls to it that don't use Avo Functions. Note that such migration is not required if you use a self-managed destination (a custom destination).
 
 #### Configure in your Avo workspace
 
