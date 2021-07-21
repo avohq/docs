@@ -81,9 +81,9 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 ```objc
 + (void)initAvoWithEnv:(AVOEnv)env
   // Other parameters may not be present, depending on your tracking plan
-  systemProprty0:(nullable NSNumber *)requiredStringSystemProperty
-  systemProperty1:(BOOL)optionalStringSystemProperty
-  customDestDestination:(nonnull id<AVOCustomDestination>)customDestDestination
+  systemProperty0:(nullable NSNumber *)systemProperty0
+  systemProperty1:(BOOL)systemProperty1
+  customDestination:(nonnull id<AVOCustomDestination>)customDestination
   strict:(BOOL)strict
   noop:(BOOL)noop;
 ```
@@ -97,7 +97,7 @@ Creates the Avo object that will be used to track. This method will initialize t
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
 
-`(nonnull id<AVOCustomDestination>) customDestDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
+`(nonnull id<AVOCustomDestination>) customDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
 
 Custom destination protocol format:
 
