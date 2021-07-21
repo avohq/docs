@@ -85,8 +85,8 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 ```kotlin
 class AvoImpl(env: AvoEnv,
     // Other parameters may not be present, depending on your tracking plan
-    systemProprty0: int, systemProperty1: bool,
-    customDestDestination: ICustomDestination,
+    systemProperty0: int, systemProperty1: bool,
+    customDestination: ICustomDestination,
     avoInspector: Any? = null,
     strict: Boolean = true,
     application: Application, context: Context
@@ -150,7 +150,7 @@ Can for example be used to disable logs or change which logging method is used.
 #### setSystemProperties
 
 ```kotlin
-avo.setSystemProperties(systemProprty0: Int, systemProperty1: Boolean?, ...)
+avo.setSystemProperties(systemProperty0: Int, systemProperty1: Boolean?, ...)
 ```
 
 A method to update system properties after initialization.

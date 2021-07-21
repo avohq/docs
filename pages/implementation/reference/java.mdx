@@ -74,22 +74,22 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 ```java
 public static void initAvo(AvoEnv env,
     // Other parameters may not be present, depending on your tracking plan
-    Integer systemProprty0, Boolean systemProperty1,
-    ICustomDestination customDestDestination,
+    Integer systemProperty0, Boolean systemProperty1,
+    ICustomDestination customDestination,
     boolean strict = true, boolean noop = false,
     application: Application, context: Context
     );
 ```
 
-There is also an init method that accepts an instance of the Avo Inpsector, use it if you have Avo Inspector set up in your project, so Avo Functions will automatically report invocations to the Avo Inspector.
+There is also an init method that accepts an instance of the Avo Inspector, use it if you have Avo Inspector set up in your project, so Avo Functions will automatically report invocations to the Avo Inspector.
 
 ```java
 public static void initAvoWithInspector(AvoEnv env,
     Object avoInspector,
     // Other parameters may not be present, depending on your tracking plan
     // Same parameters, as in `initAvo`
-    Integer systemProprty0, Boolean systemProperty1,
-    ICustomDestination customDestDestination,
+    Integer systemProperty0, Boolean systemProperty1,
+    ICustomDestination customDestination,
     boolean strict = true, boolean noop = false,
     application: Application, context: Context,
 
@@ -154,7 +154,7 @@ Read more about custom destinations <Link passHref href="/implementation/start-c
 #### setSystemProperties
 
 ```java
-public static void setSystemProperties(Integer systemProprty0, Boolean systemProperty1, ...)
+public static void setSystemProperties(Integer systemProperty0, Boolean systemProperty1, ...)
 ```
 
 A method to update system properties after initialization.
