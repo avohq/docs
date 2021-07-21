@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const withMdxEnhanced = require('next-mdx-enhanced');
 const withImages = require('next-images');
+const withVideos = require('next-videos');
 const childProcess = require('child_process');
+
 
 // const headings = require('remark-autolink-headings');
 const headingIds = require('remark-heading-id');
@@ -31,4 +33,4 @@ const config = {
   },
 };
 
-module.exports = compose(enhanceMdx, withImages)(config);
+module.exports = compose(enhanceMdx, withImages, withVideos)(config);
