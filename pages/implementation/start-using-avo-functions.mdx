@@ -41,16 +41,48 @@ If a source doesn't already exist for your app or website, click "Add Source" to
 
 ### Configure destinations
 
-In Avo there are two options when it comes to destinations:
+In Avo there are two high level options when it comes to destinations. We'll cover the difference and how you can set your destination up in your Avo workspace:
+1. [Option 1: Self-managed analytics SDK instances (custom destination)](#option-1-initialize-self-managed-analytics-sdk-instance)
+2. [Option 2: Fully Avo managed analytics SDK](#option-2-fully-avo-managed-destinations)
+3. [Configure in your Avo workspace](#configure-in-your-avo-workspace)
 
-**Option 1**. Initialize the destination (e.g. SDK) on your own and connect Avo to it. This is what we call a Custom Destination.
+#### Option 1: Initialize self-managed analytics SDK instance (custom destination)
 
-**Option 2**. Let Avo fully manage the destination for you (everything from initializing to passing data into it).
+Initialize the destination (e.g. SDK) on your own and pass it to the Avo SDK. This is what we call a [Custom Destination](../implementation/start-custom-destination).
 
-If you already have an analytics SDK running in our app, it's initialized and already receiving data, you should go with Option 1.
-If you don't have any existing tracking we recommend Option 2.
+> 💡  **Self-managed analytics SDK instances are great for:**
+>
+> A/ If you have _**existing tracking**_ and you intend to use Avo Functions alongside an analytics SDK that's already initialized in your app and receiving data.
+>
+> B/ If you're sending events to your own endpoint.
+>
+> C/ If you want to try the latest analytics tool that Avo doesn't yet officially support. If that happens, [let us know](../help/troubleshooting)!
 
-Head back to the Connections tab and click "Add Destination". To configure a destination:
+_Step 1: **Implement a bridge interface** between your existing analytics SDK instance and the Avo Functions._
+
+- This enables you to use the same analytics SDK instance across all tracking calls (using the same session IDs and any other details that your analytics instance keeps track of), so that your users will be identified in the same way across both the tracking implemented with Avo Functions and your existing analytics implementation.
+- This is a one-time setup per codebase.
+- [See example of a Python -> Segment bridge interface.](../implementation/start-custom-destination#python)
+
+_Step 2: **Initialize Avo and pass in the bridge interface**._ 
+- See how you [initialize Avo and send your first event using a custom destination](#3-initialize-avo-and-send-an-event).
+
+
+#### Option 2: Fully Avo managed destinations
+
+Avo supports a range of analytics destinations out-of-the-box. That means Avo will fully manage the destination for you—everything from initializing to passing data into it.
+
+Avo supports the following analytics destinations out of the box. If your destination is not listed, you can create a custom destination to send events to another analytics provider or your own endpoint.
+
+> 💡  **Fully Avo managed destinations are great for:**
+> 
+> Great if you don't have any existing tracking in place for this destination yet.
+>
+> If you have existing tracking in place using this SDK, you can migrate to fully Avo managed destination as soon as you've deprecated all existing calls to it that don't use Avo Functions. Note that such migration is not required if you use a self-managed destination (a custom destination).
+
+#### Configure in your Avo workspace
+
+Head back to the [Connections tab](../data-design/define-sources-and-destinations) and click "Add Destination". To configure a destination:
 
 1. Give the destination a name, e.g. _My Analytics SDK_
 2. Check the **Analytics Tool** drop down list. If you decided to go with Option 1, choose **Custom**, otherwise choose the name of your analytics tool. If you don't see the tool you need use Option 1.
