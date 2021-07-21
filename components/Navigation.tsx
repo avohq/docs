@@ -403,9 +403,75 @@ const navigation: navigationItem[] = [
         title: 'Avo Functions',
         subroutes: [
           {
-            type: 'route',
+            type: 'group',
             title: 'Programming languages',
-            path: '/implementation/supported-programming-languages',
+            subroutes: [
+              {
+                type: 'route',
+                title: 'Overview',
+                path: '/implementation/supported-programming-languages',
+              },
+              {
+                type: 'route',
+                title: 'JavaScript (Browser, Node.js, React Native)',
+                path: '/implementation/reference/javascript',
+              },
+              {
+                type: 'route',
+                title: 'TypeScript (Browser, Node.js, React Native)',
+                path: '/implementation/reference/typescript',
+              },
+              {
+                type: 'route',
+                title: 'ReasonML (Browser, Node.js, React Native)',
+                path: '/implementation/reference/reasonml',
+              },
+              {
+                type: 'route',
+                title: 'Rescript (Browser, Node.js, React Native)',
+                path: '/implementation/reference/rescript',
+              },
+              {
+                type: 'route',
+                title: 'Kotlin (Android)',
+                path: '/implementation/reference/kotlin',
+              },
+              {
+                type: 'route',
+                title: 'Java (Android, Server)',
+                path: '/implementation/reference/java',
+              },
+              {
+                type: 'route',
+                title: 'Swift (iOS, macOS)',
+                path: '/implementation/reference/swift',
+              },
+              {
+                type: 'route',
+                title: 'Objective-C (iOS)',
+                path: '/implementation/reference/objc',
+              },
+              {
+                type: 'route',
+                title: 'Python',
+                path: '/implementation/reference/python',
+              },
+              {
+                type: 'route',
+                title: 'Ruby',
+                path: '/implementation/reference/ruby',
+              },
+              {
+                type: 'route',
+                title: 'C# (Unity, .NET)',
+                path: '/implementation/reference/csharp',
+              },
+              {
+                type: 'route',
+                title: 'PHP',
+                path: '/implementation/reference/php',
+              },
+            ],
           },
           {
             type: 'route',
