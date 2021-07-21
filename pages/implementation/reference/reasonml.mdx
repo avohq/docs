@@ -1,13 +1,13 @@
 ---
 layout: 'guide'
-title: 'Avo Functions in JavaScript'
+title: 'Avo Functions in ReasonML'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can code generate Avo Functions in JavaScript targeted at the following platforms
+Avo can code generate Avo Functions in ReasonML targeted at the following platforms
 
 - Web
 - React Native
@@ -24,7 +24,7 @@ Avo functions usage consists of 4 steps.
 
 ##### Pull the generated code with the Avo CLI
 
-To get the Avo generated JavaScript file you must be a member of an Avo workspace with a JavaScript source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+To get the Avo generated ReasonML file you must be a member of an Avo workspace with a ReasonML source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
 
 ```bash
 $ npm install -g avo
@@ -40,18 +40,17 @@ You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-fi
 
 Import Avo from the generated file and initialize it by calling the `initAvo` method before tracking
 
-```javascript
-import Avo from './Avo';
-
+```reasonml
 Avo.initAvo(
-  { env: 'dev' },
-  [systemProperties],
-  [destinationOptions],
-  [customDestination],
+  ~env=`dev,
+  ~systemProperties=Avo.AvoSystemProperties.t(),
+  [~destinationOptions=?],
+  [~customDestination=?],
+  ()
 );
 ```
 
-The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/javascript#initavo"><a>the reference below</a></Link>.
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/reasonml#initavo"><a>the reference below</a></Link>.
 
 #### Step 3. Call Avo functions to track your product usage
 
@@ -71,8 +70,8 @@ For example, if you have a "Signup Start" event defined like this in Avo:
 
 You'll be able to call it like this from the generated code
 
-```javascript
-Avo.signupStart({ referral: 'direct' });
+```reasonml
+Avo.signupStart(~referral="direct");
 ```
 
 > Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
@@ -86,87 +85,71 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 
 #### initAvo
 
-```javascript
+```reasonml
 Avo.initAvo(
-  options,
-  [systemProperties],
-  [destinationOptions],
-  [customDestination],
-);
+      ~env: AvoEnv,
+      ~systemProperties: AvoSystemProperties.t,
+      ~webDebugger: bool=true,
+      ~noop: bool=false,
+      [~mobileDebugger: option(mobileDebuggerInstance)=?],
+      [~destinationOptions: option(DestinationOptions.t())=?],
+      [~customDestination: avoCustomDestination],
+      (): unit,
+)
 ```
 
 Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in the provided custom destinations.
 
 ##### Arguments
 
-`options`: `{env, [noop], [strict], [avoLogger], [inspector], [mobileDebugger]}`
-
-- `env`: string, one of 'dev', 'prod' or 'staging'.
-- `[noop = false]`: bool defaulting to false, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
-- `[strict = false]`: bool defaulting to false, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
-- `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers#javascript"><a>Find the code snippet here</a></Link>.
-- `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
+- `env`: AvoEnv, can be set to dev, prod and staging.
+- `systemProperties`: AvoSystemProperties.t, where each field represents a system property in your tracking plan.
+- `webDebugger`: 
+   When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
+- `[noop=false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
 
-`systemProperties`: an object where each field represents a system property in your tracking plan.
-When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
+`destinationOptions`: `[~segmentDestinationName=?], [~anotherSegmentDestinationName=?], [~amplitudeDestinationName=?], [~mixpanelDestinationName=?]`. Keys of this object are the camelCase versions of your destinations in the Avo UI.
 
-`destinationOptions`: `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
+- `mixpanelDestinationName`: optional Js.t, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
+- `amplitudeDestinationName`: optional Js.t, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
+- `segmentDestinationName`: optional Js.t, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
 
-- `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
-- `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
-- `segmentDestinationName`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
+`customDestination`: CustomDestination, required if given source has a custom destination set up in Avo. Otherwise not included.
 
-`customDestination`: object, required if given source has a custom destination set up in Avo. Otherwise ignored.
+Custom destination interface format:
 
-Custom destination object format:
-
-```javascript
+```reasonml
 {
-  make: function (env),
-  logEvent: function (eventName, eventProperties),
-  setUserProperties: function (userId, userProperties),
-  identify: function (userId),
-  unidentify: function (),
-  revenue: function(amount, eventProperties),
-  page: function(pageName, eventProperties)
+  make: (env: avoEnvType) => unit,
+  logEvent: (eventName: string, eventProperties: Js.Json.t) => unit,
+  setUserProperties: (userId: string, userProperties: Js.Json.t) => unit,
+  identify: (userId: string) => unit,
+  unidentify: unit => unit,
 };
 ```
 
 Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
-[//]: # 'TODO Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
-
-#### setAvoLogger
-
-```javascript
-Avo.setAvoLogger(avoLogger);
-```
-
-This method allows you to provide custom implementation of the logger used by the Avo Functions, same as the `avoLogger` parameter in the `initAvo` call.
-Can for example be used to disable logs or change which logging method is used.
-
-##### Arguments
-
-`avoLogger`: custom implementation of the logger. <Link passHref href="/implementation/custom-loggers#javascript"><a>Find the code snippet here</a></Link>.
+[//]: # 'TODO: Find examples of ReasonML custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
 #### setSystemProperties
 
-```javascript
-Avo.setSystemProperties(systemProperties);
+```reasonml
+Avo.setSystemProperties([~systemProperty1=?], [~systemProperty2=?], ..., ());
 ```
 
-A method to update system properties. If you provide undefined values here corresponding properties won't be updated
+A method to update system properties. If you don't provide values here corresponding properties won't be updated
 
 ##### Arguments
 
-`systemProperties`: an object where each field represents a system property in your tracking plan.
+`systemProperties`: a record where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
 
 #### Event tracking functions
 
-```javascript
-Avo.yourEventName(properties: { [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ..., [userId_], [anonymousId_], [segmentContext_] })
+```reasonml
+Avo.yourEventName([~eventProperty0], [~eventProperty1], ..., [~userProperty0], [~userProperty1], ..., [~userId_], [~anonymousId_], [~segmentContext_])
 ```
 
 Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
@@ -191,11 +174,11 @@ Node.js: added to all events, you have to either provide it or the `anonymousId_
 
 `anonymousId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
 
-`segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
+`segmentContext_`: Js.t, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
 
 ### Destinations
 
-You can send your data using the Avo generated JavaScript code to any data destination that accepts custom events, including:
+You can send your data using the Avo generated ReasonML code to any data destination that accepts custom events, including:
 
 - Amplitude
 - FacebookAnalytics
