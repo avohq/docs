@@ -92,7 +92,7 @@ Avo.initAvo(
       ~webDebugger: bool=true,
       ~noop: bool=false,
       [~mobileDebugger: option(mobileDebuggerInstance)=?],
-      [~destinationOptions: option(DestinationOptions.t)=?],
+      [~destinationOptions: option(DestinationOptions.t())=?],
       [~customDestination: avoCustomDestination],
       (): unit,
 )
