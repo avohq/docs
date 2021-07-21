@@ -92,10 +92,14 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Quickstart: Design data in Avo',
+        title: 'Quickstart: Tracking plan in Avo',
+        path: '/data-design/quick-start',
+      },
+      {
+        type: 'route',
+        title: 'Deep dive: Data design in Avo',
         path: '/data-design/start-data-design',
       },
-
       {
         type: 'group',
         title: 'The Avo Tracking Plan',
