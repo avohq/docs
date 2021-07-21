@@ -81,6 +81,15 @@ Where `node` is the root node of the parsed abstract syntax tree. The function s
 
 Take a look at some of the rules in the `util/mdxLint/rules/` directory for inspiration.
 
+## Spelling
+
+To catch spelling errors we rely on `mdspell` to set us straight. CI will use `yarn spellcheck` to check for any errors, as can any dev locally but sometimes `mdspell` will not recognize some of our fancy developer speak. This is where using `yarn fix-spelling` comes in handy to deal with those situations, handily creating ignores for us globally or on page level.
+
+```
+yarn run spellcheck     # Run spellcheck and gather errors
+yarn run fix-spelling   # Run spellcheck and fix errors one by one
+```
+
 ## Search
 
 We're using Algolia's free DocSearch. To update our scraping config send a pull request changing [avo.json](https://github.com/algolia/docsearch-configs/blob/master/configs/avo.json) in the DocSearch config repo. The documentation search index is updated every 24 hours.
