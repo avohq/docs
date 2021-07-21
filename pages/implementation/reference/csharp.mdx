@@ -42,7 +42,7 @@ The actual parameters depend on your tracking plan setup, see the parameters exp
 
 #### Step 3. Call Avo functions to track your product usage
 
-Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in PasclaCase.
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in PascalCase.
 
 [//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
 
@@ -121,7 +121,7 @@ Read more about custom destinations <Link passHref href="/implementation/start-c
 public static ILogger __LOGGER__ = null;
 ```
 
-This filed allows you to provide custom implementation of the logger used by the Avo Functions.
+This field allows you to provide custom implementation of the logger used by the Avo Functions.
 Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments
@@ -151,11 +151,11 @@ Every event you define in your tracking plan in Avo gets a function named after 
 
 ##### Arguments
 
-`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list, object and any`:
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, list, object and any.
 Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
 Pass the value of the property to track here.
 
-`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list, object and any`:
+`userProperty`: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list, object and any.
 Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
 Pass the value of the property to update here.
 
