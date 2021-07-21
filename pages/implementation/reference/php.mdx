@@ -85,7 +85,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 
 ##### Arguments
 
-`options (array)`: an array with env (one of: 'dev', 'prod'), strict bool, verbose bool, logger object, customDestInstance object
+`options (array)`: an array with env (one of: 'dev', 'prod'), strict bool, verbose bool, logger object, customDestinationInstance object
 
 - `env`: string, one of 'dev' or 'prod'.
 - `[strict = TRUE]`: bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
@@ -150,7 +150,7 @@ Every event you define in your tracking plan in Avo gets a function named after 
 Keys are:
 
 - `user_id_`: string, added to all events, used to connect event to specific user
-- snake_case converted event properites names defined in your Avo tracking plan and attached to this event.
+- snake_case converted event properties names defined in your Avo tracking plan and attached to this event.
 - snake_case converted user property names defined in your Avo tracking plan and attached to this event.
 
 ### Destinations
