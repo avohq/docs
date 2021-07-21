@@ -104,7 +104,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 
 - `env`: AvoEnv, can be set to dev, prod and staging.
 - `systemProperties`: AvoSystemProperties.t, where each field represents a system property in your tracking plan.
-- `webDegubber`: 
+- `webDebugger`: 
    When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
 - `[noop=false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
