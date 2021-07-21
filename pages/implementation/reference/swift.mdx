@@ -72,14 +72,14 @@ avo.signupStart(referral: "direct")
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/ios-analytics-debugger">standalone visual debugger</a>.
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/ios"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/ios-analytics-debugger">standalone visual debugger</a>.
 
 ### Reference
 
 #### Constructor
 
 ```swift
-init(env: AvoEnv,
+public init(env: AvoEnv,
     // Other parameters may not be present, depending on your tracking plan
     systemProperty0: Int, systemProperty1: Bool,
     customDestination: AvoCustomDestination,
@@ -113,19 +113,19 @@ Read more about custom destinations <Link passHref href="/implementation/start-c
 
 [//]: # 'TODO Find examples of Swift custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
-`strict: Bool = true`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+`strict: Bool = true`: bool, default value is `true`, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 
-`noop: Bool = false`: bool, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+`noop: Bool = false`: bool, default value is `false`, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 
 > Note that you do not need to pass the Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>Read more here</a></Link>.
 
 #### avoLogger
 
 ```swift
-avo?.avoLogger = MyAvoLogger()
+var avoLogger: AvoLogger
 ```
 
-where `MyAvoLogger` conforms to a protocol
+where `avoLogger` conforms to a protocol
 
 ```swift
 public protocol AvoLogger {
@@ -146,7 +146,7 @@ Can for example be used to disable logs or change which logging method is used.
 #### setSystemProperties
 
 ```swift
-avo.setSystemProperties(systemProperty0: Int, systemProperty1: Bool?, ...)
+public func setSystemProperties(systemProperty0: Int, systemProperty1: Bool?, ...)
 ```
 
 A method to update system properties after initialization.
@@ -159,7 +159,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 #### Event tracking functions
 
 ```swift
-avo.[yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Bool?, userProperty1: [Int], ..., userId_: String)
+public func [yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Bool?, userProperty1: [Int], ..., userId_: String)
 ```
 
 Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
