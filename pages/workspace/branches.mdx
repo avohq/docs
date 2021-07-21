@@ -3,6 +3,7 @@ layout: 'guide'
 title: 'Branches'
 abstract: 'Seamlessly work together on multiple fronts using branches'
 ---
+
 import Link from '../../components/Link';
 
 ## What are branches?
@@ -16,27 +17,33 @@ We highly recommend always creating a branch first before making changes to the 
 To create a new branch, first make sure you are on the main branch. Then click the icon with the plus sign next to where it says `main`.
 
 <center>
-  <img
+  <video
+    controls
+    loop
+    muted
     width="100%"
-    src={require('../../images/best-practices/day-to-day-workflow/open-branch.gif')}
+    autoPlay
+    src={require('../../images/best-practices/day-to-day-workflow/open-branch.mp4')}
     alt="Opening a branch"
   />
 </center>
 
-
 ## Design data on an Avo branch
 
 Read more about <Link passHref href="/data-design/start-data-design"><a>Designing data in Avo</a></Link>.
-
 
 ## Compare branch changes to main branch
 
 To compare the changes drafted on a branch to the source of truth on the main branch, go click the review changes button located under your branch name. There you can see which events or properties were added, deleted or updated.
 
 <center>
-  <img
+  <video
+    controls
+    loop
+    muted
     width="100%"
-    src={require('../../images/workspace/tracking-plan/review_branch.gif')}
+    autoPlay
+    src={require('../../images/workspace/tracking-plan/review_branch.mp4')}
     alt="Opening a branch"
   />
 </center>
@@ -44,7 +51,7 @@ To compare the changes drafted on a branch to the source of truth on the main br
 ## Share the implementation instructions
 
 While the diff view is handy for understanding the changes done in the tracking plan, it’s not very convenient for implementation.  
-For implementation we divide the changes per source and then group them by events, so developers can pick their platform and implement events once by one.  
+For implementation we divide the changes per source and then group them by events, so developers can pick their platform and implement events once by one.
 
 If your branch includes changes on at least one source then the implementation instructions will be available on the diff screen
 
@@ -86,9 +93,10 @@ We recommend setting up branches that have isolated changes that can be opened, 
 
 Like in git, we recommend against creating big branches with a backlog of events and properties to be implemented. We'd rather recommend splitting them in to manageable chunks that will be implemented together in a single git branch.
 
-## Protected main branch 
+## Protected main branch
 
 To make sure no one accidentally makes changes directly on the main branch and encourage peer review, you can opt in to protecting the main branch. That means:
+
 - Only admins can make changes directly on the main branch
 - Only admins can merge branches that haven't been approved by a collaborator
 
@@ -110,7 +118,6 @@ Avo is designed for multiple codebases working together on a single tracking pla
 
 Read more about how to <Link passHref href="/data-design/multiple-sources-on-avo-branches"><a>manage branches with multiple sources</a></Link> to keep your Avo main branch in sync with your git main branch.
 
-
 ## What's next?
 
-Now when you know how to use branches it's time to <Link passHref href="/workspace/members"><a>invite coworkers</a></Link>. 
+Now when you know how to use branches it's time to <Link passHref href="/workspace/members"><a>invite coworkers</a></Link>.
