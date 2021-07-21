@@ -1,0 +1,116 @@
+---
+layout: 'guide'
+title: 'Quickstart: Tracking Plan in Avo'
+---
+
+import Link from '../../components/Link';
+
+Managing a tracking plan is hard. You have to make sure it's kept up to date to what is actually being tracked, make sure existing events and properties are reused where relevant, make sure new events and properties match with the naming conventions you have in place, communicating changes and collect feedback from the team, share implementation instructions with developers, and so on.
+
+If you relate to any of the challenges mentioned above you might want to consider switching your tracking plan over to Avo.
+
+The Avo Tracking Plan is a collaborative web app that will make managing your tracking plan less of a headache, with features like <Link passHref href="/audit/index">Tracking Plan audit</Link> to ensure naming conventions are followed, <Link passHref href="/data-design/global-namespace">global event and property namespace</Link> to ensure consistency across your events and properties, <Link passHref href="/workspace/branches">branched collaboration</Link> with <Link passHref href="/workspace/branches#protected-main-branch">approval workflows</Link> and <Link passHref href="/workspace/branches#share-the-implementation-instructions">auto generated implementation instructions</Link>, <Link passHref href="/workspace/integrations#slack">Slack integration</Link> to keep your team in the loop, <Link passHref href="/workspace/tracking-plan/publishing">auto publishing</Link> to keep your downstream schemas in sync, and more!
+
+When you have your tracking plan defined in Avo you can check out our <Link passHref href="/implementation/avo-functions-overview">code generated, type-safe, functions</Link> for developers to increase tracking implementation speed and reliability, and tracking observability with the <Link passHref href="/data-design/start-using-inspector">Inspector</Link> so you know how your _actual_ tracking compares to the tracking plan.
+
+In this guide we'll walk through the process of setting up your tracking plan in Avo, suggesting your first changes on a branch, inviting a team member and asking for a review. If you're looking for a deeper dive into the tracking plan design capabilites of the Avo Tracking Plan, check out our <Link passHref href="/data-design/start-data-design"><a>deep dive guide on data design in Avo</a></Link>.
+
+### Step 1: Create an Avo workspace
+
+Head to our <a href="https://avo.app/onboarding" target="_blank">onboarding flow</a> and setup a new workspace.
+
+> If you already have an Avo workspace, you can skip this step.
+
+### Step 2: Import your existing tracking plan
+
+If you have an existing tracking plan that you want to import, you can do so by clicking the **Import** button in the workspace's settings.
+<br/>
+<center>
+  <img
+    src={require('../../images/audit/import-button.png')}
+    alt="Import button in Avo workspace"
+    width="450"
+  />
+</center>
+<br/>
+<br/>
+
+You can import a tracking plan from any of the following sources: Excel or Google Sheets (.csv), Mixpanel Lexicon or Amplitude Govern. Learn more about the available import formats in the <Link passHref href="/workspace/tracking-plan/importing" passHref><a>importing docs</a></Link>. If you have your tracking plan on a format that's currently not supported by the tracking plan importer, <Link passHref href="/workspace/tracking-plan/importing" passHref><a>reach out</a></Link> to us and we'll import it for you.
+
+> If you don't have an existing tracking plan, or if you just want to start fresh, you can skip this step. No worries, you can always import your existing tracking plan later.
+
+### Step 3: Create a new branch and start making changes
+
+If you are making changes to your tracking plan in Avo, we always recommend creating a branch first – no matter how small your change might be. That allows you to make suggestions in isolation from the source of truth on your main branch and get feedback from your team.
+
+Open a new branch by clicking the three line icon beside where it says "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
+
+<center>
+<img
+  src={require('../../images/best-practices/getting-started-to-design-data/opening-a-branch.gif')}
+  alt="Opening a branch"
+  width="450"
+/>
+</center>
+<br />
+<br />
+
+When you've created the branch, navigate to the *Events* tab in the tracking plan and create a new event by clicking the *+ Add Event* button.
+
+<center>
+<img
+  src={require('../../images/best-practices/getting-started-to-design-data/create-event.gif')}
+  alt="Creating a new event"
+  width="450"
+/>
+</center>
+
+### Step 4: Invite a colleague and ask them for a review
+
+Now we're ready to share our suggestions with our team, and ask them for input. Go to your workspace settings and invite a team member. Workspace members can be one of admin, editor, comment only or view only. To learn more about members and roles, check out our <Link passHref href="/workspace/members">members docs</Link>.
+
+<center>
+<img
+  width="450"
+  src={require('../../images/workspace/members/accessMembers.png')}
+  alt="Accessing workspace settings"
+/>
+</center>
+
+<br />
+<br />
+
+To review the changes you've made on your branch, click the *View changes* button in the workspace sidebar. There you can see all changes made to the tracking plan on this branch.
+
+<center>
+  <img
+    width="450"
+    src={require('../../images/workspace/tracking-plan/review_branch.gif')}
+    alt="Opening a branch"
+  />
+</center>
+
+When you're colleague has joined the workspace you can add them as a collaborator on the branch. Branch collaborators will be notified on any discussions on the branch, and also when the branch is ready for review, approved or merged.
+
+<center>
+  <img
+    width="450"
+    src={require('../../images/add-collaborator.png')}
+    alt="Adding a branch collaborator"
+  />
+</center>
+
+Branch collaborators can review all changes made on the branch, give feedback and approve the branch.
+
+<center>
+  <img
+    width="450"
+    src={require('../../images/branch-review.png')}
+    alt="Approving a branch"
+  />
+</center>
+
+
+## What's next?
+
+Now you know how to open a branch in Avo, suggest changes and ask for review from your team. To get even better idea of how to maintain your tracking plan in Avo, check out the <Link passHref href="/data-design/start-data-design"><a>deep dive guide on data design in Avo</a></Link>.
