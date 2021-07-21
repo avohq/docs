@@ -1,0 +1,185 @@
+---
+layout: 'guide'
+title: 'Avo Functions in PHP'
+---
+
+import Link from '../../../components/Link';
+
+### Platforms
+
+Avo can code generate Avo Functions in PHP for your server side tracking.
+
+### Quickstart
+
+Avo functions usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated PHP file you must be a member of an Avo workspace with a PHP source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli"><a>the CLI here</a></Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually"><a>download the file manually</a></Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file and initialize it by calling the `init_avo` method before tracking
+
+```PHP
+require_once 'avo.php';
+
+Avo::init_avo(array("env" => "dev" /*, other parameters depending on your tracking plan setup*/), [$system_properties]);
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/php#init_avo"><a>the reference below</a></Link>.
+
+#### Step 3. Call Avo functions to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in snake_case.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={require('../../../images/signup-start-ui.png')}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Avo check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```PHP
+Avo::signup_start(array('referral' => 'direct'));
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `set_system_properties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace to verify that your implementation is correct.
+
+### Reference
+
+#### init_avo
+
+```php
+public static function init_avo($options, $systemProperties)
+```
+
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env)` callback in the provided custom destinations.
+
+##### Arguments
+
+`options (array)`: an array with env (one of: 'dev', 'prod'), strict bool, verbose bool, logger object, customDestInstance object
+
+- `env`: string, one of 'dev' or 'prod'.
+- `[strict = TRUE]`: bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+- `[verbose = TRUE]`: bool, if set and strict is false, will print the error messages to console.
+- `[logger]`: optional custom implementation of the logger, following the `\Psr\Log\LoggerInterface` format. Can be used to disable logs.
+
+Custom logger interface:
+
+```PHP
+interface LoggerInterface
+{
+    public function emergency($message, array $context = array());
+    public function alert($message, array $context = array());
+    public function critical($message, array $context = array());
+    public function error($message, array $context = array());
+    public function warning($message, array $context = array());
+    public function notice($message, array $context = array());
+    public function info($message, array $context = array());
+    public function debug($message, array $context = array());
+    public function log($level, $message, array $context = array());
+}
+```
+
+- `[custom_dest_instance]`: object, required if given source has a custom destination set up in Avo. Otherwise ignored.
+
+Custom destination interface:
+
+```PHP
+interface CustomDestination
+{
+    function make($env);
+    function log_event($user_id, $name, $event_properties);
+    function set_user_properties($user_id, $user_properties);
+}
+```
+
+#### set_system_properties
+
+```PHP
+public static function set_system_properties($system_props)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`system_props (array)`: an array containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types.
+
+#### Event tracking functions
+
+```PHP
+public static function [your_event_name]($properties = [])
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in snake_case. The arguments of the function depend on how it's defined in your tracking plan.
+
+##### Arguments
+
+`properties`: an associated array of properties, defined in your Avo tracking plan.
+
+Keys are:
+
+- `user_id_`: string, added to all events, used to connect event to specific user
+- snake_case converted event properites names defined in your Avo tracking plan and attached to this event.
+- snake_case converted user property names defined in your Avo tracking plan and attached to this event.
+
+### Destinations
+
+You can send your data using the Avo generated PHP code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- Rudderstack
+- Freshpaint
+- Posthog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API
