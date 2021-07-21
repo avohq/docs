@@ -137,7 +137,7 @@ Read more about custom destinations <Link passHref href="/implementation/start-c
 #### setAvoLogger
 
 ```kotlin
-avo.setAvoLogger { logMessage: String -> Log.d(this.localClassName, logMessage) }
+fun setAvoLogger(logger: (String) -> Unit)
 ```
 
 This method allows you to provide custom implementation of the logger used by the Avo Functions.
@@ -145,12 +145,12 @@ Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments
 
-`avoLogger: (String) -> Unit`: custom implementation of the logger.
+`avoLogger: (String) -> Unit`: custom implementation of the logger, e.g. `{ logMessage: String -> Log.d(this.localClassName, logMessage) }`
 
 #### setSystemProperties
 
 ```kotlin
-avo.setSystemProperties(systemProperty0: Int, systemProperty1: Boolean?, ...)
+fun setSystemProperties(systemProperty0: Int, systemProperty1: Boolean?, ...)
 ```
 
 A method to update system properties after initialization.
@@ -163,7 +163,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 #### Event tracking functions
 
 ```kotlin
-avo.[yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Boolean?, userProperty1: List<Int>, ..., userId_: String)
+fun [yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Boolean?, userProperty1: List<Int>, ..., userId_: String)
 ```
 
 Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
