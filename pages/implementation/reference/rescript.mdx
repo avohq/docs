@@ -1,0 +1,208 @@
+---
+layout: 'guide'
+title: 'Avo Functions in Rescript'
+---
+
+import Link from '../../../components/Link';
+
+### Platforms
+
+Avo can code generate Avo Functions in Rescript targeted at the following platforms
+
+- Web
+- React Native
+- Node.js
+
+### Quickstart
+
+Avo functions usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Rescript file you must be a member of an Avo workspace with a Rescript source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli"><a>the CLI here</a></Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually"><a>download the file manually</a></Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file and initialize it by calling the `initAvo` method before tracking
+
+```rescript
+Avo.initAvo(
+  ~env=#dev,
+  ~systemProperties=Avo.AvoSystemProperties.t(),
+  [~destinationOptions=?],
+  [~customDestination=?],
+  ()
+);
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/rescript#initavo"><a>the reference below</a></Link>.
+
+#### Step 3. Call Avo functions to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Avo" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={require('../../../images/signup-start-ui.png')}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Avo check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```rescript
+Avo.signupStart(~referral="direct");
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers"><a>visual debuggers</a></Link> to verify that your implementation is correct.
+
+### Reference
+
+#### initAvo
+
+```rescript
+Avo.initAvo(
+      ~env: AvoEnv,
+      ~systemProperties: AvoSystemProperties.t,
+      ~webDebugger: bool=true,
+      ~noop: bool=false,
+      [~mobileDebugger: option(mobileDebuggerInstance)=?],
+      [~destinationOptions: option(DestinationOptions.t)=?],
+      [~customDestination: avoCustomDestination],
+      (): unit,
+)
+```
+
+Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in the provided custom destinations.
+
+##### Arguments
+
+- `env`: AvoEnv, can be set to dev, prod and staging.
+- `systemProperties`: AvoSystemProperties.t, where each field represents a system property in your tracking plan.
+- `webDegubber`: 
+   When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
+- `[noop=false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
+
+`destinationOptions`: `[~segmentDestinationName=?], [~anotherSegmentDestinationName=?], [~amplitudeDestinationName=?], [~mixpanelDestinationName=?]`. Keys of this object are the camelCase versions of your destinations in the Avo UI.
+
+- `mixpanelDestinationName`: optional Js.t, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
+- `amplitudeDestinationName`: optional Js.t, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
+- `segmentDestinationName`: optional Js.t, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
+
+`customDestination`: CustomDestination, required if given source has a custom destination set up in Avo. Otherwise not included.
+
+Custom destination interface format:
+
+```rescript
+{
+  make: (env: avoEnvType) => unit,
+  logEvent: (eventName: string, eventProperties: Js.Json.t) => unit,
+  setUserProperties: (userId: string, userProperties: Js.Json.t) => unit,
+  identify: (userId: string) => unit,
+  unidentify: unit => unit,
+};
+```
+
+Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+
+[//]: # 'TODO: Find examples of Rescript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
+
+#### setSystemProperties
+
+```rescript
+Avo.setSystemProperties([~systemProperty1=?], [~systemProperty2=?], ..., ());
+```
+
+A method to update system properties. If you don't provide values here corresponding properties won't be updated
+
+##### Arguments
+
+`systemProperties`: a record where each field represents a system property in your tracking plan.
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
+
+#### Event tracking functions
+
+```rescript
+Avo.yourEventName([~eventProperty0], [~eventProperty1], ..., [~userProperty0], [~userProperty1], ..., [~userId_], [~anonymousId_], [~segmentContext_])
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every event property attached to the event in the Avo UI gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
+Pass the value of the property to track here.
+
+`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every user property attached to the event in the Avo UI gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
+Pass the value of the property to update here.
+
+`userId_`: string, used to connect event to specific user
+Web and React Native: Added if the event has the `Identify User` action
+Node.js: added to all events, you have to either provide it or the `anonymousId_`
+
+###### Additional arguments
+
+`anonymousId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
+
+`segmentContext_`: Js.t, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
+
+### Destinations
+
+You can send your data using the Avo generated Rescript code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- Rudderstack
+- Freshpaint
+- Posthog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API
