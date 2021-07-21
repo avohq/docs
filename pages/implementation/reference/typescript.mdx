@@ -113,7 +113,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 
 - `env`: AvoEnv, can be set to dev, prod and staging.
 - `[webDebugger]: optional bool, for optional Avo Web Debugger instance
-- `[strict = false]`: bool defaulting to false, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+- `[strict = true]`: bool defaulting to true, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 - `[noop = false]`: bool defaulting to false, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 - `[reportFailureAs]: optional, can be set to error, warn and log. Decides the log level of reports for failures.
 - `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
