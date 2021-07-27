@@ -13,6 +13,7 @@ import Link from '../../../components/Link';
     alt="Avo Publishing"
 />
 
+
 </p>
 
 
@@ -214,17 +215,26 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 
 #### Rules Model
 
-| Attribute  | Type          | Description         |
-| :--------- | :------------ | :------------------ |
-| properties | PropertyRules | Property JSON rules |
+| Attribute    | Type                | Description                           |
+| :----------- | :------------------ | :------------------------------------ |
+| properties   | array(PropertyRule) | Property JSON rules                   |
+| nameMappings | array(NameMapping)  | Name mappings defined for given event |
 
 #### PropertyRule Model
 
-| Attribute   | Type          | Description          |
-| :---------- | :------------ | :------------------- |
-| description | string        | Property description |
-| type        | string        | Property type        |
-| ?enum       | array(string) | Allowed enum values  |
+| Attribute    | Type               | Description                              |
+| :----------- | :----------------- | :--------------------------------------- |
+| description  | string             | Property description                     |
+| type         | string             | Property type                            |
+| nameMappings | array(NameMapping) | Name mappings defined for given property |
+| ?enum        | array(string)      | Allowed enum values                      |
+
+#### NameMapping Model
+
+| Attribute     | Type   | Description                                                                                                                               |
+| :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| name          | string | New mapped name                                                                                                                           |
+| destinationId | string | Either a destination id for which this property mapping applies, or "all", meaning that this property mapping applies to all destinations |
 
 #### Metric Model
 
@@ -261,13 +271,13 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 
 #### Source Model
 
-| Attribute           | Type          | Description                                                   |
-| :------------------ | :------------ | :------------------------------------------------------------ |
-| id                  | string        | Source id                                                     |
-| name                | string        | Source name                                                   |
-| programmingLanguage | string        | Name of programming language (e.g. "JavaScript", "Python")    |
-| developmentPlatform | string        | Name of development platform (e.g. "Web", "Android") |
-| destinations        | array(string) | Destination ids where this source sends data to               |
+| Attribute           | Type          | Description                                                |
+| :------------------ | :------------ | :--------------------------------------------------------- |
+| id                  | string        | Source id                                                  |
+| name                | string        | Source name                                                |
+| programmingLanguage | string        | Name of programming language (e.g. "JavaScript", "Python") |
+| developmentPlatform | string        | Name of development platform (e.g. "Web", "Android")       |
+| destinations        | array(string) | Destination ids where this source sends data to            |
 
 #### Destination Model
 
@@ -293,7 +303,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 | :-------------- | :--------------- | :---------------------------------------------------------------------------------------- |
 | branchId        | id               | Branch id                                                                                 |
 | branchName      | string           | Branch name                                                                               |
-| integrationId   | string           | Id of the publish integration (consistently the same for this integration)                 |
+| integrationId   | string           | Id of the publish integration (consistently the same for this integration)                |
 | integrationName | string           | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName' |
 | publishDate     | Date string      | Timestamp when the webhook was triggered                                                  |
 | publishMethod   | { "type": type } | Description of the publish method, type can be "Manual" and "BranchMerge"                 |
