@@ -34,7 +34,8 @@ You can examine and download the exact JSON in the Publishing tab of your [Avo w
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
         "required": [
-          "properties"
+          "properties",
+          "nameMapping"
         ],
         "properties": {
           "properties": {
@@ -43,7 +44,13 @@ You can examine and download the exact JSON in the Publishing tab of your [Avo w
               "Property Name 1": {
                 "id": "_",
                 "description": "Describes from where the debugger was started.",
-                "type": "string"
+                "type": "string",
+                "nameMapping": [
+                  {
+                    "name": "Mapped Property Name",
+                    "destinationId": "all" | "anotherDestinationId"
+                  }
+                ]
               },
               "Property Name 2": {
                 "id": "_",
@@ -61,7 +68,13 @@ You can examine and download the exact JSON in the Publishing tab of your [Avo w
               "Property Name 2"
             ]
           }
-        }
+        },
+        "nameMapping": [
+          {
+            "name": "Mapped Event Name",
+            "destinationId": "all" | "anotherDestinationId"
+          }
+        ]
       }
     }
   ],
