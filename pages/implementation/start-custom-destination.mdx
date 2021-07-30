@@ -328,10 +328,10 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
 
 ```ReasonML
 let customDestination: Avo.avoCustomDestination = {
-  make: (_env: Avo.avoEnvType) => (),
+  make: (env: Avo.avoEnvType) => (),
   logEvent: (eventName: string, eventProperties: Js.Json.t) => ();
-  setUserProperties: (_userId: string, _userProperties: Js.Json.t) => ();
-  identify: (_userId: string) => ();
+  setUserProperties: (userId: string, userProperties: Js.Json.t) => ();
+  identify: (userId: string) => ();
   unidentify: () => ();
   addToGroup: (groupType: string,
     groupId: string,
@@ -340,8 +340,8 @@ let customDestination: Avo.avoCustomDestination = {
   logEventWithGroup: (
     eventName: string,
     eventProperties: Js.Json.t,
-    groupType: string,
-    groupId: string
+    ~groupType: string,
+    ~groupId: string
   ) => ();
 };
 ```
