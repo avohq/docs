@@ -6,7 +6,7 @@ title: 'Properties'
 
 import Link from '../../../components/Link';
 
-Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, that describe the state of the user or the product at the time of the event. Avo allows you to define event, user and system properties - each category described below.
+Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, users or groups that describe the state of the user or the product at the time of the event. Avo allows you to define event, user and system properties - each category described below.
 
 ### <a name="event-properties"></a> Event properties
 
@@ -22,9 +22,23 @@ relevant for that specific event, when you analyze your data. You might be want 
 
 Event properties are sent with the event in the <Link passHref href="/workspace/tracking-plan/events#a-namelog-eventa-log-event"><a>event call</a></Link>.
 
+### <a name="group-properties"></a> Group properties
+
+Group properties describe the state of a group you defined previously. Read more about Groups <Link passHref href="/data-design/groups"><a>here</a></Link>.
+Similar to User properties, this information is usually relevant in a larger scope than for exactly that event.
+
+**Example**
+
+For example, you are a B2B company and your product is used by different companies and each company consists of a number of users.
+You can maintain the state of each company with group properties, increase the count of employees when a new users joins particular company for example.
+
+**Functionality**
+
+Group properties are updated with the event in the LINK Update Group action.
+
 ### <a name="user-properties"></a> User Properties
 
-User properties to describe the state of your user. It is information that is
+User properties describe the state of your user. It is information that is
 usually relevant in a larger scope than for exactly that event.
 
 **Example**
@@ -135,10 +149,10 @@ Here's how an individual Snowplow context is translated from what is defined in 
     "product_name": "product_name_value",
     "product_price": 10.0,
     "product_id": "product_id_value",
-    "product_type": "product_type_value",
+    "product_type": "product_type_value"
   }
 }
-```  
+```
 
 Each Snowplow context defined on an event in Avo then added to form an array of contexts:
 
@@ -150,7 +164,7 @@ Each Snowplow context defined on an event in Avo then added to form an array of 
       "product_name": "product_name_value",
       "product_price": 10.0,
       "product_id": "product_id_value",
-      "product_type": "product_type_value",
+      "product_type": "product_type_value"
     }
   },
   {
@@ -158,7 +172,7 @@ Each Snowplow context defined on an event in Avo then added to form an array of 
     "data": {
       "page_name": "page_name_value",
       "page_path": "page_path_value",
-      "page_category": "page_category_value",
+      "page_category": "page_category_value"
     }
   }
 ]
@@ -167,33 +181,35 @@ Each Snowplow context defined on an event in Avo then added to form an array of 
 The array of context is then sent with the event where event call to Snowplow that looks like this:
 
 ```javascript
-Snowplow.logEvent({
-  "schema": "iglu:com.acme_company/event_action/jsonschema/2-0-0",
-  "data": {
-      "avo_event_name": "CART_UPDATED",
-      "event_property_1": "event_property_value_1",
-      "event_property_2": "event_property_value_2",
-  }
-}, [
+Snowplow.logEvent(
+  {
+    schema: 'iglu:com.acme_company/event_action/jsonschema/2-0-0',
+    data: {
+      avo_event_name: 'CART_UPDATED',
+      event_property_1: 'event_property_value_1',
+      event_property_2: 'event_property_value_2',
+    },
+  },
+  [
     {
-      "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
-      "data": {
-        "product_name": "product_name_value",
-        "product_price": 10.0,
-        "product_id": "product_id_value",
-        "product_type": "product_type_value",
-      }
+      schema: 'iglu:com.acme_company/product_context/jsonschema/1-0-0',
+      data: {
+        product_name: 'product_name_value',
+        product_price: 10.0,
+        product_id: 'product_id_value',
+        product_type: 'product_type_value',
+      },
     },
     {
-      "schema": "iglu:com.acme_company/page_context/jsonschema/1-0-0",
-      "data": {
-        "page_name": "page_name_value",
-        "page_path": "page_path_value",
-        "page_category": "page_category_value",
-      }
-    }
-  ]
-)
+      schema: 'iglu:com.acme_company/page_context/jsonschema/1-0-0',
+      data: {
+        page_name: 'page_name_value',
+        page_path: 'page_path_value',
+        page_category: 'page_category_value',
+      },
+    },
+  ],
+);
 ```
 
 The Snowplow object above is provided by you, so you get full access to this payload and can easily route it to Snowplow.
