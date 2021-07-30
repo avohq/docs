@@ -13,7 +13,7 @@ example:
 - When sending data to analytics platforms through an API (not using their SDK)
 - When using a combination of a programming language and analytics destination not yet directly supported by Avo
 
-> 💡  **When should I use a custom destination?**
+> 💡 **When should I use a custom destination?**
 >
 > [Read more here about how self-managed analytics SDKs work and why that may be the right choice for you.](../implementation/start-using-avo-functions#option-1-initialize-self-managed-analytics-sdk-instance-custom-destination)
 
@@ -39,8 +39,9 @@ With a custom destination you'll get access to callback methods for Avo actions.
 
 The callback methods mirror the actions you set up for given event in your tracking plan on avo.app.
 
-<center style={{marginBottom: 16 + "px"}}>
-  <img style={{height: 300 + "px"}}
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 300 + 'px' }}
     src={require('../../images/event-actions.png')}
     alt="List of event actions in Avo: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View"
   />
@@ -49,9 +50,9 @@ The callback methods mirror the actions you set up for given event in your track
 - Log Event
 
   Avo will log/track this as an event in your analytics tool.
-  
+
 - Update User Properties
-  
+
   Avo will update the following user properties when this event is sent.
 
 - Identify User
@@ -80,33 +81,39 @@ The callback methods mirror the actions you set up for given event in your track
 
 - `make`: Triggered during Avo initialization.
   Here you will usually initialize an analytics SDK with a development or production key based on the `env` parameter.
-  If analytics SDK has already been initialized before you can leave this function blank.  
-  
+  If analytics SDK has already been initialized before you can leave this function blank.
+
   Example: `analytics.init(env)`
+
 - `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
-  Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.  
-  
-  Example: `analytics.track(eventName, eventProperties)` 
+  Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
+
+  Example: `analytics.track(eventName, eventProperties)`
+
 - `identify`: You can add the Identify User action to an event in the Tracking Plan in Avo. When calling an Avo function that includes the Identify User action you'll need to provide a user ID. Calling an Avo function that has the Identify User action will trigger this callback.
   The main use cases are signup and login.
-  Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.  
-  
+  Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
+
   Example: `analytics.identify(userId)`
+
 - `unidentify`: If you call an Avo function with the Unidentify User action, this callback will be triggered.
-  Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.  
-  
+  Here you would call an analytics SDK method to detach subsequent actions from the currently identified user.
+
   Example: `analytics.identify(null)`
+
 - `revenue`: If you add a `Log Revenue` action to Avo Function this callback will be invoked.
-  Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.  
-  
+  Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.
+
   Example: `analytics.revenue(productId, quantity, price)`
+
 - `page`: If you add a `Log Page View` action to Avo Function this callback will be invoked.
-  Here you would report navigation to your analytics destination.  
-  
+  Here you would report navigation to your analytics destination.
+
   Example: `analytics.page(pageName, eventProperties)`
+
 - `setUserProperties`: You can add user properties to events in the Avo dashboard. When an Avo function with attached user properties is called, this callback is triggered.
-  Here you would attach user properties to the currently identified user in your analytics platform.  
-  
+  Here you would attach user properties to the currently identified user in your analytics platform.
+
   Example: `analytics.setUserProperties(userId, userProperties)`
 
 ## Initialization instructions
@@ -117,6 +124,7 @@ each of the supported languages:
 - [Web](#web)
   - [JavaScript](#javascript)
   - [Typescript](#typescript)
+  - [ReasonML](#ReasonML)
 - [Mobile](#mobile)
   - [iOS](#ios)
     - [Objective-C](#obj-c)
@@ -166,12 +174,36 @@ var customDestination = {
   unidentify: function () {
     // TODO implement
   },
-  revenue: function(amount, eventProperties) {
+  revenue: function (amount, eventProperties) {
     // TODO implement
   },
-  page: function(pageName, eventProperties) {
+  page: function (pageName, eventProperties) {
     // TODO implement
-  }
+  },
+  addToGroup: function (groupType, groupId, groupProperties) {
+    // Segment example
+    analytics.group(groupType, {
+      name: groupId,
+      ...groupProperties,
+    });
+    // Mixpanel example
+    mixpanel.set_group(groupType, groupId);
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    amplitude.getInstance().setGroup(groupType, groupId);
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  logEventWithGroup: function (eventName, eventProperties, groupType, groupId) {
+    // Mixpanel example
+    mixpanel.track_with_groups(eventName, eventProperties, {
+      groupType: groupId,
+    });
+    // Amplitude example
+    amplitude
+      .getInstance()
+      .logEventWithGroups(eventName, eventProperties, { groupType: groupId });
+  },
 };
 ```
 
@@ -205,16 +237,20 @@ var googleAnalyticsDestination = {
   unidentify: function () {
     // Todo: Unidentify currently identified user in Google Analytics
   },
-  revenue: function(amount, eventProperties) {
-    gtag('event', 'purchase', {...eventProperties, amount});
+  revenue: function (amount, eventProperties) {
+    gtag('event', 'purchase', { ...eventProperties, amount });
   },
-  page: function(screenName, eventProperties) {
-    gtag('event', 'screen_view', {...eventProperties, screen_name: screenName});
-  }
+  page: function (screenName, eventProperties) {
+    gtag('event', 'screen_view', {
+      ...eventProperties,
+      screen_name: screenName,
+    });
+  },
 };
 ```
 
 Call the `initAvo` method and pass in your `googleAnalyticsDestination`:
+
 ```javascript
 Avo.initAvo({ env: 'dev' }, {}, {}, googleAnalyticsDestination);
 ```
@@ -231,10 +267,10 @@ let customDestination = {
   make: function (env: AvoEnv) {
     // TODO implement
   },
-  logEvent: function (eventName: string, eventProperties: any) {
+  logEvent: function (eventName: string, eventProperties: object) {
     // TODO implement
   },
-  setUserProperties: function (userId: string, userProperties: any) {
+  setUserProperties: function (userId: string, userProperties: object) {
     // TODO implement
   },
   identify: function (userId: string) {
@@ -243,9 +279,42 @@ let customDestination = {
   unidentify: function () {
     // TODO implement
   },
-  logPage: function(pageName: string, eventProperties: object) {
+  logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
-  }
+  },
+  addToGroup: function (
+    groupType: string,
+    groupId: string,
+    groupProperties: object,
+  ) {
+    // Segment example
+    analytics.group(groupType, {
+      name: groupId,
+      ...groupProperties,
+    });
+    // Mixpanel example
+    mixpanel.set_group(groupType, groupId);
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    amplitude.getInstance().setGroup(groupType, groupId);
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  logEventWithGroup: function (
+    eventName: string,
+    eventProperties: object,
+    groupType: string,
+    groupId: string,
+  ) {
+    // Mixpanel example
+    mixpanel.track_with_groups(eventName, eventProperties, {
+      groupType: groupId,
+    });
+    // Amplitude example
+    amplitude
+      .getInstance()
+      .logEventWithGroups(eventName, eventProperties, { groupType: groupId });
+  },
 };
 ```
 
@@ -253,6 +322,34 @@ Call the initAvo function:
 
 ```typescript
 Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
+```
+
+### <a name="ReasonML"></a> ReasonML
+
+```ReasonML
+let customDestination: Avo.avoCustomDestination = {
+  make: (env: Avo.avoEnvType) => (),
+  logEvent: (eventName: string, eventProperties: Js.Json.t) => ();
+  setUserProperties: (userId: string, userProperties: Js.Json.t) => ();
+  identify: (userId: string) => ();
+  unidentify: () => ();
+  addToGroup: (groupType: string,
+    groupId: string,
+    groupProperties: Js.Json.t
+  ) => ();
+  logEventWithGroup: (
+    eventName: string,
+    eventProperties: Js.Json.t,
+    ~groupType: string,
+    ~groupId: string
+  ) => ();
+};
+```
+
+Call the initAvo function:
+
+```ReasonML
+let () = AnalyticsRe.initAvo(~env=`dev, ~customDestination, ());
 ```
 
 ## <a name="mobile"></a> Mobile
@@ -438,12 +535,12 @@ var customDestination = {
   unidentify: function () {
     // TODO implement
   },
-  revenue: function(amount, eventProperties) {
+  revenue: function (amount, eventProperties) {
     // TODO implement
   },
-  page: function(pageName, eventProperties) {
+  page: function (pageName, eventProperties) {
     // TODO implement
-  }
+  },
 };
 ```
 
@@ -466,14 +563,18 @@ import Avo from './Avo';
 
 var mixpanelDestination = {
   make: function (env) {
-    Mixpanel.init(env == "dev" ? "<Your Mixpanel dev token>" : "<Your Mixpanel prod token>");
+    Mixpanel.init(
+      env == 'dev' ? '<Your Mixpanel dev token>' : '<Your Mixpanel prod token>',
+    );
   },
   logEvent: function (eventName, eventProperties) {
     mixpanel.track(eventName, eventProperties);
   },
   setUserProperties: function (userId, userProperties) {
     mixpanel.identify(userId);
-    Object.keys(userProperties).forEach(key => mixpanel.getPeople().set(key, userProperties[key]));
+    Object.keys(userProperties).forEach((key) =>
+      mixpanel.getPeople().set(key, userProperties[key]),
+    );
   },
   identify: function (userId) {
     mixpanel.identify(userId);
@@ -481,16 +582,19 @@ var mixpanelDestination = {
   unidentify: function () {
     mixpanel.reset();
   },
-  revenue: function(amount, eventProperties) {
+  revenue: function (amount, eventProperties) {
     mixpanel.getPeople().trackCharge(amount, eventProperties);
   },
-  page: function(pageName, eventProperties) {
-    console.log("The React Native Mixpanel SDK does not provide native page or screen tracking");
-  }
+  page: function (pageName, eventProperties) {
+    console.log(
+      'The React Native Mixpanel SDK does not provide native page or screen tracking',
+    );
+  },
 };
 ```
 
 Call the `initAvo` method and pass in your `mixpanelDestination`:
+
 ```javascript
 Avo.initAvo({ env: 'dev' }, {}, {}, mixpanelDestination);
 ```
@@ -519,9 +623,9 @@ let customDestination = {
   unidentify: function () {
     // TODO implement
   },
-  logPage: function(pageName: string, eventProperties: object) {
+  logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
-  }
+  },
 };
 ```
 
@@ -687,9 +791,11 @@ class CustomDestination(object):
 ```
 
 Call the init_avo() function and pass in the Custom Destination:
+
 ```python
 avo.init_avo(options={'env': 'dev'}, custom_destination=CustomDestination())
 ```
+
 where the name of the `custom_destination` parameter is the name of your custom destination in Avo.
 
 #### <a name="python-to-segment"></a> Python to Segment
@@ -719,11 +825,12 @@ class SegmentDestination(object):
 ```
 
 Call the init_avo() function:
+
 ```python
 avo.init_avo(options={'env': 'dev'}, custom_destination=SegmentDestination())
 ```
-where the name of the `custom_destination` parameter is the name of your custom destination in Avo.
 
+where the name of the `custom_destination` parameter is the name of your custom destination in Avo.
 
 ### <a name="ruby"></a> Ruby
 
