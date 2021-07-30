@@ -77,6 +77,10 @@ The callback methods mirror the actions you set up for given event in your track
   Avo will log page view in your analytics tool when this event is sent. Usually set
   on events that are sent on screen/page navigation.
 
+- Update Group info
+
+  With this action youi can update the Goup properties of a particular group and assign currently identified user to a group.
+
 ### Callback methods
 
 - `make`: Triggered during Avo initialization.
@@ -115,6 +119,20 @@ The callback methods mirror the actions you set up for given event in your track
   Here you would attach user properties to the currently identified user in your analytics platform.
 
   Example: `analytics.setUserProperties(userId, userProperties)`
+
+- `setGroupProperties`: You can add various group properties to events in the Avo dashboard. When an Avo function with attached groups and group properties is called, this callback is triggered.
+  Here you would update the properties for specified groups.
+
+  Example: `mixpanel.get_group(groupType, groupId).set(groupProperties)`
+
+- `addCurrentUserToGroup`: You can add groups and group properties to an event and set the event to associate the currently identified user with the provided groups.
+  Can optionally update group properties along the way.
+
+Example: ` analytics.group(groupType, { name: groupId, ...groupProperties, });`
+
+- `logEventWithGroup`: this call is same as the `logEvent` call described above, except it also associates this particular event with a group.
+
+Example: ` mixpanel.track_with_groups(eventName, eventProperties, { groupType: groupId, });`
 
 ## Initialization instructions
 
@@ -180,7 +198,14 @@ var customDestination = {
   page: function (pageName, eventProperties) {
     // TODO implement
   },
-  addToGroup: function (groupType, groupId, groupProperties) {
+  setGroupProperties(groupType, groupId, groupProperties) {
+    // Mixpanel example
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  addCurrentUserToGroup: function (groupType, groupId, groupProperties) {
     // Segment example
     analytics.group(groupType, {
       name: groupId,
@@ -282,7 +307,18 @@ let customDestination = {
   logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
   },
-  addToGroup: function (
+  setGroupProperties(
+    groupType: string,
+    groupId: string,
+    groupProperties: object,
+  ) {
+    // Mixpanel example
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  addCurrentUserToGroup: function (
     groupType: string,
     groupId: string,
     groupProperties: object,
@@ -333,7 +369,11 @@ let customDestination: Avo.avoCustomDestination = {
   setUserProperties: (userId: string, userProperties: Js.Json.t) => ();
   identify: (userId: string) => ();
   unidentify: () => ();
-  addToGroup: (groupType: string,
+  setGroupProperties: (groupType: string,
+    groupId: string,
+    groupProperties: Js.Json.t
+  ) => ();
+  addCurrentUserToGroup: (groupType: string,
     groupId: string,
     groupProperties: Js.Json.t
   ) => ();
