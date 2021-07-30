@@ -212,6 +212,11 @@ const navigation: navigationItem[] = [
             path: '/data-design/global-namespace',
           },
           {
+            type: 'route',
+            title: 'Using Groups and Group Properties',
+            path: '/data-design/groups',
+          },
+          {
             type: 'section',
             group: 'Guides',
           },
