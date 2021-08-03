@@ -217,6 +217,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'How to manage Groups and Group Properties',
+            path: '/data-design/how-to-manage-groups-and-properties',
+          },
+          {
+            type: 'route',
             title: 'Documenting purpose meetings',
             path: '/data-design/documenting-purpose-meetings-in-avo',
           },
