@@ -6,7 +6,7 @@ title: 'Properties'
 
 import Link from '../../../components/Link';
 
-Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, users or groups that describe the state of the user or the product at the time of the event. Avo allows you to define event, user and system properties - each category described below.
+Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, users or groups that describe the state of the user or the product at the time of the event. Avo allows you to define event, group, user and system properties - each category described below.
 
 ### <a name="event-properties"></a> Event properties
 
@@ -29,12 +29,12 @@ Similar to User properties, this information is usually relevant in a larger sco
 
 **Example**
 
-For example, you are a B2B company and your product is used by different companies and each company consists of a number of users.
-You can maintain the state of each company with group properties, increase the count of employees when a new users joins particular company for example.
+For B2B companies, products are used by multiple companies, each consisting of a number of users.
+In that case, you can maintain the state of each company with group properties, increase the count of employees when a new user joins a particular company for example.
 
 **Functionality**
 
-Group properties are updated with the event in the LINK Update Group action.
+Group properties are updated with the event in the <Link passHref href="/data-design/how-to-add-a-group-to-an-event"><a>Update Group action</a></Link>.
 
 ### <a name="user-properties"></a> User Properties
 
