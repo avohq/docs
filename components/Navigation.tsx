@@ -218,7 +218,7 @@ const navigation: navigationItem[] = [
           {
             type: 'route',
             title: 'How to manage Groups and Group Properties',
-            path: '/data-design/how-to-manage-groups-and-properties',
+            path: '/data-design/how-to-manage-group-types-and-properties',
           },
           {
             type: 'route',
