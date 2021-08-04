@@ -1,12 +1,9 @@
 ---
 layout: 'guide'
-title: 'Using groups and group properties'
-//abstract: 'Global namespace for events and properties'
+title: 'Intro to Group analytics'
 ---
 
 import Link from '../../components/Link';
-
-## Group analytics
 
 When doing product analytics you may find yourself in a position when you need to analyze behavior of a group of users, or you need to group
 different actions together into a group.
@@ -15,10 +12,6 @@ There are two main ways of group analytics that we are going to look at in this 
 
 - Grouping users
 - Grouping actions
-
-You can also manage the groups separately:
-
-- Maintain group metadata
 
 #### Groups concepts
 
@@ -50,14 +43,6 @@ You can associate events with groups without associating the user with a group. 
 For example if you have a chat app and want to analyze the performance of different channels.
 
 See further use cases and which analytics platforms support grouping events below in <Link passHref href="/data-design/groups#associate-event-with-group"><a>Associate event with group</a></Link>.
-
-## Maintain group metadata
-
-You can maintain group metadata, aka group properties, for the group IDs you associate users or events with.
-First you define your group types and group IDs. Then you can attach specific properties to the groups you have.
-
-Conceptually the group properties are quite similar to the user properties.
-See further use cases and which analytics platforms support grouping users below in <Link passHref href="/data-design/groups#update-group-properties"><a>Update Group Properties</a></Link>.
 
 ## Managing Group Analytics
 
@@ -123,7 +108,8 @@ _Example_: If you have chat channels, you can log the “Message Sent” event w
 
 ### Update Group Properties
 
-Once you’ve defined your group types and group ids, you can attach and update specific properties about the groups. Conceptually the group properties are quite similar to the user properties.
+Conceptually the group properties are quite similar to user properties. You can maintain group metadata, aka group properties, for the group IDs that you associate users or events with.
+The first step is defining your groups (group types and group ids). Then you can attach and update specific properties about the groups.
 
 **Functionality**: This action will update metadata about a specific group, by updating the group metadata (e.g. member count of a team). This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
 

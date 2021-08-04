@@ -213,7 +213,7 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Using Groups and Group Properties',
+            title: 'Intro to Group analytics',
             path: '/data-design/groups',
           },
           {
