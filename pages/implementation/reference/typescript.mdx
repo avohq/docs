@@ -176,7 +176,7 @@ When you define system properties in your Avo workspace you set name and type - 
 #### Event tracking functions
 
 ```typescript
-Avo.yourEventName(properties: { [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ..., [userId_], [anonymousId_], [segmentContext_] })
+Avo.yourEventName(properties: { [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ..., [groupType0GroupId], [groupType1GroupId], ..., [groupProperty0], [groupProperty1], ..., [userId_], [anonymousId_], [segmentContext_] })
 ```
 
 Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
@@ -190,6 +190,15 @@ Pass the value of the property to track here.
 
 `userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
 Every user property attached to the event in the Avo UI gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
+Pass the value of the property to update here.
+
+`groupTypeGroupId`: string, if this event has group type attached in the UI, you'll provide the group id here.
+The argument key is camelCase version of the group type defined in the Avo UI with the "GroupId" suffix.
+E.g. if the event has "company" group type, the property will be celled "companyGroupId" and you would provide the company name.
+
+`groupProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every group property attached to the event in the Avo UI with the "Group Update" action gets a corresponding argument.
 The argument key is camelCase version of the property name defined in the Avo UI.
 Pass the value of the property to update here.
 
