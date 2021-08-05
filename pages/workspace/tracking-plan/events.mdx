@@ -50,7 +50,7 @@ Below is a list of possible actions and supported platforms, in the order of whi
    Fullstory
 2. <a href="#update-user-props">Update User Properties</a>: Amplitude, Segment,
    Mixpanel and Fullstory
-3. <a href="#log-event">Log Event</a> All supported analytics platforms
+3. <a href="#log-event">Log Event</a> All supported analytics platforms (Amplitude and Mixpanel when associating with groups)
 4. <a href="#log-revenue">Log Revenue</a>: Amplitude, Segment and Mixpanel
 5. <a href="#log-page-view">Log Page View</a>: Segment
 6. <a href="#unidentify-user">Unidentify User</a>: Amplitude, Segment, Mixpanel
@@ -142,6 +142,18 @@ track('Signup Completed', {
 });
 ```
 
+#### <a name="log-event-with-groups"></a> Log Event with Groups
+
+When associating the event with groups you can imply that the event is linked
+with a group. This would typically be done if only certain actions of the user
+are related to a group.
+
+Groups are applied to tracking events with the following methods according to
+analytics platform:
+
+- **Amplitude**: [logEventWithGroups](https://developers.amplitude.com/docs/javascript#user-groups)
+- **Mixpanel**: [track_with_groups](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpaneltrack_with_groups)
+
 #### <a name="identify-user"></a> Identify User
 
 The Identify User action should be used when you want to identify users from your
@@ -189,6 +201,29 @@ User properties are updated with the following methods according to analytics pl
 - Intercom: `Intercom('update', userProperties)`
 - Mixpanel: `people.set`
 - Segment: `identify`
+
+#### <a name="update-groups"></a> Update Groups
+
+Avo is equipped with a familiar user interface to define and maintain Group Types
+and their properties and updating Group Properties is as easy as adding an action
+to your Event. Read more about Groups <Link passHref href="/data-design/groups"><a>here</a></Link>.
+
+Users can be associated with groups (and all subsequent calls) with the following methods
+according to analytics platform:
+
+- **Amplitude**: [setGroup](https://developers.amplitude.com/docs/javascript#user-groups)
+- **Mixpanel**: [set_group](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpanelset_group)
+- **Segment**: [group](https://segment.com/docs/connections/spec/group/)
+
+Furthermore, group properties can be updated with the following methods according to
+analytics platform:
+
+- **Amplitude**: [groupIdentify](https://developers.amplitude.com/docs/javascript#group-identify)
+- **Mixpanel**: [group.set](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpanelgroupset)
+- **Segment**: [group](https://segment.com/docs/connections/spec/group/) (links user as well)
+
+> 💡 Note that **Segment** always links the user to a group when
+> updating group properties.
 
 #### <a name="log-revenue"></a> Log Revenue
 

@@ -217,11 +217,6 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'How to add a Group to an Event',
-            path: '/data-design/how-to-add-a-group-to-an-event',
-          },
-          {
-            type: 'route',
             title: 'Documenting purpose meetings',
             path: '/data-design/documenting-purpose-meetings-in-avo',
           },
