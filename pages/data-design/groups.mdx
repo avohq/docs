@@ -111,15 +111,15 @@ _Example_: If you have chat channels, you can log the “Message Sent” event w
 Conceptually the group properties are quite similar to user properties. You can maintain group metadata, aka group properties, for the group IDs that you associate users or events with.
 The first step is defining your groups (group types and group ids). Then you can attach and update specific properties about the groups.
 
-**Functionality**: This action will update metadata about a specific group, by updating the group metadata (e.g. member count of a team). This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
+**Functionality**: This action will update metadata associated with a specific group (e.g. member count of a team). This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
 
 **Consequences**:
 
 [//]: # 'TODO [TO CONFIRM] For Mixpanel and Amplitude: Future events associated with this specific group will have the updated metadata about the group available for filtering, segmentation, etc.'
 
-For Mixpanel and Amplitude: Specific group will have the updated metadata about the group available for filtering, segmentation, etc.
+For Mixpanel and Amplitude: Future events associated with this specific group will have the updated metadata about the group available for filtering, segmentation, etc.
 
-For Segment: You can only update group properties on the user level, not on the event level. This means that when you update group properties, it will automatically associate the user permanently with this group.
+For Segment: Note that you can not update group properties without associating the current user with that group. This means that when you update group properties, it will automatically associate the user permanently with this group.
 
 For your data warehouse: If you’re using a custom destination to send data into your data warehouse, you can use Update Group Properties to update a table that maintains the current state of group metadata.
 
