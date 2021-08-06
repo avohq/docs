@@ -88,7 +88,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `options (Hash)`: a hash with :env symbol (:prod, :dev), :verbose (true, false)
 
 `system_properties (Hash)`: a Hash containing the system properties that should be sent with every event.
-When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
+When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
 `[custom_dest (object)]`: if you have set up a custom destination for this source, an object with callbacks for the custom destination.
 
@@ -132,10 +132,10 @@ Every event you define in your tracking plan in Avo gets a function named after 
 
 ##### Arguments
 
-`event_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any. The argument key is snake_case version of the property name defined in the Avo UI.
+`event_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. The argument key is snake_case version of the property name defined in the Avo UI.
 This is an event property that should be tracked with given event. Pass the value of the property to track here.
 
-`user_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any. The argument key is snake_case version of the property name defined in the Avo UI.
+`user_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. The argument key is snake_case version of the property name defined in the Avo UI.
 This is a user property that should be updated with given event. Pass the value of the property to update here.
 
 `user_id`: string

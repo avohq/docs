@@ -104,8 +104,8 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 
 - `env`: AvoEnv, can be set to dev, prod and staging.
 - `systemProperties`: AvoSystemProperties.t, where each field represents a system property in your tracking plan.
-- `webDebugger`:
-  When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
+  When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool and list.
+- `webDebugger`: optional bool, for optional Avo Web Debugger instance
 - `[noop=false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo functions automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
 
@@ -144,7 +144,8 @@ A method to update system properties. If you don't provide values here correspon
 ##### Arguments
 
 `systemProperties`: a record where each field represents a system property in your tracking plan.
-When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties,
+in camelCase, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
 #### Event tracking functions
 
@@ -156,12 +157,12 @@ Every event you define in your tracking plan in Avo gets a function named after 
 
 ##### Arguments
 
-`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool and list.
 Every event property attached to the event in the Avo UI gets a corresponding argument.
 The argument key is camelCase version of the property name defined in the Avo UI.
 Pass the value of the property to track here.
 
-`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool and list.
 Every user property attached to the event in the Avo UI gets a corresponding argument.
 The argument key is camelCase version of the property name defined in the Avo UI.
 Pass the value of the property to update here.
