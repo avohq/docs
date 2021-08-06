@@ -13,7 +13,7 @@ There are two main ways of group analytics that we are going to look at in this 
 - Grouping users
 - Grouping actions
 
-#### Groups concepts
+## Groups terminology across platforms
 
 There are two main concepts when working with group analytics. In Avo they are called “Group Types” and “Group Ids”. See reference table below for what “Group Types” and “Group IDs” are called in other platforms.
 
@@ -23,20 +23,20 @@ Group ids are identifiers of the individual groups of those group types, for exa
 
 |                      |            |            |
 | -------------------- | ---------- | ---------- |
-| Concepts in Avo      | Group Type | Group Id   |
-| Concept in Amplitude | Group Type | Group Name |
-| Concept in Mixpanel  | Group Key  | Group Id   |
-| Concept in Segment   | Group Id   | Group Name |
+| Concepts in Avo:      | Group Type | Group Id   |
+| Concept in Amplitude: | Group Type | Group Name |
+| Concept in Mixpanel:  | Group Key  | Group Id   |
+| Concept in Segment:   | Group Id   | Group Name |
 
 ## Grouping users
 
-You can associate users with groups. Then that user profile as well as every action user makes will be attributed to the associated group.
+You can associate users with groups. Then that user profile, as well as every subsequent event associated with that user, will be attributed to the respective groups.
 
 This is useful for example for B2B products, when each individual user of the product belongs to a company, and every action of that user should be attributed to that one company.
 
 See further use cases and which analytics platforms support grouping users below in <Link passHref href="/data-design/groups#associate-user-with-group"><a>Associate user with group</a></Link>.
 
-## Grouping actions
+## Grouping events
 
 You can associate events with groups without associating the user with a group. This is useful if you have product concepts where each user can perform actions in different groups.
 
