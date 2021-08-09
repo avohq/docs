@@ -46,15 +46,13 @@ Actions is an umbrella term over all the tracking methods the analytics platform
 
 Below is a list of possible actions:
 
-1. <a href="#identify-user">Identify User</a>: Amplitude, Segment, Mixpanel and
-   Fullstory
-2. <a href="#update-user-props">Update User Properties</a>: Amplitude, Segment,
-   Mixpanel and Fullstory
-3. <a href="#log-event">Log Event</a> All supported analytics platforms (Amplitude and Mixpanel when associating with groups)
-4. <a href="#log-revenue">Log Revenue</a>: Amplitude, Segment and Mixpanel
-5. <a href="#log-page-view">Log Page View</a>: Segment
-6. <a href="#unidentify-user">Unidentify User</a>: Amplitude, Segment, Mixpanel
-   and Fullstory
+1. <a href="#identify-user">Identify User</a>: Avo will identify the user in your analytics tool when this event is sent. All events sent after this event will be tied to the identified user. Usually set on sign in events.
+2. <a href="#update-user-props">Update User Properties</a>: Avo will update the following user properties when this event is sent.
+3. <a href="#log-event">Log Event</a> Avo will log/track this as an event in your analytics tool.
+4. <a href="#log-revenue">Log Revenue</a>: Avo will use revenue APIs provided by your analytics tool to log revenue when this event is sent. Usually set on checkout events.
+5. <a href="#log-page-view">Log Page View</a>: Avo will log page view in your analytics tool when this event is sent. Usually set on events that are sent on screen/page navigation.
+6. <a href="#unidentify-user">Unidentify User</a>: Avo will unidentify the user in your analytics tool when this event is sent. All events sent after this event will not be tied to the previously identified user. Usually set on sign out events.
+7. <a href="#update-groups">Update Groups</a>: Avo can associate users with groups and/or update group properties. Adding users to groups will link them to all subsequent calls.
 
 <center style={{ marginBottom: 16 + 'px' }}>
   <img
