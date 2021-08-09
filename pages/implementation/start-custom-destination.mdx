@@ -77,7 +77,7 @@ The callback methods mirror the actions you set up for given event in your track
   Avo will log page view in your analytics tool when this event is sent. Usually set
   on events that are sent on screen/page navigation.
 
-- Update Group info
+- Update Groups
 
   With this action you can update the Group properties of a particular group and assign currently identified user to a group.
 
@@ -120,7 +120,7 @@ The callback methods mirror the actions you set up for given event in your track
 
   Example: `analytics.setUserProperties(userId, userProperties)`
 
-- `setGroupProperties`: You can add various group properties to events in the Avo dashboard. When an Avo function with attached groups and group properties is called, this callback is triggered.
+- `setGroupProperties`: You can update various group properties along with events in the Avo dashboard. When an Avo function with attached groups and group properties is called, this callback is triggered.
   Here you would update the properties for specified groups.
 
   Example: `mixpanel.get_group(groupType, groupId).set(groupProperties)`
@@ -130,7 +130,7 @@ The callback methods mirror the actions you set up for given event in your track
 
 Example: ` analytics.group(groupType, { name: groupId, ...groupProperties, });`
 
-- `logEventWithGroup`: this call is same as the `logEvent` call described above, except it also associates this particular event with a group.
+- `logEventWithGroups`: this call is same as the `logEvent` call described above, except it also associates this particular event with a group.
 
 Example: ` mixpanel.track_with_groups(eventName, eventProperties, { groupType: groupId, });`
 
@@ -219,15 +219,13 @@ var customDestination = {
     var identify = new amplitude.Identify().set(groupProperties);
     amplitude.groupIdentify(groupType, groupId, identify);
   },
-  logEventWithGroup: function (eventName, eventProperties, groupType, groupId) {
+  logEventWithGroups: function (eventName, eventProperties, groupTypesToGroupIds) {
     // Mixpanel example
-    mixpanel.track_with_groups(eventName, eventProperties, {
-      groupType: groupId,
-    });
+    mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
     // Amplitude example
     amplitude
       .getInstance()
-      .logEventWithGroups(eventName, eventProperties, { groupType: groupId });
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
   },
 };
 ```
@@ -336,20 +334,18 @@ let customDestination = {
     var identify = new amplitude.Identify().set(groupProperties);
     amplitude.groupIdentify(groupType, groupId, identify);
   },
-  logEventWithGroup: function (
+
+  logEventWithGroups: function (
     eventName: string,
     eventProperties: object,
-    groupType: string,
-    groupId: string,
+    groupTypesToGroupIds: object,
   ) {
     // Mixpanel example
-    mixpanel.track_with_groups(eventName, eventProperties, {
-      groupType: groupId,
-    });
+    mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
     // Amplitude example
     amplitude
       .getInstance()
-      .logEventWithGroups(eventName, eventProperties, { groupType: groupId });
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
   },
 };
 ```
@@ -377,11 +373,10 @@ let customDestination: Avo.avoCustomDestination = {
     groupId: string,
     groupProperties: Js.Json.t
   ) => ();
-  logEventWithGroup: (
+  logEventWithGroups: (
     eventName: string,
     eventProperties: Js.Json.t,
-    ~groupType: string,
-    ~groupId: string
+    ~groupTypesToGroupIds: Js.Json.t
   ) => ();
 };
 ```
