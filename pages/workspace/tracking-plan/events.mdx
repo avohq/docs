@@ -6,7 +6,7 @@ title: 'Events'
 
 import Link from '../../../components/Link';
 
-An event represents something that a user does or that happens to them. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
+An event represents something that a user does or that happens in response to their actions. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
 
 <a
   target="_blank"
@@ -44,7 +44,7 @@ Add all sources you want the event to be sent from to the event in Avo. If you w
 
 Actions is an umbrella term over all the tracking methods the analytics platforms offer. In Avo you can define your actions in the Actions part of the tracking plan and organize them into categories. Actions can be triggered on their own or together, for example it's common to trigger any of the actions along with logging an event.
 
-Below is a list of possible actions and supported platforms, in the order of which they are triggered:
+Below is a list of possible actions:
 
 1. <a href="#identify-user">Identify User</a>: Amplitude, Segment, Mixpanel and
    Fullstory
@@ -55,6 +55,14 @@ Below is a list of possible actions and supported platforms, in the order of whi
 5. <a href="#log-page-view">Log Page View</a>: Segment
 6. <a href="#unidentify-user">Unidentify User</a>: Amplitude, Segment, Mixpanel
    and Fullstory
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 300 + 'px' }}
+    src={require('../../../images/event-actions.png')}
+    alt="List of event actions in Avo: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View"
+  />
+</center>
 
 #### <a name="log-event"></a> Log Event
 

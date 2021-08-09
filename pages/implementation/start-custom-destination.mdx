@@ -35,47 +35,10 @@ We will be referencing Avo _functions_, _events_, _actions_ and other Avo concep
 
 With a custom destination you'll get access to callback methods for Avo actions. The Avo generated code triggers the callbacks when corresponding Avo functions are called.
 
-### Available event actions in Avo
-
-The callback methods mirror the actions you set up for given event in your tracking plan on avo.app.
-
-<center style={{ marginBottom: 16 + 'px' }}>
-  <img
-    style={{ height: 300 + 'px' }}
-    src={require('../../images/event-actions.png')}
-    alt="List of event actions in Avo: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View"
-  />
-</center>
-
-- Log Event
-
-  Avo will log/track this as an event in your analytics tool.
-
-- Update User Properties
-
-  Avo will update the following user properties when this event is sent.
-
-- Identify User
-
-  Avo will identify the user in your analytics tool when this event is sent. All events
-  sent after this event will be tied to the identified user. Usually set on sign in
-  events.
-
-- Unidentify User
-
-  Avo will unidentify the user in your analytics tool when this event is sent. All
-  events sent after this event will not be tied to the previously identified user.
-  Usually set on sign out events.
-
-- Log Revenue
-
-  Avo will use revenue APIs provided by your analytics tool to log revenue when
-  this event is sent. Usually set on checkout events.
-
-- Log Page View
-
-  Avo will log page view in your analytics tool when this event is sent. Usually set
-  on events that are sent on screen/page navigation.
+> Available event actions in Avo
+>
+> The callback methods mirror the Avo Actions you set up for given Avo Event in your tracking plan in your workspace.
+> Learn how to attach actions to events in <Link passHref href="/workspace/tracking-plan/events#actions"><a>the Tracking Plan section</a></Link>.
 
 ### Callback methods
 
