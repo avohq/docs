@@ -6,7 +6,7 @@ title: 'Events'
 
 import Link from '../../../components/Link';
 
-An event represents something that a user does or that happens to them. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
+An event represents something that a user does or that happens in response to their actions. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
 
 <a
   target="_blank"
@@ -44,17 +44,23 @@ Add all sources you want the event to be sent from to the event in Avo. If you w
 
 Actions is an umbrella term over all the tracking methods the analytics platforms offer. In Avo you can define your actions in the Actions part of the tracking plan and organize them into categories. Actions can be triggered on their own or together, for example it's common to trigger any of the actions along with logging an event.
 
-Below is a list of possible actions and supported platforms, in the order of which they are triggered:
+Below is a list of possible actions:
 
-1. <a href="#identify-user">Identify User</a>: Amplitude, Segment, Mixpanel and
-   Fullstory
-2. <a href="#update-user-props">Update User Properties</a>: Amplitude, Segment,
-   Mixpanel and Fullstory
-3. <a href="#log-event">Log Event</a> All supported analytics platforms
-4. <a href="#log-revenue">Log Revenue</a>: Amplitude, Segment and Mixpanel
-5. <a href="#log-page-view">Log Page View</a>: Segment
-6. <a href="#unidentify-user">Unidentify User</a>: Amplitude, Segment, Mixpanel
-   and Fullstory
+1. <a href="#identify-user">Identify User</a>: Avo will identify the user in your analytics tool when this event is sent. All events sent after this event will be tied to the identified user. Usually set on sign in events.
+2. <a href="#update-user-props">Update User Properties</a>: Avo will update the following user properties when this event is sent.
+3. <a href="#log-event">Log Event</a> Avo will log/track this as an event in your analytics tool.
+4. <a href="#log-revenue">Log Revenue</a>: Avo will use revenue APIs provided by your analytics tool to log revenue when this event is sent. Usually set on checkout events.
+5. <a href="#log-page-view">Log Page View</a>: Avo will log page view in your analytics tool when this event is sent. Usually set on events that are sent on screen/page navigation.
+6. <a href="#unidentify-user">Unidentify User</a>: Avo will unidentify the user in your analytics tool when this event is sent. All events sent after this event will not be tied to the previously identified user. Usually set on sign out events.
+7. <a href="#update-groups">Update Groups</a>: Avo can associate users with groups and/or update group properties. Adding users to groups will link them to all subsequent calls.
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 300 + 'px' }}
+    src={require('../../../images/event-actions.png')}
+    alt="List of event actions in Avo: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View"
+  />
+</center>
 
 #### <a name="log-event"></a> Log Event
 
@@ -142,6 +148,18 @@ track('Signup Completed', {
 });
 ```
 
+#### <a name="log-event-with-groups"></a> Log Event with Groups
+
+When associating the event with groups you can imply that the event is linked
+with a group. This would typically be done if only certain actions of the user
+are related to a group.
+
+Groups are applied to tracking events with the following methods according to
+analytics platform:
+
+- **Amplitude**: [logEventWithGroups](https://developers.amplitude.com/docs/javascript#user-groups)
+- **Mixpanel**: [track_with_groups](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpaneltrack_with_groups)
+
 #### <a name="identify-user"></a> Identify User
 
 The Identify User action should be used when you want to identify users from your
@@ -189,6 +207,29 @@ User properties are updated with the following methods according to analytics pl
 - Intercom: `Intercom('update', userProperties)`
 - Mixpanel: `people.set`
 - Segment: `identify`
+
+#### Update Groups
+
+Avo is equipped with a familiar user interface to define and maintain Group Types
+and their properties and updating Group Properties is as easy as adding an action
+to your Event. Read more about Groups <Link passHref href="/data-design/groups"><a>here</a></Link>.
+
+Users can be associated with groups (and all subsequent calls) with the following methods
+according to analytics platform:
+
+- **Amplitude**: [setGroup](https://developers.amplitude.com/docs/javascript#user-groups)
+- **Mixpanel**: [set_group](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpanelset_group)
+- **Segment**: [group](https://segment.com/docs/connections/spec/group/)
+
+Furthermore, group properties can be updated with the following methods according to
+analytics platform:
+
+- **Amplitude**: [groupIdentify](https://developers.amplitude.com/docs/javascript#group-identify)
+- **Mixpanel**: [group.set](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpanelgroupset)
+- **Segment**: [group](https://segment.com/docs/connections/spec/group/) (links user as well)
+
+> 💡 Note that **Segment** always links the user to a group when
+> updating group properties.
 
 #### <a name="log-revenue"></a> Log Revenue
 

@@ -103,7 +103,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `AvoEnv env`: Can be set to dev, prod and staging.
 
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
-The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
 `ICustomDestination customDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
 
@@ -162,7 +162,7 @@ A method to update system properties after initialization.
 ##### Arguments
 
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
-The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
 #### Event tracking functions
 
@@ -174,11 +174,11 @@ Every event you define in your tracking plan in Avo gets a function named after 
 
 ##### Arguments
 
-`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list or object`:
+`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list`:
 Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
 Pass the value of the property to track here.
 
-`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list and object`:
+`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list`:
 Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
 Pass the value of the property to update here.
 
