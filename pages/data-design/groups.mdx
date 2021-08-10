@@ -5,14 +5,26 @@ title: 'Intro to Group analytics'
 
 import Link from '../../components/Link';
 
-When doing product analytics you may find yourself in a position when you need to analyze behavior of a group of users, or you need to group
-different actions together into a group.
+> 💡 **Group analytics** is a terminology used in product analytics tools, that 
+refers to grouping by unique product concepts other than unique users.
 
-There are two main ways of group analytics that we are going to look at in this article:
+The concept of grouping product analytics by unique _users_ is well established. 
+E.g. counting unique users who perform specific actions in your product, or individual user retention. 
+In addition to unique users, most products have other core concepts to group by, 
+such as _unique workspaces_, _unique chat channels_, _unique games_, etc.  
+
+Group analytics are supported by product analytics tools and CDPs like Segment, 
+Amplitude and Mixpanel. You can also do group analytics in a fairly straight forward 
+way in your data warehouse, as long as you provide the unique id of the respective concept 
+in the relevant context.
+
+In this article we dive into <a href="#managing-group-analytics">Managing Group Analytics</a> 
+in practice (funcionality, consequences, use cases, how to manage), for each of the two main 
+types of group analytics:
 
 -  <a href="#grouping-users">Grouping users</a>
 -  <a href="#grouping-events">Grouping events</a>
-For getting group analytics going in practice, read on about <a href="#managing-group-analytics">Managing Group Analytics</a>
+
 
 ## Grouping users
 
