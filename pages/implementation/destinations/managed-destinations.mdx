@@ -17,15 +17,20 @@ Avo can manage a limited set of Analytics destination, but you can use **any** e
   />
 </center>
 
-If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: Log Event, Update User Properties, Identify User, Unidentify User, Log Revenue, Log Page View, will be handled by the Avo generated code, so you don't need to think about that.
+If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: `Log Event`, `Update User Properties`, `Identify User`, `Unidentify User`, `Log Revenue`, `Log Page View`, `Update Groups`, will be handled by the <Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions in the Avo generated code</a></Link>, so you don't need to think about that.
 
 - Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specified environment when you initialize Avo
-- Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call
-- Avo will call the user properties method of the analytics SDK (e.g. `identify(userId, userProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Update User Properties` action is called and will include the user properties in the call
-- Avo will call the identify method of the analytics SDK (e.g. `identify(userId)` in the Segment SDK) when an Avo Function corresponding to an event with `Identify User` action is called
-- Avo will call the unidentify method of the analytics SDK (e.g. `identify(null)` in the Segment SDK) when an Avo Function corresponding to an event with `Unidentify User` action is called
-- Avo will call the revenue method of the analytics SDK (e.g. `track("revenue", {"revenue": amount})` in the Segment SDK) when an Avo Function corresponding to an event with `Log Revenue` action is called
-- Avo will call the page method of the analytics SDK (e.g. `page(pageName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Page View` action is called and will include the event and system properties in the call
+- **Log Event**: Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call.
+- **Log event with Group**: Avo will associate the track method with the specified group if the event is associated with a group in the `Log Event` action.
+- **Update User Properties**: Avo will call the user properties method of the analytics SDK (e.g. `identify(userId, userProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Update User Properties` action is called and will include the user properties in the call.
+- **Identify User**: Avo will call the identify method of the analytics SDK (e.g. `identify(userId)` in the Segment SDK) when an Avo Function corresponding to an event with `Identify User` action is called.
+- **Unidentify User**: Avo will call the unidentify method of the analytics SDK (e.g. `identify(null)` in the Segment SDK) when an Avo Function corresponding to an event with `Unidentify User` action is called.
+- **Log Revenue**: Avo will call the revenue method of the analytics SDK (e.g. `track("revenue", {"revenue": amount})` in the Segment SDK) when an Avo Function corresponding to an event with `Log Revenue` action is called.
+- **Log Page View**: Avo will call the page method of the analytics SDK (e.g. `page(pageName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Page View` action is called and will include the event and system properties in the call.
+- **Associate user with Group**: Avo will associate current user with the specified group when an Avo event with the 'Update Groups' action is triggered.
+- **Update Groups Properties**: Avo will update specified group metadata when an Avo event with the 'Update Groups' action is triggered.
+
+> Learn more about Avo actions and how to attach them to events in <Link passHref href="/workspace/tracking-plan/events#actions"><a>the Tracking Plan section</a></Link>.
 
 If you choose to manage the analytics SDK yourself, for example because you are already using the analytics SDK somewhere else, or your SDK is not available as Avo managed destination, you can implement a custom destination.
 Find code snippets of Custom Destinations for different programming languages and analytics tools <Link passHref href="/implementation/start-custom-destination.mdx"><a>here</a></Link>.

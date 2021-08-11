@@ -6,7 +6,7 @@ title: 'Events'
 
 import Link from '../../../components/Link';
 
-An event represents something that a user does or that happens to them. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
+An event represents something that a user does or that happens in response to their actions. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
 
 <a
   target="_blank"
@@ -16,7 +16,7 @@ An event represents something that a user does or that happens to them. For exam
   Tracking Plan Guide: How to Pick Your Events and Properties
 </a>
 
-### <a name="event-defintion"></a> Event Definition
+## <a name="event-defintion"></a> Event Definition
 
 An event is defined in the Events section of the Tracking plan and can be organized into categories. The definition of an event includes:
 
@@ -27,7 +27,7 @@ An event is defined in the Events section of the Tracking plan and can be organi
 - The <Link passHref href="/workspace/tracking-plan/metrics"><a>_Metrics(s)_</a></Link> related to the event
 - The _category(s)_ that the event is a part of
 
-### Sources
+## Sources
 
 Add all sources you want the event to be sent from to the event in Avo. If you want the event to be implemented with [Avo Functions](https://www.avo.app/docs/implementation/avo-functions-overview), make sure "Implement with Avo" is checked. Having "Implement with Avo" checked adds the event to your type-safe generated Avo Functions file for that source. If you don't want the event to be implemented with Avo Functions, leave "Implement with Avo" unchecked.
 
@@ -40,21 +40,51 @@ Add all sources you want the event to be sent from to the event in Avo. If you w
 </center>
 
 
-### <a name="actions"></a> Actions
+## <a name="actions"></a> Actions
 
-Actions is an umbrella term over all the tracking methods the analytics platforms offer. In Avo you can define your actions in the Actions part of the tracking plan and organize them into categories. Actions can be triggered on their own or together, for example it's common to trigger any of the actions along with logging an event.
+Actions is Avo's umbrella term over all the tracking methods the analytics platforms offer, such as logging events, updating user properties, logging revenue, etc. In your Avo tracking plan you can configure which actions (tracking methods) should be triggered. Actions can be triggered on their own or together, for example it's common to update user properties along with logging an event. 
 
-Below is a list of possible actions and supported platforms, in the order of which they are triggered:
+See <a href="/workspace/tracking-plan/events#supported-actions">supported actions (tracking methods)</a> below.
 
-1. <a href="#identify-user">Identify User</a>: Amplitude, Segment, Mixpanel and
-   Fullstory
-2. <a href="#update-user-props">Update User Properties</a>: Amplitude, Segment,
-   Mixpanel and Fullstory
-3. <a href="#log-event">Log Event</a> All supported analytics platforms (Amplitude and Mixpanel when associating with groups)
-4. <a href="#log-revenue">Log Revenue</a>: Amplitude, Segment and Mixpanel
-5. <a href="#log-page-view">Log Page View</a>: Segment
-6. <a href="#unidentify-user">Unidentify User</a>: Amplitude, Segment, Mixpanel
-   and Fullstory
+### Configuring Actions
+
+#### Adding Actions
+
+The default action when you add an event to your Avo tracking plan is to log an event. 
+
+To add an action, click `+Add Action` in the Event modal and select the relevant action:
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 300 + 'px' }}
+    src={require('../../../images/workspace/tracking-plan/add-action.png')}
+    alt="Add Actions in the Actions section of the Event modal"
+  />
+</center>
+
+#### Removing Actions
+
+To remove an action, click settings in the Action and select `Remove`:
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 300 + 'px' }}
+    src={require('../../../images/workspace/tracking-plan/remove-action.png')}
+    alt="Add Actions in the Actions section of the Event modal"
+  />
+</center>
+
+### Supported Actions
+
+Below is a list of possible actions, followed by a more detailed overview of each:
+
+1. <a href="#identify-user">Identify User</a>: Avo will identify the user in your analytics tool when this event is sent. All events sent after this event will be tied to the identified user. Usually set on sign in events.
+2. <a href="#update-user-props">Update User Properties</a>: Avo will update the following user properties when this event is sent.
+3. <a href="#log-event">Log Event</a> Avo will log/track this as an event in your analytics tool.
+4. <a href="#log-revenue">Log Revenue</a>: Avo will use revenue APIs provided by your analytics tool to log revenue when this event is sent. Usually set on checkout events.
+5. <a href="#log-page-view">Log Page View</a>: Avo will log page view in your analytics tool when this event is sent. Usually set on events that are sent on screen/page navigation.
+6. <a href="#unidentify-user">Unidentify User</a>: Avo will unidentify the user in your analytics tool when this event is sent. All events sent after this event will not be tied to the previously identified user. Usually set on sign out events.
+7. <a href="#update-groups">Update Groups</a>: Avo can associate users with groups and/or update group properties. Adding users to groups will link them to all subsequent calls.
+
+> 💡 Read about <Link passHref href="/implementation/avo-functions-overview#avo-generated-file-supported-tracking-methods"><a>**how Avo Functions handle different tracking methods**</a></Link>.
 
 #### <a name="log-event"></a> Log Event
 
