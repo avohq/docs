@@ -1,0 +1,113 @@
+---
+layout: 'guide'
+title: 'Name Mapping and Use Cases'
+---
+
+import Link from '../../components/Link';
+
+**Name Mapping** is a powerful tool in Avo to customize how your events and properties are sent to different destinations. Continue reading to learn some of the use cases for name mapping and how to add name mapping to your events and properties.
+
+> 💡 Note that name mapping is in beta and available upon request.
+
+## How to use name mapping
+Name mapping can be used to configure both event and property names to be sent as something different to specific destinations.
+
+### Adding name mapping to an event
+
+To add a name mapping to your event:
+1. Open the event that you want to add name mapping for
+2. Click the three dots in the top right corner of the event details
+3. Click "Add Name Mapping" (if you can't see that option in the menu your workspace mght not have access to it yet. Contact us to request access)
+4. Type in the event name spelled like you want it to appear in the analytics destinations
+5. Select the analytics destination which you want receive this name mapping for this event
+
+[//]: # 'TODO Add GIF'
+
+### Adding name mapping to a property
+
+To add a name mapping to your property:
+1. Open the property that you want to add name mapping for
+2. Find the name mapping section located below rules and above the activity log in the property view
+3. Click "Add Name Mapping" (if you can't see that option in the menu your workspace mght not have access to it yet. Contact us to request access)
+4. Type in the property name spelled like you want it to appear in the analytics destinations
+5. Select the analytics destination which you want receive this name mapping for this property
+
+[//]: # 'TODO Add GIF'
+
+## Use cases for name mapping
+Name mapping is a powerful tool for many different use cases for events and properties. We have gathered some examples below
+
+### For Events
+** A single destination requires a specific event name **
+Some destinations require a specific event name for certain user actions that might not be according to your naming convention. Name mapping enables you to have a single event for all destinations and map the name to a differnt name when needed.
+
+_Example:_
+A marketing tool requires the purchase event to be named "purchase", but your naming convention is to spell event names in title case with an object and an action. Then you can name the event "Purchase Completed" in Avo and create a name mapping for the marketing tool such that the event is sent as "purchase" to that destination.
+
+<center>
+  <img
+    src={require('../../images/best-practices/name-mapping/event-name-mapping-marketing.png')}
+    width="75%"
+    alt="Purpose meeting example"
+  />
+</center>
+
+** An event has different shapes based on scenarios **
+Some companies have multiple platforms or products and have complex event shapes that vary depending on platform, product or context. In those cases it's useful to create multiple events in Avo for the different shapes, differentiate between the event names in Avo but send all of them as the same event name to your destinations.
+
+_Example:_
+A company has three different apps where it's possible to add things to cart. The shapes of the "Add to Cart" events varies a lot between the three apps as the same properties are not relevant for all of them. Therefore they have three "Add to Cart" events in Avo
+
+- Add to Cart – Food App
+- Add to Cart – Clothes App
+- Add to Cart – Jewlery App
+
+<center>
+  <img
+    src={require('../../images/best-practices/name-mapping/event-name-mapping-big-event.png')}
+    width="75%"
+    alt="Purpose meeting example"
+  />
+</center>
+
+
+These events have some properties in common but some not at all. But the company wants to be able to analyse all the data together, to be able to compare the performance of the three.
+
+
+### For Properties
+
+** A single destination requires a specific property name **
+Some destinations require a specific property name for certain events that might not be according to your naming convention. Name mapping enables you to have a single property for all destinations and map the name to a differnt name when needed.
+
+_Example:_
+A marketing tool requires the currency property to be spelled in upper case but your naming convention is to spell it in snake case. Then you can name the property "currency" in Avo and create a name mapping for the marketing tool such that the property is sent as "CURRENCY" to that destination.
+
+<center>
+  <img
+    src={require('../../images/best-practices/name-mapping/property-name-mapping-marketing.png')}
+    width="75%"
+    alt="Purpose meeting example"
+  />
+</center>
+
+** Different property types should have the same name **
+Some teams have a history of having event and user properties with the same name before starting to use Avo. Avo encourages teams to use different names between property types as it can be confusing in the analytics tool to differentiate between the two properties. But to be able to keep history intact, then you can name the event and user properties differently in Avo, but send them with the same name to your destinations.
+
+Example:
+A team has been sending email as a user and event property before adopting Avo. They want to continue sending both properties with the name "email" to all their destinations to keep history intact. So they name the event property "email" and the user property "user email" and add a name mapping to send it as "email" to all destinations.
+
+<center>
+  <img
+    src={require('../../images/best-practices/name-mapping/property-name-mapping-event-and-user.png')}
+    width="75%"
+    alt="Purpose meeting example"
+  />
+</center>
+
+<center>
+  <img
+    src={require('../../images/best-practices/name-mapping/property-name-mapping-user-email.png')}
+    width="75%"
+    alt="Purpose meeting example"
+  />
+</center>
