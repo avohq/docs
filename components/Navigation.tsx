@@ -251,6 +251,11 @@ const navigation: navigationItem[] = [
             title: 'Multiple sources on Avo branches',
             path: '/data-design/multiple-sources-on-avo-branches',
           },
+          {
+            type: 'route',
+            title: 'Name Mapping and Use Cases',
+            path: '/data-design/name-mapping',
+          },
         ],
       },
     ],
