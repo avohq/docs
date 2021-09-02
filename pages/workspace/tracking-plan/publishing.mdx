@@ -151,13 +151,21 @@ On publish, Avo will merge your Avo tracking plan with any existing events in Go
 
 Avo will not impact any events or properties that are only defined in Govern, or events that have not been added to the Govern integration in Avo.
 
+### Govern Publishing Warnings
+
+#### 409 Conflict
+
+Some events that are in your Govern Schema are not recognized by the Govern API, for example events that have been merged into other events in Govern or events that are blocked.
+Events that end up returning 409 error in Amplitude are likely not active. If you'd like to get rid of this warning please double check them and remove them from your Avo tracking plan if they are not active anymore.
+
 ### Govern Publishing Errors
 
 The following errors might occur when publishing your tracking to Govern. When publishing errors occur the error message in the Avo UI will contain which items could not be updated along with the error codes.
 
 #### 404 Not Found
 
-We tried to update an event that doesn't exist in your Amplitude Govern Schema. If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema). If your Govern Schema has been initialized, and the error persists, please contact support.
+We tried to update an event that doesn't exist in your Amplitude Govern Schema. If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema).
+After you Govern Schema is initialized usually the API continues to return occasional 404 errors for a few more hours. If your Govern Schema has been initialized more than 6 hours ago and the error persists, please contact support.
 
 #### 408 Timeout
 
@@ -171,7 +179,12 @@ If that does not help this might be caused by an internal error. Please reach ou
 
 #### 429 Too Many Requests
 
-We've exceeded the number of Govern requests we can make per hour for these API credentials. Please wait before trying to publish again. You can learn more about Amplitude Govern request limits [in the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360016606991-Taxonomy-API#h_53f1b7d4-ee8d-4a81-945b-e5a2909ddfad).
+We've exceeded the number of Govern requests we can make per hour for the provided API credentials or there are too many concurrent requests to the Amplitude Govern API with given credentials.
+Please wait before trying to publish again and make sure that you are not running multiple publishing at the same time for the same credentials. You can learn more about Amplitude Govern request limits [in the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360016606991-Taxonomy-API#h_53f1b7d4-ee8d-4a81-945b-e5a2909ddfad).
+
+#### Other error codes
+
+Please contact us if you are experiencing other types of errors.
 
 <img
   src={require('../../../images/publishing_webhook.svg')}
