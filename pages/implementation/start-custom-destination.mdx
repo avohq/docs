@@ -40,6 +40,10 @@ With a custom destination you'll get access to callback methods for Avo actions.
 > The callback methods mirror the Avo Actions you set up for given Avo Event in your tracking plan in your workspace.
 > Learn how to attach actions to events in <Link passHref href="/workspace/tracking-plan/events#actions"><a>the Tracking Plan section</a></Link>.
 
+- Update Groups
+
+  With this action you can update the Group properties of a particular group and assign currently identified user to a group.
+
 ### Callback methods
 
 - `make`: Triggered during Avo initialization.
@@ -78,6 +82,20 @@ With a custom destination you'll get access to callback methods for Avo actions.
   Here you would attach user properties to the currently identified user in your analytics platform.
 
   Example: `analytics.setUserProperties(userId, userProperties)`
+
+- `setGroupProperties`: You can update various group properties along with events in the Avo dashboard. When an Avo function with attached groups and group properties is called, this callback is triggered.
+  Here you would update the properties for specified groups.
+
+  Example: `mixpanel.get_group(groupType, groupId).set(groupProperties)`
+
+- `addCurrentUserToGroup`: You can add groups and group properties to an event and set the event to associate the currently identified user with the provided groups.
+  Can optionally update group properties along the way.
+
+Example: ` analytics.group(groupType, { name: groupId, ...groupProperties, });`
+
+- `logEventWithGroups`: this call is same as the `logEvent` call described above, except it also associates this particular event with a group.
+
+Example: ` mixpanel.track_with_groups(eventName, eventProperties, { groupType: groupId, });`
 
 ## Initialization instructions
 
@@ -143,7 +161,14 @@ var customDestination = {
   page: function (pageName, eventProperties) {
     // TODO implement
   },
-  addToGroup: function (groupType, groupId, groupProperties) {
+  setGroupProperties(groupType, groupId, groupProperties) {
+    // Mixpanel example
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  addCurrentUserToGroup: function (groupType, groupId, groupProperties) {
     // Segment example
     analytics.group(groupType, {
       name: groupId,
@@ -157,15 +182,13 @@ var customDestination = {
     var identify = new amplitude.Identify().set(groupProperties);
     amplitude.groupIdentify(groupType, groupId, identify);
   },
-  logEventWithGroup: function (eventName, eventProperties, groupType, groupId) {
+  logEventWithGroups: function (eventName, eventProperties, groupTypesToGroupIds) {
     // Mixpanel example
-    mixpanel.track_with_groups(eventName, eventProperties, {
-      groupType: groupId,
-    });
+    mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
     // Amplitude example
     amplitude
       .getInstance()
-      .logEventWithGroups(eventName, eventProperties, { groupType: groupId });
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
   },
 };
 ```
@@ -245,7 +268,18 @@ let customDestination = {
   logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
   },
-  addToGroup: function (
+  setGroupProperties(
+    groupType: string,
+    groupId: string,
+    groupProperties: object,
+  ) {
+    // Mixpanel example
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  addCurrentUserToGroup: function (
     groupType: string,
     groupId: string,
     groupProperties: object,
@@ -263,20 +297,18 @@ let customDestination = {
     var identify = new amplitude.Identify().set(groupProperties);
     amplitude.groupIdentify(groupType, groupId, identify);
   },
-  logEventWithGroup: function (
+
+  logEventWithGroups: function (
     eventName: string,
     eventProperties: object,
-    groupType: string,
-    groupId: string,
+    groupTypesToGroupIds: object,
   ) {
     // Mixpanel example
-    mixpanel.track_with_groups(eventName, eventProperties, {
-      groupType: groupId,
-    });
+    mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
     // Amplitude example
     amplitude
       .getInstance()
-      .logEventWithGroups(eventName, eventProperties, { groupType: groupId });
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
   },
 };
 ```
@@ -296,15 +328,18 @@ let customDestination: Avo.avoCustomDestination = {
   setUserProperties: (userId: string, userProperties: Js.Json.t) => ();
   identify: (userId: string) => ();
   unidentify: () => ();
-  addToGroup: (groupType: string,
+  setGroupProperties: (groupType: string,
     groupId: string,
     groupProperties: Js.Json.t
   ) => ();
-  logEventWithGroup: (
+  addCurrentUserToGroup: (groupType: string,
+    groupId: string,
+    groupProperties: Js.Json.t
+  ) => ();
+  logEventWithGroups: (
     eventName: string,
     eventProperties: Js.Json.t,
-    ~groupType: string,
-    ~groupId: string
+    ~groupTypesToGroupIds: Js.Json.t
   ) => ();
 };
 ```
