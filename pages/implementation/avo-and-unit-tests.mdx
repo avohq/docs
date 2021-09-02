@@ -17,7 +17,7 @@ describe('Avo', () => {
   var Avo;
   beforeAll(() => {
     Avo = require('./Avo');
-    Avo.initAvo({ env: 'dev', noop: true });
+    Avo.initAvo({ env: 'dev', noop: true, strict: true });
   });
   test('signupStart() with email property is valid', () => {
     Avo.signupCompleted({ email: 'test@test.com' });
