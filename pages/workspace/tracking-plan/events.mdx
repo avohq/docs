@@ -21,7 +21,8 @@ An event represents something that a user does or that happens in response to th
 An event is defined in the Events section of the Tracking plan and can be organized into categories. The definition of an event includes:
 
 - A descriptive <Link passHref href="/data-design/naming-conventions#2-what-does-naming-convention-refer-to"><a>_Event Name_</a></Link>
-- A <Link passHref href="/data-design/defining-descriptive-events-and-properties#events-1"><a>_Description_</a></Link> including the timing of when the event should be sent as well as other useful implementation details (optional but highly recommended)
+- A <Link passHref href="/data-design/defining-descriptive-events-and-properties#events-1"><a>_Description_</a></Link> with information about the event beyond what the name includes (optional but highly recommended)
+- The Trigger(s) that describe both visually and in words all the user or system actions that trigger the event (optional but highly recommended)
 - The <Link passHref href="/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from"><a>_Source(s)_</a></Link> that the event should be sent from
 - The <Link passHref href="#actions"><a>_Actions(s)_</a></Link> associated with the event
 - The <Link passHref href="/workspace/tracking-plan/metrics"><a>_Metrics(s)_</a></Link> related to the event (optional)
