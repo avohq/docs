@@ -222,6 +222,16 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Event Triggers and Use Cases',
+            path: '/data-design/event-triggers',
+          },
+          {
+            type: 'route',
+            title: 'Name Mapping and Use Cases',
+            path: '/data-design/name-mapping',
+          },
+          {
+            type: 'route',
             title: 'Documenting purpose meetings',
             path: '/data-design/documenting-purpose-meetings-in-avo',
           },
@@ -250,11 +260,6 @@ const navigation: navigationItem[] = [
             type: 'route',
             title: 'Multiple sources on Avo branches',
             path: '/data-design/multiple-sources-on-avo-branches',
-          },
-          {
-            type: 'route',
-            title: 'Name Mapping and Use Cases',
-            path: '/data-design/name-mapping',
           },
         ],
       },
