@@ -1,4 +1,4 @@
----
+  ---
 layout: 'guide'
 title: 'Event Triggers and Use Cases'
 ---
@@ -21,7 +21,7 @@ To add a trigger to your event:
     -  Upload a screenshot by browsing your files or dragging and dropping (optional)
     - Add a description for the trigger describing what interaction it refers to or what part of the screenshot
     - Select the sources that the trigger applies to
-      - You can select "source independent" for the trigger to be applied to the event, independant of sources. Then it will be included in the implementation instructions and Avo functions for all sources on the event.
+      - You can select "source independent" for the trigger to be applied to the event, independent of sources. Then it will be included in the implementation instructions and Avo functions for all sources on the event.
 5. Click the "Create" button to finalize the trigger
 
 
@@ -47,12 +47,12 @@ When you have an application on web and mobile, they often have different trigge
   <img
     src={require('../../images/best-practices/triggers/different-visuals-for-platforms.png')}
     width="75%"
-    alt="Multiple visuals for differnt platforms"
+    alt="Multiple visuals for different platforms"
   />
 </center>
 
 ### Multiple locations in your application to perform a user action
-When you have multiple locations in your application where a user can perfom an  action (for example with multiple buttons to sign up) then it's good practice to include all scenarios such that the developers implementing don't forget to add the event to a specific call site in their code.
+When you have multiple locations in your application where a user can perform an  action (for example with multiple buttons to sign up) then it's good practice to include all scenarios such that the developers implementing don't forget to add the event to a specific call site in their code.
 
 <center>
   <img
@@ -90,11 +90,11 @@ Triggers facilitate a very nice way to communicate to a developer when they need
 
 ### One trigger for all scenarios
 
-Whenever there is simply one location that a user can perform an action or whne a single screenshot is sufficient to describe when an event is sent, it can be useful to simply add one trigger and have it "source independant".
+Whenever there is simply one location that a user can perform an action or when a single screenshot is sufficient to describe when an event is sent, it can be useful to simply add one trigger and have it "source independent".
 
 <center>
   <img
-    src={require('../../images/best-practices/triggers/single-triggger.png')}
+    src={require('../../images/best-practices/triggers/single-trigger.png')}
     width="75%"
     alt="Single trigger for an event"
   />
