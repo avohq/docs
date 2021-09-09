@@ -1,6 +1,8 @@
-  ---
+---
+
 layout: 'guide'
 title: 'Event Triggers and Use Cases'
+
 ---
 
 import Link from '../../components/Link';
@@ -10,7 +12,8 @@ import Link from '../../components/Link';
 > 💡 Note that Event Triggers are in beta and available upon request.
 
 ## How to use event triggers
-Event triggers can be found in the event details view under "Triggered when", between the description and sources. 
+
+Event triggers can be found in the event details view under "Triggered when", between the description and sources.
 
 To add a trigger to your event:
 
@@ -18,12 +21,11 @@ To add a trigger to your event:
 2. If your event doesn't have any sources, first add the relevant source(s) to the event
 3. Once you have 1 or more sources on the event you can click "+ Add Trigger"
 4. In the trigger modal that appears you are prompted to:
-    -  Upload a screenshot by browsing your files or dragging and dropping (optional)
-    - Add a description for the trigger describing what interaction it refers to or what part of the screenshot
-    - Select the sources that the trigger applies to
-      - You can select "source independent" for the trigger to be applied to the event, independent of sources. Then it will be included in the implementation instructions and Avo functions for all sources on the event.
+   - Upload a screenshot by browsing your files or dragging and dropping (optional)
+   - Add a description for the trigger describing what interaction it refers to or what part of the screenshot
+   - Select the sources that the trigger applies to
+     - You can select "source independent" for the trigger to be applied to the event, independent of sources. Then it will be included in the implementation instructions and Avo functions for all sources on the event.
 5. Click the "Create" button to finalize the trigger
-
 
 <video
   controls
@@ -36,8 +38,8 @@ To add a trigger to your event:
 />
 
 ## Use cases for Event Triggers
-You can use Event Triggers to communicate very clearly from where the event should be sent and at what moment. Below are examples of different ways of using event triggers to communicate that with your team.
 
+You can use Event Triggers to communicate very clearly from where the event should be sent and at what moment. Below are examples of different ways of using event triggers to communicate that with your team.
 
 ### Multiple platforms have different visuals for the event
 
@@ -52,7 +54,8 @@ When you have an application on web and mobile, they often have different trigge
 </center>
 
 ### Multiple locations in your application to perform a user action
-When you have multiple locations in your application where a user can perform an  action (for example with multiple buttons to sign up) then it's good practice to include all scenarios such that the developers implementing don't forget to add the event to a specific call site in their code.
+
+When you have multiple locations in your application where a user can perform an action (for example with multiple buttons to sign up) then it's good practice to include all scenarios such that the developers implementing don't forget to add the event to a specific call site in their code.
 
 <center>
   <img
@@ -63,6 +66,7 @@ When you have multiple locations in your application where a user can perform an
 </center>
 
 ### Fat events
+
 When you have fat events (events that include multiple related user actions, distinguished by a property), it's good practice to communicate all scenarios by using multiple triggers.
 
 For example if you have an event for all interactions to a billing modal, you can add triggers for every single interaction.
@@ -87,7 +91,6 @@ Triggers facilitate a very nice way to communicate to a developer when they need
   />
 </center>
 
-
 ### One trigger for all scenarios
 
 Whenever there is simply one location that a user can perform an action or when a single screenshot is sufficient to describe when an event is sent, it can be useful to simply add one trigger and have it "source independent".
@@ -99,4 +102,3 @@ Whenever there is simply one location that a user can perform an action or when 
     alt="Single trigger for an event"
   />
 </center>
-
