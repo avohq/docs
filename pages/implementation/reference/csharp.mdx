@@ -99,10 +99,18 @@ Custom destination interface format:
 interface ICustomDestination {
     void Make(AvoEnv env);
 
-    void LogEvent(string eventName, IDictionary<string, object> eventProperties);
+    Task LogEvent(string eventName, IDictionary<string, object> eventProperties);
 
-    void SetUserProperties(string userId, IDictionary<string, object> userProperties);
+    Task SetUserProperties(string userId, IDictionary<string, object> userProperties);
 
+    // Group analytics methods
+    Task AddCurrentUserToGroup(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
+
+    Task SetGroupProperties(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
+
+    Task LogEventWithGroups(string anonymousId, string userId, string eventName, IDictionary<string, object> eventProperties, IDictionary<string, object> groupTypesToGroupIds) {return Task.CompletedTask;}
+
+    // Unity specific methods
     void Identify(string userId);
 
     void Unidentify();
