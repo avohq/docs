@@ -894,10 +894,10 @@ class CustomDestination : Avo.IDestination {
     }
 ```
 
-Call the initAvo function:
+Create the Avo object:
 
 ```csharp
-Avo.initAvo(env: Avo.AvoEnv.Dev, customDestination: new CustomDestination());
+new Avo.Avo(env: Avo.AvoEnv.Dev, customDestination: new CustomDestination());
 ```
 
 
