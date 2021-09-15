@@ -124,6 +124,7 @@ each of the supported languages:
   - [PHP](#php)
   - [Python](#python)
   - [Ruby](#ruby)
+  - [C#](#csharp)
 - [Game Engines](#game-engines)
   - [Unity (C#)](#unity)
 
@@ -858,9 +859,7 @@ Call the initAvo function:
 Avo.init_avo(options: {:env => :dev}, custom_destination: CustomDestination.new)
 ```
 
-## <a name="game-engines"></a> Game Engines
-
-### <a name="unity"></a> Unity (C#)
+### <a name="csharp"></a> C#
 
 ```csharp
 using Avo;
@@ -874,7 +873,7 @@ class CustomDestination : Avo.IDestination {
         // TODO implement
     }
 
-    public async Task LogEvent(string eventName, IDictionary<string, object> eventProperties) {
+    public async Task LogEvent(string anonymousId, string userId, string eventName, IDictionary<string, object> eventProperties) {
         // TODO implement
     }
 
@@ -882,11 +881,55 @@ class CustomDestination : Avo.IDestination {
         // TODO implement
     }
 
-    public async Task Identify(string userId) {
+    public async Task AddCurrentUserToGroup(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
+      // TODO implement
+    }
+
+    public async Task SetGroupProperties(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
+      // TODO implement
+    }
+
+    public async Task LogEventWithGroups(string anonymousId, string userId, string eventName, IDictionary<string, object> eventProperties, IDictionary<string, object> groupTypesToGroupIds) {
+      // TODO implement
+    }
+```
+
+Create the Avo object:
+
+```csharp
+new Avo.Avo(env: Avo.AvoEnv.Dev, customDestination: new CustomDestination());
+```
+
+
+## <a name="game-engines"></a> Game Engines
+
+### <a name="unity"></a> Unity (C#)
+
+```csharp
+using Avo;
+```
+
+Implement the custom destination:
+
+```csharp
+class CustomDestination : Avo.IDestination {
+    public void Make(AvoEnv env) {
         // TODO implement
     }
 
-    public async Task Unidentify() {
+    public void LogEvent(string eventName, IDictionary<string, object> eventProperties){
+        // TODO implement
+    }
+
+    public void SetUserProperties(string userId, IDictionary<string, object> userProperties){
+        // TODO implement
+    }
+
+    public void Identify(string userId){
+        // TODO implement
+    }
+
+    public void Unidentify(){
         // TODO implement
     }
 }
@@ -895,5 +938,5 @@ class CustomDestination : Avo.IDestination {
 Call the initAvo function:
 
 ```csharp
-Avo.initAvo(env=Avo.AvoEnv.Dev, customDestination=new CustomDestination());
+Avo.initAvo(env: Avo.AvoEnv.Dev, customDestination: new CustomDestination());
 ```
