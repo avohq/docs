@@ -8,6 +8,18 @@ import Link from '../../../components/Link';
 
 Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, users or groups that describe the state of the user or the product at the time of the event. Avo allows you to define event, group, user and system properties - each category described below.
 
+## <a name="property-defintion"></a> Property Definition
+
+A property is defined in the event details within the relevant <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> or in the properties view.
+
+- A descriptive <Link passHref href="/data-design/defining-descriptive-events-and-properties#properties"><a>_Property Name_</a></Link>
+- A <Link passHref href="/data-design/defining-descriptive-events-and-properties#properties-1"><a>_Description_</a></Link> that gives additional context of what the property is describing beyond the property name (optional but highly recommended)
+- The <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints"><a>_property value type_</a></Link> (required)
+- The <Link passHref href="/workspace/tracking-plan/events"><a>_events_</a></Link> that the property is attached to (required)
+- The <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional"><a>_presence_</a></Link> of the property on each event – whether it's required or optional (required)
+- The <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints"><a>_constraints_</a></Link> defined for the property values (optional but highly recommended)
+- The <Link passHref href="/data-design/name-mapping"><a>_name mappings_</a></Link> the property name is mapped to when sending to specific destinations (optional)
+
 ## <a name="event-properties"></a> Event properties
 
 Event properties describe the current state of your product at the time of the
