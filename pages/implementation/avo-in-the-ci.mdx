@@ -18,7 +18,7 @@ Currently the `avo status` command works as following:
 
 <center>
   <img
-    src={require('../../images/regression.png')}
+    src={require('../../images/avo-status-output.png')}
     width="75%"
     alt="Avo CLI showing regression via avo status"
   />
@@ -30,3 +30,34 @@ Currently the `avo status` command works as following:
   </Link>{' '}
   if you want to learn more about how Avo prevents analytics errors.
 </p>
+
+### Set up Avo status in GitHub actions
+
+Add this GitHub Actions script to `.github/workflows/avo_status.yml`.
+It will take care of installing the Avo CLI and running the `avo status` check on your codebase every time new changes are pushed.
+
+```sh
+name: Avo Status
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Avo CLI
+        run: npm install -g avo
+
+      - name: Avo status
+        run: yarn lint
+```
