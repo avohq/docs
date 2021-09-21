@@ -33,12 +33,14 @@ To add a name mapping to your event:
 
 ### Adding name mapping to a property
 
-To add a name mapping to your property:
+#### Globally for a property
+
+To add a name mapping to a property that applies to all events it's attached to:
 1. Open the property that you want to add name mapping for
 2. Find the name mapping section located below rules and above the activity log in the property view
 3. Click "Add Name Mapping" (if you can't see that option in the menu your workspace might not have access to it yet. Contact us to request access)
 4. Type in the property name spelled like you want it to appear in the analytics destinations
-5. Select the analytics destination which you want receive this name mapping for this property
+5. Select the specific analytics destination which you want receive this name mapping for this property – or select all destinations for all destinations on this event to receive this name mapping
 
 <video
   controls
@@ -48,6 +50,26 @@ To add a name mapping to your property:
   autoPlay
   src={require('../../images/best-practices/name-mapping/property-name-mapping.mp4')}
   alt="Adding name mapping to a property"
+/>
+
+#### Locally for a property on an event
+
+To add a name mapping to a property that applies to a single event it's attached to:
+1. Open the event that you want the property name mapping to apply for
+2. In the event details, find the property you want to apply the name mapping to
+3. Click the three dots on the right side of the property
+4. Select "Add Name Mapping" (if you can't see that option in the menu your workspace might not have access to it yet. Contact us to request access)
+5. Type in the property name spelled like you want it to appear in the analytics destinations
+6. Select the specific analytics destination which you want receive this name mapping for this property – or select all destinations for all destinations on this event to receive this name mapping
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={require('../../images/best-practices/name-mapping/name_mapping_per_event.mp4')}
+  alt="Adding name mapping for a property on an event"
 />
 
 ## Use cases for name mapping
