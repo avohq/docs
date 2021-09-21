@@ -33,6 +33,15 @@ To add a name mapping to your event:
 
 ### Adding name mapping to a property
 
+Name mapping can be added to a property both globally such that it applies for all events the property is attached to – and locally such that it only applies to the event where it is configured on. In addition, property name mapping can be applied to a single destination at a time – or all destinations. 
+
+In the case where multiple name mappings are defined for the same property name, Avo priorizes the name mappings such that the first available mapping in the following list is the one that is used:
+
+1. Event specific, destination specific
+2. Event specific, all destinations
+3. Global for all events, destination specific
+4. Global for all events, all destinations
+
 #### Globally for a property
 
 To add a name mapping to a property that applies to all events it's attached to:
@@ -71,6 +80,7 @@ To add a name mapping to a property that applies to a single event it's attached
   src={require('../../images/best-practices/name-mapping/name_mapping_per_event.mp4')}
   alt="Adding name mapping for a property on an event"
 />
+
 
 ## Use cases for name mapping
 Name mapping is a powerful tool for many different use cases for events and properties. We have gathered some examples below
