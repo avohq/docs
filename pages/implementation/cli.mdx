@@ -60,15 +60,44 @@ $ avo status
 
 The output of this command will show you all the Avo function calls in your codebase and will highlight functions that are never called. If one or more Avo functions are not called in the code the command will fail.
 
-<center>
-  <img
-    src={require('../../images/avo-status-output.png')}
-    width="75%"
-    alt="Purpose meeting example"
-  />
-</center>
+```sh
+> avo status
+info Currently on branch 'main'
+└─ java android (musicplayerexample/src/main/java/sh/avo/Avo.java)
+   ├─ appOpened
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/MusicPlayerExampleApplication.kt: 1 time
+   ├─ login
+   │  └─ ✖ no usage found
+   ├─ logout
+   │  └─ ✖ no usage found
+   ├─ pause
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 1 time
+   ├─ play
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 3 times
+   ├─ playNextTrack
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 1 time
+   └─ playPreviousTrack
+      └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 1 time
+info 5 of 7 events seen in code
+error 2 missing events
+└─ java android (musicplayerexample/src/main/java/sh/avo/Avo.java)
+   ├─ login: no usage found
+   └─ logout: no usage found
+```
 
 If you run `avo status --verbose` it will also print a list of files where the CLI searched for the Avo functions.
+
+Here is an example beginning of the verbose output:
+```sh
+info Currently on branch 'main'
+Looking in files with extensions: [ 'java', 'kt' ]
+info Looking for events in src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt
+info Looking for events in src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerLogic.kt
+info Looking for events in src/main/java/app/avo/musicplayerexample/MusicPlayerExampleApplication.kt
+info Looking for events in src/main/java/app/avo/musicplayerexample/MusicStorage.kt
+info Looking for events in src/main/java/app/avo/musicplayerexample/Player.kt
+...
+```
 
 ## Using Avo Branches
 
@@ -77,6 +106,7 @@ When editing your tracking plan on avo.app you can branch out from the main trac
 ```bash
 $ avo checkout my-branch-name
 ```
+
 
 You can also pull from a specific branch by using the `--branch` flag when running `avo pull`
 

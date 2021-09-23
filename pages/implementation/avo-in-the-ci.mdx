@@ -1,39 +1,67 @@
 ---
 layout: 'guide'
 title: 'Avo in CI/CD'
+
 # abstract: 'Learn how to use Avo to create a tracking plan and generate high quality, actionable data.'
+
 ---
 
-import Link from '../../components/Link';
+import Link from '../../components/Link'; 
 
-You can add the `avo status` CLI command to your CI/CD workflows to regression check your tracking plan implementation.
+The Avo CLI includes a command, `avo status` , which you can use ad-hoc or run in your CI to monitor that all expected analytics events are in fact implemented in your code.
 
-The `avo status` command errors if no tracking call is found for any of the events defined in the Tracking Plan pinned in `avo.json`. It can be added to a your CI to make sure you always complete implementing all events, and to spot if tracking implementation is accidentally removed.
+## What is `avo status` ?
 
-Currently the `avo status` command works as following:
+When you implement your analytics events with <Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions</a></Link>, aka the type-safe analytics wrappers, you can run `avo status` to check where in your code base the analytics calls are made, or if they are missing.
+
+## How does avo status work?
+
+- `avo status` runs through your code base, searches for instances Avo Functions, and returns an error if there is no found instance of one or more of the analytics events that are marked as "Implement with Avo" for this code base.
+- `avo status` searches in the folder where it's invoked and in the children subfolders. It requires Avo to be initialized in that folder, i.e. there should be your `avo.json` file.
 - It validates tracking calls implemented with Avo Function (the Avo generated code)
 - It will error if no instance of the event is found in your code. This means two things:
   1. It will not error if one tracking call instance is removed for a specific event, but there are still some tracking calls for this event remaining
   2. It will not error if the tracking call remains in a dead code path
 
-<center>
-  <img
-    src={require('../../images/avo-status-output.png')}
-    width="75%"
-    alt="Avo CLI showing regression via avo status"
-  />
-</center>
+```sh
+> avo status
+info Currently on branch 'main'
+└─ java android (musicplayerexample/src/main/java/sh/avo/Avo.java)
+   ├─ appOpened
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/MusicPlayerExampleApplication.kt: 1 time
+   ├─ login
+   │  └─ ✖ no usage found
+   ├─ logout
+   │  └─ ✖ no usage found
+   ├─ pause
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 1 time
+   ├─ play
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 3 times
+   ├─ playNextTrack
+   │  └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 1 time
+   └─ playPreviousTrack
+      └─ used in musicplayerexample/src/main/java/app/avo/musicplayerexample/ExampleMusicPlayerActivity.kt: 1 time
+info 5 of 7 events seen in code
+error 2 missing events
+└─ java android (musicplayerexample/src/main/java/sh/avo/Avo.java)
+   ├─ login: no usage found
+   └─ logout: no usage found
+```
 
 <p>
-  <Link passHref href="/help/troubleshooting">
-    <a>Get in touch</a>
-  </Link>{' '}
+  <Link passHref href="/help/troubleshooting"><a>Get in touch</a></Link>{' '}
   if you want to learn more about how Avo prevents analytics errors.
 </p>
 
-### Set up Avo status in GitHub actions
+##  Integrating Avo with my CI
 
-Add this GitHub Actions script to `.github/workflows/avo_status.yml`.
+> 💡 Why would I add Avo to my CI/CD? 
+>
+> Adding avo status to your CI/CD enables you to regression monitor your implementation (i.e. confirm you haven't accidentally refactored out an analytics trigger), as well as confirm that you've implemented every analytics event that should be implemented for a specific analytics release in a specific codebase.
+
+### Example: setting up `avo status` in GitHub Actions
+
+Add this script to `.github/workflows/avo_status.yml` .
 It will take care of installing the Avo CLI and running the `avo status` check on your codebase every time new changes are pushed.
 
 ```sh
@@ -59,5 +87,5 @@ jobs:
         run: npm install -g avo
 
       - name: Avo status
-        run: yarn lint
+        run: avo status
 ```
