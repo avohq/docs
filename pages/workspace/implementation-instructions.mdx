@@ -1,0 +1,34 @@
+---
+layout: 'guide'
+title: 'Share implementation instructions'
+abstract: 'Share auto-generated implementation instructions with your team in your favourite task management tool'
+---
+
+import Link from '../../components/Link';
+
+While the branch review scree is handy for understanding the changes done in the tracking plan, it’s not very convenient for implementation.
+For implementation we divide the changes per source and then group them by events, so developers can pick their platform and implement events once by one.
+
+If your branch includes changes on at least one source then the implementation instructions will be available on the diff screen
+
+<center>
+  <img
+    width="80%"
+    src={require('../../images/implementation-diff-panel-options.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+
+You can copy the instruction and pass them to developers for implementation in your communication tool of choice in either Markdown or in [Jira's text format](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all).
+
+<center>
+  <img
+    width="80%"
+    src={require('../../images/implementation-diff-expanded.png')}
+    alt="Opening a branch"
+  />
+</center>
+
+## What's next?
+- <Link passHref href="/implementation/read-implementation-diff"><a>Developer's guide on reading the implementation instructions</a></Link>

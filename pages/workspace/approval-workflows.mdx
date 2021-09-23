@@ -1,0 +1,71 @@
+---
+layout: 'guide'
+title: 'Approval workflows'
+abstract: 'Increase the quality of your tracking plan with protected main branch and branch approvals'
+---
+
+import Link from '../../components/Link';
+
+Building a tracking plan is a team sport. Getting feedback from your team on the changes you're making to the tracking plan helps with building alignment and keeping the plan consistent. That's why we built approval workflows. Approval workflows can be configured in three ways:
+
+1. <Link passHref href="/workspace/approval-workflows#protected-main-branch">
+     <a>Protected main branch</a>
+   </Link>
+2. <Link passHref href="/workspace/approval-workflows#require-admin-approval">
+     <a>Require admin approval</a>
+   </Link>
+3. <Link
+     passHref
+     href="/workspace/approval-workflows#require-multiple-approvals"
+   >
+     <a>Require multiple approvals</a>
+   </Link>
+
+### Protected main branch
+
+To make sure no one accidentally makes changes directly on the main branch and to encourage peer reviews of branches, you can opt in to protecting the main branch. That means:
+
+- Only admins can make changes directly on the main branch
+- Only admins can merge branches that haven't been approved by a branch collaborator (editor or admin)
+
+Enabling protected main branch is a prerequisite for using require admin approval and require multiple approvals.
+
+To enable this configuration, click the settings wheel in your workspace, in Workspace settings go into the Permissions tab and check "Protected main branch".
+
+<center>
+  <img
+    width="50%"
+    src={require('../../images/protected-main-branch.png')}
+    alt="Protecting the main branch"
+  />
+</center>
+
+### Require admin approval
+
+To make sure all tracking plan changes are reviewed by a dedicated group of people, you can opt in to require admin approval. That means that branch cannot be merged into the main branch unless at least one admin has approved the changes.
+
+To enable this configuration, click the settings wheel in your workspace, in Workspace settings go into the Permissions tab and check "Require admin approval". Note that "Protected main branch" must be enabled to enable "Require admin approval".
+
+<center>
+  <img
+    width="90%"
+    src={require('../../images/admin-approval.png')}
+    alt="Required admin approval"
+  />
+</center>
+
+### Require multiple approvals
+
+You can configure how many approvals are required to merge a branch. By default, only one approval is required, but you can require up to three approvals before a branch can be merged.
+
+To change the number of required approvals, click the settings wheel in your workspace, in Workspace settings go into the Permissions tab and change the "Number of required approvals". Note that "Protected main branch" must be enabled to enable "Require admin approval".
+
+Requiring multiple approvals can be used in combination with required admin approvals. In that case, the number of required approvals is the number of admins that need to approve the changes before the branch can be merged.
+
+<center>
+  <img
+    width="90%"
+    src={require('../../images/num-required-approvals.png')}
+    alt="Multiple approvals required"
+  />
+</center>
