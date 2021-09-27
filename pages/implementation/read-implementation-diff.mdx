@@ -33,11 +33,13 @@ Every event has description and a link to Avo.
 
 Then each event in the diff has a list of properties. Properties can be: new, removed, updated and existing.  
 If the event is new, then all properties are new. If the event is removed then you don’t need to care about the properties. If the event is updated, then you’d change the updated properties, delete the removed props and keep the existing.  
-Each property includes a description from Avo.  
+Each property includes a description from Avo.
+The type of each property is listed, can be event property, user property or group property.
 
 ### Destinations
 
 Then we list the destinations of the event - new, removed and existing.
+If an event or property has a different name that should be used for given destination, it will be listed in this section.
 
 ### An example
 
@@ -53,8 +55,9 @@ Then we list the destinations of the event - new, removed and existing.
 >
 >#### New properties on this event
 >
->- Add Seat Prompt Interaction
+>- Add Seat Prompt Interaction, also this property has destination specific names, see in the Destinations section below
 >  - **Description**: -  
+>  - **Property type**: event property
 >  - **Value Type**: string matches Proceed, Dismiss
 >
 >#### New destinations on this event
@@ -62,6 +65,7 @@ Then we list the destinations of the event - new, removed and existing.
 >- segment
 >- mixpanel
 >- fullstory
+>   - Send the "Add Seat Prompt Interaction" property as "add_spi"
 >- amplitude
 >
 >
@@ -69,7 +73,7 @@ Then we list the destinations of the event - new, removed and existing.
 >
 >## New Events:
 >
->### Event "Add Seat Prompt Interaction" ([View full event in Avo])
+>### Event "Add Seat Prompt Interaction", also this event has destination specific names, see in the Destinations section below ([View full event in Avo])
 >
 >##### This event should be implemented with Avo generated code. [See implement instructions here] 
 >
@@ -83,7 +87,9 @@ Then we list the destinations of the event - new, removed and existing.
 >
 >#### New destinations on this event
 >
->- Custom Node JS
+>- segment
+>  - Send the event as "seat_prompt_interact", NEW!
+>- mixpanel
 
 ## What's next?
 
