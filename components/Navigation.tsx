@@ -504,6 +504,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Snowplow Destination Interface',
+            path: '/implementation/snowplow-destination',
+          },
+          {
+            type: 'route',
             title: 'Configuring logging',
             path: '/implementation/custom-loggers',
           },
