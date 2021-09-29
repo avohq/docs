@@ -17,8 +17,8 @@ When you implement your analytics events with <Link passHref href="/implementati
 ## How does avo status work?
 
 - `avo status` runs through your code base, searches for instances Avo Functions, and returns an error if there is no found instance of one or more of the analytics events that are marked as "Implement with Avo" for this code base.
-- `avo status` searches in the folder where it's invoked and in the children subfolders. It requires Avo to be initialized in that folder, i.e. there should be your `avo.json` file.
-- It validates tracking calls implemented with Avo Function (the Avo generated code)
+- `avo status` searches in the folder where it's invoked and in the children subfolders. It requires Avo to be initialized in that folder, i.e. your `avo.json` file should be there.
+- It validates tracking calls implemented with <Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions</a></Link>, aka the Avo generated type-safe analytics wrappers.
 - It will error if no instance of the event is found in your code. This means two things:
   1. It will not error if one tracking call instance is removed for a specific event, but there are still some tracking calls for this event remaining
   2. It will not error if the tracking call remains in a dead code path
@@ -55,9 +55,9 @@ error 2 missing events
 
 ##  Integrating Avo with my CI
 
-> 💡 Why would I add Avo to my CI/CD? 
+> 💡 **Why would I add Avo to my CI/CD?**
 >
-> Adding avo status to your CI/CD enables you to regression monitor your implementation (i.e. confirm you haven't accidentally refactored out an analytics trigger), as well as confirm that you've implemented every analytics event that should be implemented for a specific analytics release in a specific codebase.
+> Adding `avo status` to your CI/CD enables you to **regression monitor** your implementation (i.e. confirm you haven't accidentally refactored out an analytics trigger), as well as **confirm that you've implemented every analytics event** that should be implemented for a specific analytics release in a specific codebase.
 
 ### Example: setting up `avo status` in GitHub Actions
 
