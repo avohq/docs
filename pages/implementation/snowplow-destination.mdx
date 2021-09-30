@@ -11,13 +11,15 @@ Snowplow SDK's tracking interface is a little different from the common event tr
 
 The main idea stays the same though, when you initialize the Avo analytics wrapper generated for you, you pass an object with callbacks that will be called by Avo after all the validations pass.
 
+> Event name will be added with key `avo_event_name` to the `data` dictionary 
+
 The callback object has the following interface:
 
 ```Pseudocode
 func make(env: AvoEnv)
 
 func trackSelfDescribingEvent(schema: String, data: Dictionary, 
-        customContexts: List<Dictionary<schema: String, data: Dictionary>>)
+        contexts: List<Dictionary<schema: String, data: Dictionary>>)
 
 func trackPageView(title: String)
 
@@ -51,11 +53,11 @@ val avo = AvoImpl(...,
             // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/
         }
 
-        override fun trackSelfDescribingEvent(schema: String, data: Map<String, *>, customContexts: List<Map<String, Any>>) {
+        override fun trackSelfDescribingEvent(schema: String, data: Map<String, *>, contexts: List<Map<String, Any>>) {
             val eventContent = SelfDescribingJson(schema, data)
 
             val event = SelfDescribing(eventContent)
-            customContexts.forEach { customContext ->
+            contexts.forEach { customContext ->
                 val contextSchema = customContext["schema"]
                 val contextData = customContext["data"]
                 if (contextSchema is String && contextData is Any) {
@@ -98,13 +100,13 @@ const snowplowDestination = {
     newTracker('sp1', '{{collector_url}}', {  appId: 'my-app-id',  plugins: [ ], });
     // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracker-setup/
   },
-  trackSelfDescribingEvent: (schema: string, data: any, customContexts: any[]): void => {
+  trackSelfDescribingEvent: (schema: string, data: any, contexts: any[]): void => {
     trackSelfDescribingEvent({
       event: {
         schema: schema,
         data: data
       },
-      context: customContexts
+      context: contexts
     });
     // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/
   },
@@ -136,13 +138,13 @@ extension SnowplowDestination: AvoSnowplowDestination {
         // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/#iOS_Tracker
     }
 
-    func trackSelfDescribingEvent(schema: String, data: [String: Any], customContexts: [[String: Any]]) {  
+    func trackSelfDescribingEvent(schema: String, data: [String: Any], contexts: [[String: Any]]) {  
         let event = SelfDescribing(schema: schema, payload: data)  
 
-        customContexts.forEach { customContext in
+        contexts.forEach { context in
             event.contexts.add(
-                SelfDescribingJson(schema: customContext["schema"],
-                    andDictionary: customContext["data"]))
+                SelfDescribingJson(schema: context["schema"],
+                    andDictionary: context["data"]))
         }
 
         Snowplow.getDefaultTracker().track(event)
