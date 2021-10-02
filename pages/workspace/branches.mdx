@@ -1,18 +1,18 @@
 ---
 layout: 'guide'
-title: 'Branches'
-abstract: 'Seamlessly work together on multiple fronts using branches'
+title: 'Quickstart: Branches'
+abstract: 'Seamlessly work together on multiple tracking plan updates using branches'
 ---
 
 import Link from '../../components/Link';
 
-## What are branches?
+### What are branches?
 
 In Avo you can collaborate in real time on defining, expanding and implementing your tracking plan. But you might want to try out some changes or make sure that a change is implemented before you change your tracking plan source of truth. To capture this work in progress you can use branches.
 
 We highly recommend always creating a branch first before making changes to the tracking plan, no matter how small the changes are – in particular if the changes made require implementation. If changes are made directly on the main branch, then you risk someone else creating a branch that include your incomplete changes, which will very likely lead to conflicts in the future.
 
-## How to create branches
+### Creating a branch
 
 To create a new branch, first make sure you are on the main branch. Then click the icon with the plus sign next to where it says `main`.
 
@@ -28,11 +28,7 @@ To create a new branch, first make sure you are on the main branch. Then click t
   />
 </center>
 
-## Design data on an Avo branch
-
-Read more about <Link passHref href="/data-design/start-data-design"><a>Designing data in Avo</a></Link>.
-
-## Compare branch changes to main branch
+### Review branch changes
 
 To compare the changes drafted on a branch to the source of truth on the main branch, go click the review changes button located under your branch name. There you can see which events or properties were added, deleted or updated.
 
@@ -48,34 +44,14 @@ To compare the changes drafted on a branch to the source of truth on the main br
   />
 </center>
 
-## Share the implementation instructions
 
-While the diff view is handy for understanding the changes done in the tracking plan, it’s not very convenient for implementation.  
-For implementation we divide the changes per source and then group them by events, so developers can pick their platform and implement events once by one.
+### How should branches be structured?
 
-If your branch includes changes on at least one source then the implementation instructions will be available on the diff screen
+We recommend setting up branches that have isolated changes that can be opened, implemented and merged within a few days. Typically there's a one to one mapping between Avo branches and git branches.
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/implementation-diff-panel-options.png')}
-    alt="Opening a branch"
-  />
-</center>
+Like in git, we recommend against creating big branches with a backlog of events and properties to be implemented. We'd rather recommend splitting them in to manageable chunks that will be implemented together in a single git branch.
 
-You can copy the instruction and pass them to developers for implementation in your communication tool of choice in either Markdown or in [Jira's text format](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all).
-
-<center>
-  <img
-    width="100%"
-    src={require('../../images/implementation-diff-expanded.png')}
-    alt="Opening a branch"
-  />
-</center>
-
-Here is the <Link passHref href="/implementation/read-implementation-diff"><a>developer's guide on reading the diff</a></Link>
-
-## Delete a branch
+### Deleting a branch
 
 Go to the branch review screen (“View Changes” in the Sidebar), click the tripple-dot in the top right corner. From there you can choose to delete the branch:
 
@@ -87,37 +63,11 @@ Go to the branch review screen (“View Changes” in the Sidebar), click the tr
   />
 </center>
 
-## How should branches be structured?
-
-We recommend setting up branches that have isolated changes that can be opened, implemented and merged within a few days. Typically there's a one to one mapping between Avo branches and git branches.
-
-Like in git, we recommend against creating big branches with a backlog of events and properties to be implemented. We'd rather recommend splitting them in to manageable chunks that will be implemented together in a single git branch.
-
-## Protected main branch
-
-To make sure no one accidentally makes changes directly on the main branch and encourage peer review, you can opt in to protecting the main branch. That means:
-
-- Only admins can make changes directly on the main branch
-- Only admins can merge branches that haven't been approved by a collaborator
-
-To enable this configuration, click the settings wheel in your workspace, go into members and permissions and check "Protected Main Branch" in the permissions tab.
-
-<center>
-  <img
-    width="50%"
-    src={require('../../images/protected-main-branch.png')}
-    alt="Protecting the main branch"
-  />
-</center>
-
-## Parallel workflows for large development teams
-
-Avo is designed for multiple codebases working together on a single tracking plan. Read more about <Link passHref href="/implementation/avo-and-git"><a>Using Avo in large development teams with parallel workflows</a></Link>
-
-## Multiple sources on a single Avo branch
-
-Read more about how to <Link passHref href="/data-design/multiple-sources-on-avo-branches"><a>manage branches with multiple sources</a></Link> to keep your Avo main branch in sync with your git main branch.
 
 ## What's next?
 
-Now when you know how to use branches it's time to <Link passHref href="/workspace/members"><a>invite coworkers</a></Link>.
+- <Link passHref href="/workspace/approval-workflows"><a>Approval workflows for branches</a></Link>
+- <Link passHref href="/workspace/implementation-instructions"><a>Share implementation instructions for a branch</a></Link>
+- <Link passHref href="/implementation/avo-and-git"><a>Using Avo in parallel workflows for large development teams</a></Link>
+- <Link passHref href="/data-design/multiple-sources-on-avo-branches"><a>How to manage branches with multiple sources</a></Link> 
+- <Link passHref href="/data-design/start-data-design"><a>Designing data in Avo</a></Link>
