@@ -20,28 +20,34 @@ To see the diff press the "View changes" panel in the sidebar.
 
 ### Sources
 
-All the changes are grouped by sources, so you can pick the source you work on and ignore other sources, since they usually are separate codebases.  
-If you have multiple sources in your codebase you can pick multiple sources.  
+All changes are grouped by source. That makes it easy to split the instructions down by source, enabling you to share the instructions in separate tasks for each source.
+
+### Global event properties
+
+Some event properties are configured to be sent with every event. Changes in global properties are listed first.
 
 ### Events
 
-Below sources we see events. Since implementation is happening on the events level all changes on a single source are represented as event changes.  
-There are 3 categories of events in the diff: New, Removed and Updated, so you can easily understand what kind of implementation is required.  
-Every event has description and a link to Avo.  
+All events that have been modified on the branch are included in the instructions. Events can have three states: New, Removed or Updated. For every event you can see the description and a link to the event in Avo, in addition to properties and destinations.
 
 ### Properties
 
-Then each event in the diff has a list of properties. Properties can be: new, removed, updated and existing.  
-If the event is new, then all properties are new. If the event is removed then you don’t need to care about the properties. If the event is updated, then you’d change the updated properties, delete the removed props and keep the existing.  
-Each property includes a description from Avo.  
+Each event in the instructions has a list of the properties attached to it. Properties can have four states: New, Removed, Updated or Existing (no change). For every property you can see the property description as defined in Avo. The type of each property is also included in the instructions, so you can handle each type (event, user and group properties) differently.
 
 ### Destinations
 
-Then we list the destinations of the event - new, removed and existing.
+Each event in the instructions has a list of the destinations it should be sent to. Destinations can have three states: New, Removed or Existing. If the event, or any of its properties, has a per-destination <Link href="/data-design/name-mapping" passHref>name mapping</Link> applied, they will be listed in this section.
 
 ### An example
 
 ># Source: Web
+>
+>## Event properties updated on all events
+>
+>- property named "Optional List System Property"
+>  - An event property
+>  - **Description**: -  
+>  - **Value type**: optional list of string 
 >
 >## New Events:
 >
@@ -51,17 +57,22 @@ Then we list the destinations of the event - new, removed and existing.
 >
 >Description: Event sent when a user interacts with an add seat prompt  
 >
+>Some event properties are configured to be sent with all events. Make sure to include those on this event. Learn more about the properties sent with all events above.
+>There are changes in some event properties that are sent with all events. Learn more about the properties sent with all events above.
+>
 >#### New properties on this event
 >
->- Add Seat Prompt Interaction
+>- Add Seat Prompt Interaction, also this property has destination specific names, see in the Destinations section below
+>  - An event property
 >  - **Description**: -  
->  - **Value Type**: string matches Proceed, Dismiss
+>  - **Value type**: string matches Proceed, Dismiss
 >
 >#### New destinations on this event
 >
 >- segment
 >- mixpanel
 >- fullstory
+>   - Send the "Add Seat Prompt Interaction" property as "add_spi"
 >- amplitude
 >
 >
@@ -69,7 +80,7 @@ Then we list the destinations of the event - new, removed and existing.
 >
 >## New Events:
 >
->### Event "Add Seat Prompt Interaction" ([View full event in Avo])
+>### Event "Add Seat Prompt Interaction", also this event has destination specific names, see in the Destinations section below ([View full event in Avo])
 >
 >##### This event should be implemented with Avo generated code. [See implement instructions here] 
 >
@@ -78,12 +89,15 @@ Then we list the destinations of the event - new, removed and existing.
 >#### New properties on this event
 >
 >- Add Seat Prompt Interaction
+>  - An event property
 >  - **Description**: -  
->  - **Value Type**: string matches Proceed, Dismiss
+>  - **Value type**: string matches Proceed, Dismiss
 >
 >#### New destinations on this event
 >
->- Custom Node JS
+>- segment
+>  - Send the event as "seat_prompt_interact", NEW!
+>- mixpanel
 
 ## What's next?
 
