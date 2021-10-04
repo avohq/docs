@@ -139,6 +139,28 @@ const navigation: navigationItem[] = [
 
       {
         type: 'group',
+        title: 'Branched workflows',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Quickstart: Branches',
+            path: '/workspace/branches',
+          },
+          {
+            type: 'route',
+            title: 'Approval workflows',
+            path: '/workspace/approval-workflows',
+          },
+          {
+            type: 'route',
+            title: 'Share implementation instructions',
+            path: '/workspace/implementation-instructions',
+          },
+        ],
+      },
+
+      {
+        type: 'group',
         title: 'Collaboration',
         subroutes: [
           {
@@ -146,7 +168,6 @@ const navigation: navigationItem[] = [
             title: 'How to collaborate in Avo',
             path: '/data-design/start-collaborating',
           },
-          { type: 'route', title: 'Branches', path: '/workspace/branches' },
           // {
           //   type: 'route',
           //   title: '[TODO] Commenting',
