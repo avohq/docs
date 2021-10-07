@@ -883,6 +883,14 @@ class CustomDestination : Avo.IDestination {
         // TODO implement
     }
 
+    public async Task LogPage(string anonymousId, string userId, string pageName, IDictionary<string, object> eventProperties) {
+        // TODO implement
+    }
+
+    public async Task Revenue(string anonymousId, string userId, double amount, IDictionary<string, object> eventProperties) {
+        // TODO implement
+    }
+
     public async Task SetUserProperties(string userId, IDictionary<string, object> userProperties) {
         // TODO implement
     }
@@ -924,6 +932,14 @@ class CustomDestination : Avo.IDestination {
     }
 
     public void LogEvent(string eventName, IDictionary<string, object> eventProperties){
+        // TODO implement
+    }
+
+    public void LogPage(string pageName, IDictionary<string, object> eventProperties){
+        // TODO implement
+    }
+
+    public void Revenue(double amount, IDictionary<string, object> eventProperties){
         // TODO implement
     }
 
