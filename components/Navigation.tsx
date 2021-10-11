@@ -126,13 +126,36 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Sources and destinations',
-            path: '/data-design/define-sources-and-destinations',
+            title: 'Implementation status',
+            path: '/workspace/tracking-plan/implementation-status',
+          },
+        ],
+      },
+      
+      {
+        type: 'route',
+        title: 'Connection Setup',
+        path: '/data-design/define-sources-and-destinations',
+      },
+
+      {
+        type: 'group',
+        title: 'Import, Export and Publishing',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Publishing',
+            path: '/workspace/tracking-plan/publishing',
           },
           {
             type: 'route',
-            title: 'Implementation status',
-            path: '/workspace/tracking-plan/implementation-status',
+            title: 'Importing',
+            path: '/workspace/tracking-plan/importing',
+          },
+          {
+            type: 'route',
+            title: 'Exporting',
+            path: '/workspace/tracking-plan/exporting',
           },
         ],
       },
@@ -181,27 +204,7 @@ const navigation: navigationItem[] = [
         ],
       },
 
-      {
-        type: 'group',
-        title: 'Import, Export and Publishing',
-        subroutes: [
-          {
-            type: 'route',
-            title: 'Publishing',
-            path: '/workspace/tracking-plan/publishing',
-          },
-          {
-            type: 'route',
-            title: 'Importing',
-            path: '/workspace/tracking-plan/importing',
-          },
-          {
-            type: 'route',
-            title: 'Exporting',
-            path: '/workspace/tracking-plan/exporting',
-          },
-        ],
-      },
+      
 
       {
         type: 'route',
