@@ -131,7 +131,7 @@ const navigation: navigationItem[] = [
           },
         ],
       },
-      
+
       {
         type: 'route',
         title: 'Connection Setup',
@@ -275,11 +275,12 @@ const navigation: navigationItem[] = [
             title: 'Organizing multi-product workspaces',
             path: '/data-design/organizing-multi-product-workspaces',
           },
-          {
-            type: 'route',
-            title: 'Analytics tools',
-            path: '/data-design/analytics',
-          },
+          // Deleting for now
+          // { 
+          //   type: 'route',
+          //   title: 'Analytics tools',
+          //   path: '/data-design/analytics',
+          // },
           {
             type: 'route',
             title: 'Multiple sources on Avo branches',

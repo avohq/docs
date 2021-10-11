@@ -14,19 +14,20 @@ In this doc we'll be covering how to configure and use the Inspector in your wor
 
 ## Configuring Sources
 
-The first step to start using the Inspector, is installing it on your sources. The Inspector source configuration can be found in the workspace sidebar under Inspect > Sources.
+The first step to start using the Inspector, is installing it on your sources. Inspector shares sources with the workspace sources and they are all set up in the Connection Setup tab. You can find the source setup in the Inspector tab by clicking "Manage Sources" or navigate to the "Connection Setup" tab directly.
 
-Inspector shares sources with the <Link passHref href="/workspace/connections"><a>Connections</a></Link> tab.
+[comment]: # (todo add screenshot with the buttons) 
 
-In the Sources screen you'll see a grid of all sources you've already configured in the Connections tab.
+The Connection Setup tab shows a list of all sources that have already been created and the status of the Inspector setup. Once Inspector has been successfully installed, the set up status will be updated accordingly.
 
-You can create new Inspector sources here, they will also appear in the Connections tab.
+If the source you want to set up isn't already in the list of source, you can create a new one by clicking "Add Source". Check out our Connections Setup docs to learn more about <Link passHref href="/data-design/define-sources-and-destinations#sources">setting up and configuring sources </Link>
 
 Each Inspector source has 3 states:
 1. Receiving events - this source already received at least one event from the client SDK.
-2. Waiting for events - the source is available for Inspection, but have not received any events yet. Press
-  the Source card to see the implementations details and the API key for this source.
-3. Not available - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
+2. Inspector available - the source is available for Inspection, but have not received any events yet. Click the source and find the Inspector Setup section of the source details to see the implementations details and the API key for this source.
+3. Inspector Not available - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
+
+[comment]: # (todo update screenshot to new source overview) 
 
 <center>
   <img
