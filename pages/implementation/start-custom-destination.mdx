@@ -105,7 +105,7 @@ each of the supported languages:
 - [Web](#web)
   - [JavaScript](#javascript)
   - [Typescript](#typescript)
-  - [ReasonML](#ReasonML)
+  - [ReasonML and Rescript](#ReasonML)
 - [Mobile](#mobile)
   - [iOS](#ios)
     - [Objective-C](#obj-c)
@@ -323,12 +323,14 @@ Call the initAvo function:
 Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
 ```
 
-### <a name="ReasonML"></a> ReasonML
+### <a name="ReasonML"></a> ReasonML and Rescript
 
 ```ReasonML
 let customDestination: Avo.avoCustomDestination = {
   make: (env: Avo.avoEnvType) => (),
   logEvent: (eventName: string, eventProperties: Js.Json.t) => ();
+  logPage: (pageName: string, eventProperties: Js.Json.t) => ();
+  revenue: (amount: double, eventProperties: Js.Json.t) => ();
   setUserProperties: (userId: string, userProperties: Js.Json.t) => ();
   identify: (userId: string) => ();
   unidentify: () => ();
@@ -413,7 +415,15 @@ class CustomDestination : AvoCustomDestination {
     func setUserProperties(userId: String, userProperties: [String : Any]) {
         // TODO implement
     }
-    
+
+    func logPage(pageName: String, eventProperties: [String:Any]) {
+        // TODO: Log page view in your analytics SDK here
+    }
+
+    func revenue(amount: Double, eventProperties: [String:Any]) {
+        // TODO: Log revenue in your analytics SDK here
+    }
+
     func identify(userId: String) {
         // TODO implement
     }
