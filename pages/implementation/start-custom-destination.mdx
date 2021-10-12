@@ -383,6 +383,31 @@ import Avo
 {
     // TODO implement
 }
+
+- (void)logPage:(nonnull NSString *)pageName withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    // TODO log page in your analytics SDK
+}
+
+- (void)revenue:(double)amount withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    // TODO log revenue in your analytics SDK
+}
+
+- (void)setUserProperties:(nonnull NSString*)userId withUserProperties:(nonnull NSDictionary*)userProperties
+{
+    // TODO set user properties in your analytics SDK
+}
+
+- (void)identify:(nonnull NSString*)userId
+{
+    // TODO implement an identify call to your analytics SDK
+}
+
+- (void)unidentify
+{
+    // TODO unidentify user in your analytics SDK
+}
 ```
 
 Call the initAvo function:
