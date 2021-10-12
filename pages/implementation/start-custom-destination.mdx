@@ -415,7 +415,15 @@ class CustomDestination : AvoCustomDestination {
     func setUserProperties(userId: String, userProperties: [String : Any]) {
         // TODO implement
     }
-    
+
+    func logPage(pageName: String, eventProperties: [String:Any]) {
+        // TODO: Log page view in your analytics SDK here
+    }
+
+    func revenue(amount: Double, eventProperties: [String:Any]) {
+        // TODO: Log revenue in your analytics SDK here
+    }
+
     func identify(userId: String) {
         // TODO implement
     }
