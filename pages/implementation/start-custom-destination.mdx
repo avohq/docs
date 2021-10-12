@@ -480,6 +480,14 @@ Avo.initAvo(application, context, Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
     public void unidentify() {
         // TODO implement
     }
+
+    public void logPage(String pageName, Map<String, Object> eventProperties) {
+      // TODO track page view in your analytics SDK
+    }
+
+    public void revenue(double amount, Map<String, Object> eventProperties) {
+        // TODO track revenue in your analytics SDK
+    }
 });
 ```
 
@@ -761,6 +769,14 @@ Avo.initAvo(Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
 
   public void setUserProperties(String userId, Map<String, Object> userProperties) {
       // TODO implement
+  }
+
+  public void logPage(String anonymousId, String userId, String pageName, Map<String, Object> eventProperties) {
+      // TODO track page view in your analytics SDK
+  }
+
+  public void revenue(String anonymousId, String userId, double amount, Map<String, Object> eventProperties) {
+      // TODO track revenue in your analytics SDK
   }
 });
 ```
