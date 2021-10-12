@@ -860,6 +860,12 @@ class CustomDestination(object):
 
     def set_user_properties(self, user_id, user_properties):
         pass
+
+    def log_page(self, user_id, page_name, event_properties):
+        pass
+
+    def revenue(self, user_id, amount, event_properties):
+        pass
 ```
 
 Call the init_avo() function and pass in the Custom Destination:
@@ -894,6 +900,14 @@ class SegmentDestination(object):
 
     def set_user_properties(self, user_id, user_properties):
         analytics.identify(user_id, user_properties)
+
+    def log_page(self, user_id, page_name, event_properties):
+        analytics.page(user_id, page_name, event_properties)
+
+    def revenue(self, user_id, amount, event_properties):
+      analytics.track(user_id, 'Revenue', {
+          'revenue': amount
+      })
 ```
 
 Call the init_avo() function:
