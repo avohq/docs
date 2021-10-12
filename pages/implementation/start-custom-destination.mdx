@@ -105,7 +105,7 @@ each of the supported languages:
 - [Web](#web)
   - [JavaScript](#javascript)
   - [Typescript](#typescript)
-  - [ReasonML](#ReasonML)
+  - [ReasonML and Rescript](#ReasonML)
 - [Mobile](#mobile)
   - [iOS](#ios)
     - [Objective-C](#obj-c)
@@ -269,6 +269,9 @@ let customDestination = {
   logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
   },
+  revenue: function (amount: number, eventProperties: object) {
+    // TODO implement
+  },
   setGroupProperties(
     groupType: string,
     groupId: string,
@@ -320,12 +323,14 @@ Call the initAvo function:
 Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
 ```
 
-### <a name="ReasonML"></a> ReasonML
+### <a name="ReasonML"></a> ReasonML and Rescript
 
 ```ReasonML
 let customDestination: Avo.avoCustomDestination = {
   make: (env: Avo.avoEnvType) => (),
   logEvent: (eventName: string, eventProperties: Js.Json.t) => ();
+  logPage: (pageName: string, eventProperties: Js.Json.t) => ();
+  revenue: (amount: double, eventProperties: Js.Json.t) => ();
   setUserProperties: (userId: string, userProperties: Js.Json.t) => ();
   identify: (userId: string) => ();
   unidentify: () => ();
@@ -378,6 +383,31 @@ import Avo
 {
     // TODO implement
 }
+
+- (void)logPage:(nonnull NSString *)pageName withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    // TODO log page in your analytics SDK
+}
+
+- (void)revenue:(double)amount withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    // TODO log revenue in your analytics SDK
+}
+
+- (void)setUserProperties:(nonnull NSString*)userId withUserProperties:(nonnull NSDictionary*)userProperties
+{
+    // TODO set user properties in your analytics SDK
+}
+
+- (void)identify:(nonnull NSString*)userId
+{
+    // TODO implement an identify call to your analytics SDK
+}
+
+- (void)unidentify
+{
+    // TODO unidentify user in your analytics SDK
+}
 ```
 
 Call the initAvo function:
@@ -410,7 +440,15 @@ class CustomDestination : AvoCustomDestination {
     func setUserProperties(userId: String, userProperties: [String : Any]) {
         // TODO implement
     }
-    
+
+    func logPage(pageName: String, eventProperties: [String:Any]) {
+        // TODO: Log page view in your analytics SDK here
+    }
+
+    func revenue(amount: Double, eventProperties: [String:Any]) {
+        // TODO: Log revenue in your analytics SDK here
+    }
+
     func identify(userId: String) {
         // TODO implement
     }
@@ -467,6 +505,14 @@ Avo.initAvo(application, context, Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
     public void unidentify() {
         // TODO implement
     }
+
+    public void logPage(String pageName, Map<String, Object> eventProperties) {
+      // TODO track page view in your analytics SDK
+    }
+
+    public void revenue(double amount, Map<String, Object> eventProperties) {
+        // TODO track revenue in your analytics SDK
+    }
 });
 ```
 
@@ -493,6 +539,10 @@ Avo.initAvo(application=application, context=this, env=AvoEnv.DEV, customDestina
     }
 
     override fun logPage(pageName: String, eventProperties: Map<String, *>) {
+        // TODO implement
+    }
+
+    override fun revenue(amount: Double, eventProperties: Map<String, *>) {
         // TODO implement
     }
 
@@ -625,6 +675,9 @@ let customDestination = {
   logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
   },
+  revenue: function (amount: number, eventProperties: object) {
+    // TODO implement
+  },
 };
 ```
 
@@ -703,6 +756,12 @@ let customDestination = {
   setUserProperties: async function (userId, userProperties) {
     // TODO implement
   },
+  logPage: async function (pageName: string, eventProperties: object) {
+    // TODO implement
+  },
+  revenue: async function (amount: number, eventProperties: object) {
+    // TODO implement
+  },
 };
 ```
 
@@ -735,6 +794,14 @@ Avo.initAvo(Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
 
   public void setUserProperties(String userId, Map<String, Object> userProperties) {
       // TODO implement
+  }
+
+  public void logPage(String anonymousId, String userId, String pageName, Map<String, Object> eventProperties) {
+      // TODO track page view in your analytics SDK
+  }
+
+  public void revenue(String anonymousId, String userId, double amount, Map<String, Object> eventProperties) {
+      // TODO track revenue in your analytics SDK
   }
 });
 ```
@@ -867,6 +934,14 @@ class CustomDestination
     # TODO implement
   end
 
+  def log_page(anonymous_id:, user_id:, page_name:, event_properties:)
+    # TODO: Log page view in your analytics SDK here
+  end
+
+  def revenue(anonymous_id:, user_id:, amount:, event_properties:)
+    # TODO: Log revenue in your analytics SDK here
+  end
+
   def set_user_properties(anonymous_id:, user_id:, user_properties:)
     # TODO implement
   end
@@ -895,6 +970,14 @@ class CustomDestination : Avo.IDestination {
 
     public async Task LogEvent(string anonymousId, string userId, string eventName, IDictionary<string, object> eventProperties) {
         // TODO implement
+    }
+
+    public async Task LogPage(string anonymousId, string userId, string pageName, IDictionary<string, object> eventProperties) {
+        // TODO: Log page view in your analytics SDK here
+    }
+
+    public async Task Revenue(string anonymousId, string userId, double amount, IDictionary<string, object> eventProperties) {
+        // TODO: Log revenue in your analytics SDK here
     }
 
     public async Task SetUserProperties(string userId, IDictionary<string, object> userProperties) {
@@ -939,6 +1022,14 @@ class CustomDestination : Avo.IDestination {
 
     public void LogEvent(string eventName, IDictionary<string, object> eventProperties){
         // TODO implement
+    }
+
+    public void LogPage(string pageName, IDictionary<string, object> eventProperties){
+        // TODO: Log page view in your analytics SDK here
+    }
+
+    public void Revenue(double amount, IDictionary<string, object> eventProperties){
+        // TODO: Log revenue in your analytics SDK here
     }
 
     public void SetUserProperties(string userId, IDictionary<string, object> userProperties){
