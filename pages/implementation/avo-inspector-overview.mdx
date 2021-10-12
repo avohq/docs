@@ -5,7 +5,6 @@ title: 'Avo Inspector overview'
 
 import Link from '../../components/Link';
 
-
 ## Avo Inspector SDK
 
 Avo Inspector SDK extracts tracking plan information from your existing tracking calls. It provides methods to get the shape of an event you are going to send to the analytics platform and then to send that shape alongside the event name for analysis.
@@ -15,7 +14,15 @@ The SDKs are distributed with the standard mechanism of the platform, like npm p
 
 Before using the Avo Inspector SDK you need to obtain an API key from the Inspector Setup in the source details of your source and provide it to the initialization method.
 
-[comment]: # (todo add screenshot of the Inspector tab of the source details) 
+<center>
+  <img
+    src={require('../../images/workspace/connection-setup/connections-inspector-setup.png')}
+    alt="Inspector Setup"
+    width="75%"
+  />
+</center>
+
+Then you provide the API key when defining the inspector in your code.
 
 
 ```Swift
