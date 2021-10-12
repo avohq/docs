@@ -514,19 +514,25 @@ const navigation: navigationItem[] = [
             ],
           },
           {
-            type: 'route',
-            title: 'Managed Destinations',
-            path: '/implementation/destinations/managed-destinations',
-          },
-          {
-            type: 'route',
-            title: 'Custom Destinations',
-            path: '/implementation/start-custom-destination',
-          },
-          {
-            type: 'route',
-            title: 'Snowplow Destination Interface',
-            path: '/implementation/snowplow-destination',
+            type: 'group',
+            title: 'Destinations',
+            subroutes: [
+              {
+                type: 'route',
+                title: 'Destination Interface',
+                path: '/implementation/start-custom-destination',
+              },
+              {
+                type: 'route',
+                title: 'Snowplow',
+                path: '/implementation/snowplow-destination',
+              },
+              {
+                type: 'route',
+                title: 'Managed Destinations',
+                path: '/implementation/destinations/managed-destinations',
+              },
+            ],
           },
           {
             type: 'route',
