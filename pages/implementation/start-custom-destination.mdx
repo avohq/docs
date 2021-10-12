@@ -269,6 +269,9 @@ let customDestination = {
   logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
   },
+  revenue: function (amount: number, eventProperties: object) {
+    // TODO implement
+  },
   setGroupProperties(
     groupType: string,
     groupId: string,
@@ -504,6 +507,10 @@ Avo.initAvo(application=application, context=this, env=AvoEnv.DEV, customDestina
         // TODO implement
     }
 
+    override fun revenue(amount: Double, eventProperties: Map<String, *>) {
+        // TODO implement
+    }
+
     override fun identify(userId: String) {
         // TODO implement
     }
@@ -633,6 +640,9 @@ let customDestination = {
   logPage: function (pageName: string, eventProperties: object) {
     // TODO implement
   },
+  revenue: function (amount: number, eventProperties: object) {
+    // TODO implement
+  },
 };
 ```
 
@@ -709,6 +719,12 @@ let customDestination = {
     // TODO implement
   },
   setUserProperties: async function (userId, userProperties) {
+    // TODO implement
+  },
+  logPage: async function (pageName: string, eventProperties: object) {
+    // TODO implement
+  },
+  revenue: async function (amount: number, eventProperties: object) {
     // TODO implement
   },
 };
