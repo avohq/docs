@@ -1,0 +1,164 @@
+---
+layout: 'guide'
+title: 'Sending data to Snowplow'
+---
+
+import Link from '../../components/Link';
+
+## Snowplow tracking interface
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+The main idea stays the same though, when you initialize the Avo analytics wrapper generated for you, you pass an object with callbacks that will be called by Avo after all the validations are done.
+
+The callback object has the following interface:
+
+```Pseudocode
+func make(env: AvoEnv)
+
+func trackSelfDescribingEvent(schema: String, data: Dictionary, 
+        contexts: List<Dictionary<schema: String, data: Dictionary>>)
+
+func trackPageView(title: String)
+
+func identify(userId: String)
+
+func unidentify()
+```
+
+In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are are available below.
+
+1. `make` - here you would initialize your Snowplow SDK, you can also skip this callback if you already have the Snowplow SDK initialized, the parameter will be one of `AvoEnv.Dev`, `AvoEnv.Prod`, `AvoEnv.Staging`
+
+2. `trackSelfDescribingEvent` - this callback provides you all the data needed to track a self describing event
+
+3. `trackPageView` - this callback is for tracking page views, with the page title as parameter, there is a corresponding method in the Snowplow SDK
+
+4. `identify` - this callback is to assign an id of the current user, which is the call's parameter, in Snowplow it's done by assigning the user id in the Subject config
+
+5. `unidentify` - this callback is for removing current user's identification
+
+## Code snippets
+
+### Kotlin
+
+```kotlin
+val avo = AvoImpl(...,
+    snowplowDestination = object : AvoSnowplowDestination {
+        override fun make(env: AvoEnv) {
+            // Your custom Snowplow initialization, that includes the `createTracker` call
+            Snowplow.createTracker(this@MainActivity, "appTracker", "COLLECTOR_URL", HttpMethod.POST)
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/
+        }
+
+        override fun trackSelfDescribingEvent(schema: String, data: Map<String, *>, contexts: List<Map<String, Any>>) {
+            val eventContent = SelfDescribingJson(schema, data)
+
+            val event = SelfDescribing(eventContent)
+            contexts.forEach { customContext ->
+                val contextSchema = customContext["schema"]
+                val contextData = customContext["data"]
+                if (contextSchema is String && contextData is Any) {
+                    event.customContexts.add(
+                            SelfDescribingJson(contextSchema, contextData)
+                    )
+                }
+            }
+
+            Snowplow.getDefaultTracker()?.track(event)
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
+        }
+
+        override fun trackPageView(title: String) {
+            Snowplow.getDefaultTracker()?.track(ScreenView(title))
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
+        }
+
+        override fun identify(userId: String) {
+            Snowplow.getDefaultTracker()?.subject?.userId = userId
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        }
+
+        override fun unidentify() {
+            Snowplow.getDefaultTracker()?.subject?.userId = null
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        }
+    }
+)
+```
+
+### Typescript & JavaScript
+
+> Currently in beta
+
+```typescript
+const snowplowDestination = {
+  make: function(env: string) {
+    // Your custom Snowplow initialization, that includes the `newTracker` call
+    newTracker('sp1', '{{collector_url}}', {  appId: 'my-app-id',  plugins: [ ], });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracker-setup/
+  },
+  trackSelfDescribingEvent: (schema: string, data: any, contexts: any[]): void => {
+    trackSelfDescribingEvent({
+      event: {
+        schema: schema,
+        data: data
+      },
+      context: contexts
+    });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/
+  },
+  trackPageView: (title: string): void => {
+    trackPageView(title);
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/#page-views
+  },
+  identify: (userId: string): void => {
+    setUserId(userId);
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.setuserid.md
+  },
+  unidentify: (): void => {
+    clearUserData();
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.clearuserdata.md
+  },
+
+};
+```
+
+### Swift
+
+> Currently in beta
+
+```swift
+extension SnowplowDestination: AvoSnowplowDestination {
+    func make(env: AvoEnv) {
+        // Your custom Snowplow initialization, that includes the `createTracker` call
+        Snowplow.createTracker(namespace: "appTracker", endpoint: "COLLECTOR_URL", method: .post)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/#iOS_Tracker
+    }
+
+    func trackSelfDescribingEvent(schema: String, data: [String: Any], contexts: [[String: Any]]) {  
+        let event = SelfDescribing(schema: schema, payload: data)  
+
+        contexts.forEach { context in
+            event.contexts.add(
+                SelfDescribingJson(schema: context["schema"],
+                    andDictionary: context["data"]))
+        }
+
+        Snowplow.getDefaultTracker().track(event)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/#Self_Describing
+    }
+
+    func identify(userId: String) {
+        Snowplow.getDefaultTracker().subject.setUserId(userId)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+    }
+
+    func unidentify() {
+        Snowplow.getDefaultTracker().subject.setUserId(null)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+    }
+}
+
+let avo = Avo(..., snowplowDestination: SnowplowDestination())
+```
