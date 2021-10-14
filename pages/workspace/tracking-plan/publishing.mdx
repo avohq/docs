@@ -32,9 +32,33 @@ Publishing enables your Tracking Plan to be:
 - Published with a push of a button
 - Downloaded from your Avo workspace on relevant format
 
-## Publishing configuration
+## Setting up and configuring a publishing integration
 
-### Auto publishing
+### Create a new publishing integration
+
+To create a new publishing integration, find the Publishing part of the tracking plan in the left side navigation bar. From there you can click the "Add Integration" button to create a new publishing integration.
+
+<center>
+  <img
+    src={require('../../../images/workspace/nav-publishing.png')}
+    width="100%"
+    alt="Creating a new Publishing Integration"
+  />
+</center>
+
+Then you can select the type of integration you want to create and give it a name.
+
+<center>
+  <img
+    src={require('../../../images/workspace/integrations/create-integration.png')}
+    width="75%"
+    alt="Creating a new Publishing Integration"
+  />
+</center>
+
+Note that the publishing integrations are independent of the destinations defined in the "Sources" tab. However the publishing integration can use those destinations to filter which events should be included in the publishing integration. See more below in <Link passHref href="/workspace/tracking-plan/publishing#filtering-events-for-publishing"><a>Filtering events for publishing</a></Link>.
+
+### Configure Auto publishing
 
 When Auto Publishing is enabled all changes made on a branch will be published to the integration when the branch is merged.
 
