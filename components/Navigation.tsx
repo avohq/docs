@@ -134,9 +134,10 @@ const navigation: navigationItem[] = [
 
       {
         type: 'route',
-        title: 'Connection Setup',
-        path: '/data-design/define-sources-and-destinations',
+        title: 'Integrations',
+        path: '/workspace/integrations',
       },
+
 
       {
         type: 'group',
@@ -160,6 +161,11 @@ const navigation: navigationItem[] = [
         ],
       },
 
+      {
+        type: 'route',
+        title: 'Sources',
+        path: '/data-design/define-sources-and-destinations',
+      },
       {
         type: 'group',
         title: 'Branched workflows',
@@ -202,15 +208,7 @@ const navigation: navigationItem[] = [
             path: '/workspace/members',
           },
         ],
-      },
-
-      
-
-      {
-        type: 'route',
-        title: 'Integrations',
-        path: '/workspace/integrations',
-      },
+      },      
 
       {
         type: 'group',
