@@ -31,7 +31,7 @@ let avoInspector = AvoInspector(apiKey: "YOUR_API_KEY", env: AvoInspectorEnv.dev
 
 ### Inspecting events
 
-You need to call a method whenever event is tracked, either trackSchemaFromEvent(eventName: String, eventParams: Map) or trackSchema(eventName: String, eventSchema: Map)
+You need to call a method whenever event is tracked, either `trackSchemaFromEvent(eventName: String, eventParams: Map)` or `trackSchema(eventName: String, eventSchema: Map)`
 
 The difference is that in the first method the event object is transformed into an event schema under the hood and in the second method you provide the event schema. Eventually in both methods the event schema is sent to Avo servers for analysis.
 
@@ -62,7 +62,7 @@ The following event schema would be sent to Avo:
 ```
 
 Note:
-You can extract the schema separately with extractSchema(eventParams: Map), the same method that's used by trackSchemaFromEvent(eventName: String, eventParams: Map)
+You can extract the schema separately with `extractSchema(eventParams: Map)`, the same method that's used by `trackSchemaFromEvent(eventName: String, eventParams: Map)`
 
 Example
 
