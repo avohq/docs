@@ -42,6 +42,8 @@ Checks if the casing of event names in the tracking plan is consistent. For even
 - "App Opened", "checkoutStarted", "checkout_completed"
 - "Add to Cart", "addToCart", "add-to-cart"
 
+The casing validation does allow for strings separated by semicolon (":" and " : "). For example, "cartSidebar : addToCart" is identified as camel case.
+
 > **Best practice:** Have all event names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the event name they are looking for, but also the casing of the event name.
 
 ##### How to resolve
@@ -86,6 +88,8 @@ Checks if the casing of property names in the tracking plan is consistent. For p
 
 - "User Id", "userId", "USER_ID"
 - "Product Name", "product_name", "product-name"
+
+The casing validation does allow for strings separated by semicolon (":" and " : "). For example, "product_name : updated" is identified as snake case.
 
 ##### How to resolve
 
