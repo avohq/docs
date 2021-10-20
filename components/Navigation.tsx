@@ -126,17 +126,39 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Sources and destinations',
-            path: '/data-design/define-sources-and-destinations',
-          },
-          {
-            type: 'route',
             title: 'Implementation status',
             path: '/workspace/tracking-plan/implementation-status',
           },
         ],
       },
 
+      {
+        type: 'group',
+        title: 'Import, Export and Publishing',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Publishing',
+            path: '/workspace/tracking-plan/publishing',
+          },
+          {
+            type: 'route',
+            title: 'Importing',
+            path: '/workspace/tracking-plan/importing',
+          },
+          {
+            type: 'route',
+            title: 'Exporting',
+            path: '/workspace/tracking-plan/exporting',
+          },
+        ],
+      },
+
+      {
+        type: 'route',
+        title: 'Sources',
+        path: '/data-design/define-sources-and-destinations',
+      },
       {
         type: 'group',
         title: 'Branched workflows',
@@ -179,34 +201,6 @@ const navigation: navigationItem[] = [
             path: '/workspace/members',
           },
         ],
-      },
-
-      {
-        type: 'group',
-        title: 'Import, Export and Publishing',
-        subroutes: [
-          {
-            type: 'route',
-            title: 'Publishing',
-            path: '/workspace/tracking-plan/publishing',
-          },
-          {
-            type: 'route',
-            title: 'Importing',
-            path: '/workspace/tracking-plan/importing',
-          },
-          {
-            type: 'route',
-            title: 'Exporting',
-            path: '/workspace/tracking-plan/exporting',
-          },
-        ],
-      },
-
-      {
-        type: 'route',
-        title: 'Integrations',
-        path: '/workspace/integrations',
       },
 
       {
@@ -272,11 +266,11 @@ const navigation: navigationItem[] = [
             title: 'Organizing multi-product workspaces',
             path: '/data-design/organizing-multi-product-workspaces',
           },
-          {
-            type: 'route',
-            title: 'Analytics tools',
-            path: '/data-design/analytics',
-          },
+          // { Deleting for now
+          //   type: 'route',
+          //   title: 'Analytics tools',
+          //   path: '/data-design/analytics',
+          // },
           {
             type: 'route',
             title: 'Multiple sources on Avo branches',
@@ -514,25 +508,14 @@ const navigation: navigationItem[] = [
             ],
           },
           {
-            type: 'group',
-            title: 'Destinations',
-            subroutes: [
-              {
-                type: 'route',
-                title: 'Destination Interface',
-                path: '/implementation/start-custom-destination',
-              },
-              {
-                type: 'route',
-                title: 'Snowplow',
-                path: '/implementation/snowplow-destination',
-              },
-              {
-                type: 'route',
-                title: 'Managed Destinations',
-                path: '/implementation/destinations/managed-destinations',
-              },
-            ],
+            type: 'route',
+            title: 'Managed Destinations',
+            path: '/implementation/destinations/managed-destinations',
+          },
+          {
+            type: 'route',
+            title: 'Custom Destinations',
+            path: '/implementation/start-custom-destination',
           },
           {
             type: 'route',

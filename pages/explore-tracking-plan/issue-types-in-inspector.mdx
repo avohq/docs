@@ -7,6 +7,8 @@ import Link from '../../components/Link';
 
 - <a href="#missing-usual-property-in-event">Property sometimes missing</a>
 - <a href="#event-property-type-inconsistency">Property type mismatch</a>
+- <a href="#unextpected-event">Unexpected event – not in tracking plan</a>
+- <a href="#missing-usual-property-in-event">Unexpected property – not in tracking plan</a>
 - <a href="#event-is-not-present-on-some-platforms">
     Event missing on some platforms (coming soon)
   </a>
@@ -27,7 +29,9 @@ import Link from '../../components/Link';
 
 ### <a name="missing-usual-property-in-event"></a>Property sometimes missing
 
-Detects absence of event properties across tracking calls.
+There are two cases of this issue type:
+- When a property is required in the tracking plan but sometimes or always missing
+- Property not found in tracking plan but sometimes missing
 
 _**Example:** Property onboarding status is not sent with 30% of the App Opened event._
 
@@ -35,7 +39,23 @@ _**Example:** Property onboarding status is not sent with 30% of the App Opened 
 
 Detects type changes of event properties across tracking calls.
 
+There are two cases of this issue type:
+- More than one property value type seen
+- Property value type different from tracking plan
+
 _**Example:** Inconsistent type of property onboarding status on event App Opened: int (84%), string (16%)._
+
+### <a name="unextpected-event"></a>Unexpected event
+
+Alert when an event that is not defined in the tracking plan is detected by the Inspector
+
+_**Example:** Event Signup Completedd not found in Tracking Plan._
+
+### <a name="unextpected-property"></a>Unexpected property
+
+Alert when an property that is not defined in the tracking plan is detected by the Inspector
+
+_**Example:** Property authenticationMethod not found in Tracking Plan._
 
 ### <a name="event-is-not-present-on-some-platforms"></a>Event missing on some platforms (coming soon)
 
