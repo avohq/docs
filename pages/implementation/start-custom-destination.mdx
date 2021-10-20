@@ -874,6 +874,23 @@ class CustomDestination(object):
 
     def revenue(self, user_id, amount, event_properties):
         pass
+
+    def add_current_user_to_group(self, user_id, group_type, group_id, group_properties)
+        # Mixpanel example
+        mp.people_set(user_id, {
+            group_type : group_id,
+        })
+        mp.group_set(group_type, group_id, group_properties)
+
+    def set_group_properties(self, group_type, group_id, group_properties)
+        # Mixpanel example
+        mp.group_set(group_type, group_id, group_properties)
+
+    def track_event_with_groups(self, user_id, event_name, event_properties, group_types_to_group_ids)
+        # Mixpanel example
+        for group_type in group_types_to_group_ids:
+            event_properties[group_type] = group_types_to_group_ids[group_type]
+        mp.track(user_id, event_name, event_properties)
 ```
 
 Call the init_avo() function and pass in the Custom Destination:
