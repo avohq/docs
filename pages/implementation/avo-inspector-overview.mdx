@@ -3,6 +3,8 @@ layout: 'guide'
 title: 'Avo Inspector overview'
 ---
 
+import Link from '../../components/Link';
+
 ## Avo Inspector SDK
 
 Avo Inspector SDK extracts tracking plan information from your existing tracking calls. It provides methods to get the shape of an event you are going to send to the analytics platform and then to send that shape alongside the event name for analysis.
@@ -10,7 +12,18 @@ The SDKs are distributed with the standard mechanism of the platform, like npm p
 
 ### Avo Inspector initialization
 
-Before using the Avo Inspector SDK you need to obtain an API key from the Avo dashboard in the <Link passHref href="/workspace/inspector"><a>Inspector tab</a></Link> and provide it to the initialization method.
+Before using the Avo Inspector SDK you need to obtain an API key from the Inspector Setup in the source details of your source and provide it to the initialization method.
+
+<center>
+  <img
+    src={require('../../images/workspace/connection-setup/connections-inspector-setup.png')}
+    alt="Inspector Setup"
+    width="75%"
+  />
+</center>
+
+Then you provide the API key when defining the inspector in your code.
+
 
 ```Swift
 let avoInspector = AvoInspector(apiKey: "YOUR_API_KEY", env: AvoInspectorEnv.dev)
@@ -18,7 +31,7 @@ let avoInspector = AvoInspector(apiKey: "YOUR_API_KEY", env: AvoInspectorEnv.dev
 
 ### Inspecting events
 
-You need to call a method whenever event is tracked, either trackSchemaFromEvent(eventName: String, eventParams: Map) or trackSchema(eventName: String, eventSchema: Map)
+You need to call a method whenever event is tracked, either `trackSchemaFromEvent(eventName: String, eventParams: Map)` or `trackSchema(eventName: String, eventSchema: Map)`
 
 The difference is that in the first method the event object is transformed into an event schema under the hood and in the second method you provide the event schema. Eventually in both methods the event schema is sent to Avo servers for analysis.
 
@@ -49,7 +62,7 @@ The following event schema would be sent to Avo:
 ```
 
 Note:
-You can extract the schema separately with extractSchema(eventParams: Map), the same method that's used by trackSchemaFromEvent(eventName: String, eventParams: Map)
+You can extract the schema separately with `extractSchema(eventParams: Map)`, the same method that's used by `trackSchemaFromEvent(eventName: String, eventParams: Map)`
 
 Example
 
@@ -81,4 +94,4 @@ You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` a
 
 ### Implement the Inspector SDK
 
-Now when you know how the Inspector SDK works it's good time to implement it in your application. Here is <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>the documentation</a></Link>.
+Now when you know how the Inspector SDK works it's good time to implement it in your application. Here is <Link passHref href="/implementation/avo-inspector-sdk-reference">the documentation</Link>.

@@ -115,7 +115,7 @@ We typically see a few types of reviewers added as collaborators to a branch:
 />
 
 
-_Example: Adding collaborators and asking for review_
+_Example: Adding collaborators and asking for review and implementation_
 
 ## <a name="step-5-review-and-approve"></a> Step 5 – Review and approve
 
@@ -142,6 +142,16 @@ For a deeper understanding of the changes, we recommend going into individual ev
 
 _Example: Discussions on a property_
 
+Once everyone is aligned, you can copy <Link passHref href="/workspace/implementation-instructions"><a>implementation instructions</a></Link> from the review screen and share them with a developer for example via Jira.
+
+<center>
+  <img
+    src={require('../../images/implementation-diff-panel-options.png')}
+    width="100%"
+    alt="Implementation Instructions"
+  />
+</center>
+
 ### What's next?
 
 At this point we recommend to have automatic tracking plan publishing enabled. <Link passHref href="/data-design/start-collaborating"><a>Learn how to do it here</a></Link>. 
@@ -150,19 +160,38 @@ At this point we recommend to have automatic tracking plan publishing enabled. <
 
 _Role: developer(s)_
 
-When you’ve reached consensus about the changes it’s time to start implementing. The typical implementation workflow looks like this:
+When you’ve reached consensus about the changes it’s time to start implementing.
+
+### Using Avo functions
+For teams that are using Avo functions to implement their events, the typical implementation workflow looks like this:
 
 1. Open a git branch – if you have multiple development platforms (sources in Avo), we recommend having one git branch per source for each Avo branch.
 2. Use the <Link passHref href="/implementation/cli#step-3-pull-generated-analytics-wrappers-from-avo"><a>Avo CLI</a></Link> to pull the updated code from the branch
-3. Use the Avo functions provided in the generated code to implement your events in your source code. The <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>implement tab</a></Link> in your workspace provides detailed instructions and code snippets)
+3. Use the Avo functions provided in the generated code to implement your events in your source code. The <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Functions tab</a></Link> in your workspace provides code snippets for each event.
+
+<center>
+  <img
+    src={require('../../images/workspace/nav-functions.png')}
+    width="100%"
+    alt="Functions reference"
+  />
+</center>
+
+_Example: Functions reference and code snippets_
+
+### Using other implementation methods
+For teams that are using other traditional implementation methods to implement their events, usually direct calls to the analytics SDK, the typical implementation workflow looks like this:
+
+1. Open a git branch – if you have multiple development platforms (sources in Avo), we recommend having one git branch per source for each Avo branch.
+2. Use the <Link passHref href="/workspace/implementation-instructions"><a>implementation instructions</a></Link> provided in the review screen as a guide for what needs to be changed or added
+
 
 <img
-  src={require('../../images/best-practices/day-to-day-workflow/implementation-instructions.png')}
-  width="100%"
+  src={require('../../images/implementation-diff-expanded.png')}
+  width="75%"
   alt="Implementation instructions"
 />
 
-_Example: Implementation instructions and code snippet_
 
 ## <a name="step-7-verify"></a> Step 7 – Verify
 
