@@ -130,7 +130,7 @@ When you define system properties in your Avo workspace you set name and type - 
 };
 ```
 
-`destinationOptions`: send an empty array if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameteres. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
+`destinationOptions`: send an empty array if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameters. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
 - `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
 - `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
