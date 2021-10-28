@@ -86,14 +86,17 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 class AvoImpl(env: AvoEnv,
     // Other parameters may not be present, depending on your tracking plan
     systemProperty0: int, systemProperty1: bool,
-    customDestination: ICustomDestination,
+    mixpanelDestination: ICustomDestination,
+    segmentDestination: ICustomDestination,
+    otherDestination: ICustomDestination,
     avoInspector: Any? = null,
     strict: Boolean = true,
     application: Application, context: Context
 )
 ```
 
-Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all custom destinations.
+Creates the Avo object that will be used to track. 
+This method will call the `Make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -102,13 +105,11 @@ Creates the Avo object that will be used to track. This method will initialize t
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
-`customDestination: ICustomDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
-
-Custom destination interface format:
+`destination: ICustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 ```kotlin
 interface ICustomDestination {
-    fun make(env: AvoEnv)
+    fun make(env: AvoEnv, apiKey: string) // This method is optional, you can skip it if yo've already initialized your Analytics SDK
 
     fun logEvent(eventName: String, eventProperties: Map<String, *>)
 
@@ -120,9 +121,44 @@ interface ICustomDestination {
 
     fun unidentify()
 }
+
+let customDestination = object : ICustomDestination {
+    var mixpanel: MixpanelAPI? = null
+        private set
+
+    override fun make(env: AvoEnv, apiKey: String) {
+        mixpanel = MixpanelAPI.getInstance(context.applicationContext, apiKey)
+    }
+
+    override fun logEvent(eventName: String, eventProperties: Map<String, *>) {
+        mixpanel?.track(eventName, eventProperties)
+    }
+
+    override fun setUserProperties(userId: String, userProperties: Map<String, *) {
+        mixpanel?.people?.set(userProperties)
+    }
+
+    override fun logPage(pageName: String, eventProperties: MutableMap<String, *>) {
+        let mutableEventprops = eventProperties.toMutableMap()
+        mutableEventprops["Page Name"] = pageName
+        mixpanel?.track("Page Viewed", mutableEventprops)
+    }
+
+    override fun revenue(amount: Double, eventProperties: Map<String, *>) {
+        mixpanel?.people?.trackCharge(amount, eventProperties)
+    }
+
+    override fun identify(userId: String) {
+        mixpanel?.identify(userId)
+    }
+
+    override fun unidentify() {
+        mixpanel?.reset()
+    }
+}
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO Find examples of Kotlin custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

@@ -5,52 +5,37 @@ title: 'Setting up custom destinations'
 
 import Link from '../../components/Link';
 
-Often the best way to integrate Avo is through a custom destination. For
-example:
+Destination interface is a set of hook methods that you implement to route data from Avo to particular analytics destination. Avo triggers specific methods when you call the Avo functions to send events. 
+It provides the data ready to be sent to any analytics destination.
 
-- When you want to have control over the initialization and the lifecycle of the Analytics SDK
-- When using Avo Functions alongside existing tracking implementation
-- When sending data to analytics platforms through an API (not using their SDK)
-- When using a combination of a programming language and analytics destination not yet directly supported by Avo
+You can use the destination interface with any analytics platform, please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
+the best solution for you.
 
-> 💡 **When should I use a custom destination?**
->
-> [Read more here about how self-managed analytics SDKs work and why that may be the right choice for you.](../implementation/start-using-avo-functions#option-1-initialize-self-managed-analytics-sdk-instance-custom-destination)
-
-Custom destination is an object with callbacks that Avo triggers when you call the Avo functions to send events. It provides the data ready to be sent to any analytics destination.
-
-Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
-the best solution for you or if there are any analytics destinations you'd like to see supported in Avo.
-
-To get started using a custom destination you do the following:
+To get started using a destination interface you do the following:
 
 1. Create a Custom Destination in the Connections tab
 2. Pull the updated code by doing `avo pull` in the Avo CLI
 3. Initialize Avo with a custom destination
 4. Fill in the empty methods for sending the data to your analytics destination
 
-## Custom Destinations overview
+## Destination Interface overview
 
 We will be referencing Avo _functions_, _events_, _actions_ and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> and subdocs to get familiar with Avo concepts.
 
-With a custom destination you'll get access to callback methods for Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-functions-overview"><a>Avo functions</a></Link> are called.
+With a destination interface you'll get access to callback methods for Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-functions-overview"><a>Avo functions</a></Link> are called.
 
 > Available event actions in Avo
 >
 > The callback methods mirror the Avo Actions you set up for given Avo Event in your tracking plan in your workspace.
 > Learn how to attach actions to events in <Link passHref href="/workspace/tracking-plan/events#actions"><a>the Tracking Plan section</a></Link>.
 
-- Update Groups
-
-  With this action you can update the Group properties of a particular group and assign currently identified user to a group.
-
-### Callback methods
+### Hook methods
 
 - `make`: Triggered during Avo initialization.
-  Here you will usually initialize an analytics SDK with a development or production key based on the `env` parameter.
-  If analytics SDK has already been initialized before you can leave this function blank.
+  Here you will usually initialize an analytics SDK with the provided apiKey parameter. You can adjust the initialization based on the `env` parameter.
+  This method is optional, if analytics SDK has already been initialized before you can skip it.
 
-  Example: `analytics.init(env)`
+  Example: `analytics.init(apiKey)`
 
 - `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a Log Event action attached. This callback is triggered when an Avo function with Log Event action is called.
   Here you perform the actual event tracking, calling the track/log methods of the analytics SDK. Event name and event properties are provided as parameters.
@@ -99,7 +84,7 @@ Example: ` mixpanel.track_with_groups(eventName, eventProperties, { groupType: g
 
 ## Initialization instructions
 
-Below are instructions on how to initialize Avo with a custom destination for
+Below are instructions on how to initialize Avo with a destination interface for
 each of the supported languages:
 
 - [Web](#web)
@@ -141,7 +126,7 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 var customDestination = {
-  make: function (env) {
+  make: function (env, apiKey) {
     // TODO implement
   },
   logEvent: function (eventName, eventProperties) {
@@ -202,14 +187,14 @@ Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 
 #### JavaScript to Google Analytics 4
 
-Here is a more specific example of how you can use a custom destination in JavaScript on Web to integrate with your Google Analytics 4 SDK to implement custom event tracking with Avo.
+Here is a more specific example of how you can use a destination interface in JavaScript on Web to integrate with your Google Analytics 4 SDK to implement custom event tracking with Avo.
 
 ```javascript
 import Avo from './Avo';
 
 // An object representing your Google Analytics destination that you pass into initAvo():
 var googleAnalyticsDestination = {
-  make: function (env) {
+  make: function (env, apiKey) {
     // If your gtag SDK is not already initialized you can intialize it here
   },
   logEvent: function (eventName, eventProperties) {
@@ -251,7 +236,7 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 let customDestination = {
-  make: function (env: AvoEnv) {
+  make: function (env: AvoEnv, apiKey: string) {
     // TODO implement
   },
   logEvent: function (eventName: string, eventProperties: object) {
@@ -327,7 +312,7 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, customDestination);
 
 ```ReasonML
 let customDestination: Avo.avoCustomDestination = {
-  make: (env: Avo.avoEnvType) => (),
+  make: (env: Avo.avoEnvType, apiKey: string) => (),
   logEvent: (eventName: string, eventProperties: Js.Json.t) => ();
   logPage: (pageName: string, eventProperties: Js.Json.t) => ();
   revenue: (amount: double, eventProperties: Js.Json.t) => ();
@@ -345,7 +330,7 @@ let customDestination: Avo.avoCustomDestination = {
   logEventWithGroups: (
     eventName: string,
     eventProperties: Js.Json.t,
-    ~groupTypesToGroupIds: Js.Json.t
+    groupTypesToGroupIds: Js.Json.t
   ) => ();
 };
 ```
@@ -374,7 +359,7 @@ import Avo
 
 @implementation CustomDestination : NSObject
 
-- (void)make:(AVOEnv)avoEnv
+- (void)makeWithEnv:(AVOEnv) avoEnv withApiKey:(nonnull NSString*) apiKey
 {
     // TODO implement
 }
@@ -429,7 +414,7 @@ import Avo
 // that you pass into initAvo():
 
 class CustomDestination : AvoCustomDestination {
-    func make(env: AvoEnv) {
+    func make(env: AvoEnv, apiKey: String) {
         // TODO implement
     }
     
@@ -486,7 +471,7 @@ Call the initAvo() function:
 
 ```java
 Avo.initAvo(application, context, Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
-    public void make(Avo.AvoEnv env) {
+    public void make(Avo.AvoEnv env, String apiKey) {
         // TODO implement
     }
 
@@ -526,7 +511,7 @@ Call the initAvo function:
 
 ```kotlin
 Avo.initAvo(application=application, context=this, env=AvoEnv.DEV, customDestination=object : ICustomDestination {
-    override fun make(env: AvoEnv) {
+    override fun make(env: AvoEnv, apiKey: String) {
         // TODO implement
     }
 
@@ -569,7 +554,7 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 var customDestination = {
-  make: function (env) {
+  make: function (env, apiKey) {
     // TODO implement
   },
   logEvent: function (eventName, eventProperties) {
@@ -601,7 +586,7 @@ Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 
 #### JavaScript to Mixpanel
 
-Here is a more specific example of how you can use a custom destination in JavaScript on React Native to integrate with your Mixpanel SDK. In this example we're using the official [mixpanel-react-native](https://github.com/mixpanel/mixpanel-react-native) SDK.
+Here is a more specific example of how you can use a destination interface in JavaScript on React Native to integrate with your Mixpanel SDK. In this example we're using the official [mixpanel-react-native](https://github.com/mixpanel/mixpanel-react-native) SDK.
 
 ```javascript
 import { Mixpanel } from 'mixpanel-react-native';
@@ -657,7 +642,7 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 let customDestination = {
-  make: function (env: AvoEnv) {
+  make: function (env: AvoEnv, apiKey: string) {
     // TODO implement
   },
   logEvent: function (eventName: string, eventProperties: any) {
@@ -717,7 +702,7 @@ var customDestination = {
 };
 ```
 
-If you need to be able to pass an Anonymous Id from the Avo function to your custom destination, [reach out to us](https://www.avo.app/docs/help/troubleshooting) and we'll enable that functionality for your workspace. When the Anonymous Id pass through has been enabled for your workspace the custom destination interface will look like this:
+If you need to be able to pass an Anonymous Id from the Avo function to your destination interface, [reach out to us](https://www.avo.app/docs/help/troubleshooting) and we'll enable that functionality for your workspace. When the Anonymous Id pass through has been enabled for your workspace the destination interface will look like this:
 
 ```javascript
 var Avo = require('./Avo.js');
@@ -739,7 +724,7 @@ Avo.initAvo({ env: 'dev' }, {}, {}, customDestination);
 ```
 
 By passing in the `customDestination` object, its `logEvent()` function can be used
-to deliver an event to any custom destination or pipeline.
+to deliver an event to any analytics destination or pipeline.
 
 #### <a name="node-typescript"></a> Typescript
 
@@ -750,6 +735,10 @@ import Avo from './Avo';
 // that you pass into initAvo():
 
 let customDestination = {
+  make: function (env: AvoEnv, apiKey: string) {
+    // TODO implement
+  },
+
   logEvent: async function (userId, eventName, eventProperties) {
     // TODO implement
   },
@@ -784,7 +773,7 @@ Call the initAvo() function:
 
 ```java
 Avo.initAvo(Avo.AvoEnv.DEV, new Avo.ICustomDestination() {
-  public void make(Avo.AvoEnv env) {
+  public void make(Avo.AvoEnv env, String apiKey) {
       // TODO implement
   }
 
@@ -814,7 +803,7 @@ require_once './Avo';
 // An object representing your custom destination
 // that you pass into init_avo():
 class CustomDestination {
-    public function make($env) {
+    public function make($env, $api_key) {
         // TODO implement
     }
 
@@ -822,11 +811,11 @@ class CustomDestination {
         // TODO implement
     }
 
-    public function log_page($userId, $page_name, $event_properties) {
+    public function log_page($user_id, $page_name, $event_properties) {
         // TODO: Log page view in your analytics SDK here
     }
 
-    public function revenue($userId, $amount, $event_properties) {
+    public function revenue($user_id, $amount, $event_properties) {
         // TODO: Log revenue in your analytics SDK here
     }
 
@@ -847,7 +836,7 @@ Avo::init_avo([
 
 ### <a name="python"></a> Python
 
-Import the Avo library into your code and define the Custom Destination class:
+Import the Avo library into your code and define a class that implements the destination interface:
 
 ```python
 from __future__ import print_function
@@ -860,7 +849,7 @@ class CustomDestination(object):
     def __init__(self):
         self.env = None
 
-    def make(self, env):
+    def make(self, env, api_key):
         pass
 
     def track_event(self, user_id, event_name, event_properties):
@@ -893,17 +882,17 @@ class CustomDestination(object):
         mp.track(user_id, event_name, event_properties)
 ```
 
-Call the init_avo() function and pass in the Custom Destination:
+Call the init_avo() function and pass in the destination interface implementation:
 
 ```python
 avo.init_avo(options={'env': 'dev'}, custom_destination=CustomDestination())
 ```
 
-where the name of the `custom_destination` parameter is the name of your custom destination in Avo.
+where the name of the `custom_destination` parameter is the name of your destination in Avo.
 
 #### <a name="python-to-segment"></a> Python to Segment
 
-Here is a more specific example of how you can use a custom destination in Python to integrate with your Segment SDK. In this example we're using the [analytics](https://segment.com/docs/connections/sources/catalog/libraries/server/python/) Python SDK from Segment
+Here is a more specific example of how you can use the destination interface in Python to integrate with your Segment SDK. In this example we're using the [analytics](https://segment.com/docs/connections/sources/catalog/libraries/server/python/) Python SDK from Segment
 
 ```python
 from __future__ import print_function
@@ -941,7 +930,7 @@ Call the init_avo() function:
 avo.init_avo(options={'env': 'dev'}, custom_destination=SegmentDestination())
 ```
 
-where the name of the `custom_destination` parameter is the name of your custom destination in Avo.
+where the name of the `custom_destination` parameter is the name of your destination in Avo.
 
 ### <a name="ruby"></a> Ruby
 
@@ -951,7 +940,7 @@ import Avo
 // An object representing your custom destination
 // that you pass into initAvo():
 class CustomDestination
-  def make(env:)
+  def make(env:, api_key:)
     # TODO implement
   end
 
@@ -985,11 +974,11 @@ Avo.init_avo(options: {:env => :dev}, custom_destination: CustomDestination.new)
 using Avo;
 ```
 
-Implement the custom destination:
+Implement the destination interface:
 
 ```csharp
 class CustomDestination : Avo.IDestination {
-    public void Make(Avo.AvoEnv env) {
+    public void Make(Avo.AvoEnv env, string apiKey) {
         // TODO implement
     }
 
@@ -1037,11 +1026,11 @@ new Avo.Avo(env: Avo.AvoEnv.Dev, customDestination: new CustomDestination());
 using Avo;
 ```
 
-Implement the custom destination:
+Implement the destination interface:
 
 ```csharp
 class CustomDestination : Avo.IDestination {
-    public void Make(AvoEnv env) {
+    public void Make(AvoEnv env, string apiKey) {
         // TODO implement
     }
 

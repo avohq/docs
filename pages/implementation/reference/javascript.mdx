@@ -45,9 +45,7 @@ import Avo from './Avo';
 
 Avo.initAvo(
   { env: 'dev' },
-  [systemProperties],
-  [destinationOptions],
-  [customDestination],
+  /*, other parameters depending on your tracking plan setup*/
 );
 ```
 
@@ -91,11 +89,13 @@ Avo.initAvo(
   options,
   [systemProperties],
   [destinationOptions],
-  [customDestination],
+  [mixpanelDestination],
+  [segmentDestination],
+  [otherDestination]
 );
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in the provided custom destinations.
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -111,29 +111,72 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
 
-`destinationOptions`: `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
+`destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
+
+```javascript
+{
+  [make]: function (env, apiKey), // This method is optional, you can skip it if yo've already initialized your Analytics SDK
+  logEvent: function (eventName, eventProperties),
+  setUserProperties: function (userId, userProperties),
+  identify: function (userId), // Not present in Node
+  unidentify: function (), // Not present in Node
+  [revenue]: function(amount, eventProperties),
+  [page]: function(pageName, eventProperties),
+
+  // The following methods are used for group analytics, learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+  [setGroupProperties]: function(groupType, groupId, groupProperties),
+  [addCurrentUserToGroup]: function(groupType, groupId, groupProperties),
+  [logEventWithGroups]: function(eventName, eventProperties, groupTypesToGroupIds)
+};
+```
+
+`destinationOptions`: send an empty array if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameteres. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
 - `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
 - `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
 - `segmentDestinationName`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
 
-`customDestination`: object, required if given source has a custom destination set up in Avo. Otherwise ignored.
-
-Custom destination object format:
+#### Destination interface example
 
 ```javascript
-{
-  make: function (env),
-  logEvent: function (eventName, eventProperties),
-  setUserProperties: function (userId, userProperties),
-  identify: function (userId),
-  unidentify: function (),
-  revenue: function(amount, eventProperties),
-  page: function(pageName, eventProperties)
+const customDestination = {
+  make: function(env, apiKey) {
+    // This call is optional, you may as well initialize the SDK somewhere else before using Avo Functions.
+    mixpanel.init(apiKey);
+  },
+  logEvent: function(eventName, eventProperties) {
+    mixpanel.track(eventName, eventProperties);
+  },
+  setUserProperties: function(userId, userProperties) {
+    mixpanel.people.set(userProperties);
+  },
+  identify: function(userId) {
+    mixpanel.identify(userId);
+  },
+  unidentify: function() {
+    mixpanel.reset();
+  },
+  revenue: function(amount, eventProperties) {
+    mixpanel.people.track_charge(amount, eventProperties);
+  },
+  page: function(pageName, eventProperties) {
+    mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
+  },
+  // The following methods are only used when doing <Link passHref href="/data-design/groups"><a>group analytics</a></Link>
+  setGroupProperties(groupType, groupId, groupProperties) {
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+  },
+  addCurrentUserToGroup: function (groupType, groupId, groupProperties) {
+    mixpanel.set_group(groupType, groupId);
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+  },
+  logEventWithGroups: function (eventName, eventProperties, groupTypesToGroupIds) {
+    mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
+  },
 };
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

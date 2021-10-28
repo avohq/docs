@@ -39,7 +39,7 @@ Import Avo from the generated file and initialize it by calling the `init_avo` m
 ```ruby
 require './avo.rb'
 
-Avo.init_avo(options: { env: :dev }, [system_properties], [custom_destination])
+Avo.init_avo(options: { env: :dev }, ...) # other parameters depend on your tracking plan setup
 ```
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/python#init_avo"><a>the reference below</a></Link>.
@@ -78,10 +78,10 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 #### init_avo
 
 ```ruby
-def self.init_avo(options:, [system_properties:], [custom_dest:], [logger: nil])
+def self.init_avo(options:, [system_properties:], [mixpanel_destination:], [segment_destination:], [other_destination:], [logger: nil])
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env:)` callback in the provided custom destinations.
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -90,22 +90,36 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `system_properties (Hash)`: a Hash containing the system properties that should be sent with every event.
 When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
-`[custom_dest (object)]`: if you have set up a custom destination for this source, an object with callbacks for the custom destination.
-
-Custom destination object format:
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 ```ruby
 class CustomDestination
-  def make(**args); end
+  # This method is optional, you can skip it if yo've already initialized your Analytics SDK
+  def make(env:, api_key:)
+    @tracker = Mixpanel::Tracker.new(api_key)
+  end
 
-  def track_event(**args); end
+  def track_event(user_id:, event_name:, event_properties:)
+    @tracker.track(user_id, event_name, event_properties)
+  end
 
-  def set_user_properties(**args); end
+  def log_page(user_id:, page_name:, event_properties:)
+    event_properties["Page Name"] = page_name
+    @tracker.track(user_id, "Page Viewed", event_properties)
+  end
+
+  def revenue(user_id:, amount:, event_properties:)
+    @tracker.people.track_charge(user_id, amount, event_properties)
+  end
+
+  def set_user_properties(user_id:, user_properties:)
+    @tracker.people.set(user_id, user_properties)
+  end
 end
 
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO: Find examples of Ruby custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

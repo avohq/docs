@@ -43,9 +43,7 @@ Import Avo from the generated file and initialize it by calling the `initAvo` me
 ```rescript
 Avo.initAvo(
   ~env=#dev,
-  ~systemProperties=Avo.AvoSystemProperties.t(),
-  [~destinationOptions=?],
-  [~customDestination=?],
+  /*other parameters depending on your tracking plan setup*/
   ()
 );
 ```
@@ -93,7 +91,9 @@ Avo.initAvo(
       ~noop: bool=false,
       [~mobileDebugger: option(mobileDebuggerInstance)=?],
       [~destinationOptions: option(DestinationOptions.t())=?],
-      [~customDestination: avoCustomDestination],
+      [~mixpanelDestination: avoCustomDestination],
+      [~segmentDestination: avoCustomDestination],
+      [~otherDestination: avoCustomDestination],
       (): unit,
 )
 ```
@@ -121,15 +121,43 @@ Custom destination interface format:
 
 ```rescript
 {
-  make: (env: avoEnvType) => unit,
+  // This method is optional, you can skip it if yo've already initialized your Analytics SDK
+  make: (env: avoEnvType, apiKey: string) => unit,
   logEvent: (eventName: string, eventProperties: Js.Json.t) => unit,
   setUserProperties: (userId: string, userProperties: Js.Json.t) => unit,
   identify: (userId: string) => unit,
   unidentify: unit => unit,
 };
+
+let inspectorCustomDestination: Avo.avoCustomDestination = {
+  make: (_env, _apiKey) => (),
+  logEvent: (eventName, eventProperties) => {
+    let () =
+      inspector->AvoInspector.trackSchemaFromEvent(
+        eventName,
+        eventProperties,
+      );
+    ();
+  },
+  logPage: (_eventName, _eventProperties) => {
+    ();
+  },
+  revenue: (_eventName, _eventProperties) => {
+    ();
+  },
+  setUserProperties: (_userId, _userProperties) => {
+    ();
+  },
+  identify: _userId => {
+    ();
+  },
+  unidentify: () => {
+    ();
+  },
+};
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO: Find examples of ReScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

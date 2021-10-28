@@ -75,7 +75,9 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 public static void initAvo(AvoEnv env,
     // Other parameters may not be present, depending on your tracking plan
     Integer systemProperty0, Boolean systemProperty1,
-    ICustomDestination customDestination,
+    ICustomDestination mixpanelDestination,
+    ICustomDestination segmentDestination,
+    ICustomDestination otherDestination,
     boolean strict = true, boolean noop = false,
     application: Application, context: Context
     );
@@ -89,14 +91,17 @@ public static void initAvoWithInspector(AvoEnv env,
     // Other parameters may not be present, depending on your tracking plan
     // Same parameters, as in `initAvo`
     Integer systemProperty0, Boolean systemProperty1,
-    ICustomDestination customDestination,
+    ICustomDestination mixpanelDestination,
+    ICustomDestination segmentDestination,
+    ICustomDestination otherDestination,
     boolean strict = true, boolean noop = false,
     application: Application, context: Context,
 
     );
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in the provided custom destinations.
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `Make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -105,39 +110,92 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
-`ICustomDestination customDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
-
-Custom destination interface formats
+`ICustomDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 Android:
 
 ```java
-public interface ICustomDestination {
-    void make(AvoEnv env);
+public class Destination implements ICustomDestination {
+    private MixpanelAPI mixpanel;
 
-    void logEvent(String eventName, Map<String, Object> eventProperties);
+    // Make method is optional, you can skip it if yo've already initialized your Analytics SDK
+    public void make(Avo.AvoEnv env, String apiKey) {
+        mixpanel = MixpanelAPI.getInstance(context.getApplicationContext(), projectToken);
+    }
 
-    void setUserProperties(String userId, Map<String, Object> userProperties);
+    public void logEvent(String eventName, Map<String, Object> eventProperties) {
+        mixpanel.track(eventName, eventProperties);
+    }
 
-    void identify(String userId);
+    public void setUserProperties(String userId, Map<String, Object> userProperties) {
+        mixpanel.getPeople().set(userProperties);
+    }
 
-    void unidentify();
+    public void identify(String userId) {
+        mixpanel.identify(userId);
+    }
+
+    public void unidentify() {
+        mixpanel.reset();
+    }
+
+    public void logPage(String pageName, Map<String, Object> eventProperties) {
+        eventProperties.add("Page", pageName);
+        mixpanel.track("Page Viewed", eventProperties);
+    }
+
+    public void revenue(double amount, Map<String, Object> eventProperties) {
+        mixpanel.getPeople().trackCharge(amount, eventProperties);
+    }
 }
 ```
 
 Server:
 
 ```java
-public static interface ICustomDestination {
-    void make(AvoEnv env);
+public class Destination implements ICustomDestination {
+    private Analytics analytics = null;
 
-    void logEvent(String anonymousId, String userId, String eventName, Map<String, Object> eventProperties);
+    public void make(AvoEnv env, String apiKey) {
+        analytics = Analytics.builder(apiKey).build();
+    }
 
-    void setUserProperties(String userId, Map<String, Object> userProperties);
+    public void logEvent(String userId, String eventName, Map<String, Object> eventProperties) {
+        TrackMessage.Builder builder = TrackMessage.builder(eventName);
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        analytics.enqueue(builder.properties(eventProperties));
+    }
+
+    public void setUserProperties(String userId, Map<String, Object> userProperties) {
+        IdentifyMessage.Builder builder = IdentifyMessage.builder();
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        analytics.enqueue(builder.traits(userProperties));
+    }
+
+    public void logPage(String userId, String pageName, Map<String, Object> eventProperties) {
+        ScreenMessage.Builder builder = PageMessage.builder(pageName);
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        analytics.enqueue(builder.properties(eventProperties));
+    }
+
+    public void revenue(String userId, double amount, Map<String, Object> eventProperties) {
+        TrackMessage.Builder builder = TrackMessage.builder("Purchase Completed);
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        eventProperties.put("revenue", amount)
+        analytics.enqueue(builder.properties(eventProperties));
+    }
 }
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO Find examples of Java custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

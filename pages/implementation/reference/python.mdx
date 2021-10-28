@@ -40,7 +40,7 @@ Import Avo from the generated file and initialize it by calling the `init_avo` m
 ```python
 import avo
 
-avo.init_avo({'env': 'dev'}, [system_properties], [custom_destination])
+avo.init_avo({'env': 'dev'}, ...) # other parameters depend on your tracking plan setup
 ```
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/python#init_avo"><a>the reference below</a></Link>.
@@ -79,10 +79,10 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 #### init_avo
 
 ```python
-avo.init_avo(options, [system_properties], [mixpanel_object], [custom_destination])
+avo.init_avo(options, [system_properties], [mixpanel_destination], [segment_destination], [other_destination], ...)
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env)` callback in the provided custom destinations.
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -96,28 +96,41 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `system_properties (dict)`: a dictionary containing the system properties that should be sent with every event.
 When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
-`[mixpanel_object (object)]`: if you have set up a Mixpanel destination for this source, an instance of the <a href="https://developer.mixpanel.com/docs/python">Mixpanel library object</a>.
-
-`[custom_destination (object)]`: if you have set up a custom destination for this source, an object with callbacks for the custom destination.
-
-Custom destination object format:
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 ```python
 class CustomDestination(object):
-    def __init__(self):
-        self.env = None
-
-    def make(self, env):
-        pass
+    # This method is optional, you can skip it if yo've already initialized your Analytics SDK    
+    def make(self, env, api_key):
+        self.mp = Mixpanel(api_key)
 
     def track_event(self, user_id, event_name, event_properties):
-        pass
+        self.mp.track(user_id, event_name, event_properties)
 
     def set_user_properties(self, user_id, user_properties):
-        pass
+        self.mp.people_set(user_id, user_properties)
+
+    def log_page(self, user_id, page_name, event_properties):
+        self.mp.track(user_id, "Page Viewed", event_properties)
+
+    def revenue(self, user_id, amount, event_properties):
+        self.mp.people_track_charge(user_id, amount, user_properties)
+
+    def add_current_user_to_group(self, user_id, group_type, group_id, group_properties)
+        self.mp.people_set(user_id, {
+            group_type : group_id,
+        })
+        self.mp.group_set(group_type, group_id, group_properties)
+
+    def set_group_properties(self, group_type, group_id, group_properties)
+        self.mp.group_set(group_type, group_id, group_properties)
+
+        for group_type in group_types_to_group_ids:
+            event_properties[group_type] = group_types_to_group_ids[group_type]
+        self.mp.track(user_id, event_name, event_properties)  
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO: Find examples of Python custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

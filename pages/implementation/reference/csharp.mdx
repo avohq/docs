@@ -77,12 +77,15 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 public Avo(AvoEnv env,
     // Other parameters may not be present, depending on your tracking plan
     int systemProperty0, bool systemProperty1,
-    IDestination customDestination,
+    IDestination mixpanelDestination,
+    IDestination segmentDestination,
+    IDestination otherDestination,
     bool strict = true
 )
 ```
 
-Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `Make(env)` callback in all custom destinations.
+Creates the Avo object that will be used to track. 
+This method will call the `Make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -91,19 +94,21 @@ Creates the Avo object that will be used to track. This method will initialize t
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool and list.
 
-`IDestination customDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
-
-Custom destination interface format:
+`IDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 ```csharp
-interface ICustomDestination {
-    void Make(AvoEnv env);
+interface IDestination {
+    void Make(AvoEnv env, string apiKey); // This method is optional in C# 8+, you can skip it if yo've already initialized your Analytics SDK
 
     Task LogEvent(string eventName, IDictionary<string, object> eventProperties);
 
     Task SetUserProperties(string userId, IDictionary<string, object> userProperties);
 
-    // Group analytics methods
+    Task LogPage(string userId, string pageName, IDictionary<string, object> eventProperties);
+
+    Task Revenue(string userId, double amount, IDictionary<string, object> eventProperties);
+
+    // The following methods are used for group analytics, learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
     Task AddCurrentUserToGroup(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
 
     Task SetGroupProperties(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
@@ -115,9 +120,46 @@ interface ICustomDestination {
 
     void Unidentify();
 }
+
+public class CustomDestination : IDestination{
+
+    public void Make(AvoEnv env, string apiKey) {
+        _client = new MixpanelClient(apiKey);
+    }
+    public async Task LogEvent(string userId, string eventName, IDictionary<string, object> eventProperties) {
+        return await _client!.TrackAsync(eventName, userId, eventProperties);
+    }
+    public async Task SetUserProperties(string userId, IDictionary<string, object> userProperties) {
+        return await _client!.PeopleSetAsync(userId, userProperties); 
+    }
+  
+    public async Task LogPage(string userId, string pageName, IDictionary<string, object> eventProperties) {
+        eventProperties["pageName"] = pageName;
+        return await _client!.TrackAsync("Page Visited", userId, eventProperties);
+    }
+
+    public async Task Revenue(string userId, double amount, IDictionary<string, object> eventProperties) {
+        eventProperties["amount"] = amount;
+        return await _client!.TrackAsync("Purchase Completed", userId, eventProperties);
+    }
+
+    public async Task AddCurrentUserToGroup(string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
+        // Example code, Mixpanel C# library does not actually support group analytics
+        await _client!.SetGroup(groupType, groupId);
+        return await _client!.GetGroup(groupType, groupId).Set(groupProperties);
+    }
+
+    Task SetGroupProperties(string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
+        return await _client!.GetGroup(groupType, groupId).Set(groupProperties);
+    }
+
+    Task LogEventWithGroups(string userId, string eventName, IDictionary<string, object> eventProperties, IDictionary<string, object> groupTypesToGroupIds) {
+        return await _client!.TrackWithGroups(eventName, eventProperties, groupTypesToGroupIds);;
+    }
+}
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO Find examples of C# custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

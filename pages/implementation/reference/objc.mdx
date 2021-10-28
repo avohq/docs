@@ -83,12 +83,14 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
   // Other parameters may not be present, depending on your tracking plan
   systemProperty0:(nullable NSNumber *)systemProperty0
   systemProperty1:(BOOL)systemProperty1
-  customDestination:(nonnull id<AVOCustomDestination>)customDestination
+  mixpanelDestination:(nonnull id<AVOCustomDestination>)mixpanelDestination
+  segmentDestination:(nonnull id<AVOCustomDestination>)segmentDestination
+  otherDestination:(nonnull id<AVOCustomDestination>)otherDestination
   strict:(BOOL)strict
   noop:(BOOL)noop;
 ```
 
-Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `- (void)make:(AVOEnv)avoEnv;` callback in all provided custom destinations.
+Creates the Avo object that will be used to track. This method will call the `makeWithEnv:withApiKey:` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -97,9 +99,7 @@ Creates the Avo object that will be used to track. This method will initialize t
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
-`(nonnull id<AVOCustomDestination>) customDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
-
-Custom destination protocol format:
+`(nonnull id<AVOCustomDestination>) destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 ```objc
 @protocol AVOCustomDestination
@@ -109,9 +109,53 @@ Custom destination protocol format:
 - (void)identify:(nonnull NSString*)userId;
 - (void)unidentify;
 @end
+
+@interface CustomDestination()
+    @property (nonatomic, readwrite) NSString* apiKey;
+@end
+
+@implementation CustomDestination : NSObject <AVOCustomDestination>
+
+// This method is optional, you can skip it if yo've already initialized your Analytics SDK
+- (void)makeWithEnv:(AVOEnv)avoEnv withApiKey:(nonnull NSString*) apiKey 
+{
+    self.apiKey = apiKey;
+}
+
+- (void)logEvent:(nonnull NSString*)eventName withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    [[Mixpanel sharedInstanceWithToken:self.apiKey] track:eventName properties:eventProperties];
+}
+
+- (void)logPage:(nonnull NSString *)pageName withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    NSMutableDictionary *mutableEventProperties = [eventProperties mutableCopy];
+    mutableEventProperties[@"Page Name"] = pageName;
+    [[Mixpanel sharedInstanceWithToken:self.apiKey] track:"Page Viewed" properties:mutableEventProperties];
+}
+
+- (void)revenue:(double)amount withEventProperties:(nonnull NSDictionary*)eventProperties
+{
+    [[[Mixpanel sharedInstanceWithToken:self.apiKey] people] trackCharge:amount withProperties:eventProperties];
+}
+
+- (void)setUserProperties:(nonnull NSString*)userId withUserProperties:(nonnull NSDictionary*)userProperties
+{
+    [[[Mixpanel sharedInstanceWithToken:self.apiKey] people] set:userProperties];
+}
+
+- (void)identify:(nonnull NSString*)userId
+{
+    [[Mixpanel sharedInstanceWithToken:self.apiKey] identify:userId];
+}
+
+- (void)unidentify
+{
+    [[Mixpanel sharedInstanceWithToken:self.apiKey] reset];
+}
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO Find examples of Objective-C custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

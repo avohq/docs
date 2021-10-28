@@ -81,7 +81,7 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 public static function init_avo($options, $systemProperties)
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env)` callback in the provided custom destinations.
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in the provided destination interfaces.
 
 ##### Arguments
 
@@ -109,18 +109,35 @@ interface LoggerInterface
 }
 ```
 
-- `[custom_dest_instance]`: object, required if given source has a custom destination set up in Avo. Otherwise ignored.
-
-Custom destination interface:
+- `[destination_instance]`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 ```PHP
-interface CustomDestination
-{
-    function make($env);
-    function log_event($user_id, $name, $event_properties);
-    function set_user_properties($user_id, $user_properties);
+class CustomDestination {
+    private $mp;
+
+    # This method is optional, you can skip it if yo've already initialized your Analytics SDK
+    function make($stub, $apiKey){
+      $this->mp = Mixpanel::getInstance(apiKey);
+    }
+    function log_event($user_id, $name, $properties){
+      $properties["distinct_id"] = $user_id;
+      $this->mp->track($name, $properties);
+    }
+    function set_user_properties($user_id, $array){
+      $this->mp->people->set($user_id, $array, $ip = 0, $ignore_time = true);
+    }
+    function log_page($user_id, $page_name, $event_properties){
+      $event_properties["distinct_id"] = $user_id;
+      $event_properties["page_name"] = $page_name;
+      $this->mp->track("Page Viewed", $event_properties);
+    }
+    function revenue($userId, $amount, $event_properties){
+      $this->mp->people->trackCharge($userId, $amount);
+    }
 }
 ```
+
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 #### set_system_properties
 

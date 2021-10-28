@@ -82,11 +82,13 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 public init(env: AvoEnv,
     // Other parameters may not be present, depending on your tracking plan
     systemProperty0: Int, systemProperty1: Bool,
-    customDestination: AvoCustomDestination,
+    mixpanelDestination: AvoCustomDestination,
+    segmentDestination: AvoCustomDestination,
+    otherDestination: AvoCustomDestination,
     strict: Bool = true, noop: Bool = false)
 ```
 
-Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all provided custom destinations.
+Creates the Avo object that will be used to track. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
 
 ##### Arguments
 
@@ -95,21 +97,51 @@ Creates the Avo object that will be used to track. This method will initialize t
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
 
-`customDestination: AvoCustomDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
-
-Custom destination protocol format:
+`destination: AvoCustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
 
 ```swift
 public protocol AvoCustomDestination {
-    func make(env: AvoEnv)
+    func make(env: AvoEnv, apiKey: String) // This method is optional, you can skip it if yo've already initialized your Analytics SDK
     func logEvent(eventName: String, eventProperties: [String:Any])
     func setUserProperties(userId: String, userProperties: [String:Any])
     func identify(userId: String)
     func unidentify()
 }
+
+class CustomDestination : AvoCustomDestination {
+    func make(env: AvoEnv, apiKey: String) {
+        Mixpanel.initialize(token: apiKey)
+    }
+    
+    func logEvent(eventName: String, eventProperties: [String : Any]) {
+        Mixpanel.mainInstance().track(event: eventName, properties: eventProperties as? Properties)
+    }
+    
+    func setUserProperties(userId: String, userProperties: [String : Any]) {
+        if !userProperties.isEmpty {
+            Mixpanel.mainInstance().people.set(properties: userProperties as! Properties)
+        }
+    }
+
+    func logPage(pageName: String, eventProperties: [String:Any]) {
+        Mixpanel.mainInstance().track(event: "Page Viewed", properties: eventProperties as? Properties)
+    }
+
+    func revenue(amount: Double, eventProperties: [String:Any]) {
+        Mixpanel.mainInstance().people.trackCharge(amount: amount, properties: eventProperties as? Properties)
+    }
+
+    func identify(userId: String) {
+        Mixpanel.mainInstance().identify(distinctId: userId)
+    }
+    
+    func unidentify() {
+        Mixpanel.mainInstance().reset()
+    }
+}
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO Find examples of Swift custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
