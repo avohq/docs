@@ -81,7 +81,7 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 def self.init_avo(options:, [system_properties:], [mixpanel_destination:], [segment_destination:], [other_destination:], [logger: nil])
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy Avo managed destinations.
 
 ##### Arguments
 
@@ -90,11 +90,12 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `system_properties (Hash)`: a Hash containing the system properties that should be sent with every event.
 When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
-`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 ```ruby
+# Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 class CustomDestination
-  # This method is optional, you can skip it if yo've already initialized your Analytics SDK
+  # This method is optional, you can skip it if you've already initialized your Analytics SDK
   def make(env:, api_key:)
     @tracker = Mixpanel::Tracker.new(api_key)
   end

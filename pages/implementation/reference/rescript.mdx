@@ -115,13 +115,13 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 - `amplitudeDestinationName`: optional Js.t, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
 - `segmentDestinationName`: optional Js.t, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
 
-`customDestination`: CustomDestination, required if given source has a custom destination set up in Avo. Otherwise not included.
+`destination`: CustomDestination, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 Custom destination interface format:
 
 ```rescript
 {
-  // This method is optional, you can skip it if yo've already initialized your Analytics SDK
+  // This method is optional, you can skip it if you've already initialized your Analytics SDK
   make: (env: avoEnvType, apiKey: string) => unit,
   logEvent: (eventName: string, eventProperties: Js.Json.t) => unit,
   setUserProperties: (userId: string, userProperties: Js.Json.t) => unit,
@@ -129,6 +129,7 @@ Custom destination interface format:
   unidentify: unit => unit,
 };
 
+// Example: Destination interface for the Avo Inspector SDK. Replace the implementation with your own tracking SDK methods
 let inspectorCustomDestination: Avo.avoCustomDestination = {
   make: (_env, _apiKey) => (),
   logEvent: (eventName, eventProperties) => {

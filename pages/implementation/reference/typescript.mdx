@@ -128,13 +128,13 @@ When you define system properties in your Avo workspace you set name and type - 
 - `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
 - `segmentDestinationName`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
 
-`customDestination`: CustomDestination, required if given source has a custom destination set up in Avo. Otherwise ignored.
+`destination`: CustomDestination, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 Custom destination interface format:
 
 ```typescript
 {
-  make?: function (env: AvoEnv): void, // This method is optional, you can skip it if yo've already initialized your Analytics SDK
+  make?: function (env: AvoEnv): void, // This method is optional, you can skip it if you've already initialized your Analytics SDK
   logEvent?: function (eventName: string, eventProperties): void,
   setUserProperties?: function (userId: string, userProperties): void,
   identify?: function (userId: string): void,
@@ -142,6 +142,7 @@ Custom destination interface format:
   logPage?: function (pageName: string, eventProperties): void
 };
 
+# Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 let customDestination = {
   make: function (env: AvoEnv, apiKey: string) {
     mixpanel.getInstance().init(apiKey);
@@ -164,7 +165,7 @@ let customDestination = {
   revenue: function (amount: number, eventProperties: object) {
     mixpanel.getInstance().people.track_charge(amount, eventProperties);
   },
-  // The following methods are only used when doing <Link passHref href="/data-design/groups"><a>group analytics</a></Link>
+  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
   setGroupProperties(
     groupType: string,
     groupId: string,
@@ -190,7 +191,7 @@ let customDestination = {
 };
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 [//]: # 'TODO: Find examples of TypeScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 

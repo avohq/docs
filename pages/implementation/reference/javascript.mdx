@@ -95,7 +95,7 @@ Avo.initAvo(
 );
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
+Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy Avo managed destinations.
 
 ##### Arguments
 
@@ -111,11 +111,11 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
 
-`destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
+`destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 ```javascript
 {
-  [make]: function (env, apiKey), // This method is optional, you can skip it if yo've already initialized your Analytics SDK
+  [make]: function (env, apiKey), // This method is optional, you can skip it if you've already initialized your Analytics SDK
   logEvent: function (eventName, eventProperties),
   setUserProperties: function (userId, userProperties),
   identify: function (userId), // Not present in Node
@@ -123,7 +123,7 @@ When you define system properties in your Avo workspace you set name and type - 
   [revenue]: function(amount, eventProperties),
   [page]: function(pageName, eventProperties),
 
-  // The following methods are used for group analytics, learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
   [setGroupProperties]: function(groupType, groupId, groupProperties),
   [addCurrentUserToGroup]: function(groupType, groupId, groupProperties),
   [logEventWithGroups]: function(eventName, eventProperties, groupTypesToGroupIds)
@@ -139,6 +139,7 @@ When you define system properties in your Avo workspace you set name and type - 
 #### Destination interface example
 
 ```javascript
+// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 const customDestination = {
   make: function(env, apiKey) {
     // This call is optional, you may as well initialize the SDK somewhere else before using Avo Functions.

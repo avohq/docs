@@ -88,7 +88,7 @@ public init(env: AvoEnv,
     strict: Bool = true, noop: Bool = false)
 ```
 
-Creates the Avo object that will be used to track. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy managed destinations.
+Creates the Avo object that will be used to track. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy Avo managed destinations.
 
 ##### Arguments
 
@@ -97,17 +97,18 @@ Creates the Avo object that will be used to track. This method will call the `ma
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool, list, object or any.
 
-`destination: AvoCustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations.
+`destination: AvoCustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 ```swift
 public protocol AvoCustomDestination {
-    func make(env: AvoEnv, apiKey: String) // This method is optional, you can skip it if yo've already initialized your Analytics SDK
+    func make(env: AvoEnv, apiKey: String) // This method is optional, you can skip it if you've already initialized your Analytics SDK
     func logEvent(eventName: String, eventProperties: [String:Any])
     func setUserProperties(userId: String, userProperties: [String:Any])
     func identify(userId: String)
     func unidentify()
 }
 
+# Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 class CustomDestination : AvoCustomDestination {
     func make(env: AvoEnv, apiKey: String) {
         Mixpanel.initialize(token: apiKey)
