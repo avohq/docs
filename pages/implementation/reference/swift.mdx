@@ -155,7 +155,7 @@ class CustomDestination : AvoCustomDestination {
 }
 ```
 
-Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/destinations"><a>here</a></Link>.
 
 #### avoLogger
 
@@ -214,6 +214,55 @@ Pass the value of the property to update here.
 
 `userId_: String`: used to connect event to specific user.
 Added if the event has the `Identify User` action
+
+### Snowplow interface
+
+> Currently in beta
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+If you add a snowplow destination to a Swift source you'll get an additional constructor parameter
+
+```swift
+snowplowDestination: AvoSnowplowDestination
+```
+
+You'll implement it like this:
+
+```swift
+extension SnowplowDestination: AvoSnowplowDestination {
+    func make(env: AvoEnv) {
+        // Your custom Snowplow initialization, that includes the `createTracker` call
+        Snowplow.createTracker(namespace: "appTracker", endpoint: "COLLECTOR_URL", method: .post)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/#iOS_Tracker
+    }
+
+    func trackSelfDescribingEvent(schema: String, data: [String: Any], contexts: [[String: Any]]) {  
+        let event = SelfDescribing(schema: schema, payload: data)  
+
+        contexts.forEach { context in
+            event.contexts.add(
+                SelfDescribingJson(schema: context["schema"],
+                    andDictionary: context["data"]))
+        }
+
+        Snowplow.getDefaultTracker().track(event)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/#Self_Describing
+    }
+
+    func identify(userId: String) {
+        Snowplow.getDefaultTracker().subject.setUserId(userId)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+    }
+
+    func unidentify() {
+        Snowplow.getDefaultTracker().subject.setUserId(null)
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+    }
+}
+
+let avo = Avo(..., snowplowDestination: SnowplowDestination())
+```
 
 ### Destinations
 

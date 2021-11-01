@@ -509,13 +509,8 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Managed Destinations',
-            path: '/implementation/destinations/managed-destinations',
-          },
-          {
-            type: 'route',
-            title: 'Custom Destinations',
-            path: '/implementation/start-custom-destination',
+            title: 'Destinations',
+            path: '/implementation/destinations',
           },
           {
             type: 'route',

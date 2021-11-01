@@ -270,7 +270,7 @@ var mixpanelDestination = {
 };
 ```
 
-Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+Read more about the destination interface <Link passHref href="/implementation/destinations"><a>here</a></Link>.
 
 #### setAvoLogger
 
@@ -336,6 +336,52 @@ Node.js: added to all events, you have to either provide it or the `anonymousId_
 `anonymousId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
 
 `segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
+
+### Snowplow interface
+
+> Currently in beta
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+If you add a snowplow destination to a Javascript source you'll need to provide the following object as
+
+```javascript
+options[snowplowDestination]
+```
+
+You'll implement it like this:
+
+```javascript
+const snowplowDestination = {
+  make: function(env) {
+    // Your custom Snowplow initialization, that includes the `newTracker` call
+    newTracker('sp1', '{{collector_url}}', {  appId: 'my-app-id',  plugins: [ ], });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracker-setup/
+  },
+  trackSelfDescribingEvent: (schema, data, contexts) => {
+    trackSelfDescribingEvent({
+      event: {
+        schema: schema,
+        data: data
+      },
+      context: contexts
+    });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/
+  },
+  trackPageView: (title) => {
+    trackPageView(title);
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/#page-views
+  },
+  identify: (userId) => {
+    setUserId(userId);
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.setuserid.md
+  },
+  unidentify: () => {
+    clearUserData();
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.clearuserdata.md
+  },
+};
+```
 
 ### Destinations
 

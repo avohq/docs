@@ -82,7 +82,7 @@ Example: ` analytics.group(groupType, { name: groupId, ...groupProperties, });`
 
 Example: ` mixpanel.track_with_groups(eventName, eventProperties, { groupType: groupId, });`
 
-## Initialization instructions
+### Implementation instructions
 
 Below are instructions on how to initialize Avo with a destination interface for
 each of the supported languages:
@@ -117,3 +117,62 @@ each of the supported languages:
   - <Link passHref href="/implementation/reference/csharp#destination-interface-example"><a>C#</a></Link>
 - Game Engines
   - <Link passHref href="/implementation/reference/csharp#destination-interface-example"><a>C#</a></Link>
+
+## Snowplow destination interface
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+The main idea stays the same though, when you initialize the Avo analytics wrapper generated for you, you pass an object with callbacks that will be called by Avo after all the validations are done.
+
+The callback object has the following interface:
+
+```pseudocode
+func make(env: AvoEnv)
+
+func trackSelfDescribingEvent(schema: String, data: Dictionary, 
+        contexts: List<Dictionary<schema: String, data: Dictionary>>)
+
+func trackPageView(title: String)
+
+func identify(userId: String)
+
+func unidentify()
+```
+
+In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are are available below.
+
+1. `make` - here you would initialize your Snowplow SDK, you can also skip this callback if you already have the Snowplow SDK initialized, the parameter will be one of `AvoEnv.Dev`, `AvoEnv.Prod`, `AvoEnv.Staging`
+
+2. `trackSelfDescribingEvent` - this callback provides you all the data needed to track a self describing event
+
+3. `trackPageView` - this callback is for tracking page views, with the page title as parameter, there is a corresponding method in the Snowplow SDK
+
+4. `identify` - this callback is to assign an id of the current user, which is the call's parameter, in Snowplow it's done by assigning the user id in the Subject config
+
+5. `unidentify` - this callback is for removing current user's identification
+
+### Implementation instructions
+
+- <Link passHref href="/implementation/reference/kotlin#snowplow-interface"><a>Kotlin</a></Link>
+- <Link passHref href="/implementation/reference/swift#snowplow-interface"><a>Swift</a></Link>
+- <Link passHref href="/implementation/reference/javascript#snowplow-interface"><a>JavaScript</a></Link>
+- <Link passHref href="/implementation/reference/typescript#snowplow-interface"><a>TypeScript</a></Link>
+
+## Managed destination (legacy)
+
+When using some language + destination combinations you can pick Avo managed destination approach. It's a legacy feature that will be deprecated soon.
+
+If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: `Log Event`, `Update User Properties`, `Identify User`, `Unidentify User`, `Log Revenue`, `Log Page View`, `Update Groups`, will be handled by the <Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions in the Avo generated code</a></Link>.
+
+- Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specified environment when you initialize Avo
+- **Log Event**: Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call.
+- **Log event with Group**: Avo will associate the track method with the specified group if the event is associated with a group in the `Log Event` action.
+- **Update User Properties**: Avo will call the user properties method of the analytics SDK (e.g. `identify(userId, userProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Update User Properties` action is called and will include the user properties in the call.
+- **Identify User**: Avo will call the identify method of the analytics SDK (e.g. `identify(userId)` in the Segment SDK) when an Avo Function corresponding to an event with `Identify User` action is called.
+- **Unidentify User**: Avo will call the unidentify method of the analytics SDK (e.g. `identify(null)` in the Segment SDK) when an Avo Function corresponding to an event with `Unidentify User` action is called.
+- **Log Revenue**: Avo will call the revenue method of the analytics SDK (e.g. `track("revenue", {"revenue": amount})` in the Segment SDK) when an Avo Function corresponding to an event with `Log Revenue` action is called.
+- **Log Page View**: Avo will call the page method of the analytics SDK (e.g. `page(pageName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Page View` action is called and will include the event and system properties in the call.
+- **Associate user with Group**: Avo will associate current user with the specified group when an Avo event with the 'Update Groups' action is triggered.
+- **Update Groups Properties**: Avo will update specified group metadata when an Avo event with the 'Update Groups' action is triggered.
+
+> Learn more about Avo actions and how to attach them to events in <Link passHref href="/workspace/tracking-plan/events#actions"><a>the Tracking Plan section</a></Link>.
