@@ -109,11 +109,13 @@ The parameters are named the same as system properties, in camelCase, and requir
 
 ```kotlin
 interface ICustomDestination {
-    fun make(env: AvoEnv, apiKey: string) // This method is optional, you can skip it if you've already initialized your Analytics SDK
+    fun make(env: AvoEnv, apiKey: String) {} // This method is optional, you can skip it if you've already initialized your Analytics SDK
 
     fun logEvent(eventName: String, eventProperties: Map<String, *>)
 
-    fun logPage(pageName: String, eventProperties: Map<String, *>) {}
+    fun logPage(pageName: String, eventProperties: Map<String, *>)
+
+    fun revenue(amount: Double, eventProperties: Map<String, *>)
 
     fun setUserProperties(userId: String, userProperties: Map<String, *>)
 
@@ -121,7 +123,15 @@ interface ICustomDestination {
 
     fun unidentify()
 }
+```
 
+`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
+
+`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+#### Destination interface example
+
+```kotlin
 // Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 let customDestination = object : ICustomDestination {
     var mixpanel: MixpanelAPI? = null
@@ -140,6 +150,7 @@ let customDestination = object : ICustomDestination {
     }
 
     override fun logPage(pageName: String, eventProperties: MutableMap<String, *>) {
+        // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.        
         let mutableEventprops = eventProperties.toMutableMap()
         mutableEventprops["Page Name"] = pageName
         mixpanel?.track("Page Viewed", mutableEventprops)
@@ -160,12 +171,6 @@ let customDestination = object : ICustomDestination {
 ```
 
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO Find examples of Kotlin custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
-
-`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
-
-`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 
 ###### Additional arguments
 

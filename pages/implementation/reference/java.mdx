@@ -112,6 +112,31 @@ The parameters are named the same as system properties, in camelCase, and requir
 
 `ICustomDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
+```java
+public interface ICustomDestination {
+        default void make(AvoEnv env) {};
+        default void make(AvoEnv env, String apiKey) {
+          throw new RuntimeException("Make with apiKey is not implemented");
+        };
+        void logEvent(String eventName, Map<String, Object> eventProperties);
+        void setUserProperties(String userId, Map<String, Object> userProperties);
+        void identify(String userId);
+        void unidentify();
+        void logPage(String pageName, Map<String, Object> eventProperties);
+        void revenue(double revenue, Map<String, Object> eventProperties);
+}
+```
+
+If you are using server Java each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
+`boolean strict = true`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+`boolean noop = false`: bool, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+
+`Object avoInspector`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
+
+#### Destination interface example
+
 Android:
 
 ```java
@@ -141,6 +166,7 @@ public class Destination implements ICustomDestination {
     }
 
     public void logPage(String pageName, Map<String, Object> eventProperties) {
+        // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.        
         eventProperties.add("Page", pageName);
         mixpanel.track("Page Viewed", eventProperties);
     }
@@ -154,9 +180,11 @@ public class Destination implements ICustomDestination {
 Server:
 
 ```java
+// Example: Destination interface for the Segment SDK. Replace the Segment implementation with your own tracking SDK methods
 public class Destination implements ICustomDestination {
     private Analytics analytics = null;
 
+    // Make method is optional, you can skip it if you've already initialized your Analytics SDK
     public void make(AvoEnv env, String apiKey) {
         analytics = Analytics.builder(apiKey).build();
     }
@@ -186,7 +214,8 @@ public class Destination implements ICustomDestination {
     }
 
     public void revenue(String userId, double amount, Map<String, Object> eventProperties) {
-        TrackMessage.Builder builder = TrackMessage.builder("Purchase Completed);
+        // Note: Segment does not provide a native method for revenue tracking, so we send an event instead. Other SDKs may have a dedicated revenue tracking method.        
+        TrackMessage.Builder builder = TrackMessage.builder("Purchase Completed");
         if (userId != null) {
             builder = builder.userId(userId);
         }
@@ -197,14 +226,6 @@ public class Destination implements ICustomDestination {
 ```
 
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO Find examples of Java custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
-
-`boolean strict = true`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
-
-`boolean noop = false`: bool, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
-
-`Object avoInspector`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
 
 ###### Additional arguments
 

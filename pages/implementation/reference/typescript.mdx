@@ -135,13 +135,25 @@ Custom destination interface format:
 ```typescript
 {
   make?: function (env: AvoEnv): void, // This method is optional, you can skip it if you've already initialized your Analytics SDK
-  logEvent?: function (eventName: string, eventProperties): void,
-  setUserProperties?: function (userId: string, userProperties): void,
+  logEvent?: function (eventName: string, eventProperties: object): void,
+  setUserProperties?: function (userId: string, userProperties: object): void,
   identify?: function (userId: string): void,
   unidentify?: function (): void,
-  logPage?: function (pageName: string, eventProperties): void
-};
+  logPage?: function (pageName: string, eventProperties: object): void
+  revenue?: function (amount: number, eventProperties: object): void
 
+  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+  setGroupProperties?: function(groupType: string, groupId: string, groupProperties: object),
+  addCurrentUserToGroup?: function(groupType: string, groupId: string, groupProperties: object),
+  logEventWithGroups?: function(eventName: string, eventProperties: object, groupTypesToGroupIds: object)
+};
+```
+
+In Node each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
+#### Destination interface example
+
+```typescript
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 let customDestination = {
   make: function (env: AvoEnv, apiKey: string) {
@@ -171,29 +183,46 @@ let customDestination = {
     groupId: string,
     groupProperties: object,
   ) {
+    // Mixpanel example
     mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
   },
   addCurrentUserToGroup: function (
     groupType: string,
     groupId: string,
     groupProperties: object,
   ) {
+    // Segment example
+    analytics.group(groupType, {
+      name: groupId,
+      ...groupProperties,
+    });
+    // Mixpanel example
     mixpanel.set_group(groupType, groupId);
     mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    amplitude.getInstance().setGroup(groupType, groupId);
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
   },
   logEventWithGroups: function (
     eventName: string,
     eventProperties: object,
     groupTypesToGroupIds: object,
   ) {
+    // Mixpanel example
     mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
+    // Amplitude example
+    amplitude
+      .getInstance()
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
   },
 };
 ```
 
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO: Find examples of TypeScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
 #### setAvoLogger
 

@@ -92,6 +92,8 @@ When you define system properties in your Avo workspace you set name and type - 
 
 `[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
+#### Destination interface example
+
 ```ruby
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 class CustomDestination
@@ -105,6 +107,7 @@ class CustomDestination
   end
 
   def log_page(user_id:, page_name:, event_properties:)
+    # Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
     event_properties["Page Name"] = page_name
     @tracker.track(user_id, "Page Viewed", event_properties)
   end
@@ -120,9 +123,9 @@ end
 
 ```
 
-Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
 
-[//]: # 'TODO: Find examples of Ruby custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
+Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
 
 #### set_system_properties
 

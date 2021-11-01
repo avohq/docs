@@ -98,6 +98,8 @@ When you define system properties in your Avo workspace you set name and type - 
 
 `[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
+#### Destination interface example
+
 ```python
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 class CustomDestination(object):
@@ -112,28 +114,66 @@ class CustomDestination(object):
         self.mp.people_set(user_id, user_properties)
 
     def log_page(self, user_id, page_name, event_properties):
+        # Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+        event_properties["Page Name"] = page_name
         self.mp.track(user_id, "Page Viewed", event_properties)
 
     def revenue(self, user_id, amount, event_properties):
         self.mp.people_track_charge(user_id, amount, user_properties)
 
+    # The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
     def add_current_user_to_group(self, user_id, group_type, group_id, group_properties)
-        self.mp.people_set(user_id, {
+        mp.people_set(user_id, {
             group_type : group_id,
         })
-        self.mp.group_set(group_type, group_id, group_properties)
+        mp.group_set(group_type, group_id, group_properties)
 
     def set_group_properties(self, group_type, group_id, group_properties)
-        self.mp.group_set(group_type, group_id, group_properties)
+        mp.group_set(group_type, group_id, group_properties)
 
+    def track_event_with_groups(self, user_id, event_name, event_properties, group_types_to_group_ids)
         for group_type in group_types_to_group_ids:
             event_properties[group_type] = group_types_to_group_ids[group_type]
-        self.mp.track(user_id, event_name, event_properties)  
+        mp.track(user_id, event_name, event_properties)
+```
+
+To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
+##### Segment example (without the group analytics)
+
+Here is a more specific example of how you can use the destination interface in Python to integrate with your Segment SDK. In this example we're using the [analytics](https://segment.com/docs/connections/sources/catalog/libraries/server/python/) Python SDK from Segment
+
+```python
+from __future__ import print_function
+
+import avo
+import analytics
+
+# An object representing your custom destination
+# that you pass into init_avo():
+class SegmentDestination(object):
+    def __init__(self):
+        self.env = None
+
+    def make(self, env):
+        analytics.write_key = 'YOUR_WRITE_KEY'
+
+    def track_event(self, user_id, event_name, event_properties):
+        analytics.track(user_id, event_name, event_properties)
+
+    def set_user_properties(self, user_id, user_properties):
+        analytics.identify(user_id, user_properties)
+
+    def log_page(self, user_id, page_name, event_properties):
+        analytics.page(user_id, page_name, event_properties)
+
+    def revenue(self, user_id, amount, event_properties):
+      analytics.track(user_id, 'Revenue', {
+          'revenue': amount
+      })
 ```
 
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO: Find examples of Python custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
 #### set_system_properties
 

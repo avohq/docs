@@ -103,11 +103,23 @@ The parameters are named the same as system properties, in camelCase, and requir
 public protocol AvoCustomDestination {
     func make(env: AvoEnv, apiKey: String) // This method is optional, you can skip it if you've already initialized your Analytics SDK
     func logEvent(eventName: String, eventProperties: [String:Any])
+    func logPage(pageName: String, eventProperties: [String:Any])
+    func revenue(amount: Double, eventProperties: [String:Any])
     func setUserProperties(userId: String, userProperties: [String:Any])
     func identify(userId: String)
     func unidentify()
 }
+```
 
+`strict: Bool = true`: bool, default value is `true`, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+`noop: Bool = false`: bool, default value is `false`, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+
+> Note that you do not need to pass the Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>Read more here</a></Link>.
+
+#### Destination interface example
+
+```swift
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 class CustomDestination : AvoCustomDestination {
     func make(env: AvoEnv, apiKey: String) {
@@ -125,7 +137,8 @@ class CustomDestination : AvoCustomDestination {
     }
 
     func logPage(pageName: String, eventProperties: [String:Any]) {
-        Mixpanel.mainInstance().track(event: "Page Viewed", properties: eventProperties as? Properties)
+        // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.        
+        Mixpanel.mainInstance().track(event: "Page Viewed", properties: eventProperties as? Properties)
     }
 
     func revenue(amount: Double, eventProperties: [String:Any]) {
@@ -143,14 +156,6 @@ class CustomDestination : AvoCustomDestination {
 ```
 
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO Find examples of Swift custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
-
-`strict: Bool = true`: bool, default value is `true`, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
-
-`noop: Bool = false`: bool, default value is `false`, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
-
-> Note that you do not need to pass the Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>Read more here</a></Link>.
 
 #### avoLogger
 

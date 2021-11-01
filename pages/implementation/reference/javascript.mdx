@@ -130,6 +130,8 @@ When you define system properties in your Avo workspace you set name and type - 
 };
 ```
 
+In Node each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
 `destinationOptions`: send an empty array if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameters. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
 - `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
@@ -161,25 +163,114 @@ const customDestination = {
     mixpanel.people.track_charge(amount, eventProperties);
   },
   page: function(pageName, eventProperties) {
+    // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
     mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
   },
-  // The following methods are only used when doing <Link passHref href="/data-design/groups"><a>group analytics</a></Link>
+  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
   setGroupProperties(groupType, groupId, groupProperties) {
+    // Mixpanel example
     mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
   },
   addCurrentUserToGroup: function (groupType, groupId, groupProperties) {
+    // Segment example
+    analytics.group(groupType, {
+      name: groupId,
+      ...groupProperties,
+    });
+    // Mixpanel example
     mixpanel.set_group(groupType, groupId);
     mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    amplitude.getInstance().setGroup(groupType, groupId);
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
   },
   logEventWithGroups: function (eventName, eventProperties, groupTypesToGroupIds) {
+    // Mixpanel example
     mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
+    // Amplitude example
+    amplitude
+      .getInstance()
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
+  },
+};
+```
+
+##### Web Google Analytics 4 example
+
+```javascript
+import Avo from './Avo';
+
+// An object representing your Google Analytics destination that you pass into initAvo():
+var googleAnalyticsDestination = {
+  logEvent: function (eventName, eventProperties) {
+    gtag('event', eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    // Todo: Pass user properties to Google Analytics
+  },
+  identify: function (userId) {
+    // Todo: Identify user in Google Analytics
+  },
+  unidentify: function () {
+    // Todo: Unidentify currently identified user in Google Analytics
+  },
+  revenue: function (amount, eventProperties) {
+    gtag('event', 'purchase', { ...eventProperties, amount });
+  },
+  page: function (screenName, eventProperties) {
+    gtag('event', 'screen_view', {
+      ...eventProperties,
+      screen_name: screenName,
+    });
+  },
+};
+```
+
+##### React Native Mixpanel example
+
+Here is a more specific example of how you can use a destination interface in JavaScript on React Native to integrate with your Mixpanel SDK. In this example we're using the official [mixpanel-react-native](https://github.com/mixpanel/mixpanel-react-native) SDK.
+
+```javascript
+import { Mixpanel } from 'mixpanel-react-native';
+import Avo from './Avo';
+
+// An object representing your Mixpanel destination
+// that you pass into initAvo():
+
+var mixpanelDestination = {
+  make: function (env, apiKey) {
+    Mixpanel.init(apiKey);
+  },
+  logEvent: function (eventName, eventProperties) {
+    mixpanel.track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    mixpanel.identify(userId);
+    Object.keys(userProperties).forEach((key) =>
+      mixpanel.getPeople().set(key, userProperties[key]),
+    );
+  },
+  identify: function (userId) {
+    mixpanel.identify(userId);
+  },
+  unidentify: function () {
+    mixpanel.reset();
+  },
+  revenue: function (amount, eventProperties) {
+    mixpanel.getPeople().trackCharge(amount, eventProperties);
+  },
+  page: function (pageName, eventProperties) {
+    // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+    mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
   },
 };
 ```
 
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO Find examples of JavaScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
 #### setAvoLogger
 

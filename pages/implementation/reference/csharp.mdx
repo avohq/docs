@@ -97,7 +97,6 @@ The parameters are named the same as system properties, in camelCase, and requir
 `IDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 ```csharp
-// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 interface IDestination {
     void Make(AvoEnv env, string apiKey); // This method is optional in C# 8+, you can skip it if you've already initialized your Analytics SDK
 
@@ -121,9 +120,19 @@ interface IDestination {
 
     void Unidentify();
 }
+```
 
+If you are using `.NET` source each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
+`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+#### Destination interface example
+
+```csharp
+// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 public class CustomDestination : IDestination{
 
+    // Make method is optional, you can skip it if you've already initialized your Analytics SDK
     public void Make(AvoEnv env, string apiKey) {
         _client = new MixpanelClient(apiKey);
     }
@@ -135,6 +144,7 @@ public class CustomDestination : IDestination{
     }
   
     public async Task LogPage(string userId, string pageName, IDictionary<string, object> eventProperties) {
+        // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
         eventProperties["pageName"] = pageName;
         return await _client!.TrackAsync("Page Visited", userId, eventProperties);
     }
@@ -144,8 +154,9 @@ public class CustomDestination : IDestination{
         return await _client!.TrackAsync("Purchase Completed", userId, eventProperties);
     }
 
+    // The following methods are used for group analytics  and are not required. Learn, more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
     public async Task AddCurrentUserToGroup(string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
-        // Example code, Mixpanel C# library does not actually support group analytics
+        // Conceptual code, Mixpanel C# library does not support group analytics yet
         await _client!.SetGroup(groupType, groupId);
         return await _client!.GetGroup(groupType, groupId).Set(groupProperties);
     }
@@ -160,11 +171,79 @@ public class CustomDestination : IDestination{
 }
 ```
 
+In `Unity` all the method are synchronous `void` type and there are 2 additional methods:
+
+```csharp
+    // Initialize before use in the Unity UI https://developer.mixpanel.com/docs/unity-quickstart#2-initialize-mixpanel
+
+    public void LogEvent(string eventName, IDictionary<string, object> eventProperties){
+        var props = new Value();
+        foreach (string key in eventProperties.Keys)
+        {
+            object value = eventProperties[key];
+            if (value is string)
+            {
+                props[key] = value as string;
+            }
+            else if (value is int)
+            {
+                props[key] = value as int?;
+            }
+            else if (value is double)
+            {
+                props[key] = value as double?;
+            }
+            else if (value is bool)
+            {
+                props[key] = value as bool?;
+            }
+        }
+
+        Mixpanel.Track(eventName, props);
+    }
+
+    public void LogPage(string pageName, IDictionary<string, object> eventProperties){
+        // Note: Mixpanel does not provide a native method for page or screen tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
+    }
+
+    public void Revenue(double amount, IDictionary<string, object> eventProperties){
+        // Note: Mixpanel does not provide a native method for revenue tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
+    }
+
+    public void SetUserProperties(string userId, IDictionary<string, object> userProperties){
+        foreach (string key in userProperties.Keys)
+        {
+            object value = userProperties[key];
+
+            if (value is string)
+            {
+                Mixpanel.People.Set(key, value as string);
+            }
+            else if (value is int)
+            {
+                Mixpanel.People.Set(key, value as int?);
+            }
+            else if (value is double)
+            {
+                Mixpanel.People.Set(key, value as double?);
+            }
+            else if (value is bool)
+            {
+                Mixpanel.People.Set(key, value as bool?);
+            }
+        }
+    }
+
+    public void Identify(string userId){
+        Mixpanel.Identify(userId);
+    }
+
+    public void Unidentify(){
+        Mixpanel.Reset();
+    }
+```
+
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO Find examples of C# custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
-
-`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 
 #### setAvoLogger
 

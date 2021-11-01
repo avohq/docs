@@ -120,11 +120,19 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 {
   make: (env: avoEnvType, apiKey: string) => unit, // This method is optional, you can skip it if you've already initialized your Analytics SDK
   logEvent: (eventName: string, eventProperties: Js.Json.t) => unit,
+  logPage: (pageName: string, eventProperties: Js.Json.t) => unit,
+  revenue: (amount: float, eventProperties: Js.Json.t) => unit,
   setUserProperties: (userId: string, userProperties: Js.Json.t) => unit,
   identify: (userId: string) => unit,
   unidentify: unit => unit,
 };
+```
 
+In Node each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
+#### Destination interface example
+
+```reasonml
 // Example: Destination interface for the Avo Inspector SDK. Replace the implementation with your own tracking SDK methods
 let inspectorCustomDestination: Avo.avoCustomDestination = {
   make: (_env, _apiKey) => (),
@@ -136,10 +144,10 @@ let inspectorCustomDestination: Avo.avoCustomDestination = {
       );
     ();
   },
-  logPage: (_eventName, _eventProperties) => {
+  logPage: (_pageName, _eventProperties) => {
     ();
   },
-  revenue: (_eventName, _eventProperties) => {
+  revenue: (_amount, _eventProperties) => {
     ();
   },
   setUserProperties: (_userId, _userProperties) => {
@@ -155,8 +163,6 @@ let inspectorCustomDestination: Avo.avoCustomDestination = {
 ```
 
 Read more about the destination interface <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO: Find examples of ReasonML custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
 
 #### setSystemProperties
 
