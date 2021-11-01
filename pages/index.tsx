@@ -439,9 +439,7 @@ const LandingPage: FunctionComponent = () => {
             image={DevIcon}
             title="How to implement destination interfaces"
             description="Learn how to implement destination interrfaces in your language"
-            callToAction={
-              new CallToAction('/implementation/destinations')
-            }
+            callToAction={new CallToAction('/implementation/destinations')}
           />
 
           <PageLink
