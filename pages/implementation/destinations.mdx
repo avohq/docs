@@ -130,7 +130,7 @@ The callback object has the following interface:
 func make(env: AvoEnv)
 
 func trackSelfDescribingEvent(schema: String, data: Dictionary, 
-        contexts: List<Dictionary<schema: String, data: Dictionary>>)
+        contexts: List<Pair<schema: String, data: Dictionary>>)
 
 func trackPageView(title: String)
 
@@ -138,6 +138,8 @@ func identify(userId: String)
 
 func unidentify()
 ```
+
+> Snowplow context is basically a properties object (a set of property names and values) plus the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function and the data, which is an object. You provide the values for that object's fileds when calling the Avo function.
 
 In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are are available below.
 
