@@ -32,7 +32,7 @@ All events that have been modified on the branch are included in the instruction
 
 ### Properties
 
-Each event in the instructions has a list of the properties attached to it. Properties can have four states: New, Removed, Updated or Existing (no change). For every property you can see the property description as defined in Avo. The type of each property is also included in the instructions, so you can handle each type (event, user and group properties) differently.
+Each event in the instructions has a list of the properties attached to it. Properties can have four states: New, Removed, Updated or Existing (no change). For every property you can see the property description as defined in Avo. Properties are categorized into event, user and group properties, so you can handle each type differently.
 
 ### Destinations
 
@@ -45,7 +45,6 @@ Each event in the instructions has a list of the destinations it should be sent 
 >## Event properties updated on all events
 >
 >- property named "Optional List System Property"
->  - An event property
 >  - **Description**: -  
 >  - **Value type**: optional list of string 
 >
@@ -62,10 +61,15 @@ Each event in the instructions has a list of the destinations it should be sent 
 >
 >#### New properties on this event
 >
+>Event properties:
 >- Add Seat Prompt Interaction, also this property has destination specific names, see in the Destinations section below
->  - An event property
 >  - **Description**: -  
 >  - **Value type**: string matches Proceed, Dismiss
+>
+>User properties:
+>- User interactions
+>  - **Description**: -  
+>  - **Value type**: int
 >
 >#### New destinations on this event
 >
@@ -88,8 +92,8 @@ Each event in the instructions has a list of the destinations it should be sent 
 >
 >#### New properties on this event
 >
+>Event properties:
 >- Add Seat Prompt Interaction
->  - An event property
 >  - **Description**: -  
 >  - **Value type**: string matches Proceed, Dismiss
 >
