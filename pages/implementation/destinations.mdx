@@ -1,11 +1,11 @@
 ---
 layout: 'guide'
-title: 'Setting up custom destinations'
+title: 'Destinations in Avo Functions'
 ---
 
 import Link from '../../components/Link';
 
-Destination interface is a set of hook methods that you implement to route data from Avo to particular analytics destination. Avo triggers specific methods when you call the Avo functions to send events. 
+Destination interface is a set of callback methods that you implement to route data from Avo to particular analytics destination in your client. Avo triggers specific methods when you call the Avo functions to send events, update user properties, identify users, etc.
 It provides the data ready to be sent to any analytics destination.
 
 You can use the destination interface with any analytics platform, please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
@@ -22,7 +22,7 @@ To get started using a destination interface you do the following:
 
 We will be referencing Avo _functions_, _events_, _actions_ and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> and subdocs to get familiar with Avo concepts.
 
-With a destination interface you'll get access to callback methods for Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-functions-overview"><a>Avo functions</a></Link> are called.
+With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-functions-overview"><a>Avo functions</a></Link> are called.
 
 > Available event actions in Avo
 >
@@ -139,9 +139,9 @@ func identify(userId: String)
 func unidentify()
 ```
 
-> Snowplow context is basically a properties object (a set of property names and values) plus the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function and the data, which is an object. You provide the values for that object's fields when calling the Avo function.
+> Snowplow context is a properties object (a set of property names and values) plus the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function, and the `data`, which is an object. You provide the values for that object's fields when calling the Avo function.
 
-In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are are available below.
+In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are available below.
 
 1. `make` - here you would initialize your Snowplow SDK, you can also skip this callback if you already have the Snowplow SDK initialized, the parameter will be one of `AvoEnv.Dev`, `AvoEnv.Prod`, `AvoEnv.Staging`
 

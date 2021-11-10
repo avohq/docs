@@ -90,7 +90,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `system_properties (Hash)`: a Hash containing the system properties that should be sent with every event.
 When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
-`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 #### Destination interface example
 
