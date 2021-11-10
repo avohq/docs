@@ -81,7 +81,8 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 def self.init_avo(options:, [system_properties:], [mixpanel_destination:], [segment_destination:], [other_destination:], [logger: nil])
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy Avo managed destinations.
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 

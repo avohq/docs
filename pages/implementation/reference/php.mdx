@@ -81,7 +81,8 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 public static function init_avo($options, $systemProperties)
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in the provided destination interfaces.
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 
