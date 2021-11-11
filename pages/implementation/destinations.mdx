@@ -47,7 +47,7 @@ With a destination interface you'll get access to callback methods for all the A
   Here you perform the actual event tracking, calling the track/log methods of your analytics destination. Event name and event properties are provided as parameters.
 
   ```pseudocode
-  logEvent(eventName, eventPropertoes) {
+  logEvent(eventName, eventProperties) {
     // Log event in your destination
     analytics.track(eventName, eventProperties)
   }
