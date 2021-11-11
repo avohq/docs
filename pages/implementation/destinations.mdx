@@ -33,8 +33,8 @@ With a destination interface you'll get access to callback methods for all the A
 ### Destination Interface callback methods
 
 - `make`: Triggered during Avo initialization.
-  Here you will usually initialize an analytics SDK with the provided apiKey parameter. You can adjust the initialization based on the `env` parameter. Note that if you have already initialized your destination you can leave this callback method empty or leave it out of the interface.
-  This method is optional, if analytics SDK has already been initialized before you can skip it.
+  Here you will usually initialize an analytics SDK with the provided apiKey parameter. You can adjust the initialization based on the `env` parameter.
+  > 💡 Note that if you have already initialized your destination you can leave this callback method empty or leave it out of the interface.
 
   ```pseudocode
   make(env, apiKey) {
@@ -76,6 +76,7 @@ With a destination interface you'll get access to callback methods for all the A
 
 - `revenue`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-namelog-revenuea-log-revenue"><a>Log Revenue action</a></Link> in the Tracking Plan, this callback will be invoked.
   Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.
+   > 💡 Note that if your destination does not support revenue tracking, you can leave this callback empty.
 
   ```pseudocode
   revenue(amount, properties) {
@@ -86,6 +87,7 @@ With a destination interface you'll get access to callback methods for all the A
 
 - `page`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-namelog-page-viewa-log-page-view"><a>Log Page View</a></Link> action in the Tracking Plan, this callback will be invoked.
   Here you would report navigation to your analytics destination.
+  > 💡 Note that if your destination does not support page/screen tracking, you can leave this callback empty.
 
   ```pseudocode
   page(pageName, eventProperties) {
@@ -96,6 +98,7 @@ With a destination interface you'll get access to callback methods for all the A
 
 - `setUserProperties`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-nameupdate-user-propsa-update-user-properties"><a>Update User Properties action</a></Link> in the Tracking Plan, this callback will be invoked.
   Here you would attach user properties to the currently identified user in your analytics platform.
+  > 💡 Note that if your destination does not support user properties / traits tracking, you can leave this callback empty.
 
   ```pseudocode
   setUserProperties(userId, userProperties) {
@@ -106,6 +109,7 @@ With a destination interface you'll get access to callback methods for all the A
 
 - `setGroupProperties`: You can update various group properties along with events in the Tracking Plan. If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#update-groups"><a>Update Groups action</a></Link> in the Tracking Plan, this callback is invoked.
   Here you would update the properties for specified groups.
+  > 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.
 
   ```pseudocode
   setGroupProperties(groupType, groupId, groupProperties) {
@@ -116,6 +120,7 @@ With a destination interface you'll get access to callback methods for all the A
 
 - `addCurrentUserToGroup`: You can add groups and group properties to an event and set the event to associate the currently identified user with the provided groups.
   Can optionally update group properties along the way.
+  > 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.
 
   ```pseudocode
   addCurrentUserToGroup(groupType, groupId, groupProperties) {
@@ -125,6 +130,7 @@ With a destination interface you'll get access to callback methods for all the A
   ```
 
 - `logEventWithGroups`: this call is same as the `logEvent` call described above, except it also associates this particular event with a group.
+> 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.
 
   ```pseudocode
   logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds) {
@@ -300,7 +306,7 @@ func identify(userId: String)
 func unidentify()
 ```
 
-> Snowplow context is a properties object (a set of property names and values) plus the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function, and the `data`, which is an object. You provide the values for that object's fields when calling the Avo function.
+> **Snowplow context** is a object of properties (a set of property names and values) in addition to the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function, and the `data`, which is an object. You provide the values for that object's fields when calling the Avo function.
 
 In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are available below.
 

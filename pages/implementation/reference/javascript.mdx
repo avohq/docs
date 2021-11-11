@@ -142,7 +142,7 @@ In Node each callback gets an additional first parameter - `userId` and, optiona
 
 ```javascript
 // Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
-const customDestination = {
+const mixpanelDestinationInterface = {
   make: function(env, apiKey) {
     // This call is optional, you may as well initialize the SDK somewhere else before using Avo Functions.
     mixpanel.init(apiKey);
@@ -205,7 +205,7 @@ const customDestination = {
 import Avo from './Avo';
 
 // An object representing your Google Analytics destination that you pass into initAvo():
-var googleAnalyticsDestination = {
+var googleAnalyticsDestinationInterface = {
   logEvent: function (eventName, eventProperties) {
     gtag('event', eventName, eventProperties);
   },
@@ -241,7 +241,7 @@ import Avo from './Avo';
 // An object representing your Mixpanel destination
 // that you pass into initAvo():
 
-var mixpanelDestination = {
+var mixpanelDestinationInterface = {
   make: function (env, apiKey) {
     Mixpanel.init(apiKey);
   },
