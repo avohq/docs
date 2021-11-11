@@ -9,7 +9,9 @@ import Link from '../../../../components/Link';
 
 Find the Quick Start Guide in our <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/js-avo-inspector">GitHub repo.</a>
 
-## <a name="installation"></a>Installation
+## <a name="installation"></a>1. Installation
+
+### Installation option 1: NPM / Yarn
 
 The Inspector library is available through npm. Run the following command to install it:
 
@@ -17,15 +19,15 @@ The Inspector library is available through npm. Run the following command to ins
 $ npm install avo-inspector
 ```
 
-## <a name="import"></a>Import
+##### <a name="import"></a>Import
 
 ```ts
 import * as Inspector from "avo-inspector";
 ```
 
-## <a name="initialization"></a>Initialization
+##### <a name="initialization"></a>Initialization
 
-Obtain the API key in the Inspector tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app</a> workspace.
+Obtain the API key in the Sources tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app</a> workspace.
 
 You will need to create an instance of **AvoInspector** with the constructor:
 
@@ -47,13 +49,33 @@ All the following methods are available in the **AvoInspector** class.
 > - `appVersion` - your application version. A lot of Inspector features rely on versioning and you need to provide a comparable string here to get value from them. We recommend using semantic versioning or integers that are incremented in every release.
 > - `appName` - your application name. Optional; Provide it to make it easier to distinguish between data from different apps.
 
-## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
+### Installation option 2: HTML Tag
+
+Paste the HTML script tag snippet within the `<head>` tag of your page, or into a tag manager like Google Tag Manager (GTM).
+
+Make sure to update `__API_KEY__`, `__ENV__`, `__VERSION__` and `__APP_NAME__` based on your project. Obtain the API key in the Sources tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app</a> workspace.
+
+```html
+<script>
+!function(){var t=window.inspector=window.inspector||[];t.methods=["trackSchemaFromEvent","trackSchema","setBatchSize","setBatchFlushSeconds"],t.factory=function(e){return function(){var r=Array.prototype.slice.call(arguments);return r.unshift(e),t.push(r),t}};for(var e=0;e<t.methods.length;e++){var r=t.methods[e];t[r]=t.factory(r)}t.load=function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://cdn.avo.app/inspector/inspector-v1.min.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)},t._scriptVersion=1}();
+
+// Update the following variables to match your project.
+inspector.__API_KEY__ = "YOUR-API-KEY";
+inspector.__ENV__ = "dev"; // or "prod"
+inspector.__VERSION__ = "YOUR-APP-VERSION";
+inspector.__APP_NAME__ = "YOUR-APP-NAME";
+
+inspector.load();
+</script>
+```
+
+## <a name="event-tracking"></a>2. Send event schemas to Avo Inspector
 
 This is the core of the **Avo Inspector SDK**.
 
 Call \***\*one of the methods\*\*** in this section every time an event is tracked.
 
-#### Option 1
+#### Track option 1
 
 ```ts
 trackSchemaFromEvent(eventName: string, eventProperties: {
@@ -78,7 +100,7 @@ Extracts the event schema from event properties represented by the second parame
 > };
 > ```
 
-#### Option 2
+#### Track option 2
 
 ```js
 trackSchema(eventName: string, eventSchema: Array<{
