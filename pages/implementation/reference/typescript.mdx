@@ -45,9 +45,7 @@ import Avo from './Avo';
 
 Avo.initAvo(
   { env: Avo.AvoEnv.Dev },
-  [systemProperties],
-  [destinationOptions],
-  [customDestination],
+  /*, other parameters depending on your tracking plan setup*/
 );
 ```
 
@@ -90,22 +88,25 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 Avo.initAvo(
   options: {
     env: AvoEnv;
-    [webDebugger?: boolean];
-    [strict?: boolean];
-    [noop?: boolean];
-    [reportFailureAs?: 'error' | 'warn' | 'log'];
-    [inspector?: AvoInspector];
-    [avoLogger?: AvoLogger];
+    webDebugger?: boolean;
+    strict?: boolean;
+    noop?: boolean;
+    reportFailureAs?: 'error' | 'warn' | 'log';
+    inspector?: AvoInspector;
+    avoLogger?: AvoLogger;
   },
-  [systemProperties: {
+  systemProperties?: {
     systemProperty0: number;
     systemProperty1: boolean;
-    ...}],
-  [destinationOptions: any],
-  [CustomDestDestination: CustomDestination])
+    ...},
+  destinationOptions?: any,
+  interfaceDestination?: CustomDestination,
+  otherInterfaceDestination?: CustomDestination,
+  ...Destination?: CustomDestination
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in the provided custom destinations.
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `make(env)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 
@@ -128,24 +129,101 @@ When you define system properties in your Avo workspace you set name and type - 
 - `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
 - `segmentDestinationName`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
 
-`customDestination`: CustomDestination, required if given source has a custom destination set up in Avo. Otherwise ignored.
+`destination`: CustomDestination, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 Custom destination interface format:
 
 ```typescript
 {
-  make?: function (env: AvoEnv): void,
-  logEvent?: function (eventName: string, eventProperties): void,
-  setUserProperties?: function (userId: string, userProperties): void,
+  make?: function (env: AvoEnv): void, // This method is optional, you can skip it if you've already initialized your Analytics SDK
+  logEvent?: function (eventName: string, eventProperties: object): void,
+  setUserProperties?: function (userId: string, userProperties: object): void,
   identify?: function (userId: string): void,
   unidentify?: function (): void,
-  logPage?: function (pageName: string, eventProperties): void
+  logPage?: function (pageName: string, eventProperties: object): void
+  revenue?: function (amount: number, eventProperties: object): void
+
+  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+  setGroupProperties?: function(groupType: string, groupId: string, groupProperties: object),
+  addCurrentUserToGroup?: function(groupType: string, groupId: string, groupProperties: object),
+  logEventWithGroups?: function(eventName: string, eventProperties: object, groupTypesToGroupIds: object)
 };
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
+In Node each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
 
-[//]: # 'TODO: Find examples of TypeScript custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
+#### Destination interface example
+
+```typescript
+# Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+let customDestination = {
+  make: function (env: AvoEnv, apiKey: string) {
+    mixpanel.getInstance().init(apiKey);
+  },
+  logEvent: function (eventName: string, eventProperties: object) {
+    mixpanel.getInstance().track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId: string, userProperties: object) {
+    mixpanel.getInstance().people.set(userProperties);
+  },
+  identify: function (userId: string) {
+    mixpanel.getInstance().identify(userId);
+  },
+  unidentify: function () {
+    mixpanel.getInstance().reset();
+  },
+  logPage: function (pageName: string, eventProperties: object) {
+    mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
+  },
+  revenue: function (amount: number, eventProperties: object) {
+    mixpanel.getInstance().people.track_charge(amount, eventProperties);
+  },
+  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+  setGroupProperties(
+    groupType: string,
+    groupId: string,
+    groupProperties: object,
+  ) {
+    // Mixpanel example
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  addCurrentUserToGroup: function (
+    groupType: string,
+    groupId: string,
+    groupProperties: object,
+  ) {
+    // Segment example
+    analytics.group(groupType, {
+      name: groupId,
+      ...groupProperties,
+    });
+    // Mixpanel example
+    mixpanel.set_group(groupType, groupId);
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    amplitude.getInstance().setGroup(groupType, groupId);
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  logEventWithGroups: function (
+    eventName: string,
+    eventProperties: object,
+    groupTypesToGroupIds: object,
+  ) {
+    // Mixpanel example
+    mixpanel.track_with_groups(eventName, eventProperties, groupTypesToGroupIds);
+    // Amplitude example
+    amplitude
+      .getInstance()
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
+  },
+};
+```
+
+Read more about the destination interface <Link passHref href="/implementation/destinations"><a>here</a></Link>.
 
 #### setAvoLogger
 
@@ -211,6 +289,52 @@ Node.js: added to all events, you have to either provide it or the `anonymousId_
 `anonymousId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
 
 `segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
+
+### Snowplow interface
+
+> Currently in beta
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+If you add a snowplow destination to a JavaScript source you'll need to provide the following object as
+
+```typescript
+options[snowplowDestination]
+```
+
+You'll implement it like this:
+
+```typescript
+const snowplowDestination = {
+  make: function(env: string) {
+    // Your custom Snowplow initialization, that includes the `newTracker` call
+    newTracker('sp1', '{{collector_url}}', {  appId: 'my-app-id',  plugins: [ ], });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracker-setup/
+  },
+  trackSelfDescribingEvent: (schema: string, data: any, contexts: any[]): void => {
+    trackSelfDescribingEvent({
+      event: {
+        schema: schema,
+        data: data
+      },
+      context: contexts
+    });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/
+  },
+  trackPageView: (title: string): void => {
+    trackPageView(title);
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/#page-views
+  },
+  identify: (userId: string): void => {
+    setUserId(userId);
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.setuserid.md
+  },
+  unidentify: (): void => {
+    clearUserData();
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.clearuserdata.md
+  },
+};
+```
 
 ### Destinations
 

@@ -86,14 +86,17 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 class AvoImpl(env: AvoEnv,
     // Other parameters may not be present, depending on your tracking plan
     systemProperty0: int, systemProperty1: bool,
-    customDestination: ICustomDestination,
+    mixpanelDestination: ICustomDestination,
+    segmentDestination: ICustomDestination,
+    otherDestination: ICustomDestination,
     avoInspector: Any? = null,
     strict: Boolean = true,
     application: Application, context: Context
 )
 ```
 
-Creates the Avo object that will be used to track. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in all custom destinations.
+Creates the Avo object that will be used to track. 
+This method will call the `Make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 
@@ -102,17 +105,17 @@ Creates the Avo object that will be used to track. This method will initialize t
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
-`customDestination: ICustomDestination`: object, required if target source has a custom destination set up in Avo. Otherwise not present.
-
-Custom destination interface format:
+`destination: ICustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 ```kotlin
 interface ICustomDestination {
-    fun make(env: AvoEnv)
+    fun make(env: AvoEnv, apiKey: String) {} // This method is optional, you can skip it if you've already initialized your Analytics SDK
 
     fun logEvent(eventName: String, eventProperties: Map<String, *>)
 
-    fun logPage(pageName: String, eventProperties: Map<String, *>) {}
+    fun logPage(pageName: String, eventProperties: Map<String, *>)
+
+    fun revenue(amount: Double, eventProperties: Map<String, *>)
 
     fun setUserProperties(userId: String, userProperties: Map<String, *>)
 
@@ -122,13 +125,52 @@ interface ICustomDestination {
 }
 ```
 
-Read more about custom destinations <Link passHref href="/implementation/start-custom-destination"><a>here</a></Link>.
-
-[//]: # 'TODO Find examples of Kotlin custom destinations for each analytics destination in <Link passHref href="/implementation/destinations"><a>this section</a></Link>.'
-
 `avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
 
 `strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+#### Destination interface example
+
+```kotlin
+// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+let mixpanelDestinationInterface = object : ICustomDestination {
+    var mixpanel: MixpanelAPI? = null
+        private set
+
+    override fun make(env: AvoEnv, apiKey: String) {
+        mixpanel = MixpanelAPI.getInstance(context.applicationContext, apiKey)
+    }
+
+    override fun logEvent(eventName: String, eventProperties: Map<String, *>) {
+        mixpanel?.track(eventName, eventProperties)
+    }
+
+    override fun setUserProperties(userId: String, userProperties: Map<String, *) {
+        mixpanel?.people?.set(userProperties)
+    }
+
+    override fun logPage(pageName: String, eventProperties: MutableMap<String, *>) {
+        // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.        
+        let mutableEventprops = eventProperties.toMutableMap()
+        mutableEventprops["Page Name"] = pageName
+        mixpanel?.track("Page Viewed", mutableEventprops)
+    }
+
+    override fun revenue(amount: Double, eventProperties: Map<String, *>) {
+        mixpanel?.people?.trackCharge(amount, eventProperties)
+    }
+
+    override fun identify(userId: String) {
+        mixpanel?.identify(userId)
+    }
+
+    override fun unidentify() {
+        mixpanel?.reset()
+    }
+}
+```
+
+Read more about the destination interface <Link passHref href="/implementation/destinations"><a>here</a></Link>.
 
 ###### Additional arguments
 
@@ -180,6 +222,62 @@ Pass the value of the property to update here.
 
 `userId_: String`: used to connect event to specific user.
 Added if the event has the `Identify User` action
+
+### Snowplow interface
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+If you add a snowplow destination to a Kotlin source you'll get an additional constructor parameter
+
+```kotlin
+snowplowDestination: AvoSnowplowDestination
+```
+
+You'll implement it like this:
+
+```kotlin
+val avo = AvoImpl(...,
+    snowplowDestination = object : AvoSnowplowDestination {
+        override fun make(env: AvoEnv) {
+            // Your custom Snowplow initialization, that includes the `createTracker` call
+            Snowplow.createTracker(this@MainActivity, "appTracker", "COLLECTOR_URL", HttpMethod.POST)
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/
+        }
+
+        override fun trackSelfDescribingEvent(schema: String, data: Map<String, *>, contexts: List<Map<String, Any>>) {
+            val eventContent = SelfDescribingJson(schema, data)
+
+            val event = SelfDescribing(eventContent)
+            contexts.forEach { customContext ->
+                val contextSchema = customContext["schema"]
+                val contextData = customContext["data"]
+                if (contextSchema is String && contextData is Any) {
+                    event.customContexts.add(
+                            SelfDescribingJson(contextSchema, contextData)
+                    )
+                }
+            }
+
+            Snowplow.getDefaultTracker()?.track(event)
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
+        }
+
+        override fun trackPageView(title: String) {
+            Snowplow.getDefaultTracker()?.track(ScreenView(title))
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
+        }
+
+        override fun identify(userId: String) {
+            Snowplow.getDefaultTracker()?.subject?.userId = userId
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        }
+
+        override fun unidentify() {
+            Snowplow.getDefaultTracker()?.subject?.userId = null
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        }
+    })
+```
 
 ### Destinations
 

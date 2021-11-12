@@ -5,7 +5,7 @@ title: 'Sources'
 
 import Link from '../../components/Link';
 
-If you open the “Sources” tab in your Avo workspace you’ll find yourself in a place to define and configure sources and destinations. 
+If you open the “Sources” tab in your Avo workspace you’ll find yourself in a place to define and configure sources and destinations.
 
 <center>
   <img
@@ -13,7 +13,7 @@ If you open the “Sources” tab in your Avo workspace you’ll find yourself i
     alt="Connections Screen"
     width="100%"
   />
-</center> 
+</center>
 
 Sources and destinations are an important part of your tracking plan, and crucial for implementation, so we recommend maintaining an up-to-date list of them and attaching relevant sources and destinations to events. If you use Avo Functions the same data is used to generate the tracking code. If you use Inspector, the sources represent the products/platforms where you install Inspector
 
@@ -43,7 +43,7 @@ Then you’ll see a configuration dialog, define necessary config and press “C
     alt="Source configuration"
     width="75%"
   />
-</center>  
+</center>
 
 ### Overview
 
@@ -54,6 +54,7 @@ The overview section of the source setup contains the base configurations for th
 We recommend naming your source in a manner that is easy for anyone to understand what part of your product it refers to.
 
 For **single product organizations** we normally recommend creating sources representing each git repository that events should be sent from – and naming them accordingly.
+
 - If you have a single repository per development platform then your sources could be named something like
   - "Web"
   - "Mobile" (if using React Native)
@@ -65,6 +66,7 @@ For **single product organizations** we normally recommend creating sources repr
   - Backend – Notifications
 
 For **multi product organizations** we normally recommend creating a source per product per development platform. So that they will be named something like:
+
 - Product A – Web
 - Product A – Mobile
 - Product A – Backend
@@ -73,11 +75,12 @@ For **multi product organizations** we normally recommend creating a source per 
 - Product B – Backend
 - ...
 
-Read more about <Link passHref href="/data-design/define-sources-and-destinations"><a>organizing multi-product workspaces </a></Link>. 
+Read more about <Link passHref href="/data-design/define-sources-and-destinations"><a>organizing multi-product workspaces </a></Link>.
 
 #### Development platform
 
 The development platform you select for your source indicates whether it's a web, desktop, mobile, backend or a game engine source and what kind. Below is a list of supported development platforms:
+
 - Web
 - Desktop
   - MacOS
@@ -118,9 +121,9 @@ This can also be configured in the destination details, where sources can be tog
 
 #### Events
 
-The events list in the source overview shows all the events that the source is currently attached to and whether the events should be implemented with Avo or not.  
+The events list in the source overview shows all the events that the source is currently attached to and whether the events should be implemented with Avo or not.
 
-If an event is in this list, it means that the event is or should be sent from this source. 
+If an event is in this list, it means that the event is or should be sent from this source.
 
 If the "Implement with Avo" check mark is checked, it means that the event should be implemented using the Avo functions that are generated based on the event definition in the tracking plan. If the check mark is not checked, it means that the event should be implemented using existing implementation methods, probably a direct call to the analytics SDK.
 
@@ -146,7 +149,7 @@ To add or remove events event to/from the events list on this source, first clic
   />
 </center>
 
-and then check or uncheck the events you want to add/remove on the modal that appears. 
+and then check or uncheck the events you want to add/remove on the modal that appears.
 
 <center>
   <img
@@ -196,7 +199,6 @@ Once you have successfully installed the Inspector, the setup status will show "
   />
 </center>
 
-
 #### Documentation
 
 The documentation is automatically generated instructions with code snippets on how to install Inspector using either Segment functions or directly for your programming language.
@@ -205,7 +207,7 @@ Check out the Tracking Observability part of this documentation to learn more on
 
 ### Avo Functions Setup
 
-The Avo functions Setup part of the source details contains a step by step guide on  how to set up and Initialize Avo function for this source for the first time. 
+The Avo functions Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
 
 <center>
   <img
@@ -217,8 +219,7 @@ The Avo functions Setup part of the source details contains a step by step guide
 
 #### Programming Language
 
-To start using Avo functions for this source, you need to select which <Link passHref href="/implementation/supported-programming-languages"><a> programming languages here</a></Link> you want to generate the code in. 
-
+To start using Avo functions for this source, you need to select which <Link passHref href="/implementation/supported-programming-languages"><a> programming languages here</a></Link> you want to generate the code in.
 
 #### Setup Status
 
@@ -242,12 +243,28 @@ Once you have successfully initialized the Avo functions, the setup status will 
   />
 </center>
 
+#### Destination Interface
+
+Destinations can have two modes: Destination Interface and Avo Managed:
+
+- When set to Destination Interface (recommended), Avo will provide a set of callback methods to connect your existing analytics destination to your Avo instance.
+- When set to Avo Managed, Avo will manage the destination for you, that includes initializing it and passing all data you send via Avo to relevant destination calls. Note that in Avo Managed mode you can't use your destination SDK outside of Avo, e.g. for existing tracking.
+
+Learn more about Destination Interface and Avo Managed destinations in the <Link passHref href="/implementation/destinations"><a>Destinations in Avo Functions doc</a></Link>.
+
+<center>
+  <img
+    src={require('../../images/data-design/destinations-interface-config.png')}
+    alt="Destinations Interface config in Avo Functions Setup tab"
+    width="60%"
+  />
+</center>
+
 #### Documentation
 
 The documentation is automatically generated for your source and the connected destinations. First you have to generate your Avo file by using our CLI or downloading it from the UI, then you can initialize Avo and implement your events.
 
 Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/data-design/implementation/avo-functions-overview"><a>how to set up the Avo functions</a></Link>.
-
 
 ## Destinations
 
@@ -310,10 +327,8 @@ To enable or disable a destination locally on an event for a specific source, yo
   />
 </center>
 
-
 Think "We send the Signup Complete event from web and send it to our Custom Analytics API, Mixpanel and Amplitude – not our other destinations."
-
 
 ## What's next?
 
-Now you know how to define and configure sources and destinations in Avo. Next thing to learn is <Link passHref href="/workspace/branches"><a>the branched workflows</a></Link>. 
+Now you know how to define and configure sources and destinations in Avo. Next thing to learn is <Link passHref href="/workspace/branches"><a>the branched workflows</a></Link>.
