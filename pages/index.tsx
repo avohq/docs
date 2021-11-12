@@ -437,11 +437,9 @@ const LandingPage: FunctionComponent = () => {
 
           <PageLink
             image={DevIcon}
-            title="How to define custom destinations"
-            description="Learn how to write a custom destination in your language"
-            callToAction={
-              new CallToAction('/implementation/start-custom-destination')
-            }
+            title="How to implement destination interfaces"
+            description="Learn how to implement destination interfaces in your language"
+            callToAction={new CallToAction('/implementation/destinations')}
           />
 
           <PageLink
