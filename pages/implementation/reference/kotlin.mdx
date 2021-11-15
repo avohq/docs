@@ -96,7 +96,7 @@ class AvoImpl(env: AvoEnv,
 ```
 
 Creates the Avo object that will be used to track. 
-This method will call the `Make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy Avo managed destinations.
+This method will call the `Make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 
@@ -105,7 +105,7 @@ This method will call the `Make(env, apiKey)` callback in all the provided desti
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
-`destination: ICustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
+`destination: ICustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 ```kotlin
 interface ICustomDestination {
@@ -133,7 +133,7 @@ interface ICustomDestination {
 
 ```kotlin
 // Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
-let customDestination = object : ICustomDestination {
+let mixpanelDestinationInterface = object : ICustomDestination {
     var mixpanel: MixpanelAPI? = null
         private set
 
@@ -150,7 +150,7 @@ let customDestination = object : ICustomDestination {
     }
 
     override fun logPage(pageName: String, eventProperties: MutableMap<String, *>) {
-        // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.        
+        // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.        
         let mutableEventprops = eventProperties.toMutableMap()
         mutableEventprops["Page Name"] = pageName
         mixpanel?.track("Page Viewed", mutableEventprops)

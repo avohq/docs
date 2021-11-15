@@ -88,24 +88,25 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 Avo.initAvo(
   options: {
     env: AvoEnv;
-    [webDebugger?: boolean];
-    [strict?: boolean];
-    [noop?: boolean];
-    [reportFailureAs?: 'error' | 'warn' | 'log'];
-    [inspector?: AvoInspector];
-    [avoLogger?: AvoLogger];
+    webDebugger?: boolean;
+    strict?: boolean;
+    noop?: boolean;
+    reportFailureAs?: 'error' | 'warn' | 'log';
+    inspector?: AvoInspector;
+    avoLogger?: AvoLogger;
   },
-  [systemProperties: {
+  systemProperties?: {
     systemProperty0: number;
     systemProperty1: boolean;
-    ...}],
-  [destinationOptions: any],
-  [mixpanelDestination: CustomDestination],
-  [segmentDestination: CustomDestination],
-  [otherDestination: CustomDestination]
+    ...},
+  destinationOptions?: any,
+  interfaceDestination?: CustomDestination,
+  otherInterfaceDestination?: CustomDestination,
+  ...Destination?: CustomDestination
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will initialize the SDKs for all destinations that are managed by Avo, and call the `make(env)` callback in the provided custom destinations.
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `make(env)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 

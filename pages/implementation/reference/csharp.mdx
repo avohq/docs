@@ -85,7 +85,7 @@ public Avo(AvoEnv env,
 ```
 
 Creates the Avo object that will be used to track. 
-This method will call the `Make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy Avo managed destinations.
+This method will call the `Make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 
@@ -144,7 +144,7 @@ public class CustomDestination : IDestination{
     }
   
     public async Task LogPage(string userId, string pageName, IDictionary<string, object> eventProperties) {
-        // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+        // Note: In this example Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
         eventProperties["pageName"] = pageName;
         return await _client!.TrackAsync("Page Visited", userId, eventProperties);
     }
@@ -154,7 +154,7 @@ public class CustomDestination : IDestination{
         return await _client!.TrackAsync("Purchase Completed", userId, eventProperties);
     }
 
-    // The following methods are used for group analytics  and are not required. Learn, more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+    // The following methods are used for group analytics and are not required. Learn, more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
     public async Task AddCurrentUserToGroup(string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
         // Conceptual code, Mixpanel C# library does not support group analytics yet
         await _client!.SetGroup(groupType, groupId);
@@ -203,11 +203,11 @@ In `Unity` all the method are synchronous `void` type and there are 2 additional
     }
 
     public void LogPage(string pageName, IDictionary<string, object> eventProperties){
-        // Note: Mixpanel does not provide a native method for page or screen tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
+        // Note: In this example Mixpanel does not provide a native method for page or screen tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
     }
 
     public void Revenue(double amount, IDictionary<string, object> eventProperties){
-        // Note: Mixpanel does not provide a native method for revenue tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
+        // Note: In this example Mixpanel does not provide a native method for revenue tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
     }
 
     public void SetUserProperties(string userId, IDictionary<string, object> userProperties){

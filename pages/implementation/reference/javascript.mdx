@@ -87,15 +87,15 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 ```javascript
 Avo.initAvo(
   options,
-  [systemProperties],
-  [destinationOptions],
-  [mixpanelDestination],
-  [segmentDestination],
-  [otherDestination]
+  ?systemProperties,
+  ?destinationOptions,
+  ?destinationInterfaceOne,
+  ?destinationInterfaceTwo,
+  ?...destinationInterface,
 );
 ```
 
-Initializes Avo, needs to be called before the tracking methods. This method will call the `make(env, apiKey)` callback in all the provided destination interfaces. It will also initialize the analytics SDKs of the legacy Avo managed destinations.
+This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
 
@@ -111,7 +111,7 @@ Initializes Avo, needs to be called before the tracking methods. This method wil
 `systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
 
-`destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
+`destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
 ```javascript
 {
@@ -132,7 +132,7 @@ When you define system properties in your Avo workspace you set name and type - 
 
 In Node each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
 
-`destinationOptions`: send an empty array if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameters. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
+`destinationOptions`: send an empty object if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameters. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
 - `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
 - `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
@@ -142,7 +142,7 @@ In Node each callback gets an additional first parameter - `userId` and, optiona
 
 ```javascript
 // Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
-const customDestination = {
+const mixpanelDestinationInterface = {
   make: function(env, apiKey) {
     // This call is optional, you may as well initialize the SDK somewhere else before using Avo Functions.
     mixpanel.init(apiKey);
@@ -163,7 +163,7 @@ const customDestination = {
     mixpanel.people.track_charge(amount, eventProperties);
   },
   page: function(pageName, eventProperties) {
-    // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+    // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
     mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
   },
   // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
@@ -205,7 +205,7 @@ const customDestination = {
 import Avo from './Avo';
 
 // An object representing your Google Analytics destination that you pass into initAvo():
-var googleAnalyticsDestination = {
+var googleAnalyticsDestinationInterface = {
   logEvent: function (eventName, eventProperties) {
     gtag('event', eventName, eventProperties);
   },
@@ -241,7 +241,7 @@ import Avo from './Avo';
 // An object representing your Mixpanel destination
 // that you pass into initAvo():
 
-var mixpanelDestination = {
+var mixpanelDestinationInterface = {
   make: function (env, apiKey) {
     Mixpanel.init(apiKey);
   },
@@ -343,7 +343,7 @@ Node.js: added to all events, you have to either provide it or the `anonymousId_
 
 Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
 
-If you add a snowplow destination to a JavaScript source you'll need to provide the following object as
+If you add a Snowplow destination to a JavaScript source you'll need to provide the following object as
 
 ```javascript
 options[snowplowDestination]
