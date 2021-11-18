@@ -27,41 +27,61 @@ const DocSearch: FunctionComponent = () => {
   const [searchHits, setSearchHits] = useState<SearchHit[]>([]);
   const [searchStatus, setSearchStatus] = useState(Status.NotFocused);
 
-  useEffect(() => {
+  const [isLoading, setLoading] = useState(true);
+
+  const initializeDocSearch = () => {
     let searchHits: SearchHit[] = [];
+    window.docsearch({
+      apiKey: 'db5ac03036725a2cd252824f49ab2b09',
+      indexName: 'avo',
+      inputSelector: '#algolia-avo-search', // the selector of my search input
+      transformData: (hits: SearchHit[]) => {
+        setSearchHits(hits);
+        searchHits = hits;
+      },
+      handleSelected: (
+        input: SearchInput,
+        _: never,
+        suggestion: SearchSuggestion,
+      ) => {
+        setSearchStatus(Status.ResultSelected);
+        const searchString = input.getVal();
+        const searchResultZeroBasedPosition = searchHits
+          .map((hit: SearchHit) => {
+            return hit.url;
+          })
+          .indexOf(suggestion.url);
+        Avo.docsSearchResultSelected({
+          searchResultPosition: searchResultZeroBasedPosition + 1,
+          searchResultCount: searchHits.length,
+          searchTerm: searchString,
+          searchTermCharacterCount: searchString.length,
+        });
+        window.open(suggestion.url, '_self');
+      },
+    });
+    setLoading(false);
+  };
+
+  useEffect(() => {
     if (window.docsearch) {
-      window.docsearch({
-        apiKey: 'db5ac03036725a2cd252824f49ab2b09',
-        indexName: 'avo',
-        inputSelector: '#algolia-avo-search', // the selector of my search input
-        transformData: (hits: SearchHit[]) => {
-          setSearchHits(hits);
-          searchHits = hits;
-        },
-        handleSelected: (
-          input: SearchInput,
-          _: never,
-          suggestion: SearchSuggestion,
-        ) => {
-          setSearchStatus(Status.ResultSelected);
-          const searchString = input.getVal();
-          const searchResultZeroBasedPosition = searchHits
-            .map((hit: SearchHit) => {
-              return hit.url;
-            })
-            .indexOf(suggestion.url);
-          Avo.docsSearchResultSelected({
-            searchResultPosition: searchResultZeroBasedPosition + 1,
-            searchResultCount: searchHits.length,
-            searchTerm: searchString,
-            searchTermCharacterCount: searchString.length,
-          });
-          window.open(suggestion.url, '_self');
-        },
-      });
+      initializeDocSearch();
     } else {
       // eslint-disable-next-line no-console
-      console.warn('Docsearch has failed to load');
+      console.info(
+        'Still waiting for Docsearch to load, setting up onload listener...',
+      );
+      const scriptTag = document.querySelector('#load-docsearch-script');
+      if (scriptTag) {
+        scriptTag.addEventListener('load', function () {
+          console.info('Docsearch loaded, initializing...');
+          initializeDocSearch();
+        });
+      } else {
+        console.error(
+          'Could not load Docsearch, script tag with the id #load-docsearch-script not found',
+        );
+      }
     }
   }, []);
 
@@ -70,7 +90,9 @@ const DocSearch: FunctionComponent = () => {
       <Icon name="search" color="inherit" />
       <input
         id="algolia-avo-search"
-        placeholder="Search the documentation"
+        placeholder={
+          isLoading ? 'Loading search...' : 'Search the documentation'
+        }
         className={styles.searchInput}
         onFocus={() => {
           setSearchStatus(Status.Focused);
@@ -89,6 +111,7 @@ const DocSearch: FunctionComponent = () => {
         onChange={(e) => {
           setSearchTerm(e.target.value);
         }}
+        disabled={isLoading}
       />
     </div>
   );
