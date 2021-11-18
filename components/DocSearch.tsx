@@ -27,7 +27,7 @@ const DocSearch: FunctionComponent = () => {
   const [searchHits, setSearchHits] = useState<SearchHit[]>([]);
   const [searchStatus, setSearchStatus] = useState(Status.NotFocused);
 
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const initializeDocSearch = () => {
     let searchHits: SearchHit[] = [];
