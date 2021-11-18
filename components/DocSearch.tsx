@@ -74,10 +74,12 @@ const DocSearch: FunctionComponent = () => {
       const scriptTag = document.querySelector('#load-docsearch-script');
       if (scriptTag) {
         scriptTag.addEventListener('load', function () {
+          // eslint-disable-next-line no-console
           console.info('Docsearch loaded, initializing...');
           initializeDocSearch();
         });
       } else {
+        // eslint-disable-next-line no-console
         console.error(
           'Could not load Docsearch, script tag with the id #load-docsearch-script not found',
         );
