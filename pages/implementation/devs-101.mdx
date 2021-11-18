@@ -38,12 +38,25 @@ object and pass it into initAvo, so that any time an Avo Function calls an analy
 logging method (e.g. logEvent, setUserProperties, etc), you can govern exactly what analytics 
 SDK method should be called.
 
-
 In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can govern which analytics SDK methods 
 should be triggered with an Avo Function. For example you might want to update user properties or log revenue 
 along with logging an event. In the Avo tracking plan you can configure those settings, and the Avo Functions 
 will handle calling all the relevant analytics SDK methods. All you have to do is call the Avo Function in your 
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
+
+### Do events flow through Avo servers?
+
+No. None of your events ever go through Avo servers. They go directly from your devices (whether that's 
+a front-end client or a server) to the analytics destination.
+
+This is compatible to Segment's "device mode". With Segment, you can choose 
+between <Link passHref href="https://segment.com/docs/guides/intro-impl/#connection-modes"><a>_Cloud-mode_ or _Device-mode_</a></Link>:
+- In _Cloud-mode_, your events go through Segment servers. Your devices send the events to the 
+Segment cloud (aka the Segment Servers) and the Segment cloud sends them to the analytics destinations.
+- In _Device-mode_ the events go directly from your devices (whether it's a front end client 
+or a server) to the analytics destination.
+
+In this regard, Avo works like Segment's _Device-mode_.
 
 ## Avo Inspector: Tracking Observability
 
