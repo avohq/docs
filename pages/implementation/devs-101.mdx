@@ -6,7 +6,7 @@ title: 'Avo 101 for developers'
 
 import Link from '../../components/Link';
 
-Avo offers three validation types:
+Avo offers three ways to validate your tracking implementation:
 
 1.  <a href="#avo-functions-type-safe-analytics-wrappers">Avo Functions: Type safe analytics wrappers</a>
 2.  <a href="#avo-inspector-tracking-observability">Avo Inspector: Tracking observability</a>
@@ -34,13 +34,11 @@ etc) or your home made API.
 
 The Avo Functions have a <Link passHref href="/implementation/destinations"><a>Destination Interface</a></Link> 
 that you have full control over how you implement. You provide a simple Destination Interface 
-object when initializing Avo Functions, so that any time an Avo Function calls an analytics 
+object when initializing Avo Functions SDK, so that any time an Avo Function calls an analytics 
 logging method (e.g. logEvent, setUserProperties, etc), you can govern exactly what analytics 
 SDK method should be called.
 
-In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics actions 
-(for example you might want to update user properties or log revenue along with logging an event)
-should be triggered with an Avo Function, and the Avo Functions 
+In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and the Avo Functions 
 will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your 
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
 
@@ -51,21 +49,16 @@ Learn more technical details about <Link passHref href="/implementation/avo-func
 No. None of your events ever go through Avo servers. They go directly from your devices (whether that's 
 a front-end client or a server) to the analytics destination.
 
-This is compatible to Segment's "device mode". With Segment, you can choose 
-between <Link passHref href="https://segment.com/docs/guides/intro-impl/#connection-modes"><a>_Cloud-mode_ or _Device-mode_</a></Link>:
-- In _Cloud-mode_, your events go through Segment servers. Your devices send the events to the 
-Segment cloud (aka the Segment Servers) and the Segment cloud sends them to the analytics destinations.
-- In _Device-mode_ the events go directly from your devices (whether it's a front end client 
-or a server) to the analytics destination.
-
-In this regard, Avo works like Segment's _Device-mode_.
+> This is compatible to Segment's "device mode". With Segment, you can choose between <Link passHref href="https://segment.com/docs/guides/intro-impl/#connection-modes"><a>_Cloud-mode_ or _Device-mode_</a></Link>:
+> - In _Cloud-mode_, your events go through Segment servers. Your devices send the events to the Segment cloud (aka the Segment Servers) and the Segment cloud sends them to the analytics destinations.
+> - In _Device-mode_ the events go directly from your devices (whether it's a front end client or a server) to the analytics destination.
+>In this regard, Avo works like Segment's _Device-mode_.
 
 ## Avo Inspector: Tracking Observability
 
 ### What is Avo Inspector?
 
-Avo Inspector is a tracking observability solution that's easy to install. Avo Inspector analyzes tracking calls made by your app 
-and shows an audit in the web dashboard. It gives you an instant review of your current state of tracking, 
+Avo Inspector is a tracking observability solution that's easy to install. Avo Inspector analyzes tracking calls made by your app and shows an audit in the web dashboard. It gives you an instant audit of your current state of tracking, 
 and an ongoing observability going forward.
 
 ### How does Avo Inspector work?
@@ -109,12 +102,12 @@ Initialize the Avo Functions SDK with an instance of the Inspector SDK.
 
 You can pipe your analytics data into the Inspector API via your CDPs or analytics providers:
 
-- Segment: Set Inspector up via Segment Functions
+- Segment: <Link passHref href="/workspace/connect-inspector-to-segment"><a>Set Inspector up via Segment Functions</a></Link>
 - Mixpanel: Coming soon.
 - mParticle: Coming soon.
 - Rudderstack: Coming soon.
 
-Reach out to support@avo.sh for early access to any of the platforms comping soon.
+Reach out to support@avo.sh for early access to any of the platforms coming soon.
 
 #### Inspector API
 
