@@ -71,6 +71,7 @@ const DocSearch: FunctionComponent = () => {
       console.info(
         'Still waiting for Docsearch to load, setting up onload listener...',
       );
+      setLoading(true);
       const scriptTag = document.querySelector('#load-docsearch-script');
       if (scriptTag) {
         scriptTag.addEventListener('load', function () {
