@@ -36,6 +36,7 @@ class MyDocument extends Document {
           </noscript>
           {/* End Google Tag Manager (noscript) */}
           <script
+            id="load-docsearch-script"
             type="text/javascript"
             src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"
           ></script>
