@@ -200,6 +200,11 @@ const navigation: navigationItem[] = [
             title: 'Managing members and roles',
             path: '/workspace/members',
           },
+          {
+            type: 'route',
+            title: 'Authentication methods',
+            path: '/workspace/authentication',
+          },
         ],
       },
 
