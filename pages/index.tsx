@@ -206,8 +206,8 @@ const LandingPage: FunctionComponent = () => {
         </h3>
         <p className={styles.text}>
           You can set up your tracking plan to be automatically published to
-          Segment Protocols, RudderStack, Amplitude and Mixpanel every time a branch is
-          merged. We also provide a webhook for advanced automation.
+          Segment Protocols, RudderStack, Amplitude and Mixpanel every time a
+          branch is merged. We also provide a webhook for advanced automation.
         </p>
         <div className={styles.row}>
           <div style={{ display: 'flex' }}>
