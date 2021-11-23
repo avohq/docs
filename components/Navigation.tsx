@@ -200,6 +200,11 @@ const navigation: navigationItem[] = [
             title: 'Managing members and roles',
             path: '/workspace/members',
           },
+          {
+            type: 'route',
+            title: 'Authentication methods',
+            path: '/workspace/authentication',
+          },
         ],
       },
 
@@ -275,6 +280,11 @@ const navigation: navigationItem[] = [
             type: 'route',
             title: 'Multiple sources on Avo branches',
             path: '/data-design/multiple-sources-on-avo-branches',
+          },
+          {
+            type: 'route',
+            title: 'Reset the Tracking Plan',
+            path: '/workspace/reset-tracking-plan',
           },
         ],
       },
