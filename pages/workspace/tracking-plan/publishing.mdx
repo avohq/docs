@@ -23,6 +23,7 @@ Available integrations are:
 
 - <a href="#segment-protocols">Segment Protocols</a>
 - <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>
+- <a href="#rudderstack">RudderStack</a>
 - <a href="#amplitude-govern">Amplitude Govern</a>
 - <a href="#webhook">Webhook</a>
 
@@ -149,6 +150,30 @@ To publish your Avo tracking plan to Lexicon, click the "Publish to Lexicon" but
 On publish, Avo will merge your Avo tracking plan with any existing events in Lexicon. Any changes made to an event in Lexicon between Avo publish will be overridden on next Avo publish.
 
 Avo will not impact any events that are only defined in Lexicon, or events that have not been added to the Lexicon integration in Avo.
+
+<img
+  src={require('../../../images/publishing_rudderstack.svg')}
+  alt="Amplitude"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="rudderstack"></a> RudderStack Tracking Plans
+
+The [RudderStack integration](https://rudderstack.com/blog/dogfooding-at-rudderstack-tracking-plans-part-1/) enables you to publish your Avo Tracking Plan into RudderStack. You can configure the integration to publish whenever a branch is merged or with a push of a button.
+
+### Configure the RudderStack integration
+
+To enable the direct integration with RudderStack Tracking Plans, you need to configure it with the following parameters from RudderStack.
+
+- **RudderStack Account Email Address**: The email of a RudderStack account with Read-Write access
+- **RudderStack Tracking Plan Name**: The display name of the RudderStack Tracking Plan you want to publish to
+- **RudderStack Access Token**: [Create new Personal Access Token](https://rudderstack.com/docs/transformations/api-access-token/#access-token) for the account with the email address you provided above
+
+### Publishing to RudderStack
+
+Avo will override all events in the RudderStack Tracking Plan that are being imported from Avo. Any changes made to an event in RudderStack Tracking Plan between Avo publish will be overridden on next Avo publish.
+
+Avo will not override any events that are only defined in RudderStack, or events that have not been excluded from the RudderStack integration in Avo with filters.
 
 <img
   src={require('../../../images/publishing_govern.svg')}
