@@ -281,6 +281,11 @@ const navigation: navigationItem[] = [
             title: 'Multiple sources on Avo branches',
             path: '/data-design/multiple-sources-on-avo-branches',
           },
+          {
+            type: 'route',
+            title: 'Reset the Tracking Plan',
+            path: '/workspace/reset-tracking-plan',
+          },
         ],
       },
     ],
