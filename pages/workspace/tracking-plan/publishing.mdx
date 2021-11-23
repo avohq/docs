@@ -157,13 +157,13 @@ Avo will not impact any events that are only defined in Lexicon, or events that 
   style={{ margin: '32px 0 -32px 0' }}
 />
 
-## <a name="rudderstack"></a> RudderStack
+## <a name="rudderstack"></a> RudderStack Tracking Plans
 
 The integration to [RudderStack](https://rudderstack.com/blog/dogfooding-at-rudderstack-tracking-plans-part-1/) allows for your Tracking Plan to be published into RudderStack whenever branches are merged in your workspace or with a push of a button.
 
 ### Configure the RudderStack integration
 
-To enable the direct integration with Segment Protocols, you need to configure it with the following parameters from RudderStack.
+To enable the direct integration with RudderStack Tracking Plans, you need to configure it with the following parameters from RudderStack.
 
 - **RudderStack Account Email Address**: The email of a RudderStack account with Read-Write access
 - **RudderStack Tracking Plan Name**: The display name of the RudderStack Tracking Plan you want to publish to
@@ -173,7 +173,7 @@ To enable the direct integration with Segment Protocols, you need to configure i
 
 Avo will override all events in the RudderStack Tracking Plan that are being imported from Avo. Any changes made to an event in RudderStack Tracking Plan between Avo publish will be overridden on next Avo publish.
 
-Avo will not override any events that are only defined in RudderStack, or events that have not been added to the RudderStack integration in Avo.
+Avo will not override any events that are only defined in RudderStack, or events that have not been excluded from the RudderStack integration in Avo with filters.
 
 <img
   src={require('../../../images/publishing_govern.svg')}
