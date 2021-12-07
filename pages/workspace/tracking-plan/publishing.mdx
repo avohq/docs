@@ -26,6 +26,7 @@ Available integrations are:
 - <a href="#rudderstack">RudderStack</a>
 - <a href="#amplitude-govern">Amplitude Govern</a>
 - <a href="#mparticle">mParticle Data Master</a>
+- <a href="#snowplow">Snowplow Data Structures (beta)</a>
 - <a href="#webhook">Webhook</a>
 
 Publishing enables your Tracking Plan to be:
@@ -200,6 +201,34 @@ To enable the direct integration with mParticle Data Master, you need to configu
 Avo will override all events in the mParticle Tracking Plan that are being imported from Avo. Any changes made to an event in mParticle Tracking Plan between Avo publish will be overridden on next Avo publish.
 
 Avo will not override any events that are only defined in mParticle, or events that have not been excluded from the mParticle integration in Avo with filters.
+
+<img
+  src={require('../../../images/publishing_snowplow.svg')}
+  alt="Snowplow"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="snowplow"></a> Snowplow Data Master
+
+> Snowplow integration is currently in beta, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to get access
+
+The [Snowplow integration](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/managing-data-structures/) enables you to publish your Avo Tracking Plan into Snowplow. You can configure the integration to publish whenever a branch is merged or with a push of a button.
+
+### Configure the Snowplow integration
+
+To enable the direct integration with Snowplow Data Structures, you need to configure it with the following parameters from Snowplow.
+
+- **Snowplow Organization ID**: Your organization ID issued by Snowplow
+- **Snowplow Vendor Name**: The vendor name for the data structures published by Avo, usually your domain in revers domain notation
+- **Snowplow Access Token**: The API Token provided by Snowplow for authentication
+
+### Publishing to Snowplow
+
+Avo will upload the events to the Development environment of your Snowplow workspace. You'll need to manually promote them to Production in the [Snowplow console](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/managing-data-structures#promote)
+
+Avo will override all events in the Snowplow Tracking Plan that are being imported from Avo. Any changes made to an event in Snowplow Tracking Plan between Avo publish will be overridden on next Avo publish.
+
+Avo will not override any events that are only defined in Snowplow, or events that have not been excluded from the Snowplow integration in Avo with filters.
 
 <img
   src={require('../../../images/publishing_govern.svg')}
