@@ -179,6 +179,25 @@ You can learn more about common Tracking Plan spreadsheet formats [on our blog.]
 
 4. Review your events and finish the import 🎉
 
+## Troubleshooting
+
+### **How do I prevent importing duplicates of my properties?**
+The importer attempts to merge properties from imported events using the following criteria:
+- The property name matches
+- The property type matches
+- The description matches
+
+If these three criteria are not fulfilled, the importer doesn't merge the properties. The reason we
+decided to include the description in this criteria is that a property that shares a name and a type,
+can still have a totally different meaning based on the description, and documenting that
+difference clearly in the tracking plan is critical to ensure everyone share the same understanding
+of what the property should contain in different context.
+
+In the case where you have aligned your names and types, but the description is different, you can:
+- **If the properties should be merged and you are in a position to reset your tracking plan**: Unify the description in your import file, <Link passHref href="/workspace/reset-tracking-plan"><a>reset the tracking plan</a></Link>, and re-run the import. This will result in the properties being merged on import.
+- **If the properties should be merged**: Use the <Link passHref href="/workspace/tracking-plan/properties#replacing-a-property"><a>"Replace property with..." feature</a></Link> in the context menu of the property modal
+- **If the properties should not be merged**: Provide unique name and descriptions to better differentiate between these properties in the tracking plan
+
 
 ## What's next?
 
