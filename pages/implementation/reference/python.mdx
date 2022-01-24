@@ -104,7 +104,7 @@ When you define system properties in your Avo workspace you set name and type - 
 ```python
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 class CustomDestination(object):
-    # This method is optional, you can skip it if you've already initialized your Analytics SDK    
+    # This method is optional, you can skip it if you've already initialized your Analytics SDK
     def make(self, env, api_key):
         self.mp = Mixpanel(api_key)
 
@@ -122,7 +122,7 @@ class CustomDestination(object):
     def revenue(self, user_id, amount, event_properties):
         self.mp.people_track_charge(user_id, amount, user_properties)
 
-    # The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+    # The following methods are used for group analytics and are not required.
     def add_current_user_to_group(self, user_id, group_type, group_id, group_properties)
         mp.people_set(user_id, {
             group_type : group_id,
@@ -137,6 +137,8 @@ class CustomDestination(object):
             event_properties[group_type] = group_types_to_group_ids[group_type]
         mp.track(user_id, event_name, event_properties)
 ```
+
+> Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
 
 To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
 

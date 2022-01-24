@@ -201,6 +201,8 @@ const mixpanelDestinationInterface = {
 
 ##### Web Google Analytics 4 example
 
+Make sure you have the `gtag.js` tag added as described in the `Add the global site tag directly to your web pages` section [here](https://support.google.com/analytics/answer/9304153?hl=en#zippy=add-your-tag-using-google-tag-manager%2Cadd-the-global-site-tag-directly-to-your-web-pages).
+
 ```javascript
 import Avo from './Avo';
 
@@ -228,6 +230,15 @@ var googleAnalyticsDestinationInterface = {
     });
   },
 };
+
+Then, when initializing Avo you'll provide the destination interface as your GA4 destination.
+
+```javascript
+  Avo.initAvo(
+  { env: 'dev' },
+  /*other parameters depending on your tracking plan setup*/,
+  googleAnalyticsDestinationInterface
+);
 ```
 
 ##### React Native Mixpanel example
