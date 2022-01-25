@@ -36,9 +36,8 @@ represented as its own Destination Interface in the initAvo method of your Avo F
 locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections 
 you've defined in the Avo dashboard.
 
-In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics 
-<Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be triggered with an Avo Function (for 
-example you might want to update user properties or log revenue along with logging an event), and the Avo Functions 
+In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> 
+should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and the Avo Functions 
 will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your 
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
 
