@@ -184,9 +184,11 @@ object properties: exact structure of the allowed keys and types of values in th
 
 #### What's happening inside the Avo Functions
 
-Avo makes sure that the event names and provided properties are correct according to the tracking plan with compile time and runtime validations, development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
-The last step sends the provided data to all the configured tracking destinations. There are different classes of <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> that can be tracked: identify, log event, update user properties, unidentify, log revenue, log page view, 
-but everything is handled inside the Avo file and delivered in a correct form to your destinations. The data will be provided to the Destination Interface methods you've defined during initialization.
+Avo makes sure that the event names and provided properties are correct according to the tracking plan with compile time and runtime validations and development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
+
+Then it sends the provided data to all the configured analytics destinations, using the destination interfaces you've defined during initialization. There are different <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> that can be tracked: 
+identify, log event, update user properties, unidentify, log revenue, log page view, but everything is checked and the payload is prepared inside the Avo file and delivered in a correct form to the destination interfaces.
+
 The Avo generated tracking code will look similar to this:
 
 ```swift
