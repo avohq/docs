@@ -27,18 +27,17 @@ analytics implementation you have to revisit to fix again and again and again ðŸ
 
 ### How do Avo Functions work?
 
-Avo Functions are type safe analytics wrappers that can work with any analytics tool you already 
-use or plan on using, whether it's any of the third-party event logging SDKs (e.g. 
+Avo Functions are type safe analytics wrappers that can work with any analytics tool, whether it's any of the third-party event logging SDKs (e.g. 
 Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, Pendo, 
 etc) or your home made API.
 
-The Avo Functions have a <Link passHref href="/implementation/destinations"><a>Destination Interface</a></Link> 
-that you have full control over how you implement. You provide a simple Destination Interface 
-object when initializing Avo Functions SDK, so that any time an Avo Function calls an analytics 
-logging method (e.g. logEvent, setUserProperties, etc), you can govern exactly what analytics 
-SDK method should be called.
+When designing the tracking plan you configure the list of analytics destinations for each source. In the generated code each destination is 
+represented as its own Destination Interface in the initAvo method of your Avo Functions. This is how Avo Functions routes data, 
+locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections 
+you've defined in the Avo dashboard.
 
-In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and the Avo Functions 
+In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> 
+should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and the Avo Functions 
 will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your 
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
 
