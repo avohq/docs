@@ -150,7 +150,7 @@ Custom destination interface format:
 };
 ```
 
-In Node each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+In Node each callback is asynchronous and gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
 
 #### Destination interface example
 
@@ -173,7 +173,7 @@ let customDestination = {
     mixpanel.getInstance().reset();
   },
   logPage: function (pageName: string, eventProperties: object) {
-    mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
+    mixpanel.track("Page Viewed", eventProperties.assign({"pageName": pageName}));
   },
   revenue: function (amount: number, eventProperties: object) {
     mixpanel.getInstance().people.track_charge(amount, eventProperties);
@@ -222,6 +222,8 @@ let customDestination = {
   },
 };
 ```
+
+Find destination interface snippects for different platforms and analytics destinations [in our GitHub])("https://github.com/avohq/destination-interface-code-snippets/tree/main/typescript").
 
 Read more about the destination interface <Link passHref href="/implementation/destinations"><a>here</a></Link>.
 
