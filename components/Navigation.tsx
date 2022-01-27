@@ -67,7 +67,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'What is tracking plan audit?',
-        path: '/audit/index',
+        path: '/audit/overview',
       },
       {
         type: 'route',
