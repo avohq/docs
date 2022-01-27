@@ -41,6 +41,22 @@ The Avo Inspector SDK is designed to be small and easy to include in any project
 
 Find in <Link passHref href="/implementation/avo-inspector-overview"><a>the Avo Inspector overview</a></Link> guide.
 
+## <a name="logs"></a> Logs
+
+You can enable or disable logs with a method on the `AvoInspector` class (the interface may vary depending on platform, see <a href="#platform-docs">platform specific documentation</a> above)
+
+`AvoInspector.enableLogging(isEnabled)`
+
+The printed logs are the following, in the chronological order:
+
+- `Avo Inspector: supplied event ...`: when an event is provided to the Avo Inspector
+- `Avo Inspector: extracting schema from ...`: right before extraction of the schema from a supplied event
+- `Avo Inspector: saved event ...`: when the event schema is saved locally to send it to Avo servers later, due to batching
+- `Avo Inspector: events ...`: before sending the data it prints the list of event schemas that are going to be sent 
+- `Avo Inspector: batch sent successfully.`: when the event schemas are successfully sent
+
+> When setting up the Inspector make sure that you see the `Avo Inspector: batch sent successfully` log. That means that your setup is most likely correct.
+
 ## <a name="batching"></a> Batching
 
 In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. In production, default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
