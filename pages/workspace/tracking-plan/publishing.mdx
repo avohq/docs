@@ -286,7 +286,7 @@ The Tracking Plan will be delivered with a `POST` request containing the Trackin
 Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>can be found here</a></Link>
 
 | Attribute    | Type                               | Description                                                                     |
-| :----------- | :--------------------------------- | :------------------------------------------------------------------------------ |
+|:-------------|:-----------------------------------|:--------------------------------------------------------------------------------|
 | name         | string                             | The name of your Avo workspace                                                  |
 | events       | array(Event)                       | Array of Tracking Plan events                                                   |
 | metrics      | { metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids           |
@@ -298,7 +298,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 #### Event Model
 
 | Attribute   | Type   | Description       |
-| :---------- | :----- | :---------------- |
+|:------------|:-------|:------------------|
 | name        | string | Event name        |
 | description | string | Event description |
 | rules       | Rules  | Event JSON rules  |
@@ -306,30 +306,31 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 #### Rules Model
 
 | Attribute    | Type                | Description                           |
-| :----------- | :------------------ | :------------------------------------ |
+|:-------------|:--------------------|:--------------------------------------|
 | properties   | array(PropertyRule) | Property JSON rules                   |
 | nameMappings | array(NameMapping)  | Name mappings defined for given event |
 
 #### PropertyRule Model
 
-| Attribute    | Type               | Description                              |
-| :----------- | :----------------- | :--------------------------------------- |
-| description  | string             | Property description                     |
-| type         | string             | Property type                            |
-| nameMappings | array(NameMapping) | Name mappings defined for given property |
-| ?enum        | array(string)      | Allowed enum values                      |
+| Attribute    | Type               | Description                                   |
+|:-------------|:-------------------|:----------------------------------------------|
+| description  | string             | Property description                          |
+| type         | string             | Property type                                 |
+| nameMappings | array(NameMapping) | Name mappings defined for given property      |
+| ?enum        | array(string)      | Allowed enum values                           |
+| ?operations  | array(string)      | Array of property ops, e.g. "SnowplowContext" |
 
 #### NameMapping Model
 
 | Attribute     | Type   | Description                                                                                                                               |
-| :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+|:--------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------|
 | name          | string | New mapped name                                                                                                                           |
 | destinationId | string | Either a destination id for which this property mapping applies, or "all", meaning that this property mapping applies to all destinations |
 
 #### Metric Model
 
 | Attribute   | Type                  | Description                                                |
-| :---------- | :-------------------- | :--------------------------------------------------------- |
+|:------------|:----------------------|:-----------------------------------------------------------|
 | id          | string                | Metric id                                                  |
 | name        | string                | Metric name                                                |
 | description | string                | Metric description                                         |
@@ -340,7 +341,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 #### Nested Event Model
 
 | Attribute | Type                 | Description                                          |
-| :-------- | :------------------- | :--------------------------------------------------- |
+|:----------|:---------------------|:-----------------------------------------------------|
 | eventId   | string               | Event id                                             |
 | where     | array(whereFilter)   | Array of where filters                               |
 | groupBy   | array(groupByFilter) | array of objects containing property ids to group by |
@@ -348,13 +349,13 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 ##### groupByFilter
 
 | Attribute  | Type   | Description                            |
-| :--------- | :----- | :------------------------------------- |
+|:-----------|:-------|:---------------------------------------|
 | propertyId | string | property Id being used in group filter |
 
 #### Where filter
 
 | Attribute  | Type     | Description                      |
-| :--------- | :------- | :------------------------------- |
+|:-----------|:---------|:---------------------------------|
 | propertyId | string   | property id                      |
 | operation  | string   | binary operation as string       |
 | values     | array(t) | array of values of the same type |
@@ -362,7 +363,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 #### Source Model
 
 | Attribute           | Type          | Description                                                |
-| :------------------ | :------------ | :--------------------------------------------------------- |
+|:--------------------|:--------------|:-----------------------------------------------------------|
 | id                  | string        | Source id                                                  |
 | name                | string        | Source name                                                |
 | programmingLanguage | string        | Name of programming language (e.g. "JavaScript", "Python") |
@@ -372,7 +373,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 #### Destination Model
 
 | Attribute | Type   | Description                                                                                                        |
-| :-------- | :----- | :----------------------------------------------------------------------------------------------------------------- |
+|:----------|:-------|:-------------------------------------------------------------------------------------------------------------------|
 | id        | string | Destination id                                                                                                     |
 | name      | string | Destination name                                                                                                   |
 | type      | string | Name of the provider (e.g. "Segment", "Mixpanel") where the data is sent to if managed by Avo, "Custom" otherwise. |
@@ -380,7 +381,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 #### Category Model
 
 | Attribute   | Type          | Description                        |
-| :---------- | :------------ | :--------------------------------- |
+|:------------|:--------------|:-----------------------------------|
 | id          | string        | Category id                        |
 | name        | string        | Category name                      |
 | description | string        | Category description               |
@@ -390,7 +391,7 @@ Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook">
 #### PublishInfo Model
 
 | Attribute       | Type             | Description                                                                               |
-| :-------------- | :--------------- | :---------------------------------------------------------------------------------------- |
+|:----------------|:-----------------|:------------------------------------------------------------------------------------------|
 | branchId        | id               | Branch id                                                                                 |
 | branchName      | string           | Branch name                                                                               |
 | integrationId   | string           | Id of the publish integration (consistently the same for this integration)                |
