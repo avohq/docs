@@ -130,7 +130,7 @@ When you define system properties in your Avo workspace you set name and type - 
 };
 ```
 
-In Node each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+In Node each callback is asynchronous and gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
 
 `destinationOptions`: send an empty object if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameters. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
 
@@ -164,7 +164,7 @@ const mixpanelDestinationInterface = {
   },
   page: function(pageName, eventProperties) {
     // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
-    mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
+    mixpanel.track("Page Viewed", eventProperties.assign({"pageName": pageName}));
   },
   // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
   setGroupProperties(groupType, groupId, groupProperties) {
@@ -277,7 +277,7 @@ var mixpanelDestinationInterface = {
   },
   page: function (pageName, eventProperties) {
     // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
-    mixpanel.track("Page Viewed", eventProperties.assign("pageName": pageName));
+    mixpanel.track("Page Viewed", eventProperties.assign({"pageName": pageName}));
   },
 };
 ```
