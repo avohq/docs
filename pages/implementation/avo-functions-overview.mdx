@@ -7,12 +7,12 @@ import Link from '../../components/Link';
 
 ## <a name="avo-generated-file"></a> Avo generated file containing Avo Functions
 
-The Avo generated code is the representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events. 
-For example if you set up an iOS/Swift source the generated code will be in a `.swift` file. 
-Since the tracking plans are different for each customer the content of this file is also different. 
-We generate the files and you can download them either with <Link passHref href="/implementation/cli"><a>the Avo CLI</a></Link> or in the Avo web interface in <Link passHref href="/workspace/implement"><a>the Implement tab</a></Link>.
+The Avo generated code is the representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events.
+For example if you set up an iOS/Swift source the generated code will be in a `.swift` file.
+Since the tracking plans are different for each customer the content of this file is also different.
+We generate the files and you can download them either with <Link passHref href="/implementation/cli"><a>the Avo CLI</a></Link> or in the Avo web interface in <Link passHref href="/workspace/implement"><a>the Functions tab</a></Link>.
 
-First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another. 
+First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another.
 The generated file is the best source of truth when looking for implementation details.
 
 > You should never have to make changes to the Avo generated file. If you find yourself in the situation where you have to edit the file please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link>.
@@ -51,7 +51,7 @@ Learn more about the CLI <Link passHref href="/implementation/cli"><a>here</a></
 
 First thing you need to do after importing the generated file is to initialize Avo.
 There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to change the setup.
-Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the <Link passHref href="/workspace/implement"><a>Implement tab</a></Link> for specific recommendations. 
+Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the <Link passHref href="/workspace/implement"><a>Functions tab</a></Link> for specific recommendations.
 Samples below are in Swift and the code is very similar in other programming languages:
 
 ```swift
@@ -80,8 +80,8 @@ public static func setSystemProperties(
 
 Read more about property types later in the <Link passHref href="/implementation/avo-functions-overview#avo-generated-file-func-parameters"><a>Avo Functions section.</a></Link>
 
-- `firstDestination` and `secondDestination` - each destination from the source/destination connections you've defined in the Avo dashboard is represented as its own <Link passHref href="/implementation/destinations"><a>Destination Interface</a></Link> in the init call. 
-This is how Avo Functions routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
+- `firstDestination` and `secondDestination` - each destination from the source/destination connections you've defined in the Avo dashboard is represented as its own <Link passHref href="/implementation/destinations"><a>Destination Interface</a></Link> in the init call.
+  This is how Avo Functions routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
 - `debugger` - mobile platforms (Android, iOS, React Native) support <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers"><a>the Avo Analytics Debuggers</a></Link>, provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
 - `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors. Note that the Avo validation will never crash your app if env is set to Production.
 - `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is dismissed in production.
@@ -136,9 +136,9 @@ public func App Opened(
 Each Avo Function is a code generated wrapper around your analytics SDK tracking libraries. Each Avo Function can wrap multiple tracking methods, such as logging events, identifying users, updating user properties, etc. The default tracking method is to log an event. To configure which tracking methods each Avo Function wraps, you change or add "Action Types" on the event in your Avo Tracking Plan.
 
 > 💡 **Read more about actions and supported tracking methods:**
-> 
+>
 > Read about <Link passHref href="/workspace/tracking-plan/events#actions"><a>available Actions and how they work in the tracking plan</a></Link>.
-> 
+>
 > Learn how <Link passHref href="/implementation/destinations"><a>you can implement supported tracking methods in your destinations</a></Link>.
 
 #### <a name="avo-generated-file-func-parameters"></a> Property types
@@ -186,7 +186,7 @@ object properties: exact structure of the allowed keys and types of values in th
 
 Avo makes sure that the event names and provided properties are correct according to the tracking plan with compile time and runtime validations and development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
 
-Then it sends the provided data to all the configured analytics destinations, using the destination interfaces you've defined during initialization. There are different <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> that can be tracked: 
+Then it sends the provided data to all the configured analytics destinations, using the destination interfaces you've defined during initialization. There are different <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> that can be tracked:
 identify, log event, update user properties, unidentify, log revenue, log page view, but everything is checked and the payload is prepared inside the Avo file and delivered in a correct form to the destination interfaces.
 
 The Avo generated tracking code will look similar to this:
