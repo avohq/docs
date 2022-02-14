@@ -563,6 +563,11 @@ const navigation: navigationItem[] = [
             title: 'Node.js SDK',
             path: '/implementation/inspector/sdk/node',
           },
+          {
+            type: 'route',
+            title: 'Dart and Flutter SDK',
+            path: '/implementation/inspector/sdk/dart',
+          },
         ],
       },
       {
