@@ -179,7 +179,7 @@ enableLogging(enable: boolean): void;
 >
 > - `enable` - boolean flag that sets whether **Avo Inspector SDK** will print logs.
 
-### 3. Controlling the batch size
+#### 3. Controlling the batch size
 
 ```js
 setBatchSize(newBatchSize: number): void;
@@ -192,7 +192,7 @@ In development batching is disabled by default.
 >
 > - `int newBatchSize` - sets batch size.
 
-### 4. Controlling the batching interval
+#### 4. Controlling the batching interval
 
 ```js
 setBatchFlushSeconds(newBatchFlushSeconds: number): void;
@@ -203,3 +203,11 @@ Enables manual control over events batching. The default production batch flush 
 > #### Parameters:
 >
 > - `int newBatchFlushSeconds` - sets batch flush time in seconds.
+
+## <a name="web-workers"></a>Using in web workers
+
+The Web SDK maintains some shared state across the tracking calls and stores the data for batching, which makes it not suitale for web workers usage.
+
+If you have event tracking in Web Workers, we recommend to set up a listener in the main thread and send your event data there, where an inspector instance will be listening for it.
+
+This approach will allow you to use the shared batching and sessions across all web workers and the main thread.
