@@ -527,6 +527,11 @@ const navigation: navigationItem[] = [
             title: 'Configuring logging',
             path: '/implementation/custom-loggers',
           },
+          {
+            type: 'route',
+            title: 'User identification',
+            path: '/implementation/anonymous-user-id.mdx',
+          },
         ],
       },
       {
