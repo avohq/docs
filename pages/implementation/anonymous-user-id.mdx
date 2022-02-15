@@ -9,13 +9,13 @@ import Link from '../../components/Link';
 
 ### Anonymous users
 
-When working with anonymous users analytics SDKs automatically assign anonymous user ids on per-client level. 
+When working with anonymous users, analytics SDKs automatically assign anonymous user ids on a per-client level. 
 When a user is identified the anonymous events are associated with the identified user.
 You don't need to do additional actions for this logic to work on the client side, so you are not required to provide `anonymousUserId` anywhere.
 
 ### Identified users
 
-Client side Analytics SDKs can store the information about the currently logged in used. 
+Client side Analytics SDKs can store the information about the currently logged in user. 
 It makes possible to identify user once and then send all subsequent tracking calls on behalf of the identified user.
 
 To make an Avo function identify a user you add the Identify action to the corresponding Avo event in your tracking plan.
@@ -30,11 +30,11 @@ Avo functions corresponding to the events with Identify action will require a us
 
 Server side Avo functions do not have a way to maintain user identity. 
 That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Avo functions.
-Optional `anonymousUserId` parameter is available in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Avo functions.
+An optional `anonymousUserId` parameter is available in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Avo functions.
 
 ### Identified users
 
 Given the server side functions can not maintain user identity, once the user is identified you still have to provide the `userId` with every function call.
-Optional `userId` parameter is automatically required in all the server side Avo functions.
+An optional `userId` parameter is automatically required in all the server side Avo functions.
 
 > Though both `anonymousUserId` and `userId` are optional make sure to provide one of them to be able to identify the user.
