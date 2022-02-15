@@ -208,6 +208,6 @@ Enables manual control over events batching. The default production batch flush 
 
 The Web SDK maintains some shared state across the tracking calls and stores the data for batching, which makes it not suitable for web workers usage.
 
-If you have event tracking in web workers, we recommend to set up a listener in the main thread and send your event data there, where an inspector instance will be listening for it.
+If you have event tracking in web workers, we recommend to set up a listener in the main thread and send your event data there, where an inspector instance will be listening, processing and sending the event schemas to Avo.
 
 This approach will allow you to use the shared batching and sessions across all web workers and the main thread.
