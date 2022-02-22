@@ -76,7 +76,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Audit rules',
+        title: 'Audit rules and configuration',
         path: '/audit/rules',
       },
     ],
