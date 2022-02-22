@@ -122,9 +122,36 @@ To enable the direct integration with Segment Protocols, you need to configure i
 
 ### Publishing to Protocols
 
-Avo will override all events in the Protocols tracking plan that are being imported from Avo. Any changes made to an event in Protocols between Avo publish will be overridden on next Avo publish.
+To publish your Avo tracking plan to Protocols, click the "Publish" button in the integration interface, or enable Auto Publishing to publish the Tracking Plan whenever a branch has been merged.
 
-Avo will not override any events that are only defined in Protocols, or events that have not been added to the Protocols integration in Avo.
+#### What Is Included In The Publish to Protocols?
+
+Avo will override all events in the Protocols tracking plan that are included in the publish from Avo. Any changes made to an event in Protocols between Avo publish will be overridden on next Avo publish.
+
+Avo will not override any events that are only defined in Protocols, or events that are not included in the Protocols integration in Avo.
+
+Here's how the Avo Tracking Plan is mapped to Protocols:
+
+##### Event
+
+- **Name**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for a Segment destination, the name defined by the name mapping is used here.
+- **Description**: This is the description as provided in Avo
+  - Coming Soon: We're currently working on including the event triggers in the description published to Protocols
+- **Labels**: All tags attached to the event in Avo will be published to Protocols as labels, on the key:value format "<Avo tag>:avo"
+
+##### Event Property
+
+- **Name**: The property name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the property, the name defined by the name mapping is used here.
+- **Description**: The property description as defined in Avo
+- **Type**: The property type and rules in Avo mapped to [JSON Schema](https://json-schema.orgx) compatible rules
+- **Required**: If the property is marked as "Always sent" in Avo it will be marked as required in Protocols
+
+##### User Property and Group Property
+Currently Avo does not publish user or group properties into Protocols. If you'd like to publish user or group properties, please let us know, and we'll invite you to the beta when it goes live.
+
+##### Category
+Currently Avo does not publish categories into Protocols. If you'd like to publish categories, please let us know!
+
 
 <img
   src={require('../../../images/publishing_lexicon.svg')}
