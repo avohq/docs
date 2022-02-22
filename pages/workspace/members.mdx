@@ -3,6 +3,8 @@ layout: 'guide'
 title: 'Members'
 ---
 
+import Link from '../../components/Link';
+
 Expand your Avo team and manage your members access by opening the workspace settings modal from the settings wheel located next to your workspace name:
 
 <img
@@ -25,7 +27,15 @@ Members with a _Comment Only_ role have the same limitations as the _View Only_ 
 
 ### Editor
 
-Members with the _Editor_ role can make changes to your workspace like adding events and properties, changing property values and opening new branches. Editors can pull code generated Avo Functions using the Avo CLI. Editors can view other members but can not change their roles or add new ones and are not able to change your workspace name. On the Team and Enterprise plans you can limit editor edits to just branches, requiring peer approval before the changes are merged to main:
+Members with the _Editor_ role can:
+
+- Make changes to your workspace like adding events and properties, changing property values and opening new branches.
+- Pull code generated Avo Functions using the Avo CLI.
+- View other members but can not change their roles or add new ones.
+- Edit the <Link passHref href="/audit/rules"><a>tracking plan audit rules</a></Link>.
+- _Not_ change your workspace name.
+
+On the Team and Enterprise plans you can limit editor edits to just branches, requiring peer approval before the changes are merged to main:
 
 <img
   width="516"
@@ -39,4 +49,4 @@ Members with the _Admin_ role can change your workspace name, publish integratio
 
 ## What's next?
 
-Now when you when you have your team in Avo it's time to <Link passHref href="/data-design/start-collaborating"><a>learn how to collaborate</a></Link>. 
+Now when you when you have your team in Avo it's time to <Link passHref href="/data-design/start-collaborating"><a>learn how to collaborate</a></Link>.
