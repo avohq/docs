@@ -1,7 +1,7 @@
 ---
 layout: 'guide'
 title: 'Avo tracking plan audit rules'
-abstract: 'Learn how to read and fix your tracking plan audit'
+abstract: 'Learn how to read, fix and configure your tracking plan audit'
 ---
 
 import Link from '../../components/Link';
@@ -15,12 +15,12 @@ You will recognize the Tracking Plan Audit by the yellow exclamation point next 
 Below is an overview of the reported issues and how you can resolve them.
 
 <center>
-  <img width="400" src={require('../../images/audit/audit.png')} />
+  <img width="543" src={require('../../images/audit/audit.png')} />
 </center>
 
 ## Event Rules
 
-### All events have unique names*
+### All events have unique names
 
 Checks if any two event names in the tracking plan conflict with each other. For event name to be unique, no other event can have the same name, independent from their case. Example of conflicting event names:
 
@@ -56,7 +56,7 @@ Checks if all events in the tracking plan have a description.
 
 ## Property Rules
 
-### No conflicting properties*
+### No conflicting properties
 
 Checks if there are more than one definition of a property with the same name. This is the case where two properties have the same name, but different type definitions or descriptions. Example of conflicting properties:
 
@@ -67,7 +67,7 @@ Checks if there are more than one definition of a property with the same name. T
 
 Aligning the descriptions, types and property constraints of the conflicting properties and fix the implementation of those that don't fit your standards
 
-### All property names are unique*
+### All property names are unique\*
 
 Checks if any two property names in the tracking plan conflict with each other. For property name to be unique, no other property can have the same name, independent from their case. Example of conflicting property names:
 
@@ -117,3 +117,13 @@ Add descriptions to all properties to increase the quality of your tracking plan
 <br />
 
 \* These rules can only fail after importing an existing tracking plan to Avo. When editing your Tracking Plan in Avo, Avo prevents you from introducing conflicting events and properties.
+
+# Audit Rule Configuration
+
+For new workspaces all rules are enabled in their default settings. Workspaces on the Team and Enterprise plans have the Tracking Plan Audit Config enabled which allows members that are Editors or Admins to change the audit behavior. All rules can be toggled on or off and the preferred casing can be configured separately for events and properties. Additionally workspaces on the Enterprise plan have the ability to force the preferred casing when events names are set, blocking the creation and editing of events and/or properties with invalid casing.
+
+<img
+  with="750"
+  src={require('../../images/audit/tracking-plan-audit-config.png')}
+  alt="Tracking Plan Audit Configuration"
+/>
