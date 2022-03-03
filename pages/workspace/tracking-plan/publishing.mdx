@@ -332,6 +332,8 @@ Currently there are three different payload formats you can choose from for the 
 
 Json containing a Snowplow Schema for every event included in the Publishing integration. These schemas can for example be used to integrate Avo with Snowplow Iglu.
 
+You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#:~:text=%E2%80%9Cvendor%E2%80%9D%20%E2%80%93%20This%20usually%20refers,events%20and%20contexts%20(e.g.%20com.) value via the "Vendor" input in the publishing integration config.
+
 | Attribute | Type                         | Description                                                                                                                                                                                                               |
 | :-------- | :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | schemas   | array(Snowplow Event Schema) | Schema for every event in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
