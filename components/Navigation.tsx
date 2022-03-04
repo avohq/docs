@@ -670,14 +670,14 @@ const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
       return (
         <React.Fragment key={route.path + ' ' + route.title}>
           <Link href={route.path} key={route.path}>
-             <a 
-             style={{ textDecoration: 'none', }}
+            <a
+              style={{ textDecoration: 'none' }}
               className={classNames(styles.subroute, {
                 [styles.activeLink]: isActive,
               })}
-              >
-               {route.title}
-             </a>
+            >
+              {route.title}
+            </a>
           </Link>
         </React.Fragment>
       );
@@ -735,8 +735,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
   return (
     <div>
       <div
-        onClick={() =>
-           setExpanded((currentIsExpanded) => !currentIsExpanded)}
+        onClick={() => setExpanded((currentIsExpanded) => !currentIsExpanded)}
         className={classNames(styles.parentLink, {
           [styles.activeLink]: isRootActive,
         })}
