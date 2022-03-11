@@ -334,19 +334,20 @@ Json containing a Snowplow Schema for every event included in the Publishing int
 
 You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#:~:text=%E2%80%9Cvendor%E2%80%9D%20%E2%80%93%20This%20usually%20refers,events%20and%20contexts%20) value via the "Vendor" input in the publishing integration config.
 
-| Attribute | Type                         | Description                                                                                                                                                                                                               |
-| :-------- | :--------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| schemas   | array(Snowplow Event Schema) | Schema for every event in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
-| context   | { publishInfo: PublishInfo } | Metadata about the webhook call                                                                                                                                                                                           |
+| Attribute      | Type                           | Description                                                                                                                                                                                                                          |
+| :------------- | :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| eventSchemas   | array(Snowplow Event Schema)   | Schema for every event in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format            |
+| contextSchemas | array(Snowplow Context Schema) | Schema for every Snowplow context in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
+| context        | { publishInfo: PublishInfo }   | Metadata about the webhook call                                                                                                                                                                                                      |
 
 ##### Avo Json
 
 Json representation of the state of your entire Avo workspace. Currently behind a feature flag. Contact us to enable.
 
-| Attribute | Type                         | Description                                                             |
-| :-------- | :--------------------------- | :---------------------------------------------------------------------- |
+| Attribute | Type                         | Description                                      |
+| :-------- | :--------------------------- | :----------------------------------------------- |
 | model     | Avo Model                    | Json representation of your entire Avo workspace |
-| context   | { publishInfo: PublishInfo } | Metadata about the webhook call                                         |
+| context   | { publishInfo: PublishInfo } | Metadata about the webhook call                  |
 
 ##### Json Schema (default)
 
