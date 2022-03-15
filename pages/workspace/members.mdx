@@ -17,13 +17,9 @@ Expand your Avo team and manage your members access by opening the workspace set
 
 You can assign roles when inviting new users as well as for existing users, excluding yourself.
 
-### View Only
+### Admin
 
-Members with the _View Only_ role can access your workspace but cannot make any modifications and can not access workspace settings including the members and settings modal, audit log or billing page. Additionally, _View Only_ users don't have access to pull code generated Avo Functions with the Avo CLI. Assign the _View Only_ role to a member when you want to allow them to view your tracking plan but don't want them to be able to make changes. All new plans can add an unlimited amount of _View Only_ users.
-
-### Comment Only
-
-Members with a _Comment Only_ role have the same limitations as the _View Only_ role but can comment on events, properties, branches and more. The _Comment Only_ role is available on plans with extended collaboration, [see more](https://www.avo.app/pricing).
+Members with the _Admin_ role can change your workspace name, publish integrations, edit other members roles and invite new members. Admins can access the Audit Log, Billing page and the Workspace permissions. If the _protected main branch_ config is active, Admins can override merging a branch without approval.
 
 ### Editor
 
@@ -43,9 +39,17 @@ On the Team and Enterprise plans you can limit editor edits to just branches, re
   alt="The protected main branch toggle"
 />
 
-### Admin
+### Comment Only
 
-Members with the _Admin_ role can change your workspace name, publish integrations, edit other members roles and invite new members. Admins can access the Audit Log, Billing page and the Workspace permissions. If the _protected main branch_ config is active, Admins can override merging a branch without approval.
+Members with a _Comment Only_ role have the same limitations as the _View Only_ role but can comment on events, properties, branches and more. The _Comment Only_ role is available on plans with extended collaboration, [see more](https://www.avo.app/pricing).
+
+## Billing Only
+
+Members with a _Billing Only_ role can only access the Billing page of the workspace. They can update payment methods and sign up for new subscriptions.
+
+### View Only
+
+Members with the _View Only_ role can access your workspace but cannot make any modifications and can not access workspace settings including the members and settings modal, audit log or billing page. Additionally, _View Only_ users don't have access to pull code generated Avo Functions with the Avo CLI. Assign the _View Only_ role to a member when you want to allow them to view your tracking plan but don't want them to be able to make changes. All new plans can add an unlimited amount of _View Only_ users.
 
 ## What's next?
 
