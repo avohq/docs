@@ -670,16 +670,14 @@ const Subroute: FunctionComponent<SubrouteProps> = ({ route }) => {
       return (
         <React.Fragment key={route.path + ' ' + route.title}>
           <Link href={route.path} key={route.path}>
-            <div
-              onClick={() =>
-                setExpanded((currentIsExpanded) => !currentIsExpanded)
-              }
+            <a
+              style={{ textDecoration: 'none' }}
               className={classNames(styles.subroute, {
                 [styles.activeLink]: isActive,
               })}
             >
               {route.title}
-            </div>
+            </a>
           </Link>
         </React.Fragment>
       );
