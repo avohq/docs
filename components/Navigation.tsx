@@ -530,7 +530,7 @@ const navigation: navigationItem[] = [
           {
             type: 'route',
             title: 'User identification',
-            path: '/implementation/anonymous-user-id.mdx',
+            path: '/implementation/anonymous-user-id',
           },
         ],
       },
