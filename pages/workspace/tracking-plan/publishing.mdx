@@ -373,10 +373,16 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ###### Rules Model
 
-| Attribute    | Type                | Description                           |
-| :----------- | :------------------ | :------------------------------------ |
-| properties   | array(PropertyRule) | Property JSON rules                   |
-| nameMappings | array(NameMapping)  | Name mappings defined for given event |
+| Attribute    | Type               | Description                           |
+| :----------- | :----------------- | :------------------------------------ |
+| properties   | PropertiesRule     | Properties JSON rules                   |
+| nameMappings | array(NameMapping) | Name mappings defined for given event |
+
+#### PropertiesRule Model
+
+| Attribute  | Type                | Description         |
+| :--------- | :------------------ | :------------------ |
+| properties | array(PropertyRule) | Property JSON rules |
 
 ###### PropertyRule Model
 
