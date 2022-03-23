@@ -1,0 +1,42 @@
+---
+layout: 'guide'
+title: 'Pinned properties'
+---
+
+import Link from '../../components/Link';
+
+**Pinned Properties** is a way to make specific property be sent with the same constant value all the time.
+
+## How to use property pinning
+
+Use property pinning to assing constant value to a property. When the value of a property is pinned it will always be sent as the pinned value. 
+
+Developers won't be required to pass in value for the property when the event is being sent, the value will be hardcoded in the generated code.
+
+You can pin event and user properties on the event level, i.e. set that a particular property will have the same value every time it's sent with a particular event.
+
+## Pinning a property value on an event
+
+To pin a value for a property on a specific event 
+
+1. Proceed to the tracking plan events in your Avo workspace 
+2. Pick an event where you'd like to pin a property value
+3. Locate the event or user property and pless the ⋮
+4. Pick the "Pin  Property Value" option
+5. Set the constant value of the property
+
+<center>
+  <img
+    src={require('../../images/best-practices/pinned-properties/pinned-prop-per-event.png')}
+    width="75%"
+    alt="Event name mapping for multiple event shapes"
+  />
+</center>
+
+# Use cases
+
+One of the main use cases is the hardcoded metadata for events. For example when using Snowplow destination you are required to attach a schema id to every event. This is done with the pinned properties in Avo.
+
+
+[//]: # 'TODO when objects feature flag is lifted: docs about pinning a property field in a property of type object globally and per event'
+
