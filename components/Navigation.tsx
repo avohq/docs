@@ -252,7 +252,7 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
-            title: 'Pinned properties',
+            title: 'Pinned Properties and Use Cases',
             path: '/data-design/pinned-properties',
           },
           {
