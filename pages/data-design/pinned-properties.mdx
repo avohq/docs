@@ -1,0 +1,45 @@
+---
+layout: 'guide'
+title: 'Pinned Properties and Use Cases'
+---
+
+import Link from '../../components/Link';
+
+**Pinned properties** is a way to make specific property be sent with the same constant value all the time.
+
+## How to use pinned properties
+
+Use pinned properties to assign constant value to a property. When the value of a property is pinned it will always be sent as the pinned value. 
+
+If using Avo Functions with pinned properties, developers won't be required to pass in value for the property when the event is being sent, the value will be hardcoded in the generated code.
+
+You can pin event and user properties on the event level, i.e. set a particular property to always have the same value every time it's sent with a particular event.
+
+## Pinning a property value on an event
+
+To pin a value for a property on a specific event :
+
+1. Proceed to the tracking plan events in your Avo workspace 
+2. Pick an event where you'd like to pin a property value
+3. Locate the event or user property and press the ⋮ menu
+4. Pick the "Pin  Property Value" option
+5. Set the constant value of the property
+
+<center>
+  <img
+    src={require('../../images/best-practices/pinned-properties/pinned-prop-per-event.png')}
+    width="75%"
+    alt="Event name mapping for multiple event shapes"
+  />
+</center>
+
+# Use cases
+
+One of the main use cases for pinned properties is to hardcode metadata for events. For example when using a Snowplow destination you are required to attach a schema id to every event. This can be done with pinned properties in Avo.
+
+Another use case is to have properties with fixed values on some events and not fixed on other.
+
+Example: You want to include the "Page Section" property on some events in your app. Some events can be triggered from multiple page sections, and can therefor not be pinned. However there can be events where the "Page Section" should always be the same. As an example, let's say we have the event "Footer Item Clicked". For that event we would always want "Page Section" to be sent as "Footer". We can define that in Avo by using pinned properties.
+
+[//]: # 'TODO when objects feature flag is lifted: docs about pinning a property field in a property of type object globally and per event'
+
