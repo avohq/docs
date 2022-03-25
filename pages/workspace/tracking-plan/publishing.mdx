@@ -135,8 +135,7 @@ Here's how the Avo Tracking Plan is mapped to Protocols:
 ##### Event
 
 - **Name**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for a Segment destination, the name defined by the name mapping is used here.
-- **Description**: This is the description as provided in Avo
-  - Coming Soon: We're currently working on including the event triggers in the description published to Protocols
+- **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 - **Labels**: All tags attached to the event in Avo will be published to Protocols as labels, on the key:value format "[Avo tag]:avo"
 
 ##### Event Property
@@ -264,8 +263,7 @@ Here's how events, properties and categories are mapped from Avo to Govern:
 
 - **Event type**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for an Amplitude destination, the name defined by the name mapping is used here.
 - **Category**: Amplitude Govern only supports one category per event, so the first category attached to the event in Avo is used here
-- **Description**: This is the description as provided in Avo
-  - Coming Soon: We're currently working on including the event triggers here as well
+- **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 
 ##### Event Property
 
@@ -365,11 +363,11 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ###### Event Model
 
-| Attribute   | Type   | Description       |
-| :---------- | :----- | :---------------- |
-| name        | string | Event name        |
-| description | string | Event description |
-| rules       | Rules  | Event JSON rules  |
+| Attribute   | Type   | Description                                |
+| :---------- | :----- | :----------------------------------------- |
+| name        | string | Event name                                 |
+| description | string | Event description and the list of triggers |
+| rules       | Rules  | Event JSON rules                           |
 
 ###### Rules Model
 
