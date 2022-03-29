@@ -16,7 +16,7 @@ import Link from '../../../components/Link';
 
 </p>
 
-Publishing is a way to push your tracking plan specs from Avo into your other schema registries and downstream tools, including analytics platforms like Amplitude or Mixpanel, ingestion time validation tools like Segment Protocols, Rudderstack or Snowplow, or connect to any tool or internal system via webhook.
+Publishing is a way to push your tracking plan specs from Avo into your other schema registries and downstream tools, including analytics platforms like Amplitude or Mixpanel, ingestion time validation tools like Segment Protocols, RudderStack or Snowplow, or connect to any tool or internal system via webhook.
 
 Available integrations are:
 
@@ -43,7 +43,7 @@ With an Avo publishing integration you can let Avo automatically push descriptio
 
 ### Keep data validation in your CDP up to date with the tracking plan
 
-Segment Protocols, mParticle Data Master, Rudderstack Tracking Plans and Snowplow Iglu are all examples of CDPs with ingestion time validation. It allows you to validate the events as they come in, and for example route the bad events to alternative destinations. 
+Segment Protocols, mParticle Data Master, RudderStack Tracking Plans and Snowplow Iglu are all examples of CDPs with ingestion time validation. It allows you to validate the events as they come in, and for example route the bad events to alternative destinations. 
 With Avo publishing you can make sure the schemas used for this validation are always up to date with your tracking plan in Avo, which increases the quality of your data in all downstream destinations.
 Being able to integrate with CDPs this way also allows your teams to gradually adopt Avo over time.
 
@@ -55,7 +55,7 @@ Here are some ideas to get you started:
   - #### **Update ingestion time validation:**
     *Automatically update your JSON Schema ingestion time validation whenever a tracking plan change is merged to the main branch. Making sure your pipeline is ready to approve the fresh events before they arrive.*
   - #### **Manage tables in data warehouses:**
-    *Automatically keep raw event table schemas in @SnowflakeDB, BigQuery or Redshift in sync with the Tracking Plan – keeping your data streaming in smoothly*
+    *Automatically keep raw event table schemas in SnowflakeDB, BigQuery or Redshift in sync with the Tracking Plan – keeping your data streaming in smoothly*
   - #### **Generate dbt models:**
     *Generate .yml config files describing your raw event tables in dbt. I'm also excited to explore the possibility of generating detailed dbt tests based on the Tracking Plan spec*
 
