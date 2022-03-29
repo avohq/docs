@@ -16,7 +16,43 @@ import Link from '../../../components/Link';
 
 </p>
 
-Publishing is a way to push your tracking plan specs from Avo into your other schema registries and downstream tools, including analytics platforms like Amplitude or Mixpanel, ingestion time validation tools like Segment Protocols, RudderStack or Snowplow, or connect to any tool or internal system via webhook.
+## Why keep schema registries in sync
+
+> 💡 **Event schemas** are important in many layers of your data stack. Keeping schema
+registries in sync across the stack can be a challenge, especially since stakeholders
+involved vary from non-technical folks with a preference for human readable
+tools like spreadsheets, to technical folks with a preference for computer
+readable schemas like JSON.
+
+**Publishing** is a way to push your tracking plan specs from Avo into your other
+schema registries and downstream tools, including analytics platforms like
+Amplitude or Mixpanel, ingestion time validation tools like Segment Protocols,
+RudderStack or Snowplow, or connect to any tool or internal system via webhook.
+See <a href="#publishing-use-cases">publishing use cases</a> and <a href="#publishing-integrations">publishing integrations</a> below.
+
+### Push or pull to keep schema registries in sync
+
+Avo allows you to maintain a single source of truth for your schemas and keep
+your schema registries in sync, serving both your technical and non-technical
+stakeholders.
+
+> 💡 **Push or pull your schemas**: To keep your Avo tracking plan in sync with
+your downstream schema registries you can either **push** your schema from Avo
+via Avo Publishing or **pull** your Avo schema via Avo CLI. We recommend
+leveraging *push* since you can configure that to make sure your downstream
+schema registries get updated when your main Avo schema gets updated.
+
+1. **Push: Publishing your schema:** You can set up <a href="#publishing-integrations">Publishing integrations</a>
+where you publish your Avo schema into other schema registries. For example as
+JSON into a Webhook. We recommend leveraging auto-publishing for those
+integrations, where your schema will get published upon Avo branch merge
+(you can also manually publish a schema at any point). See <a href="#publishing-use-cases">use cases</a>.
+
+2. **Pull: Pull JSON schema via CLI:** An alternative to Avo Publishing integrations
+is pulling a JSON schema via the CLI. This way you can add a schema pull into
+a CI/CD. See <Link passHref href="/workspace/tracking-plan/exporting#pull-json-schema-via-the-cli"><a>docs to pull schema via CLI</a></Link>.
+
+## Publishing Integrations
 
 Available integrations are:
 
