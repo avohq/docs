@@ -1,5 +1,5 @@
 import fs from 'fs';
-import globby from 'globby';
+import { globby } from 'globby';
 
 import XMLBuilder from 'xmlbuilder';
 import pager from './pager';
