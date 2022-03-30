@@ -3,7 +3,7 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
-import remark from 'remark';
+import { remark } from 'remark';
 import mdx from 'remark-mdx';
 import slug from 'remark-slug';
 import headingIds from 'remark-heading-id';
