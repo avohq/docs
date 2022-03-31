@@ -20,12 +20,13 @@ export interface layoutProps {
 
 type LayoutComponent = FunctionComponent<layoutProps>;
 
-const createLayout = (Component: LayoutComponent) => (
-  frontMatter: frontMatter,
+const createLayout = (
+  Component: LayoutComponent,
 ): FunctionComponent<layoutProps> => {
-  const Layout: FunctionComponent<layoutProps> = (props) => (
-    <Component {...props} frontMatter={frontMatter} />
-  );
+  const Layout: FunctionComponent<layoutProps> = ({
+    children,
+    frontMatter: frontMatter,
+  }) => <Component frontMatter={frontMatter}>{children}</Component>;
   return Layout;
 };
 
