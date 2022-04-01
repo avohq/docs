@@ -329,7 +329,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Inspector Rudderstack integration',
+        title: 'Inspector RudderStack integration',
         path: '/workspace/connect-inspector-to-rudderstack',
       },
       {
