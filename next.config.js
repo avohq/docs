@@ -26,6 +26,7 @@ const config = {
   publicRuntimeConfig: {
     basePath: basePath || '',
   },
+  webpack5: false,
 
   webpack: (config, { isServer }) => {
     if (isServer) childProcess.execSync('yarn run generate-sitemap');
