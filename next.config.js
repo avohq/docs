@@ -4,8 +4,6 @@ const withImages = require('next-images');
 const withVideos = require('next-videos');
 const childProcess = require('child_process');
 
-
-// const headings = require('remark-autolink-headings');
 const headingIds = require('remark-heading-id');
 const slug = require('remark-slug');
 
@@ -26,6 +24,7 @@ const config = {
   publicRuntimeConfig: {
     basePath: basePath || '',
   },
+  webpack5: false,
 
   webpack: (config, { isServer }) => {
     if (isServer) childProcess.execSync('yarn run generate-sitemap');
