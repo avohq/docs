@@ -329,6 +329,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Inspector Rudderstack integration',
+        path: '/workspace/connect-inspector-to-rudderstack',
+      },
+      {
+        type: 'route',
         title: 'Inspector SDKs',
         path: '/implementation/avo-inspector-overview',
       },
