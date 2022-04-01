@@ -36,7 +36,7 @@ You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-fi
 
 Import Avo from the generated file and initialize it by calling the `init_avo` method before tracking
 
-```PHP
+```php
 require_once 'avo.php';
 
 Avo::init_avo(array("env" => "dev" /*, other parameters depending on your tracking plan setup*/), [$system_properties]);
@@ -62,7 +62,7 @@ For example, if you have a "Signup Start" event defined like this in Avo:
 
 You'll be able to call it like this from the generated code
 
-```PHP
+```php
 Avo::signup_start(array('referral' => 'direct'));
 ```
 
@@ -95,7 +95,7 @@ This method will call the `make(env, apiKey)` callback in all the provided <Link
 
 Custom logger interface:
 
-```PHP
+```php
 interface LoggerInterface
 {
     public function emergency($message, array $context = array());
@@ -114,7 +114,7 @@ interface LoggerInterface
 
 #### Destination interface example
 
-```PHP
+```php
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
 class CustomDestination {
     private $mp;
@@ -148,7 +148,7 @@ Read more about the destination interface <Link passHref href="/implementation/d
 
 #### set_system_properties
 
-```PHP
+```php
 public static function set_system_properties($system_props)
 ```
 
@@ -161,7 +161,7 @@ When you define system properties in your Avo workspace you set name and type - 
 
 #### Event tracking functions
 
-```PHP
+```php
 public static function [your_event_name]($properties = [])
 ```
 
