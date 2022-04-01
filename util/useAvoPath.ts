@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
 
-export default (): string => {
+const useAvoPath = (): string => {
   const router = useRouter();
   return 'docs' + router.pathname;
 };
+
+export default useAvoPath;

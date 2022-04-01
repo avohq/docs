@@ -16,8 +16,43 @@ import Link from '../../../components/Link';
 
 </p>
 
+## Why keep schema registries in sync
 
-Publishing is where you can configure Avo to publish your Tracking Plan to your analytics platform, a production time validation tool or your own custom endpoint via webhook.
+> 💡 **Event schemas** are important in many layers of your data stack. Keeping schema
+registries in sync across the stack can be a challenge, especially since stakeholders
+involved vary from non-technical folks with a preference for human readable
+tools like spreadsheets, to technical folks with a preference for computer
+readable schemas like JSON.
+
+**Publishing** is a way to push your tracking plan specs from Avo into your other
+schema registries and downstream tools, including analytics platforms like
+Amplitude or Mixpanel, ingestion time validation tools like Segment Protocols,
+RudderStack or Snowplow, or connect to any tool or internal system via webhook.
+See <a href="#publishing-use-cases">publishing use cases</a> and <a href="#publishing-integrations">publishing integrations</a> below.
+
+### Push or pull to keep schema registries in sync
+
+Avo allows you to maintain a single source of truth for your schemas and keep
+your schema registries in sync, serving both your technical and non-technical
+stakeholders.
+
+> 💡 **Push or pull your schemas**: To keep your Avo tracking plan in sync with
+your downstream schema registries you can either **push** your schema from Avo
+via Avo Publishing or **pull** your Avo schema via Avo CLI. We recommend
+leveraging *push* since you can configure that to make sure your downstream
+schema registries get updated when your main Avo schema gets updated.
+
+1. **Push: Publishing your schema:** You can set up <a href="#publishing-integrations">Publishing integrations</a>
+where you publish your Avo schema into other schema registries. For example as
+JSON into a Webhook. We recommend leveraging auto-publishing for those
+integrations, where your schema will get published upon Avo branch merge
+(you can also manually publish a schema at any point). See <a href="#publishing-use-cases">use cases</a>.
+
+2. **Pull: Pull JSON schema via CLI:** An alternative to Avo Publishing integrations
+is pulling a JSON schema via the CLI. This way you can add a schema pull into
+a CI/CD. See <Link passHref href="/workspace/tracking-plan/exporting#pull-json-schema-via-the-cli"><a>docs to pull schema via CLI</a></Link>.
+
+## Publishing Integrations
 
 Available integrations are:
 
@@ -33,6 +68,35 @@ Publishing enables your Tracking Plan to be:
 - Published whenever a branch is merged with Auto Publishing
 - Published with a push of a button
 - Downloaded from your Avo workspace on relevant format
+
+
+## Publishing use cases
+
+### See event and property descriptions from Avo inline in your analytics tool
+
+Having the description at hand when navigating your events in your analytics platform, like Mixpanel or Amplitude, helps you more easily identify the events and properties you’re looking for when building charts and looking at dashboards. 
+With an Avo publishing integration you can let Avo automatically push description and other tracking plan details into these tools, so you can have more context at hand when using the data.
+
+### Keep data validation in your CDP up to date with the tracking plan
+
+Segment Protocols, mParticle Data Master, RudderStack Tracking Plans and Snowplow Iglu are all examples of CDPs with ingestion time validation. It allows you to validate the events as they come in, and for example route the bad events to alternative destinations. 
+With Avo publishing you can make sure the schemas used for this validation are always up to date with your tracking plan in Avo, which increases the quality of your data in all downstream destinations.
+Being able to integrate with CDPs this way also allows your teams to gradually adopt Avo over time.
+
+### Receive a webhook every time the Avo tracking plan is updated
+The publishing webhook is a building block that allows you to integrate your Avo tracking plan with your other schema registries and internal systems, tools and workflows.
+What can you build with the webhook? 
+Here are some ideas to get you started:
+
+  - #### **Update ingestion time validation:**
+    *Automatically update your JSON Schema ingestion time validation whenever a tracking plan change is merged to the main branch. Making sure your pipeline is ready to approve the fresh events before they arrive.*
+  - #### **Manage tables in data warehouses:**
+    *Automatically keep raw event table schemas in SnowflakeDB, BigQuery or Redshift in sync with the Tracking Plan – keeping your data streaming in smoothly*
+  - #### **Generate dbt models:**
+    *Generate .yml config files describing your raw event tables in dbt. I'm also excited to explore the possibility of generating detailed dbt tests based on the Tracking Plan spec*
+
+  - #### **Automatically build dashboards in your visualization tool:** 
+    *The webhook contains detailed specs on the metrics you've defined in your Tracking Plan. Those specs could be used to automatically build out feature dashboards in visualization tools like Looker, Mode, Mixpanel or Amplitude*
 
 ## Setting up and configuring a publishing integration
 
@@ -135,8 +199,7 @@ Here's how the Avo Tracking Plan is mapped to Protocols:
 ##### Event
 
 - **Name**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for a Segment destination, the name defined by the name mapping is used here.
-- **Description**: This is the description as provided in Avo
-  - Coming Soon: We're currently working on including the event triggers in the description published to Protocols
+- **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 - **Labels**: All tags attached to the event in Avo will be published to Protocols as labels, on the key:value format "[Avo tag]:avo"
 
 ##### Event Property
@@ -264,8 +327,7 @@ Here's how events, properties and categories are mapped from Avo to Govern:
 
 - **Event type**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for an Amplitude destination, the name defined by the name mapping is used here.
 - **Category**: Amplitude Govern only supports one category per event, so the first category attached to the event in Avo is used here
-- **Description**: This is the description as provided in Avo
-  - Coming Soon: We're currently working on including the event triggers here as well
+- **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 
 ##### Event Property
 
@@ -365,11 +427,11 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ###### Event Model
 
-| Attribute   | Type   | Description       |
-| :---------- | :----- | :---------------- |
-| name        | string | Event name        |
-| description | string | Event description |
-| rules       | Rules  | Event JSON rules  |
+| Attribute   | Type   | Description                                |
+| :---------- | :----- | :----------------------------------------- |
+| name        | string | Event name                                 |
+| description | string | Event description and the list of triggers |
+| rules       | Rules  | Event JSON rules                           |
 
 ###### Rules Model
 
