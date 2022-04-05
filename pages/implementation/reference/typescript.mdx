@@ -152,7 +152,7 @@ Custom destination interface format:
 
 In Node each callback is asynchronous and gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
 
-#### Destination interface example
+#### Destination interface example: Mixpanel
 
 ```typescript
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
@@ -222,6 +222,56 @@ let customDestination = {
   },
 };
 ```
+#### Destination interface example: Segment
+
+```typescript
+# Example: Destination interface for the Segment SDK. Replace the Segment implementation with your own tracking SDK methods
+let customDestination = {
+  make: function (env: AvoEnv, apiKey: string) {
+    analytics.load(apiKey)
+  },
+  logEvent: function (eventName: string, eventProperties: object) {
+    analytics.track(eventName, eventProperties)
+  },
+  setUserProperties: function (userId: string, userProperties: object) {
+    analytics.identify(userId, userProperties);
+  },
+  identify: function (userId: string) {
+    analytics.identify(userId);
+  },
+  unidentify: function () {
+    analytics.identify(null);
+  },
+  logPage: function (pageName: string, eventProperties: object) {
+    analytics.page(eventProperties.assign({"pageName": pageName}));
+  },
+  revenue: function (amount: number, eventProperties: object) {
+    analytics.track("Purchase Complete", eventProperties.assign({"revenue": amount}))
+  },
+  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups"><a>here</a></Link>
+  setGroupProperties(
+    groupType: string,
+    groupId: string,
+    groupProperties: object,
+  ) {
+    analytics.group(groupId, groupProperties);
+  },
+  addCurrentUserToGroup: function (
+    groupType: string,
+    groupId: string,
+  ) {
+    analytics.group(groupId)
+  },
+  logEventWithGroups: function (
+    eventName: string,
+    eventProperties: object,
+    groupTypesToGroupIds: object,
+  ) {
+    // Not supported by the Segment SDK
+  },
+};
+```
+
 
 Find destination interface snippets for different platforms and analytics destinations [in our GitHub](https://github.com/avohq/destination-interface-code-snippets/tree/main/typescript).
 
