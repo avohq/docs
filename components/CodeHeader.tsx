@@ -15,18 +15,6 @@ interface NameAndIcon {
   iconPack?: IconPrefix;
 }
 
-// javascript;
-// objectivec;
-// swift;
-// java;
-// kotlin;
-// typescript;
-// java;
-// php;
-// python;
-// ruby;
-// csharp;
-
 const parseLanguage = (language: string): NameAndIcon => {
   switch (language) {
     case 'javascript':

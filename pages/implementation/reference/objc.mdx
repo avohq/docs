@@ -36,7 +36,7 @@ You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-fi
 
 Initialize Avo by creating an object using constructor from the generated Avo file
 
-```objc
+```objectivec
 val avo = Avo(env: .dev/*, other parameters depending on your tracking plan setup*/)
 
 [Avo initAvoWithEnv:AVOEnvDev
@@ -63,7 +63,7 @@ For example, if you have a "Signup Start" event defined like this in Avo:
 
 You'll be able to call it like this from the generated code
 
-```objc
+```objectivec
 [Avo signupStartWithReferral:@"direct"];
 ```
 
@@ -78,7 +78,7 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>
 
 #### Constructor
 
-```objc
+```objectivec
 + (void)initAvoWithEnv:(AVOEnv)env
   // Other parameters may not be present, depending on your tracking plan
   systemProperty0:(nullable NSNumber *)systemProperty0
@@ -101,7 +101,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 
 `(nonnull id<AVOCustomDestination>) destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Learn more about event Actions in this doc</a></Link>.
 
-```objc
+```objectivec
 @protocol AVOCustomDestination
 - (void)make:(AVOEnv)avoEnv;
 - (void)logEvent:(nonnull NSString*)eventName withEventProperties:(nonnull NSDictionary*)eventProperties;
@@ -121,7 +121,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 
 #### Destination interface example
 
-```objc
+```objectivec
 @interface CustomDestination()
     @property (nonatomic, readwrite) NSString* apiKey;
 @end
@@ -173,7 +173,7 @@ Read more about the destination interface <Link passHref href="/implementation/d
 
 #### setSystemProperties
 
-```objc
+```objectivec
 + (void)setSystemPropertiesWithSystemProperty0:(NSInteger)systemProperty0
   systemProperty1:(nullable NSNumber *)systemProperty1
   ...;
@@ -188,7 +188,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 
 #### Event tracking functions
 
-```objc
+```objectivec
 + (void)[yourEventName]WithEventProperty0:(NSInteger)eventProperty0
     eventProperty1:(nullable NSNumber *)eventProperty1
     userProperty0:(BOOL)userProperty0

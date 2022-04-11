@@ -13,7 +13,7 @@ Notice the returned boolean, if you return `true` Avo Functions won't print the 
 
 ### Swift
 
-```Swift
+```swift
 class MyAvoLogger : AvoLogger {
     func logDebug(env: AvoEnv, message: String) -> Bool {
         NSLog("[debug] My avo logger: " + String(describing: env) + " " + message)
@@ -36,7 +36,7 @@ Avo.avoLogger = MyAvoLogger()
 
 ### JavaScript
 
-```JavaScript
+```javascript
 const avoLogger = {
   logDebug: (env, message) => {
     console.log("Avo Custom Logger Here!", message, env)
@@ -60,7 +60,7 @@ Avo.initAvo(
 
 ### TypeScript
 
-```TypeScript
+```typescript
 const avoLogger = {
   logDebug: (env: AvoEnv, message: string): boolean => {
     console.log("Avo Custom Logger Here!", message, env)

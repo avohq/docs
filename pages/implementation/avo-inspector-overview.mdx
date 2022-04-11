@@ -25,7 +25,7 @@ Before using the Avo Inspector SDK you need to obtain an API key from the Inspec
 Then you provide the API key when defining the inspector in your code.
 
 
-```Swift
+```swift
 let avoInspector = AvoInspector(apiKey: "YOUR_API_KEY", env: AvoInspectorEnv.dev)
 ```
 
@@ -66,7 +66,7 @@ You can extract the schema separately with `extractSchema(eventParams: Map)`, th
 
 Example
 
-```Swift
+```swift
 func trackAppOpened(appOpenedEvent: Dictionary<String, Any>) {
     tracker.track(eventName: "App Opened", eventParams: appOpenedEvent);
     SceneDelegate.avoInspector?.trackSchema(fromEvent: "App Opened", eventParams: appOpenedEvent)
