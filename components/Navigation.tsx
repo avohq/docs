@@ -339,6 +339,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Inspector PostHog integration',
+        path: '/workspace/connect-inspector-to-posthog',
+      },
+      {
+        type: 'route',
         title: 'Inspector SDKs',
         path: '/implementation/avo-inspector-overview',
       },
