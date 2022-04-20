@@ -339,7 +339,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Inspector RudderStack integration',
+        title: 'Inspector PostHog integration',
         path: '/workspace/connect-inspector-to-posthog',
       },
       {
