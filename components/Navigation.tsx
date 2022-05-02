@@ -257,6 +257,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Defining object properties',
+            path: '/data-design/object-properties',
+          },
+          {
+            type: 'route',
             title: 'Documenting purpose meetings',
             path: '/data-design/documenting-purpose-meetings-in-avo',
           },
