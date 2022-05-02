@@ -92,9 +92,7 @@ Here are some ideas to get you started:
 - #### **Manage tables in data warehouses:**
   _Automatically keep raw event table schemas in SnowflakeDB, BigQuery or Redshift in sync with the Tracking Plan – keeping your data streaming in smoothly_
 - #### **Generate dbt models:**
-
   _Generate .yml config files describing your raw event tables in dbt. I'm also excited to explore the possibility of generating detailed dbt tests based on the Tracking Plan spec_
-
 - #### **Automatically build dashboards in your visualization tool:**
   _The webhook contains detailed specs on the metrics you've defined in your Tracking Plan. Those specs could be used to automatically build out feature dashboards in visualization tools like Looker, Mode, Mixpanel or Amplitude_
 
@@ -461,13 +459,14 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ###### PropertyRule Model
 
-| Attribute    | Type               | Description                                   |
-| :----------- | :----------------- | :-------------------------------------------- |
-| description  | string             | Property description                          |
-| type         | string             | Property type                                 |
-| nameMappings | array(NameMapping) | Name mappings defined for given property      |
-| ?enum        | array(string)      | Allowed enum values                           |
-| ?operations  | array(string)      | Array of property ops, e.g. "SnowplowContext" |
+| Attribute    | Type                         | Description                                   |
+| :----------- | :--------------------------- | :-------------------------------------------- |
+| description  | string                       | Property description                          |
+| type         | string                       | Property type                                 |
+| nameMappings | array(NameMapping)           | Name mappings defined for given property      |
+| ?const       | Depends on the property type | Pinned property value                         |
+| ?enum        | array(string)                | Allowed enum values                           |
+| ?operations  | array(string)                | Array of property ops, e.g. "SnowplowContext" |
 
 ###### NameMapping Model
 
