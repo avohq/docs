@@ -13,10 +13,15 @@ import Link from '../../../components/Link';
 
 Avo will sign each webhook call it sends to your endpoint by including a signature in each request `Avo-Signature` header. 
 This allows you to verify that the events were sent by Avo and not by a third party. 
-
 Before you can verify signatures, you need to retrieve your publishing webhook's secret from your <publishing page>.
-
 Avo generates a unique secret key for each publishing webhook endpoint. If you use multiple endpoints, you must obtain a secret for each one you want to verify signature on.
+<p>
+  <img
+    src={require('../../../images/signing-secret.png')}
+    width="200px"
+    alt="Signing secret for webhook publishing"
+/>
+</p>
 
 
 ### Verifying signatures
