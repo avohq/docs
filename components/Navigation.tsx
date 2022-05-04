@@ -76,6 +76,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Branch audits',
+        path: '/audit/branch-audit',
+      },
+      {
+        type: 'route',
         title: 'Audit rules and configuration',
         path: '/audit/rules',
       },

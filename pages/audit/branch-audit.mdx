@@ -1,0 +1,49 @@
+---
+layout: 'guide'
+title: 'Branch Audits'
+#abstract: 'Learn how to use branch audits to identify and resolve issues introduced on branches.'
+---
+
+import Link from '../../components/Link';
+
+> **Note:** Branch Audit is a feature for the _Team_ and _Enterprise_ plans
+
+The branch audit review the changes you have made on your branch and flags issues which are introduced by your changes, such as unexpected naming or inconsistent types — helping you keep your tracking plan clean and consistent.
+
+When <Link passHref href="workspace/branches#review-branch-changes"><a>reviewing changes on a branch</a></Link>, you can see issues directly on your tracking plan items and in the instance of inconsistent casing you can automatically fix the issue by the click of a button.
+
+<center>
+  <img
+    src={require('../../images/audit/inline-audit.png')}
+    width="75%"
+    alt="Example of inline audit in the diff screen showing changes to an event called add_to_cart. The audit suggests there are two issues: the event name is not consistent with the naming convention and it doesn't have a description."
+  />
+</center>
+
+At the bottom of the diff screen you will have a summary of the issues introduced on the branch, indicating whether you have to take action or not. Expanding the sections will let you see in more details which items are affected and whether there are any automated actions to take, i.e. for inconsistent casing.
+
+<center>
+  <img
+    src={require('../../images/audit/branch-audit-summary.png')}
+    width="75%"
+    alt="Example of a branch audit summary showing several issues."
+  />
+</center>
+
+If there is a problem with casing in multiple instances, you can fix all of them at once by clicking the auto fix button. This will take care of fixing all of the issues which are possible to fix. In some cases it might not be possible to fix the casing of some names due to naming conflicts in which case they will be left out for manual fixing.
+
+<center>
+  <img
+    src={require('../../images/audit/auto-correct.png')}
+    width="75%"
+    alt="Example of multiple issues being fixed at once when there is inconsistancy in the casing of names of items."
+  />
+</center>
+
+To learn more about the audit rules, see <Link passHref href="/audit/rules"><a>Avo's tracking plan audit rules</a></Link>.
+
+> **Note:** The tracking plan audit only audits the _plan_. If you want to identify issues in your current tracking implementation and data streams, check out <Link passHref href="/workspace/inspector"><a>Tracking Observability</a></Link>.
+
+## What's next?
+
+Follow the <Link passHref href="/audit/quickstart"><a>quickstart guide</a></Link> to import your existing tracking plan into Avo and review your first tracking plan audit in 5 minutes.
