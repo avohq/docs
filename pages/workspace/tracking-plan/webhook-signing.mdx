@@ -29,10 +29,8 @@ Avo generates a unique secret key for each publishing webhook endpoint. If you u
 The `Avo-signature` header included in each request contains a timestamp and a signature. 
 The timestamp(Unix timestamp) is prefixed by `ts=` and the signature is prefixed by `v1`.
 
-```
-Avo-Signature:
-ts=1651677541,
-v1=30703093db3c532c6f0ab1f1f9eb80b134f5bf6e2ff7064c403aab7582df0667
+```json
+Avo-Signature:ts=1651677541,v1=30703093db3c532c6f0ab1f1f9eb80b134f5bf6e2ff7064c403aab7582df0667
 ```
 
 <br />
