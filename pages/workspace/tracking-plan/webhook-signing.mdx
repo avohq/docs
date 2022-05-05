@@ -13,7 +13,7 @@ import Link from '../../../components/Link';
 
 Avo will sign each webhook call it sends to your endpoint by including a signature in each request `Avo-Signature` header. 
 This allows you to verify that the events were sent by Avo and not by a third party. 
-Before you can verify signatures, you need to retrieve your publishing webhook's secret from your <publishing page>.
+Before you can verify signatures, you need to retrieve your publishing webhook's secret from your _Webhook publishing page in Avo_.
 Avo generates a unique secret key for each publishing webhook endpoint. If you use multiple endpoints, you must obtain a secret for each one you want to verify the signature on.
 <p>
   <img
@@ -39,7 +39,7 @@ Avo generates signatures using a hash-based message authentication code (HMAC) w
 
 ### Verify signature header
 
-1. Extract the timestamp and signature from the header
+#### 1. Extract the timestamp and signature from the header
 
 Split the header on comma (`,`) as the seperator to get a list of elements. Then split each element using the `=` sign to get a key and value dict. 
 You should now have a dict of 2 key value pairs, 
@@ -50,7 +50,7 @@ You should now have a dict of 2 key value pairs,
 }
 \```
 
-2. Prepare the signed payload
+#### 2. Prepare the signed payload
 
 The `signed_payload` string is created by concatinating
  - The timestamp (string)
@@ -59,9 +59,9 @@ The `signed_payload` string is created by concatinating
 
  Store this value in a variable for the next step.
 
- 3. Determine the expected signature
+#### 3. Determine the expected signature
 
-Compute an HMAC using the SHA256 has function. Use the webhooks endpoint signing secret from <your publishing page> as the key, and use the `signed_payload` string as the message.
+Compute an HMAC using the SHA256 has function. Use the webhooks endpoint signing secret from _Webhook publishing page in Avo_ as the key, and use the `signed_payload` string as the message.
 
-4. Compare the signatures
+#### 4. Compare the signatures
 Now that you have hashed the secret with the `signed_payload`, you can now compare it with the signature from the `Avo-Signature` header.
