@@ -27,7 +27,7 @@ Avo generates a unique secret key for each publishing webhook endpoint. If you u
 ### Verifying signatures
 
 The `Avo-signature` header included in each request contains a timestamp and a signature. 
-The timestamp is prefixed by `ts=` and the signature is prefixed by `v1`.
+The timestamp(Unix timestamp) is prefixed by `ts=` and the signature is prefixed by `v1`.
 
 ```
 Avo-Signature:
@@ -44,7 +44,8 @@ Avo generates signatures using a hash-based message authentication code (HMAC) w
 #### 1. Extract the timestamp and signature from the header
 
 Split the header on comma (`,`) as the seperator to get a list of elements. Then split each element using the `=` sign to get a key and value dict. 
-You should now have a dict of 2 key value pairs, 
+You should now have a dict of 2 key value pairs
+
 ```
 {
     ts:1651677541,
@@ -65,7 +66,7 @@ The `signed_payload` string is created by concatinating
 
 #### 3. Determine the expected signature
 
-Compute an HMAC using the SHA256 has function. Use the webhooks endpoint signing secret from your Webhook publishing page in Avo as the key, and use the `signed_payload` string as the message.
+Compute an HMAC using the SHA256 hash function. Use the webhooks endpoint signing secret from your Webhook publishing page in Avo as the key, and use the `signed_payload` string as the message.
 
 #### 4. Compare the signatures
 Now that you have hashed the secret with the `signed_payload`, you can now compare it with the signature from the `Avo-Signature` header.
