@@ -64,9 +64,33 @@ The `signed_payload` string is created by concatinating
 
  Store this value in a variable for the next step.
 
+Pseudocode:
+ ```
+  var signed_payload = 
+  requestTimestamp // Timestamp from Avo-Signature header
+  ++ "." 
+  ++ Json.stringify(request.body);
+ ```
+
 #### 3. Determine the expected signature
 
 Compute an HMAC using the SHA256 hash function. Use the webhooks endpoint signing secret from your Webhook publishing page in Avo as the key, and use the `signed_payload` string as the message.
 
+Pseudocode: 
+```
+var signature = hmac_sha256(~key=<Secret-from-avo-dashboard>, ~message=signed_payload);
+```
+
 #### 4. Compare the signatures
 Now that you have hashed the secret with the `signed_payload`, you can now compare it with the signature from the `Avo-Signature` header.
+
+Pseudocode:
+```
+if (signature === requestSignature) {   // requestSignature is the v1 signature from the header.
+  ...// handle request
+}
+else {
+  ... // signature invalid, return error
+  response.send(400) // Bad request
+}
+```
