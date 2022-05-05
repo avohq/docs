@@ -1,0 +1,94 @@
+---
+layout: 'guide'
+title: 'Webhook signing'
+# abstract: 'Learn about how to secure your webhook endpoint'
+---
+
+import Link from '../../../components/Link';
+
+
+## Check the webhook signatures
+
+### Verify the that only Avo is sending you events!
+
+Avo will sign each webhook call it sends to your endpoint by including a signature in each request `Avo-Signature` header. 
+This allows you to verify that the events were sent by Avo and not by a third party. 
+Before you can verify signatures, you need to retrieve your publishing webhook's secret from your Webhook publishing page in Avo.
+Avo generates a unique secret key for each publishing webhook endpoint. If you use multiple endpoints, you must obtain a secret for each one you want to verify the signature on.
+<p>
+  <img
+    src={require('../../../images/signing-secret.png')}
+    width="600px"
+    alt="The image shows a webhook integration and a button at the top labeled Signing Secret which if clicked reveals the secret"
+/>
+</p>
+
+
+### Verifying signatures
+
+The `Avo-signature` header included in each request contains a timestamp and a signature. 
+The timestamp(Unix timestamp) is prefixed by `ts=` and the signature is prefixed by `v1`.
+
+```json
+Avo-Signature:ts=1651677541,v1=30703093db3c532c6f0ab1f1f9eb80b134f5bf6e2ff7064c403aab7582df0667
+```
+
+<br />
+
+Avo generates signatures using a hash-based message authentication code (HMAC) with SHA-256.
+
+### Verify signature header
+
+#### 1. Extract the timestamp and signature from the header
+
+Split the header on comma (`,`) as the separator to get a list of elements. Then split each element using the `=` sign to get a key and value dict. 
+You should now have a dict of 2 key value pairs
+
+```json
+{
+    ts:1651677541,
+    v1:30703093db3c532c6f0ab1f1f9eb80b134f5bf6e2ff7064c403aab7582df0667
+}
+```
+
+<br />
+
+#### 2. Prepare the signed payload
+
+The `signed_payload` string is created by concatenating
+ - The timestamp (string)
+ - The character `.`
+ - The JSON payload (request.body)
+
+ Store this value in a variable for the next step.
+
+
+ ```pseudocode
+  var signed_payload = 
+  requestTimestamp // Timestamp from Avo-Signature header
+  ++ "." 
+  ++ Json.stringify(request.body);
+ ```
+
+#### 3. Determine the expected signature
+
+Compute an HMAC using the SHA-256 hash function. Use the webhooks endpoint signing secret from your Webhook publishing page in Avo as the key, and use the `signed_payload` string as the message.
+
+
+```pseudocode
+var signature = hmac_sha256(~key=<Secret-from-avo-dashboard>, ~message=signed_payload);
+```
+
+#### 4. Compare the signatures
+Now that you have hashed the secret with the `signed_payload`, you can now compare it with the signature from the `Avo-Signature` header.
+
+
+```pseudocode
+if (signature === requestSignature) {   // requestSignature is the v1 signature from the header.
+  ...// handle request
+}
+else {
+  ... // signature invalid, return error
+  response.send(400) // Bad request
+}
+```
