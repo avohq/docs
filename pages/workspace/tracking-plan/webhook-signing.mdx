@@ -46,7 +46,7 @@ Avo generates signatures using a hash-based message authentication code (HMAC) w
 Split the header on comma (`,`) as the seperator to get a list of elements. Then split each element using the `=` sign to get a key and value dict. 
 You should now have a dict of 2 key value pairs
 
-```
+```json
 {
     ts:1651677541,
     v1:30703093db3c532c6f0ab1f1f9eb80b134f5bf6e2ff7064c403aab7582df0667
@@ -64,8 +64,8 @@ The `signed_payload` string is created by concatinating
 
  Store this value in a variable for the next step.
 
-Pseudocode:
- ```
+
+ ```pseudocode
   var signed_payload = 
   requestTimestamp // Timestamp from Avo-Signature header
   ++ "." 
@@ -76,16 +76,16 @@ Pseudocode:
 
 Compute an HMAC using the SHA256 hash function. Use the webhooks endpoint signing secret from your Webhook publishing page in Avo as the key, and use the `signed_payload` string as the message.
 
-Pseudocode: 
-```
+
+```pseudocode
 var signature = hmac_sha256(~key=<Secret-from-avo-dashboard>, ~message=signed_payload);
 ```
 
 #### 4. Compare the signatures
 Now that you have hashed the secret with the `signed_payload`, you can now compare it with the signature from the `Avo-Signature` header.
 
-Pseudocode:
-```
+
+```pseudocode
 if (signature === requestSignature) {   // requestSignature is the v1 signature from the header.
   ...// handle request
 }
