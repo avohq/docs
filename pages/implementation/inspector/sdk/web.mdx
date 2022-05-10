@@ -37,6 +37,7 @@ constructor(options: {
     env: AvoInspectorEnv;
     version: string;
     appName?: string;
+    suffix?: string;
 });
 ```
 
@@ -48,6 +49,7 @@ All the following methods are available in the **AvoInspector** class.
 > - `env` - current environment: `"dev"`, `"staging"` or `"prod"`
 > - `appVersion` - your application version. A lot of Inspector features rely on versioning and you need to provide a comparable string here to get value from them. We recommend using semantic versioning or integers that are incremented in every release.
 > - `appName` - your application name. Optional; Provide it to make it easier to distinguish between data from different apps.
+> - `suffix` - optional. If you are using more than 1 instance of the Avo Inspector in the same project provide a unique string here.
 
 ### Installation option 2: HTML Tag
 
