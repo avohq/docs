@@ -11,7 +11,7 @@ import Link from '../../../components/Link';
 
 ### Verify the that only Avo is sending you events!
 
-Avo will sign each webhook call it sends to your endpoint by including a [JWT](https://jwt.io) token in each request `authorization` header. 
+Avo will sign each webhook call it sends to your endpoint by including a [Jwt](https://Jwt.io) token in each request `authorization` header. 
 This allows you to verify that the events were sent by Avo and not by a third party. 
 Before you can verify signatures, you need to retrieve your publishing webhook's secret from your Webhook publishing page in Avo.
 Avo generates a unique secret key for each publishing webhook endpoint. If you use multiple endpoints, you must obtain a secret for each one you want to verify the signature on.
@@ -26,14 +26,14 @@ Avo generates a unique secret key for each publishing webhook endpoint. If you u
 
 ### Verifying signatures
 
-The `authorization` header included in each request contains a JWT token that can be used to validate the request using the secret given in the webhook configuration dashboard.
+The `authorization` header included in each request contains a Jwt token that can be used to validate the request using the secret given in the webhook configuration dashboard.
 
 
 Avo generates signatures using a hash-based message authentication code (HMAC) with SHA-256.
 ```json
 {
   "alg": "HS256",
-  "typ": "JWT"
+  "typ": "Jwt"
 }
 ```
 <br />
@@ -45,7 +45,7 @@ The secret you received in our webhook configuration, should be stored in a secr
 
 #### 2. Validate the authorization header
 
-Using a [Jwt library](https://jwt.io/libraries), verify that the token is valid.
+Using a [Jwt library](https://Jwt.io/libraries), verify that the token is valid.
 
 
  ```pseudocode
@@ -57,7 +57,7 @@ Using a [Jwt library](https://jwt.io/libraries), verify that the token is valid.
 
 #### 3. Extra security (optional)
 
-Each jwt token has in it's payload an "iat"(Issued at time) which is a timestamp you can use for extra security to match with the current timestamp. That way you can make sure the timestamp in the request is not very old.
+Each Jwt token has in it's payload an "iat"(Issued at time) which is a timestamp you can use for extra security to match with the current timestamp. That way you can make sure the timestamp in the request is not very old.
 
 ```json
 {
