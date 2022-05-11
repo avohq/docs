@@ -11,7 +11,7 @@ import Link from '../../../components/Link';
 
 ### Verify the that only Avo is sending you events!
 
-Avo will sign each webhook call it sends to your endpoint by including a signature in each request `Avo-Signature` header. 
+Avo will sign each webhook call it sends to your endpoint by including a [JWT](https://jwt.io) token in each request `authorization` header. 
 This allows you to verify that the events were sent by Avo and not by a third party. 
 Before you can verify signatures, you need to retrieve your publishing webhook's secret from your Webhook publishing page in Avo.
 Avo generates a unique secret key for each publishing webhook endpoint. If you use multiple endpoints, you must obtain a secret for each one you want to verify the signature on.
@@ -19,76 +19,48 @@ Avo generates a unique secret key for each publishing webhook endpoint. If you u
   <img
     src={require('../../../images/signing-secret.png')}
     width="600px"
-    alt="The image shows a webhook integration and a button at the top labeled Signing Secret which if clicked reveals the secret"
+    alt="The image shows a webhook integration and a button at the top labeled Webhook Secret which if clicked reveals the secret"
 />
 </p>
 
 
 ### Verifying signatures
 
-The `Avo-signature` header included in each request contains a timestamp and a signature. 
-The timestamp(Unix timestamp) is prefixed by `ts=` and the signature is prefixed by `v1`.
+The `authorization` header included in each request contains a JWT token that can be used to validate the request using the secret given in the webhook configuration dashboard.
 
-```json
-Avo-Signature:ts=1651677541,v1=30703093db3c532c6f0ab1f1f9eb80b134f5bf6e2ff7064c403aab7582df0667
-```
-
-<br />
 
 Avo generates signatures using a hash-based message authentication code (HMAC) with SHA-256.
+```json
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+<br />
 
 ### Verify signature header
 
-#### 1. Extract the timestamp and signature from the header
+#### 1. Store your secret safely.
+The secret you received in our webhook configuration, should be stored in a secret manager or an env variable on your server.
 
-Split the header on comma (`,`) as the separator to get a list of elements. Then split each element using the `=` sign to get a key and value dict. 
-You should now have a dict of 2 key value pairs
+#### 2. Validate the authorization header
 
-```json
-{
-    ts:1651677541,
-    v1:30703093db3c532c6f0ab1f1f9eb80b134f5bf6e2ff7064c403aab7582df0667
-}
-```
-
-<br />
-
-#### 2. Prepare the signed payload
-
-The `signed_payload` string is created by concatenating
- - The timestamp (string)
- - The character `.`
- - The JSON payload (request.body)
-
- Store this value in a variable for the next step.
+Using a [Jwt library](https://jwt.io/libraries), verify that the token is valid.
 
 
  ```pseudocode
-  var signed_payload = 
-  requestTimestamp // Timestamp from Avo-Signature header
-  ++ "." 
-  ++ Json.stringify(request.body);
+
+    var token = request.headers.get('authorization');
+    token = token.split(" ")[1]; //Remove "Bearer " from the token
+    Jwt.verify(token, _secret); // Some libraries require try catch around this.
  ```
 
-#### 3. Determine the expected signature
+#### 3. Extra security (optional)
 
-Compute an HMAC using the SHA-256 hash function. Use the webhooks endpoint signing secret from your Webhook publishing page in Avo as the key, and use the `signed_payload` string as the message.
+Each jwt token has in it's payload an "iat"(Issued at time) which is a timestamp you can use for extra security to match with the current timestamp. That way you can make sure the timestamp in the request is not very old.
 
-
-```pseudocode
-var signature = hmac_sha256(~key=<Secret-from-avo-dashboard>, ~message=signed_payload);
-```
-
-#### 4. Compare the signatures
-Now that you have hashed the secret with the `signed_payload`, you can now compare it with the signature from the `Avo-Signature` header.
-
-
-```pseudocode
-if (signature === requestSignature) {   // requestSignature is the v1 signature from the header.
-  ...// handle request
-}
-else {
-  ... // signature invalid, return error
-  response.send(400) // Bad request
+```json
+{
+  "iat": 1652306791  //Unix timestmap in seconds
 }
 ```
