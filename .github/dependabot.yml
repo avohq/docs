@@ -3,4 +3,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/" 
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    reviewers:
+      - "avohq/random-reviewer"
+    open-pull-requests-limit: 20
