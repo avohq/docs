@@ -298,6 +298,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Archive and restore from archive',
+            path: '/workspace/archive-and-restore',
+          },
+          {
+            type: 'route',
             title: 'Reset the Tracking Plan',
             path: '/workspace/reset-tracking-plan',
           },
