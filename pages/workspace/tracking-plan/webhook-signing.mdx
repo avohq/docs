@@ -26,7 +26,7 @@ Avo generates a unique secret key for each webhook publishing integration. You s
 
 ### Verifying signatures
 
-The `authorization` header included in each request contains a JWT token that can be used to validate the request using the secret given in the webhook configuration dashboard.
+The `authorization` header included in each request contains a JWT token that can be used to validate the request using the secret key given in the webhook configuration dashboard.
 
 
 Avo generates signatures using a hash-based message authentication code (HMAC) with SHA-256.
