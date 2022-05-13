@@ -8,17 +8,13 @@ import Link from '../../../components/Link';
 
 ## Check the webhook signatures
 
-### Verify the that only Avo is sending you events
+### Verify that only Avo is sending you events
 
 Avo will sign each webhook call it sends to your endpoint by including a [JWT](https://Jwt.io) token in each request `authorization` header.
 This allows you to verify that the events were sent by Avo and not by a third party.
 Before you can verify signatures, you need to retrieve your publishing webhook's secret from your Webhook publishing page in Avo.
-<<<<<<< Updated upstream
 Avo generates a unique secret key for each webhook publishing integration. You should obtain a distinct key for every webhook integration you use.
-=======
-Avo generates a unique secret key for each publishing webhook endpoint. If you use multiple webhooks, you must obtain a secret for each one you want to verify the signature for.
 
->>>>>>> Stashed changes
 <p>
   <img
     src={require('../../../images/signing-secret.png')}
