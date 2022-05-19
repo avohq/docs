@@ -634,6 +634,17 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Partners',
+    iconName: 'rocket',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Avo & Rudderstack',
+        path: '/partners/avo-rudderstack',
+      },
+    ],
+  },
+  {
     title: 'Help',
     iconName: 'help',
     subroutes: [
