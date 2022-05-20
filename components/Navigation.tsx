@@ -159,7 +159,7 @@ const navigation: navigationItem[] = [
           {
             type: 'route',
             title: 'Signing and Verifying Webhooks',
-            path: 'workspace/tracking-plan/webhook-signing',
+            path: '/workspace/tracking-plan/webhook-signing',
           },
         ],
       },
