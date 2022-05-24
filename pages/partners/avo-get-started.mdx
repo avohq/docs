@@ -1,0 +1,50 @@
+---
+layout: 'guide'
+title: 'Get started with Avo'
+---
+
+import Link from '../../components/Link';
+
+Below are the key areas to consider when getting started with Avo. You can start them in any order or in parallel (since these areas might involve different stakeholders). For example: If you have an analytics release coming up in the next days, you can do that in Avo immediately. If you don’t, you can start with the other areas.
+
+## Start the Avo workflow
+
+### Your first release
+
+- We recommend your first “full-circle” release in Avo be a small one. This will enable you to quickly go through your first analytics release in Avo, from start to finish.
+- For example: Don’t choose a product release that’s about to take the next 3 months to work on. Choose one that has a couple of new or updated events.
+
+### Best practices for a streamlined analytics release workflow:
+
+- Your Avo main branch should represent what is actually being tracked in production on which platform. As soon as event implementation is done, you merge your Avo branch into your Avo main branch.
+- For your analytics release lifecycle (and Avo branches), we recommend following the same best practices as generally apply to the software development lifecycle (and git branches):
+  - Release Early, Release Often. This will streamline collaboration across teams, platforms and products of your new single-source-of-truth tracking plan.
+  - In practice, this means: Keep Avo branches small and release often, rather than designing a large set of changes that should be implemented over multiple product releases.
+
+### The Avo Workflow:
+
+- <Link passhref href="/workspace/branches">
+    Plan analytics update in Avo branch
+  </Link>
+- Review suggestions in Avo
+  - <Link
+      passhref
+      href="/workspace/integrations#enable-slack-notifications-in-your-avo-workspace"
+    >
+      Connect to Slack
+    </Link> for notifications into a Slack channel about new branches, comments or
+    at-mentions
+  - <Link passhref href="/workspace/branches#review-branch-changes">
+      “View changes”
+    </Link> screen where you can pull in stakeholders -Leverage <Link
+      passhref
+      href="/audit/branch-audit"
+    >
+      Branch Audits.
+    </Link>
+- Share implementation instructions with developers via Avo
+  - Add a link to your branch’s View Changes screen in internal tickets (e.g. Jira or Asana) and/or leverage auto-generated <Link passhref href="/workspace/implementation-instructions">Implementation instructions</Link>
+- Implement analytics events
+  - Optionally: Leverage the <Link passhref href="/implementation/devs-101#avo-functions-type-safe-analytics-wrappers">Avo Codegen (aka Avo Functions)</Link>—but this is not a likely part of your initial release cycle.
+- Validate implementation using Avo
+  - When you start leveraging Avo for release validation depends on when you get Inspector up <Link passhref href=""><a>(more on Inspector setup below)</a></Link>.

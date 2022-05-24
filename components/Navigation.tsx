@@ -640,7 +640,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Avo & Rudderstack',
-        path: '/partners/avo-rudderstack',
+        path: '/partners/avo-get-started',
       },
     ],
   },
