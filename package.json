@@ -11,7 +11,8 @@
     "fix-spelling": "yarn mdspell 'pages/*.mdx' 'pages/*/*.mdx' 'pages/*/*/*.mdx' 'pages/*/*/*/*.mdx' --en-us -x -n",
     "lint": "eslint '*/**/*.{js,ts,tsx}' && tsc --noEmit",
     "lint-mdx": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/mdxLint/index.ts",
-    "generate-sitemap": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/generateSitemap.ts"
+    "generate-sitemap": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/generateSitemap.ts",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -69,6 +70,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "glob": "^8.0.3",
     "globby": "^11.1.0",
+    "husky": "^7.0.0",
     "parse-es6-imports": "^1.0.1",
     "prettier": "^2.6.2",
     "remark": "^12.0.0",
