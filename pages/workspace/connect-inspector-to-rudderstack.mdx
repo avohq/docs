@@ -9,7 +9,7 @@ import Link from '../../components/Link';
 
 If you are already sending your data to RudderStack you can stream it to Avo Inspector without adding any code to your codebase.
 
-You'll need to create a Transformation in RudderStack with a code snippet provided by Avo for each RudderStack source you want to send to Avo Inspector.
+You'll need to create a RudderStack Destination powered by RudderStack Transformation with a code snippet provided in your Avo workspace for each app and environment combination.
 
 > The Transformations that we will add here are not changing the events you receive from RudderStack in any way.
 > They add a side effect of the Avo Inspector analyzing your events and keeping your RudderStack events stream unchanged.
@@ -32,7 +32,7 @@ An Avo Source is the first thing you need to connect your RudderStack data to Av
 
 Open `Sources` in the Avo sidebar or `Manage Sources` in the Inspector tab
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     width="100%"
     src={require('../../images/workspace/nav-inspector-sources-highlighted.png')}
@@ -42,7 +42,7 @@ Open `Sources` in the Avo sidebar or `Manage Sources` in the Inspector tab
 
 If you already have the source, pick it. If you don’t have the source corresponding to your app, <Link passHref href="/workspace/inspector#configuring-sources"><a>add a new one</a></Link>.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     src={require('../../images/add-source.png')}
     alt="Image of the Add Source button in Avo"
@@ -51,7 +51,7 @@ If you already have the source, pick it. If you don’t have the source correspo
 
 In the source details, go to "Inspector Setup" and there you’ll see options to integrate Inspector. Pick RudderStack to see the integration code snippets.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     height="400"
     src={require('../../images/guide-rudder-to-inspector/source-setup.png')}
@@ -61,7 +61,7 @@ In the source details, go to "Inspector Setup" and there you’ll see options to
 
 Use the copy button to copy the full snippet to clipboard when you need to paste them into RudderStack on the next step.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     src={require('../../images/guide-segment-to-inspector/code-snippets.png')}
     alt="Development and production code snippets to integrate with Inspector"
@@ -72,11 +72,11 @@ Use the copy button to copy the full snippet to clipboard when you need to paste
 
 - Open RudderStack and log in into your workspace
 
-- Pick `Transformations` in the sidebar 
+- Pick `Transformations` in the sidebar
 
 - Press the `New Transformation` button in the top right corner
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     src={require('../../images/guide-rudder-to-inspector/rudder-transformations-menu.png')}
     alt="RudderStack navigation to the transformations menu"
@@ -84,13 +84,13 @@ Use the copy button to copy the full snippet to clipboard when you need to paste
 </center>
 
 You’ll find yourself in the web code editor provided by RudderStack.
-Here you would paste one of the code snippets we’ve seen in Avo on the 1st step. 
+Here you would paste one of the code snippets we’ve seen in Avo on the 1st step.
 
 > You'll need to create a separate Transformation for each code snippet, i.e. one for development, one for staging and one for production per each Avo source.
 
 Save it by pressing `Save` button under the code editor.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     src={require('../../images/guide-rudder-to-inspector/create-transformation.png')}
     alt="RudderStack create transformation"
@@ -106,18 +106,19 @@ If you pick the Track event in the Events code editor in the bottom of the page 
 To see the event in Avo you will need to fix the event `originalTimestamp` to a recent timestamp.
 
 For example change this old timestamp provided by RudderStack (line highlighted on the screenshot below)
+
 ```
 "originalTimestamp": "2020-05-25T18:37:10.917Z",
 
 ```
- 
+
 to current ISO timestamp, which you can find [on this website](https://greenwichmeantime.com/articles/clocks/iso/)
 
 Press the `Run Test` button.
 
 Check out the `Logs`, it should say `Log: {"ok":true}` in the end.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     height="500"
     src={require('../../images/guide-rudder-to-inspector/rudderstack-transformation-test.png')}
@@ -127,7 +128,7 @@ Check out the `Logs`, it should say `Log: {"ok":true}` in the end.
 
 Then navigate to Avo, pick `Inspector` in the sidebar and pick Development environment
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     src={require('../../images/guide-segment-to-inspector/inspector-development-env.png')}
     alt="Environment picker in Inspector"
@@ -136,7 +137,7 @@ Then navigate to Avo, pick `Inspector` in the sidebar and pick Development envir
 
 You’ll see the event in your dashboard under the source from where you got the snippet from.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     height="500"
     src={require('../../images/guide-segment-to-inspector/source-in-inspector.png')}
@@ -162,7 +163,7 @@ There you can pick a Transformation that will be ran on every event that is sent
 
 On this screenshot we connected the development Avo Inspector transformation to the Development Destination.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     src={require('../../images/guide-rudder-to-inspector/rudder-destinations-menu.png')}
     alt="RudderStack navigation to the transformations menu"
@@ -171,7 +172,7 @@ On this screenshot we connected the development Avo Inspector transformation to 
 
 Then go to the `Sources` tab and make sure that the destination is connected to the correct source.
 
-<center style={{marginBottom: 16 + "px"}}>
+<center style={{ marginBottom: 16 + 'px' }}>
   <img
     src={require('../../images/guide-rudder-to-inspector/rudder-destination-sources.png')}
     alt="Connecting a source for the destination in RudderStack"
