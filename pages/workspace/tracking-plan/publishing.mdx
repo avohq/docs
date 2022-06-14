@@ -449,7 +449,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | tags        | array(string)                                                    | Array of all tags attached to event             |
 | categories  | array(string)                                                    | Array of category ids this event is attached to |
 | triggers    | array({id, description, sourceIds, link, imageUrl})              | Details about all triggers attached to event    |
-| sources     | dict(sourceId -> {id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
+| sources     | array({id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
 
 ###### Rules Model
 
