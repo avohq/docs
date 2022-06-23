@@ -1,12 +1,9 @@
 @use '../styles/brand';
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  grid-template-rows: 1fr;
-  gap: 10px 15px;
-  grid-template-areas:
-    'content  toc';
+
+.root {
+  flex: 1;
+  display: flex;
 }
 
 .row {
@@ -23,17 +20,14 @@
   }
 }
 
-.tocSidebar {
-  width: 280px;
-  border-radius: 8px;
-  padding: 10px;
-  margin: 8px;
-  padding-top: 18px;
-  grid-area: toc;
-  height: 300px;
+.sidebar {
+  width: 250px;
+  margin-left: 50px;
+  flex-shrink: 0;
 }
 
-.tocInline {
+
+.inlineToc {
   display: none;
 }
 
@@ -51,11 +45,41 @@
 }
 
 .text {
-  width: 85%;
+  width: 100%;
   line-height: 150%;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   grid-area: content;
+}
+
+.callout {
+  display: flex;
+  width: 100%;
+  line-height: 150%;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  grid-area: content;
+  border-radius: 5px;
+  border-left: 5px solid brand.$gray-5;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 15px 20px;
+  background-color: #fbfbfb;
+  color: brand.$gray-75;
+  margin-top: 0;
+  margin-bottom: 5px;
+
+  span {
+    margin-right: 15px;
+    font-size: 20px;
+  }
+}
+
+.image {
+  width: 100%;
+  padding: 30px 0 30px 0;
 }
 
 .tableLabels {
@@ -77,39 +101,18 @@
 }
 
 .heading2 {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 500;
+  padding-top: 40px;
 }
 
 .heading3 {
   font-weight: 500;
-  font-size: 22px;
+  font-size: 20px;
+  padding-top: 20px;
 }
 
 @media (max-width: 1140px) {
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    grid-template-areas:
-      'content';
-  }
-
-  .tocSidebar {
-    display: none;
-  }
-
-  .tocInline {
-    max-width: 420px;
-    width: 85%;
-    display: block;
-    background-color: brand.$gray-5;
-    border-radius: 8px;
-    padding: 16px;
-    margin-top: 8px;
-    height: 300px;
-  }
-
   .text {
     width: 100%;
     font-size: 14px;
@@ -123,4 +126,18 @@
   .label {
     width: 100%;
   }
+
+  .sidebar {
+    display: none;
+  }
+  .inlineToc {
+    display: block;
+  }
+}
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background-color: brand.$gray-5;
+  margin: 75px 0;
 }
