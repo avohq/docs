@@ -24,26 +24,6 @@ const LandingPage: FunctionComponent = () => {
     s.path = 'index.tsx';
   });
 
-  // const tocContent = (
-  //   <div>
-  //     <p>
-  //       <a href="#workflow" className={styles.tocItem}>
-  //       Try the Avo workflow for your next analytics release
-  //       </a>
-  //     </p>
-  //     <p>
-  //       <a href="#import" className={styles.tocItem}>
-  //       Import your tracking plan into Avo
-  //       </a>
-  //     </p>
-  //     <p>
-  //       <a href="#inspector" className={styles.tocItem}>
-  //       Get overview of your current state of tracking with Inspector
-  //       </a>
-  //     </p>
-  //   </div>
-  // );
-
   let headings = [
     {
       id: 'intro',
@@ -206,28 +186,29 @@ const LandingPage: FunctionComponent = () => {
         <div className={styles.row}>
           <PageLink
             image={DevIcon}
-            title="Avo 101 for developers"
-            description="Avo Functions, Avo Inspector and the Avo Debuggers – What’s the difference?"
+            title="Avo 101 For Developers"
+            description="Functions, Inspector and Debuggers—What’s the difference?"
             callToAction={new CallToAction('/implementation/devs-101')}
+          />
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="Designing Data In Avo"
+            description="How to define metrics, events and properties step by step"
+            callToAction={new CallToAction('/data-design/start-data-design')}
           />
         </div>
         <div className={styles.row}>
           <PageLink
             image={AnalyticsManagerIcon}
-            title="Designing data in Avo"
-            description="How to define metrics, events and properties step by step"
-            callToAction={new CallToAction('/data-design/start-data-design')}
-          />
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Organizing Multi-Product Workspaces"
-            description="How to organize a tracking plan for multiple products in your Avo workspace"
+            title="Multi-Product Workspaces"
+            description="How to organize a tracking plan for multiple products"
             callToAction={
               new CallToAction(
                 '/data-design/organizing-multi-product-workspaces',
               )
             }
           />
+          <span />
         </div>
 
         <h3 className={[styles.label, styles.heading3].join(' ')}>
@@ -238,7 +219,7 @@ const LandingPage: FunctionComponent = () => {
           <PageLink
             image={AnalyticsManagerIcon}
             title="Tracking Plan Management"
-            description="Collaborate with your team on designing and reviewing tracking plan changes"
+            description="Collaborate with your team on tracking plan changes"
             callToAction={new CallToAction('/data-design/quick-start')}
           />
           <PageLink
@@ -260,7 +241,7 @@ const LandingPage: FunctionComponent = () => {
           <PageLink
             image={AnalyticsManagerIcon}
             title="Publishing"
-            description="Keep your schema registries and downstream tools in sync with the Avo Tracking Plan"
+            description="Keep your downstream schema registries in sync with the Avo"
             callToAction={
               new CallToAction('/workspace/tracking-plan/publishing')
             }
@@ -270,7 +251,7 @@ const LandingPage: FunctionComponent = () => {
           <PageLink
             image={DevIcon}
             title="Avo Functions"
-            description="Implement more reliable tracking code faster with generated type-safe tracking functions"
+            description="Faster, more reliable implementation with type-safe tracking functions"
             callToAction={
               new CallToAction('/implementation/avo-functions-overview')
             }
