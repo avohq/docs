@@ -9,6 +9,7 @@
 .row {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   margin-left: -5px;
   margin-right: -5px;
 
@@ -121,6 +122,10 @@
 
   .row {
     width: 100%;
+  }
+
+  .rowFiller {
+    display: none;
   }
 
   .label {

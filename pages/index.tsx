@@ -208,7 +208,7 @@ const LandingPage: FunctionComponent = () => {
               )
             }
           />
-          <span />
+          <span className={styles.rowFiller} />
         </div>
 
         <h3 className={[styles.label, styles.heading3].join(' ')}>
