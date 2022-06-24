@@ -86,12 +86,6 @@ const LandingPage: FunctionComponent = () => {
           request implementation, implement, validate and publish your analytics
           release.
         </p>
-        <p className={styles.callout}>
-          <span>💡</span>
-          When trying the Avo Workflow for the first time, don't choose a
-          product release that's about to take the next 3 months to work on.
-          Choose one that has a handful of new or updated events.
-        </p>
 
         <Zoom>
           <img
@@ -103,9 +97,10 @@ const LandingPage: FunctionComponent = () => {
         </Zoom>
 
         <p className={styles.text}>
-          We recommend your first “full-circle” release in Avo be a small one.
-          This will enable you to quickly go through your first analytics
-          release in Avo, from start to finish.
+          We recommend your first “full-circle” release in Avo be a small one,
+          for example a product release that includes a handful of new or
+          updated events. This will enable you to quickly go through your first
+          analytics release in Avo, from start to finish.
         </p>
 
         <div className={styles.row}>
