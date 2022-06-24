@@ -11,6 +11,7 @@ const Logo: FunctionComponent<LogoProps> = () => (
   <Link href="/">
     <a className={styles.container}>
       <img
+        alt="Avo logo"
         src={require('../images/logo.svg')}
         width={60}
         style={{ cursor: 'pointer' }}
