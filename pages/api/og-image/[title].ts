@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { NextApiRequest, NextApiResponse } from 'next';
 import Puppeteer from 'puppeteer';
-import marked from 'marked';
+import { marked } from 'marked';
 
 import chromium from 'chrome-aws-lambda';
 
