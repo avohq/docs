@@ -33,7 +33,9 @@ const PageLink: FunctionComponent<Props> = ({
         <div className={styles.description}>{description}</div>
         {callToAction && (
           <div className={styles.callToAction}>
-            <span style={{ textDecoration: 'none', color: 'grey' }}>{'Read '}</span>
+            <span style={{ textDecoration: 'none', color: 'grey' }}>
+              {'Read '}
+            </span>
             <Icon name="chevron-right" relativeSize="sm" color="inherit" />
           </div>
         )}

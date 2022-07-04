@@ -32,19 +32,6 @@
   display: none;
 }
 
-.tocItem {
-  margin-bottom: 10px;
-  font-size: 14px;
-  color: brand.$gray-50;
-  text-decoration: none;
-
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
 .text {
   width: 100%;
   line-height: 150%;
@@ -53,41 +40,9 @@
   grid-area: content;
 }
 
-.callout {
-  display: flex;
-  width: 100%;
-  line-height: 150%;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  grid-area: content;
-  border-radius: 5px;
-  border-left: 5px solid brand.$gray-5;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  margin-left: 0px;
-  margin-right: 0px;
-  padding: 15px 20px;
-  background-color: #fbfbfb;
-  color: brand.$gray-75;
-  margin-top: 0;
-  margin-bottom: 5px;
-
-  span {
-    margin-right: 15px;
-    font-size: 20px;
-  }
-}
-
 .image {
   width: 100%;
   padding: 30px 0 30px 0;
-}
-
-.tableLabels {
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  color: brand.$gray-75;
 }
 
 .label {
