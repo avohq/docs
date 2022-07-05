@@ -15,16 +15,12 @@ import Head from 'next/head';
 import { GitHubLinkStore } from '../util/gitHubLinkStore';
 import Toc from '../components/Toc';
 
-function emptyRowElement() {
-  return <div style={{ display: 'flex', padding: '15px' }} />;
-}
-
 const LandingPage: FunctionComponent = () => {
   GitHubLinkStore.update((s) => {
     s.path = 'index.tsx';
   });
 
-  let headings = [
+  const headings = [
     {
       id: 'intro',
       level: 2,
@@ -64,8 +60,8 @@ const LandingPage: FunctionComponent = () => {
 
         <p className={styles.text}>
           Below are the key areas to consider when getting started with Avo. You
-          can start them in any order or in parallel, and skip those you don't
-          think apply to you.
+          can start them in any order or in parallel, and skip those you
+          don&apos;t think apply to you.
         </p>
 
         {headings != null && headings.length !== 0 && (
@@ -122,9 +118,9 @@ const LandingPage: FunctionComponent = () => {
         </p>
 
         <p className={styles.text}>
-          In the guide below you'll find information on what to consider before
-          importing, how to import, and our suggested next steps after the
-          import is completed.
+          In the guide below you&apos;ll find information on what to consider
+          before importing, how to import, and our suggested next steps after
+          the import is completed.
         </p>
 
         <div className={styles.row}>
