@@ -1,0 +1,93 @@
+---
+layout: 'guide'
+title: 'Export Tracking Plan'
+abstract: 'Export tracking plan using Avo API'
+---
+
+import Link from '../../components/Link';
+
+Export API gives you the possibility to export the tracking plan as `json` from any branch.
+
+> This endpoint requires <Link passHref href="/avoapi/authentication#authenticating-with-avo-api"><a>authorization header</a></Link> containing service account name and secret.
+
+## Endpoint
+
+```sh
+https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1
+```
+
+> returns a Json payload represantation of <Link passHref href="/workspace/tracking-plan/publishing#payload-format"><a>your tracking plan.</a></Link>
+
+## Example Usage
+
+### Request
+
+```sh
+$ curl  curl -H "authorization: Basic <token>" -X GET http://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
+```
+
+### Response:
+
+```json
+{
+  "name": "Avo's Tracking Plan:main",
+  "events": [
+    {
+      "id": "-PHsAi6jC6",
+      "name": "my_event",
+      "description": "Event description",
+      "triggers": [],
+      "tags": ["Tag1"],
+      "categories": [],
+      "sources": [
+        {
+          "id": "5GHrzRFAb",
+          "name": "web_source",
+          "implementWithCodegen": true,
+          "destinations": [{ "id": "hvCvaCl5H" }]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["properties", "nameMapping"],
+        "nameMapping": [],
+        "properties": {
+          "properties": {
+            "type": "object",
+            "properties": {
+              "my_property": {
+                "id": "cem9e4kyn",
+                "index": 0,
+                "description": "Property description",
+                "nameMapping": [],
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["my_property"]
+          }
+        }
+      }
+    }
+  ],
+  "metrics": {},
+  "sources": {
+    "5GHrzRFAb": {
+      "id": "5GHrzRFAb",
+      "name": "web_source",
+      "programmingLanguage": null,
+      "developmentPlatform": "Web",
+      "destinations": ["hvCvaCl5H"]
+    }
+  },
+  "destinations": {
+    "hvCvaCl5H": {
+      "id": "hvCvaCl5H",
+      "name": "webhook_destination",
+      "type": "Custom"
+    }
+  },
+  "categories": {}
+}
+```

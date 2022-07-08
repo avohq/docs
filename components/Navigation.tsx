@@ -474,6 +474,27 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Avo Public API',
+    iconName: 'rocket',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Overview',
+        path: '/avoapi/overview',
+      },
+      {
+        type: 'route',
+        title: 'Authentication',
+        path: '/avoapi/authentication',
+      },
+      {
+        type: 'route',
+        title: 'Export Tracking Plan',
+        path: '/avoapi/export-tracking-plan',
+      },
+    ]
+  },
+  {
     title: 'Reference',
     iconName: 'book',
     subroutes: [

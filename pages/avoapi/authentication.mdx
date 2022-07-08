@@ -1,0 +1,76 @@
+---
+layout: 'guide'
+title: 'Authentication'
+abstract: 'Authentication for Avo API'
+---
+
+import Link from '../../components/Link';
+
+Avo API uses `Basic authentication` to authenticate requests with avo service accounts.
+
+## Authenticating with Avo API
+
+Avo API accepts service account token as an authentication method.
+
+Authenticate with the API:
+
+### Step 1. Create Service Account
+
+Start by <Link passHref href="/avoapi/authentication#creating-service-accounts"><a>Creating a Service Account</a></Link> and store the secret somewhere secure.
+
+### Step 2. Authorization Header
+
+The Avo API expects the authorization header to be set with BASIC auth.
+
+- Base64 encoded `name:secret` from the service account.
+
+```json
+("authorization": "Basic <token>")
+```
+
+### Step 3. Send a Request with the header.
+
+```sh
+curl -H "authorization: Basic <token>" -X GET https://api.avo.app/workspaces/<WorkspaceId>/branches/<BranchId>/export/v1
+```
+
+## Creating Service Accounts
+
+1. Open the settings cogwheel in the Avo sidebar, and open `Service Accounts`
+
+   > It requires Avo Admin priviliges to see this option in the cogwheel
+
+2. Press `Create` in the service account list header, and give the service account a descriptive name and press `Create Service Account`.
+
+   > Avo prefixes the name with `sa_pa_[randomId]_` so make sure to copy the final name
+
+<center>
+  <img
+    src={require('../../images/avoapi/create-service-account.png')}
+    width={400}
+  />
+</center>
+
+3. Copy the secret key and save it securely in your internal systems.
+   > You will never see the secret key again, so make sure to copy it.
+
+## Deleting a Service Account
+
+If for some reason you need to delete your service account, you can do so from the service account management page.
+
+1. Open the settings cogwheel in the Avo sidebar, and open `Service Accounts`
+
+   > It requires Avo Admin priviliges to see this option in the cogwheel
+
+2. Click `Delete` button on the service account that you want to delete.
+
+3. Press `Delete` again in the confirm window that pops up.
+
+   > This action can not be undone. Once deleted, there is no way to recover the service account again.
+
+   <center>
+     <img
+       src={require('../../images/avoapi/delete-service-account.png')}
+       width={400}
+     />
+   </center>
