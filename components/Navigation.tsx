@@ -143,13 +143,13 @@ const navigation: navigationItem[] = [
         subroutes: [
           {
             type: 'route',
-            title: 'Publishing',
-            path: '/workspace/tracking-plan/publishing',
+            title: 'Importing',
+            path: '/workspace/tracking-plan/importing',
           },
           {
             type: 'route',
-            title: 'Importing',
-            path: '/workspace/tracking-plan/importing',
+            title: 'Publishing',
+            path: '/workspace/tracking-plan/publishing',
           },
           {
             type: 'route',
