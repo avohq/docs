@@ -492,7 +492,7 @@ const navigation: navigationItem[] = [
         title: 'Export Tracking Plan',
         path: '/avoapi/export-tracking-plan',
       },
-    ]
+    ],
   },
   {
     title: 'Reference',
