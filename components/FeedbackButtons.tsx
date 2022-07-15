@@ -38,7 +38,11 @@ const FeedbackButtons: FunctionComponent = () => {
         })}
         onClick={() => onClick(Feedback.HELPFUL)}
       >
-        <img width={20} src={require('../images/svg/thumbsup.svg')} />
+        <img
+          alt="Thumbs up"
+          width={20}
+          src={require('../images/svg/thumbsup.svg')}
+        />
       </div>
       <div
         className={classNames(styles.button, {
@@ -47,7 +51,11 @@ const FeedbackButtons: FunctionComponent = () => {
         })}
         onClick={() => onClick(Feedback.NOT_HELPFUL)}
       >
-        <img width={20} src={require('../images/svg/thumbsdown.svg')} />
+        <img
+          alt="Thumbs down"
+          width={20}
+          src={require('../images/svg/thumbsdown.svg')}
+        />
       </div>
     </div>
   );
