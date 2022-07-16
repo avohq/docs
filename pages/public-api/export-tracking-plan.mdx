@@ -4,11 +4,11 @@ title: 'Export Tracking Plan'
 abstract: 'Export tracking plan using Avo API'
 ---
 
-> We are currently testing the Avo Public API and it's not yet in general availability. Reach out to us for access.
+> The Avo Public API is currently in beta and is not yet in general availability. Reach out to us for access.
 
 import Link from '../../components/Link';
 
-The Export API gives you the possibility to export your Avo tracking plan as `json` from any branch.
+The Export API gives you the possibility to export your Avo tracking plan as JSON Schema from any branch.
 
 > This endpoint requires an <Link passHref href="/public-api/authentication#authenticating-with-avo-api"><a>authorization header</a></Link> containing a service account name and secret.
 
@@ -27,7 +27,7 @@ Returns <Link passHref href="/workspace/tracking-plan/publishing#payload-format"
 ### Request
 
 ```sh
-$ curl -H "authorization: Basic <token>" -X GET http://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET http://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
 ```
 
 ### Response:

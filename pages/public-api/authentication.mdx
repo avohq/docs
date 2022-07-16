@@ -8,7 +8,7 @@ import Link from '../../components/Link';
 
 > We are currently testing the Avo Public API and it's not yet in general availability. Reach out to us for access.
 
-Avo API uses `Basic authentication` to authenticate requests with avo service accounts.
+Avo API uses `Basic authentication` to authenticate requests with Avo service accounts.
 
 ## Authenticating with Avo API
 
@@ -27,14 +27,16 @@ Authenticate with the API:
    - Base64 encoded `name:secret` from the service account.
 
    ```json
-   ("authorization": "Basic <token>")
+   ("authorization": "Basic <Base64 encoded token>")
    ```
 
 3. Send a request with the header
 
    ```sh
-   curl -H "authorization: Basic <token>" -X GET https://api.avo.app/workspaces/<WorkspaceId>/branches/<BranchId>/export/v1
+   curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.app/workspaces/<WorkspaceId>/branches/<BranchId>/export/v1
    ```
+
+   > You can find the `<WorkspaceId>` and `<BranchId>` in the URL of your Avo workspace: `https://www.avo.app/schemas/<WorkspaceId>/branches/<BranchId>/`
 
 ## Creating Service Accounts
 
@@ -73,7 +75,7 @@ If for some reason you need to delete your service account, you can do so from t
 
 3. Press `Delete` again in the confirm window that pops up.
 
-   > This action cannot be undone. Once deleted, there is no way to recover the service account again.
+   > This action cannot be undone. Once deleted, there is no way to recover the service account again. As soon as a service account has been deleted it will stop working immediately.
 
    <center>
      <img
