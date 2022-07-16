@@ -4,26 +4,30 @@ title: 'Export Tracking Plan'
 abstract: 'Export tracking plan using Avo API'
 ---
 
+> We are currently testing the Avo Public API and it's not yet in general availability. Reach out to us for access.
+
 import Link from '../../components/Link';
 
-Export API gives you the possibility to export the tracking plan as `json` from any branch.
+The Export API gives you the possibility to export your Avo tracking plan as `json` from any branch.
 
-> This endpoint requires <Link passHref href="/avoapi/authentication#authenticating-with-avo-api"><a>authorization header</a></Link> containing service account name and secret.
+> This endpoint requires an <Link passHref href="/avoapi/authentication#authenticating-with-avo-api"><a>authorization header</a></Link> containing a service account name and secret.
 
 ## Endpoint
 
-```sh
+```Url
 https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1
 ```
 
-> returns a Json payload representation of <Link passHref href="/workspace/tracking-plan/publishing#payload-format"><a>your tracking plan.</a></Link>
+`:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`. `:branchId` is the ID of the branch you want to export. If you open a branch in Avo you can find it in the URL after `/branches/`. For the main branch simply use `main`. Note that the branch id is not the same as the branch name.
+
+Returns <Link passHref href="/workspace/tracking-plan/publishing#payload-format"><a>a Json payload representation of your tracking plan.</a></Link>
 
 ## Example Usage
 
 ### Request
 
 ```sh
-$ curl  curl -H "authorization: Basic <token>" -X GET http://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
+$ curl -H "authorization: Basic <token>" -X GET http://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
 ```
 
 ### Response:
