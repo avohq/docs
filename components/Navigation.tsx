@@ -474,27 +474,6 @@ const navigation: navigationItem[] = [
     ],
   },
   {
-    title: 'Avo Public API',
-    iconName: 'rocket',
-    subroutes: [
-      {
-        type: 'route',
-        title: 'Overview',
-        path: '/avoapi/overview',
-      },
-      {
-        type: 'route',
-        title: 'Authentication',
-        path: '/avoapi/authentication',
-      },
-      {
-        type: 'route',
-        title: 'Export Tracking Plan',
-        path: '/avoapi/export-tracking-plan',
-      },
-    ],
-  },
-  {
     title: 'Reference',
     iconName: 'book',
     subroutes: [
@@ -649,6 +628,27 @@ const navigation: navigationItem[] = [
             type: 'route',
             title: 'Mobile',
             path: '/implementation/setup-mobile-debugger',
+          },
+        ],
+      },
+      {
+        type: 'group',
+        title: 'Avo Public API',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/public-api/overview',
+          },
+          {
+            type: 'route',
+            title: 'Authentication',
+            path: '/public-api/authentication',
+          },
+          {
+            type: 'route',
+            title: 'Export Tracking Plan',
+            path: '/public-api/export-tracking-plan',
           },
         ],
       },
