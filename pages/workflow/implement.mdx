@@ -1,0 +1,40 @@
+---
+layout: 'guide'
+title: '4. Implement analytics events'
+abstract: ''
+---
+
+import Link from '../../components/Link';
+
+Avo provides developer tools, Avo Functions, to make the tracking code implementation faster and more robust. Using Avo’s developer tools is optional, but something we highly recommend.
+
+In this guide we’ll cover how to implement analytics events with and without using Avo’s developer tools.
+
+# Implementing without using Avo’s developer tools
+
+You can continue implementing your tracking code like you are used to using analytics SDKs from analytics platforms (like Mixpanel, PostHog or Amplitude), SDKs from CDPs (like Rudderstack, Segment or mParticle), or using internal built SDKs or APIs.
+
+A typical implementation workflow looks like this:
+1. Open a git branch to implement your analytics tracking changes on
+2. Follow the implementation instructions provided on the branch review screen in Avo for what needs to be done
+
+When using the implementation instructions from Avo, we recommend checking out our guide on how to read the implementation instructions:
+
+> [How to read the implementation diff](https://www.avo.app/docs/implementation/read-implementation-diff)
+
+# Implementing with Avo Functions
+Avo Functions are type safe analytics wrappers that are code generated based on your tracking plan. Designed to speed up the tracking code implementation, while also making it more reliable with type-safety. Learn more about Avo’s developer tools in Avo 101 for developers:
+
+> [Avo 101 for developers](https://www.avo.app/docs/implementation/devs-101)
+
+For teams that are using Avo Functions to implement their tracking code, the typical implementation workflow looks like this:
+1. Open a git branch to implement your analytics tracking changes on.
+2. Use the <Link passHref href="/implementation/cli"><a>Avo CLI</a></Link> to pull the updated code from the branch you are implementing. You can find the Avo CLI command for each source in the top right corner of the branch review screen under “Branch Implementation”. From there you can also access documentation for all the events that need to be implemented 
+3. Use the Avo Functions provided in the generated code to implement your events in your source code. [The Functions tab in your workspace](https://www.avo.app/schemas/fwtXqAc0fCLy7b7oGW40/implement/fs/WUFObVFR4PVbZGtT1hQ5) provides documentation and code snippets for each event
+
+If Avo Functions haven’t been set up in your project yet, learn how to set them up in our Avo Functions quickstart guide:
+
+> [Quickstart: Avo Functions](https://www.avo.app/docs/implementation/start-using-avo-functions)
+
+## What’s next?
+>#### <Link passHref href="/workflow/validate"><a>5. Validate implementation</a></Link>
