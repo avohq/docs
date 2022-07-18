@@ -400,13 +400,13 @@ To enable the Webhook integration you need to configure it with a URL where you 
 
 The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a JSON format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
 
-#### Webhook Payload Format
+### Payload Format
 
 Currently there are three different payload formats you can choose from for the webhook: **Snowplow Schemas**, **Avo Json**, and **Json Schema** (default).
 
 > 💡 To see a preview of the exact Webhook payload in your Avo workspace choose `Publishing` in the sidebar, then pick your Webhook from the menu and expand the `Payload preview` section
 
-##### Snowplow Schemas
+#### Snowplow Schemas
 
 Json containing a Snowplow Schema for every event included in the Publishing integration. These schemas can for example be used to integrate Avo with Snowplow Iglu.
 
@@ -418,7 +418,7 @@ You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/unders
 | contextSchemas | array(Snowplow Context Schema) | Schema for every Snowplow context in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
 | context        | { publishInfo: PublishInfo }   | Metadata about the webhook call                                                                                                                                                                                                      |
 
-##### Avo Json
+#### Avo Json
 
 Json representation of the state of your entire Avo workspace. Currently behind a feature flag. Contact us to enable.
 
@@ -427,7 +427,7 @@ Json representation of the state of your entire Avo workspace. Currently behind 
 | model     | Avo Model                    | Json representation of your entire Avo workspace |
 | context   | { publishInfo: PublishInfo } | Metadata about the webhook call                  |
 
-##### Json Schema (default)
+#### Json Schema (default)
 
 Json representation of your tracking plan, following the [Json Schema](https://json-schema.org/) standard. Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>can be found here</a></Link>
 

@@ -1,0 +1,97 @@
+---
+layout: 'guide'
+title: 'Export Tracking Plan'
+abstract: 'Export tracking plan using Avo API'
+---
+
+> The Avo Public API is currently in beta and is not yet in general availability. Reach out to us for access.
+
+import Link from '../../components/Link';
+
+The Export API gives you the possibility to export your Avo tracking plan as JSON Schema from any branch.
+
+> This endpoint requires an <Link passHref href="/public-api/authentication#authenticating-with-avo-api"><a>authorization header</a></Link> containing a service account name and secret.
+
+## Endpoint
+
+```Url
+https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1
+```
+
+`:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`. `:branchId` is the ID of the branch you want to export. If you open a branch in Avo you can find it in the URL after `/branches/`. For the main branch simply use `main`. Note that the branch id is not the same as the branch name.
+
+Returns <Link passHref href="/workspace/tracking-plan/publishing#payload-format"><a>a Json payload representation of your tracking plan.</a></Link>
+
+## Example Usage
+
+### Request
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET http://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
+```
+
+### Response:
+
+```json
+{
+  "name": "Avo's Tracking Plan:main",
+  "events": [
+    {
+      "id": "-PHsAi6jC6",
+      "name": "my_event",
+      "description": "Event description",
+      "triggers": [],
+      "tags": ["Tag1"],
+      "categories": [],
+      "sources": [
+        {
+          "id": "5GHrzRFAb",
+          "name": "web_source",
+          "implementWithCodegen": true,
+          "destinations": [{ "id": "hvCvaCl5H" }]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["properties", "nameMapping"],
+        "nameMapping": [],
+        "properties": {
+          "properties": {
+            "type": "object",
+            "properties": {
+              "my_property": {
+                "id": "cem9e4kyn",
+                "index": 0,
+                "description": "Property description",
+                "nameMapping": [],
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["my_property"]
+          }
+        }
+      }
+    }
+  ],
+  "metrics": {},
+  "sources": {
+    "5GHrzRFAb": {
+      "id": "5GHrzRFAb",
+      "name": "web_source",
+      "programmingLanguage": null,
+      "developmentPlatform": "Web",
+      "destinations": ["hvCvaCl5H"]
+    }
+  },
+  "destinations": {
+    "hvCvaCl5H": {
+      "id": "hvCvaCl5H",
+      "name": "webhook_destination",
+      "type": "Custom"
+    }
+  },
+  "categories": {}
+}
+```
