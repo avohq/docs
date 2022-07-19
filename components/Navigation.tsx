@@ -81,7 +81,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: '3. Request implmentation',
+        title: '3. Request implementation',
         path: '/workflow/request-implementation',
       },
       {
