@@ -66,7 +66,7 @@ const navigation: navigationItem[] = [
     subroutes: [
       {
         type: 'route',
-        title: 'The Avo workflow',
+        title: 'Overview',
         path: '/workflow/overview',
       },
       {
