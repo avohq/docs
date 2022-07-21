@@ -647,6 +647,27 @@ const navigation: navigationItem[] = [
           },
         ],
       },
+      {
+        type: 'group',
+        title: 'Avo Public API',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/public-api/overview',
+          },
+          {
+            type: 'route',
+            title: 'Authentication',
+            path: '/public-api/authentication',
+          },
+          {
+            type: 'route',
+            title: 'Export Tracking Plan',
+            path: '/public-api/export-tracking-plan',
+          },
+        ],
+      },
     ],
   },
   {

@@ -91,12 +91,9 @@ export const Img: FunctionComponent = (props) => {
 export const processLines = (lines: string[], isTerminal: boolean): string =>
   lines
     .slice(0, lines.length - 1)
-    .map((line) => {
-      if (isTerminal && line.startsWith('$ ')) {
-        return line.substring(2);
-      }
-      return line;
-    })
+    .map((line) =>
+      isTerminal && line.startsWith('$ ') ? line.substring(2) : line,
+    )
     .join('\n');
 
 // Code highlighting
@@ -130,7 +127,7 @@ export const Code: FunctionComponent<{
 
   const onCopy = useCallback(() => {
     const inputLines = lines
-      .flatMap((line) => (line.startsWith('$ ') ? [line.substr(2)] : []))
+      .flatMap((line) => (line.startsWith('$ ') ? [line.substring(2)] : [line]))
       .join('\n');
 
     navigator.clipboard.writeText(isTerminal ? inputLines : rawCode);
