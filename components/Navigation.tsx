@@ -99,20 +99,6 @@ const navigation: navigationItem[] = [
         title: '6. Merge branch & Publish',
         path: '/workflow/merge-publish',
       },
-      {
-        type: 'section',
-        group: 'Guides',
-      },
-      {
-        type: 'route',
-        title: 'Sharing implementation instructions',
-        path: '/implementation/read-implementation-diff',
-      },
-      {
-        type: 'route',
-        title: 'Subscribe to changes with webhooks',
-        path: '/implementation/avo-tracking-plan-webhook',
-      },
     ],
   },
   {

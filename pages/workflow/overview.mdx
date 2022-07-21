@@ -6,29 +6,36 @@ abstract: ''
 
 import Link from '../../components/Link';
 
+import { FunctionComponent } from 'react';
+import Zoom from 'react-medium-image-zoom';
+
 The Avo workflow is the recommended approach for a team working on an analytics release. The workflow is helpful both when new analytics tracking is being implemented, as well as when existing tracking is being updated.
 
 The Avo workflow for analytics releases is inspired by the general best practices of software development using branched change management, peer-reviews, and approval workflows.
 
-1. **Plan** analytics update in Avo branch
-2. **Review** suggestions in Avo
-3. **Share** implementation instructions with developers via Avo
+1. **Plan** analytics update
+2. **Review** suggestions
+3. **Request** implementation instructions with developers
 4. **Implement** analytics events
-5. **Validate** implementation using Avo
+5. **Validate** implementation
 6. **Merge** Avo branch and **Publish** schema to downstream schema registries
 
-<center>
-  <img
-        width="100%"
-        src={require('../../images/avo-workflow.png')}
-        alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
-  />
-</center>
+<Zoom>
+  <center>
+    <img
+          width="100%"
+          src={require('../../images/workflow/overview/avo-workflow.png')}
+          alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+    />
+  </center>
+</Zoom>
 
 
 ## Your first release
 
 We recommend your first “full-circle” release in Avo to be a small one. For example, a product release that includes a handful of new or updated events. This will enable you to quickly go through your first analytics release in Avo, from start to finish.
+
+If you don’t have an upcoming analytics release, you can start kicking the tires by recreating a tracking spec you’ve recently shipped in Avo.
 
 ## Best practices for a streamlined analytics release workflow
 

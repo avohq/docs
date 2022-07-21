@@ -5,6 +5,15 @@ abstract: ''
 ---
 
 import Link from '../../components/Link';
+import styles from '../index.module.scss';
+import PageLink, { CallToAction } from '../../components/PageLink';
+import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
+import DevIcon from '../../images/svg/dev.svg';
+
+import { FunctionComponent } from 'react';
+import Zoom from 'react-medium-image-zoom';
+
+
 
 ## Ask for a review
 
@@ -22,13 +31,15 @@ We typically see three types of reviewers:
 **How to ask for a review?**
 The first step is to mark the branch as “Ready for review”. This is done at the bottom of the review screen as seen on the screenshot below.
 
+<Zoom>
 <center>
-  <img
-        width="70%"
+    <img
+        width="60%"
         src={require('../../images/workflow/2.review/ready-for-review.png')}
         alt="even definition"
-  />
+    />
 </center>
+</Zoom>
 
 _Example: Changes ready for review_ 
 
@@ -51,17 +62,33 @@ _Example: Add reviewer as branch collaborators_
 
 - Share a direct link to the branch with the reviewers: Go to the branch review screen and copy the browser URL.
 
-> 💡Follow the same process for requesting branch reviews on Avo as you would for other types of internal requests. For example if your team mostly works in Asana or Jira, create an Asana task or Jira ticket with a link to the branch review screen.
+> 💡 Follow the same process for requesting branch reviews on Avo as you would for other types of internal requests. For example if your team mostly works in Asana or Jira, create an Asana task or Jira ticket with a link to the branch review screen.
 
 We also recommend you set up the Slack workflow integration for your Avo workspace. The Slack workflow integration will post all branch updates and comments to a Slack channel of your choice. 
 
-> [How to enable Slack notifications in your Avo Workspace](https://www.avo.app/docs/workspace/integrations#slack).
+ <div className={styles.row}>
+          <PageLink
+            image={DevIcon}
+            title="Slack notifications"
+            description="Learn how to enable Slack notifications in your Avo Workspace"
+            callToAction={
+              new CallToAction('https://www.avo.app/docs/workspace/integrations#slack')
+            }
+          />
+  </div>
 
 Additionally, with approval workflows you can configure how many approvals are required, and who can approve, before the branch can be merged.
 
-
-> [Approval workflows](https://www.avo.app/docs/workspace/approval-workflows). Increase the quality of your tracking plan with protected main branch and branch approvals
-
+ <div className={styles.row}>
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="Approval workflows"
+            description="Increase the quality of your tracking plan with protected main branch and branch approvals"
+            callToAction={
+              new CallToAction('https://www.avo.app/docs/workspace/approval-workflows')
+            }
+          />
+  </div>
 
 ## Submit a review
 
@@ -72,11 +99,13 @@ The branch review screen in Avo summarizes the changes that have been suggested 
 On the review screen, you can comment on every item that has been introduced or changed on your branch, ask questions and suggest changes.
 
 <center>
-  <img
-        width="100%"
-        src={require('../../images/workflow/2.review/add-comments.png')}
-        alt="Adding comment"
-  />
+  <Zoom>
+    <img
+          width="100%"
+          src={require('../../images/workflow/2.review/add-comments.png')}
+          alt="Adding comment"
+    />
+  </Zoom>
 </center>
 
 _Example: Adding comment to the changes_
@@ -98,11 +127,13 @@ _Example: Adding comment directly to an item_
 You can add a comment at the bottom of the review to discuss the overall branch, give thumbs up for approval, or request changes.
 
 <center>
-  <img
-        width="100%"
-        src={require('../../images/workflow/2.review/comment-whole-branch.png')}
-        alt="Adding comment"
-  />
+  <Zoom>
+    <img
+          width="100%"
+          src={require('../../images/workflow/2.review/comment-whole-branch.png')}
+          alt="Adding comment"
+    />
+  </Zoom>
 </center>
 
 _Example: Adding comment to the overall branch_
