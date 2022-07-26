@@ -11,7 +11,6 @@ import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
 import DevIcon from '../../images/svg/dev.svg';
 
 import { FunctionComponent } from 'react';
-import Zoom from 'react-medium-image-zoom';
 
 ## 1.1 Decide what to track
 
@@ -47,15 +46,13 @@ A branch allows you to draft changes to the tracking plan in isolation, without 
 
 To create a new branch, first make sure you are on the main branch. You can see the name of the branch you’re currently on under your workspace name in the branch sidebar. Right next to the name of the branch, you can click the plus icon and there you can create a new branch as shown on the screenshot below.
 
-<Zoom>
-  <center>
-    <img
-          width="70%"
-          src={require('../../images/workflow/1.plan/create-new-branch.png')}
-          alt="create a new branch from the navigation bar"
-    />
-  </center>
-</Zoom>
+<center>
+  <img
+        width="70%"
+        src={require('../../images/workflow/1.plan/create-new-branch.png')}
+        alt="create a new branch from the navigation bar"
+  />
+</center>
 
 > 💡 Name your branch in a way that helps your team mates know what the branch is about. We recommend the branch name references the product update or feature it’s connected to in some way. Some teams also like including a reference to the team involved in the change and/or a ticket number from their task management system. 
 
@@ -87,15 +84,13 @@ There are a few things to keep in mind when doing so:
 - Add descriptions to your events and properties to keep transparency and clarity between those who design, implement and consume the data
 - Try to apply <Link passHref href="/audit/rules#property-rules"><a>property rules</a></Link> on your properties if possible. This is especially useful when you have a string property that has a finite number of possible values.
 
-<Zoom>
-  <center>
+<center>
     <img
           width="70%"
           src={require('../../images/workflow/1.plan/event.png')}
           alt="even definition"
     />
-  </center>
-</Zoom>
+</center>
 
 _Example: Event definition_
 

@@ -7,7 +7,6 @@ abstract: ''
 import Link from '../../components/Link';
 
 import { FunctionComponent } from 'react';
-import Zoom from 'react-medium-image-zoom';
 
 The Avo workflow is the recommended approach for a team working on an analytics release. The workflow is helpful both when new analytics tracking is being implemented, as well as when existing tracking is being updated.
 
@@ -20,16 +19,13 @@ The Avo workflow for analytics releases is inspired by the general best practice
 5. **Validate** implementation
 6. **Merge** Avo branch and **Publish** schema to downstream schema registries
 
-<Zoom>
-  <center>
-    <img
-          width="100%"
-          src={require('../../images/workflow/overview/avo-workflow.png')}
-          alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
-    />
-  </center>
-</Zoom>
-
+<center>
+  <img
+        width="100%"
+        src={require('../../images/workflow/overview/avo-workflow.png')}
+        alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+  />
+</center>
 
 ## Your first release
 

@@ -10,7 +10,6 @@ import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
 import DevIcon from '../../images/svg/dev.svg';
 
 import { FunctionComponent } from 'react';
-import Zoom from 'react-medium-image-zoom';
 
 
 The branch review screen is handy for understanding the changes done in the tracking plan. In addition to developers being able to review suggested changes in the branch review screen, they can also view so called implementation instructions. In the implementation instructions (aka “Diff details”) the changes are segmented by source and then grouped by events, so developers can pick their platform and implement events one by one.
@@ -18,25 +17,21 @@ The branch review screen is handy for understanding the changes done in the trac
 If your branch includes changes on at least one source then the implementation instructions will be available at the top of the branch review screen.
 
 <center>
-  <Zoom>
   <img
         width="100%"
         src={require('../../images/workflow/3.request-implementation/diff-panel.png')}
         alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
   />
-  </Zoom>
 </center>
 
 You can copy the instructions and pass them to developers for implementation in your collaboration tool of choice (e.g. Jira or Slack) in either Markdown or in Jira's text format.
 
 <center>
-  <Zoom>
   <img
         width="100%"
         src={require('../../images/workflow/3.request-implementation/diff-implementation.png')}
         alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
   />
-  </Zoom>
 </center>
 
 We recommend checking out our guide on how to read the implementation instructions:

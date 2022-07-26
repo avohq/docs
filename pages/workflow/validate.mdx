@@ -11,7 +11,6 @@ import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
 import DevIcon from '../../images/svg/dev.svg';
 
 import { FunctionComponent } from 'react';
-import Zoom from 'react-medium-image-zoom';
 
 
 Avo provides a number of tools that help you verify that the events you’ve implemented are correct according to how you’ve defined them in your Avo Tracking Plan.
@@ -46,7 +45,6 @@ Here’s how you can validate tracking implementation for a particular branch us
 1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
 2. In the Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
 
-<Zoom>
   <center>
     <img
           width="100%"
@@ -54,13 +52,11 @@ Here’s how you can validate tracking implementation for a particular branch us
           alt="validate on inspector dashboard"
     />
   </center>
-</Zoom>
 
 _Example: Inspector dashboard_
 
 3. In the Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
 
-<Zoom>
 <center>
   <img
         width="100%"
@@ -68,7 +64,6 @@ _Example: Inspector dashboard_
         alt="validate on inspector dashboard"
   />
 </center> 
-</Zoom>
 
 _Example: Discrepancies in the event tracking_
 
@@ -131,13 +126,11 @@ The Avo In-app Debugger is an addition on top of Avo Functions that gives you be
 
 
   <center>
-    <Zoom>
       <img
         height="500"
         src={require('../../images/web-debugger-example.png')}
         alt="Web debugger example"
       />
-    </Zoom>
   </center>
 
 
@@ -209,28 +202,24 @@ For every source the Avo Functions are installed on, you’ll find an implementa
 
 You can hover over the source pill in the events table, or click into the event, to learn more about the implementation status.
 
-<Zoom>
-  <center>
-    <img
-          width="100%"
-          src={require('../../images/workflow/5.validate/pill.png')}
-          alt="hover the pill to see implementation status"
-    />
-  </center> 
-</Zoom>
+<center>
+  <img
+        width="100%"
+        src={require('../../images/workflow/5.validate/pill.png')}
+        alt="hover the pill to see implementation status"
+  />
+</center>
 
 _Example: Implementation status in the event table of the tracking plan_
 
 You can also find a branch implementation status for Avo Functions in the top right corner of the branch review screen.
 
 <center>
-  <Zoom>
     <img
           width="60%"
           src={require('../../images/workflow/5.validate/event-implemented.png')}
           alt="hover the pill to see implementation status"
     />
-  </Zoom>
 </center> 
 
 
