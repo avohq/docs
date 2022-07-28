@@ -1,0 +1,58 @@
+---
+layout: 'guide'
+title: '6. Merge branch and Publish'
+abstract: ''
+---
+
+import Link from '../../components/Link';
+import styles from '../index.module.scss';
+import PageLink, { CallToAction } from '../../components/PageLink';
+import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
+import DevIcon from '../../images/svg/dev.svg';
+
+
+# Merge Avo branch
+
+When you have finished the tracking implementation and validated it, you are ready to merge your Avo branch.
+
+We recommend merging your Avo branch after all related git branches containing tracking changes have been merged. This is to prevent conflicts that can arise if an Avo branch is merged first and the git branch lives on for an extended period of time. These conflicts happen when other team members create new branches from your Avo main branch while it is still out of sync with your git main.
+
+You can learn more about using Avo branches in a git workflow at scale here:
+
+<div className={styles.row}>
+          <PageLink
+            image={DevIcon}
+            title="Avo branches at a large scale"
+            description="​​Using Avo in large development teams with parallel workflows"
+            callToAction={
+              new CallToAction('https://www.avo.app/docs/implementation/avo-and-git')
+            }
+          />
+</div>
+
+# Publish tracking plan updates to schema registries
+
+Publishing is a way to push your tracking plan specs from Avo into your other schema registries and downstream tools.
+
+You can configure Avo to auto-publish your tracking changes to your downstream schema registries as soon as an Avo branch is merged. By doing so you ensure that all your schema registries are always kept in sync with your source of truth tracking plan in Avo.
+
+You can learn more about how to push or pull to keep schema registries in sync, including with publishing, here:
+
+<div className={styles.row}>
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="Publishing"
+            description="How to publish your tracking updates"
+            callToAction={
+              new CallToAction('https://www.avo.app/docs/workspace/tracking-plan/publishing')
+            }
+          />
+</div>
+
+## You just completed the final step of the Avo workflow!
+
+Congrats, by completing this step you’ve completed the Avo workflow for an analytics release! 🎉
+
+
+
+

@@ -104,7 +104,7 @@ const LandingPage: FunctionComponent = () => {
             image={AnalyticsManagerIcon}
             title="The Avo Workflow"
             description="Plan, review, implement and validate every analytics release"
-            callToAction={new CallToAction('/data-design/day-to-day-workflow')}
+            callToAction={new CallToAction('/workflow/overview')}
           />
         </div>
 

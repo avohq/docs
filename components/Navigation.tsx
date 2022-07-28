@@ -61,6 +61,47 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Avo Workflow',
+    iconName: 'rocket',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Overview',
+        path: '/workflow/overview',
+      },
+      {
+        type: 'route',
+        title: '1. Plan',
+        path: '/workflow/plan',
+      },
+      {
+        type: 'route',
+        title: '2. Review',
+        path: '/workflow/review',
+      },
+      {
+        type: 'route',
+        title: '3. Request implementation',
+        path: '/workflow/request-implementation',
+      },
+      {
+        type: 'route',
+        title: '4. Implement',
+        path: '/workflow/implement',
+      },
+      {
+        type: 'route',
+        title: '5. Validate',
+        path: '/workflow/validate',
+      },
+      {
+        type: 'route',
+        title: '6. Merge branch & Publish',
+        path: '/workflow/merge-publish',
+      },
+    ],
+  },
+  {
     title: 'Tracking Plan Audit',
     iconName: 'health',
     subroutes: [
@@ -366,31 +407,6 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Inspector SDKs',
         path: '/implementation/avo-inspector-overview',
-      },
-    ],
-  },
-  {
-    title: 'Analytics Release Workflow',
-    iconName: 'rocket',
-    subroutes: [
-      {
-        type: 'route',
-        title: 'The Avo workflow',
-        path: '/data-design/day-to-day-workflow',
-      },
-      {
-        type: 'section',
-        group: 'Guides',
-      },
-      {
-        type: 'route',
-        title: 'Sharing implementation instructions',
-        path: '/implementation/read-implementation-diff',
-      },
-      {
-        type: 'route',
-        title: 'Subscribe to changes with webhooks',
-        path: '/implementation/avo-tracking-plan-webhook',
       },
     ],
   },
