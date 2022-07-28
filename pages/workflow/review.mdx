@@ -12,8 +12,6 @@ import DevIcon from '../../images/svg/dev.svg';
 
 import { FunctionComponent } from 'react';
 
-
-
 ## Ask for a review
 
 _Role: Product, Data, Engineering. See more below _
@@ -44,18 +42,17 @@ _Example: Changes ready for review_
 
 There are couple ways to share a review request:
 - Add the reviewers as [branch collaborators](https://www.avo.app/blog/introducing-branch-collaborators): Go to the branch review screen of your branch and add your reviewers as collaborators. A collaborator will receive an email when added to your branch, when discussions are started, when the branch status is updated and when the branch is merged or closed.
+  <video
+    controls
+    loop
+    muted
+    width="100%"
+    autoPlay
+    src={require('../../images/workflow/2.review/add-collaborators.mp4')}
+    alt="Add Collaborators"
+  />
 
-<video
-  controls
-  loop
-  muted
-  width="100%"
-  autoPlay
-  src={require('../../images/workflow/2.review/add-collaborators.mp4')}
-  alt="Add Collaborators"
-/>
-
-_Example: Add reviewer as branch collaborators_
+  _Example: Add reviewer as branch collaborators_
 
 - Share a direct link to the branch with the reviewers: Go to the branch review screen and copy the browser URL.
 
@@ -135,6 +132,14 @@ When you are done with the review, if your workspace has <Link passHref href="/w
 
 ## What’s next?
 
->#### <Link passHref href="/workflow/request-implementation"><a>3. Request implementation</a></Link>
-
+ > <div className={styles.row}>
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="3. Request implementation"
+            description="Learn how to request implementation"
+            callToAction={
+              new CallToAction("/workflow/request-implementation")
+            }
+          />
+  </div>
 

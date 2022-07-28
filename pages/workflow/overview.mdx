@@ -8,16 +8,21 @@ import Link from '../../components/Link';
 
 import { FunctionComponent } from 'react';
 
+import styles from '../index.module.scss';
+import PageLink, { CallToAction } from '../../components/PageLink';
+import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
+import DevIcon from '../../images/svg/dev.svg';
+
 The Avo workflow is the recommended approach for a team working on an analytics release. The workflow is helpful both when new analytics tracking is being implemented, as well as when existing tracking is being updated.
 
 The Avo workflow for analytics releases is inspired by the general best practices of software development using branched change management, peer-reviews, and approval workflows.
 
-1. **Plan** analytics update
-2. **Review** suggestions
-3. **Request** implementation instructions with developers
-4. **Implement** analytics events
-5. **Validate** implementation
-6. **Merge** Avo branch and **Publish** schema to downstream schema registries
+1. **<Link passHref href="/workflow/plan"><a>Plan</a></Link>** analytics update
+2. **<Link passHref href="/workflow/review"><a>Review</a></Link>** suggestions
+3. **<Link passHref href="/workflow/request-implementation"><a>Request</a></Link>** implementation instructions with developers
+4. **<Link passHref href="/workflow/implement"><a>Implement</a></Link>** analytics events
+5. **<Link passHref href="/workflow/validate"><a>Validate</a></Link>** implementation
+6. **<Link passHref href="/workflow/merge-publish"><a>Merge</a></Link>** Avo branch and **<Link passHref href="/workflow/merge-publish"><a>Publish</a></Link>** schema to downstream schema registries
 
 <center>
   <img
@@ -42,5 +47,14 @@ For your analytics release cycle (and Avo branches), we recommend following the 
 - In practice, this means: Keep Avo branches small and release often, rather than designing a large set of changes that should be implemented over multiple product releases. 
 
 ## Ready to get going?
->#### <Link passHref href="/workflow/plan"><a>1. Plan analytics update in Avo branch</a></Link>
 
+ > <div className={styles.row}>
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="1. Plan analytics update in Avo branch"
+            description="Learn how to plan an analytic update in Avo branch"
+            callToAction={
+              new CallToAction("/workflow/plan")
+            }
+          />
+  </div>

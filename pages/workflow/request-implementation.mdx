@@ -11,27 +11,30 @@ import DevIcon from '../../images/svg/dev.svg';
 
 import { FunctionComponent } from 'react';
 
-
 The branch review screen is handy for understanding the changes done in the tracking plan. In addition to developers being able to review suggested changes in the branch review screen, they can also view so called implementation instructions. In the implementation instructions (aka “Diff details”) the changes are segmented by source and then grouped by events, so developers can pick their platform and implement events one by one.
 
 If your branch includes changes on at least one source then the implementation instructions will be available at the top of the branch review screen.
 
 <center>
+  <Zoom>
   <img
         width="100%"
         src={require('../../images/workflow/3.request-implementation/diff-panel.png')}
         alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
   />
+  </Zoom>
 </center>
 
 You can copy the instructions and pass them to developers for implementation in your collaboration tool of choice (e.g. Jira or Slack) in either Markdown or in Jira's text format.
 
 <center>
+  <Zoom>
   <img
         width="100%"
         src={require('../../images/workflow/3.request-implementation/diff-implementation.png')}
         alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
   />
+  </Zoom>
 </center>
 
 We recommend checking out our guide on how to read the implementation instructions:
@@ -49,6 +52,14 @@ We recommend checking out our guide on how to read the implementation instructio
 
 ## What’s next?
 
->#### <Link passHref href="/workflow/implement"><a>4. Implement analytics events</a></Link>
-
+ > <div className={styles.row}>
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="4. Implement analytics events"
+            description="Learn how to implement analytics event"
+            callToAction={
+              new CallToAction("/workflow/implement")
+            }
+          />
+  </div>
 

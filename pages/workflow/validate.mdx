@@ -12,7 +12,6 @@ import DevIcon from '../../images/svg/dev.svg';
 
 import { FunctionComponent } from 'react';
 
-
 Avo provides a number of tools that help you verify that the events you’ve implemented are correct according to how you’ve defined them in your Avo Tracking Plan.
 
 Avo’s validation functionalities are built on top of two product offerings, <Link passHref href="/data-design/start-using-inspector"><a>Avo Inspector</a></Link> and <Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions</a></Link>.
@@ -44,7 +43,7 @@ The Inspector dashboard compares your tracking calls to the Tracking Plan on you
 Here’s how you can validate tracking implementation for a particular branch using the Inspector dashboard:
 1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
 2. In the Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
-
+ 
   <center>
     <img
           width="100%"
@@ -242,5 +241,14 @@ Learn more about how to read the Avo Functions implementation status:
 
 ## What’s next?
 
->#### <Link passHref href="/workflow/merge-publish"><a>6. Merge branch and Publish</a></Link>
+ > <div className={styles.row}>
+          <PageLink
+            image={AnalyticsManagerIcon}
+            title="6. Merge branch and Publish"
+            description="Learn how to Merge branch and Publish your tracking plan updates to schema registries"
+            callToAction={
+              new CallToAction("/workflow/merge-publish")
+            }
+          />
+  </div>
 
