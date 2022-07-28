@@ -50,7 +50,7 @@ Using <Link passHref href="/implementation/cli#using-avo-branches"><a>the Avo CL
 
 Once the tracking has been implemented, and the feature is ready to go, the developer gets their git branch merged like they usually would. As soon as the git branch is merged into the git main branch, they merge their Avo branch in the Avo main branch. By doing so, the main branch in Avo always represents the current state of the Avo tracking plan, while the tracking plan implementation stays pinned to the branch we just implemented. The `avo.json` file still points to the head of the Avo branch they just implemented, since that's the version of the Tracking Plan the most recent tracking implementation was based on.
 
-When it’s time for the Android team to implement the same changes, they would go through the same flow, but instead of creating the events and properties in Avo, they would only need to add the Android source to the events they want to implement, set the properties to be always sent from Android and run `avo pull` from their Avo branch to implement the tracking changes.
+When it’s time for the Android team to implement the same changes, they would go through the same flow, but instead of creating the events and properties in Avo, they would only need to add the Android source to the events they want to implement, set the properties to be always sent from Android and run `avo pull [--branch my-branch] [SourceName]` from their Avo branch to implement the tracking changes.
 
 Previously merged Avo branches can always be viewed back in time. That means you can always see the state of your tracking plan at that point, what changes were made when, and by whom.
 

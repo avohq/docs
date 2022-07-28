@@ -45,7 +45,14 @@ When you run this command for the first time it will prompt you to select which 
 Please commit the `avo.json` file into your version control, in order to keep it in sync across your team.
 
 ```bash
-$ avo pull
+$ avo pull [--branch "my-branch"] [--force] [--forceFeatures SwiftTrackInterface,SplitKtFiles] [SourceName]
+```
+
+Options:
+```bash
+  --branch         Name of Avo branch to pull from, 
+  --force          Proceed ignoring the unsupported features for given source type (e.g. group analytics)
+  --forceFeatures  A list of experimenta codegen features to force enable. Pass unsupported name to get the list of available features
 ```
 
 ### Step 4: Monitor the analytics implementation
