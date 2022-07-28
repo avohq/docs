@@ -105,7 +105,7 @@ Head to the Tracking Plan tab. If no events exist in your tracking plan yet you 
 >
 > You can think about the Avo Functions like a utility file for your analytics. It should be placed somewhere in the source code directory of your Source and checked into git. Every time the tracking plan in Avo is updated, the Avo Functions are updated.
 >
-> To make the workflow of updating the Avo Functions as easy as possible we built the Avo CLI. By running `avo pull` the CLI will update the file containing the Avo Functions automatically.
+> To make the workflow of updating the Avo Functions as easy as possible we built the Avo CLI. By running `avo pull [--branch my-branch] [SourceName]` the CLI will update the file containing the Avo Functions automatically.
 
 ### Install the [Avo CLI](https://www.npmjs.com/package/avo)
 
@@ -137,7 +137,7 @@ Authenticate the **Avo CLI** with your Avo user:
 avo login
 ```
 
-Now you can pull the Avo Functions from your Avo workspace. When you run Avo pull for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with the Avo Functions file.
+Now you can pull the Avo Functions from your Avo workspace. When you run `avo pull` for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with the Avo Functions file.
 
 ```bash
 avo pull
