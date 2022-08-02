@@ -4,6 +4,8 @@ title: 'Using the Avo CLI'
 # abstract: 'Learn how to use Avo to create a tracking plan and generate high quality, actionable data.'
 ---
 
+import Link from '../../components/Link';
+
 The [Avo command line interface](https://github.com/avohq/avo) provides a way to pull custom analytics wrappers from Avo. The CLI is designed to make developers more productive when implementing analytics.
 
 ## Quickstart
@@ -45,7 +47,7 @@ When you run this command for the first time it will prompt you to select which 
 Please commit the `avo.json` file into your version control, in order to keep it in sync across your team.
 
 ```bash
-$ avo pull [--branch "my-branch"] [--force] [--forceFeatures SwiftTrackInterface,SplitKtFiles] [SourceName]
+$ avo pull [--branch "my-branch"] [--force] [--forceFeatures ...,...] [SourceName]
 ```
 
 Options:
@@ -104,6 +106,28 @@ info Looking for events in src/main/java/app/avo/musicplayerexample/MusicPlayerE
 info Looking for events in src/main/java/app/avo/musicplayerexample/MusicStorage.kt
 info Looking for events in src/main/java/app/avo/musicplayerexample/Player.kt
 ...
+```
+
+### Interface files
+
+Some languages allow you to generate multiple files, for example Objective-C requires it and you can enable it in Kotlin and Swift using on-demand feature flags. <Link passHref href="/cli#step-3-pull-generated-analytics-wrappers-from-avo" passHref><a>see --forceFeatures pull flag above</a></Link>
+
+When initializing a source with CLI v3.2.0 and later it will ask you to specify a separate path for the interface file.
+
+You can also specify the interface file path manually, by adding `interfaceFilePath` field to the `source` object in the `avo.json` file
+
+```
+"sources": [
+  {
+    "id": "...",
+    "name": "Android Kotlin",
+    "path": "Avo.kt",
+    "interfacePath": "interface/AvoInterface.kt",
+    "actionId": "...",
+    "branchId": "...",
+    "updatedAt": "..."
+  }
+]
 ```
 
 ## Using Avo Branches
