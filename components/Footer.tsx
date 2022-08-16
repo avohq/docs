@@ -10,7 +10,7 @@ const Footer: FunctionComponent = () => {
   const sourcePath = GitHubLinkStore.useState((s) => s.path);
 
   const gitHubPath = sourcePath
-    ? `https://github.com/avohq/docs/tree/master/pages/${sourcePath}`
+    ? `https://github.com/avohq/docs/edit/main/pages/${sourcePath}`
     : 'https://github.com/avohq/docs';
 
   return (
