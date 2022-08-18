@@ -28,6 +28,26 @@ This endpoint requires an <Link passHref href="/public-api/authentication#authen
 
 We currently soft-enforce 1/req/s rate limit per service account for this endpoint. Please reach out to us if you have a use case in mind that requires a higher rate limit.
 
+## Parameters
+
+### - _workspaceId_
+
+Locate your workspaceId in the url
+`avo.app/schemas/:workspaceId`
+
+### - _BranchId_
+
+Locate your branchId by switching onto the branch and checking the URL
+
+- `avo.app/schemas/:workspaceId/branches/:branchId`
+- For the main branch, use `main` as the ID
+
+### - Base64 encoding secret header
+
+The base64 encoded token expects `name:secret`
+
+See more on <Link passHref href="/avoapi/authentication#authenticating-with-avo-api"><a>authorization</a></Link>
+
 ## Example Usage
 
 ### Request
