@@ -449,6 +449,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Avo Functions alongside existing tracking',
+        path: '/implementation/avo-and-existing-tracking',
+      },
+      {
+        type: 'route',
         title: 'Avo visual debuggers to verify tracking',
         path: '/explore-tracking-plan/start-using-visual-debuggers',
       },
