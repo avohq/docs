@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import styles from './PageLink.module.scss';
 import Icon from './Icon';
-import Link from 'next/link';
+import Link from '../components/Link';
 
 export class CallToAction {
   constructor(readonly path: string) {}
