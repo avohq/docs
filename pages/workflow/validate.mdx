@@ -24,33 +24,35 @@ For every source that has the Inspector installed, you can validate if the imple
 
 If you don’t have the Inspector installed yet, you can learn more about how to get started with the Inspector here:
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Avo Inspector"
-            description="Use Inspector to improve your tracking plan health"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/data-design/start-using-inspector')
-            }
-          />
-  </div>
-
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="Avo Inspector"
+    description="Use Inspector to improve your tracking plan health"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/data-design/start-using-inspector',
+      )
+    }
+  />
+</div>
 
 ### Validate with the Inspector dashboard
 
 The Inspector dashboard compares your tracking calls to the Tracking Plan on your current branch. If the Inspector finds any discrepancies between the tracking calls and the Tracking Plan, an issue is shown on the dashboard.
 
 Here’s how you can validate tracking implementation for a particular branch using the Inspector dashboard:
+
 1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
 2. In the Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
- 
-  <center>
-    <img
-          width="100%"
-          src={require('../../images/workflow/5.validate/dev-stag-production.png')}
-          alt="validate on inspector dashboard"
-    />
-  </center>
+
+<center>
+  <img
+    width="100%"
+    src={require('../../images/workflow/5.validate/dev-stag-production.png')}
+    alt="validate on inspector dashboard"
+  />
+</center>
 
 _Example: Inspector dashboard_
 
@@ -58,11 +60,11 @@ _Example: Inspector dashboard_
 
 <center>
   <img
-        width="100%"
-        src={require('../../images/workflow/5.validate/validate-dashboard-issue.png')}
-        alt="validate on inspector dashboard"
+    width="100%"
+    src={require('../../images/workflow/5.validate/validate-dashboard-issue.png')}
+    alt="validate on inspector dashboard"
   />
-</center> 
+</center>
 
 _Example: Discrepancies in the event tracking_
 
@@ -74,16 +76,18 @@ You can hover over the source pill in the events table, or click into the event,
 
 Learn more about how to read the Inspector implementation status:
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Inspector implementation status"
-            description=""
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/workspace/tracking-plan/implementation-status#inspector-implementation-status')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="Inspector implementation status"
+    description=""
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/workspace/tracking-plan/implementation-status#inspector-implementation-status',
+      )
+    }
+  />
+</div>
 
 # Validate implementation with Avo Functions
 
@@ -92,15 +96,17 @@ For all tracking implemented with Avo Functions, you can validate if the impleme
 If you’re not using Avo Functions already, you can learn more about how to get started here:
 
 <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Quickstart: Avo Functions"
-            description="Start using Avo Functions"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/implementation/start-using-avo-functions')
-            }
-          />
-  </div>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="Quickstart: Avo Functions"
+    description="Start using Avo Functions"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/implementation/start-using-avo-functions',
+      )
+    }
+  />
+</div>
 
 ### Validate with type-safety and runtime validation
 
@@ -109,50 +115,52 @@ All tracking code implemented with Avo Functions is type-safe and has built in r
 Learn more about how validations in Avo Functions work here:
 
 <div className={styles.row}>
-          <PageLink
-            image={DevIcon}
-            title="What's happening inside the Avo Functions"
-            description="Learn about how validation in Avo Functions work"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/implementation/avo-functions-overview#whats-happening-inside-the-avo-functions')
-            }
-          />
-  </div>
+  <PageLink
+    image={DevIcon}
+    title="What's happening inside the Avo Functions"
+    description="Learn about how validation in Avo Functions work"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/implementation/avo-functions-overview#whats-happening-inside-the-avo-functions',
+      )
+    }
+  />
+</div>
 
-### Validate with the Avo In-app Debugger 
+### Validate with the Avo In-app Debugger
 
 The Avo In-app Debugger is an addition on top of Avo Functions that gives you better visibility into which events are being sent, which properties are attached, and whether any issues were detected or not.
 
-
-  <center>
-      <img
-        height="500"
-        src={require('../../images/web-debugger-example.png')}
-        alt="Web debugger example"
-      />
-  </center>
-
+<center>
+  <img
+    height="500"
+    src={require('../../images/web-debugger-example.png')}
+    alt="Web debugger example"
+  />
+</center>
 
 _Example: Web debugger example_
 
-The Avo debugger is available on Web, iOS, Android and React Native. Learn more about the Avo debugger here: 
+The Avo debugger is available on Web, iOS, Android and React Native. Learn more about the Avo debugger here:
 
 <div className={styles.row}>
-          <PageLink
-            image={DevIcon}
-            title="Visual debuggers"
-            description="Learn about how Avo debugger works"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/explore-tracking-plan/start-using-visual-debuggers')
-            }
-          />
-  </div>
+  <PageLink
+    image={DevIcon}
+    title="Visual debuggers"
+    description="Learn about how Avo debugger works"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/explore-tracking-plan/start-using-visual-debuggers',
+      )
+    }
+  />
+</div>
 
 ### Validate with the Avo CLI
 
-The Avo CLI has a command, ´avo status´, that will report on where the Avo Functions are being called from, and which events have not been implemented yet. 
+The Avo CLI has a command, ´avo status´, that will report on where the Avo Functions are being called from, and which events have not been implemented yet.
 
-We recommend adding the ´avo status´ check to your CI pipeline, and configure it to throw an error if an event that is supposed to be sent with Avo Functions, is not found in the codebase. 
+We recommend adding the ´avo status´ check to your CI pipeline, and configure it to throw an error if an event that is supposed to be sent with Avo Functions, is not found in the codebase.
 
 ```sh
 > avo status
@@ -184,16 +192,15 @@ _Example: The ´avo status´ command in Avo CLI_
 You can learn more about using the Avo CLI in CI/CD here:
 
 <div className={styles.row}>
-          <PageLink
-            image={DevIcon}
-            title="Avo in CI/CD"
-            description="How to use the Avo CLI in CI/CD"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/implementation/avo-in-the-ci')
-            }
-          />
-  </div>
-
+  <PageLink
+    image={DevIcon}
+    title="Avo in CI/CD"
+    description="How to use the Avo CLI in CI/CD"
+    callToAction={
+      new CallToAction('https://www.avo.app/docs/implementation/avo-in-the-ci')
+    }
+  />
+</div>
 
 ### Validate with implementation status in the tracking plan
 
@@ -203,9 +210,9 @@ You can hover over the source pill in the events table, or click into the event,
 
 <center>
   <img
-        width="100%"
-        src={require('../../images/workflow/5.validate/pill.png')}
-        alt="hover the pill to see implementation status"
+    width="100%"
+    src={require('../../images/workflow/5.validate/pill.png')}
+    alt="hover the pill to see implementation status"
   />
 </center>
 
@@ -214,41 +221,39 @@ _Example: Implementation status in the event table of the tracking plan_
 You can also find a branch implementation status for Avo Functions in the top right corner of the branch review screen.
 
 <center>
-    <img
-          width="60%"
-          src={require('../../images/workflow/5.validate/event-implemented.png')}
-          alt="hover the pill to see implementation status"
-    />
-</center> 
-
+  <img
+    width="60%"
+    src={require('../../images/workflow/5.validate/event-implemented.png')}
+    alt="hover the pill to see implementation status"
+  />
+</center>
 
 _Example: Implementation status on the branch review screen_
-
 
 Learn more about how to read the Avo Functions implementation status:
 
 <div className={styles.row}>
-          <PageLink
-            image={DevIcon}
-            title="Avo Functions implementation status"
-            description="Learn how to read the Avo Functions implementation status"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/workspace/tracking-plan/implementation-status#avo-functions-implementation-status')
-            }
-          />
-  </div>
-
+  <PageLink
+    image={DevIcon}
+    title="Avo Functions implementation status"
+    description="Learn how to read the Avo Functions implementation status"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/workspace/tracking-plan/implementation-status#avo-functions-implementation-status',
+      )
+    }
+  />
+</div>
 
 ## What’s next?
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="6. Merge branch and Publish"
-            description="Learn how to Merge branch and Publish your tracking plan updates to schema registries"
-            callToAction={
-              new CallToAction("https://www.avo.app/docs/workflow/merge-publish")
-            }
-          />
-  </div>
-
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="6. Merge branch and Publish"
+    description="Learn how to Merge branch and Publish your tracking plan updates to schema registries"
+    callToAction={
+      new CallToAction('https://www.avo.app/docs/workflow/merge-publish')
+    }
+  />
+</div>

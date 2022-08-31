@@ -3,6 +3,7 @@ layout: 'guide'
 title: '3. Request implementation'
 abstract: ''
 ---
+
 import Link from '../../components/Link';
 import styles from '../index.module.scss';
 import PageLink, { CallToAction } from '../../components/PageLink';
@@ -17,9 +18,9 @@ If your branch includes changes on at least one source then the implementation i
 
 <center>
   <img
-        width="100%"
-        src={require('../../images/workflow/3.request-implementation/diff-panel.png')}
-        alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+    width="100%"
+    src={require('../../images/workflow/3.request-implementation/diff-panel.png')}
+    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
   />
 </center>
 
@@ -27,35 +28,36 @@ You can copy the instructions and pass them to developers for implementation in 
 
 <center>
   <img
-        width="100%"
-        src={require('../../images/workflow/3.request-implementation/diff-implementation.png')}
-        alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+    width="100%"
+    src={require('../../images/workflow/3.request-implementation/diff-implementation.png')}
+    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
   />
 </center>
 
 We recommend checking out our guide on how to read the implementation instructions:
 
- <div className={styles.row}>
-          <PageLink
-            image={DevIcon}
-            title="Implementation diff"
-            description="How to read the implementation diff"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/implementation/read-implementation-diff')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={DevIcon}
+    title="Implementation diff"
+    description="How to read the implementation diff"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/implementation/read-implementation-diff',
+      )
+    }
+  />
+</div>
 
 ## What’s next?
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="4. Implement analytics events"
-            description="Learn how to implement analytics event"
-            callToAction={
-              new CallToAction("https://www.avo.app/docs/workflow/implement")
-            }
-          />
-  </div>
-
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="4. Implement analytics events"
+    description="Learn how to implement analytics event"
+    callToAction={
+      new CallToAction('https://www.avo.app/docs/workflow/implement')
+    }
+  />
+</div>

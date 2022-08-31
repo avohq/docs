@@ -19,22 +19,25 @@ _Role: Product or Data (This initiative is usually led by a product oriented per
 The hardest part in the whole analytics release process is usually to decide what events and properties you need, to be able to measure the success of the product change. There are many paths to a decision, but no matter which one you take, we recommend doing it as early as possible in the development process.
 
 We always recommend starting by formulating the metrics you hope to move with your change. Our favorite way to do this is what we like to call a <Link passHref href="/blog/tracking-the-right-product-metrics"><a>“Purpose Meeting”</a></Link>. The outcomes of that meeting are:
+
 1. Goals – what does success look like?
 2. Metrics – how will we measure how successful we are?
 3. Data – what analytics events do we need for our success metrics?
 
 The result of the purpose meeting is usually a draft of events that someone takes forward to the next step.
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Blog Post: Purpose Meeting"
-            description="Learn about the Purpose Meeting"
-            callToAction={
-              new CallToAction('https://www.avo.app/blog/tracking-the-right-product-metrics')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="Blog Post: Purpose Meeting"
+    description="Learn about the Purpose Meeting"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/blog/tracking-the-right-product-metrics',
+      )
+    }
+  />
+</div>
 
 ## 1.2 Create a branch in Avo
 
@@ -48,13 +51,13 @@ To create a new branch, first make sure you are on the main branch. You can see 
 
 <center>
   <img
-        width="70%"
-        src={require('../../images/workflow/1.plan/create-new-branch.png')}
-        alt="create a new branch from the navigation bar"
+    width="70%"
+    src={require('../../images/workflow/1.plan/create-new-branch.png')}
+    alt="create a new branch from the navigation bar"
   />
 </center>
 
-> 💡 Name your branch in a way that helps your team mates know what the branch is about. We recommend the branch name references the product update or feature it’s connected to in some way. Some teams also like including a reference to the team involved in the change and/or a ticket number from their task management system. 
+> 💡 Name your branch in a way that helps your team mates know what the branch is about. We recommend the branch name references the product update or feature it’s connected to in some way. Some teams also like including a reference to the team involved in the change and/or a ticket number from their task management system.
 
 <video
   controls
@@ -85,25 +88,22 @@ There are a few things to keep in mind when doing so:
 - Try to apply <Link passHref href="/audit/rules#property-rules"><a>property rules</a></Link> on your properties if possible. This is especially useful when you have a string property that has a finite number of possible values.
 
 <center>
-    <img
-          width="70%"
-          src={require('../../images/workflow/1.plan/event.png')}
-          alt="even definition"
-    />
+  <img
+    width="70%"
+    src={require('../../images/workflow/1.plan/event.png')}
+    alt="even definition"
+  />
 </center>
 
 _Example: Event definition_
 
-
 ## What’s next?
 
-  <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="2. Review suggestions in Avo"
-            description="Learn how to review suggestions in Avo"
-            callToAction={
-              new CallToAction("https://www.avo.app/docs/workflow/review")
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="2. Review suggestions in Avo"
+    description="Learn how to review suggestions in Avo"
+    callToAction={new CallToAction('https://www.avo.app/docs/workflow/review')}
+  />
+</div>

@@ -13,7 +13,6 @@ import DevIcon from '../../images/svg/dev.svg';
 import { FunctionComponent } from 'react';
 import Zoom from 'react-medium-image-zoom';
 
-
 Avo provides a set of developer tools to make it faster and less error prone to implement tracking code. <Link passHref href="/implementation/devs-101#avo-functions-type-safe-analytics-wrappers"><a>Avo Functions</a></Link>, our type safe analytics wrappers, are one of those tools. Using Avo’s developer tools is optional, but something we highly recommend.
 
 In this guide we’ll cover how to implement analytics events with and without using Avo’s developer tools.
@@ -23,66 +22,72 @@ In this guide we’ll cover how to implement analytics events with and without u
 You can continue implementing your tracking code like you are used to using analytics SDKs from analytics platforms (like Mixpanel, PostHog or Amplitude), SDKs from CDPs (like Rudderstack, Segment or mParticle), or using internal built SDKs or APIs.
 
 A typical implementation workflow looks like this:
+
 1. Open a git branch to implement your analytics tracking changes on
 2. Follow the implementation instructions provided on the branch review screen in Avo for what needs to be done
 
 When using the implementation instructions from Avo, we recommend checking out our guide on how to read the implementation instructions:
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Implementation diff"
-            description="How to read the implementation diff"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/implementation/read-implementation-diff')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="Implementation diff"
+    description="How to read the implementation diff"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/implementation/read-implementation-diff',
+      )
+    }
+  />
+</div>
 
 # Implementing with Avo Functions
 
-Avo Functions are type safe analytics wrappers that are code generated based on your tracking plan. Designed to speed up the tracking code implementation, while also making it more reliable with type-safety. 
+Avo Functions are type safe analytics wrappers that are code generated based on your tracking plan. Designed to speed up the tracking code implementation, while also making it more reliable with type-safety.
 
 Learn more about Avo’s developer tools in Avo 101 for developers:
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Avo 101 for developers"
-            description="Learn about Avo’s developer tools"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/implementation/devs-101')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="Avo 101 for developers"
+    description="Learn about Avo’s developer tools"
+    callToAction={
+      new CallToAction('https://www.avo.app/docs/implementation/devs-101')
+    }
+  />
+</div>
 
 For teams that are using Avo Functions to implement their tracking code, the typical implementation workflow looks like this:
+
 1. Open a git branch to implement your analytics tracking changes on.
-2. Use the <Link passHref href="/implementation/cli"><a>Avo CLI</a></Link> to pull the updated code from the branch you are implementing. You can find the Avo CLI command for each source in the top right corner of the branch review screen under “Branch Implementation”. From there you can also access documentation for all the events that need to be implemented 
+2. Use the <Link passHref href="/implementation/cli"><a>Avo CLI</a></Link> to pull the updated code from the branch you are implementing. You can find the Avo CLI command for each source in the top right corner of the branch review screen under “Branch Implementation”. From there you can also access documentation for all the events that need to be implemented
 3. Use the Avo Functions provided in the generated code to implement your events in your source code. [The Functions tab in your workspace](https://www.avo.app/schemas/fwtXqAc0fCLy7b7oGW40/implement/fs/WUFObVFR4PVbZGtT1hQ5) provides documentation and code snippets for each event
 
 If Avo Functions haven’t been set up in your project yet, learn how to set them up in our Avo Functions quickstart guide:
 
- <div className={styles.row}>
-          <PageLink
-            image={DevIcon}
-            title="Quickstart: Avo Functions"
-            description="Start using Avo Functions"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/implementation/start-using-avo-functions')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={DevIcon}
+    title="Quickstart: Avo Functions"
+    description="Start using Avo Functions"
+    callToAction={
+      new CallToAction(
+        'https://www.avo.app/docs/implementation/start-using-avo-functions',
+      )
+    }
+  />
+</div>
 
 ## What’s next?
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="5. Validate implementation"
-            description="Learn how to validate implementation"
-            callToAction={
-              new CallToAction("https://www.avo.app/docs/workflow/validate")
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="5. Validate implementation"
+    description="Learn how to validate implementation"
+    callToAction={
+      new CallToAction('https://www.avo.app/docs/workflow/validate')
+    }
+  />
+</div>
