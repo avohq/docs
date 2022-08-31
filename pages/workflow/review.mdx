@@ -16,11 +16,11 @@ import { FunctionComponent } from 'react';
 
 _Role: Product, Data, Engineering. See more below _
 
-
 Once you have drafted changes to your tracking plan we recommend asking your teammates to review your suggested changes.
 
 **Who should be asked for a review?**
 We typically see three types of reviewers:
+
 - **Product team:** Someone who is responsible for the related feature or user flow that verifies that the metrics mapped out on the branch suffice for their data needs
 - **Data team:** Someone who validates that the changes made are according to the data standard of your company
 - **Engineering team:** The folks who will implement the suggested changes. If the changes made affect multiple sources (e.g. iOS, Android, Web, backend) we recommend to get reviews from the teams working on each source
@@ -29,19 +29,21 @@ We typically see three types of reviewers:
 The first step is to mark the branch as “Ready for review”. This is done at the bottom of the review screen as seen on the screenshot below.
 
 <center>
-    <img
-        width="60%"
-        src={require('../../images/workflow/2.review/ready-for-review.png')}
-        alt="even definition"
-    />
+  <img
+    width="60%"
+    src={require('../../images/workflow/2.review/ready-for-review.png')}
+    alt="even definition"
+  />
 </center>
 
-_Example: Changes ready for review_ 
+_Example: Changes ready for review_
 
 > Note that detailed branch statuses like “Draft”, “Ready for Review”, “Request changes” and “Approved” are only available on our paid plans. If you’re currently on the Free plan you can start a free trial today to try it out.
 
 There are couple ways to share a review request:
+
 - Add the reviewers as [branch collaborators](https://www.avo.app/blog/introducing-branch-collaborators): Go to the branch review screen of your branch and add your reviewers as collaborators. A collaborator will receive an email when added to your branch, when discussions are started, when the branch status is updated and when the branch is merged or closed.
+
   <video
     controls
     loop
@@ -58,46 +60,46 @@ There are couple ways to share a review request:
 
 > 💡 Follow the same process for requesting branch reviews on Avo as you would for other types of internal requests. For example if your team mostly works in Asana or Jira, create an Asana task or Jira ticket with a link to the branch review screen.
 
-We also recommend you set up the Slack workflow integration for your Avo workspace. The Slack workflow integration will post all branch updates and comments to a Slack channel of your choice. 
+We also recommend you set up the Slack workflow integration for your Avo workspace. The Slack workflow integration will post all branch updates and comments to a Slack channel of your choice.
 
- <div className={styles.row}>
-          <PageLink
-            image={DevIcon}
-            title="Slack notifications"
-            description="Learn how to enable Slack notifications in your Avo Workspace"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/workspace/integrations#slack')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={DevIcon}
+    title="Slack notifications"
+    description="Learn how to enable Slack notifications in your Avo Workspace"
+    callToAction={
+      new CallToAction('/workspace/integrations#slack')
+    }
+  />
+</div>
 
 Additionally, with approval workflows you can configure how many approvals are required, and who can approve, before the branch can be merged.
 
- <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="Approval workflows"
-            description="Increase the quality of your tracking plan with protected main branch and branch approvals"
-            callToAction={
-              new CallToAction('https://www.avo.app/docs/workspace/approval-workflows')
-            }
-          />
-  </div>
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="Approval workflows"
+    description="Increase the quality of your tracking plan with protected main branch and branch approvals"
+    callToAction={
+      new CallToAction('/workspace/approval-workflows')
+    }
+  />
+</div>
 
 ## Submit a review
 
-The role of the reviewer(s) is to make sure that the suggested changes fit your data needs, are according to the existing standards and naming conventions, and are feasible for implementation. 
+The role of the reviewer(s) is to make sure that the suggested changes fit your data needs, are according to the existing standards and naming conventions, and are feasible for implementation.
 
-The branch review screen in Avo summarizes the changes that have been suggested on the branch. 
+The branch review screen in Avo summarizes the changes that have been suggested on the branch.
 
 On the review screen, you can comment on every item that has been introduced or changed on your branch, ask questions and suggest changes.
 
 <center>
-    <img
-          width="100%"
-          src={require('../../images/workflow/2.review/add-comments.png')}
-          alt="Adding comment"
-    />
+  <img
+    width="100%"
+    src={require('../../images/workflow/2.review/add-comments.png')}
+    alt="Adding comment"
+  />
 </center>
 
 _Example: Adding comment to the changes_
@@ -119,11 +121,11 @@ _Example: Adding comment directly to an item_
 You can add a comment at the bottom of the review to discuss the overall branch, give thumbs up for approval, or request changes.
 
 <center>
-    <img
-          width="100%"
-          src={require('../../images/workflow/2.review/comment-whole-branch.png')}
-          alt="Adding comment"
-    />
+  <img
+    width="100%"
+    src={require('../../images/workflow/2.review/comment-whole-branch.png')}
+    alt="Adding comment"
+  />
 </center>
 
 _Example: Adding comment to the overall branch_
@@ -132,14 +134,15 @@ When you are done with the review, if your workspace has <Link passHref href="/w
 
 ## What’s next?
 
- > <div className={styles.row}>
-          <PageLink
-            image={AnalyticsManagerIcon}
-            title="3. Request implementation"
-            description="Learn how to request implementation"
-            callToAction={
-              new CallToAction("/workflow/request-implementation")
-            }
-          />
-  </div>
-
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="3. Request implementation"
+    description="Learn how to request implementation"
+    callToAction={
+      new CallToAction(
+        '/workflow/request-implementation',
+      )
+    }
+  />
+</div>
