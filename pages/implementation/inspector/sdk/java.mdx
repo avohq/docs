@@ -71,6 +71,15 @@ Call \***\*one of the methods\*\*** in this section every time an event is track
 @NonNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@NonNull String eventName, @Nullable Map<String, ?> eventProperties);
 ```
 
+> Example usage:
+>
+> ```java
+> void trackEvent(@NonNull String eventName, @Nullable Map<String, ?> eventParams) {
+>     tracker.track(eventName, eventParams);
+>     this.avoInspector.trackSchemaFromEvent(eventName, eventParams);
+> }
+> ```
+
 Extracts event schema from event properties represented by the second parameter (`JSONObject` or Map<String, ?>) and sends the schema to **Avo** for analysis.
 
 > #### Parameters:
