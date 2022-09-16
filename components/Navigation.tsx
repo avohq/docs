@@ -175,6 +175,11 @@ const navigation: navigationItem[] = [
             title: 'Implementation status',
             path: '/workspace/tracking-plan/implementation-status',
           },
+          {
+            type: 'route',
+            title: 'Workbench',
+            path: '/workspace/tracking-plan/workbench',
+          },
         ],
       },
 
