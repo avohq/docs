@@ -446,6 +446,11 @@ const navigation: navigationItem[] = [
         title: 'Avo Functions in monorepos',
         path: '/implementation/avo-in-monorepo',
       },
+      {
+        type: 'route',
+        title: 'Explicit `null` in the Codegen',
+        path: '/implementation/explicit-null-in-codegen',
+      },
     ],
   },
   {
