@@ -448,7 +448,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Explicit `null` in the Codegen',
+        title: 'Explicit null in the Codegen',
         path: '/implementation/explicit-null-in-codegen',
       },
     ],
