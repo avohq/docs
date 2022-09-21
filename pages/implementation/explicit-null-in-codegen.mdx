@@ -14,3 +14,5 @@ The fact that we require to explicitly pass a `null` value for every `Sometimes 
 Imagine we don't require passing `null` explicitly. Now if the tracking plan changes and a property presence goes from `Never Sent` to `Sometimes Sent`, which is a very common scenario, compiler has no way to distinguish between the two cases and will allow you go ahead instead of helping you do the migration. In this situation it's very easy to miss a code path where a value should be provided.
 
 On the other hand when we require `null` values for `Sometimes Sent` properties when they are not provided the compiler is able to guide you through the migration from `Never Sent` and back.
+
+Another example is when a `Sometimes Sent` property is added to an event. In this case the compiler will guide the developer through every event call to consider where the property should be sent.
