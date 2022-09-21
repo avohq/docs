@@ -15,7 +15,7 @@ If you open the “Sources” tab in your Avo workspace you’ll find yourself i
   />
 </center>
 
-Sources and destinations are an important part of your tracking plan, and crucial for implementation, so we recommend maintaining an up-to-date list of them and attaching relevant sources and destinations to events. If you use Avo Functions the same data is used to generate the tracking code. If you use Inspector, the sources represent the products/platforms where you install Inspector
+Sources and destinations are an important part of your tracking plan, and crucial for implementation, so we recommend maintaining an up-to-date list of them and attaching relevant sources and destinations to events. If you use Avo Codegen the same data is used to generate the tracking code. If you use Inspector, the sources represent the products/platforms where you install Inspector
 
 ## Sources
 
@@ -99,7 +99,7 @@ The development platform you select for your source indicates whether it's a web
 - Game Engines
   - Unity
 
-You don't have to define the programming language unless you want to set up and use Avo functions to implement your tracking. Read more about <Link passHref href="/implementation/supported-programming-languages"><a>supported and upcoming programming languages here</a></Link>.
+You don't have to define the programming language unless you want to set up and use Avo Codegen to implement your tracking. Read more about <Link passHref href="/implementation/supported-programming-languages"><a>supported and upcoming programming languages here</a></Link>.
 
 #### Destinations
 
@@ -125,9 +125,9 @@ The events list in the source overview shows all the events that the source is c
 
 If an event is in this list, it means that the event is or should be sent from this source.
 
-If the "Implement with Avo" check mark is checked, it means that the event should be implemented using the Avo functions that are generated based on the event definition in the tracking plan. If the check mark is not checked, it means that the event should be implemented using existing implementation methods, probably a direct call to the analytics SDK.
+If the "Implement with Avo" check mark is checked, it means that the event should be implemented using the Avo Codegen that is generated based on the event definition in the tracking plan. If the check mark is not checked, it means that the event should be implemented using existing implementation methods, probably a direct call to the analytics SDK.
 
-When creating an event we recommend to add it to all the existing sources where it should be sent from, whether you are using Avo functions or existing implementation methods to implement. This information is both used by the codegen to automatically create the tracking code if you are using the Avo functions and to generate implementation instructions for a developer.
+When creating an event we recommend to add it to all the existing sources where it should be sent from, whether you are using Avo Codegen or existing implementation methods to implement. This information is both used by the codegen to automatically create the tracking code if you are using the Avo Codegen and to generate implementation instructions for a developer.
 
 <center>
   <img
@@ -205,40 +205,40 @@ The documentation is automatically generated instructions with code snippets on 
 
 Check out the Tracking Observability part of this documentation to learn more on <Link passHref href="/data-design/start-using-inspector"><a>how to set up the Inspector</a></Link>.
 
-### Avo Functions Setup
+### Avo Codegen Setup
 
-The Avo functions Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
+The Avo Codegen Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
 
 <center>
   <img
     src={require('../../images/workspace/connection-setup/connections-avo-functions-setup.png')}
-    alt="Avo Functions Setup Status"
+    alt="Avo Codegen Setup Status"
     width="60%"
   />
 </center>
 
 #### Programming Language
 
-To start using Avo functions for this source, you need to select which <Link passHref href="/implementation/supported-programming-languages"><a> programming languages here</a></Link> you want to generate the code in.
+To start using Avo Codegen for this source, you need to select which <Link passHref href="/implementation/supported-programming-languages"><a> programming languages here</a></Link> you want to generate the code in.
 
 #### Setup Status
 
-The setup status indicates whether the Avo functions have been successfully initialized or not. If they have yet to be Initialized for this source, the setup status will show "Listening for the first initialization..."
+The setup status indicates whether the Avo Codegen has been successfully initialized or not. If they have yet to be Initialized for this source, the setup status will show "Listening for the first initialization..."
 
 <center>
   <img
     src={require('../../images/workspace/connection-setup/avo-functions-listening.png')}
-    alt="Avo functions listening for the first initialization"
+    alt="Avo Codegen listening for the first initialization"
     width="75%"
   />
 </center>
 
-Once you have successfully initialized the Avo functions, the setup status will show "Successfully Initialized", which means you can start implementing events using Avo functions.
+Once you have successfully initialized the Avo Codegen, the setup status will show "Successfully Initialized", which means you can start implementing events using Avo Codegen.
 
 <center>
   <img
     src={require('../../images/workspace/connection-setup/avo-functions-receiving-events.png')}
-    alt="Avo functions successfully initialized"
+    alt="Avo Codegen successfully initialized"
     width="75%"
   />
 </center>
@@ -250,12 +250,12 @@ Destinations can have two modes: Destination Interface and Avo Managed:
 - When set to Destination Interface (recommended), Avo will provide a set of callback methods to connect your existing analytics destination to your Avo instance.
 - When set to Avo Managed, Avo will manage the destination for you, that includes initializing it and passing all data you send via Avo to relevant destination calls. Note that in Avo Managed mode you can't use your destination SDK outside of Avo, e.g. for existing tracking.
 
-Learn more about Destination Interface and Avo Managed destinations in the <Link passHref href="/implementation/destinations"><a>Destinations in Avo Functions doc</a></Link>.
+Learn more about Destination Interface and Avo Managed destinations in the <Link passHref href="/implementation/destinations"><a>Destinations in Avo Codegen doc</a></Link>.
 
 <center>
   <img
     src={require('../../images/data-design/destinations-interface-config.png')}
-    alt="Destinations Interface config in Avo Functions Setup tab"
+    alt="Destinations Interface config in Avo Codegen Setup tab"
     width="60%"
   />
 </center>
@@ -264,7 +264,7 @@ Learn more about Destination Interface and Avo Managed destinations in the <Link
 
 The documentation is automatically generated for your source and the connected destinations. First you have to generate your Avo file by using our CLI or downloading it from the UI, then you can initialize Avo and implement your events.
 
-Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/implementation/avo-functions-overview"><a>how to set up the Avo functions</a></Link>.
+Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/implementation/avo-codegen-overview"><a>how to set up the Avo Codegen</a></Link>.
 
 ## Destinations
 

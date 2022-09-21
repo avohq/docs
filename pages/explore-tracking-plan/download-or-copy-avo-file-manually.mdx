@@ -1,31 +1,35 @@
 ---
 layout: 'guide'
-title: 'Get Avo Functions without using Avo CLI'
+title: 'Get Avo Codegen without using Avo CLI'
 ---
 
 import Link from '../../components/Link';
 
-> 💡 **Avo Functions** are type-safe wrappers around your analytics event tracking calls, 
-to make it easier and faster to implement your analytics tracking calls. <Link passHref href="/implementation/devs-101"><a>Read more about Avo Functions here.</a></Link> 
+> 💡 **Avo Codegen** produces type-safe wrappers around your analytics event tracking calls,
+> to make it easier and faster to implement your analytics tracking calls. <Link passHref href="/implementation/devs-101"><a>Read more about Avo Codegen here.</a></Link>
 
-Avo Functions are generated based on the events in your tracking plan, so when 
-an event is updated in your tracking plan, you generate the code again to get the 
+Avo Codegen is generated based on the events in your tracking plan, so when
+an event is updated in your tracking plan, you generate the code again to get the
 updated implementation requirements applied to your type safe analytics code.
 
 ### [Recommended] Set up Avo CLI to connect Avo Codegen to your repo
-We recommend connecting your repository to a Source in your Avo Tracking Plan, because 
-then all you need to do to update the generated code is run `avo pull [--branch my-branch] [SourceName]` from your 
-terminal, and that will update the generated code. 
 
-<Link passHref href="/implementation/cli"><a>Check out the Quickstart guide to setting up the Avo CLI</a></Link>
+We recommend connecting your repository to a Source in your Avo Tracking Plan, because
+then all you need to do to update the generated code is run `avo pull [--branch my-branch] [SourceName]` from your
+terminal, and that will update the generated code.
 
-### Download Avo Functions manually
+<Link passHref href="/implementation/cli">
+  <a>Check out the Quickstart guide to setting up the Avo CLI</a>
+</Link>
 
-If you want to skip setting up the CLI for some reason, you can Download or Copy 
-the Avo Functions manually:
-1. Navigate to the Functions tab in the sidebar
+### Download Avo Codegen manually
+
+If you want to skip setting up the CLI for some reason, you can Download or Copy
+the Avo Codegen manually:
+
+1. Navigate to the Codegen tab in the sidebar
 2. Select your source
-3. Go to "Avo Functions Setup"
+3. Go to "Avo Codegen Setup"
 4. Scroll to the bottom and press "Click to generate your Avo file"
 
 <center style={{ marginBottom: 16 + 'px' }}>

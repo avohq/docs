@@ -241,10 +241,10 @@ const LandingPage: FunctionComponent = () => {
         <div className={styles.row}>
           <PageLink
             image={DevIcon}
-            title="Avo Functions"
+            title="Avo Codegen"
             description="Faster, more reliable implementation with type-safe tracking functions"
             callToAction={
-              new CallToAction('/implementation/avo-functions-overview')
+              new CallToAction('/implementation/avo-codegen-overview')
             }
           />
           <PageLink
@@ -263,7 +263,7 @@ const LandingPage: FunctionComponent = () => {
         <div className={styles.row}>
           <PageLink
             image={DevIcon}
-            title="Avo Functions"
+            title="Avo Codegen"
             callToAction={new CallToAction('/implementation/destinations')}
           />
           <PageLink

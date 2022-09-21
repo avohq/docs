@@ -33,6 +33,12 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   const path = useAvoPath();
 
   useEffect(() => {
+
+    console.log("Hey");
+    return undefined;
+  })
+
+  useEffect(() => {
     const onCopy = () => {
       const content = window.getSelection()?.toString();
       Avo.contentCopied({ path, content });

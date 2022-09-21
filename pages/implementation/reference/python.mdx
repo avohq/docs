@@ -1,21 +1,21 @@
 ---
 layout: 'guide'
-title: 'Avo Functions in Python'
+title: 'Avo Codegen in Python'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can code generate Avo Functions in Python for your server side tracking.
+Avo can code generate Avo Codegen in Python for your server side tracking.
 Avo supports Python 2 and Python 3.
 
 ### Quickstart
 
-Avo functions usage consists of 4 steps.
+Avo Codegen usage consists of 4 steps.
 
 [//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
-[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
 
 #### Step 1. Include the Avo file
 
@@ -45,7 +45,7 @@ avo.init_avo({'env': 'dev'}, ...) # other parameters depend on your tracking pla
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/python#init_avo"><a>the reference below</a></Link>.
 
-#### Step 3. Call Avo functions to track your product usage
+#### Step 3. Call Avo Codegen to track your product usage
 
 Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in snake_case.
 

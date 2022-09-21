@@ -8,50 +8,63 @@ import Link from '../../components/Link';
 
 Avo offers three ways to validate your tracking implementation:
 
-1.  <a href="#avo-functions-type-safe-analytics-wrappers">Avo Functions: Type safe analytics wrappers</a>
-2.  <a href="#avo-inspector-tracking-observability">Avo Inspector: Tracking observability</a>
-3.  <a href="#avo-debuggers-aka-in-app-inspector-on-device-tracking-verification">Avo Debuggers aka In-App Inspector: On device tracking verification</a>
+1.  <a href="#avo-functions-type-safe-analytics-wrappers">
+      Avo Codegen: Type safe analytics wrappers
+    </a>
+2.  <a href="#avo-inspector-tracking-observability">
+      Avo Inspector: Tracking observability
+    </a>
+3.  <a href="#avo-debuggers-aka-in-app-inspector-on-device-tracking-verification">
+      Avo Debuggers aka In-App Inspector: On device tracking verification
+    </a>
 
+## Avo Codegen: Type safe analytics wrappers
 
-## Avo Functions: Type safe analytics wrappers
+### What is Avo Codegen?
 
-### What are Avo Functions?
+<Link passHref href="/implementation/avo-codegen-overview">
+  <a>Avo Codegen</a>
+</Link> produces type safe analytics wrappers that are code generated based on your <Link
+  passHref
+  href="/workspace"
+>
+  <a>tracking plan</a>
+</Link>
+. <br /> <br />{' '}
 
-<Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions</a></Link> are 
-type safe analytics wrappers that are code generated based on your <Link passHref href="/workspace"><a>tracking plan</a></Link>. <br/> <br/> 
-
-Technical or non-technical people can define analytics event schemas in the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link>, 
-and you can generate human readable type safe code based on that. The days of unstructured 
-and outdated tracking plan spreadsheets and Jira tickets are over 🥳 So are the days of brittle 
+Technical or non-technical people can define analytics event schemas in the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link>,
+and you can generate human readable type safe code based on that. The days of unstructured
+and outdated tracking plan spreadsheets and Jira tickets are over 🥳 So are the days of brittle
 analytics implementation you have to revisit to fix again and again and again 😌
 
-### How do Avo Functions work?
+### How does Avo Codegen work?
 
-Avo Functions are type safe analytics wrappers that can work with any analytics tool, whether it's any of the third-party event logging SDKs (e.g. 
-Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, Pendo, 
+Avo Codegen produces type safe analytics wrappers that can work with any analytics tool, whether it's any of the third-party event logging SDKs (e.g.
+Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, Pendo,
 etc) or your home made API.
 
-When designing the tracking plan you configure the list of analytics destinations for each source. In the generated code each destination is 
-represented as its own Destination Interface in the initAvo method of your Avo Functions. This is how Avo Functions routes data, 
-locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections 
+When designing the tracking plan you configure the list of analytics destinations for each source. In the generated code each destination is
+represented as its own Destination Interface in the initAvo method of your Avo Codegen. This is how Avo Codegen routes data,
+locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections
 you've defined in the Avo dashboard.
 
-In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> 
-should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and the Avo Functions 
-will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your 
+In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link>
+should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and the Avo Codegen
+will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
 
-Learn more technical details about <Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions here</a></Link>.
+Learn more technical details about <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen here</a></Link>.
 
 ### Do events flow through Avo servers?
 
-No. None of your events ever go through Avo servers. They go directly from your devices (whether that's 
+No. None of your events ever go through Avo servers. They go directly from your devices (whether that's
 a front-end client or a server) to the analytics destination.
 
 > 💡 This sometimes called "device mode". With CDPs, you can choose between <Link passHref href="https://segment.com/docs/guides/intro-impl/#connection-modes"><a>_Cloud-mode_ or _Device-mode_</a></Link>:
+>
 > - In _Cloud-mode_, your events go through the CDP servers. Your devices send the events to the CDP cloud (aka the CDP Servers) and the CDP cloud sends them to the analytics destinations.
 > - In _Device-mode_ the events go directly from your devices (whether it's a front end client or a server) to the analytics destination.
-> In this regard, Avo works like _Device-mode_.
+>   In this regard, Avo works like _Device-mode_.
 
 ## Avo Inspector: Tracking Observability
 
@@ -63,13 +76,13 @@ With Inspector, you get an instant audit of your current state of tracking, and 
 
 ### How does Avo Inspector work?
 
-The Inspector API extracts the schemas (aka shapes) of the events you trigger (no PII data, 
-only event names, property names, and types of properties) and sends those schemas to 
+The Inspector API extracts the schemas (aka shapes) of the events you trigger (no PII data,
+only event names, property names, and types of properties) and sends those schemas to
 the Avo servers. To repeat: None of the PII data ever flows through Avo servers; only event schemas.
 
 ### How do I use Inspector?
 
-You can view the overview of your current tracking in the <Link passHref href="/workspace/inspector"><a>Inspector dashboard</a></Link> and you can connect Avo Inspector to a Slack channel to receive alerts when the Inspector detects 
+You can view the overview of your current tracking in the <Link passHref href="/workspace/inspector"><a>Inspector dashboard</a></Link> and you can connect Avo Inspector to a Slack channel to receive alerts when the Inspector detects
 a new issue that has not been seen in production for 30 days.
 
 ### How do I send data into the Inspector?
@@ -77,26 +90,33 @@ a new issue that has not been seen in production for 30 days.
 You can send data into Inspector three ways:
 
 1.  <a href="#inspector-sdks">Inspector SDKs</a>
-2.  <a href="#connect-with-cdps-and-analytics-platforms">Connect with CDPs and analytics platforms</a>
-3.  <a href="#inspector-api">Inspector API (<Link passHref href="/help/troubleshooting"><a>contact us to get access</a></Link>)</a>
-
+2.  <a href="#connect-with-cdps-and-analytics-platforms">
+      Connect with CDPs and analytics platforms
+    </a>
+3.  <a href="#inspector-api">
+      Inspector API (
+      <Link passHref href="/help/troubleshooting">
+        <a>contact us to get access</a>
+      </Link>
+      )
+    </a>
 
 #### Inspector SDKs
 
-The Inspector SDK can be plugged into your existing tracking – independent of whether 
-you're using the Avo Functions or not.
+The Inspector SDK can be plugged into your existing tracking – independent of whether
+you're using the Avo Codegen or not.
 
 ##### Inspector SDK with your existing tracking
 
 The Inspector SDK is a stand-alone SDK which you can install with your package manager.
-You can use the Inspector SDK whether or not you adopt Avo Functions, by plugging the 
-Inspector SDK into the call site of your existing tracking. Most code bases 
-have some sort of a wrapper around calling their analytics SDKs, and that's where you 
+You can use the Inspector SDK whether or not you adopt Avo Codegen, by plugging the
+Inspector SDK into the call site of your existing tracking. Most code bases
+have some sort of a wrapper around calling their analytics SDKs, and that's where you
 plug the Inspector SDK.
 
-##### Inspector SDK with Avo Functions
+##### Inspector SDK with Avo Codegen
 
-Initialize the Avo Functions SDK with an instance of the Inspector SDK.
+Initialize the Avo Codegen SDK with an instance of the Inspector SDK.
 
 #### Connect with CDPs and analytics platforms
 
@@ -116,7 +136,7 @@ Coming soon: You can send data into the Inspector API directly. Reach out to sup
 
 ### Does Inspector receive PII data?
 
-No. Inspector does not receive any PII data. Inspector only takes in event names, 
+No. Inspector does not receive any PII data. Inspector only takes in event names,
 property names, and types of properties.
 
 Learn more technical details about the <Link passHref href="/implementation/avo-inspector-overview"><a>Avo Inspector here</a></Link>.
@@ -124,10 +144,9 @@ Learn more technical details about the <Link passHref href="/implementation/avo-
 ## Avo Debuggers aka In-App Inspector: On device tracking verification
 
 Avo provides an <Link passHref href="/implementation/start-using-visual-debugger"><a>In-App Inspector</a></Link> that shows you when you're triggering events, what the schemas are,
-and whether they match the analytics event spec. The In-App Inspector is displayed via a small bubble 
+and whether they match the analytics event spec. The In-App Inspector is displayed via a small bubble
 on your web or mobile app, which you can click into and see the details of the event structure.
 
-When you implement analytics via the <a href="#avo-functions-type-safe-analytics-wrappers">Avo Functions</a>, the In-App Inspector will not only show you 
-the timing and schema of your event, but also display a red warning or green check mark based on 
+When you implement analytics via the <a href="#avo-functions-type-safe-analytics-wrappers">Avo Codegen</a>, the In-App Inspector will not only show you
+the timing and schema of your event, but also display a red warning or green check mark based on
 whether or not your events fits the analytics spec in your Avo tracking plan.
-
