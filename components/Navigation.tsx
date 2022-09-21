@@ -436,7 +436,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Quickstart: Avo Codegen',
-        path: '/implementation/start-using-avo-functions',
+        path: '/implementation/start-using-avo-codegen',
       },
       {
         type: 'route',
@@ -480,7 +480,7 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Avo Codegen with Inspector SDK ',
-        path: '/implementation/start-using-inspector-with-avo-functions',
+        path: '/implementation/start-using-inspector-with-avo-codegen',
       },
       {
         type: 'route',

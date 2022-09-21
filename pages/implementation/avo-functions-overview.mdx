@@ -10,7 +10,7 @@ import Link from '../../components/Link';
 The Avo generated code is the representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events.
 For example if you set up an iOS/Swift source the generated code will be in a `.swift` file.
 Since the tracking plans are different for each customer the content of this file is also different.
-We generate the files and you can download them either with <Link passHref href="/implementation/cli"><a>the Avo CLI</a></Link> or in the Avo web interface in <Link passHref href="/workspace/implement"><a>the Functions tab</a></Link>.
+We generate the files and you can download them either with <Link passHref href="/implementation/cli"><a>the Avo CLI</a></Link> or in the Avo web interface in <Link passHref href="/workspace/implement"><a>the Codegen tab</a></Link>.
 
 First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another.
 The generated file is the best source of truth when looking for implementation details.
@@ -51,7 +51,7 @@ Learn more about the CLI <Link passHref href="/implementation/cli"><a>here</a></
 
 First thing you need to do after importing the generated file is to initialize Avo.
 There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to change the setup.
-Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the <Link passHref href="/workspace/implement"><a>Functions tab</a></Link> for specific recommendations.
+Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the <Link passHref href="/workspace/implement"><a>Codegen tab</a></Link> for specific recommendations.
 Samples below are in Swift and the code is very similar in other programming languages:
 
 ```swift

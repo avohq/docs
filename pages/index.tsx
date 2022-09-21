@@ -178,7 +178,7 @@ const LandingPage: FunctionComponent = () => {
           <PageLink
             image={DevIcon}
             title="Avo 101 For Developers"
-            description="Functions, Inspector and Debuggers—What’s the difference?"
+            description="Codegen, Inspector and Debuggers—What’s the difference?"
             callToAction={new CallToAction('/implementation/devs-101')}
           />
           <PageLink

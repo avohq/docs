@@ -167,17 +167,17 @@ For teams that are using Avo Codegen to implement their events, the typical impl
 
 1. Open a git branch – if you have multiple development platforms (sources in Avo), we recommend having one git branch per source for each Avo branch.
 2. Use the <Link passHref href="/implementation/cli#step-3-pull-generated-analytics-wrappers-from-avo"><a>Avo CLI</a></Link> to pull the updated code from the branch
-3. Use the Avo Codegen provided in the generated code to implement your events in your source code. The <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Functions tab</a></Link> in your workspace provides code snippets for each event.
+3. Use the Avo Codegen provided in the generated code to implement your events in your source code. The <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Codegen tab</a></Link> in your workspace provides code snippets for each event.
 
 <center>
   <img
     src={require('../../images/workspace/nav-functions.png')}
     width="100%"
-    alt="Functions reference"
+    alt="Codegen reference"
   />
 </center>
 
-_Example: Functions reference and code snippets_
+_Example: Codegen reference and code snippets_
 
 ### Using other implementation methods
 
@@ -205,7 +205,7 @@ Avo provides a number of tools that help you verify that the events you’ve imp
     <a>Avo status</a>
   </Link> command in the CLI that will report on where the analytics functions provided
   by Avo are being called, and which events have not been implemented yet.
-- <Link passHref href="/implementation/avo-functions-overview#data-validations">
+- <Link passHref href="/implementation/avo-codegen-overview#data-validations">
     <a>Data validation logs and warnings</a>
   </Link> that warn you whenever a mistake is made during implementation
 - <Link
