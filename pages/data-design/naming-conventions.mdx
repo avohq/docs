@@ -59,7 +59,7 @@ In other words, event and property naming is abstracted entirely away from the e
 
 ### 2. How Avo helps with better data design with global namespace
 
-_Also covered in <Link passHref href="/data-design/global-namespace"><a>Global namespace for events and properties</a></Link> _
+*Also covered in <Link passHref href="/data-design/global-namespace"><a>Global namespace for events and properties</a></Link> *
 
 As stated above, naming inconsistencies often arise either during the "data design" step, not only implementation step. This is particularly true as product organizations scale up and multiple teams contribute to the tracking plan. (It's difficult enough to remember all the events you _yourself_ created, let alone be aware of all the events other people have created).
 
@@ -77,7 +77,7 @@ Having a global namespace for all events and properties significantly reduces du
      width="75%"
    />
 
-2. Avo **_nudges_ you if you try to create an event in a casing that contradicts** your tracking plan casing convention. Same for property names.
+2. Avo ***nudges* you if you try to create an event in a casing that contradicts** your tracking plan casing convention. Same for property names.
 
    For example: if the convention is `snake_case` and you type in `gameStarted` in the event creation modal, Avo will suggest the right casing to you before you create the event:
 
@@ -87,7 +87,7 @@ Having a global namespace for all events and properties significantly reduces du
      width="75%"
    />
 
-3. Avo **_nudges_ you if you try to create an event with similar words as an event that already exists**.
+3. Avo ***nudges* you if you try to create an event with similar words as an event that already exists**.
 
    For example: if you try to create `UPDATE_EMAIL` while `EMAIL_UPDATE` already exists.
 
@@ -97,15 +97,15 @@ Having a global namespace for all events and properties significantly reduces du
      width="75%"
    />
 
-4. Avo **_prevents_ you from creating properties with slightly different meaning depending on which event** they are sent from.
+4. Avo ***prevents* you from creating properties with slightly different meaning depending on which event** they are sent from.
 
    This is a source of many confusions for the "data consumers" (analysts, PMs, whoever is digging into the data).
 
    For example, the data consumer may be used to `player_id` meaning _"id of the current player"_, but then all of a sudden a new event gets created with `player_id` referring to the opposing player. 🤯 The consequences are not only confusion, but also that the "normal" `player_id` property cannot be added to the new event. With a global namespace for properties, this cannot happen\*.
 
-   > \*_ Avo provides workarounds to bypass this, in case you have existing tracking that requires support for this. Email support@avo.sh for more info._
+   > ** Avo provides workarounds to bypass this, in case you have existing tracking that requires support for this. Email support@avo.sh for more info.*
 
-5. Avo **_enforces_ mutually exclusive property names for event properties and user properties**.
+5. Avo ***enforces* mutually exclusive property names for event properties and user properties**.
 
    For example, if you have a **_user property_** called `player_id`, you won't be able to create an **_event property_** called `player_id`.
 
@@ -139,7 +139,7 @@ The typical Avo customer has years of tracking in place when they start using Av
 
    For example if `msg_sent` is defined in your tracking plan, but someone implements analytics for it without Avo Codegen, and ships `message_sent` or `msgSent`, then Inspector will show you those events, and indicate that they don't match the tracking plan.
 
-   > \*_ It's impossible to ship events or properties with names that don't match your tracking plan when you implement using Avo Codegen, but, when companies adopt Avo, they often have multiple product teams and years of analytics tracking code in place._
+   > ** It's impossible to ship events or properties with names that don't match your tracking plan when you implement using Avo Codegen, but, when companies adopt Avo, they often have multiple product teams and years of analytics tracking code in place.*
 
    1. For adoption, we recommend adopting Avo team by team (not flag-day switch-over for entire company). This means: While some teams will implement with type-safe Avo Codegen, other teams and codebases will still implement "the old way". Which means, implementation errors will slip through 😅
    2. For replacing old tracking code, we recommend the "scout rule"; always leaving the analytics code better than when you found it, and porting analytics code to Avo Codegen as it makes sense.
