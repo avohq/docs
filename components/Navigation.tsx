@@ -430,7 +430,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'What is Avo Codegen',
+        title: 'Avo Codegen technical deep dive',
         path: '/implementation/avo-codegen-overview',
       },
       {
