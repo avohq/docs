@@ -51,8 +51,9 @@ $ avo pull [--branch "my-branch"] [--force] [--forceFeatures ...,...] [SourceNam
 ```
 
 Options:
+
 ```bash
-  --branch         Name of Avo branch to pull from, 
+  --branch         Name of Avo branch to pull from,
   --force          Proceed ignoring the unsupported features for given source type (e.g. group analytics)
   --forceFeatures  A list of experimental codegen features to force enable. Pass unsupported name to get the list of available features
 ```
@@ -67,7 +68,7 @@ The `status` command will report on where the analytics functions provided by Av
 $ avo status
 ```
 
-The output of this command will show you all the Avo function calls in your codebase and will highlight functions that are never called. If one or more Avo functions are not called in the code the command will fail.
+The output of this command will show you all the Avo function calls in your codebase and will highlight functions that are never called. If one or more functions from Avo Codegen are not called in the code the command will fail.
 
 ```sh
 > avo status
@@ -94,9 +95,10 @@ error 2 missing events
    └─ logout: no usage found
 ```
 
-If you run `avo status --verbose` it will also print a list of files where the CLI searched for the Avo functions.
+If you run `avo status --verbose` it will also print a list of files where the CLI searched for the functions from Avo Codegen.
 
 Here is an example beginning of the verbose output:
+
 ```sh
 info Currently on branch 'main'
 Looking in files with extensions: [ 'java', 'kt' ]
@@ -137,7 +139,6 @@ When editing your tracking plan on avo.app you can branch out from the main trac
 ```bash
 $ avo checkout my-branch-name
 ```
-
 
 You can also pull from a specific branch by using the `--branch` flag when running `avo pull`
 

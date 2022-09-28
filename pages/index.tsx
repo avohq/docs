@@ -142,26 +142,26 @@ const LandingPage: FunctionComponent = () => {
         </h2>
 
         <p className={styles.text}>
-          The Avo Inspector gives you an overview of your current state of
-          tracking and highlights issues and discrepancies in your tracking.
-          Once you have your tracking plan in Avo, it flags discrepancies
-          between your tracking plan and your actual tracking so you can see
-          which events in your tracking plan are actually implemented and
-          whether they’re being sent correctly.
+          Avo Inspector gives you an overview of your current state of tracking
+          and highlights issues and discrepancies in your tracking. Once you
+          have your tracking plan in Avo, it flags discrepancies between your
+          tracking plan and your actual tracking so you can see which events in
+          your tracking plan are actually implemented and whether they’re being
+          sent correctly.
         </p>
 
         <p className={styles.text}>
-          The Inspector also gives you an implementation status for every
-          analytics release in your Avo Branch, available for dev, staging and
-          production environments. This gives you confidence and visibility into
-          the status and health of the event implementation.
+          Inspector also gives you an implementation status for every analytics
+          release in your Avo Branch, available for dev, staging and production
+          environments. This gives you confidence and visibility into the status
+          and health of the event implementation.
         </p>
 
         <div className={styles.row}>
           <PageLink
             image={AnalyticsManagerIcon}
             title="Get Started With Inspector"
-            description="Install the Inspector to get overview of your current state of tracking"
+            description="Install Inspector to get overview of your current state of tracking"
             callToAction={
               new CallToAction('/data-design/start-using-inspector')
             }
@@ -178,7 +178,7 @@ const LandingPage: FunctionComponent = () => {
           <PageLink
             image={DevIcon}
             title="Avo 101 For Developers"
-            description="Functions, Inspector and Debuggers—What’s the difference?"
+            description="Codegen, Inspector and Debuggers—What’s the difference?"
             callToAction={new CallToAction('/implementation/devs-101')}
           />
           <PageLink
@@ -241,10 +241,10 @@ const LandingPage: FunctionComponent = () => {
         <div className={styles.row}>
           <PageLink
             image={DevIcon}
-            title="Avo Functions"
+            title="Avo Codegen"
             description="Faster, more reliable implementation with type-safe tracking functions"
             callToAction={
-              new CallToAction('/implementation/avo-functions-overview')
+              new CallToAction('/implementation/avo-codegen-overview')
             }
           />
           <PageLink
@@ -263,7 +263,7 @@ const LandingPage: FunctionComponent = () => {
         <div className={styles.row}>
           <PageLink
             image={DevIcon}
-            title="Avo Functions"
+            title="Avo Codegen"
             callToAction={new CallToAction('/implementation/destinations')}
           />
           <PageLink

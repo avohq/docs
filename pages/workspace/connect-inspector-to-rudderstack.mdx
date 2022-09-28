@@ -12,7 +12,7 @@ If you are already sending your data to RudderStack you can stream it to Avo Ins
 You'll need to create a RudderStack Destination powered by RudderStack Transformation with a code snippet provided in your Avo workspace for each app and environment combination.
 
 > The Transformations that we will add here are not changing the events you receive from RudderStack in any way.
-> They add a side effect of the Avo Inspector analyzing your events and keeping your RudderStack events stream unchanged.
+> They add a side effect of Avo Inspector analyzing your events and keeping your RudderStack events stream unchanged.
 
 In RudderStack you usually have different sources for each app environment, for example if you have a single web app, you probably have Web App Dev and Web App Production sources in RudderStack.
 
@@ -20,7 +20,7 @@ Unlike RudderStack, Avo sources contain environments in them, so you will only n
 
 After connecting a Transformation to corresponding RudderStack source the event schemas of all events seen in RudderStack will automatically be sent to Avo Inspector and you'll be able to monitor the quality of your tracking implementation without any changes in your code!
 
-> Remember that production data takes up to 2 hours to appear in the Inspector dashboard, while development data is available without any delay
+> Remember that production data takes up to 2 hours to appear in Inspector dashboard, while development data is available without any delay
 
 ## Guide to connect RudderStack and Avo Inspector
 
@@ -30,13 +30,13 @@ After connecting a Transformation to corresponding RudderStack source the event 
 
 An Avo Source is the first thing you need to connect your RudderStack data to Avo Inspector.
 
-Open `Sources` in the Avo sidebar or `Manage Sources` in the Inspector tab
+Open `Sources` in the Avo sidebar or `Manage Sources` in Inspector tab
 
 <center style={{ marginBottom: 16 + 'px' }}>
   <img
     width="100%"
     src={require('../../images/workspace/nav-inspector-sources-highlighted.png')}
-    alt="Navigation to the Inspector sources screen in Avo"
+    alt="Navigation to Inspector sources screen in Avo"
   />
 </center>
 
@@ -99,7 +99,7 @@ Save it by pressing `Save` button under the code editor.
 
 #### Step 3. Test your development RudderStack Transformation (Optional)
 
-> You can test the production RudderStack Transformation in the same way, but keep in mind that the production data shows with a ~2 hours delay in the Inspector dashboard, while development data is shown without delay
+> You can test the production RudderStack Transformation in the same way, but keep in mind that the production data shows with a ~2 hours delay in Inspector dashboard, while development data is shown without delay
 
 If you pick the Track event in the Events code editor in the bottom of the page and then press "Run Test" button, the event will be sent to Avo Inspector
 
@@ -179,4 +179,4 @@ Then go to the `Sources` tab and make sure that the destination is connected to 
   />
 </center>
 
-Now your RudderStack events stream from this source to this destination is analyzed by the Avo Inspector.
+Now your RudderStack events stream from this source to this destination is analyzed by Avo Inspector.

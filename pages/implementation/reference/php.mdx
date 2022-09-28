@@ -1,20 +1,20 @@
 ---
 layout: 'guide'
-title: 'Avo Functions in PHP'
+title: 'Avo Codegen in PHP'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can code generate Avo Functions in PHP for your server side tracking.
+Avo can code generate Avo Codegen in PHP for your server side tracking.
 
 ### Quickstart
 
-Avo functions usage consists of 4 steps.
+Avo Codegen usage consists of 4 steps.
 
 [//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
-[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
 
 #### Step 1. Include the Avo file
 
@@ -44,7 +44,7 @@ Avo::init_avo(array("env" => "dev" /*, other parameters depending on your tracki
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/php#init_avo"><a>the reference below</a></Link>.
 
-#### Step 3. Call Avo functions to track your product usage
+#### Step 3. Call Avo Codegen to track your product usage
 
 Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in snake_case.
 

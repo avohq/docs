@@ -1,29 +1,29 @@
 ---
 layout: 'guide'
-title: 'Avo Functions in Kotlin'
+title: 'Avo Codegen in Kotlin'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can code generate Avo Functions in Kotlin targeted at the following platforms
+Avo can code generate Avo Codegen in Kotlin targeted at the following platforms
 
 - Android
 - Server is coming soon, for now we recommend using the `Java` generated code for backend JVM projects
 
 > <Link passHref href="/help/troubleshooting">
 >   <a>Reach out</a>
-> </Link> if you want to use Avo Functions in Kotlin server
+> </Link> if you want to use Avo Codegen in Kotlin server
 
 > You can force the generated code to use Kotlin Coroutines for the network calls with "--forceFeatures KotlinCoroutines" flag when running the <Link passHref href="/implementation/cli#step-3-pull-generated-analytics-wrappers-from-avo"><a>Avo CLI</a></Link>. <Link passHref href="/help/troubleshooting"><a>Let us know</a></Link> if you want to enable coroutines by default in your workspace.
 
 ### Quickstart
 
-Avo functions usage consists of 4 steps.
+Avo Codegen usage consists of 4 steps.
 
 [//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
-[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
 
 #### Step 1. Include the Avo file
 
@@ -51,7 +51,7 @@ val avo = AvoImpl(env = AvoEnv.DEV/*, other parameters depending on your trackin
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/kotlin#constructor"><a>the reference below</a></Link>.
 
-#### Step 3. Call Avo functions to track your product usage
+#### Step 3. Call Avo Codegen to track your product usage
 
 Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
 
@@ -78,7 +78,7 @@ avo.signupStart(referral = "direct")
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a>.
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a>.
 
 ### Reference
 
@@ -97,7 +97,7 @@ class AvoImpl(env: AvoEnv,
 )
 ```
 
-Creates the Avo object that will be used to track. 
+Creates the Avo object that will be used to track.
 This method will call the `Make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
@@ -127,7 +127,7 @@ interface ICustomDestination {
 }
 ```
 
-`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo functions automatically report the invocations to the Avo Inspector.
+`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
 
 `strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 
@@ -152,7 +152,7 @@ let mixpanelDestinationInterface = object : ICustomDestination {
     }
 
     override fun logPage(pageName: String, eventProperties: MutableMap<String, *>) {
-        // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.        
+        // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
         let mutableEventprops = eventProperties.toMutableMap()
         mutableEventprops["Page Name"] = pageName
         mixpanel?.track("Page Viewed", mutableEventprops)
@@ -184,7 +184,7 @@ Read more about the destination interface <Link passHref href="/implementation/d
 fun setAvoLogger(logger: (String) -> Unit)
 ```
 
-This method allows you to provide custom implementation of the logger used by the Avo Functions.
+This method allows you to provide custom implementation of the logger used by Avo Codegen.
 Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments

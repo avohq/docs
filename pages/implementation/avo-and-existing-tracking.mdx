@@ -1,13 +1,13 @@
 ---
 layout: 'guide'
-title: 'Avo Functions alongside existing tracking'
+title: 'Avo Codegen alongside existing tracking'
 ---
 
 import Link from '../../components/Link';
 
-You can safely keep raw tracking calls in your code when adopting Avo Functions. In this case we recommend to migrate gradually, following 2 steps below.
+You can safely keep raw tracking calls in your code when adopting Codegen. In this case we recommend to migrate gradually, following 2 steps below.
 
-### 1. Start implementing all new tracking with Avo Functions.
+### 1. Start implementing all new tracking with Codegen.
 
 Mark the new events you want to implement with Avo as "Implement with Avo" in the Avo workspace and they will appear as functions in the generated code.
 
@@ -19,7 +19,7 @@ Mark the new events you want to implement with Avo as "Implement with Avo" in th
   />
 </center>
 
-Initiate the Avo functions with a  <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interface</a></Link>.
+Initiate Codegen with a <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interface</a></Link>.
 
 In the track methods of the destination interface (logEvent, identify etc.) you use your existing tracking SDK instance to track events:
 
@@ -30,12 +30,12 @@ logEvent(eventName, eventProperties) {
 }
 ```
 
-With this one time setup the events you track with Avo Functions will be sent to the same analytics destinations as your existing events.
+With this one time setup the events you track with Codegen will be sent to the same analytics destinations as your existing events.
 
 ### 2. Migrate you existing implementation to Avo
 
 Going forward you'll be able to gradually swap old events implemented with raw analytics SDK with Avo implementation at your own pace by:
 
 - Marking more events as "Implement with Avo"
-- Pulling the Avo code 
-- Replacing existing SDK calls with calls of the generated Avo Functions
+- Pulling the Avo code
+- Replacing existing SDK calls with calls of the generated Codegen
