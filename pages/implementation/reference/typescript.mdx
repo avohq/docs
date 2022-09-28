@@ -117,7 +117,7 @@ This method will call the `make(env)` callback in all the provided <Link passHre
 - `[strict = true]`: bool defaulting to true, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 - `[noop = false]`: bool defaulting to false, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 - `[reportFailureAs]: optional, can be set to error, warn and log. Decides the log level of reports for failures.
-- `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo Codegen automatically report the invocations to the Avo Inspector.
+- `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
 - `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers#typescript"><a>Find the code snippet here</a></Link>.
 
 `systemProperties`: an object where each field represents a system property in your tracking plan.
@@ -283,7 +283,7 @@ Read more about the destination interface <Link passHref href="/implementation/d
 Avo.setAvoLogger(avoLogger);
 ```
 
-This method allows you to provide custom implementation of the logger used by the Avo Codegen, same as the `avoLogger` parameter in the `initAvo` call.
+This method allows you to provide custom implementation of the logger used by Avo Codegen, same as the `avoLogger` parameter in the `initAvo` call.
 Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments

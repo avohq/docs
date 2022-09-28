@@ -12,14 +12,14 @@ The generated code gives you access to functions, each function representing an 
 
 We call those functions Avo Codegen.
 
-You invoke the Avo Codegen, provide tracking parameters and
+You invoke Avo Codegen, provide tracking parameters and
 
 - Avo verifies that your tracking is correct according to the defined tracking plan. It verifies that all required properties are provided, correctly spelled and their value fit what's expected by your tracking plan. Preventing the time consuming back-and-forth required to align on what to track and how, and to verify the tracking is correctly implemented.
 - Avo also tracks your functions usage in development and reports if a call of particular function was seen or not, both in your CI with the Avo CLI and in your Tracking Plan on avo.app.
 - Eventually Avo sends the data to the destinations it manages and calls the callbacks (called custom destinations) you provided when initializing.
 
 > It's useful to get the overview of the tracking implementation when working on new tracking.
-> You can also get more insights into dev implementation and actual production state of your tracking with <Link passHref href="/workspace/tracking-plan/implementation-status#inspector-implementation-status"><a>the Inspector implementation status</a></Link>
+> You can also get more insights into dev implementation and actual production state of your tracking with <Link passHref href="/workspace/tracking-plan/implementation-status#inspector-implementation-status"><a>Inspector implementation status</a></Link>
 
 ### Handling tracking plan changes
 

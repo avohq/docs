@@ -65,7 +65,7 @@ Avo.signupStart("direct")
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a> in your client applications.
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a> in your client applications.
 
 ### Reference
 
@@ -83,7 +83,7 @@ public static void initAvo(AvoEnv env,
     );
 ```
 
-There is also an init method that accepts an instance of the Avo Inspector, use it if you have Avo Inspector set up in your project, so Avo Codegen will automatically report invocations to the Avo Inspector.
+There is also an init method that accepts an instance of Avo Inspector, use it if you have Avo Inspector set up in your project, so Avo Codegen will automatically report invocations to Avo Inspector.
 
 ```java
 public static void initAvoWithInspector(AvoEnv env,
@@ -133,7 +133,7 @@ If you are using server Java each callback gets an additional first parameter - 
 
 `boolean noop = false`: bool, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 
-`Object avoInspector`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo Codegen automatically report the invocations to the Avo Inspector.
+`Object avoInspector`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
 
 #### Destination interface example
 

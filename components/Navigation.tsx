@@ -381,7 +381,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'The Inspector dashboard',
+        title: 'Inspector dashboard',
         path: '/workspace/inspector',
       },
       {

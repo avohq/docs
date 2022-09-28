@@ -20,9 +20,9 @@ Avo’s validation functionalities are built on top of two product offerings, <L
 
 # Validate implementation with Avo Inspector
 
-For every source that has the Inspector installed, you can validate if the implementation is according to the tracking plan using the Inspector dashboard and/or the Inspector implementation in your tracking plan.
+For every source that has Inspector installed, you can validate if the implementation is according to the tracking plan using Inspector dashboard and/or Inspector implementation in your tracking plan.
 
-If you don’t have the Inspector installed yet, you can learn more about how to get started with the Inspector here:
+If you don’t have Inspector installed yet, you can learn more about how to get started with Inspector here:
 
 <div className={styles.row}>
   <PageLink
@@ -33,14 +33,14 @@ If you don’t have the Inspector installed yet, you can learn more about how to
   />
 </div>
 
-### Validate with the Inspector dashboard
+### Validate with Inspector dashboard
 
-The Inspector dashboard compares your tracking calls to the Tracking Plan on your current branch. If the Inspector finds any discrepancies between the tracking calls and the Tracking Plan, an issue is shown on the dashboard.
+Inspector dashboard compares your tracking calls to the Tracking Plan on your current branch. If Inspector finds any discrepancies between the tracking calls and the Tracking Plan, an issue is shown on the dashboard.
 
-Here’s how you can validate tracking implementation for a particular branch using the Inspector dashboard:
+Here’s how you can validate tracking implementation for a particular branch using Inspector dashboard:
 
 1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
-2. In the Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
+2. In Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
 
 <center>
   <img
@@ -52,7 +52,7 @@ Here’s how you can validate tracking implementation for a particular branch us
 
 _Example: Inspector dashboard_
 
-3. In the Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
+3. In Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
 
 <center>
   <img
@@ -64,13 +64,13 @@ _Example: Inspector dashboard_
 
 _Example: Discrepancies in the event tracking_
 
-### Validate with the Inspector implementation status
+### Validate with Inspector implementation status
 
-For every source the Inspector is installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent from in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
+For every source Inspector is installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent from in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
 
 You can hover over the source pill in the events table, or click into the event, to learn more about the implementation status.
 
-Learn more about how to read the Inspector implementation status:
+Learn more about how to read Inspector implementation status:
 
 <div className={styles.row}>
   <PageLink
@@ -109,7 +109,7 @@ Learn more about how validations in Avo Codegen work here:
 <div className={styles.row}>
   <PageLink
     image={DevIcon}
-    title="What's happening inside the Avo Codegen"
+    title="What's happening inside Avo Codegen"
     description="Learn about how validations in Avo Codegen work"
     callToAction={
       new CallToAction(
@@ -148,7 +148,7 @@ The Avo debugger is available on Web, iOS, Android and React Native. Learn more 
 
 ### Validate with the Avo CLI
 
-The Avo CLI has a command, ´avo status´, that will report on where the Avo Codegen is being called from, and which events have not been implemented yet.
+The Avo CLI has a command, ´avo status´, that will report on where Avo Codegen is being called from, and which events have not been implemented yet.
 
 We recommend adding the ´avo status´ check to your CI pipeline, and configure it to throw an error if an event that is supposed to be sent with Avo Codegen, is not found in the codebase.
 
@@ -192,7 +192,7 @@ You can learn more about using the Avo CLI in CI/CD here:
 
 ### Validate with implementation status in the tracking plan
 
-For every source the Avo Codegen is installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
+For every source Avo Codegen is installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
 
 You can hover over the source pill in the events table, or click into the event, to learn more about the implementation status.
 
@@ -218,13 +218,13 @@ You can also find a branch implementation status for Avo Codegen in the top righ
 
 _Example: Implementation status on the branch review screen_
 
-Learn more about how to read the Avo Codegen implementation status:
+Learn more about how to read Avo Codegen implementation status:
 
 <div className={styles.row}>
   <PageLink
     image={DevIcon}
     title="Avo Codegen implementation status"
-    description="Learn how to read the Avo Codegen implementation status"
+    description="Learn how to read Avo Codegen implementation status"
     callToAction={
       new CallToAction(
         '/workspace/tracking-plan/implementation-status#avo-codegen-implementation-status',

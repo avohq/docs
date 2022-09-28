@@ -105,8 +105,8 @@ This method will call the `make(env, apiKey)` callback in all the provided <Link
 - `[noop = false]`: bool defaulting to false, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 - `[strict = true]`: bool defaulting to true, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 - `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers#javascript"><a>Find the code snippet here</a></Link>.
-- `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo Codegen automatically report the invocations to the Avo Inspector.
-- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
+- `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
+- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
 
 `systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
@@ -304,7 +304,7 @@ Read more about the destination interface <Link passHref href="/implementation/d
 Avo.setAvoLogger(avoLogger);
 ```
 
-This method allows you to provide custom implementation of the logger used by the Avo Codegen, same as the `avoLogger` parameter in the `initAvo` call.
+This method allows you to provide custom implementation of the logger used by Avo Codegen, same as the `avoLogger` parameter in the `initAvo` call.
 Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments

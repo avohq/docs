@@ -78,7 +78,7 @@ avo.signupStart(referral = "direct")
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a>.
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a>.
 
 ### Reference
 
@@ -127,7 +127,7 @@ interface ICustomDestination {
 }
 ```
 
-`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make the Avo Codegen automatically report the invocations to the Avo Inspector.
+`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
 
 `strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 
@@ -184,7 +184,7 @@ Read more about the destination interface <Link passHref href="/implementation/d
 fun setAvoLogger(logger: (String) -> Unit)
 ```
 
-This method allows you to provide custom implementation of the logger used by the Avo Codegen.
+This method allows you to provide custom implementation of the logger used by Avo Codegen.
 Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments

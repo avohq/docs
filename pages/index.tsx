@@ -142,26 +142,26 @@ const LandingPage: FunctionComponent = () => {
         </h2>
 
         <p className={styles.text}>
-          The Avo Inspector gives you an overview of your current state of
-          tracking and highlights issues and discrepancies in your tracking.
-          Once you have your tracking plan in Avo, it flags discrepancies
-          between your tracking plan and your actual tracking so you can see
-          which events in your tracking plan are actually implemented and
-          whether they’re being sent correctly.
+          Avo Inspector gives you an overview of your current state of tracking
+          and highlights issues and discrepancies in your tracking. Once you
+          have your tracking plan in Avo, it flags discrepancies between your
+          tracking plan and your actual tracking so you can see which events in
+          your tracking plan are actually implemented and whether they’re being
+          sent correctly.
         </p>
 
         <p className={styles.text}>
-          The Inspector also gives you an implementation status for every
-          analytics release in your Avo Branch, available for dev, staging and
-          production environments. This gives you confidence and visibility into
-          the status and health of the event implementation.
+          Inspector also gives you an implementation status for every analytics
+          release in your Avo Branch, available for dev, staging and production
+          environments. This gives you confidence and visibility into the status
+          and health of the event implementation.
         </p>
 
         <div className={styles.row}>
           <PageLink
             image={AnalyticsManagerIcon}
             title="Get Started With Inspector"
-            description="Install the Inspector to get overview of your current state of tracking"
+            description="Install Inspector to get overview of your current state of tracking"
             callToAction={
               new CallToAction('/data-design/start-using-inspector')
             }

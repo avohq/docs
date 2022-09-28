@@ -49,7 +49,7 @@ locally in your client (without the data ever going through Avo's servers), to t
 you've defined in the Avo dashboard.
 
 In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link>
-should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and the Avo Codegen
+should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and Avo Codegen
 will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
 
@@ -70,22 +70,22 @@ a front-end client or a server) to the analytics destination.
 
 ### What is Avo Inspector?
 
-Avo Inspector is a tracking observability solution that's easy to install. Avo Inspector analyzes tracking calls made by your app and provides an overview of them in the Inspector dashboard.
+Avo Inspector is a tracking observability solution that's easy to install. Avo Inspector analyzes tracking calls made by your app and provides an overview of them in Inspector dashboard.
 
 With Inspector, you get an instant audit of your current state of tracking, and an ongoing tracking observability going forward.
 
 ### How does Avo Inspector work?
 
-The Inspector API extracts the schemas (aka shapes) of the events you trigger (no PII data,
+Inspector API extracts the schemas (aka shapes) of the events you trigger (no PII data,
 only event names, property names, and types of properties) and sends those schemas to
 the Avo servers. To repeat: None of the PII data ever flows through Avo servers; only event schemas.
 
 ### How do I use Inspector?
 
-You can view the overview of your current tracking in the <Link passHref href="/workspace/inspector"><a>Inspector dashboard</a></Link> and you can connect Avo Inspector to a Slack channel to receive alerts when the Inspector detects
+You can view the overview of your current tracking in the <Link passHref href="/workspace/inspector"><a>Inspector dashboard</a></Link> and you can connect Avo Inspector to a Slack channel to receive alerts when Inspector detects
 a new issue that has not been seen in production for 30 days.
 
-### How do I send data into the Inspector?
+### How do I send data into Inspector?
 
 You can send data into Inspector three ways:
 
@@ -103,24 +103,24 @@ You can send data into Inspector three ways:
 
 #### Inspector SDKs
 
-The Inspector SDK can be plugged into your existing tracking – independent of whether
-you're using the Avo Codegen or not.
+Inspector SDK can be plugged into your existing tracking – independent of whether
+you're using Avo Codegen or not.
 
 ##### Inspector SDK with your existing tracking
 
-The Inspector SDK is a stand-alone SDK which you can install with your package manager.
-You can use the Inspector SDK whether or not you adopt Avo Codegen, by plugging the
+Inspector SDK is a stand-alone SDK which you can install with your package manager.
+You can use Inspector SDK whether or not you adopt Avo Codegen, by plugging the
 Inspector SDK into the call site of your existing tracking. Most code bases
 have some sort of a wrapper around calling their analytics SDKs, and that's where you
-plug the Inspector SDK.
+plug Inspector SDK.
 
 ##### Inspector SDK with Avo Codegen
 
-Initialize the Avo Codegen SDK with an instance of the Inspector SDK.
+Initialize Avo Codegen SDK with an instance of Inspector SDK.
 
 #### Connect with CDPs and analytics platforms
 
-You can pipe your analytics data into the Inspector API via your CDPs or analytics providers:
+You can pipe your analytics data into Inspector API via your CDPs or analytics providers:
 
 - Segment: <Link passHref href="/workspace/connect-inspector-to-segment"><a>Set Inspector up via Segment Functions</a></Link>
 - RudderStack: <Link passHref href="/workspace/connect-inspector-to-rudderstack"><a>Set Inspector up via RudderStack Functions</a></Link>
@@ -132,7 +132,7 @@ Reach out to support@avo.sh for early access to any of the platforms coming soon
 
 #### Inspector API
 
-Coming soon: You can send data into the Inspector API directly. Reach out to support@avo.sh for early access.
+Coming soon: You can send data into Inspector API directly. Reach out to support@avo.sh for early access.
 
 ### Does Inspector receive PII data?
 

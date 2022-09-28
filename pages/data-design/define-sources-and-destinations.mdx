@@ -19,7 +19,7 @@ Sources and destinations are an important part of your tracking plan, and crucia
 
 ## Sources
 
-The sources are code bases that you send events from and install the Inspector, for example your website, mobile application or your server.
+The sources are code bases that you send events from and install Inspector, for example your website, mobile application or your server.
 
 In the tracking plan, the sources help you understand what app is sending particular events and they will also help you to locate a subset of changes to give to the platform developers to implement. Either using the “Copy instructions for developers” (on adoption steps 1 and 2) or the generated code (on adoption step 3) Avo will automatically select relevant changes for a particular platform and will help the developer to orient in the tracking plan.
 
@@ -125,9 +125,9 @@ The events list in the source overview shows all the events that the source is c
 
 If an event is in this list, it means that the event is or should be sent from this source.
 
-If the "Implement with Avo" check mark is checked, it means that the event should be implemented using the Avo Codegen that is generated based on the event definition in the tracking plan. If the check mark is not checked, it means that the event should be implemented using existing implementation methods, probably a direct call to the analytics SDK.
+If the "Implement with Avo" check mark is checked, it means that the event should be implemented using Avo Codegen that is generated based on the event definition in the tracking plan. If the check mark is not checked, it means that the event should be implemented using existing implementation methods, probably a direct call to the analytics SDK.
 
-When creating an event we recommend to add it to all the existing sources where it should be sent from, whether you are using Avo Codegen or existing implementation methods to implement. This information is both used by the codegen to automatically create the tracking code if you are using the Avo Codegen and to generate implementation instructions for a developer.
+When creating an event we recommend to add it to all the existing sources where it should be sent from, whether you are using Avo Codegen or existing implementation methods to implement. This information is both used by Codegen to automatically create the tracking code if you are using Avo Codegen and to generate implementation instructions for a developer.
 
 <center>
   <img
@@ -163,7 +163,7 @@ This is a really convenient way to bulk add or remove a source to multiple event
 
 ### Inspector Setup
 
-The Inspector Setup part of the source details contains an overview of how to set up the Inspector for this source for the first time and the API key needed to be able to start sending data.
+Inspector Setup part of the source details contains an overview of how to set up Inspector for this source for the first time and the API key needed to be able to start sending data.
 
 <center>
   <img
@@ -179,7 +179,7 @@ This is your API key that is unique for each source. Follow the documentation in
 
 #### Setup Status
 
-The setup status indicates whether the Inspector is receiving events or not. If it has yet to be installed with the API key for this source, the setup status will show "Listening for the first event..."
+The setup status indicates whether Inspector is receiving events or not. If it has yet to be installed with the API key for this source, the setup status will show "Listening for the first event..."
 
 <center>
   <img
@@ -189,7 +189,7 @@ The setup status indicates whether the Inspector is receiving events or not. If 
   />
 </center>
 
-Once you have successfully installed the Inspector, the setup status will show "Receiving Events" and a link to see them in the Inspector dashboard.
+Once you have successfully installed Inspector, the setup status will show "Receiving Events" and a link to see them in Inspector dashboard.
 
 <center>
   <img
@@ -203,11 +203,11 @@ Once you have successfully installed the Inspector, the setup status will show "
 
 The documentation is automatically generated instructions with code snippets on how to install Inspector using either Segment functions or directly for your programming language.
 
-Check out the Tracking Observability part of this documentation to learn more on <Link passHref href="/data-design/start-using-inspector"><a>how to set up the Inspector</a></Link>.
+Check out the Tracking Observability part of this documentation to learn more on <Link passHref href="/data-design/start-using-inspector"><a>how to set up Inspector</a></Link>.
 
 ### Avo Codegen Setup
 
-The Avo Codegen Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
+Avo Codegen Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
 
 <center>
   <img
@@ -223,7 +223,7 @@ To start using Avo Codegen for this source, you need to select which <Link passH
 
 #### Setup Status
 
-The setup status indicates whether the Avo Codegen has been successfully initialized or not. If they have yet to be Initialized for this source, the setup status will show "Listening for the first initialization..."
+The setup status indicates whether Avo Codegen has been successfully initialized or not. If they have yet to be Initialized for this source, the setup status will show "Listening for the first initialization..."
 
 <center>
   <img
@@ -233,7 +233,7 @@ The setup status indicates whether the Avo Codegen has been successfully initial
   />
 </center>
 
-Once you have successfully initialized the Avo Codegen, the setup status will show "Successfully Initialized", which means you can start implementing events using Avo Codegen.
+Once you have successfully initialized Avo Codegen, the setup status will show "Successfully Initialized", which means you can start implementing events using Avo Codegen.
 
 <center>
   <img
@@ -264,7 +264,7 @@ Learn more about Destination Interface and Avo Managed destinations in the <Link
 
 The documentation is automatically generated for your source and the connected destinations. First you have to generate your Avo file by using our CLI or downloading it from the UI, then you can initialize Avo and implement your events.
 
-Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/implementation/avo-codegen-overview"><a>how to set up the Avo Codegen</a></Link>.
+Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/implementation/avo-codegen-overview"><a>how to set up Avo Codegen</a></Link>.
 
 ## Destinations
 

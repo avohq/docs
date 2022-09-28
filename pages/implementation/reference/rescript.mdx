@@ -108,7 +108,7 @@ This method will call the `make(env)` callback in all the provided <Link passHre
   When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool and list.
 - `webDebugger`: optional bool, for optional Avo Web Debugger instance
 - `[noop=false]`: optional bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
-- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make the Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
+- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
 
 `destinationOptions`: `[~segmentDestinationName=?], [~anotherSegmentDestinationName=?], [~amplitudeDestinationName=?], [~mixpanelDestinationName=?]`. Keys of this object are the camelCase versions of your destinations in the Avo UI.
 
@@ -138,7 +138,7 @@ In Node each callback gets an additional first parameter - `userId` and, optiona
 #### Destination interface example
 
 ```rescript
-// Example: Destination interface for the Avo Inspector SDK. Replace the implementation with your own tracking SDK methods
+// Example: Destination interface for Avo Inspector SDK. Replace the implementation with your own tracking SDK methods
 let inspectorCustomDestination: Avo.avoCustomDestination = {
   make: (_env, _apiKey) => (),
   logEvent: (eventName, eventProperties) => {
