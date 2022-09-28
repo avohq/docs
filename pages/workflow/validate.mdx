@@ -14,37 +14,33 @@ import { FunctionComponent } from 'react';
 
 Avo provides a number of tools that help you verify that the events you’ve implemented are correct according to how you’ve defined them in your Avo Tracking Plan.
 
-Avo’s validation functionalities are built on top of two product offerings, <Link passHref href="/data-design/start-using-inspector"><a>Avo Inspector</a></Link> and <Link passHref href="/implementation/avo-functions-overview"><a>Avo Functions</a></Link>.
+Avo’s validation functionalities are built on top of two product offerings, <Link passHref href="/data-design/start-using-inspector"><a>Avo Inspector</a></Link> and <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen</a></Link>.
 
 > 🔒 While Avo offers powerful tools for data quality monitoring and observability, Avo never receives or processes any PII data about the customers of Avo customers. Avo never receives or processes your actual analytics events, only the schemas.
 
 # Validate implementation with Avo Inspector
 
-For every source that has the Inspector installed, you can validate if the implementation is according to the tracking plan using the Inspector dashboard and/or the Inspector implementation in your tracking plan.
+For every source that has Inspector installed, you can validate if the implementation is according to the tracking plan using Inspector dashboard and/or Inspector implementation in your tracking plan.
 
-If you don’t have the Inspector installed yet, you can learn more about how to get started with the Inspector here:
+If you don’t have Inspector installed yet, you can learn more about how to get started with Inspector here:
 
 <div className={styles.row}>
   <PageLink
     image={AnalyticsManagerIcon}
     title="Avo Inspector"
     description="Use Inspector to improve your tracking plan health"
-    callToAction={
-      new CallToAction(
-        '/data-design/start-using-inspector',
-      )
-    }
+    callToAction={new CallToAction('/data-design/start-using-inspector')}
   />
 </div>
 
-### Validate with the Inspector dashboard
+### Validate with Inspector dashboard
 
-The Inspector dashboard compares your tracking calls to the Tracking Plan on your current branch. If the Inspector finds any discrepancies between the tracking calls and the Tracking Plan, an issue is shown on the dashboard.
+Inspector dashboard compares your tracking calls to the Tracking Plan on your current branch. If Inspector finds any discrepancies between the tracking calls and the Tracking Plan, an issue is shown on the dashboard.
 
-Here’s how you can validate tracking implementation for a particular branch using the Inspector dashboard:
+Here’s how you can validate tracking implementation for a particular branch using Inspector dashboard:
 
 1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
-2. In the Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
+2. In Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
 
 <center>
   <img
@@ -56,7 +52,7 @@ Here’s how you can validate tracking implementation for a particular branch us
 
 _Example: Inspector dashboard_
 
-3. In the Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
+3. In Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
 
 <center>
   <img
@@ -68,13 +64,13 @@ _Example: Inspector dashboard_
 
 _Example: Discrepancies in the event tracking_
 
-### Validate with the Inspector implementation status
+### Validate with Inspector implementation status
 
-For every source the Inspector is installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent from in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
+For every source Inspector is installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent from in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
 
 You can hover over the source pill in the events table, or click into the event, to learn more about the implementation status.
 
-Learn more about how to read the Inspector implementation status:
+Learn more about how to read Inspector implementation status:
 
 <div className={styles.row}>
   <PageLink
@@ -89,39 +85,35 @@ Learn more about how to read the Inspector implementation status:
   />
 </div>
 
-# Validate implementation with Avo Functions
+# Validate implementation with Avo Codegen
 
-For all tracking implemented with Avo Functions, you can validate if the implementation is according to the tracking plan using four methods, each with its own purpose.
+For all tracking implemented with Codegen, you can validate if the implementation is according to the tracking plan using four methods, each with its own purpose.
 
-If you’re not using Avo Functions already, you can learn more about how to get started here:
+If you’re not using Codegen already, you can learn more about how to get started here:
 
 <div className={styles.row}>
   <PageLink
     image={AnalyticsManagerIcon}
-    title="Quickstart: Avo Functions"
-    description="Start using Avo Functions"
-    callToAction={
-      new CallToAction(
-        '/implementation/start-using-avo-functions',
-      )
-    }
+    title="Quickstart: Codegen"
+    description="Start using Codegen"
+    callToAction={new CallToAction('/implementation/start-using-avo-codegen')}
   />
 </div>
 
 ### Validate with type-safety and runtime validation
 
-All tracking code implemented with Avo Functions is type-safe and has built in runtime validation. This gives the developer instant feedback on whether the tracking implementation is according to the tracking plan or not. Any type issues are surfaced by the code compiler, and runtime validations are surfaced via console logs and the Avo debugger.
+All tracking code implemented with Codegen is type-safe and has built in runtime validation. This gives the developer instant feedback on whether the tracking implementation is according to the tracking plan or not. Any type issues are surfaced by the code compiler, and runtime validations are surfaced via console logs and the Avo debugger.
 
-Learn more about how validations in Avo Functions work here:
+Learn more about how validations in Codegen work here:
 
 <div className={styles.row}>
   <PageLink
     image={DevIcon}
-    title="What's happening inside the Avo Functions"
-    description="Learn about how validation in Avo Functions work"
+    title="What's happening inside Codegen"
+    description="Learn about how validations in Codegen work"
     callToAction={
       new CallToAction(
-        '/implementation/avo-functions-overview#whats-happening-inside-the-avo-functions',
+        '/implementation/avo-codegen-overview#whats-happening-inside-the-avo-codegen',
       )
     }
   />
@@ -129,7 +121,7 @@ Learn more about how validations in Avo Functions work here:
 
 ### Validate with the Avo In-app Debugger
 
-The Avo In-app Debugger is an addition on top of Avo Functions that gives you better visibility into which events are being sent, which properties are attached, and whether any issues were detected or not.
+The Avo In-app Debugger is an addition on top of Avo Codegen that gives you better visibility into which events are being sent, which properties are attached, and whether any issues were detected or not.
 
 <center>
   <img
@@ -149,18 +141,16 @@ The Avo debugger is available on Web, iOS, Android and React Native. Learn more 
     title="Visual debuggers"
     description="Learn about how Avo debugger works"
     callToAction={
-      new CallToAction(
-        '/explore-tracking-plan/start-using-visual-debuggers',
-      )
+      new CallToAction('/explore-tracking-plan/start-using-visual-debuggers')
     }
   />
 </div>
 
 ### Validate with the Avo CLI
 
-The Avo CLI has a command, ´avo status´, that will report on where the Avo Functions are being called from, and which events have not been implemented yet.
+The Avo CLI has a command, ´avo status´, that will report on where Avo Codegen is being called from, and which events have not been implemented yet.
 
-We recommend adding the ´avo status´ check to your CI pipeline, and configure it to throw an error if an event that is supposed to be sent with Avo Functions, is not found in the codebase.
+We recommend adding the ´avo status´ check to your CI pipeline, and configure it to throw an error if an event that is supposed to be sent with Avo Codegen, is not found in the codebase.
 
 ```sh
 > avo status
@@ -196,15 +186,13 @@ You can learn more about using the Avo CLI in CI/CD here:
     image={DevIcon}
     title="Avo in CI/CD"
     description="How to use the Avo CLI in CI/CD"
-    callToAction={
-      new CallToAction('/implementation/avo-in-the-ci')
-    }
+    callToAction={new CallToAction('/implementation/avo-in-the-ci')}
   />
 </div>
 
 ### Validate with implementation status in the tracking plan
 
-For every source the Avo Functions are installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
+For every source Avo Codegen is installed on, you’ll find an implementation status in the Avo Tracking Plan. When looking at from which sources an event is sent in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
 
 You can hover over the source pill in the events table, or click into the event, to learn more about the implementation status.
 
@@ -218,7 +206,7 @@ You can hover over the source pill in the events table, or click into the event,
 
 _Example: Implementation status in the event table of the tracking plan_
 
-You can also find a branch implementation status for Avo Functions in the top right corner of the branch review screen.
+You can also find a branch implementation status for Avo Codegen in the top right corner of the branch review screen.
 
 <center>
   <img
@@ -230,16 +218,16 @@ You can also find a branch implementation status for Avo Functions in the top ri
 
 _Example: Implementation status on the branch review screen_
 
-Learn more about how to read the Avo Functions implementation status:
+Learn more about how to read Avo Codegen implementation status:
 
 <div className={styles.row}>
   <PageLink
     image={DevIcon}
-    title="Avo Functions implementation status"
-    description="Learn how to read the Avo Functions implementation status"
+    title="Avo Codegen implementation status"
+    description="Learn how to read Avo Codegen implementation status"
     callToAction={
       new CallToAction(
-        '/workspace/tracking-plan/implementation-status#avo-functions-implementation-status',
+        '/workspace/tracking-plan/implementation-status#avo-codegen-implementation-status',
       )
     }
   />
@@ -252,8 +240,6 @@ Learn more about how to read the Avo Functions implementation status:
     image={AnalyticsManagerIcon}
     title="6. Merge branch and Publish"
     description="Learn how to Merge branch and Publish your tracking plan updates to schema registries"
-    callToAction={
-      new CallToAction('/workflow/merge-publish')
-    }
+    callToAction={new CallToAction('/workflow/merge-publish')}
   />
 </div>

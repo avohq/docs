@@ -381,7 +381,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'The Inspector dashboard',
+        title: 'Inspector dashboard',
         path: '/workspace/inspector',
       },
       {
@@ -426,17 +426,17 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'section',
-        group: 'Avo Functions',
+        group: 'Avo Codegen',
       },
       {
         type: 'route',
-        title: 'What are Avo Functions',
-        path: '/implementation/avo-functions-overview',
+        title: 'What is Avo Codegen',
+        path: '/implementation/avo-codegen-overview',
       },
       {
         type: 'route',
-        title: 'Quickstart: Avo Functions',
-        path: '/implementation/start-using-avo-functions',
+        title: 'Quickstart: Avo Codegen',
+        path: '/implementation/start-using-avo-codegen',
       },
       {
         type: 'route',
@@ -449,12 +449,12 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Implementing tracking with Avo Functions',
+        title: 'Implementing tracking with Avo Codegen',
         path: '/implementation/start-implementing-tracking-changes',
       },
       {
         type: 'route',
-        title: 'Avo Functions alongside existing tracking',
+        title: 'Avo Codegen alongside existing tracking',
         path: '/implementation/avo-and-existing-tracking',
       },
       {
@@ -464,37 +464,37 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo Functions in unit tests',
+        title: 'Avo Codegen in unit tests',
         path: '/implementation/avo-and-unit-tests',
       },
       {
         type: 'route',
-        title: 'Avo Functions status in CI/CD',
+        title: 'Avo Codegen status in CI/CD',
         path: '/implementation/avo-in-the-ci',
       },
       {
         type: 'route',
-        title: 'Avo Functions and linters',
+        title: 'Avo Codegen and linters',
         path: '/implementation/avo-and-linters',
       },
       {
         type: 'route',
-        title: 'Avo Functions with Inspector SDK ',
-        path: '/implementation/start-using-inspector-with-avo-functions',
+        title: 'Avo Codegen with Inspector SDK ',
+        path: '/implementation/start-using-inspector-with-avo-codegen',
       },
       {
         type: 'route',
-        title: 'Get Avo Functions without using Avo CLI',
+        title: 'Get Avo Codegen without using Avo CLI',
         path: '/explore-tracking-plan/download-or-copy-avo-file-manually',
       },
       {
         type: 'route',
-        title: 'Avo Functions and parallel tracking changes',
+        title: 'Avo Codegen and parallel tracking changes',
         path: '/implementation/avo-and-git',
       },
       {
         type: 'route',
-        title: 'Avo Functions in monorepos',
+        title: 'Avo Codegen in monorepos',
         path: '/implementation/avo-in-monorepo',
       },
       {
@@ -510,7 +510,7 @@ const navigation: navigationItem[] = [
     subroutes: [
       {
         type: 'group',
-        title: 'Avo Functions',
+        title: 'Avo Codegen',
         subroutes: [
           {
             type: 'group',

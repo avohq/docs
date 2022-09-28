@@ -66,24 +66,24 @@ Authenticate the **Avo CLI** with your Avo user:
 avo login
 ```
 
-Now you can pull the Avo Functions from your Avo workspace.
+Now you can pull your custom tracking snippet from your Avo workspace using Codegen.
 
 ```bash
 avo pull --branch your_branch_name [SourceName]
 ```
 
-> When you run Avo pull for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with the Avo Functions file.
+> When you run Avo pull for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with Codegen file.
 
 ## Implement new events
 
-Now your Avo file will have the changes from the `your_branch_name` branch. Call all the new Avo Functions in required places, update the new event properties. You can find a reference of all the code snippets required to implement your events in the `Functions` tab.
+Now your Avo file will have the changes from the `your_branch_name` branch. Call all the new Avo Codegen functions in required places, update the new event properties. You can find a reference of all the code snippets required to implement your events in the `Codegen` tab.
 
 <img
   src={require('../../images/workspace/nav-functions.png')}
   alt="Connections configuration"
 />
 <center>
-  <i>Avo functions reference</i>
+  <i>Codegen reference</i>
 </center>
 <br />
 

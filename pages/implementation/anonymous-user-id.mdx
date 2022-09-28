@@ -5,36 +5,42 @@ title: 'Handling anonymous and identified users in the client and on the server'
 
 import Link from '../../components/Link';
 
-## User identity in the client side Avo functions
+## User identity in the client side Codegen
 
 ### Anonymous users
 
-When working with anonymous users, analytics SDKs automatically assign anonymous user ids on a per-client level. 
+When working with anonymous users, analytics SDKs automatically assign anonymous user ids on a per-client level.
 When a user is identified the anonymous events are associated with the identified user.
 You don't need to do additional actions for this logic to work on the client side, so you are not required to provide `anonymousUserId` anywhere.
 
 ### Identified users
 
-Client side Analytics SDKs can store the information about the currently logged in user. 
+Client side Analytics SDKs can store the information about the currently logged in user.
 It makes possible to identify user once and then send all subsequent tracking calls on behalf of the identified user.
 
 To make an Avo function identify a user you add the Identify action to the corresponding Avo event in your tracking plan.
-<Link passHref href="/workspace/tracking-plan/events#a-nameidentify-usera-identify-user" passHref><a>Learn more about the Identify action.</a></Link>
 
-Avo functions corresponding to the events with Identify action will require a userId parameter automatically.
+<Link
+  passHref
+  href="/workspace/tracking-plan/events#a-nameidentify-usera-identify-user"
+  passHref
+>
+  <a>Learn more about the Identify action.</a>
+</Link>
 
+Codegen corresponding to the events with Identify action will require a userId parameter automatically.
 
-## User identity in the server side Avo functions
+## User identity in the server side Codegen
 
 ### Anonymous users
 
-Server side Avo functions do not have a way to maintain user identity. 
-That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Avo functions.
-An optional `anonymousUserId` parameter is available in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Avo functions.
+Server side Codegen does not have a way to maintain user identity.
+That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Codegen.
+An optional `anonymousUserId` parameter is available in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Codegen.
 
 ### Identified users
 
 Given the server side functions can not maintain user identity, once the user is identified you still have to provide the `userId` with every function call.
-An optional `userId` parameter is automatically required in all the server side Avo functions.
+An optional `userId` parameter is automatically required in all the server side Codegen.
 
 > Though both `anonymousUserId` and `userId` are optional make sure to provide one of them to be able to identify the user.

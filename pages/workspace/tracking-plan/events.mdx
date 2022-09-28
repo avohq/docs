@@ -30,10 +30,9 @@ An event is defined in the Events section of the Tracking plan and can be organi
 - The _Tags_ associated with the event
 - The <Link passHref href="/data-design/name-mapping"><a>_Name Mapping(s)_</a></Link> that the event name is mapped to when sending to specific destinations
 
-
 ## Sources
 
-Add all sources you want the event to be sent from to the event in Avo. If you want the event to be implemented with [Avo Functions](https://www.avo.app/docs/implementation/avo-functions-overview), make sure "Implement with Avo" is checked. Having "Implement with Avo" checked adds the event to your type-safe generated Avo Functions file for that source. If you don't want the event to be implemented with Avo Functions, leave "Implement with Avo" unchecked.
+Add all sources you want the event to be sent from to the event in Avo. If you want the event to be implemented with [Avo Codegen](https://www.avo.app/docs/implementation/avo-codegen-overview), make sure "Implement with Avo" is checked. Having "Implement with Avo" checked adds the event to your type-safe Avo Codegen file for that source. If you don't want the event to be implemented with Avo Codegen, leave "Implement with Avo" unchecked.
 
 <center>
   <img
@@ -43,10 +42,9 @@ Add all sources you want the event to be sent from to the event in Avo. If you w
   />
 </center>
 
-
 ## <a name="actions"></a> Actions
 
-Actions is Avo's umbrella term over all the tracking methods the analytics platforms offer, such as logging events, updating user properties, logging revenue, etc. In your Avo tracking plan you can configure which actions (tracking methods) should be triggered. Actions can be triggered on their own or together, for example it's common to update user properties along with logging an event. 
+Actions is Avo's umbrella term over all the tracking methods the analytics platforms offer, such as logging events, updating user properties, logging revenue, etc. In your Avo tracking plan you can configure which actions (tracking methods) should be triggered. Actions can be triggered on their own or together, for example it's common to update user properties along with logging an event.
 
 See <a passhref href="/workspace/tracking-plan/events#supported-actions">supported actions (tracking methods)</a> below.
 
@@ -54,9 +52,10 @@ See <a passhref href="/workspace/tracking-plan/events#supported-actions">support
 
 #### Adding Actions
 
-The default action when you add an event to your Avo tracking plan is to log an event. 
+The default action when you add an event to your Avo tracking plan is to log an event.
 
 To add an action, click `+Add Action` in the Event modal and select the relevant action:
+
 <center style={{ marginBottom: 16 + 'px' }}>
   <img
     style={{ height: 300 + 'px' }}
@@ -68,6 +67,7 @@ To add an action, click `+Add Action` in the Event modal and select the relevant
 #### Removing Actions
 
 To remove an action, click settings in the Action and select `Remove`:
+
 <center style={{ marginBottom: 16 + 'px' }}>
   <img
     style={{ height: 300 + 'px' }}
@@ -80,15 +80,28 @@ To remove an action, click settings in the Action and select `Remove`:
 
 Below is a list of possible actions, followed by a more detailed overview of each:
 
-1. <a href="#identify-user">Identify User</a>: Avo will identify the user in your analytics tool when this event is sent. All events sent after this event will be tied to the identified user. Usually set on sign in events.
-2. <a href="#update-user-props">Update User Properties</a>: Avo will update the following user properties when this event is sent.
-3. <a href="#log-event">Log Event</a> Avo will log/track this as an event in your analytics tool.
-4. <a href="#log-revenue">Log Revenue</a>: Avo will use revenue APIs provided by your analytics tool to log revenue when this event is sent. Usually set on checkout events.
-5. <a href="#log-page-view">Log Page View</a>: Avo will log page view in your analytics tool when this event is sent. Usually set on events that are sent on screen/page navigation.
-6. <a href="#unidentify-user">Unidentify User</a>: Avo will unidentify the user in your analytics tool when this event is sent. All events sent after this event will not be tied to the previously identified user. Usually set on sign out events.
-7. <a href="#update-groups">Update Groups</a>: Avo can associate users with groups and/or update group properties. Adding users to groups will link them to all subsequent calls.
+1. <a href="#identify-user">Identify User</a>: Avo will identify the user in
+   your analytics tool when this event is sent. All events sent after this event
+   will be tied to the identified user. Usually set on sign in events.
+2. <a href="#update-user-props">Update User Properties</a>: Avo will update the
+   following user properties when this event is sent.
+3. <a href="#log-event">Log Event</a> Avo will log/track this as an event in your
+   analytics tool.
+4. <a href="#log-revenue">Log Revenue</a>: Avo will use revenue APIs provided by
+   your analytics tool to log revenue when this event is sent. Usually set on
+   checkout events.
+5. <a href="#log-page-view">Log Page View</a>: Avo will log page view in your
+   analytics tool when this event is sent. Usually set on events that are sent
+   on screen/page navigation.
+6. <a href="#unidentify-user">Unidentify User</a>: Avo will unidentify the user
+   in your analytics tool when this event is sent. All events sent after this
+   event will not be tied to the previously identified user. Usually set on sign
+   out events.
+7. <a href="#update-groups">Update Groups</a>: Avo can associate users with
+   groups and/or update group properties. Adding users to groups will link them
+   to all subsequent calls.
 
-> 💡 Read about <Link passHref href="/implementation/avo-functions-overview#avo-generated-file-supported-tracking-methods"><a>**how Avo Functions handle different tracking methods**</a></Link>.
+> 💡 Read about <Link passHref href="/implementation/avo-codegen-overview#avo-generated-file-supported-tracking-methods"><a>**how Avo Codegen handles different tracking methods**</a></Link>.
 
 #### <a name="log-event"></a> Log Event
 
@@ -261,11 +274,9 @@ analytics platform:
 
 #### <a name="log-revenue"></a> Log Revenue
 
-<a href="#revenue-amplitude">
-  Amplitude
-</a>, <a href="#revenue-segment">Segment</a> and <a href="#revenue-mixpanel">
-  Mixpanel
-</a>
+<a href="#revenue-amplitude">Amplitude</a>, <a href="#revenue-segment">
+  Segment
+</a> and <a href="#revenue-mixpanel">Mixpanel</a>
 support tracking revenue specifically. It's recommended to add the Log Revenue
 action with events that represent a successful purchase, such as `Purchase
 Completed`
