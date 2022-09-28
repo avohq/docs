@@ -5,7 +5,51 @@ title: 'Start using Avo Codegen'
 
 import Link from '../../components/Link';
 
-In this guide we'll cover all the required steps to start using Avo in your app or website, both alongside existing tracking code and SDKs and in a new project.
+## What is Codegen
+
+Codegen produces type safe code for implementing analytics. 
+
+- The "data designer" specifies the event structure in the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link>, and which platforms should send the event
+- then the developer who implements analytics can use Codegen to implement the analytics calls per each analytics event
+
+## Why use Codegen
+
+Codegen simplifies implementation and makes sure it is correct and consistent across all platforms.
+
+For example, instead of Android calling `analytics.track("game started")` and iOS calling `analytics.track("gameStarted")` , they both call `Avo.gameStarted()`, and the Avo function takes care of the spelling of the event and property names as they get passed into the analytics SDK.
+
+In other words, event and property naming is abstracted entirely away from the event implementation layer, ensuring that events and properties are named the same across all platforms, teams and code bases.
+
+## When use Codegen
+
+Codegen is our take on increasing the robustness of the analytics implementation and simplifying the implementation process.
+
+Adopting Codegen is not required to get value from Avo - many companies have their own ways to achieve robust analytics implementation and prefer to stick to them after adopting Avo and it’s totally fine.
+
+Avo is designed to be efficient and powerful without the Codegen, providing the option of the advanced tracking plan management with any implementation approach. 
+The decision to use Codegen is usually in the hands of the Engineering department. If they prefer to use a different approach Avo would help you communicate the tracking plan changes to the engineering team and help them to give the implementation feedback.
+
+## How does Codegen work
+
+Codegen works with any analytics tool, whether it's any of the third-party event logging SDKs (e.g. Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, Pendo, etc) or your homemade API.
+
+When designing the tracking plan you configure the list of analytics destinations for each source. In the generated code each destination is represented as its own Destination Interface in the initAvo method. This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
+
+In the Avo Tracking Plan you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
+
+Learn more technical details about Codegen <Link passHref href="/implementation/avo-functions-overview"><a>here</a></Link>.
+
+## Do events flow through Avo servers?
+
+No. None of your events ever go through Avo servers. They go directly from your devices (whether that's a front-end client or a server) to the analytics destination.
+
+> 💡 This sometimes called "device mode". With CDPs, you can choose between <Link passHref href="https://segment.com/docs/guides/intro-impl/#connection-modes"><a>_Cloud-mode_ or _Device-mode_</a></Link>:
+>
+> - In _Cloud-mode_, your events go through the CDP servers. Your devices send the events to the CDP cloud (aka the CDP Servers) and the CDP cloud sends them to the analytics destinations.
+> - In _Device-mode_ the events go directly from your devices (whether it's a front end client or a server) to the analytics destination.
+>   In this regard, Avo works like _Device-mode_.
+
+## How to set up and use Codegen
 
 Integrating Avo with your app or website can begin as soon as you create an Avo account, and requires three steps:
 
@@ -13,7 +57,7 @@ Integrating Avo with your app or website can begin as soon as you create an Avo 
 2. [Install the Avo CLI](#install-the-avo-cli)
 3. [Initialize Avo and send your first event](#3-initialize-avo-and-send-an-event)
 
-## 1. Configure your Avo workspace
+### 1. Configure your Avo workspace
 
 In [your Avo workspace](https://avo.app/welcome) head to the Sources tab in the left sidebar. Here we'll create a Source for our app and a Destination for every SDK we want to pass data into.
 
@@ -22,7 +66,7 @@ In [your Avo workspace](https://avo.app/welcome) head to the Sources tab in the 
 
 <br />
 
-### Configure a source
+#### Configure a source
 
 If a source doesn't already exist for your app or website, click "Add Source" to create a new Source. Give it a name and define what development platform and programming language you'll be using. This configuration is used to tailor Codegen to your stack.
 
@@ -39,12 +83,12 @@ If a source doesn't already exist for your app or website, click "Add Source" to
 
 <br />
 
-### Configure destinations
+#### Configure destinations
 
 1. [Configure destinations in your Avo workspace](#configure-in-your-avo-workspace)
 2. [Provide the destination interface for each destination in initAvo](#implement-the-destination-interface)
 
-#### Implement the destination interface
+##### Implement the destination interface
 
 Initialize the destination (e.g. SDK) on your own and pass it to the Avo SDK, by implementing the [destination interface](../implementation/destinations) and providing it to the Avo generated code.
 
@@ -58,7 +102,7 @@ _Step 2: **Initialize Avo and pass in the bridge interface**._
 
 - See how you [initialize Avo and send your first event using a custom destination](#3-initialize-avo-and-send-an-event).
 
-#### Configure in your Avo workspace
+##### Configure in your Avo workspace
 
 Head back to the [Sources tab](../data-design/define-sources-and-destinations) and click "Add Destination". To configure a destination:
 
@@ -95,11 +139,11 @@ Here we've configured a Source, sending to a Custom Destination called My Analyt
   <i>Our Source and Destination</i>
 </center>
 
-### Configure events
+#### Configure events
 
 Head to the Tracking Plan tab. If no events exist in your tracking plan yet you can either [import your existing tracking plan](https://www.avo.app/docs/workspace/tracking-plan/importing) or [define events in the Tracking Plan](https://www.avo.app/docs/data-design/start-data-design#defining-and-configuring-events). Make sure to attach the source you'll be implementing to all events you want to implement. Learn more about [attaching sources to events here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
 
-## 2. Install Avo to your project
+### 2. Install Avo to your project
 
 > 💡 **How does Avo integrate with my project?**<br />
 > Avo code-generates a file based on the Tracking Plan in your Avo workspace. The file contains a function per each Event in the Tracking Plan that you use to send your events. We call these functions Codegen. Each Avo Function validates the event data before passing it forward to your Destinations.
@@ -108,7 +152,7 @@ Head to the Tracking Plan tab. If no events exist in your tracking plan yet you 
 >
 > To make the workflow of updating Codegen as easy as possible we built the Avo CLI. By running `avo pull [--branch my-branch] [SourceName]` the CLI will update the file containing Codegen automatically.
 
-### Install the [Avo CLI](https://www.npmjs.com/package/avo)
+#### Install the [Avo CLI](https://www.npmjs.com/package/avo)
 
 Install the **Avo CLI** locally in your project (recommended), using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
 
@@ -130,7 +174,7 @@ npm install -g avo
 yarn global add -E avo
 ```
 
-### Link your project to Avo
+#### Link your project to Avo
 
 Authenticate the **Avo CLI** with your Avo user:
 
@@ -144,9 +188,9 @@ Now you can pull Codegen from your Avo workspace. When you run `avo pull` for th
 avo pull
 ```
 
-## 3. Initialize Avo and send an event
+### 3. Initialize Avo and send an event
 
-### Initialize Avo
+#### Initialize Avo
 
 Before we can start using Codegen to log events we first need to initialize Avo by calling the `initAvo` function exported from the file. Avo is usually initialized in the same place you initialize all your other analytics SDKs, or as soon as possible in the runtime of your app.
 
@@ -238,7 +282,7 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, myAnalyticsSDKBridge);
 
 Detailed instructions on how to initialize Avo with Custom Destinations for all other programming languages and platforms supported by Avo <Link passHref href="/implementation/destinations"><a>can be found here</a></Link>.
 
-### Send an event
+#### Send an event
 
 Now we're ready to start implementing reliably analytics tracking with Codegen. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Tracking Plan on avo.app</a></Link> has it's own function in Codegen file.
 
