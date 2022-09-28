@@ -5,7 +5,7 @@ title: 'Destinations in Avo Codegen'
 
 import Link from '../../components/Link';
 
-Destination Interface is a set of callback methods that you implement to route data from Avo to particular analytics destination in your client. Avo triggers specific methods when you call the functions from Avo Codegen to send events, update user properties, identify users, etc.
+Destination Interface is a set of callback methods that you implement to route data from Avo to particular analytics destination in your client. Avo triggers specific methods when you call the functions from Codegen to send events, update user properties, identify users, etc.
 It provides the data ready to be sent to any analytics destination.
 
 You can use the destination interface with any analytics platform, please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
@@ -14,16 +14,16 @@ the best solution for you.
 To get started using a destination interface you do the following:
 
 1. Create a <Link passHref href="/data-design/define-sources-and-destinations#destinations-1Destination"><a>Destination</a></Link> in the Connections tab
-2. Set the Destination Mode to Destination Interface in the <Link passHref href="/data-design/define-sources-and-destinations#avo-codegen-setup"><a>Avo Codegen Setup</a></Link> tab in your Source
+2. Set the Destination Mode to Destination Interface in the <Link passHref href="/data-design/define-sources-and-destinations#avo-codegen-setup"><a>Codegen Setup</a></Link> tab in your Source
 3. Pull the updated code by doing `avo pull [--branch my-branch] [SourceName]` in the Avo CLI
 4. Initialize Avo with a custom destination (<Link passHref href="/implementation/reference/javascript#destination-interface-example"><a>view example for JavaScript</a></Link>)
 5. Fill in the empty callback methods for sending the data to your analytics destination
 
 ## Destination Interface overview
 
-We will be referencing <Link passHref href="/implementation/avo-codegen-overview"><a>_Avo Codegen_</a></Link>, <Link passHref href="/workspace/tracking-plan/events"><a>_events_</a></Link>, <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>_actions_</a></Link> and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> and subdocs to get familiar with Avo concepts.
+We will be referencing <Link passHref href="/implementation/avo-codegen-overview"><a>_Codegen_</a></Link>, <Link passHref href="/workspace/tracking-plan/events"><a>_events_</a></Link>, <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>_actions_</a></Link> and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> and subdocs to get familiar with Avo concepts.
 
-With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen</a></Link> are called.
+With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-codegen-overview"><a>Codegen</a></Link> are called.
 
 > Available event actions in Avo
 >
@@ -346,7 +346,7 @@ In each callback you would do a specific action, that maps directly to the Snowp
 
 When using some language + destination combinations you can pick Avo managed destination approach.
 
-If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: `Log Event`, `Update User Properties`, `Identify User`, `Unidentify User`, `Log Revenue`, `Log Page View`, `Update Groups`, will be handled by the <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen in the Avo generated code</a></Link>.
+If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: `Log Event`, `Update User Properties`, `Identify User`, `Unidentify User`, `Log Revenue`, `Log Page View`, `Update Groups`, will be handled by the <Link passHref href="/implementation/avo-codegen-overview"><a>Codegen in the Avo generated code</a></Link>.
 
 - Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specified environment when you initialize Avo
 - **Log Event**: Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call.

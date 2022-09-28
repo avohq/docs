@@ -51,7 +51,7 @@ Inconsistent event names and property names can arise either during the "data de
 
 ### 1. How Avo Codegen ensure consistent event and property names across platforms and codebases
 
-**_What is Avo Codegen?_** Avo Codegen produces type safe code for implementing analytics. The "data designer" specifies the event structure in the Avo app, and which platforms should send the event, and then the developer who implements analytics can use Avo Codegen per each analytics event.
+**_What is Codegen?_** Codegen produces type safe code for implementing analytics. The "data designer" specifies the event structure in the Avo app, and which platforms should send the event, and then the developer who implements analytics can use Codegen per each analytics event.
 
 For example, instead of Android calling `analytics.track("game started")` and iOS calling `analytics.track("gameStarted")` , they both call `Avo.gameStarted()`, and the Avo function takes care of the spelling of the event and property names as they get passed into the analytics SDK.
 
@@ -139,10 +139,10 @@ The typical Avo customer has years of tracking in place when they start using Av
 
    For example if `msg_sent` is defined in your tracking plan, but someone implements analytics for it without Avo Codegen, and ships `message_sent` or `msgSent`, then Inspector will show you those events, and indicate that they don't match the tracking plan.
 
-   > ** It's impossible to ship events or properties with names that don't match your tracking plan when you implement using Avo Codegen, but, when companies adopt Avo, they often have multiple product teams and years of analytics tracking code in place.*
+   > ** It's impossible to ship events or properties with names that don't match your tracking plan when you implement using Codegen, but, when companies adopt Avo, they often have multiple product teams and years of analytics tracking code in place.*
 
-   1. For adoption, we recommend adopting Avo team by team (not flag-day switch-over for entire company). This means: While some teams will implement with type-safe Avo Codegen, other teams and codebases will still implement "the old way". Which means, implementation errors will slip through 😅
-   2. For replacing old tracking code, we recommend the "scout rule"; always leaving the analytics code better than when you found it, and porting analytics code to Avo Codegen as it makes sense.
+   1. For adoption, we recommend adopting Avo team by team (not flag-day switch-over for entire company). This means: While some teams will implement with type-safe Codegen, other teams and codebases will still implement "the old way". Which means, implementation errors will slip through 😅
+   2. For replacing old tracking code, we recommend the "scout rule"; always leaving the analytics code better than when you found it, and porting analytics code to Codegen as it makes sense.
 
 3. Inspector **shows you all your tracked events**
 

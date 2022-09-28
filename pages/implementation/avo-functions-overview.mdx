@@ -5,7 +5,7 @@ title: 'Avo Codegen overview'
 
 import Link from '../../components/Link';
 
-## <a name="avo-generated-file"></a> Avo generated file containing Avo Codegen
+## <a name="avo-generated-file"></a> Avo generated file containing Codegen
 
 The Avo generated code is the representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events.
 For example if you set up an iOS/Swift source the generated code will be in a `.swift` file.
@@ -17,7 +17,7 @@ The generated file is the best source of truth when looking for implementation d
 
 > You should never have to make changes to the Avo generated file. If you find yourself in the situation where you have to edit the file please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link>.
 
-> Make sure all the events you want to implement using Avo Codegen have the source attached to it, where "Implement with Avo" has been checked. Learn more about how to [configure events in your tracking plan here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
+> Make sure all the events you want to implement using Codegen have the source attached to it, where "Implement with Avo" has been checked. Learn more about how to [configure events in your tracking plan here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
 
 ### Avo Command Line Interface
 
@@ -78,16 +78,16 @@ public static func setSystemProperties(
     optionalListSystemProperty: [Int]?);
 ```
 
-Read more about property types later in the <Link passHref href="/implementation/avo-codegen-overview#avo-generated-file-func-parameters"><a>Avo Codegen section.</a></Link>
+Read more about property types later in the <Link passHref href="/implementation/avo-codegen-overview#avo-generated-file-func-parameters"><a>Codegen section.</a></Link>
 
 - `firstDestination` and `secondDestination` - each destination from the source/destination connections you've defined in the Avo dashboard is represented as its own <Link passHref href="/implementation/destinations"><a>Destination Interface</a></Link> in the init call.
-  This is how Avo Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
+  This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
 - `debugger` - mobile platforms (Android, iOS, React Native) support <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers"><a>the Avo Analytics Debuggers</a></Link>, provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
 - `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors. Note that the Avo validation will never crash your app if env is set to Production.
 - `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is dismissed in production.
 - `destination options` (not shown in the example) - some platforms, for example JavaScript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization. This allows you to pass config/options through Avo to the init functions of the underlying analytics SDKs.
 - `avoLogger` (not shown in the example) - custom logger implementation to control logs logic. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>.
-- `inspector` (not shown in the example) - instance of Avo Inspector to automatically send Avo Codegen data to Avo Inspector (on the supported platforms)
+- `inspector` (not shown in the example) - instance of Avo Inspector to automatically send Codegen data to Avo Inspector (on the supported platforms)
 
 ### <a name="avo-generated-file-init-inside"></a> What's inside the initAvo method / Avo constructor?
 
@@ -112,13 +112,13 @@ if __ENV__ == .dev {
 
 The keys are set up in the Avo web UI and automatically fetched by Codegen, so you don't need to do anything here, just know that it is there. The API keys in Avo are version controlled, and synced across all your sources, this way you don't need to worry if correct API key is being used or not, Avo takes care of it for you.
 
-### Avo Codegen
+### Codegen
 
-Avo Codegen produces actual callable functions generated for events defined in your tracking plan.
+Codegen produces actual callable functions generated for events defined in your tracking plan.
 
-> On some server platforms Avo Codegen produces functions which are async, e.g. on Node.js they return a Promise and on C# you can await on the function
+> On some server platforms Codegen produces functions which are async, e.g. on Node.js they return a Promise and on C# you can await on the function
 
-For example if you have an event defined with name `App Opened` connected to your source, Avo Codegen interface will look like
+For example if you have an event defined with name `App Opened` connected to your source, Codegen interface will look like
 
 ```swift
 /**
@@ -182,7 +182,7 @@ object properties: exact structure of the allowed keys and types of values in th
 
 > Avo can add helper parameters that are not defined in the tracking plan, but are known to be required to make that specific call, for example in server environments Avo usually adds a userId parameter to each function, so server can provide user id to the analytics tracking services.
 
-#### What's happening inside Avo Codegen?
+#### What's happening inside Codegen?
 
 Avo makes sure that the event names and provided properties are correct according to the tracking plan with compile time and runtime validations and development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
 

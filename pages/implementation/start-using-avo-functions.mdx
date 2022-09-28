@@ -24,7 +24,7 @@ In [your Avo workspace](https://avo.app/welcome) head to the Sources tab in the 
 
 ### Configure a source
 
-If a source doesn't already exist for your app or website, click "Add Source" to create a new Source. Give it a name and define what development platform and programming language you'll be using. This configuration is used to tailor Avo Codegen to your stack.
+If a source doesn't already exist for your app or website, click "Add Source" to create a new Source. Give it a name and define what development platform and programming language you'll be using. This configuration is used to tailor Codegen to your stack.
 
 <img
   src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/source-config.png')}
@@ -48,9 +48,9 @@ If a source doesn't already exist for your app or website, click "Add Source" to
 
 Initialize the destination (e.g. SDK) on your own and pass it to the Avo SDK, by implementing the [destination interface](../implementation/destinations) and providing it to the Avo generated code.
 
-_Step 1: **Implement a bridge interface** between your existing analytics SDK instance and Avo Codegen._
+_Step 1: **Implement a bridge interface** between your existing analytics SDK instance and Codegen._
 
-- This enables you to use the same analytics SDK instance across all tracking calls (using the same session IDs and any other details that your analytics instance keeps track of), so that your users will be identified in the same way across both the tracking implemented with Avo Codegen and your existing analytics implementation.
+- This enables you to use the same analytics SDK instance across all tracking calls (using the same session IDs and any other details that your analytics instance keeps track of), so that your users will be identified in the same way across both the tracking implemented with Codegen and your existing analytics implementation.
 - This is a one-time setup per codebase.
 - [See example of a callback interface in JavaScript.](../implementation/reference/javascript#destination-interface-example)
 
@@ -102,11 +102,11 @@ Head to the Tracking Plan tab. If no events exist in your tracking plan yet you 
 ## 2. Install Avo to your project
 
 > 💡 **How does Avo integrate with my project?**<br />
-> Avo code-generates a file based on the Tracking Plan in your Avo workspace. The file contains a function per each Event in the Tracking Plan that you use to send your events. We call these functions Avo Codegen. Each Avo Function validates the event data before passing it forward to your Destinations.
+> Avo code-generates a file based on the Tracking Plan in your Avo workspace. The file contains a function per each Event in the Tracking Plan that you use to send your events. We call these functions Codegen. Each Avo Function validates the event data before passing it forward to your Destinations.
 >
-> You can think about Avo Codegen like a utility file for your analytics. It should be placed somewhere in the source code directory of your Source and checked into git. Every time the tracking plan in Avo is updated, Avo Codegen is updated.
+> You can think about Codegen like a utility file for your analytics. It should be placed somewhere in the source code directory of your Source and checked into git. Every time the tracking plan in Avo is updated, Codegen is updated.
 >
-> To make the workflow of updating Avo Codegen as easy as possible we built the Avo CLI. By running `avo pull [--branch my-branch] [SourceName]` the CLI will update the file containing Avo Codegen automatically.
+> To make the workflow of updating Codegen as easy as possible we built the Avo CLI. By running `avo pull [--branch my-branch] [SourceName]` the CLI will update the file containing Codegen automatically.
 
 ### Install the [Avo CLI](https://www.npmjs.com/package/avo)
 
@@ -138,7 +138,7 @@ Authenticate the **Avo CLI** with your Avo user:
 avo login
 ```
 
-Now you can pull Avo Codegen from your Avo workspace. When you run `avo pull` for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with Avo Codegen file.
+Now you can pull Codegen from your Avo workspace. When you run `avo pull` for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with Codegen file.
 
 ```bash
 avo pull
@@ -148,9 +148,9 @@ avo pull
 
 ### Initialize Avo
 
-Before we can start using Avo Codegen to log events we first need to initialize Avo by calling the `initAvo` function exported from the file. Avo is usually initialized in the same place you initialize all your other analytics SDKs, or as soon as possible in the runtime of your app.
+Before we can start using Codegen to log events we first need to initialize Avo by calling the `initAvo` function exported from the file. Avo is usually initialized in the same place you initialize all your other analytics SDKs, or as soon as possible in the runtime of your app.
 
-First we import Avo Codegen and set up the destinations.
+First we import Codegen and set up the destinations.
 
 If we are using an Avo-managed tracking destination (Option 2) all we need to do is to import the corresponding SDK.
 
@@ -240,16 +240,16 @@ Detailed instructions on how to initialize Avo with Custom Destinations for all 
 
 ### Send an event
 
-Now we're ready to start implementing reliably analytics tracking with Avo Codegen. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Tracking Plan on avo.app</a></Link> has it's own function in Avo Codegen file.
+Now we're ready to start implementing reliably analytics tracking with Codegen. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Tracking Plan on avo.app</a></Link> has it's own function in Codegen file.
 
-Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, with two Event Properties, "Client" and "Screen Name". Here's how we would send the event using Avo Codegen:
+Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, with two Event Properties, "Client" and "Screen Name". Here's how we would send the event using Codegen:
 
 ```typescript
 Avo.appOpened({ client: 'Web', screenName: 'Home Screen' });
 ```
 
-> On some server platforms Avo Codegen functions are async, e.g. on Node.js they return a Promise and on C# you can await on the functions
+> On some server platforms Codegen functions are async, e.g. on Node.js they return a Promise and on C# you can await on the functions
 
 When the Avo Function is called Avo will run validation on the event properties, making sure they fit the spec defined in the Tracking Plan in Avo. Note that this validation is only run in development mode. If you are using a Custom destination Avo passes the event name and properties to the logEvent function in the Custom Destination interface defined above, otherwise it will pass the event directly to the analytics tool defined in your destination.
 
-You can find tailor made documentation for your Avo Codegen, based on your Tracking Plan, in the <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Codegen tab</a></Link> in [your Avo workspace](https://www.avo.app/welcome).
+You can find tailor made documentation for your Codegen, based on your Tracking Plan, in the <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Codegen tab</a></Link> in [your Avo workspace](https://www.avo.app/welcome).

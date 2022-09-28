@@ -20,10 +20,10 @@ Avo offers three ways to validate your tracking implementation:
 
 ## Avo Codegen: Type safe analytics wrappers
 
-### What is Avo Codegen?
+### What is Codegen?
 
 <Link passHref href="/implementation/avo-codegen-overview">
-  <a>Avo Codegen</a>
+  <a>Codegen</a>
 </Link> produces type safe analytics wrappers that are code generated based on your <Link
   passHref
   href="/workspace"
@@ -37,23 +37,23 @@ and you can generate human readable type safe code based on that. The days of un
 and outdated tracking plan spreadsheets and Jira tickets are over 🥳 So are the days of brittle
 analytics implementation you have to revisit to fix again and again and again 😌
 
-### How does Avo Codegen work?
+### How does Codegen work?
 
-Avo Codegen produces type safe analytics wrappers that can work with any analytics tool, whether it's any of the third-party event logging SDKs (e.g.
+Codegen produces type safe analytics wrappers that can work with any analytics tool, whether it's any of the third-party event logging SDKs (e.g.
 Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, Pendo,
 etc) or your home made API.
 
 When designing the tracking plan you configure the list of analytics destinations for each source. In the generated code each destination is
-represented as its own Destination Interface in the initAvo method of your Avo Codegen. This is how Avo Codegen routes data,
+represented as its own Destination Interface in the initAvo method of your Codegen. This is how Codegen routes data,
 locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections
 you've defined in the Avo dashboard.
 
 In the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link> you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link>
-should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and Avo Codegen
+should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and Codegen
 will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
 
-Learn more technical details about <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen here</a></Link>.
+Learn more technical details about <Link passHref href="/implementation/avo-codegen-overview"><a>Codegen here</a></Link>.
 
 ### Do events flow through Avo servers?
 
@@ -104,19 +104,19 @@ You can send data into Inspector three ways:
 #### Inspector SDKs
 
 Inspector SDK can be plugged into your existing tracking – independent of whether
-you're using Avo Codegen or not.
+you're using Codegen or not.
 
 ##### Inspector SDK with your existing tracking
 
 Inspector SDK is a stand-alone SDK which you can install with your package manager.
-You can use Inspector SDK whether or not you adopt Avo Codegen, by plugging the
+You can use Inspector SDK whether or not you adopt Codegen, by plugging the
 Inspector SDK into the call site of your existing tracking. Most code bases
 have some sort of a wrapper around calling their analytics SDKs, and that's where you
 plug Inspector SDK.
 
-##### Inspector SDK with Avo Codegen
+##### Inspector SDK with Codegen
 
-Initialize Avo Codegen SDK with an instance of Inspector SDK.
+Initialize Codegen SDK with an instance of Inspector SDK.
 
 #### Connect with CDPs and analytics platforms
 
@@ -147,6 +147,6 @@ Avo provides an <Link passHref href="/implementation/start-using-visual-debugger
 and whether they match the analytics event spec. The In-App Inspector is displayed via a small bubble
 on your web or mobile app, which you can click into and see the details of the event structure.
 
-When you implement analytics via the <a href="#avo-codegen-type-safe-analytics-wrappers">Avo Codegen</a>, the In-App Inspector will not only show you
+When you implement analytics via the <a href="#avo-codegen-type-safe-analytics-wrappers">Codegen</a>, the In-App Inspector will not only show you
 the timing and schema of your event, but also display a red warning or green check mark based on
 whether or not your events fits the analytics spec in your Avo tracking plan.

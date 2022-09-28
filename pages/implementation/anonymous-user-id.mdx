@@ -5,7 +5,7 @@ title: 'Handling anonymous and identified users in the client and on the server'
 
 import Link from '../../components/Link';
 
-## User identity in the client side Avo Codegen
+## User identity in the client side Codegen
 
 ### Anonymous users
 
@@ -28,19 +28,19 @@ To make an Avo function identify a user you add the Identify action to the corre
   <a>Learn more about the Identify action.</a>
 </Link>
 
-Avo Codegen corresponding to the events with Identify action will require a userId parameter automatically.
+Codegen corresponding to the events with Identify action will require a userId parameter automatically.
 
-## User identity in the server side Avo Codegen
+## User identity in the server side Codegen
 
 ### Anonymous users
 
-Server side Avo Codegen does not have a way to maintain user identity.
-That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Avo Codegen.
-An optional `anonymousUserId` parameter is available in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Avo Codegen.
+Server side Codegen does not have a way to maintain user identity.
+That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Codegen.
+An optional `anonymousUserId` parameter is available in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Codegen.
 
 ### Identified users
 
 Given the server side functions can not maintain user identity, once the user is identified you still have to provide the `userId` with every function call.
-An optional `userId` parameter is automatically required in all the server side Avo Codegen.
+An optional `userId` parameter is automatically required in all the server side Codegen.
 
 > Though both `anonymousUserId` and `userId` are optional make sure to provide one of them to be able to identify the user.

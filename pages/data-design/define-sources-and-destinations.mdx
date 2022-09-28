@@ -127,7 +127,7 @@ If an event is in this list, it means that the event is or should be sent from t
 
 If the "Implement with Avo" check mark is checked, it means that the event should be implemented using Avo Codegen that is generated based on the event definition in the tracking plan. If the check mark is not checked, it means that the event should be implemented using existing implementation methods, probably a direct call to the analytics SDK.
 
-When creating an event we recommend to add it to all the existing sources where it should be sent from, whether you are using Avo Codegen or existing implementation methods to implement. This information is both used by Codegen to automatically create the tracking code if you are using Avo Codegen and to generate implementation instructions for a developer.
+When creating an event we recommend to add it to all the existing sources where it should be sent from, whether you are using Codegen or existing implementation methods to implement. This information is both used by Codegen to automatically create the tracking code if you are using Codegen and to generate implementation instructions for a developer.
 
 <center>
   <img
@@ -207,7 +207,7 @@ Check out the Tracking Observability part of this documentation to learn more on
 
 ### Avo Codegen Setup
 
-Avo Codegen Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
+The Codegen Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
 
 <center>
   <img
@@ -219,11 +219,11 @@ Avo Codegen Setup part of the source details contains a step by step guide on ho
 
 #### Programming Language
 
-To start using Avo Codegen for this source, you need to select which <Link passHref href="/implementation/supported-programming-languages"><a> programming languages here</a></Link> you want to generate the code in.
+To start using Codegen for this source, you need to select which <Link passHref href="/implementation/supported-programming-languages"><a> programming languages here</a></Link> you want to generate the code in.
 
 #### Setup Status
 
-The setup status indicates whether Avo Codegen has been successfully initialized or not. If they have yet to be Initialized for this source, the setup status will show "Listening for the first initialization..."
+The setup status indicates whether Codegen has been successfully initialized or not. If they have yet to be Initialized for this source, the setup status will show "Listening for the first initialization..."
 
 <center>
   <img
@@ -233,7 +233,7 @@ The setup status indicates whether Avo Codegen has been successfully initialized
   />
 </center>
 
-Once you have successfully initialized Avo Codegen, the setup status will show "Successfully Initialized", which means you can start implementing events using Avo Codegen.
+Once you have successfully initialized Codegen, the setup status will show "Successfully Initialized", which means you can start implementing events using Codegen.
 
 <center>
   <img
@@ -250,7 +250,7 @@ Destinations can have two modes: Destination Interface and Avo Managed:
 - When set to Destination Interface (recommended), Avo will provide a set of callback methods to connect your existing analytics destination to your Avo instance.
 - When set to Avo Managed, Avo will manage the destination for you, that includes initializing it and passing all data you send via Avo to relevant destination calls. Note that in Avo Managed mode you can't use your destination SDK outside of Avo, e.g. for existing tracking.
 
-Learn more about Destination Interface and Avo Managed destinations in the <Link passHref href="/implementation/destinations"><a>Destinations in Avo Codegen doc</a></Link>.
+Learn more about Destination Interface and Avo Managed destinations in the <Link passHref href="/implementation/destinations"><a>Destinations in Codegen doc</a></Link>.
 
 <center>
   <img
@@ -264,7 +264,7 @@ Learn more about Destination Interface and Avo Managed destinations in the <Link
 
 The documentation is automatically generated for your source and the connected destinations. First you have to generate your Avo file by using our CLI or downloading it from the UI, then you can initialize Avo and implement your events.
 
-Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/implementation/avo-codegen-overview"><a>how to set up Avo Codegen</a></Link>.
+Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/implementation/avo-codegen-overview"><a>how to set up Codegen</a></Link>.
 
 ## Destinations
 
