@@ -443,6 +443,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Property Groups in Codegen',
+        path: '/implementation/property-groups-unfolding',
+      },
+      {
+        type: 'route',
         title: 'Avo Functions in monorepos',
         path: '/implementation/avo-in-monorepo',
       },
