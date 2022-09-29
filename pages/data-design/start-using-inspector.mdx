@@ -25,11 +25,13 @@ Inspector gives you:
 - Implementation status for the events in your entire tracking plan, so you can see which events are actually implemented and whether they’re sent correctly or not.
 - Inspector helps you migrate your tracking plan to Avo. Skip importing things you’re skeptical of. Then leverage Inspector to detect how events and properties are actually tracked, and gradually add them to your tracking plan via Avo branches.
 
-### How does Inspector work
+## How does Inspector work
 
-Inspector API extracts the schemas (aka shapes) of the events you trigger (no PII data,
-only event names, property names, and types of properties) and sends those schemas to
-the Avo servers. To repeat: None of the PII data ever flows through Avo servers; only event schemas.
+Inspector extracts the schemas (aka shapes/metadata) of the events you trigger on the client. 
+
+Inspector does not process property values or PII data, only event names, property names, and types of properties, and sends those schemas to the Avo servers.
+
+TL;DR: No PII data ever flows through Avo servers; only event schemas.
 
 ## How to use Inspector
 
@@ -108,8 +110,7 @@ Not seeing your platform in the list? <Link passHref href="/help/troubleshooting
 
 ### Does Inspector receive PII data?
 
-No. Inspector does not receive any PII data. Inspector only takes in event names,
-property names, and types of properties.
+No. Inspector does not receive any PII data. Inspector only takes schema metadata, containing event names, property names, and types of properties.
 
 Learn more technical details about the <Link passHref href="/implementation/avo-inspector-overview"><a>Avo Inspector here</a></Link>.
 
