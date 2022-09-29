@@ -1,0 +1,40 @@
+---
+layout: 'guide'
+title: 'Start using Avo Visual Debugger in code'
+---
+
+import Link from '../../components/Link';
+
+In Avo you can group multiple event properties into a property group.
+
+Then you can add the whole group to selected events.
+
+For example in Avo we have a property group called "Source", that includes 2 properties: "Source Id" and "Source Name".
+
+We add this property group to any event that is related to a source instead of adding those 2 properties manually every time.
+
+Property groups can include more than 2 properties, there is no upper limit.
+
+Read more about property groups <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-groupsa-event-property-groups"><a>here</a></Link>.
+
+## Property groups in the Codegen
+
+When generating code for a tracking plan with property groups the property groups can be in 2 states:
+
+- folded: in this case we can represent a property group as an object in the code. Every property included into the property group becomes a field of the object.
+
+- unfolded: in this case all the properties from the property group are added to the event tracking function as if the properties were added directly to the event in Avo.
+
+## Force property group unfolding
+
+Sometimes a change in the tracking plan can cause a property group to be force unfolded.
+
+This happens if the property group data structure can not be represented as a specific type in the programming language anymore.
+
+One reason for that is when the property absence varies between different events.
+
+In that case a property can be optional on one event and required on another event. 
+
+This circumstance makes it impossible to represent this property group type as a class in the code, because one filed of that class should be optional under one condition and non optional under another.
+
+When this happen we unflod the property group, so each event can get granular property presense.
