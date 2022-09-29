@@ -426,12 +426,17 @@ const navigation: navigationItem[] = [
       {
         type: 'route',
         title: 'Avo Codegen overview',
+        path: '/implementation/avo-codegen-overview',
+      },
+      {
+        type: 'route',
+        title: 'Avo Codegen setup',
         path: '/implementation/start-using-avo-codegen',
       },
       {
         type: 'route',
         title: 'Avo Codegen technical deep dive',
-        path: '/implementation/avo-codegen-overview',
+        path: '/implementation/avo-codegen-tech-deep-dive',
       },
       {
         type: 'route',
