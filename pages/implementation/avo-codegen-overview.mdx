@@ -5,236 +5,46 @@ title: 'Avo Codegen overview'
 
 import Link from '../../components/Link';
 
-## <a name="avo-generated-file"></a> Avo generated file containing Codegen
+## What is Codegen
 
-The Avo generated code is the representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events.
-For example if you set up an iOS/Swift source the generated code will be in a `.swift` file.
-Since the tracking plans are different for each customer the content of this file is also different.
-We generate the files and you can download them either with <Link passHref href="/implementation/cli"><a>the Avo CLI</a></Link> or in the Avo web interface in <Link passHref href="/workspace/implement"><a>Codegen tab</a></Link>.
+Codegen produces type safe code for implementing analytics. 
 
-First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another.
-The generated file is the best source of truth when looking for implementation details.
+- The "data designer" specifies the event structure in the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link>, and which platforms should send the event
+- then the developer who implements analytics can use Codegen to implement the analytics calls per each analytics event
 
-> You should never have to make changes to the Avo generated file. If you find yourself in the situation where you have to edit the file please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link>.
+## Why use Codegen
 
-> Make sure all the events you want to implement using Codegen have the source attached to it, where "Implement with Avo" has been checked. Learn more about how to [configure events in your tracking plan here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
+Codegen simplifies implementation and makes sure it is correct and consistent across all platforms.
 
-### Avo Command Line Interface
+For example, instead of Android calling `analytics.track("game started")` and iOS calling `analytics.track("gameStarted")` , they both call `Avo.gameStarted()`, and the Avo function takes care of the spelling of the event and property names as they get passed into the analytics SDK.
 
-The Avo CLI is the easiest way to interact with Avo from your development environment.
-Run
+In other words, event and property naming is abstracted entirely away from the event implementation layer, ensuring that events and properties are named the same across all platforms, teams and code bases.
 
-```sh
-$ npm install -g avo
-```
+## When use Codegen
 
-to install the CLI.
-Then login with
+Codegen is our way of increasing the robustness of the analytics implementation and simplifying the implementation process.
 
-```sh
-$ avo login
-```
+Adopting Codegen is not required to get value from Avo - many companies have their own ways to achieve robust analytics implementation and prefer to stick to them rather than adopting a new approach.
 
-And pull the Avo Generated file with the following command
+Avo is designed to be efficient and powerful without the Codegen, providing advanced tracking plan management and observability with Inspector. 
+The decision to use Codegen is usually in the hands of the engineering team on each platform. If you prefer to use a different approach for implementing your tracking code Avo can still help you by providing a platform to collaborate and align on the tracking specs, and by providing clear specs for the suggested tracking changes.
 
-```sh
-$ avo pull [--branch my-branch] [SourceName]
-```
+## How does Codegen work
 
-it will guide you through the initial setup and will create a config file called `avo.json` in the directory. Next time when you pull the setup will be picked from that file.
+Codegen works with any analytics tool, whether it's any of the common event logging SDKs (e.g. Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, PostHog, FreshPaint, Pendo, etc) or an homemade API or SDK.
 
-Make sure to check the `avo.json` file in to your source control to keep the Avo configuration is in sync across your team.
+When designing the tracking plan you configure the list of data destinations for each source. In the generated code each destination is represented as its own Destination Interface in the initAvo method. This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
 
-Learn more about the CLI <Link passHref href="/implementation/cli"><a>here</a></Link>.
+In the Avo Tracking Plan you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
 
-### <a name="avo-generated-file-init"></a> Initialization
+Learn more technical details about Codegen <Link passHref href="/implementation/avo-functions-overview"><a>here</a></Link>.
 
-First thing you need to do after importing the generated file is to initialize Avo.
-There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to change the setup.
-Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the <Link passHref href="/workspace/implement"><a>Codegen tab</a></Link> for specific recommendations.
-Samples below are in Swift and the code is very similar in other programming languages:
+## Does my event data flow through Avo servers?
 
-```swift
-public static func initAvo(env: AvoEnv,
-    requiredStringSystemProperty: RequiredStringSystemProperty,
-    optionalStringSystemProperty: OptionalStringSystemProperty?,
-    requiredIntSystemProperty: Int,
-    optionalFloatSystemProperty: Double?,
-    optionalListSystemProperty: [Int]?,
-    firstDestination: AvoCustomDestination,
-    secondDestination: AvoCustomDestination,
-    debugger: NSObject, strict: Bool = false, noop: Bool = false)
-```
+No. None of your events ever go through Avo servers. They go directly from your devices (whether that's a front-end client or a server) to the data destination.
 
-- `env` - Avo is designed to act differently based on the environment. Supported values are development, staging and production. Most important differences include sending data to different projects in your analytics (to not pollute production data with dev/testing session) and ability to crash the app in development if Avo detects an error in the analytics.
-- `system properties` - this are properties designed to be sent with each event. You need to provide them during initialization. You can update their values later with the `setSystemProperties` method.
-
-```swift
-public static func setSystemProperties(
-    requiredStringSystemProperty: RequiredStringSystemProperty,
-    optionalStringSystemProperty: OptionalStringSystemProperty?,
-    requiredIntSystemProperty: Int,
-    optionalFloatSystemProperty: Double?,
-    optionalListSystemProperty: [Int]?);
-```
-
-Read more about property types later in the <Link passHref href="/implementation/avo-codegen-overview#avo-generated-file-func-parameters"><a>Codegen section.</a></Link>
-
-- `firstDestination` and `secondDestination` - each destination from the source/destination connections you've defined in the Avo dashboard is represented as its own <Link passHref href="/implementation/destinations"><a>Destination Interface</a></Link> in the init call.
-  This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
-- `debugger` - mobile platforms (Android, iOS, React Native) support <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers"><a>the Avo Analytics Debuggers</a></Link>, provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
-- `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors. Note that the Avo validation will never crash your app if env is set to Production.
-- `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is dismissed in production.
-- `destination options` (not shown in the example) - some platforms, for example JavaScript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization. This allows you to pass config/options through Avo to the init functions of the underlying analytics SDKs.
-- `avoLogger` (not shown in the example) - custom logger implementation to control logs logic. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers"><a>More about custom loggers</a></Link>.
-- `inspector` (not shown in the example) - instance of Avo Inspector to automatically send Codegen data to Avo Inspector (on the supported platforms)
-
-### <a name="avo-generated-file-init-inside"></a> What's inside the initAvo method / Avo constructor?
-
-There are a few things happening, like setting the flags, system properties and reporting implementation status in development mode to the Avo servers, so you can check whether the event has ever been successfully invoked in development, on the Avo website.
-
-But the most important part is initialization of the analytics destinations. Depending on the setup of your tracking plan you might see something like
-
-```swift
-if __ENV__ == .prod {
-    amplitudeDestination = AmplitudeDestination()
-    amplitudeDestination?.make("production Amplitude key is automatically here based on the data you provided in the tracking plan"")
-    mixpanelDestination = MixpanelDestination()
-    mixpanelDestination?.make("production Mixpanel key is automatically here based on the data you provided in the tracking plan"")
-}
-if __ENV__ == .dev {
-    amplitudeDestination = AmplitudeDestination()
-    amplitudeDestination?.make("development Amplitude key is automatically here based on the data you provided in the tracking plan"")
-    mixpanelDestination = MixpanelDestination()
-    mixpanelDestination?.make("development Mixpanel key is automatically here based on the data you provided in the tracking plan"")
-}
-```
-
-The keys are set up in the Avo web UI and automatically fetched by Codegen, so you don't need to do anything here, just know that it is there. The API keys in Avo are version controlled, and synced across all your sources, this way you don't need to worry if correct API key is being used or not, Avo takes care of it for you.
-
-### Codegen
-
-Codegen produces actual callable functions generated for events defined in your tracking plan.
-
-> On some server platforms Codegen produces functions which are async, e.g. on Node.js they return a Promise and on C# you can await on the function
-
-For example if you have an event defined with name `App Opened` connected to your source, Codegen interface will look like
-
-```swift
-/**
-    App Opened: This event is sent immediately after the user opens the app [This description is defined in the Tracking Plan on avo.app]
-
-    - SeeAlso: [App Opened](https://www.avo.app/link-to-the-event-in-your-tracking-plan)
-*/
-public func App Opened(
-    beverage: Beverage,
-    userId: String?) {...}
-```
-
-#### <a name="avo-generated-file-supported-tracking-methods"></a> Supported tracking methods (Avo Actions)
-
-Each Avo Function is a code generated wrapper around your analytics SDK tracking libraries. Each Avo Function can wrap multiple tracking methods, such as logging events, identifying users, updating user properties, etc. The default tracking method is to log an event. To configure which tracking methods each Avo Function wraps, you change or add "Action Types" on the event in your Avo Tracking Plan.
-
-> 💡 **Read more about actions and supported tracking methods:**
+> 💡 This sometimes called "device mode". With CDPs, you can choose between <Link passHref href="https://segment.com/docs/guides/intro-impl/#connection-modes"><a>_Cloud-mode_ or _Device-mode_</a></Link>:
 >
-> Read about <Link passHref href="/workspace/tracking-plan/events#actions"><a>available Actions and how they work in the tracking plan</a></Link>.
->
-> Learn how <Link passHref href="/implementation/destinations"><a>you can implement supported tracking methods in your destinations</a></Link>.
-
-#### <a name="avo-generated-file-func-parameters"></a> Property types
-
-At this point you would notice that the parameters can have various types.
-
-There are a few dimensions in which the parameters can differ:
-
-##### Type
-
-Avo supports the following types: `string`, `int`, `float`, `bool` and `object`.
-
-##### Single value / list
-
-You would be required to provide a list of things if the property is marked as a `list`.
-
-##### Required / Optional
-
-In Avo we made a design decision that you always need to provide a value of a property, even if it is optional to mitigate the risk of accidentally not providing the value and damaging the data. But if the property is marked as optional you would be able to provide `null` as it's value and it won't be sent to your analytics tool.
-
-##### Value Constraints
-
-You can notice that in the example above the first argument is not a `String`, but some other type. It happens because there is a constraint specified in the tracking plan that limits the possible values of this parameter. Avo has generated an enum for you:
-
-```swift
-public enum Beverage : String {
-    case beer = "beer"
-    case wine = "wine"
-    case cocktail = "cocktail"
-    case water = "water"
-}
-```
-
-The second parameter has no constraints, so it is a `String` (though it is optional, because it's marked as optional in the tracking plan).
-
-In general, constraints can be added to properties to validate against:
-
-string properties: a finite list of allowed string values
-int and float properties: a minimum and maximum value
-object properties: exact structure of the allowed keys and types of values in the object
-
-> Avo can add helper parameters that are not defined in the tracking plan, but are known to be required to make that specific call, for example in server environments Avo usually adds a userId parameter to each function, so server can provide user id to the analytics tracking services.
-
-#### What's happening inside Codegen?
-
-Avo makes sure that the event names and provided properties are correct according to the tracking plan with compile time and runtime validations and development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
-
-Then it sends the provided data to all the configured analytics destinations, using the destination interfaces you've defined during initialization. There are different <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> that can be tracked:
-identify, log event, update user properties, unidentify, log revenue, log page view, but everything is checked and the payload is prepared inside the Avo file and delivered in a correct form to the destination interfaces.
-
-The Avo generated tracking code will look similar to this:
-
-```swift
-// first destination
-var firstDestinationEventProperties: [String: Any] = [:]
-// firstDestinationEventProperties will be populated with all the provided properties to this Avo Function and all the system properties.
-firstDestination.logEvent(eventName: "Logged Out", eventProperties: firstDestinationEventProperties)
-secondDestination.unidentify()
-// second destination
-var secondDestinationEventProperties: [String: Any] = [:]
-// secondDestinationEventProperties will be populated with all the provided properies to this Avo Function and all the system properties.
-secondDestination.logEvent(eventName: "Logged Out", eventProperties: customDestEventProperties)
-secondDestination.unidentify()
-```
-
-This particular event has `log event` and `unidentify` actions. The methods called above will vary based on the actions of the given event. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>Read more about actions here.</a></Link>
-
-### Data Validations
-
-Avo helps developers avoid mistakes when implementing analytics, it makes sure that your code does exactly what it is supposed to do based on the tracking plan defined in Avo, in two ways.
-
-First, Avo is utilizing the type system of a programming language you work with. For example in the code snippet above the optional properties are supported on the language level in Swift, so we make the interface in a way you can't provide null values where they are not expected. We try to do as many validations as possible this way, so they are performed in the compile time.
-
-Second, it's runtime validations. In cases when the language does not provide us with tool to check in the compile time, like in JavaScript, we do runtime checks, looking like this
-
-```javascript
-assertString: function assertString(propertyId, propName, str) {
-  if (typeof str !== 'string') {
-    var message =
-      propName +
-      ' should be of type string but you provided type ' +
-      typeof str +
-      ' with value ' +
-      JSON.stringify(str);
-    return [
-      {
-        tag: 'expectedStringType',
-        propertyId: propertyId,
-        message: message,
-        actualType: typeof str,
-      },
-    ];
-  } else {
-    return [];
-  }
-}
-```
-
-A check like this is run when the Avo function is triggered. Then the message is delivered to the logs, debugger or as a crash in the strict mode depending on your setup.
+> - In _Cloud-mode_, your events go through the CDP servers. Your devices send the events to the CDP cloud (aka the CDP Servers) and the CDP cloud sends them to the analytics destinations.
+> - In _Device-mode_ the events go directly from your devices (whether it's a front end client or a server) to the analytics destination.
+>   In this regard, Avo works like _Device-mode_.

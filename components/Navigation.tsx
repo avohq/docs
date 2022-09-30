@@ -420,23 +420,23 @@ const navigation: navigationItem[] = [
     iconName: 'implementation',
     subroutes: [
       {
-        type: 'route',
-        title: 'Avo 101 for developers',
-        path: '/implementation/devs-101',
-      },
-      {
         type: 'section',
         group: 'Avo Codegen',
       },
       {
         type: 'route',
-        title: 'What is Avo Codegen',
+        title: 'Avo Codegen overview',
         path: '/implementation/avo-codegen-overview',
       },
       {
         type: 'route',
-        title: 'Quickstart: Avo Codegen',
+        title: 'Avo Codegen setup',
         path: '/implementation/start-using-avo-codegen',
+      },
+      {
+        type: 'route',
+        title: 'Avo Codegen technical deep dive',
+        path: '/implementation/avo-codegen-tech-deep-dive',
       },
       {
         type: 'route',

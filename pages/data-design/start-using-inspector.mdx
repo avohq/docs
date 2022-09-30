@@ -26,6 +26,14 @@ Inspector gives you:
 - Implementation status for the events in your entire tracking plan, so you can see which events are actually implemented and whether they’re sent correctly or not.
 - Inspector helps you migrate your tracking plan to Avo. Skip importing things you’re skeptical of. Then leverage Inspector to detect how events and properties are actually tracked, and gradually add them to your tracking plan via Avo branches.
 
+## How does Inspector work
+
+Inspector extracts the schemas (aka shapes/metadata) of the events you trigger on the client. 
+
+Inspector does not process property values or PII data, only event names, property names, and types of properties, and sends those schemas to the Avo servers.
+
+TL;DR: No PII data ever flows through Avo servers; only event schemas.
+
 ## How to use Inspector
 
 After <Link passHref href="/workspace/inspector#configuring-sources"><a>setting up your sources</a></Link> to send data to the Inspector with the direct CDP integrations or <Link passHref href="/implementation/avo-inspector-sdk-reference"><a>Avo Inspector SDKs</a></Link> you will see the data appearing in the the Inspector tab.
@@ -87,7 +95,7 @@ Find the tag snippet and instructions to send data <Link passHref href="/impleme
 
 ### Install Inspector SDK
 
-If you’re not using one of the supported CDPs you can send events data with an SDK. It will require one time setup and a new app release and takes 2-30 minutes, depending on the developer’s experience. We recommend asking a developer that is familiar with the existing event tracking setup to help with this setup.
+If you’re not using one of the supported CDPs you can send events data with an SDK. It will require one time setup and a new app release and takes 10-30 minutes, depending on the developer’s experience. We recommend asking a developer that is familiar with the existing event tracking setup to help with this setup.
 
 Learn how to set up SDKs for supported platforms:
 
@@ -114,6 +122,12 @@ Learn how to set up SDKs for supported platforms:
   </Link>
 
 Not seeing your platform in the list? <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to send data from another platform.
+
+### Does Inspector receive PII data?
+
+No. Inspector does not receive any PII data. Inspector only takes schema metadata, containing event names, property names, and types of properties.
+
+Learn more technical details about the <Link passHref href="/implementation/avo-inspector-overview"><a>Avo Inspector here</a></Link>.
 
 ## What's next?
 

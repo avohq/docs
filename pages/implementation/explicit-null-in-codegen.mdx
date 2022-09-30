@@ -9,7 +9,7 @@ With the Avo Codegen our goal is to provide developers with a type safe analytic
 
 One of the ways we do it is with the required values for the `Sometimes Sent` parameters.
 
-The fact that we require to explicitly pass a `null` value for every `Sometimes Sent` property when it's not sent allows the compiler to catch a very common implementation related data bug.
+The fact that we require an explicit `null` value to be passed for every `Sometimes Sent` property when it's not sent allows the compiler to catch very common implementation related data bugs.
 
 Imagine we don't require passing `null` explicitly. Now if the tracking plan changes and a property presence goes from `Never Sent` to `Sometimes Sent`, which is a very common scenario, compiler has no way to distinguish between the two cases and will allow you go ahead instead of helping you do the migration. In this situation it's very easy to miss a code path where a value should be provided.
 
