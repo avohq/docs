@@ -104,7 +104,7 @@ Below is a list of possible actions, followed by a more detailed overview of eac
 
 Logging an event is the fundamental action for behavioral analytics. An event describes an action that a user does in your application or something that happens for them. Additional information about the action, event properties, can be logged with the event.
 
-When using Codegen Avo creates one function for each event, that prepares all the required data to perform all associated actions and routes the data to the data destination. By doing so, Avo Codegen makes your analytics as type-safe as possible, and takes care of sending the event to all your analytics tools.
+When using Codegen, Avo creates one function for each event, that prepares all the required data to perform all associated actions and routes the data to the data destination. By doing so, Codegen makes your analytics as type-safe as possible, and takes care of sending the event to all your analytics tools.
 
 Here's how sending and event called "Signup Completed" would look like:
 
@@ -118,7 +118,7 @@ When associating the event with groups you can imply that the event is linked
 with a group. This would typically be done if only certain actions of the user
 are related to a group.
 
-With Avo Codegen groups are applied to tracking events with the following methods according to
+With Codegen, groups are applied to tracking events with the following methods according to
 analytics platform:
 
 - **Amplitude**: [logEventWithGroups](https://developers.amplitude.com/docs/javascript#user-groups)
@@ -133,7 +133,7 @@ according your system.
 
 The Identify User action can be triggered individually or along with logging an event. It's common to trigger the Identify User action along with log `Signup Completed` and a `Login Completed` events - in such cases, the Identify user call should occur first and then the log event call.
 
-In the Avo Codegen when the Identify User action is selected, Avo will require a user property called
+In the Codegen when the Identify User action is selected, Avo will require a user property called
 `User Id`. Below is a list of Identify User methods used for each supported analytics platform:
 
 - **Amplitude**: [setUserId](https://amplitude.zendesk.com/hc/en-us/articles/115003135607-Tracking-Unique-Users#determining-unique-users)
