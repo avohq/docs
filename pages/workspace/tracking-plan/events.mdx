@@ -46,7 +46,7 @@ Add all sources you want the event to be sent from to the event in Avo. If you w
 
 Actions is Avo's umbrella term over all the tracking methods the analytics platforms offer, such as logging events, updating user properties, logging revenue, etc. In your Avo tracking plan you can configure which actions (tracking methods) should be triggered. Actions can be triggered on their own or together, for example it's common to update user properties along with logging an event.
 
-See <a passhref href="/workspace/tracking-plan/events#supported-actions">supported actions (tracking methods)</a> below.
+See <Link passHref href="/workspace/tracking-plan/events#supported-actions"><a>supported actions (tracking methods)</a></Link> below.
 
 ### Configuring Actions
 
@@ -80,113 +80,36 @@ To remove an action, click settings in the Action and select `Remove`:
 
 Below is a list of possible actions, followed by a more detailed overview of each:
 
-1. <a href="#identify-user">Identify User</a>: Avo will identify the user in
-   your analytics tool when this event is sent. All events sent after this event
+1. <a href="#identify-user">Identify User</a>: identifies the user in
+   the analytics tool when sent. All events sent after this event
    will be tied to the identified user. Usually set on sign in events.
-2. <a href="#update-user-props">Update User Properties</a>: Avo will update the
-   following user properties when this event is sent.
-3. <a href="#log-event">Log Event</a> Avo will log/track this as an event in your
+2. <a href="#update-user-props">Update User Properties</a>: updates the
+   associated user properties when sent.
+3. <a href="#log-event">Log Event</a> logs/tracks an event in your
    analytics tool.
-4. <a href="#log-revenue">Log Revenue</a>: Avo will use revenue APIs provided by
-   your analytics tool to log revenue when this event is sent. Usually set on
+4. <a href="#log-revenue">Log Revenue</a>: logs revenue when this event is sent. Usually set on
    checkout events.
-5. <a href="#log-page-view">Log Page View</a>: Avo will log page view in your
+5. <a href="#log-page-view">Log Page View</a>: logs page view in your
    analytics tool when this event is sent. Usually set on events that are sent
    on screen/page navigation.
-6. <a href="#unidentify-user">Unidentify User</a>: Avo will unidentify the user
+6. <a href="#unidentify-user">Unidentify User</a>: unidentifies the user
    in your analytics tool when this event is sent. All events sent after this
    event will not be tied to the previously identified user. Usually set on sign
    out events.
-7. <a href="#update-groups">Update Groups</a>: Avo can associate users with
-   groups and/or update group properties. Adding users to groups will link them
-   to all subsequent calls.
-
-> 💡 Read about <Link passHref href="/implementation/avo-codegen-overview#avo-generated-file-supported-tracking-methods"><a>**how Avo Codegen handles different tracking methods**</a></Link>.
+7. <a href="#update-groups">Update Groups</a>: associates users with
+   groups and/or updates group properties. Adding users to groups will link them
+   in all subsequent calls.
 
 #### <a name="log-event"></a> Log Event
 
-Logging an event is the fundamental action for behavioral analytics. An event describes an action that a user does in your application or something that happens for them. Additional information about the action, Event properties, can be logged with the event.
+Logging an event is the fundamental action for behavioral analytics. An event describes an action that a user does in your application or something that happens for them. Additional information about the action, event properties, can be logged with the event.
 
-Avo wraps the SDKs of your current analytics tools so you get one function for each event. By doing so, Avo makes your analytics as type-safe as possible, and takes care of sending the event to all your analytics tools.
+When using Codegen Avo creates one function for each event, that prepares all the required data to perform all associated actions and routes the data to the data destination. By doing so, Avo Codegen makes your analytics as type-safe as possible, and takes care of sending the event to all your analytics tools.
 
 Here's how sending and event called "Signup Completed" would look like:
 
 ```javascript
 Avo.signupStarted({ authenticationMethod: 'Facebook', email: 'hi@avo.sh' });
-```
-
-And here is a list of methods that are wrapped in each analytics tool when `Avo.signupStarted` is called:
-
-**Amplitude**
-
-```javascript
-logEvent('Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
-```
-
-**Appsflyer**
-
-```javascript
-trackEvent('Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
-```
-
-**Facebook Analytics**
-
-```javascript
-fbq('trackCustom', 'Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
-```
-
-**Firebase Analytics**
-
-```javascript
-logEvent('Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
-```
-
-**Fullstory**
-
-```javascript
-event('Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
-```
-
-**Intercom**
-
-```javascript
-Intercom('trackEvent', 'Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
-```
-
-**Mixpanel**
-
-```javascript
-track('Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
-```
-
-**Segment**
-
-```javascript
-track('Signup Completed', {
-  'Authentication Method': 'Facebook',
-  Email: 'hi@avo.sh',
-});
 ```
 
 #### <a name="log-event-with-groups"></a> Log Event with Groups
@@ -195,7 +118,7 @@ When associating the event with groups you can imply that the event is linked
 with a group. This would typically be done if only certain actions of the user
 are related to a group.
 
-Groups are applied to tracking events with the following methods according to
+With Avo Codegen groups are applied to tracking events with the following methods according to
 analytics platform:
 
 - **Amplitude**: [logEventWithGroups](https://developers.amplitude.com/docs/javascript#user-groups)
@@ -208,8 +131,9 @@ system in your analytics platform. This would typically be on done when users
 either Sign up or Login or in other ways users are becoming authenticated users
 according your system.
 
-The Identify User action can be triggered individually or along with logging an event. It's common to trigger the Identify User action along with log `Signup Completed` and a `Login Completed` events - in such cases, the Identify user call will occur first and then the log event call.
-When the Identify User action is selected, Avo will require a user property called
+The Identify User action can be triggered individually or along with logging an event. It's common to trigger the Identify User action along with log `Signup Completed` and a `Login Completed` events - in such cases, the Identify user call should occur first and then the log event call.
+
+In the Avo Codegen when the Identify User action is selected, Avo will require a user property called
 `User Id`. Below is a list of Identify User methods used for each supported analytics platform:
 
 - **Amplitude**: [setUserId](https://amplitude.zendesk.com/hc/en-us/articles/115003135607-Tracking-Unique-Users#determining-unique-users)
@@ -274,14 +198,11 @@ analytics platform:
 
 #### <a name="log-revenue"></a> Log Revenue
 
-<a href="#revenue-amplitude">Amplitude</a>, <a href="#revenue-segment">
-  Segment
-</a> and <a href="#revenue-mixpanel">Mixpanel</a>
-support tracking revenue specifically. It's recommended to add the Log Revenue
-action with events that represent a successful purchase, such as `Purchase
-Completed`
+It's recommended to add the Log Revenue action with events that represent a successful purchase, such as `Purchase Completed`
 
-Below are details for what Avo automatically does for each analytics platform.
+##### Log Revenue in Codegen
+
+Below are details for what Avo Codegen automatically does for each analytics platform.
 
 ##### <a name="revenue-amplitude"></a> Amplitude
 
@@ -300,7 +221,7 @@ and then call logEvent.
 
 ##### <a name="revenue-segment"></a> Segment
 
-For the Segment destination, Avo will add 2 event properties that match the
+For the Segment destination, Avo Codegen will add 2 event properties that match the
 [Segment revenue properties](https://segment.com/docs/spec/track/#properties)
 with the prefix "Segment: ".
 
@@ -331,10 +252,11 @@ then call track
 
 #### <a name="log-page-view"></a> Log Page View
 
-Adding the Log Page View action will trigger page tracking on web and screen
-tracking on mobile. Log Page View is only available in Segment, other supported platforms do not offer page tracking at the moment.
+Add the Log Page View action to include page tracking on web and screen tracking on mobile. 
 
-When Log Page View is set on events, Avo will do the following for each platform
+##### Log Page View in the Codegen
+
+When Log Page View is set on events, Avo Codegen will do the following for each platform
 
 ##### Segment
 
@@ -343,5 +265,4 @@ property](https://segment.com/docs/spec/page/) with the prefix "Segment: ".
 
 - Segment: Page Name
 
-Call either page or screen (depending on your apps platform) with the Page Name
-property and then call track. If you want to only log a page view, not an event, you can remove the Log Event action from the event.
+Calls either page or screen (depending on your apps platform) with the Page Name property and then call track. If you want to only log a page view, not an event, you can remove the Log Event action from the event.
