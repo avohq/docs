@@ -6,26 +6,28 @@ title: 'Exporting'
 
 import Link from '../../../components/Link';
 
-
 ## Manual export in the Avo dashboard
 
 To export your tracking plan Schema:
 
 1. Head to the Sidebar wheel > **Export**
-<img src={require('../../../images/workspace/wheel-export.png')} />
+   <img src={require('../../../images/workspace/wheel-export.png')} />
 2. Select **Export JSON** or **Export CSV** to download your schema. If these formats don't contain all the data you need, you can reach out to us and we can enable alternative exporting options for your workspace.
-<img src={require('../../../images/workspace/export-modal.png')} />
+   <img src={require('../../../images/workspace/export-modal.png')} />
 
 ## Automated Webhook export
 
-<Link passHref href="/workspace/tracking-plan/publishing"><a>Publishing integrations</a></Link> can be used for exporting your tracking plan, either one of, or a recurring publishing export using auto-publishing.
+<Link passHref href="/workspace/tracking-plan/publishing">
+  <a>Publishing integrations</a>
+</Link> can be used for exporting your tracking plan, either one of, or a recurring
+publishing export using auto-publishing.
 
 To export your tracking plan on a JSON Schema format:
 
 1. Head to Tracking Plan > **Publish** in the sidebar of your Avo workspace
 2. Create a Webhook integration
 3. In the "Payload preview" section click "Click to view payload preview". When the preview has loaded you can either copy or download the JSON file. You can find more details on the format of the JSON in the <Link passHref href="/workspace/tracking-plan/publishing#tracking-plan-model"><a>Publishing docs</a></Link>.
-<img src={require('../../../images/workspace/webhook-export.png')} />
+   <img src={require('../../../images/workspace/webhook-export.png')} />
 
 You can customize which events to export by using the events filter in the webhook configuration. Events can be filtered by Sources, Destinations and Tags.
 
@@ -35,9 +37,9 @@ You can 'avo pull' a JSON Schema representation of your tracking plan via the Av
 
 1. Reach out to us to enable the JSON source type for your workspace
 2. Create a new Source (in the Sources tab) and set the Source 'Development Platform' to JSON Schema
-4. Attach the JSON Schema source to the events you'd like to be included. Note that this can be done in bulk on the Source settings page.
+3. Attach the JSON Schema source to the events you'd like to be included. Note that this can be done in bulk on the Source settings page
+4. Pick programming language in the "Avo Codegen Setup" tab
 5. Run 'avo pull' in your CLI to pull the JSON Schema
-
 
 ## What's next?
 

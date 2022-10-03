@@ -1,0 +1,59 @@
+---
+layout: 'guide'
+title: 'Avo Workflow'
+abstract: ''
+---
+
+import Link from '../../components/Link';
+
+import { FunctionComponent } from 'react';
+
+import styles from '../index.module.scss';
+import PageLink, { CallToAction } from '../../components/PageLink';
+import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
+import DevIcon from '../../images/svg/dev.svg';
+
+The Avo workflow is the recommended approach for a team working on an analytics release. The workflow is helpful both when new analytics tracking is being implemented, as well as when existing tracking is being updated.
+
+The Avo workflow for analytics releases is inspired by the general best practices of software development using branched change management, peer-reviews, and approval workflows.
+
+1. **<Link passHref href="/workflow/plan"><a>Plan</a></Link>** analytics update
+2. **<Link passHref href="/workflow/review"><a>Review</a></Link>** suggestions
+3. **<Link passHref href="/workflow/request-implementation"><a>Request</a></Link>** implementation instructions with developers
+4. **<Link passHref href="/workflow/implement"><a>Implement</a></Link>** analytics events
+5. **<Link passHref href="/workflow/validate"><a>Validate</a></Link>** implementation
+6. **<Link passHref href="/workflow/merge-publish"><a>Merge</a></Link>** Avo branch and **<Link passHref href="/workflow/merge-publish"><a>Publish</a></Link>** schema to downstream schema registries
+
+<center>
+  <img
+    width="100%"
+    src={require('../../images/workflow/overview/avo-workflow.png')}
+    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+  />
+</center>
+
+## Your first release
+
+We recommend your first “full-circle” release in Avo to be a small one. For example, a product release that includes a handful of new or updated events. This will enable you to quickly go through your first analytics release in Avo, from start to finish.
+
+If you don’t have an upcoming analytics release, you can start kicking the tires by recreating a tracking spec you’ve recently shipped in Avo.
+
+## Best practices for a streamlined analytics release workflow
+
+Your main branch in Avo should represent what is currently being tracked in production. As soon as event implementation is done, you merge your Avo branch into your Avo main branch.
+
+For your analytics release cycle (and Avo branches), we recommend following the same best practices as generally apply to the software development lifecycle (and git branches):
+
+- Release Early, Release Often. This will streamline collaboration across teams, platforms and products of your new single-source-of-truth tracking plan.
+- In practice, this means: Keep Avo branches small and release often, rather than designing a large set of changes that should be implemented over multiple product releases.
+
+## Ready to get going?
+
+<div className={styles.row}>
+  <PageLink
+    image={AnalyticsManagerIcon}
+    title="1. Plan analytics update in Avo branch"
+    description="Learn how to plan an analytic update in Avo branch"
+    callToAction={new CallToAction('/workflow/plan')}
+  />
+</div>

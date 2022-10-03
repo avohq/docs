@@ -61,6 +61,47 @@ const navigation: navigationItem[] = [
     ],
   },
   {
+    title: 'Avo Workflow',
+    iconName: 'rocket',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Overview',
+        path: '/workflow/overview',
+      },
+      {
+        type: 'route',
+        title: '1. Plan',
+        path: '/workflow/plan',
+      },
+      {
+        type: 'route',
+        title: '2. Review',
+        path: '/workflow/review',
+      },
+      {
+        type: 'route',
+        title: '3. Request implementation',
+        path: '/workflow/request-implementation',
+      },
+      {
+        type: 'route',
+        title: '4. Implement',
+        path: '/workflow/implement',
+      },
+      {
+        type: 'route',
+        title: '5. Validate',
+        path: '/workflow/validate',
+      },
+      {
+        type: 'route',
+        title: '6. Merge branch & Publish',
+        path: '/workflow/merge-publish',
+      },
+    ],
+  },
+  {
     title: 'Tracking Plan Audit',
     iconName: 'health',
     subroutes: [
@@ -73,6 +114,11 @@ const navigation: navigationItem[] = [
         type: 'route',
         title: 'Quickstart: Get your first audit',
         path: '/audit/quickstart',
+      },
+      {
+        type: 'route',
+        title: 'Branch audits',
+        path: '/audit/branch-audit',
       },
       {
         type: 'route',
@@ -129,6 +175,11 @@ const navigation: navigationItem[] = [
             title: 'Implementation status',
             path: '/workspace/tracking-plan/implementation-status',
           },
+          {
+            type: 'route',
+            title: 'Workbench',
+            path: '/workspace/tracking-plan/workbench',
+          },
         ],
       },
 
@@ -138,18 +189,23 @@ const navigation: navigationItem[] = [
         subroutes: [
           {
             type: 'route',
-            title: 'Publishing',
-            path: '/workspace/tracking-plan/publishing',
-          },
-          {
-            type: 'route',
             title: 'Importing',
             path: '/workspace/tracking-plan/importing',
           },
           {
             type: 'route',
+            title: 'Publishing',
+            path: '/workspace/tracking-plan/publishing',
+          },
+          {
+            type: 'route',
             title: 'Exporting',
             path: '/workspace/tracking-plan/exporting',
+          },
+          {
+            type: 'route',
+            title: 'Signing and Verifying Webhooks',
+            path: '/workspace/tracking-plan/webhook-signing',
           },
         ],
       },
@@ -257,6 +313,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Defining object properties',
+            path: '/data-design/object-properties',
+          },
+          {
+            type: 'route',
             title: 'Documenting purpose meetings',
             path: '/data-design/documenting-purpose-meetings-in-avo',
           },
@@ -288,6 +349,11 @@ const navigation: navigationItem[] = [
           },
           {
             type: 'route',
+            title: 'Archive and restore from archive',
+            path: '/workspace/archive-and-restore',
+          },
+          {
+            type: 'route',
             title: 'Reset the Tracking Plan',
             path: '/workspace/reset-tracking-plan',
           },
@@ -315,7 +381,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'The Inspector dashboard',
+        title: 'Inspector dashboard',
         path: '/workspace/inspector',
       },
       {
@@ -339,33 +405,13 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Inspector PostHog integration',
+        path: '/workspace/connect-inspector-to-posthog',
+      },
+      {
+        type: 'route',
         title: 'Inspector SDKs',
         path: '/implementation/avo-inspector-overview',
-      },
-    ],
-  },
-  {
-    title: 'Analytics Release Workflow',
-    iconName: 'rocket',
-    subroutes: [
-      {
-        type: 'route',
-        title: 'The Avo workflow',
-        path: '/data-design/day-to-day-workflow',
-      },
-      {
-        type: 'section',
-        group: 'Guides',
-      },
-      {
-        type: 'route',
-        title: 'Sharing implementation instructions',
-        path: '/implementation/read-implementation-diff',
-      },
-      {
-        type: 'route',
-        title: 'Subscribe to changes with webhooks',
-        path: '/implementation/avo-tracking-plan-webhook',
       },
     ],
   },
@@ -374,23 +420,23 @@ const navigation: navigationItem[] = [
     iconName: 'implementation',
     subroutes: [
       {
-        type: 'route',
-        title: 'Avo 101 for developers',
-        path: '/implementation/devs-101',
-      },
-      {
         type: 'section',
-        group: 'Avo Functions',
+        group: 'Avo Codegen',
       },
       {
         type: 'route',
-        title: 'What are Avo Functions',
-        path: '/implementation/avo-functions-overview',
+        title: 'Avo Codegen overview',
+        path: '/implementation/avo-codegen-overview',
       },
       {
         type: 'route',
-        title: 'Quickstart: Avo Functions',
-        path: '/implementation/start-using-avo-functions',
+        title: 'Avo Codegen setup',
+        path: '/implementation/start-using-avo-codegen',
+      },
+      {
+        type: 'route',
+        title: 'Avo Codegen technical deep dive',
+        path: '/implementation/avo-codegen-tech-deep-dive',
       },
       {
         type: 'route',
@@ -403,8 +449,13 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Implementing tracking with Avo Functions',
+        title: 'Implementing tracking with Avo Codegen',
         path: '/implementation/start-implementing-tracking-changes',
+      },
+      {
+        type: 'route',
+        title: 'Avo Codegen alongside existing tracking',
+        path: '/implementation/avo-and-existing-tracking',
       },
       {
         type: 'route',
@@ -413,43 +464,48 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Avo Functions in unit tests',
+        title: 'Avo Codegen in unit tests',
         path: '/implementation/avo-and-unit-tests',
       },
       {
         type: 'route',
-        title: 'Avo Functions status in CI/CD',
+        title: 'Avo Codegen status in CI/CD',
         path: '/implementation/avo-in-the-ci',
       },
       {
         type: 'route',
-        title: 'Avo Functions and linters',
+        title: 'Avo Codegen and linters',
         path: '/implementation/avo-and-linters',
       },
       {
         type: 'route',
-        title: 'Avo Functions with Inspector SDK ',
-        path: '/implementation/start-using-inspector-with-avo-functions',
+        title: 'Avo Codegen with Inspector SDK ',
+        path: '/implementation/start-using-inspector-with-avo-codegen',
       },
       {
         type: 'route',
-        title: 'Get Avo Functions without using Avo CLI',
+        title: 'Get Avo Codegen without using Avo CLI',
         path: '/explore-tracking-plan/download-or-copy-avo-file-manually',
       },
       {
         type: 'route',
-        title: 'Avo Functions and parallel tracking changes',
+        title: 'Avo Codegen and parallel tracking changes',
         path: '/implementation/avo-and-git',
       },
       {
         type: 'route',
-        title: 'Property Groups in Codegen',
+        title: 'Avo Codegen in monorepos',
+        path: '/implementation/avo-in-monorepo',
+      },
+      {
+        type: 'route',
+        title: 'Property groups in Codegen',
         path: '/implementation/property-groups-unfolding',
       },
       {
         type: 'route',
-        title: 'Avo Functions in monorepos',
-        path: '/implementation/avo-in-monorepo',
+        title: 'Explicit null in the Codegen',
+        path: '/implementation/explicit-null-in-codegen',
       },
     ],
   },
@@ -459,7 +515,7 @@ const navigation: navigationItem[] = [
     subroutes: [
       {
         type: 'group',
-        title: 'Avo Functions',
+        title: 'Avo Codegen',
         subroutes: [
           {
             type: 'group',
@@ -588,6 +644,11 @@ const navigation: navigationItem[] = [
             title: 'Dart and Flutter SDK',
             path: '/implementation/inspector/sdk/dart',
           },
+          {
+            type: 'route',
+            title: 'Java SDK',
+            path: '/implementation/inspector/sdk/java',
+          },
         ],
       },
       {
@@ -608,6 +669,27 @@ const navigation: navigationItem[] = [
             type: 'route',
             title: 'Mobile',
             path: '/implementation/setup-mobile-debugger',
+          },
+        ],
+      },
+      {
+        type: 'group',
+        title: 'Avo Public API',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/public-api/overview',
+          },
+          {
+            type: 'route',
+            title: 'Authentication',
+            path: '/public-api/authentication',
+          },
+          {
+            type: 'route',
+            title: 'Export Tracking Plan',
+            path: '/public-api/export-tracking-plan',
           },
         ],
       },

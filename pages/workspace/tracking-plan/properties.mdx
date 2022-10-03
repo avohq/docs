@@ -61,15 +61,15 @@ Group properties are updated with the event in the <Link passHref href="/workspa
 
 ### Managing Groups
 
-To be able to manage a Group (update Group Properties, associate users or events with Groups)  you first need to define the Group:
+To be able to manage a Group (update Group Properties, associate users or events with Groups) you first need to define the Group:
 
 #### Creating Group Types
 
 You can create Group Types either from the Properties screen or from the
 `Update Groups` action from the Event details.
 
-* From the Properties screen click `+ Add Group Type`
-* From the Update Groups action click `+ Add Group Type`
+- From the Properties screen click `+ Add Group Type`
+- From the Update Groups action click `+ Add Group Type`
 
 and fill in name and description of your Group Type.
 
@@ -84,9 +84,9 @@ Group Properties are properties which belong to a specific group type (e.g.
 Group Property `Member Count` for Group Type `Workspace`). There are also two ways to create
 Group properties
 
-* From the Properties screen, find the Group Properties section and your
-Group Type's subsection and click `+ Add Group Property`
-* From the Update Groups action choose the Group Type and then `+ Add Group Property`
+- From the Properties screen, find the Group Properties section and your
+  Group Type's subsection and click `+ Add Group Property`
+- From the Update Groups action choose the Group Type and then `+ Add Group Property`
 
 and fill in name and description of your Group property.
 
@@ -132,7 +132,7 @@ System properties are set in the Avo.initAvo() function. They can be updated wit
 
 ## <a name="property-groups"></a> Event property groups
 
-Event property groups are a way to group two or more related event properties to quickly and consistently add them to all related events.
+Event property groups are a way to group two or more related event properties to quickly and consistently add them to all related events. You can create event property groups from the [event property groups screen](https://www.avo.app/schemas/default/properties/groups)
 
 An e-commerce website might want to attach all product properties to cart and checkout events.
 An example event property group could be "Product" containing the following properties:
@@ -141,6 +141,8 @@ An example event property group could be "Product" containing the following prop
 - Product Name
 - Product Price
 - Product Quantity
+
+> 💡 A property can only belong to a single group. That's to avoid a conflict between groups when using Avo Codegen
 
 ## <a name="property-types-and-constraints"></a> Property types and constraints
 
@@ -152,11 +154,15 @@ Avo supports properties with values of the following types and constraints:
 - integer _(minimum and maximum value)_
 - float _(minimum and maximum value)_
 - boolean _(true or false)_
-- object _(<Link passHref href="/help/troubleshooting"><a>reach out to us</a></Link> for access)_
+- <Link passHref href="/data-design/object-properties">
+    <a>object</a>
+  </Link> _(<Link passHref href="/help/troubleshooting">
+    <a>reach out to us</a>
+  </Link> for access)_
 
 Properties values can also be a list of the above mentioned types:
 
-- [‘foo’, ‘bar’]
+- ['foo', 'bar']
 - [1, 2, 3, 4, 5]
 - [1.2, 1.3, 1.6]
 - [true, false, true, true, false]
@@ -184,7 +190,6 @@ For configuring per-event and per-source you can change the overall setting for 
     alt="Image shows how to change property presence between events"
   />
 </center>
-
 
 ## <a name="property-enums"></a> Enumeration of allowed string values
 

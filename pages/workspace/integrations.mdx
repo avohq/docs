@@ -10,45 +10,85 @@ You can integrate Avo with your existing tools to streamline your analytics work
 
 <a href="#schema-management">Schema management</a>:
 
-- <a href="#webhook">Webhook</a>: Sync your analytics schema to any endpoint to manage downstream schemas such as ingestion time validation or SQL table structures  
-- <a href="#segment-protocols">Segment Protocols</a>: Sync your analytics schema to Segment Protocols
-- <a href="#rudderstack-tracking-plans">RudderStack Tracking Plans</a>: Sync your analytics schema to RudderStack
-- <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>: Sync your analytics schema to Mixpanel Lexicon  
-- <a href="#amplitude-govern">Amplitude Govern</a>: Sync your analytics schema to Amplitude Govern  
-- <a href="#mparticle-data-master">mParticle Data Master</a>: Sync your analytics schema to mParticle Data Master  
+- <a href="#webhook">Webhook</a>: Sync your analytics schema to any endpoint to
+  manage downstream schemas such as ingestion time validation or SQL table
+  structures{' '}
+- <a href="#segment-protocols">Segment Protocols</a>: Sync your analytics schema
+  to Segment Protocols
+- <a href="#rudderstack-tracking-plans">RudderStack Tracking Plans</a>: Sync
+  your analytics schema to RudderStack
+- <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>: Sync your analytics schema
+  to Mixpanel Lexicon{' '}
+- <a href="#amplitude-govern">Amplitude Govern</a>: Sync your analytics schema
+  to Amplitude Govern{' '}
+- <a href="#mparticle-data-master">mParticle Data Master</a>: Sync your
+  analytics schema to mParticle Data Master{' '}
 
 <a href="#workflow">Workflow</a>:
 
-- <a href="#slack">Slack</a>: Configure notifications to be sent to a Slack channel.  
-- <a href="#jira">Jira</a>: Automatically create tickets with instrumentation instructions and a list of changes for review or implementation.
-- <a href="#github">GitHub</a>: Automatically create pull requests with an updated tracking library.
+- <a href="#slack">Slack</a>: Configure notifications to be sent to a Slack
+  channel.{' '}
+- <a href="#jira">Jira</a>: Automatically create tickets with instrumentation
+  instructions and a list of changes for review or implementation.
+- <a href="#github">GitHub</a>: Automatically create pull requests with an
+  updated tracking library.
 
 Destinations:
-- <Link href="/data-design/define-sources-and-destinations#destinations" passHref>Document destinations in your tracking plan</Link>: Document to which analytics tools and destinations your data should be sent in your Avo Tracking plan  
-- <Link href="/implementation/start-using-avo-functions" passHref>Implement tracking for your destinations with Avo Functions</Link>: Type-safe implementation based on your Avo Tracking Plan, for all your analytics tools and destinations
 
+- <Link
+    href="/data-design/define-sources-and-destinations#destinations"
+    passHref
+  >
+    Document destinations in your tracking plan
+  </Link>
+  : Document to which analytics tools and destinations your data should be sent in
+  your Avo Tracking plan{' '}
+- <Link href="/implementation/start-using-avo-codegen" passHref>
+    Implement tracking for your destinations with Avo Codegen
+  </Link>
+  : Type-safe implementation based on your Avo Tracking Plan, for all your analytics
+  tools and destinations
 
 ## Schema Management
 
 With Avo you can _<Link passHref href="/workspace/tracking-plan/publishing">Publish</Link>_ your tracking plan to any downstream schema management to keep everything in sync, such as your analytics platforms, your production time validation schemas, your SQL table structures, etc. Go to <Link passHref href="/workspace/tracking-plan/publishing">Publishing</Link> to read more.
 
 ### Webhook
-<Link passHref href="/workspace/tracking-plan/publishing#webhook">Publish to Webhook</Link> to post your JSON schema to any endpoint and sync your analytics schema with internal schema management such as production time validation, your SQL tables, etc.  
+
+<Link passHref href="/workspace/tracking-plan/publishing#webhook">
+  Publish to Webhook
+</Link> to post your JSON schema to any endpoint and sync your analytics schema with
+internal schema management such as production time validation, your SQL tables, etc.{' '}
 
 ### Segment Protocols
-<Link passHref href="/workspace/tracking-plan/publishing#segment-protocols">Publish to Segment Protocols</Link> to sync your analytics schema downstream
+
+<Link passHref href="/workspace/tracking-plan/publishing#segment-protocols">
+  Publish to Segment Protocols
+</Link> to sync your analytics schema downstream
 
 ### RudderStack Tracking Plans
-<Link passHref href="/workspace/tracking-plan/publishing#rudderstack">Publish to RudderStack Tracking Plans</Link> to sync your analytics schema downstream
+
+<Link passHref href="/workspace/tracking-plan/publishing#rudderstack">
+  Publish to RudderStack Tracking Plans
+</Link> to sync your analytics schema downstream
 
 ### Mixpanel Lexicon
-<Link passHref href="/workspace/tracking-plan/publishing#mixpanel-lexicon">Publish to Mixpanel Lexicon</Link> to sync your analytics schema downstream
+
+<Link passHref href="/workspace/tracking-plan/publishing#mixpanel-lexicon">
+  Publish to Mixpanel Lexicon
+</Link> to sync your analytics schema downstream
 
 ### Amplitude Govern
-<Link passHref href="/workspace/tracking-plan/publishing#amplitude-govern">Publish to Amplitude Govern</Link> to sync your analytics schema to downstream
+
+<Link passHref href="/workspace/tracking-plan/publishing#amplitude-govern">
+  Publish to Amplitude Govern
+</Link> to sync your analytics schema to downstream
 
 ### mParticle Data Master
-<Link passHref href="/workspace/tracking-plan/publishing#mparticle">Publish to mParticle Data Master</Link> to sync your analytics schema downstream
+
+<Link passHref href="/workspace/tracking-plan/publishing#mparticle">
+  Publish to mParticle Data Master
+</Link> to sync your analytics schema downstream
 
 ## Workflow
 
@@ -59,43 +99,43 @@ Configure notifications to be sent to a Slack channel:
 #### Enable Slack notifications in your Avo Workspace
 
 1. Open **Workspace Settings** ⚙️ > **Slack Integration**
-<img
-  src={require('../../images/workspace/integrations/workspace-settings.png')}
-  width="350px"
-  alt="Workspace settings"
-/>
+   <img
+     src={require('../../images/workspace/integrations/workspace-settings.png')}
+     width="350px"
+     alt="Workspace settings"
+   />
 2. Select **Connect to Slack**
 3. Follow the instructions in the popup from Slack, where you pick the channel you want to receive the notifications in
-<img
-  src={require('../../images/workspace/integrations/workspace-notifications.png')}
-  width="350px"
-  alt="Workspace notifications"
-/>
+
+   <img
+     src={require('../../images/workspace/integrations/workspace-notifications.png')}
+     width="350px"
+     alt="Workspace notifications"
+   />
 
 4. Save and enjoy!
-
 
 #### Types of notifications delivered to Slack
 
 - Branches:
-    - Branch created
-    - Ready for review
-    - Approved
-    - Request changes
-    - Merged
-    - Closed
-    - Example:
-        - Solvi approved the `onboarding-funnel` branch 🎉
-- Comments: 
-    - New comment added
-    - Examples:
-        - Solvi commented on the `Account Created` event on the `onboarding-funnel` branch: _“Should we include the `role` property?”_
-        - Stefania commented on the `authentication config` property on the `main` branch: _“Should we have `auto login` as a property value here when we auto login the customer from the landing page?”_
-- Collaborators: 
-    - Collaborator added
-    - Collaborator removed
-    - Example:
-        - Stefania added Solvi as a collaborator on the `onboarding-funnel` branch
+  - Branch created
+  - Ready for review
+  - Approved
+  - Request changes
+  - Merged
+  - Closed
+  - Example:
+    - Solvi approved the `onboarding-funnel` branch 🎉
+- Comments:
+  - New comment added
+  - Examples:
+    - Solvi commented on the `Account Created` event on the `onboarding-funnel` branch: _“Should we include the `role` property?”_
+    - Stefania commented on the `authentication config` property on the `main` branch: _“Should we have `auto login` as a property value here when we auto login the customer from the landing page?”_
+- Collaborators:
+  - Collaborator added
+  - Collaborator removed
+  - Example:
+    - Stefania added Solvi as a collaborator on the `onboarding-funnel` branch
 
 ### Jira
 
@@ -106,4 +146,3 @@ When you make changes to your tracking plan on an Avo branch, Avo automatically 
 ### GitHub
 
 **Coming Soon:** When a tracking plan branch is ready to implement Avo will auto create a pull request for your development team that includes the latest analytics changes.
-

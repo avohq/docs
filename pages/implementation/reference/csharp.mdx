@@ -1,13 +1,13 @@
 ---
 layout: 'guide'
-title: 'Avo Functions in C#'
+title: 'Avo Codegen in C#'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can code generate Avo Functions in C# targeted at the following platforms
+Avo can code generate Avo Codegen in C# targeted at the following platforms
 
 - .NET Server
 - Unity
@@ -40,7 +40,7 @@ Avo.Avo avo = new Avo.Avo(Avo.AvoEnv.Dev/*, other parameters depending on your t
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/csharp#constructor"><a>the reference below</a></Link>.
 
-#### Step 3. Call Avo functions to track your product usage
+#### Step 3. Call Avo Codegen to track your product usage
 
 Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in PascalCase.
 
@@ -84,7 +84,7 @@ public Avo(AvoEnv env,
 )
 ```
 
-Creates the Avo object that will be used to track. 
+Creates the Avo object that will be used to track.
 This method will call the `Make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interfaces</a></Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy"><a>Avo Managed destinations</a></Link>.
 
 ##### Arguments
@@ -140,9 +140,9 @@ public class CustomDestination : IDestination{
         return await _client!.TrackAsync(eventName, userId, eventProperties);
     }
     public async Task SetUserProperties(string userId, IDictionary<string, object> userProperties) {
-        return await _client!.PeopleSetAsync(userId, userProperties); 
+        return await _client!.PeopleSetAsync(userId, userProperties);
     }
-  
+
     public async Task LogPage(string userId, string pageName, IDictionary<string, object> eventProperties) {
         // Note: In this example Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
         eventProperties["pageName"] = pageName;
@@ -251,7 +251,7 @@ Read more about the destination interface <Link passHref href="/implementation/d
 public static ILogger __LOGGER__ = null;
 ```
 
-This field allows you to provide a custom implementation of the logger used by the Avo Functions.
+This field allows you to provide a custom implementation of the logger used by Avo Codegen.
 Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments

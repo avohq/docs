@@ -1,6 +1,6 @@
 ---
 layout: 'guide'
-title: 'Avo Inspector Flutted and Dart SDK'
+title: 'Avo Inspector Flutter and Dart SDK'
 ---
 
 import Link from '../../../../components/Link';
@@ -36,7 +36,7 @@ import 'package:avo_inspector/avo_inspector.dart';
 
 ## <a name="initialization"></a>Initialization
 
-Obtain the API key in the Inspector tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app workspace</a>.
+Obtain the API key in Inspector tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app workspace</a>.
 
 You will need to create an instance of **AvoInspector** with the constructor:
 
@@ -50,14 +50,14 @@ AvoInspector avoInspector = await AvoInspector.create(
 
 > #### Parameters:
 >
-> - `apiKey` - the API key you get in the Inspector Setup Guide in your Avo Workspace 
+> - `apiKey` - the API key you get in Inspector Setup Guide in your Avo Workspace 
 > - `env` - current environment: `AvoInspectorEnv.dev`, `AvoInspectorEnv.staging` or `AvoInspectorEnv.prod`
 > - `appVersion` - your application version. Some Inspector features rely on versioning and you need to provide a comparable string here to get value from them. We recommend using semantic versioning or integers that are incremented in every release.
 > - `appName` - your application name. Optional; Provide it to make it easier to distinguish between data from different apps.
 
 ## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
 
-This method gets the actual tracking event parameters, extracts the schema automatically and sends it to the Avo Inspector backend. Just call this method at the same place you call your analytics tools' track methods with the same parameters.
+This method gets the actual tracking event parameters, extracts the schema automatically and sends it to Avo Inspector backend. Just call this method at the same place you call your analytics tools' track methods with the same parameters.
 
 ```dart
 avoInspector.trackSchemaFromEvent(

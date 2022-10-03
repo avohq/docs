@@ -55,6 +55,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
             sizes="96x96"
             href={require('../images/favicon.png')}
           />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
           <script
             type="text/javascript"
             dangerouslySetInnerHTML={{

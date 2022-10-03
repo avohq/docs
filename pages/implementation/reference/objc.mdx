@@ -1,20 +1,20 @@
 ---
 layout: 'guide'
-title: 'Avo Functions in Objective-C'
+title: 'Avo Codegen in Objective-C'
 ---
 
 import Link from '../../../components/Link';
 
 ### Platforms
 
-Avo can code generate Avo Functions in Objective-C for your iOS tracking.
+Avo can code generate Avo Codegen in Objective-C for your iOS tracking.
 
 ### Quickstart
 
-Avo functions usage consists of 4 steps.
+Avo Codegen usage consists of 4 steps.
 
 [//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
-[//]: # 'TODO Learn more about how Avo Functions can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
 
 #### Step 1. Include the Avo file
 
@@ -45,7 +45,7 @@ val avo = Avo(env: .dev/*, other parameters depending on your tracking plan setu
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/objc#initAvo"><a>the reference below</a></Link>.
 
-#### Step 3. Call Avo functions to track your product usage
+#### Step 3. Call Avo Codegen to track your product usage
 
 Every event in your tracking plan, marked with the "Implement with Avo" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
 
@@ -72,7 +72,7 @@ You'll be able to call it like this from the generated code
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/ios"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use the Avo Inspector you can use the <a href="https://github.com/avohq/ios-analytics-debugger">standalone visual debugger</a>.
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/ios"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the <a href="https://github.com/avohq/ios-analytics-debugger">standalone visual debugger</a>.
 
 ### Reference
 
@@ -117,7 +117,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 
 `(BOOL) noop`: bool, default value is `false`, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 
-> Note that you do not need to pass the Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. <Link passHref href="/implementation/start-using-inspector-with-avo-functions"><a>Read more here</a></Link>.
+> Note that you do not need to pass Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. <Link passHref href="/implementation/start-using-inspector-with-avo-codegen"><a>Read more here</a></Link>.
 
 #### Destination interface example
 
@@ -130,7 +130,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 @implementation CustomDestination : NSObject <AVOCustomDestination>
 
 // This method is optional, you can skip it if you've already initialized your Analytics SDK
-- (void)makeWithEnv:(AVOEnv)avoEnv withApiKey:(nonnull NSString*) apiKey 
+- (void)makeWithEnv:(AVOEnv)avoEnv withApiKey:(nonnull NSString*) apiKey
 {
     self.apiKey = apiKey;
 }

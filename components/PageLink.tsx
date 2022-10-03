@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 
 import styles from './PageLink.module.scss';
 import Icon from './Icon';
-import Link from 'next/link';
+import Link from '../components/Link';
 
 export class CallToAction {
   constructor(readonly path: string) {}
@@ -33,7 +33,9 @@ const PageLink: FunctionComponent<Props> = ({
         <div className={styles.description}>{description}</div>
         {callToAction && (
           <div className={styles.callToAction}>
-            <a style={{ textDecoration: 'none', color: 'grey' }}>{'Read '}</a>
+            <span style={{ textDecoration: 'none', color: 'grey' }}>
+              {'Read '}
+            </span>
             <Icon name="chevron-right" relativeSize="sm" color="inherit" />
           </div>
         )}
@@ -42,9 +44,12 @@ const PageLink: FunctionComponent<Props> = ({
   );
 
   if (callToAction) {
+    // Link content wrapped in an anchor to make cmd+click to open in a new tab work
     return (
-      <Link scroll={true} href={callToAction ? callToAction.path : ''}>
-        {returnDiv}
+      <Link scroll={true} href={callToAction ? callToAction.path : ''} passHref>
+        <a rel="noreferrer" style={{ textDecoration: 'none' }}>
+          {returnDiv}
+        </a>
       </Link>
     );
   } else {

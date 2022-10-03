@@ -1,0 +1,35 @@
+name: Lint, spellcheck and avo status
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-linting-spelling-avo:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+      - name: Install modules
+        run: yarn install --immutable
+      - name: Check linting
+        run: yarn lint
+        env:
+          CI: true
+      - run: yarn lint-mdx
+        if: ${{ always() }}
+        env:
+          CI: true
+          GITHUB_SECRET: ${{secrets.GITHUB_TOKEN}}
+          OWNER: avohq
+          REPO: docs
+      - name: Check spelling
+        run: yarn spellcheck
+      - name: Check avo status
+        run: yarn avo status

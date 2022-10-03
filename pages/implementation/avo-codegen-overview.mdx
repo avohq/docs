@@ -1,0 +1,50 @@
+---
+layout: 'guide'
+title: 'Avo Codegen overview'
+---
+
+import Link from '../../components/Link';
+
+## What is Codegen
+
+Codegen produces type safe code for implementing analytics. 
+
+- The "data designer" specifies the event structure in the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link>, and which platforms should send the event
+- then the developer who implements analytics can use Codegen to implement the analytics calls per each analytics event
+
+## Why use Codegen
+
+Codegen simplifies implementation and makes sure it is correct and consistent across all platforms.
+
+For example, instead of Android calling `analytics.track("game started")` and iOS calling `analytics.track("gameStarted")` , they both call `Avo.gameStarted()`, and the Avo function takes care of the spelling of the event and property names as they get passed into the analytics SDK.
+
+In other words, event and property naming is abstracted entirely away from the event implementation layer, ensuring that events and properties are named the same across all platforms, teams and code bases.
+
+## When use Codegen
+
+Codegen is our way of increasing the robustness of the analytics implementation and simplifying the implementation process.
+
+Adopting Codegen is not required to get value from Avo - many companies have their own ways to achieve robust analytics implementation and prefer to stick to them rather than adopting a new approach.
+
+Avo is designed to be efficient and powerful without the Codegen, providing advanced tracking plan management and observability with Inspector. 
+The decision to use Codegen is usually in the hands of the engineering team on each platform. If you prefer to use a different approach for implementing your tracking code Avo can still help you by providing a platform to collaborate and align on the tracking specs, and by providing clear specs for the suggested tracking changes.
+
+## How does Codegen work
+
+Codegen works with any analytics tool, whether it's any of the common event logging SDKs (e.g. Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, PostHog, FreshPaint, Pendo, etc) or an homemade API or SDK.
+
+When designing the tracking plan you configure the list of data destinations for each source. In the generated code each destination is represented as its own Destination Interface in the initAvo method. This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
+
+In the Avo Tracking Plan you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
+
+Learn more technical details about Codegen <Link passHref href="/implementation/avo-functions-overview"><a>here</a></Link>.
+
+## Does my event data flow through Avo servers?
+
+No. None of your events ever go through Avo servers. They go directly from your devices (whether that's a front-end client or a server) to the data destination.
+
+> 💡 This sometimes called "device mode". With CDPs, you can choose between <Link passHref href="https://segment.com/docs/guides/intro-impl/#connection-modes"><a>_Cloud-mode_ or _Device-mode_</a></Link>:
+>
+> - In _Cloud-mode_, your events go through the CDP servers. Your devices send the events to the CDP cloud (aka the CDP Servers) and the CDP cloud sends them to the analytics destinations.
+> - In _Device-mode_ the events go directly from your devices (whether it's a front end client or a server) to the analytics destination.
+>   In this regard, Avo works like _Device-mode_.

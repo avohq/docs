@@ -13,16 +13,15 @@ import Link from '../../../components/Link';
     alt="Avo Publishing"
 />
 
-
 </p>
 
 ## Why keep schema registries in sync
 
 > 💡 **Event schemas** are important in many layers of your data stack. Keeping schema
-registries in sync across the stack can be a challenge, especially since stakeholders
-involved vary from non-technical folks with a preference for human readable
-tools like spreadsheets, to technical folks with a preference for computer
-readable schemas like JSON.
+> registries in sync across the stack can be a challenge, especially since stakeholders
+> involved vary from non-technical folks with a preference for human readable
+> tools like spreadsheets, to technical folks with a preference for computer
+> readable schemas like JSON.
 
 **Publishing** is a way to push your tracking plan specs from Avo into your other
 schema registries and downstream tools, including analytics platforms like
@@ -37,20 +36,20 @@ your schema registries in sync, serving both your technical and non-technical
 stakeholders.
 
 > 💡 **Push or pull your schemas**: To keep your Avo tracking plan in sync with
-your downstream schema registries you can either **push** your schema from Avo
-via Avo Publishing or **pull** your Avo schema via Avo CLI. We recommend
-leveraging *push* since you can configure that to make sure your downstream
-schema registries get updated when your main Avo schema gets updated.
+> your downstream schema registries you can either **push** your schema from Avo
+> via Avo Publishing or **pull** your Avo schema via Avo CLI. We recommend
+> leveraging _push_ since you can configure that to make sure your downstream
+> schema registries get updated when your main Avo schema gets updated.
 
 1. **Push: Publishing your schema:** You can set up <a href="#publishing-integrations">Publishing integrations</a>
-where you publish your Avo schema into other schema registries. For example as
-JSON into a Webhook. We recommend leveraging auto-publishing for those
-integrations, where your schema will get published upon Avo branch merge
-(you can also manually publish a schema at any point). See <a href="#publishing-use-cases">use cases</a>.
+   where you publish your Avo schema into other schema registries. For example as
+   JSON into a Webhook. We recommend leveraging auto-publishing for those
+   integrations, where your schema will get published upon Avo branch merge
+   (you can also manually publish a schema at any point). See <a href="#publishing-use-cases">use cases</a>.
 
 2. **Pull: Pull JSON schema via CLI:** An alternative to Avo Publishing integrations
-is pulling a JSON schema via the CLI. This way you can add a schema pull into
-a CI/CD. See <Link passHref href="/workspace/tracking-plan/exporting#pull-json-schema-via-the-cli"><a>docs to pull schema via CLI</a></Link>.
+   is pulling a JSON schema via the CLI. This way you can add a schema pull into
+   a CI/CD. See <Link passHref href="/workspace/tracking-plan/exporting#pull-json-schema-via-the-cli"><a>docs to pull schema via CLI</a></Link>.
 
 ## Publishing Integrations
 
@@ -69,34 +68,33 @@ Publishing enables your Tracking Plan to be:
 - Published with a push of a button
 - Downloaded from your Avo workspace on relevant format
 
-
 ## Publishing use cases
 
 ### See event and property descriptions from Avo inline in your analytics tool
 
-Having the description at hand when navigating your events in your analytics platform, like Mixpanel or Amplitude, helps you more easily identify the events and properties you’re looking for when building charts and looking at dashboards. 
+Having the description at hand when navigating your events in your analytics platform, like Mixpanel or Amplitude, helps you more easily identify the events and properties you’re looking for when building charts and looking at dashboards.
 With an Avo publishing integration you can let Avo automatically push description and other tracking plan details into these tools, so you can have more context at hand when using the data.
 
 ### Keep data validation in your CDP up to date with the tracking plan
 
-Segment Protocols, mParticle Data Master, RudderStack Tracking Plans and Snowplow Iglu are all examples of CDPs with ingestion time validation. It allows you to validate the events as they come in, and for example route the bad events to alternative destinations. 
+Segment Protocols, mParticle Data Master, RudderStack Tracking Plans and Snowplow Iglu are all examples of CDPs with ingestion time validation. It allows you to validate the events as they come in, and for example route the bad events to alternative destinations.
 With Avo publishing you can make sure the schemas used for this validation are always up to date with your tracking plan in Avo, which increases the quality of your data in all downstream destinations.
 Being able to integrate with CDPs this way also allows your teams to gradually adopt Avo over time.
 
 ### Receive a webhook every time the Avo tracking plan is updated
+
 The publishing webhook is a building block that allows you to integrate your Avo tracking plan with your other schema registries and internal systems, tools and workflows.
-What can you build with the webhook? 
+What can you build with the webhook?
 Here are some ideas to get you started:
 
-  - #### **Update ingestion time validation:**
-    *Automatically update your JSON Schema ingestion time validation whenever a tracking plan change is merged to the main branch. Making sure your pipeline is ready to approve the fresh events before they arrive.*
-  - #### **Manage tables in data warehouses:**
-    *Automatically keep raw event table schemas in SnowflakeDB, BigQuery or Redshift in sync with the Tracking Plan – keeping your data streaming in smoothly*
-  - #### **Generate dbt models:**
-    *Generate .yml config files describing your raw event tables in dbt. I'm also excited to explore the possibility of generating detailed dbt tests based on the Tracking Plan spec*
-
-  - #### **Automatically build dashboards in your visualization tool:** 
-    *The webhook contains detailed specs on the metrics you've defined in your Tracking Plan. Those specs could be used to automatically build out feature dashboards in visualization tools like Looker, Mode, Mixpanel or Amplitude*
+- #### **Update ingestion time validation:**
+  _Automatically update your JSON Schema ingestion time validation whenever a tracking plan change is merged to the main branch. Making sure your pipeline is ready to approve the fresh events before they arrive._
+- #### **Manage tables in data warehouses:**
+  _Automatically keep raw event table schemas in SnowflakeDB, BigQuery or Redshift in sync with the Tracking Plan – keeping your data streaming in smoothly_
+- #### **Generate dbt models:**
+  _Generate .yml config files describing your raw event tables in dbt. I'm also excited to explore the possibility of generating detailed dbt tests based on the Tracking Plan spec_
+- #### **Automatically build dashboards in your visualization tool:**
+  _The webhook contains detailed specs on the metrics you've defined in your Tracking Plan. Those specs could be used to automatically build out feature dashboards in visualization tools like Looker, Mode, Mixpanel or Amplitude_
 
 ## Setting up and configuring a publishing integration
 
@@ -182,7 +180,7 @@ To enable the direct integration with Segment Protocols, you need to configure i
 
 - **Segment Workspace Slug**: Found in the URL when logged into Segment: `https://app.segment.com/{Segment workspace slug}/...` or in the workspace settings
 - **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_`
-- **Segment Access Token**: [Create new API tokens](https://segment.com/docs/config-api/authentication/#create-an-access-token) for Avo and limit the scope of its permissions to ‘Protocol Admin’.
+- **Segment Access Token**: [Create new API tokens](https://segment.com/docs/api/config-api/authentication/#create-an-access-token) for Avo and limit the scope of its permissions to ‘Protocol Admin’.
 
 ### Publishing to Protocols
 
@@ -209,9 +207,22 @@ Here's how the Avo Tracking Plan is mapped to Protocols:
 - **Type**: The property type and rules in Avo mapped to [JSON Schema](https://json-schema.org) compatible rules
 - **Required**: If the property is marked as "Always sent" in Avo it will be marked as required in Protocols
 
-##### User Property and Group Property
+##### User Property
 
-Currently Avo does not publish user or group properties into Protocols. If you'd like to publish user or group properties, please let us know, and we'll invite you to the beta when it goes live.
+User Properties in Avo are published as identify traits to Segment Protocols.
+
+By default, all user properties that are attached to events that are sent from at least one source in Avo, are included in the publish. When the publishing integration is filtered by source, only user properties sent with events from those sources will be included. To see exactly which user properties will be published in your integration, expand the "Payload Preview" section below the integration config.
+
+Avo will not override any user properties (identify traits) that are only defined in Protocols, or user properties that are not included in the Protocols integration in Avo.
+
+- **Name**: The property name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the property, the name defined by the name mapping is used here. Note that event specific name mappings will not be applied because user properties are not event specific in Protocols.
+- **Description**: The property description as defined in Avo
+- **Type**: The property type and rules in Avo mapped to [JSON Schema](https://json-schema.org) compatible rules
+- **Required**: If the property is marked as "Always sent" on all events in Avo, it will be marked as required in Protocols. Otherwise it will be marked as optional.
+
+##### Group Property
+
+Currently Avo does not publish properties into Protocols. If you'd like to publish group properties, please let us know, and we'll invite you to the beta when it goes live.
 
 ##### Category
 
@@ -234,6 +245,7 @@ To enable the direct integration with Mixpanel Lexicon, you need to configure it
 - **Mixpanel Project Id**: Found in the URL when viewing your project in Mixpanel: `https://mixpanel.com/report/<Mixpanel Project Id>/...`
 - **Mixpanel Service Account Username**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference/authentication#service-accounts)
 - **Mixpanel Service Account Secret**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference/authentication#service-accounts)
+- ** EU Data Residency**: Turn this on if you opted to store your data in the EU when you created your Mixpanel project [See Mixpanel's documentation on data residency in EU](https://help.mixpanel.com/hc/en-us/articles/360039135652-Data-Residency-in-EU)
 
 ### Publishing to Lexicon
 
@@ -352,8 +364,12 @@ Here's how events, properties and categories are mapped from Avo to Govern:
 
 The following errors might occur when publishing your tracking to Govern. When publishing errors occur the error message in the Avo UI will contain which items could not be updated along with the error codes.
 
-- **404 Not Found**: We tried to update an event that doesn't exist in your Amplitude Govern Schema. If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema).
-  After you Govern Schema is initialized usually the API continues to return occasional 404 errors for a few more hours. If your Govern Schema has been initialized more than 6 hours ago and the error persists, please contact support.
+- **404 Not Found**: This error can be thrown in few scenarios:
+
+  - We tried to update an event that doesn't exist in your Amplitude Govern Schema
+  - If this error only occurs for events and properties Amplitude hasn't seen yet, it might indicate that the schema in Amplitude Govern hasn't been initialized, or that you don't have access to the "Plan data" functionality in Amplitude Govern
+  - If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema).
+    After you Govern Schema is initialized usually the API continues to return occasional 404 errors for a few more hours. If your Govern Schema has been initialized more than 6 hours ago and the error persists, please contact support.
 
 - **408 Timeout**: The publishing operation took too long. This can happen when publishing large tracking plans for the first time. Click publish again to resume the publish, it will continue from where it left off.
 
@@ -384,13 +400,13 @@ To enable the Webhook integration you need to configure it with a URL where you 
 
 The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a JSON format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
 
-#### Webhook Payload Format
+### Payload Format
 
 Currently there are three different payload formats you can choose from for the webhook: **Snowplow Schemas**, **Avo Json**, and **Json Schema** (default).
 
 > 💡 To see a preview of the exact Webhook payload in your Avo workspace choose `Publishing` in the sidebar, then pick your Webhook from the menu and expand the `Payload preview` section
 
-##### Snowplow Schemas
+#### Snowplow Schemas
 
 Json containing a Snowplow Schema for every event included in the Publishing integration. These schemas can for example be used to integrate Avo with Snowplow Iglu.
 
@@ -402,7 +418,7 @@ You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/unders
 | contextSchemas | array(Snowplow Context Schema) | Schema for every Snowplow context in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
 | context        | { publishInfo: PublishInfo }   | Metadata about the webhook call                                                                                                                                                                                                      |
 
-##### Avo Json
+#### Avo Json
 
 Json representation of the state of your entire Avo workspace. Currently behind a feature flag. Contact us to enable.
 
@@ -411,7 +427,7 @@ Json representation of the state of your entire Avo workspace. Currently behind 
 | model     | Avo Model                    | Json representation of your entire Avo workspace |
 | context   | { publishInfo: PublishInfo } | Metadata about the webhook call                  |
 
-##### Json Schema (default)
+#### Json Schema (default)
 
 Json representation of your tracking plan, following the [Json Schema](https://json-schema.org/) standard. Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>can be found here</a></Link>
 
@@ -427,17 +443,21 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ###### Event Model
 
-| Attribute   | Type   | Description                                |
-| :---------- | :----- | :----------------------------------------- |
-| name        | string | Event name                                 |
-| description | string | Event description and the list of triggers |
-| rules       | Rules  | Event JSON rules                           |
+| Attribute   | Type                                                  | Description                                     |
+| :---------- | :---------------------------------------------------- | :---------------------------------------------- |
+| name        | string                                                | Event name                                      |
+| description | string                                                | Event description and the list of triggers      |
+| rules       | Rules                                                 | Event JSON rules                                |
+| tags        | array(string)                                         | Array of all tags attached to event             |
+| categories  | array(string)                                         | Array of category ids this event is attached to |
+| triggers    | array({id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event    |
+| sources     | array({id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
 
 ###### Rules Model
 
 | Attribute    | Type               | Description                           |
 | :----------- | :----------------- | :------------------------------------ |
-| properties   | PropertiesRule     | Properties JSON rules                   |
+| properties   | PropertiesRule     | Properties JSON rules                 |
 | nameMappings | array(NameMapping) | Name mappings defined for given event |
 
 #### PropertiesRule Model
@@ -448,13 +468,14 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ###### PropertyRule Model
 
-| Attribute    | Type               | Description                                   |
-| :----------- | :----------------- | :-------------------------------------------- |
-| description  | string             | Property description                          |
-| type         | string             | Property type                                 |
-| nameMappings | array(NameMapping) | Name mappings defined for given property      |
-| ?enum        | array(string)      | Allowed enum values                           |
-| ?operations  | array(string)      | Array of property ops, e.g. "SnowplowContext" |
+| Attribute    | Type                         | Description                                   |
+| :----------- | :--------------------------- | :-------------------------------------------- |
+| description  | string                       | Property description                          |
+| type         | string                       | Property type                                 |
+| nameMappings | array(NameMapping)           | Name mappings defined for given property      |
+| ?const       | Depends on the property type | Pinned property value                         |
+| ?enum        | array(string)                | Allowed enum values                           |
+| ?operations  | array(string)                | Array of property ops, e.g. "SnowplowContext" |
 
 ###### NameMapping Model
 
