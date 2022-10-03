@@ -1,15 +1,17 @@
 ---
 layout: 'guide'
-title: 'Start using Avo Visual Debugger in code'
+title: 'Property groups in Avo Codegen'
 ---
 
 import Link from '../../components/Link';
 
-In Avo you can group multiple event properties into a property group.
+In Avo you can group multiple event properties that are commonly used together into a property group.
 
-Then you can add the whole group to selected events.
+Property groups allow you to increase the consistency of your tracking plan as well as increasing efficiency when defining new events and implementing them.
 
-For example in Avo we have a property group called "Source", that includes 2 properties: "Source Id" and "Source Name".
+## Example
+
+In Avo we have a property group called "Source", that includes 2 properties: "Source Id" and "Source Name".
 
 We add this property group to any event that is related to a source instead of adding those 2 properties manually every time.
 
@@ -17,15 +19,17 @@ Property groups can include more than 2 properties, there is no upper limit.
 
 Read more about property groups <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-groupsa-event-property-groups"><a>here</a></Link>.
 
-## Property groups in the Codegen
+## Property groups in Avo Codegen
 
 When generating code for a tracking plan with property groups the property groups can be in 2 states:
 
-- folded: in this case we can represent a property group as an object in the code. Every property included into the property group becomes a field of the object.
+- Folded: in this case we can represent a property group as an object in the code. Every property included into the property group becomes a field of the object.
 
-- unfolded: in this case all the properties from the property group are added to the event tracking function as if the properties were added directly to the event in Avo.
+- Unfolded: in this case all the properties from the property group are added to the event tracking function as if the properties were added directly to the event in Avo.
 
-## Force property group unfolding
+Folded property groups are currently supported in 4 languages: Kotlin, Swift, Objective-C and Rescript/ReasonML. Codegen for these languages will generate group properties in the folded state by default, unless force unfolding happens. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to force unfold all property groups in your workspace. 
+
+### Force property group unfolding
 
 Sometimes a change in the tracking plan can cause a property group to be force unfolded.
 
