@@ -133,7 +133,7 @@ public func App Opened(
 
 #### <a name="avo-generated-file-supported-tracking-methods"></a> Supported tracking methods (Avo Actions)
 
-Each Avo Function is a code generated wrapper around your analytics SDK tracking libraries. Each Avo Function can wrap multiple tracking methods, such as logging events, identifying users, updating user properties, etc. The default tracking method is to log an event. To configure which tracking methods each Avo Function wraps, you change or add "Action Types" on the event in your Avo Tracking Plan.
+Each event in your tracking plan added to Codegen creates an event function that is a code generated wrapper that prepares and routes the event tracking data to your analytics SDK tracking libraries. Each event function can wrap multiple tracking methods, such as logging events, identifying users, updating user properties, etc. The default tracking method is to log an event. To configure which tracking methods each Avo Function wraps, you change or add "Action Types" on the event in your Avo Tracking Plan.
 
 > 💡 **Read more about actions and supported tracking methods:**
 >
