@@ -313,7 +313,7 @@ func identify(userId: String)
 func unidentify()
 ```
 
-> **Snowplow context** is a object of properties (a set of property names and values) in addition to the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function, and the `data`, which is an object. You provide the values for that object's fields when calling the Avo function.
+> **Snowplow context** is an object of properties (a set of property names and values) in addition to the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function, and the `data`, which is an object. You provide the values for that object's fields when calling the Avo function.
 
 In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are available below.
 
