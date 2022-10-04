@@ -499,6 +499,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Property groups in Codegen',
+        path: '/implementation/property-groups-unfolding',
+      },
+      {
+        type: 'route',
         title: 'Explicit null in the Codegen',
         path: '/implementation/explicit-null-in-codegen',
       },
