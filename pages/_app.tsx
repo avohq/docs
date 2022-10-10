@@ -73,7 +73,6 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
           <script
             type="text/javascript"
             src="//cdn.iubenda.com/cs/iubenda_cs.js"
-            charSet="UTF-8"
             async
           />
           <link
