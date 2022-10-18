@@ -40,11 +40,9 @@ The default position of the Web Debugger is at the bottom right of the screen. H
 > 💡 Using `WebDebuggerPosition` will guide you to pass the correct parameters.
 
 ```javascript
-import Avo, { WebDebuggerPosition } from './path/to/Avo';
-
 Avo.initAvo({
     webDebuggerOptions: {
-        position: WebDebuggerPosition.TopLeft({ top: 20, left: 20 }),
+        position: Avo.WebDebuggerPosition.TopLeft({ top: 20, left: 20 }),
     },
     ...
 });
