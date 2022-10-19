@@ -12,7 +12,7 @@ When designing the tracking plan changes, we recommend creating one Avo branch w
 
 ## Merging one of many sources into Avo main
 
-If one of the sources completes their implementation ahead of the other sources, and are merging that implementation in the main git branch, we recommend merging only that Source into your Avo main branch. For the Sources that will not be implemented for now, deselect "Implement with Avo"  on the sources that are not ready. Then you can merge the branch and create new ones for the remaining sources, selecting "Implement with Avo", or perhaps a branch per source.
+If one of the sources completes their implementation ahead of the other sources, and are merging that implementation in the main git branch, we recommend merging only that Source into your Avo main branch. For the Sources that will not be implemented for now, deselect "Implement with Codegen"  on the sources that are not ready. Then you can merge the branch and create new ones for the remaining sources, selecting "Implement with Codegen", or perhaps a branch per source.
 
 So the step by step guide would be:
 1. Create a branch
@@ -21,9 +21,9 @@ So the step by step guide would be:
 _If_ one of the sources is ready and they're merging their code into their git main branch:
 
 3. Temporarily tag the events that should be implemented on the other sources
-4. Uncheck "Implement with Avo" for all the sources that should be implemented but are not ready to be merged into Avo main
+4. Uncheck "Implement with Codegen" for all the sources that should be implemented but are not ready to be merged into Avo main
 5. Merge the branch
 6. Create a new branch
 7. Filter by the tag you added in step 3.
-8. Check "Implement with Avo" on the remaining sources
+8. Check "Implement with Codegen" on the remaining sources
 9. Share the new branch with the development teams on the remaining sources

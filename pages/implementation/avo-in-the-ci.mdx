@@ -14,7 +14,7 @@ When you implement your analytics events with <Link passHref href="/implementati
 
 ## How does avo status work?
 
-- `avo status` runs through your code base, searches for instances Avo Codegen, and returns an error if there is no found instance of one or more of the analytics events that are marked as "Implement with Avo" for this code base.
+- `avo status` runs through your code base, searches for instances Avo Codegen, and returns an error if there is no found instance of one or more of the analytics events that are marked as "Implement with Codegen" for this code base.
 - `avo status` searches in the folder where it's invoked and in the children subfolders. It requires Avo to be initialized in that folder, i.e. your `avo.json` file should be there.
 - It validates tracking calls implemented with <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen</a></Link>, aka the Avo generated type-safe analytics wrappers.
 - It will error if no instance of the event is found in your code. This means two things:
