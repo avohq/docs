@@ -19,7 +19,7 @@ The Web Debugger is on by default in development.
 
 To disable the Web Debugger in development provide `webDebugger = false` to initAvo options:
 
-```javascript
+```typescript
 Avo.initAvo({ webDebugger: false, ... }, ...);
 ```
 
@@ -38,6 +38,16 @@ To access it in production add the `?avo_debug=1` query parameter to the URL.
 The default position of the Web Debugger is at the bottom right of the screen. However, if you wish to move it you can pass in the `position` object to the `webDebuggerOptions`. The bubble may be anchored to each corner of the screen (`BottomRight`, `BottomLeft`, `TopRight` or `TopLeft`) and each area will take a more fine grained offset relative to it's corner.
 
 > 💡 Using `WebDebuggerPosition` will guide you to pass the correct parameters.
+
+```typescript
+import Avo, { WebDebuggerPosition } from './path/to/Avo';
+Avo.initAvo({
+    webDebuggerOptions: {
+        position: WebDebuggerPosition.BottomRight({ bottom: 20, right: 20 }),
+    },
+    ...
+});
+```
 
 ```javascript
 Avo.initAvo({
