@@ -59,6 +59,7 @@ Available integrations are:
 - <a href="#mixpanel-lexicon">Mixpanel Lexicon</a>
 - <a href="#rudderstack">RudderStack</a>
 - <a href="#amplitude-govern">Amplitude Govern</a>
+- <a href="#snowplow">Snowplow Data Structures</a>
 - <a href="#mparticle">mParticle Data Master</a>
 - <a href="#webhook">Webhook</a>
 
@@ -280,6 +281,44 @@ To enable the direct integration with RudderStack Tracking Plans, you need to co
 Avo will override all events in the RudderStack Tracking Plan that are being imported from Avo. Any changes made to an event in RudderStack Tracking Plan between Avo publish will be overridden on next Avo publish.
 
 Avo will not override any events that are only defined in RudderStack, or events that have not been excluded from the RudderStack integration in Avo with filters.
+
+<img
+  src={require('../../../images/publishing_snowplow.svg')}
+  alt="Snowplow"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="snowplow"></a> Snowplow Data Structures
+
+The [Snowplow integration](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/managing-data-structures/) enables you to publish your Avo Tracking Plan into Snowplow. You can configure the integration to publish whenever a branch is merged or with a push of a button.
+
+### Configure the Snowplow integration
+
+To enable the direct integration with Snowplow, you need to configure it with the following parameters.
+
+- **Snowplow Organization ID**: Your organization ID issued by Snowplow.
+- **Snowplow Vendor Name**: The vendor name of your Snowplow schemas.
+- **Snowplow Access Token**: The secret access token to update your Snowplow data structures.
+
+### Publishing to Snowplow
+
+> Data structures interfaces are only compatible with pipelines that have been upgraded to use Iglu Server registries, rather than static S3 registries. Please check in your [Snowplow console](https://console.snowplowanalytics.com/data-structures/), to see if you need an upgrade or if your registries are ready to go.
+
+The Snowplow API enforces a workflow of validating, testing on development and then deploying to production.
+
+Avo publishing integration will take care of validating and deploying your data structures to the development environment, where you take over to test the data structures and promote the tested data structures to production.
+
+Avo will override all events in the Snowplow Tracking Plan that are being imported from Avo. Any changes made to an event in Snowplow Tracking Plan between Avo publish will be overridden on next Avo publish.
+
+Avo will not override any events that are only defined in Snowplow, or events that have not been excluded from the Snowplow integration in Avo with filters.
+
+Note that only Admin users can promote data structures from Dev to Production. Learn more on how to promote the data structures with Snowplow Console [here](https://docs.snowplow.io/docs/understanding-tracking-design/managing-data-structures/#promoting-a-data-structure)
+
+### Versioning
+
+Avo will create new data structures with version 1-0-0 and will patch the existing data structures in your development environment on the same version as they are.
+
+When promoting the tested data structures to production you will be required update the version. Read more about the versioning [here](https://docs.snowplow.io/docs/understanding-tracking-design/versioning-your-data-structures/)
 
 <img
   src={require('../../../images/publishing_mparticle.svg')}
