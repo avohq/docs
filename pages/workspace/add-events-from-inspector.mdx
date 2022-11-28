@@ -1,0 +1,65 @@
+---
+layout: 'guide'
+title: 'Add Events and properties from Inspector'
+---
+
+import Link from '../../components/Link';
+
+## Inspector Dashboard
+
+<center>
+  <img
+    src={require('../../images/inspector/dashboard.png')}
+    width="100%"
+    alt="Image shows how to change property presence between events"
+  />
+</center>
+
+The inspector shows you all events and properties it detects, and lets you know whether they are missing from your tracking plan, and gives you the option to add the event or property to your tracking plan directly from the Inspector dashboard.
+
+## Missing Events
+
+If the Inspector detects an Event that is not in your tracking plan, it will be highlighted by a red tracking plan icon next to the name, along with and "Add" button to add it to your tracking plan.
+
+Selecting the event will expand it down, to show you all the properties that were detected in this particular Event.
+
+<center>
+  <img
+    src={require('../../images/inspector/add-event.png')}
+    width="100%"
+    alt="Image shows an inspector event and all detected properties on the event."
+  />
+</center>
+
+### Add Event
+
+Before creating the event, the Inspector will first validate the event name against all events in the tracking plan, to determine if the event might already exist with different casing.
+If that happens, a confirm dialog pops up showing the user that the Inspector found an existing event with the same name.
+
+<center>
+  <img
+    src={require('../../images/inspector/confirm-dialog.png')}
+    width="100%"
+    alt="Image shows a confirm dialog to make sure the user wants to add this event"
+  />
+</center>
+
+Adding the event to the tracking plan will create the Event and do the following:
+
+- Add all sources the event has according to the inspector
+- Add properties that exist in the tracking plan and are on the event in the inspector.
+- Create and add properties that are missing from the tracking plan but are on the event in the inspector
+  - If the property already exists in different casing, it will not be created.
+  - If the property has reported seeing 2 types (int, string for example) it will select the type that Inspector has seen more of.
+  - Each property will be created as required
+  - All new properties created will be created as **Event properties**
+
+### Add Property
+
+Adding a Property directly from the inspector will create the Property and do the following:
+
+- Validate that the property does not exist already in the workspace
+  - If a property with different casing already exists, a window will pop up asking you to confirm your creation of the property.
+- If the property has reported seeing 2 types (int, string for example) it will select the type that Inspector has seen more of.
+- Each property will be created as required
+- The property will be created as **Event property**

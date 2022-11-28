@@ -28,31 +28,31 @@ The Sources tab shows a list of all sources that have already been created and t
 If the source you want to set up isn't already in the list of source, you can create a new one by clicking "Add Source". Check out our Connections Setup docs to learn more about <Link passHref href="/data-design/define-sources-and-destinations#sources">setting up and configuring sources </Link>
 
 Each Inspector source has 3 states:
-1. Receiving events - this source already received at least one event from the client SDK.
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/inspector-receiving-events.png')}
-    alt="Inspector receiving events"
-    width="60%"
-  />
-</center>
-2. Inspector available - the source is available for Inspection, but have not received any events yet. Click the source and find Inspector Setup section of the source details to see the implementations details and the API key for this source.
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/inspector-listening.png')}
-    alt="Inspector listening"
-    width="60%"
-  />
-</center>
-3. Inspector Not available - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/inspector-not-available.png')}
-    alt="Inspector not available"
-    width="60%"
-  />
-</center>
 
+1. Receiving events - this source already received at least one event from the client SDK.
+   <center>
+     <img
+       src={require('../../images/workspace/connection-setup/inspector-receiving-events.png')}
+       alt="Inspector receiving events"
+       width="60%"
+     />
+   </center>
+2. Inspector available - the source is available for Inspection, but have not received any events yet. Click the source and find Inspector Setup section of the source details to see the implementations details and the API key for this source.
+   <center>
+     <img
+       src={require('../../images/workspace/connection-setup/inspector-listening.png')}
+       alt="Inspector listening"
+       width="60%"
+     />
+   </center>
+3. Inspector Not available - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
+   <center>
+     <img
+       src={require('../../images/workspace/connection-setup/inspector-not-available.png')}
+       alt="Inspector not available"
+       width="60%"
+     />
+   </center>
 
 ## Connect to Slack
 
@@ -96,6 +96,7 @@ Here you can choose which environment to examine, the time window and search for
 #### Environments
 
 Currently Inspector supports 3 types of environments:
+
 - Development
 - Staging
 - Production
@@ -138,6 +139,7 @@ If you select an event or property row a panel with detailed information will ap
 ##### Unknown Source
 
 Sources that are not defined on the Tracking Plan branch you're on, will show up as "Unknown Source" columns in the event table. Unknown sources can show up if:
+
 1. The source has been archived in Avo
 2. The source was created on a branch that is yet to be merged to the branch you're currently on
 
@@ -149,3 +151,6 @@ You can learn more about the <Link passHref href="/explore-tracking-plan/issue-t
 
 You can learn more about <Link passHref href="/workspace/tracking-plan/implementation-status">how Inspector works with your Tracking Plan implementation status here</Link>.
 
+## Adding events to your tracking plan directly from the Inspector
+
+You can learn more about <Link passHref href="/workspace/add-events-from-inspector">how you can create events and properties directly from the inspector here</Link>

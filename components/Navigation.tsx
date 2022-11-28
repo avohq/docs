@@ -390,6 +390,11 @@ const navigation: navigationItem[] = [
         path: '/explore-tracking-plan/issue-types-in-inspector',
       },
       {
+        type: 'route',
+        title: 'Add Events from Inspector',
+        path: '/workspace/add-events-from-inspector',
+      },
+      {
         type: 'section',
         group: 'Connecting Inspector',
       },
