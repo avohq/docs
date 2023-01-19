@@ -58,9 +58,8 @@ const mixpanelDestinationInterface: CustomDestination = {
   setGroupProperties: (groupTypeName, groupId, groupProperties) =>
     mixpanel.get_group(groupTypeName, groupId).set(groupProperties),
 
-  /* @see https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.people.track_charge */
-  revenue: (amount, eventProperties) =>
-    mixpanel.people.track_charge(amount, eventProperties),
+  // revenue: (amount, eventProperties) => {}
+  // Mixpanel does not support revenue tracking out of the box.
 };
 
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
