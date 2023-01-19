@@ -1,8 +1,9 @@
 import { FunctionComponent, useEffect } from 'react';
 import { AppProps } from 'next/app';
 import { MDXProvider } from '@mdx-js/react';
+import mixpanel from 'mixpanel-browser';
 
-import Avo, { AvoEnv } from '../Avo';
+import Avo, { AvoEnv, CustomDestination } from '../Avo';
 
 import '../styles/global.css';
 
@@ -27,8 +28,48 @@ const getAvoEnv = () => {
   }
 };
 
+const mixpanelDestinationInterface: CustomDestination = {
+  make: (env, apiKey) =>
+    mixpanel.init(apiKey, {
+      debug: env != AvoEnv.Prod,
+      ignore_dnt: env == AvoEnv.Dev,
+    }),
+
+  identify: (userId) => mixpanel.identify(userId),
+
+  logEvent: (eventName, eventProperties) =>
+    mixpanel.track(eventName, eventProperties),
+
+  setUserProperties: (_userId, userProperties) =>
+    mixpanel.people.set(userProperties),
+
+  unidentify: () => mixpanel.reset(),
+
+  addCurrentUserToGroup: (groupTypeName, groupId) =>
+    mixpanel.set_group(groupTypeName, groupId),
+
+  logEventWithGroups: (eventName, eventProperties, groupTypeNamesToGroupIds) =>
+    mixpanel.track_with_groups(
+      eventName,
+      eventProperties,
+      groupTypeNamesToGroupIds,
+    ),
+
+  setGroupProperties: (groupTypeName, groupId, groupProperties) =>
+    mixpanel.get_group(groupTypeName, groupId).set(groupProperties),
+
+  /* @see https://mixpanel.com/help/reference/javascript-full-api-reference#mixpanel.people.track_charge */
+  revenue: (amount, eventProperties) =>
+    mixpanel.people.track_charge(amount, eventProperties),
+};
+
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
-  Avo.initAvo({ env: getAvoEnv() }, { client: 'Docs', version: '2.0' }, {});
+  Avo.initAvo(
+    { env: getAvoEnv() },
+    { client: 'Docs', version: '2.0' },
+    {},
+    mixpanelDestinationInterface,
+  );
 
   const path = useAvoPath();
 

@@ -85,6 +85,11 @@ const parseLanguage = (language: string): NameAndIcon => {
         name: 'Terminal',
         icon: 'terminal',
       };
+    case 'pseudocode':
+      return {
+        name: language,
+        icon: 'code',
+      };
     default:
       // eslint-disable-next-line no-console
       console.warn(`Missing icon and name for language "${language}"`);

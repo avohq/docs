@@ -22,6 +22,7 @@ const Layout: FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     Avo.docsPageViewed({
+      userId_: 'ok',
       path: path,
       referrer: document.referrer,
       utmCampaign: router.query.utm_campaign as string | undefined,
