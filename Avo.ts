@@ -965,7 +965,7 @@ _avo_invoke = function _avo_invoke(env: AvoEnv, eventId: string, hash: string, m
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          "ac": "8F4IErVJrv2RxqgEPw7Y",
+          "ac": "mXdsEZAc5wgJWFpGtSk8",
           "br": "0vRisgo5p",
           "en": env,
           "ev": eventId,
@@ -992,7 +992,7 @@ _avo_invoke_meta = function _avo_invoke_meta(env: AvoEnv, type: string, messages
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          "ac": "8F4IErVJrv2RxqgEPw7Y",
+          "ac": "mXdsEZAc5wgJWFpGtSk8",
           "br": "0vRisgo5p",
           "en": env,
           "ty": type,
@@ -1065,105 +1065,6 @@ function _avo_debugger_send_position(position: webDebuggerPosition) {
   })
 }
 
-
-// @ts-ignore
-interface Window {
-  analytics: any;
-}
-
-let SegmentInspectorForDocs = {
-  make: function make(apiKey: string, options: any) {
-    if (typeof (window as any) === 'undefined') { InternalAvoLogger.warn('window.analytics is not available in Node.js'); return; }
-    let analytics = ((window as any).analytics = (window as any).analytics || []);
-
-    (this as any).getInstance = () => (window as any).analytics;
-    if (analytics.initialize) return;
-    if (analytics.invoked) {
-      if (InternalAvoLogger && InternalAvoLogger.error) {
-        InternalAvoLogger.error('Segment snippet included twice.');
-      }
-      return;
-    }
-    analytics.invoked = true;
-    analytics.methods = [
-      'trackSubmit',
-      'trackClick',
-      'trackLink',
-      'trackForm',
-      'pageview',
-      'identify',
-      'reset',
-      'group',
-      'track',
-      'ready',
-      'alias',
-      'debug',
-      'page',
-      'once',
-      'off',
-      'on',
-      'addSourceMiddleware',
-      'addIntegrationMiddleware',
-      'setAnonymousId',
-      'addDestinationMiddleware'
-    ];
-    analytics.factory = function(method: any){
-      return function(){
-        let args = Array.prototype.slice.call(arguments);
-        args.unshift(method);
-        analytics.push(args);
-        return analytics;
-      };
-    };
-    for (let i = 0; i < analytics.methods.length; i++) {
-      let key = analytics.methods[i];
-      analytics[key] = analytics.factory(key);
-    }
-    analytics.load = function(key: any, options: any){
-      let script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.async = true;
-      script.src = 'https://cdn.segment.com/analytics.js/v1/'
-        + key + '/analytics.min.js';
-      let first = document.getElementsByTagName('script')[0];
-      // @ts-ignore
-      first.parentNode.insertBefore(script, first);
-      analytics._loadOptions = options;
-    };
-    analytics._writeKey = apiKey;
-    analytics.SNIPPET_VERSION = '4.15.3';
-
-    analytics.load(apiKey, options);
-
-    (this as any).getInstance = () => (window as any).analytics;
-  },
-
-  /* Segment does not have revenue api, @see https://segment.com/docs/spec/track/#properties */
-  logEvent: function logEvent(eventName: any, eventProperties: any, integrations: any) {
-    if (typeof (window as any) === 'undefined') { return; }
-    (this as any).getInstance().track(eventName, eventProperties, Object.assign({}, {integrations: integrations}));
-  },
-
-  setUserProperties: function setUserProperties(userProperties: any, integrations: any) {
-    if (typeof (window as any) === 'undefined') { return; }
-    (this as any).getInstance().identify(userProperties, Object.assign({}, {integrations: integrations}));
-  },
-
-  identify: function identify(userId: any, integrations: any) {
-    if (typeof (window as any) === 'undefined') { return; }
-    (this as any).getInstance().identify(userId, {}, Object.assign({}, {integrations: integrations}));
-  },
-
-  unidentify: function unidentify(integrations: any) {
-    if (typeof (window as any) === 'undefined') { return; }
-    (this as any).getInstance().identify(null, {}, Object.assign({}, {integrations: integrations}));
-  },
-
-  page: function page(eventName: any, eventProperties: any, integrations: any) {
-    if (typeof (window as any) === 'undefined') { return; }
-    (this as any).getInstance().page(eventName, eventProperties, Object.assign({}, {integrations: integrations}));
-  },
-};
 
 // @ts-ignore
 interface Window {
@@ -1382,6 +1283,7 @@ export function setSystemProperties(properties: {client: ClientValueType;
   }
 }
 
+let SegmentInspectorForDocs: any;
 let Mixpanel: any;
 
 export function initAvo(options: {env: AvoEnv; webDebugger?: boolean;
@@ -1389,6 +1291,7 @@ export function initAvo(options: {env: AvoEnv; webDebugger?: boolean;
   reportFailureAs?: 'error' | 'warn' | 'log'; inspector?: AvoInspector;
   avoLogger?: AvoLogger}, systemProperties: {client: ClientValueType;
   version: string}, destinationOptions: any,
+  SegmentInspectorForDocsDestination: CustomDestination,
   MixpanelDestination: CustomDestination) {
   if (__AVO_ENV__ !== null) {
     return;
@@ -1457,23 +1360,16 @@ export function initAvo(options: {env: AvoEnv; webDebugger?: boolean;
   }
   if (!__AVO_NOOP__) {
     if (__AVO_ENV__ === AvoEnv.Prod) {
-      SegmentInspectorForDocs.make("4vJwiarRLzNEP7VyJkO9logLfZGbHElb", destinationOptions.segmentInspectorForDocs);
       Intercom.make("q694k0ra", destinationOptions.intercom);
       Amplitude.make("20a050881c2f99ed4850d73230fa1e31", destinationOptions.amplitude);
       Fullstory.make("E2KTW", destinationOptions.fullstory);
     }
     if (__AVO_ENV__ === AvoEnv.Dev) {
-      SegmentInspectorForDocs.make("fEIv1FdmNttjO0k7TJbRLxerceD4u53D", destinationOptions.segmentInspectorForDocs);
       Intercom.make("hc03k7sl", destinationOptions.intercom);
       Amplitude.make("78f0aa77e1de2125674e4703d5f21460", destinationOptions.amplitude);
       Fullstory.make("KBA1X", destinationOptions.fullstory);
     }
     if (__AVO_ENV__ === AvoEnv.Staging) {
-      console[__REPORT_FAILURE_AS__ || 'error']("[avo] No staging key is set for segment inspector for docs. Head to destination settings in Avo to set a staging key.");
-      SegmentInspectorForDocs.make(
-        "",
-        destinationOptions.segmentInspectorForDocs
-      );
       console[__REPORT_FAILURE_AS__ || 'error']("[avo] No staging key is set for Intercom. Head to destination settings in Avo to set a staging key.");
       Intercom.make(
         "",
@@ -1488,6 +1384,16 @@ export function initAvo(options: {env: AvoEnv; webDebugger?: boolean;
         "",
         destinationOptions.fullstory
       );
+    }
+
+    SegmentInspectorForDocs = SegmentInspectorForDocsDestination;
+    if (__AVO_ENV__ === 'prod') {
+      SegmentInspectorForDocs && SegmentInspectorForDocs.make && SegmentInspectorForDocs.make(__AVO_ENV__, "4vJwiarRLzNEP7VyJkO9logLfZGbHElb");
+    } else if (__AVO_ENV__ === 'dev') {
+      SegmentInspectorForDocs && SegmentInspectorForDocs.make && SegmentInspectorForDocs.make(__AVO_ENV__, "fEIv1FdmNttjO0k7TJbRLxerceD4u53D");
+    } else {
+      console[__REPORT_FAILURE_AS__ || 'error']("[avo] No staging key is set for segment inspector for docs. Head to destination settings in Avo to set a staging key.");
+      SegmentInspectorForDocs && SegmentInspectorForDocs.make && SegmentInspectorForDocs.make(__AVO_ENV__, null);
     }
 
     Mixpanel = MixpanelDestination;
@@ -1592,7 +1498,7 @@ export function feedbackGiven(properties: FeedbackGivenProperties) {
         }, "35_wLFqR0", "5e4033bd4f57356defd63a2c91d84c2f37cf705fcee6cd91f5a8a81f3cd6dd96");
     }
     // destination SegmentInspectorForDocs
-    SegmentInspectorForDocs.logEvent("Feedback Given", (Object as any).assign({}, eventProperties), {});
+    SegmentInspectorForDocs.logEvent("Feedback Given", (Object as any).assign({}, eventProperties));
 
     // destination Intercom
     let intercomProperties = {};
@@ -1672,7 +1578,7 @@ export function contentCopied(properties: ContentCopiedProperties) {
         }, "0FvnJgpVbz", "a1957ef9b84b8f29012e1e9f97ff61250039ea456028ff892b1392f196baee65");
     }
     // destination SegmentInspectorForDocs
-    SegmentInspectorForDocs.logEvent("Content Copied", (Object as any).assign({}, eventProperties), {});
+    SegmentInspectorForDocs.logEvent("Content Copied", (Object as any).assign({}, eventProperties));
 
     // destination Intercom
     let intercomProperties = {};
@@ -1780,7 +1686,7 @@ export function docsPageViewed(properties: DocsPageViewedProperties) {
         }, "J4cW6PmriY", "417dede293053169a1c89e095789e3dfbbc2f7bfe48d4f9f5e0f5691d021a599");
     }
     // destination SegmentInspectorForDocs
-    SegmentInspectorForDocs.logEvent("Docs Page Viewed", (Object as any).assign({}, eventProperties), {});
+    SegmentInspectorForDocs.logEvent("Docs Page Viewed", (Object as any).assign({}, eventProperties));
 
     // destination Intercom
     let intercomProperties = {};
@@ -1845,7 +1751,7 @@ export function docsSearchInitialized() {
         }, "FWqOBDDhHU", "7c779d7bf63cd360c54ff24d3ceb1f66e4d670d433679ac2088af29db41fa600");
     }
     // destination SegmentInspectorForDocs
-    SegmentInspectorForDocs.logEvent("Docs Search Initialized", (Object as any).assign({}, eventProperties), {});
+    SegmentInspectorForDocs.logEvent("Docs Search Initialized", (Object as any).assign({}, eventProperties));
 
     // destination Intercom
     let intercomProperties = {};
@@ -1950,7 +1856,7 @@ export function docsSearchResultSelected(
         }, "YartShpgKH", "6df6ade9a8681938b55b334c4f29ab1b88bbc5d15e5915a0c4192b55d2f627fb");
     }
     // destination SegmentInspectorForDocs
-    SegmentInspectorForDocs.logEvent("Docs Search Result Selected", (Object as any).assign({}, eventProperties), {});
+    SegmentInspectorForDocs.logEvent("Docs Search Result Selected", (Object as any).assign({}, eventProperties));
 
     // destination Intercom
     let intercomProperties = {};
@@ -2048,7 +1954,7 @@ export function docsSearchAbandoned(properties: DocsSearchAbandonedProperties
         }, "OPFGpaxOEx", "e4680184c4dc2aac03cea74ad05402370a8e10017979038f1bd22705df6e70d1");
     }
     // destination SegmentInspectorForDocs
-    SegmentInspectorForDocs.logEvent("Docs Search Abandoned", (Object as any).assign({}, eventProperties), {});
+    SegmentInspectorForDocs.logEvent("Docs Search Abandoned", (Object as any).assign({}, eventProperties));
 
     // destination Intercom
     let intercomProperties = {};

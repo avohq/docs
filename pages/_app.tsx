@@ -1,4 +1,5 @@
 import { FunctionComponent, useEffect } from 'react';
+import { AnalyticsBrowser } from '@segment/analytics-next';
 import { AppProps } from 'next/app';
 import { MDXProvider } from '@mdx-js/react';
 import mixpanel from 'mixpanel-browser';
@@ -26,6 +27,40 @@ const getAvoEnv = () => {
     default:
       return AvoEnv.Dev;
   }
+};
+
+let analytics: AnalyticsBrowser | undefined;
+
+const segmentDestinationInterface: CustomDestination = {
+  make: (_env, apiKey) => {
+    analytics = AnalyticsBrowser.load({ writeKey: apiKey });
+  },
+
+  identify: (userId) => analytics?.identify(userId),
+
+  logEvent: (eventName, eventProperties) =>
+    analytics?.track(eventName, eventProperties),
+
+  setUserProperties: (userProperties) => analytics?.identify(userProperties),
+
+  unidentify: () => analytics?.reset(),
+
+  logPage: (eventName, eventProperties) =>
+    analytics?.page(eventName, eventProperties),
+
+  revenue: (amount: number, eventProperties: object) =>
+    analytics?.track('Purchase Complete', {
+      ...eventProperties,
+      revenue: amount,
+    }),
+
+  setGroupProperties: (_groupType, groupId, groupProperties) =>
+    analytics?.group(groupId, groupProperties),
+
+  addCurrentUserToGroup: (_groupType, groupId) => analytics?.group(groupId),
+
+  // logEventWithGroups is not supported by the Segment SDK
+  // logEventWithGroups: (eventName, eventProperties, groupTypesToGroupIds) => {},
 };
 
 const mixpanelDestinationInterface: CustomDestination = {
@@ -67,6 +102,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
     { env: getAvoEnv() },
     { client: 'Docs', version: '2.0' },
     {},
+    segmentDestinationInterface,
     mixpanelDestinationInterface,
   );
 
