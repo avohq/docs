@@ -29,6 +29,8 @@ Adopting Codegen is not required to get value from Avo - many companies have the
 Avo is designed to be efficient and powerful without the Codegen, providing advanced tracking plan management and observability with Inspector. 
 The decision to use Codegen is usually in the hands of the engineering team on each platform. If you prefer to use a different approach for implementing your tracking code Avo can still help you by providing a platform to collaborate and align on the tracking specs, and by providing clear specs for the suggested tracking changes.
 
+Learn more in the <Link passHref href="/implementation/start-using-avo-codegen"><a>Codegen setup docs</a></Link>.
+
 ## How does Codegen work
 
 Codegen works with any analytics tool, whether it's any of the common event logging SDKs (e.g. Google Analytics 4, Segment, RudderStack, mParticle, Snowplow, Amplitude, Mixpanel, PostHog, FreshPaint, Pendo, etc) or an homemade API or SDK.
@@ -37,7 +39,7 @@ When designing the tracking plan you configure the list of data destinations for
 
 In the Avo Tracking Plan you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
 
-Learn more technical details about Codegen <Link passHref href="/implementation/avo-functions-overview"><a>here</a></Link>.
+Learn more in the <Link passHref href="/implementation/avo-codegen-tech-deep-dive"><a>Codegen tech deep dive docs</a></Link>.
 
 ## Does my event data flow through Avo servers?
 
