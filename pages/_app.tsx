@@ -1,8 +1,10 @@
 import { FunctionComponent, useEffect } from 'react';
+import { AnalyticsBrowser } from '@segment/analytics-next';
 import { AppProps } from 'next/app';
 import { MDXProvider } from '@mdx-js/react';
+import mixpanel from 'mixpanel-browser';
 
-import Avo, { AvoEnv } from '../Avo';
+import Avo, { AvoEnv, CustomDestination } from '../Avo';
 
 import '../styles/global.css';
 
@@ -27,8 +29,82 @@ const getAvoEnv = () => {
   }
 };
 
+let analytics: AnalyticsBrowser | undefined;
+
+const segmentDestinationInterface: CustomDestination = {
+  make: (_env, apiKey) => {
+    analytics = AnalyticsBrowser.load({ writeKey: apiKey });
+  },
+
+  identify: (userId) => analytics?.identify(userId),
+
+  logEvent: (eventName, eventProperties) =>
+    analytics?.track(eventName, eventProperties),
+
+  setUserProperties: (userProperties) => analytics?.identify(userProperties),
+
+  unidentify: () => analytics?.reset(),
+
+  logPage: (eventName, eventProperties) =>
+    analytics?.page(eventName, eventProperties),
+
+  revenue: (amount: number, eventProperties: object) =>
+    analytics?.track('Purchase Complete', {
+      ...eventProperties,
+      revenue: amount,
+    }),
+
+  setGroupProperties: (_groupType, groupId, groupProperties) =>
+    analytics?.group(groupId, groupProperties),
+
+  addCurrentUserToGroup: (_groupType, groupId) => analytics?.group(groupId),
+
+  // logEventWithGroups is not supported by the Segment SDK
+  // logEventWithGroups: (eventName, eventProperties, groupTypesToGroupIds) => {},
+};
+
+const mixpanelDestinationInterface: CustomDestination = {
+  make: (env, apiKey) =>
+    mixpanel.init(apiKey, {
+      debug: env != AvoEnv.Prod,
+      ignore_dnt: env == AvoEnv.Dev,
+    }),
+
+  identify: (userId) => mixpanel.identify(userId),
+
+  logEvent: (eventName, eventProperties) =>
+    mixpanel.track(eventName, eventProperties),
+
+  setUserProperties: (_userId, userProperties) =>
+    mixpanel.people.set(userProperties),
+
+  unidentify: () => mixpanel.reset(),
+
+  addCurrentUserToGroup: (groupTypeName, groupId) =>
+    mixpanel.set_group(groupTypeName, groupId),
+
+  logEventWithGroups: (eventName, eventProperties, groupTypeNamesToGroupIds) =>
+    mixpanel.track_with_groups(
+      eventName,
+      eventProperties,
+      groupTypeNamesToGroupIds,
+    ),
+
+  setGroupProperties: (groupTypeName, groupId, groupProperties) =>
+    mixpanel.get_group(groupTypeName, groupId).set(groupProperties),
+
+  // revenue: (amount, eventProperties) => {}
+  // Mixpanel does not support revenue tracking out of the box.
+};
+
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
-  Avo.initAvo({ env: getAvoEnv() }, { client: 'Docs', version: '2.0' }, {});
+  Avo.initAvo(
+    { env: getAvoEnv() },
+    { client: 'Docs', version: '2.0' },
+    {},
+    segmentDestinationInterface,
+    mixpanelDestinationInterface,
+  );
 
   const path = useAvoPath();
 
