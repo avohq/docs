@@ -1,10 +1,18 @@
 import { FunctionComponent } from 'react';
 import styles from './SignIn.module.scss';
+import Avo from '../Avo';
+import useAvoPath from '../util/useAvoPath';
 
 const SignIn: FunctionComponent = () => {
+  const path = useAvoPath();
+
   return (
     <div className={styles.root}>
-      <a href="https://avo.app/onboarding">
+      <a href="https://avo.app/onboarding" onClick={(_event) => Avo.signUpStarted({
+        siteSection: Avo.SiteSection.HEADER,
+        emailInput: undefined,
+        path: path
+      })}>
         <div className={styles.signUp}>Sign up</div>
       </a>
       <a href="https://avo.app/login">
