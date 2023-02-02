@@ -8,11 +8,16 @@ const SignIn: FunctionComponent = () => {
 
   return (
     <div className={styles.root}>
-      <a href="https://avo.app/onboarding" onClick={(_event) => Avo.signUpStarted({
-        siteSection: Avo.SiteSection.HEADER,
-        emailInput: undefined,
-        path: path
-      })}>
+      <a
+        href="https://avo.app/onboarding"
+        onClick={() =>
+          Avo.signUpStarted({
+            siteSection: Avo.SiteSection.HEADER,
+            emailInput: undefined,
+            path: path,
+          })
+        }
+      >
         <div className={styles.signUp}>Sign up</div>
       </a>
       <a href="https://avo.app/login">
