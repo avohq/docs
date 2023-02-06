@@ -1,0 +1,106 @@
+---
+layout: 'guide'
+title: 'Review Code Changes '
+---
+
+Review the code changes affected by the branch by getting a good overview of added, deleted or updated events.
+
+The overview will display how many affected events are using Avo Codegen and who are not using it.
+
+<img
+  src={require('../../images/code-changes/overview-screen.png')}
+  width="100%"
+  alt="Overview of code changes"
+/>
+
+## Filtering View
+
+While Reviewing, you can filter the events to help you focus on your context.
+There are 2 filters
+
+- By source
+- By event implementation type (Codegen/Non-Codegen)
+
+<img
+  src={require('../../images/code-changes/source-filter.png')}
+  height="200px"
+  alt="source filter"
+/>
+
+<img
+  src={require('../../images/code-changes/implementation-filter.png')}
+  height="200px"
+  alt="Implementation filter"
+/>
+
+## Code Snippets
+
+You can select how you want the code snippets changes displayed.
+There are 3 options to select from to view the changes:
+
+- Unified
+- Split
+- No diff
+
+To show an example, we have an event called REACTION_REMOVED where we modified two properties.
+
+- app_id: We changed the property type from `string` to `int`
+- bot_id: We changed the property presence from `required` to `sometimes sent`
+
+#### Unified
+
+When viewing the events unified, the diff between main branch and your branch will be shown in the code snippet inline.
+
+<img
+  src={require('../../images/code-changes/unified-snippet.png')}
+  width="80%"
+  alt="code snippet unified diff"
+/>
+
+#### Split
+
+When viewing the events with split view, it will show the main state on the left hand side, while your current branch changes on the right hand side, with highlights on which properties were modified
+
+<img
+  src={require('../../images/code-changes/split-snippet.png')}
+  width="80%"
+  alt="code snippet split diff"
+/>
+
+#### No diff
+
+When viewing the events with `No diff` view. The code snippet will display only the branch current changes.
+
+<img
+  src={require('../../images/code-changes/nodiff-snippet.png')}
+  width="80%"
+  alt="code snippet no diff"
+/>
+
+## Codegen snippets
+
+When reviewing sources that are using the Avo Codegen, the snippet will generate the function call to the Avo generated function created. The code snippet will be in the source's selected programming language and can be copy and pasted directly into code.
+
+<img
+  src={require('../../images/code-changes/codegen-snippet.png')}
+  width="100%"
+  alt="Codegen code snippet"
+/>
+
+## Non-Codegen snippets
+
+Events that are not implemented with codegen will also show code snippets.
+These code snippets will be in Pseudocode to be used as a guide helper for the developer to implement the code.
+The Pseudocodegen will attempt to display all the complexity that can be in implementing the event such as:
+
+- Name mapping (overall and per destination)
+- Multiple Destinations
+- Property presence
+
+> Pseudocodegen sets the property types as values for the properties to help the developer make sure to implement it correctly.
+
+<img
+  src={require('../../images/code-changes/pseudo-snippet.png')}
+  width="100%"
+  alt="PseudoCode code snippet"
+/>

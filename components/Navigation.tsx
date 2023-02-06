@@ -234,6 +234,11 @@ const navigation: navigationItem[] = [
             title: 'Share implementation instructions',
             path: '/workspace/implementation-instructions',
           },
+          {
+            type: 'route',
+            title: 'Review code changes',
+            path: '/workspace/code-changes',
+          },
         ],
       },
 
