@@ -148,8 +148,12 @@ const amplitudeDestinationInterface: CustomDestination = {
   addCurrentUserToGroup: (groupTypeName, groupId) =>
     amplitude.setGroup(groupTypeName, groupId),
 
-  // Amplitude doesn't support logging events with groups
-  // logEventWithGroups: (eventName, eventProperties, groupTypeNamesToGroupIds) => {},
+  logEventWithGroups: (eventName, eventProperties, groupTypeNamesToGroupIds) =>
+    amplitude.track({
+      event_type: eventName,
+      event_properties: eventProperties,
+      groups: groupTypeNamesToGroupIds,
+    }),
 };
 
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
