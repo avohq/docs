@@ -29,6 +29,7 @@ const Layout: FunctionComponent = ({ children }) => {
       utmContent: router.query.utm_content as string | undefined,
       utmMedium: router.query.utm_medium as string | undefined,
       utmSource: router.query.utm_source as string | undefined,
+      utmTerm: router.query.utm_term as string | undefined,
     });
   }, [path]);
 
