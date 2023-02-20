@@ -7,8 +7,8 @@ title: 'Import your existing tracking plan'
 import Link from '../../../components/Link';
 
 > 💡 **Import existing tracking specs into Avo to get started quickly**. We know that tracking plans come in all shapes and sizes. If you don't see your format
-below you can try converting your existing spreadsheet to one of our supported formats or <Link passHref href="/help/troubleshooting#contact-us"><a>reach out</a></Link> and 
-we'll support you.
+> below you can try converting your existing spreadsheet to one of our supported formats or <Link passHref href="/help/troubleshooting#contact-us"><a>reach out</a></Link> and
+> we'll support you.
 
 Read on for:
 
@@ -23,8 +23,8 @@ You can import your <Link passHref href="#importing-event-schemas"><a>event sche
 
 ### Import Tracking Plan
 
-Import your existing event schemas, aka tracking plan, to get started 
-quickly. 
+Import your existing event schemas, aka tracking plan, to get started
+quickly.
 
 > 💡 When importing events that already exist in Avo, the importer will only import new properties, categories and tags for the event. The importer will never archive or delete existing events or properties, or remove properties, categories or tags from existing events. You can also import user properties, group properties, and name mapping.
 
@@ -38,37 +38,39 @@ See <Link passHref href="/workspace/tracking-plan/importing#tracking-plan-import
 
 ### Import User Properties
 
-> 💡 **User properties** are helpful to segment behaviors by current state of 
-users, as opposed to the state at the time of an event trigger. Read 
-about <Link passHref href="/workspace/tracking-plan/properties#user-properties"><a>user property use cases and how they work</a></Link>.
+> 💡 **User properties** are helpful to segment behaviors by current state of
+> users, as opposed to the state at the time of an event trigger. Read
+> about <Link passHref href="/workspace/tracking-plan/properties#user-properties"><a>user property use cases and how they work</a></Link>.
 
 See <Link passHref href="/workspace/tracking-plan/importing#user-property-import-format"><a>supported formats for importing user properties</a></Link>.
 
 ### Import Group Properties
 
 > 💡 **Group analytics** are important for b2b companies and can be useful in
-many other cases. Read about <Link passHref href="/workspace/data-design/groups"><a>group analytics use cases and how it works</a></Link>.
+> many other cases. Read about <Link passHref href="/workspace/data-design/groups"><a>group analytics use cases and how it works</a></Link>.
 
 See <Link passHref href="/workspace/tracking-plan/importing#group-property-import-format"><a>supported formats for importing group properties</a></Link>.
 
-
 ### Import Name Mapping
-> 💡 **Different names to different destinations:** You 
-might need to send events and properties with different names to different 
-destinations if:
->
-> ***a/ You have legacy event structures in specific analytics tools***, 
-which you can't change now because you need to data continuity in these 
-tools. 
->
-> ***b/ Analytics destinations require specific event or property names*** 
-for some functionality. 
->
-> Read more 
-about <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> and its <Link passHref href="/data-design/name-mapping#use-cases-for-name-mapping"><a>use cases</a></Link>.
 
-<Link passHref href="/help/troubleshooting#contact-us"><a>Reach out</a></Link> if 
-you want to apply a large set of name mappings for event and property names.
+> 💡 **Different names to different destinations:** You
+> might need to send events and properties with different names to different
+> destinations if:
+>
+> **_a/ You have legacy event structures in specific analytics tools_**,
+> which you can't change now because you need to data continuity in these
+> tools.
+>
+> **_b/ Analytics destinations require specific event or property names_**
+> for some functionality.
+>
+> Read more
+> about <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> and its <Link passHref href="/data-design/name-mapping#use-cases-for-name-mapping"><a>use cases</a></Link>.
+
+<Link passHref href="/help/troubleshooting#contact-us">
+  <a>Reach out</a>
+</Link> if you want to apply a large set of name mappings for event and property
+names.
 
 ## Where to import from
 
@@ -160,7 +162,7 @@ Following are the spreadsheet formats the Avo Importer currently supports.
 
 We know that tracking plan spreadsheets come in all shapes and sizes. If you don't see your format
 below you can try converting your existing spreadsheet to one of these formats,
-by renaming columns etc, or you can <Link passHref href="/help/troubleshooting#contact-us"><a>reach out to us</a></Link> and 
+by renaming columns etc, or you can <Link passHref href="/help/troubleshooting#contact-us"><a>reach out to us</a></Link> and
 we'll get the importing done for you.
 
 **Note:**
@@ -170,7 +172,6 @@ we'll get the importing done for you.
 - Any additional columns are ignored
 
 You can learn more about common Tracking Plan spreadsheet formats [on our blog.](https://www.avo.app/blog/9-free-tracking-plan-templates-from-mixpanel-amplitude-segment-and-more)
-
 
 #### Avo's Ultimate Tracking Plan Template
 
@@ -196,6 +197,12 @@ You can learn more about common Tracking Plan spreadsheet formats [on our blog.]
 | Is Property Required?        | True if the property should always be sent with your event        | true                                       |
 | Is Property Array?           | True if property should be array of values                        | false                                      |
 | Property Enumeration options | Finite list of all values allowed for the property, if applicable | iOS, Android, Web, Desktop, Fire           |
+
+##### Optional columns
+
+| Column Name  | Description                                    | Example value  |
+| :----------- | :--------------------------------------------- | :------------- |
+| Pinned Value | The pinned value of the property on this event | [optional] iOS |
 
 #### Amplitude Taxonomy Template
 
@@ -246,10 +253,10 @@ You can learn more about common Tracking Plan spreadsheet formats [on our blog.]
 
 CSV format for importing.
 
-> 💡 **Optional: Associate user property to events** You can either attach user properties to events or import them without them 
-being attached to events. 
+> 💡 **Optional: Associate user property to events** You can either attach user properties to events or import them without them
+> being attached to events.
 >
-> 1. If you list events in this import that are not already in your tracking plan, Avo will also import those events. 
+> 1. If you list events in this import that are not already in your tracking plan, Avo will also import those events.
 >
 > 2. If you want to attach user properties to events that are already in your Avo tracking plan, use the event name already in your Avo tracking plan. To reduce probability of import conflict, leave all other event related columns empty.
 >
@@ -265,16 +272,16 @@ being attached to events.
 
 ##### Required columns
 
-| Column Name                  | Description                                                                 | Example value                              |
-| :--------------------------- | :-------------------------------------------------------------------------- | :----------------------------------------- |
-| Event Name                   | The name of the event the user property should be sent with. Leave empty if you don't want to associate user property with an event.                 | App Opened                                 |
-| Event Description            | The description of your event and when it should be sent. Leave empty event is already in your tracking plan.                    | Sent when the user opens the app           |
-| Event Category               | The category your event belongs to, if any. Leave empty event is already in your tracking plan.                                  | App Lifecycle                              |
-| Platform                     | The name of the platforms this event should be sent from. Leave empty event is already in your tracking plan.                    | iOS, Android, Web                          |
-| Property Name                | The name of a property that should be sent with your event                  | Device Type                                |
-| Property Description         | The description of the property                                             | The type of client user is currently using |
-| Property Type                | Control whether the event should be sent as Event property or User property | User                                       |
-| Property Enumeration options | List of all values allowed for the property, if applicable                  | Email, Phone Number, SSO                   |
+| Column Name                  | Description                                                                                                                          | Example value                              |
+| :--------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------- |
+| Event Name                   | The name of the event the user property should be sent with. Leave empty if you don't want to associate user property with an event. | App Opened                                 |
+| Event Description            | The description of your event and when it should be sent. Leave empty event is already in your tracking plan.                        | Sent when the user opens the app           |
+| Event Category               | The category your event belongs to, if any. Leave empty event is already in your tracking plan.                                      | App Lifecycle                              |
+| Platform                     | The name of the platforms this event should be sent from. Leave empty event is already in your tracking plan.                        | iOS, Android, Web                          |
+| Property Name                | The name of a property that should be sent with your event                                                                           | Device Type                                |
+| Property Description         | The description of the property                                                                                                      | The type of client user is currently using |
+| Property Type                | Control whether the event should be sent as Event property or User property                                                          | User                                       |
+| Property Enumeration options | List of all values allowed for the property, if applicable                                                                           | Email, Phone Number, SSO                   |
 
 ### Group Property Import Format
 
@@ -288,21 +295,22 @@ CSV format for importing.
 
 ##### Required columns
 
-| Column Name                  | Description                                                                   | Example value                        |
-| :--------------------------- | :---------------------------------------------------------------------------- | :----------------------------------- |
-| Group Type                   | The group type (e.g. "Workspace" if you have a Workspace group)               | Workspace                            |
-| Property Name                | The name of the property as you want it sent to the analytics destination     | Member Count                         |
-| Property Description         | The description of the property                                               | The number of members of a workspace |
-| Property Value Type          | The type of the property                                                      | int (see <Link passHref href="/workspace/tracking-plan/properties#property-types-and-constraints"><a>supported types</a></Link>)            |
-| Is Property Array?           | "Y" or "N" for whether this property is an array of property values           | "Y"                                  |
-| Sent with Events             | "/" separated list of events with which this group property should be updated | Invite Accepted / Member Removed     |
-| Property Enumeration options | Finite list of all values allowed for the property, if applicable             | Email, Phone Number, SSO             |
-
+| Column Name                  | Description                                                                   | Example value                                                                                                                    |
+| :--------------------------- | :---------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| Group Type                   | The group type (e.g. "Workspace" if you have a Workspace group)               | Workspace                                                                                                                        |
+| Property Name                | The name of the property as you want it sent to the analytics destination     | Member Count                                                                                                                     |
+| Property Description         | The description of the property                                               | The number of members of a workspace                                                                                             |
+| Property Value Type          | The type of the property                                                      | int (see <Link passHref href="/workspace/tracking-plan/properties#property-types-and-constraints"><a>supported types</a></Link>) |
+| Is Property Array?           | "Y" or "N" for whether this property is an array of property values           | "Y"                                                                                                                              |
+| Sent with Events             | "/" separated list of events with which this group property should be updated | Invite Accepted / Member Removed                                                                                                 |
+| Property Enumeration options | Finite list of all values allowed for the property, if applicable             | Email, Phone Number, SSO                                                                                                         |
 
 ## Troubleshooting
 
 ### **How do I prevent importing duplicates of my properties?**
+
 The importer attempts to merge properties from imported events using the following criteria:
+
 - The property name matches
 - The property type matches
 - The description matches
@@ -314,11 +322,11 @@ difference clearly in the tracking plan is critical to ensure everyone share the
 of what the property should contain in different context.
 
 In the case where you have aligned your names and types, but the description is different, you can:
+
 - **If the properties should be merged and you are in a position to reset your tracking plan**: Unify the description in your import file, <Link passHref href="/workspace/reset-tracking-plan"><a>reset the tracking plan</a></Link>, and re-run the import. This will result in the properties being merged on import.
 - **If the properties should be merged**: Use the <Link passHref href="/workspace/tracking-plan/properties#replacing-a-property"><a>"Replace property with..." feature</a></Link> in the context menu of the property modal
 - **If the properties should not be merged**: Provide unique name and descriptions to better differentiate between these properties in the tracking plan
 
-
 ## What's next?
 
-Now you have a tracking plan in Avo and it's time to learn <Link passHref href="/data-design/start-data-design"><a>how to manage it</a></Link>. 
+Now you have a tracking plan in Avo and it's time to learn <Link passHref href="/data-design/start-data-design"><a>how to manage it</a></Link>.
