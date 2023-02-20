@@ -6,30 +6,33 @@ title: 'Amplitude Govern (API deprecated by Amplitude)'
 
 import Link from '../../components/Link';
 
+<p>
+
 <img
   src={require('../../images/publishing_govern.svg')}
   alt="Amplitude"
-  style={{ margin: '32px 0 -32px 0' }}
 />
 
-## <a name="amplitude-govern"></a> Amplitude Govern
+</p>
+
+## Introduction
 
 > 💡 Amplitude has recently closed it's public API making us unable to offer this option to our users. We will make it available as soon as they offer an API to update Govern.
 
 The integration to [Amplitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the integration screen or download a CSV file on the Amplitude Govern format, which you can manually import into Govern. The events to be published can be <Link passHref href="/workspace/tracking-plan/publishing#filtering-events-for-publishing"><a>filtered by Sources, Destinations and Tags</a></Link>.
 
-### Configure the Govern integration
+## Configure the Govern integration
 
 To enable the direct integration with Amplitude Govern, you need to configure it with the following parameters from Amplitude. They can be found from the project settings in Amplitude. From the left sidebar in your Amplitude workspace click: Settings > Projects > [Your Project Name]. The URL should look like this: `https://analytics.amplitude.com/{org-name}/settings/projects/{project-id}/general`.
 
 - **Amplitude API Key**
 - **Amplitude Secret Key**
 
-### Publishing to Govern
+## Publishing to Govern
 
 To publish your Avo tracking plan to Govern, click the "Publish to Govern" button in the integration interface, or enable Auto Publishing to publish the events included in the publishing integration whenever a branch has been merged.
 
-#### What Is Included In The Publish to Govern?
+### What Is Included In The Publish to Govern?
 
 On publish, Avo will merge your Avo tracking plan with any existing events in Govern. Any changes made to an event in Govern between Avo publish will be overridden on next Avo publish.
 
@@ -37,13 +40,13 @@ Avo will not impact any events or properties that are not defined in Avo, or eve
 
 Here's how events, properties and categories are mapped from Avo to Govern:
 
-##### Event
+#### Event
 
 - **Event type**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for an Amplitude destination, the name defined by the name mapping is used here.
 - **Category**: Amplitude Govern only supports one category per event, so the first category attached to the event in Avo is used here
 - **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 
-##### Event Property
+#### Event Property
 
 - **Event property**: The property name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the property for an Amplitude destination, the name defined by the name mapping is used here.
 - **Event type**: The name of the event this property is attached to. If the property is attached to multiple events in Avo, multiple properties will be created in Govern because Govern does not support reusing properties across multiple events with a <Link passHref href="/data-design/global-namespacesharing"><a>global namespace</a></Link>.
@@ -53,16 +56,16 @@ Here's how events, properties and categories are mapped from Avo to Govern:
 - **Description**: The property description as defined in Avo
 - **Enum values**: If the property is of type string, and the <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-enumsa-enumeration-of-allowed-string-values"><a>"property matches..." rule</a></Link> is applied in Avo, the allowed values are provided here
 
-##### Category
+#### Category
 
 - **Name**: The name of the category as defined in Avo. If the category already exists in Govern, we reuse that one.
 
-### Govern Publishing Warnings
+## Govern Publishing Warnings
 
 - **409 Conflict**: Some events that are in your Govern Schema are not recognized by the Govern API, for example events that have been merged into other events in Govern or events that are blocked.
   Events that end up returning 409 error in Amplitude are likely not active. If you'd like to get rid of this warning please double check them and remove them from your Avo tracking plan if they are not active anymore.
 
-### Govern Publishing Errors
+## Govern Publishing Errors
 
 The following errors might occur when publishing your tracking to Govern. When publishing errors occur the error message in the Avo UI will contain which items could not be updated along with the error codes.
 

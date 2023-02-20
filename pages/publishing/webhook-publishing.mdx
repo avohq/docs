@@ -11,28 +11,27 @@ import Link from '../../components/Link';
 <img
   src={require('../../images/publishing_webhook.svg')}
   alt="Webhook"
-  style={{ margin: '32px 0 -32px 0' }}
 />
 
-## <a name="webhook"></a> Webhook
+## Introduction
 
 The Webhook integration is a way to get your updated Tracking Plan distributed to an endpoint of your choice. This happens when a branch is merged or when the publish button is clicked in the integration interface.
 
-### Configure the Webhook integration
+## Configure the Webhook integration
 
-#### Webhook URL
+### Webhook URL
 
 To enable the Webhook integration you need to configure it with a URL where you want the updated tracking plan to be delivered.
 
 The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a JSON format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
 
-### Payload Format
+## Payload Format
 
 Currently there are three different payload formats you can choose from for the webhook: **Snowplow Schemas**, **Avo Json**, and **Json Schema** (default).
 
 > 💡 To see a preview of the exact Webhook payload in your Avo workspace choose `Publishing` in the sidebar, then pick your Webhook from the menu and expand the `Payload preview` section
 
-#### Snowplow Schemas
+### Snowplow Schemas
 
 Json containing a Snowplow Schema for every event included in the Publishing integration. These schemas can for example be used to integrate Avo with Snowplow Iglu.
 
@@ -44,7 +43,7 @@ You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/unders
 | contextSchemas | array(Snowplow Context Schema) | Schema for every Snowplow context in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
 | context        | { publishInfo: PublishInfo }   | Metadata about the webhook call                                                                                                                                                                                                      |
 
-#### Avo Json
+### Avo Json
 
 Json representation of the state of your entire Avo workspace. Currently behind a feature flag. Contact us to enable.
 
@@ -53,7 +52,7 @@ Json representation of the state of your entire Avo workspace. Currently behind 
 | model     | Avo Model                    | Json representation of your entire Avo workspace |
 | context   | { publishInfo: PublishInfo } | Metadata about the webhook call                  |
 
-#### Json Schema (default)
+### Json Schema (default)
 
 Json representation of your tracking plan, following the [Json Schema](https://json-schema.org/) standard. Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>can be found here</a></Link>
 
@@ -67,7 +66,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | categories   | { categoryId: Category ... }       | Objet where each Tracking Plan metric is a field, keys are category ids         |
 | context      | { publishInfo: PublishInfo }       | Metadata about the webhook call                                                 |
 
-###### Event Model
+##### Event Model
 
 | Attribute   | Type                                                  | Description                                     |
 | :---------- | :---------------------------------------------------- | :---------------------------------------------- |
@@ -79,20 +78,20 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | triggers    | array({id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event    |
 | sources     | array({id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
 
-###### Rules Model
+##### Rules Model
 
 | Attribute    | Type               | Description                           |
 | :----------- | :----------------- | :------------------------------------ |
 | properties   | PropertiesRule     | Properties JSON rules                 |
 | nameMappings | array(NameMapping) | Name mappings defined for given event |
 
-#### PropertiesRule Model
+### PropertiesRule Model
 
 | Attribute  | Type                | Description         |
 | :--------- | :------------------ | :------------------ |
 | properties | array(PropertyRule) | Property JSON rules |
 
-###### PropertyRule Model
+##### PropertyRule Model
 
 | Attribute    | Type                         | Description                                   |
 | :----------- | :--------------------------- | :-------------------------------------------- |
@@ -103,14 +102,14 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | ?enum        | array(string)                | Allowed enum values                           |
 | ?operations  | array(string)                | Array of property ops, e.g. "SnowplowContext" |
 
-###### NameMapping Model
+##### NameMapping Model
 
 | Attribute     | Type   | Description                                                                                                                               |
 | :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- |
 | name          | string | New mapped name                                                                                                                           |
 | destinationId | string | Either a destination id for which this property mapping applies, or "all", meaning that this property mapping applies to all destinations |
 
-###### Metric Model
+##### Metric Model
 
 | Attribute   | Type                  | Description                                                |
 | :---------- | :-------------------- | :--------------------------------------------------------- |
@@ -121,7 +120,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | type        | string                | One of Proportion / EventSegmentation / Funnel / Retention |
 | items       | array of Nested Event | Event descriptions                                         |
 
-###### Nested Event Model
+##### Nested Event Model
 
 | Attribute | Type                 | Description                                          |
 | :-------- | :------------------- | :--------------------------------------------------- |
@@ -129,13 +128,13 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | where     | array(whereFilter)   | Array of where filters                               |
 | groupBy   | array(groupByFilter) | array of objects containing property ids to group by |
 
-###### groupByFilter
+##### groupByFilter
 
 | Attribute  | Type   | Description                            |
 | :--------- | :----- | :------------------------------------- |
 | propertyId | string | property Id being used in group filter |
 
-###### Where filter
+##### Where filter
 
 | Attribute  | Type     | Description                      |
 | :--------- | :------- | :------------------------------- |
@@ -143,7 +142,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | operation  | string   | binary operation as string       |
 | values     | array(t) | array of values of the same type |
 
-###### Source Model
+##### Source Model
 
 | Attribute           | Type          | Description                                                |
 | :------------------ | :------------ | :--------------------------------------------------------- |
@@ -153,7 +152,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | developmentPlatform | string        | Name of development platform (e.g. "Web", "Android")       |
 | destinations        | array(string) | Destination ids where this source sends data to            |
 
-###### Destination Model
+##### Destination Model
 
 | Attribute | Type   | Description                                                                                                        |
 | :-------- | :----- | :----------------------------------------------------------------------------------------------------------------- |
@@ -161,7 +160,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | name      | string | Destination name                                                                                                   |
 | type      | string | Name of the provider (e.g. "Segment", "Mixpanel") where the data is sent to if managed by Avo, "Custom" otherwise. |
 
-###### Category Model
+##### Category Model
 
 | Attribute   | Type          | Description                        |
 | :---------- | :------------ | :--------------------------------- |
@@ -171,7 +170,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | metrics     | array(string) | Metric ids belonging this category |
 | events      | array(string) | Event ids belonging this category  |
 
-###### PublishInfo Model
+##### PublishInfo Model
 
 | Attribute       | Type             | Description                                                                               |
 | :-------------- | :--------------- | :---------------------------------------------------------------------------------------- |

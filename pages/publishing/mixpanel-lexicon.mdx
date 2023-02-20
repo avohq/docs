@@ -9,14 +9,13 @@ import Link from '../../components/Link';
 <img
   src={require('../../images/publishing_lexicon.svg')}
   alt="Mixpanel"
-  style={{ margin: '32px 0 -32px 0' }}
 />
 
-## <a name="mixpanel-lexicon"></a> Mixpanel Lexicon
+## Introduction
 
 The integration to [Mixpanel Lexicon](https://mixpanel.com/data-governance/) allows for your Tracking Plan to be published into Mixpanel Lexicon whenever a branch is merged in your workspace or with a push of a button.
 
-### Configure the Lexicon integration
+## Configure the Lexicon integration
 
 To enable the direct integration with Mixpanel Lexicon, you need to configure it with the following parameters from Mixpanel.
 
@@ -26,7 +25,7 @@ To enable the direct integration with Mixpanel Lexicon, you need to configure it
 - **EU Data Residency**: Turn this on if you opted to store your data in the EU when you created your Mixpanel project [See Mixpanel's documentation on data residency in EU](https://help.mixpanel.com/hc/en-us/articles/360039135652-Data-Residency-in-EU)
 - **Publish categories as tags**: Mixpanel doesn't have a notion of event categories but enabling this toggle allows you to publish an events categories as tags to Mixpanel. The categories will have `Category: ` prepended to them, for example: `Category: Authentication`.
 
-### Publishing to Lexicon
+## Publishing to Lexicon
 
 To publish your Avo tracking plan to Lexicon, click the "Publish to Lexicon" button in the integration interface, or enable Auto Publishing to publish the events included in the publishing integration whenever a branch has been merged.
 
@@ -34,7 +33,7 @@ On publish, Avo will merge your Avo tracking plan with any existing events in Le
 
 Avo will not impact any events that are only defined in Lexicon, or events that have not been added to the Lexicon integration in Avo.
 
-#### What Is Included In The Publish to Lexicon?
+### What Is Included In The Publish to Lexicon?
 
 Here's how the Avo Tracking Plan is mapped to Lexicon:
 

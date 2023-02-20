@@ -9,14 +9,13 @@ import Link from '../../components/Link';
 <img
   src={require('../../images/publishing_protocols.svg')}
   alt="Segment"
-  style={{ margin: '32px 0 -32px 0' }}
 />
 
-## <a name="segment-protocols"></a> Segment Protocols
+## Introduction
 
 The integration to [Segment Protocols](https://segment.com/docs/protocols) allows for your Tracking Plan to be published into Segment Protocols whenever branches are merged in your workspace or with a push of a button.
 
-### Configure the Protocols integration
+## Configure the Protocols integration
 
 > 💡 The Protocols integration currently supports the established [Config API](https://segment.com/docs/api/config-api/). If you are only able to use the new _Public API_, please reach out to us.
 
@@ -26,11 +25,11 @@ To enable the direct integration with Segment Protocols, you need to configure i
 - **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_`
 - **Segment Access Token**: [Create new API tokens](https://segment.com/docs/api/config-api/authentication/#create-an-access-token) for Avo and limit the scope of its permissions to ‘Protocol Admin’.
 
-### Publishing to Protocols
+## Publishing to Protocols
 
 To publish your Avo tracking plan to Protocols, click the "Publish" button in the integration interface, or enable Auto Publishing to publish the events included in the publishing integration whenever a branch has been merged.
 
-#### What Is Included In The Publish to Protocols?
+### What Is Included In The Publish to Protocols?
 
 Avo will override all events in the Protocols tracking plan that are included in the publish from Avo. Any changes made to an event in Protocols between Avo publish will be overridden on next Avo publish.
 
@@ -38,20 +37,20 @@ Avo will not override any events that are only defined in Protocols, or events t
 
 Here's how the Avo Tracking Plan is mapped to Protocols:
 
-##### Event
+#### Event
 
 - **Name**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for a Segment destination, the name defined by the name mapping is used here.
 - **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 - **Labels**: All tags attached to the event in Avo will be published to Protocols as labels, on the key:value format "[Avo tag]:avo"
 
-##### Event Property
+#### Event Property
 
 - **Name**: The property name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the property, the name defined by the name mapping is used here.
 - **Description**: The property description as defined in Avo
 - **Type**: The property type and rules in Avo mapped to [JSON Schema](https://json-schema.org) compatible rules
 - **Required**: If the property is marked as "Always sent" in Avo it will be marked as required in Protocols
 
-##### User Property
+#### User Property
 
 User Properties in Avo are published as identify traits to Segment Protocols.
 
@@ -64,10 +63,10 @@ Avo will not override any user properties (identify traits) that are only define
 - **Type**: The property type and rules in Avo mapped to [JSON Schema](https://json-schema.org) compatible rules
 - **Required**: If the property is marked as "Always sent" on all events in Avo, it will be marked as required in Protocols. Otherwise it will be marked as optional.
 
-##### Group Property
+#### Group Property
 
 Currently Avo does not publish properties into Protocols. If you'd like to publish group properties, please let us know, and we'll invite you to the beta when it goes live.
 
-##### Category
+#### Category
 
 Currently Avo does not publish categories into Protocols. If you'd like to publish categories, please let us know!

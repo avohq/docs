@@ -10,14 +10,13 @@ import Link from '../../components/Link';
 <img
   src={require('../../images/publishing_snowplow.svg')}
   alt="Snowplow"
-  style={{ margin: '32px 0 -32px 0' }}
 />
 
-## <a name="snowplow"></a> Snowplow Data Structures
+## Introduction
 
 The [Snowplow integration](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/managing-data-structures/) enables you to publish your Avo Tracking Plan into Snowplow. You can configure the integration to publish whenever a branch is merged or with a push of a button.
 
-### Configure the Snowplow integration
+## Configure the Snowplow integration
 
 To enable the direct integration with Snowplow, you need to configure it with the following parameters.
 
@@ -25,7 +24,7 @@ To enable the direct integration with Snowplow, you need to configure it with th
 - **Snowplow Vendor Name**: The vendor name of your Snowplow schemas, can be obtained in the `Manage data structures` section in the console.
 - **Snowplow Access Token**: The secret access token to update your Snowplow data structures, can be obtained in the `API keys` section.
 
-### Publishing to Snowplow
+## Publishing to Snowplow
 
 > Data structures interfaces are only compatible with pipelines that have been upgraded to use Iglu Server registries, rather than static S3 registries. Please check in your [Snowplow console](https://console.snowplowanalytics.com/data-structures/), to see if you need an upgrade or if your registries are ready to go.
 
@@ -39,7 +38,7 @@ Avo will not override any events that are only defined in Snowplow, or events th
 
 Note that only Admin users can promote data structures from Dev to Production. Learn more on how to promote the data structures with Snowplow Console [here](https://docs.snowplow.io/docs/understanding-tracking-design/managing-data-structures/#promoting-a-data-structure)
 
-### Versioning
+## Versioning
 
 Avo will create new data structures with version 1-0-0 and will patch the existing data structures in your development environment on the same version as they are.
 

@@ -10,14 +10,13 @@ import Link from '../../components/Link';
 <img
   src={require('../../images/publishing_rudderstack.svg')}
   alt="Amplitude"
-  style={{ margin: '32px 0 -32px 0' }}
 />
 
-## <a name="rudderstack"></a> RudderStack Tracking Plans
+## Introduction
 
 The [RudderStack integration](https://rudderstack.com/blog/dogfooding-at-rudderstack-tracking-plans-part-1/) enables you to publish your Avo Tracking Plan into RudderStack. You can configure the integration to publish whenever a branch is merged or with a push of a button.
 
-### Configure the RudderStack integration
+## Configure the RudderStack integration
 
 To enable the direct integration with RudderStack Tracking Plans, you need to configure it with the following parameters from RudderStack.
 
@@ -25,7 +24,7 @@ To enable the direct integration with RudderStack Tracking Plans, you need to co
 - **RudderStack Tracking Plan Name**: The display name of the RudderStack Tracking Plan you want to publish to
 - **RudderStack Access Token**: [Create new Personal Access Token](https://rudderstack.com/docs/transformations/api-access-token/#access-token) for the account with the email address you provided above
 
-### Publishing to RudderStack
+## Publishing to RudderStack
 
 Avo will override all events in the RudderStack Tracking Plan that are being imported from Avo. Any changes made to an event in RudderStack Tracking Plan between Avo publish will be overridden on next Avo publish.
 
