@@ -1,0 +1,35 @@
+---
+layout: 'guide'
+title: 'mParticle Data Master'
+# abstract: 'Publishing your tracking plan to mParticle Data Master'
+---
+
+import Link from '../../components/Link';
+
+
+<img
+  src={require('../../images/publishing_mparticle.svg')}
+  alt="mParticle"
+  style={{ margin: '32px 0 -32px 0' }}
+/>
+
+## <a name="mparticle"></a> mParticle Data Master
+
+The [mParticle Data Master](https://docs.mparticle.com/guides/data-master/introduction/) integration enables you to publish your Avo Tracking Plan into mParticle Data Master. You can configure the integration to publish whenever a branch is merged or with a push of a button.
+
+### Configure the mParticle integration
+
+To enable the direct integration with mParticle Data Master, you need to configure it with the following parameters from mParticle.
+
+- **mParticle Client ID**: Your client ID issued by mParticle. To get both Client ID and Client Secret press the person icon in the bottom left of your mParticle web UI. Then click "Settings" -> "API Credentials" and create new credentials. You'll get both Client ID and Client Secret there.
+- **mParticle Client Secret**: Your client secret issued by mParticle.
+- **mParticle Workspace ID**: The ID of the workspace containing your data plans. To find it click the app name in the top left of the mParticle web UI, then "Settings". You'll see the list of your workspaces, Workspace ID is the number below your workspace name.
+- **mParticle Plan ID**: The ID of the Data Plan to update. To view available plans press "Data Master" -> "Plans" in the navigation panel in the mParticle UI. You'll see the list of your plans. Plan ID is the string below the plan name.
+
+### Publishing to mParticle
+
+Avo will create a new version of your data plan in mParticle every time you publish. When publishing manually you can pick whether you'd like to overwrite existing mParticle data plan version or create a new one. Auto publish will always create a new version of the data plan in mParticle, by incrementing the version number of the most recent plan by one.
+
+Avo will override all events in the mParticle Tracking Plan that are being imported from Avo. Any changes made to an event in an mParticle Tracking Plan between publishing from Avo will be overridden on the next Avo publish.
+
+Avo will not override any events that are only defined in mParticle, or events that have not been excluded from the mParticle integration in Avo with filters.

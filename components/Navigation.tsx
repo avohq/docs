@@ -184,33 +184,6 @@ const navigation: navigationItem[] = [
       },
 
       {
-        type: 'group',
-        title: 'Import, Export and Publishing',
-        subroutes: [
-          {
-            type: 'route',
-            title: 'Importing',
-            path: '/workspace/tracking-plan/importing',
-          },
-          {
-            type: 'route',
-            title: 'Publishing',
-            path: '/workspace/tracking-plan/publishing',
-          },
-          {
-            type: 'route',
-            title: 'Exporting',
-            path: '/workspace/tracking-plan/exporting',
-          },
-          {
-            type: 'route',
-            title: 'Signing and Verifying Webhooks',
-            path: '/workspace/tracking-plan/webhook-signing',
-          },
-        ],
-      },
-
-      {
         type: 'route',
         title: 'Sources',
         path: '/data-design/define-sources-and-destinations',
@@ -425,6 +398,85 @@ const navigation: navigationItem[] = [
       },
     ],
   },
+  {
+    title: 'Import, Export and Publishing',
+    iconName: 'publishing',
+    subroutes: [
+      {
+        type: 'route',
+        title: 'Importing',
+        path: '/workspace/tracking-plan/importing',
+      },
+      {
+        type: 'group',
+        title: 'Publishing',
+        subroutes: [
+          {
+            type: 'route',
+            title: 'Overview',
+            path: '/workspace/tracking-plan/publishing',
+          },
+          {
+            type: 'route',
+            title: 'Use Cases',
+            path: '/publishing/publishing-use-cases',
+          },
+          {
+            type: 'group',
+            title: 'Integrations',
+            subroutes: [
+              {
+                type: 'route',
+                title: 'Segment Protocols',
+                path: '/publishing/segment-protocols',
+              },
+              {
+                type: 'route',
+                title: 'Mixpanel Lexicon',
+                path: '/publishing/mixpanel-lexicon',
+              },
+              {
+                type: 'route',
+                title: 'Rudderstack Tracking Plans',
+                path: '/publishing/rudderstack',
+              },
+              {
+                type: 'route',
+                title: 'Snowplow Data Sturcutures',
+                path: '/publishing/snowplow-data-structures',
+              },
+              {
+                type: 'route',
+                title: 'mParticle Data Master',
+                path: '/publishing/mparticle-data-master',
+              },
+              {
+                type: 'route',
+                title: 'Amplitude Govern',
+                path: '/publishing/amplitude-govern',
+              },
+              {
+                type: 'route',
+                title: 'Webhook',
+                path: '/publishing/webhook-publishing',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'route',
+        title: 'Exporting',
+        path: '/workspace/tracking-plan/exporting',
+      },
+      {
+        type: 'route',
+        title: 'Signing and Verifying Webhooks',
+        path: '/workspace/tracking-plan/webhook-signing',
+      },
+    ],
+  },
+
   {
     title: 'Type safe code, unit tests and CI',
     iconName: 'implementation',
@@ -912,6 +964,10 @@ function locateIcon(item: navigationItem) {
     }
     case 'book': {
       icon = require('../images/book-icon.svg');
+      break;
+    }
+    case 'publishing': {
+      icon = require('../images/publishing_icon.svg');
       break;
     }
     default: {
