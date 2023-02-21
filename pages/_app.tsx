@@ -65,14 +65,11 @@ const segmentDestinationInterface: CustomDestination = {
 };
 
 const mixpanelDestinationInterface: CustomDestination = {
-  make: (env, apiKey) => {
-    // eslint-disable-next-line
-    console.log('mixpanelDestinationInterface.make', env, apiKey);
+  make: (env, apiKey) =>
     mixpanel.init(apiKey, {
       debug: env != AvoEnv.Prod,
       ignore_dnt: env == AvoEnv.Dev,
-    });
-  },
+    }),
 
   identify: (userId) => mixpanel.identify(userId),
 
