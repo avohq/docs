@@ -12,40 +12,28 @@ import DevIcon from '../../images/svg/dev.svg';
 
 import { FunctionComponent } from 'react';
 
-The branch review screen is handy for understanding the changes done in the tracking plan. In addition to developers being able to review suggested changes in the branch review screen, they can also view so called implementation instructions. In the implementation instructions (aka “Diff details”) the changes are segmented by source and then grouped by events, so developers can pick their platform and implement events one by one.
+The branch code changes screen displays all the changes needed to implement the branch, grouped by source. In addition to developers being able to review suggested changes, they can also view event and property details. The code changes are visualized in a configurable diff view.
 
-If your branch includes changes on at least one source then the implementation instructions will be available at the top of the branch review screen.
+<img
+  src={require('../../images/code-changes/overview-screen.png')}
+  width="100%"
+  alt="Overview of code changes"
+/>
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/3.request-implementation/diff-panel.png')}
-    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
-  />
-</center>
+You can copy a link to the branch review screen or even create a shared view available to anyone with the link to pass them to developers for implementation in your collaboration tool of choice (e.g. Jira or Slack). If you want to focus the discussion you can link to a specific event on a specific source. Take a look at this [example shared branch code changes](https://www.avo.app/s/TZ0YwKaQ9).
 
-You can copy the instructions and pass them to developers for implementation in your collaboration tool of choice (e.g. Jira or Slack) in either Markdown or in Jira's text format.
-
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/3.request-implementation/diff-implementation.png')}
-    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
-  />
-</center>
-
-We recommend checking out our guide on how to read the implementation instructions:
+<img
+  src={require('../../images/shared.png')}
+  width="306px"
+  alt="Branch code changes share popup"
+/>
 
 <div className={styles.row}>
   <PageLink
-    image={DevIcon}
-    title="Implementation diff"
-    description="How to read the implementation diff"
-    callToAction={
-      new CallToAction(
-        '/implementation/read-implementation-diff',
-      )
-    }
+    image={AnalyticsManagerIcon}
+    title="Branch Code Changes"
+    description="Using the branch code changes screen for a simple and accurate implementation"
+    callToAction={new CallToAction('/workspace/code-changes')}
   />
 </div>
 

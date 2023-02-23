@@ -3,15 +3,48 @@ layout: 'guide'
 title: 'Review Code Changes '
 ---
 
-Review the code changes affected by the branch by getting a good overview of added, deleted or updated events.
-
-The overview will display how many affected events are using Avo Codegen and who are not using it.
+The branch implement screen helps your team quickly and accurately implement tracking plan changes on a branch, allowing you start using the data or plan the next release. You can even share it with someone that's not part of your Avo workspace using the public sharing feature.
 
 <img
   src={require('../../images/code-changes/overview-screen.png')}
   width="100%"
   alt="Overview of code changes"
 />
+
+On the branch implement screen you see all events that are affected by your tracking plan changes, grouped by source. The event code snippet highlights exactly what has changed in the implementation of the event on the branch and makes it fast and easy for developers to understand what changes they need to make to successfully implement the branch. Your workspace members can comment directly no the events from the screen, quickly fleshing out any uncertainties about the changes. Your workspace members can comment directly on the events from the screen, quickly fleshing out any uncertainties about the changes. 
+
+## Sharing
+
+You can copy a link to the implementation instructions using the link (🔗) icon. It will include the current source, allowing you to tailor the link for each source that has to be implemented. If you want to focus on the implementation of a specific event, you can copy a link directly to it as well.
+
+## Public sharing
+
+If you are sharing implementation instructions with someone outside of your workspace or don't know if whoever might open the link is logged into Avo, you can create a public link. 
+
+<img
+  src={require('../../images/share.png')}
+  width="306px"
+  alt="Overview of code changes"
+/>
+
+The public view looks and functions similarly to the one in the workspace – the only difference is that it's restricted to the code changes view only. The view is filtered down to source and you can switch between the sources affected by the tracking plan changes in the branch. You can configure the diff mode for the code snippets and copy the code for events implemented with Codegen and even copy a link to a specific event to send to anyone.
+
+<img
+  src={require('../../images/public-implementation-instructions.png')}
+  width="100%"
+  alt="Overview of code changes"
+/>
+
+Workspace Admins and Editors can generate a public link right from the branch code changes view in the workspace. Once generated, anyone in the workspace can copy the link to share. We envision that this will become especially handy for those that create tracking implementation tasks in your task management tool and don't know if whoever will be looking at the task is already a member in your Avo workspace. Take a look at this [example public view](https://www.avo.app/s/TZ0YwKaQ9).
+
+<img
+  src={require('../../images/shared.png')}
+  width="306px"
+  alt="Overview of code changes"
+/>
+
+To maintain as much security and privacy as we can given the public access, we've gone to great lengths to expose nothing but the information necessary to display the code changes. All tracking plan calculations happen on the server side and we only send the browser the exact strings needed to display the page. Deleting a public link will permanently invalidate all existing links as generating a new one will be behind a new, unique share ID.
+
 
 ## Filtering View
 
@@ -36,6 +69,10 @@ There are 2 filters
   alt="Implementation filter"
 />
 </div>
+
+## Sharing
+
+
 
 ## Code Snippets
 
