@@ -27,7 +27,15 @@ If you are sharing implementation instructions with someone outside of your work
   alt="Overview of code changes"
 />
 
-The public view looks and functions similarly to the one in the workspace – the only difference is that it's restricted to the code changes view only. The view is filtered down to source and you can switch between the sources affected by the tracking plan changes in the branch. You can configure the diff mode for the code snippets and copy the code for events implemented with Codegen and even copy a link to a specific event to send to anyone.
+The public view looks and functions similarly to the one in the workspace, but there are some key differences:
+
+- it's restricted to only show the code changes view. 
+- It doesn't show any metrics changes or other business context
+- it doesn't reveal any information about your workspace; the workspace name is hidden as well as comments and contributors
+
+To maintain as much security and privacy as we can given the public access, we've gone to great lengths to expose nothing but the information necessary to display the code changes. All tracking plan calculations happen on the server side and we only send the browser the exact strings needed to display the page. 
+
+For a preview, take a look at this [example public view](https://www.avo.app/s/TZ0YwKaQ9).
 
 <img
   src={require('../../images/public-implementation-instructions.png')}
