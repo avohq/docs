@@ -3,15 +3,58 @@ layout: 'guide'
 title: 'Review Code Changes '
 ---
 
-Review the code changes affected by the branch by getting a good overview of added, deleted or updated events.
-
-The overview will display how many affected events are using Avo Codegen and who are not using it.
+The code changes screen helps your team quickly and accurately implement tracking plan changes on a branch. You can find it by navigating to a branch, selecting *View changes* in the sidebar and then clicking the *Code changes* tab. You can even share it with someone outside your Avo workspace using the public sharing feature.
 
 <img
-  src={require('../../images/code-changes/overview-screen.png')}
+  src={require('../../images/code-changes/code-changes.png')}
   width="100%"
   alt="Overview of code changes"
 />
+
+On the code changes screen you see all events that are affected by your tracking plan changes, grouped by source. The event code snippet highlights exactly what has changed in the implementation of the event on the branch and makes it fast and easy for developers to understand what changes they need to make to successfully implement the branch. Your workspace members can comment directly on the events to address any uncertainties about the changes.
+
+## Sharing
+
+You can copy a link to the branch code changes using the link (🔗) icon. It will include the current source, allowing you to tailor the link for each source that has to be implemented. If you want to focus on the implementation of a specific event, you can copy a link directly to each individual event as well.
+
+## Public sharing
+
+If you are sharing implementation instructions with someone outside your workspace you can create a public link. This comes in handy if you are creating tracking implementation tasks in your task management tool and don't know if whoever will be looking at the task is already a member in your Avo workspace. If the user opening the link is authenticated in Avo, they will be redirected to an authenticated view.
+
+Only workspace Admins and Editors can generate a public link but once generated, anyone in the workspace can copy the link to share. Deleting a public link will permanently invalidate all existing links and generating a new one will be behind a new, unique share ID.
+
+
+<img
+  src={require('../../images/code-changes/code-changes-share.png')}
+  width="306px"
+  alt="Overview of code changes"
+/>
+
+The public view looks and functions similarly to the one in the workspace, but there are some key differences:
+
+- it's restricted to only show the code changes view. 
+- It doesn't show any metrics changes or other business context
+- it doesn't reveal any information about your workspace; the workspace name is hidden as well as comments and contributors
+
+To maintain as much security and privacy as we can given the public access, we've gone to great lengths to expose nothing but the information necessary to display the code changes. All tracking plan calculations happen on the server side and we only send the browser the exact strings needed to display the page. 
+
+For a preview, take a look at this [example public view](https://www.avo.app/s/TZ0YwKaQ9).
+
+<img
+  src={require('../../images/code-changes/code-changes-public.png')}
+  width="100%"
+  alt="Overview of code changes"
+/>
+
+
+<img
+  src={require('../../images/code-changes/code-changes-shared.png')}
+  width="306px"
+  alt="Overview of code changes"
+/>
+
+To maintain as much security and privacy as we can given the public access, we've gone to great lengths to expose nothing but the information necessary to display the code changes. All tracking plan calculations happen on the server side and we only send the browser the exact strings needed to display the page. Deleting a public link will permanently invalidate all existing links as generating a new one will be behind a new, unique share ID.
+
 
 ## Filtering View
 
