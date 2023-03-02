@@ -437,7 +437,7 @@ const navigation: navigationItem[] = [
               },
               {
                 type: 'route',
-                title: 'Snowplow Data Sturcutures',
+                title: 'Snowplow Data Structures',
                 path: '/publishing/snowplow-data-structures',
               },
               {
