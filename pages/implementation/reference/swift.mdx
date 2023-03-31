@@ -74,6 +74,26 @@ avo.signupStart(referral: "direct")
 
 Use the <Link passHref href="/workspace/tracking-plan/implementation-status"><a>Implementation status</a></Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/ios"><a>Avo Inspector</a></Link> to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the <a href="https://github.com/avohq/ios-analytics-debugger">standalone visual debugger</a>.
 
+#### Step 5. Suppress warnings in the Avo files
+
+Because of the nature of the code generation Avo files can sometimes contain warnings, that do not affect the execution of the code, but may distract you.
+To avoid it we suggest to disable the warning in the Avo generated files.
+
+To do that:
+
+1. Select the file you want to suppress warnings for in the Xcode project navigator.
+1. Click on the file to open its details view in the right-hand pane.
+1. In the details view, click on the "Build Phases" tab.
+1. In the "Compile Sources" section, find the file you want to suppress warnings for and click on it to select it.
+1. Click on the "Compiler Flags" column next to the selected file, and add the `-w -Xanalyzer -analyzer-disable-all-checks` flags to suppress warnings.
+1. Save your changes, restart Xcode and rebuild your project.
+
+<img
+  src={require('../../../images/suppress-warnings-swift.png')}
+  alt="Xcode setup screenshot"
+  style={{ margin: '0px 0 8px 0' }}
+/>
+
 ### Reference
 
 #### Constructor
