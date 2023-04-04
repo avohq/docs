@@ -354,13 +354,33 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Inspector dashboard',
+        title: 'Inspector overview',
         path: '/workspace/inspector',
+      },
+      {
+        type: 'route',
+        title: 'Configuring Inspector sources',
+        path: '/workspace/inspector/configuring-inspector-sources',
+      },
+      {
+        type: 'route',
+        title: 'Inspector events view',
+        path: '/workspace/inspector/inspector-events-view',
+      },
+      {
+        type: 'route',
+        title: 'Inspector issues view',
+        path: '/workspace/inspector/inspector-issues-view',
       },
       {
         type: 'route',
         title: 'Inspector issue types',
         path: '/explore-tracking-plan/issue-types-in-inspector',
+      },
+      {
+        type: 'route',
+        title: 'Inspector Slack alerts',
+        path: '/workspace/inspector/inspector-slack-alerts',
       },
       {
         type: 'route',
