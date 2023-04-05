@@ -1,0 +1,36 @@
+---
+layout: 'guide'
+title: 'Inspector Slack Alerts'
+abstract: 'How to start recieving Slack alerts for your Inspector issues'
+---
+
+import Link from '../../../components/Link';
+
+In the Inspector events view you can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
+
+Press the `Connect to Slack` button and follow the instructions.
+
+<center>
+  <img
+    src={require('../../../images/workspace/nav-inspector-slack-highlighted.png')}
+    alt="Inspector receiving events"
+    width="100%"
+  />
+</center>
+
+Avo Inspector will post new issues it finds in production hourly to the specified slack channel.
+
+Inspector Slack integration currently alerts on the following issues:
+
+- Property is sometimes not provided
+- Property is sent with inconsistent types
+- New event seen that is not in the Tracking Plan
+- New property seen that is not in the Tracking Plan
+- Property type does not match the Tracking Plan
+
+<center>
+  <img
+    src={require('../../../images/workspace/inspector/inspector-slack-integration.png')}
+    alt="Inspector Slack Integration"
+  />
+</center>

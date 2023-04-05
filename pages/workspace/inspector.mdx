@@ -1,7 +1,7 @@
 ---
 layout: 'guide'
-title: 'Inspector'
-abstract: 'Learn about how to use Inspector dashboard'
+title: 'Inspector Overview'
+abstract: 'How to set up and use the Inspector in Avo'
 ---
 
 import Link from '../../components/Link';
@@ -10,147 +10,34 @@ The first step to better analytics governance is knowing what's wrong with your 
 
 We built Inspector to help you understand how your current tracking is performing. Inspector both identifies <Link passHref href="/explore-tracking-plan/issue-types-in-inspector">common issues in your existing tracking</Link>, such as inconsistent properties and types, and provides implementation status in the Avo Tracking Plan, so you always know the state of your tracking implementation in your app.
 
-In this doc we'll be covering how to configure and use Inspector in your workspace. You can learn about <Link passHref href="/implementation/avo-inspector-sdk-reference">how to install Inspector SDKs in your sources here</Link>.
+In this section of the Inspector docs we'll be covering how to configure and use Inspector in your workspace. You can learn about <Link passHref href="/implementation/avo-inspector-sdk-reference">how to install Inspector SDKs in your sources here</Link>.
 
-## Configuring Sources
+- <Link passHref href="/workspace/inspector/configuring-inspector-sources">
+    <a>Configuring Inspector Sources</a>
+  </Link>
+  : how to set up sources to connect Inspector to your data stream
 
-The first step to start using Inspector, is installing it on your sources. Inspector shares sources with the workspace sources and they are all set up in the Sources tab. You can find the source setup in Inspector tab by clicking "Manage Sources" or navigate to the "Sources" tab directly.
+- <Link passHref href="/workspace/inspector/inspector-events-view">
+    <a>Events view</a>
+  </Link>
+  : How the Inspector Events view works and how to use it
 
-<center>
-  <img
-    src={require('../../images/workspace/nav-inspector-sources-highlighted.png')}
-    alt="Opening a branch"
-  />
-</center>
+- <Link passHref href="/workspace/inspector/inspector-issues-view">
+    <a>Issues view (beta)</a>
+  </Link>
+  : How the Inspector Issues view works and how to use it
 
-The Sources tab shows a list of all sources that have already been created and the status of Inspector setup. Once Inspector has been successfully installed, the set up status will be updated accordingly.
+- <Link passHref href="/explore-tracking-plan/issue-types-in-inspector">
+    <a>Issue types)</a>
+  </Link>
+  : Which issues does Inspector detect and what they mean
 
-If the source you want to set up isn't already in the list of source, you can create a new one by clicking "Add Source". Check out our Connections Setup docs to learn more about <Link passHref href="/data-design/define-sources-and-destinations#sources">setting up and configuring sources </Link>
+- <Link passHref href="/workspace/inspector/inspector-slack-alerts">
+    <a>Slack alerts</a>
+  </Link>
+  : How to configure Inspector to send alerts via Slack
 
-Each Inspector source has 3 states:
-
-1. Receiving events - this source already received at least one event from the client SDK.
-   <center>
-     <img
-       src={require('../../images/workspace/connection-setup/inspector-receiving-events.png')}
-       alt="Inspector receiving events"
-       width="60%"
-     />
-   </center>
-2. Inspector available - the source is available for Inspection, but have not received any events yet. Click the source and find Inspector Setup section of the source details to see the implementations details and the API key for this source.
-   <center>
-     <img
-       src={require('../../images/workspace/connection-setup/inspector-listening.png')}
-       alt="Inspector listening"
-       width="60%"
-     />
-   </center>
-3. Inspector Not available - this source is not supported, there is no client SDK yet. Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> to learn current status and planned release date.
-   <center>
-     <img
-       src={require('../../images/workspace/connection-setup/inspector-not-available.png')}
-       alt="Inspector not available"
-       width="60%"
-     />
-   </center>
-
-## Connect to Slack
-
-On Inspector tab you can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
-
-Press the `Connect to Slack` button and follow the instructions.
-
-<center>
-  <img
-    src={require('../../images/workspace/nav-inspector-slack-highlighted.png')}
-    alt="Inspector receiving events"
-    width="100%"
-  />
-</center>
-
-Avo Inspector will post new issues it finds in production hourly to the specified slack channel.
-
-Inspector Slack integration currently alerts on the following issues:
-
-- Property is sometimes not provided
-- Property is sent with inconsistent types
-- New event seen that is not in the Tracking Plan
-- New property seen that is not in the Tracking Plan
-- Property type does not match the Tracking Plan
-
-<center>
-  <img
-    src={require('../../images/workspace/inspector/inspector-slack-integration.png')}
-    alt="Inspector Slack Integration"
-  />
-</center>
-
-## Inspector Dashboard
-
-Inspector dashboard provides a report on all tracking Inspector has seen in your development, staging and production environment. You can use the dashboard to evaluate the health of your tracking implementation and prioritize issues.
-
-### Filters
-
-Here you can choose which environment to examine, the time window and search for event name.
-
-#### Environments
-
-Currently Inspector supports 3 types of environments:
-
-- Development
-- Staging
-- Production
-
-The events are streamed to the Environment specified in the client, based on the environment constant provided when initializing Avo Inspector SDK.
-
-> Development and Staging events appear in the dashboard in a few minutes after they are fired and Production events can take up to 2 hours to show up.
-
-#### Time window
-
-Currently Inspector supports 4 types of time windows:
-
-- 1 hour
-- 24 hours
-- 7 days
-- 30 days
-
-All the time windows are updated hourly on Production and are close to real time in Development and Staging.
-
-#### Search for event name
-
-Type the event name in the input field and only events with similar name will be shown.
-
-If you want an exact match put the event name in quotes, e.g. "App Opened".
-
-### Share current view of Inspector
-
-Notice that after you change the header filters the URL also changes. You can share this URL with a colleague and they would see exactly the same slice of inspector data as you filtered.
-
-### Events list
-
-The main part of Inspector dashboard screen is the list of all events seen. You can expand the events to see the event properties.
-
-If Inspector sees an event that is not yet in your tracking plan there is a shortcut to add it to your Tracking plan.
-
-If Inspector detects an issue it will indicate that in the list.
-
-If you select an event or property row a panel with detailed information will appear on the right. There you would be able to see extended information about the issues and edit the event or property in your tracking plan.
-
-##### Unknown Source
-
-Sources that are not defined on the Tracking Plan branch you're on, will show up as "Unknown Source" columns in the event table. Unknown sources can show up if:
-
-1. The source has been archived in Avo
-2. The source was created on a branch that is yet to be merged to the branch you're currently on
-
-### Inspector issues
-
-You can learn more about the <Link passHref href="/explore-tracking-plan/issue-types-in-inspector">issue types Inspector can detect in your tracking here</Link>.
-
-## Inspector Implementation Status
-
-You can learn more about <Link passHref href="/workspace/tracking-plan/implementation-status">how Inspector works with your Tracking Plan implementation status here</Link>.
-
-## Adding events to your tracking plan directly from the Inspector
-
-You can learn more about <Link passHref href="/workspace/add-events-from-inspector">how you can create events and properties directly from the inspector here</Link>
+- <Link passHref href="/workspace/add-events-from-inspector">
+    <a>Add events from Inspector</a>
+  </Link>
+  : How to add events and properties to your tracking plan from Inspector
