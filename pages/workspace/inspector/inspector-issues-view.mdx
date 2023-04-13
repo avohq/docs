@@ -8,7 +8,13 @@ import Link from '../../../components/Link';
 
 The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter the issues list to uncover issues relevant to you and gives you the overview and information needed to prioritize which of them to act on.
 
-<!--- _screenshot coming soon_ -->
+<center>
+  <img
+    src={require('../../../images/inspector/inspector-issues-default.png')}
+    width="100%"
+    alt="Image shows an example default view of the Inspector issues view."
+  />
+</center>
 
 Each issue in the table represents an issue on a particular event, or a particular property contained within an event. For each issue, the Issue overview page displays:
 - The issue type – what type of issue it is, for example unexpected event or inconsistent property types, (see list of issue types in Inspector)
@@ -29,7 +35,13 @@ To narrow down your search to issues important to you, issues can be filtered by
 - Property
 - Issue Type
 
-<!--- _screenshot coming soon_ -->
+<center>
+  <img
+    src={require('../../../images/inspector/inspector-issues-filtering.png')}
+    width="100%"
+    alt="Image shows the inspector Issues table ordered by issue volume and filtered by Web source."
+  />
+</center>
 
 > 💡 We are working on filtering the content in the table to match the filter criteria. In the near future, when you filter by source, the table content will show you issue timing, event volume, issue volume and issue percentage for only that source. In the meantime, you will need to click into the issue details to see that information.
 
@@ -48,16 +60,28 @@ The property impacted by the issue, and whether it is documented to be sent with
 - If the property is present in your tracking plan but not set to be sent with your event, you can add it to the event definition.
 - If the property is missing from your tracking plan, you can add it to your tracking plan.
 
-> 💡 Not all issues are related to properties. See full list of issue types here.
+> 💡 Not all issues are related to properties. See [full list of issue types here](https://www.avo.app/docs/explore-tracking-plan/issue-types-in-inspector).
 
-<!--- _screenshot coming soon_ -->
+<center>
+  <img
+    src={require('../../../images/inspector/inspector-issue-details.png')}
+    width="100%"
+    alt="Image shows example issue details for an unexpected property."
+  />
+</center>
 
 ### Issue details per source
 Event volume, issue volume and issue percentage for all sources sending the event. Expanding a source will display
 When the issue was first and last seen and on which versions
 A list of all versions impacted by the issue
 
-<!--- _screenshot coming soon_ -->
+<center>
+  <img
+    src={require('../../../images/inspector/inspector-issues-source-details.png')}
+    width="75%"
+    alt="Image shows an example issue details where the source details for iOS is expanded."
+  />
+</center>
 
 We have more insights into the issue details coming up. Please reach out if you have any thoughts on what to add! 
 
