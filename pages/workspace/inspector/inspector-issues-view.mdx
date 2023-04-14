@@ -6,7 +6,7 @@ abstract: 'How to use the Inspector Issues view'
 
 import Link from '../../../components/Link';
 
-The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter the issues list to uncover issues relevant to you and gives you the overview and information needed to prioritize which of them to act on.
+The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter issues to uncover those relevant to you and gives you the overview and information needed to prioritize which of them to act on.
 
 <center>
   <img
@@ -16,20 +16,20 @@ The Inspector issues view displays information about anomalies and discrepancies
   />
 </center>
 
-Each issue in the table represents an issue on a particular event, or a particular property contained within an event. For each issue, the Issue overview page displays:
-- The issue type – what type of issue it is, for example unexpected event or inconsistent property types, (see list of issue types in Inspector)
-- The name of the event and property impacted by the issue
-- Sources impacted by the issue
+Each issue in the table represents an issue on a particular event, or a particular property contained within an event. In the table you will see:
+- The issue type – for example unexpected event or inconsistent property types, [(see list of issue types in Inspector)](https://www.avo.app/docs/explore-tracking-plan/issue-types-in-inspector)
+- The name of the event and property impacted
+- Sources impacted
 - Issue timing – when it was first and last seen
 - Event volume – how many instances of the event were seen across all sources
 - Issue volume – how many instances of the event were seen with this issue across all sources
-- Issue percentage – the proportion of events that were seen with this issue in relation to the the event volume (issue volume / event volume)
+- Issue percentage – the proportion of events seen with this issue in relation to the event volume (issue volume / event volume)
 
 ## Sorting and filtering
 
 The issue table can be sorted by any column. When prioritizing issues it’s helpful to sort by event volume, issue volume or issue percentage to quickly uncover which issues have the most impact on your data and prioritize accordingly.
 
-To narrow down your search to issues important to you, issues can be filtered by the following:
+To narrow down your search to your most relevant issues, you can filter by the following:
 - Source
 - Event name
 - Property
@@ -43,7 +43,8 @@ To narrow down your search to issues important to you, issues can be filtered by
   />
 </center>
 
-> 💡 We are working on filtering the content in the table to match the filter criteria. In the near future, when you filter by source, the table content will show you issue timing, event volume, issue volume and issue percentage for only that source. In the meantime, you will need to click into the issue details to see that information.
+> 💡 We are actively working on adding more filter options, and you can expect more filters in the near future. If there’s anything specific you’d like to be able to filter by, please [let us know](https://www.avo.app/docs/help/troubleshooting). 
+
 
 ## Issue details
 
@@ -91,4 +92,4 @@ If the implementation is not what it should be according to the tracking plan, w
 If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in
 
 
-> 💡 We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please reach out if you have any thoughts on how you would like to act on issues and what would make your team more efficient
+> 💡 We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please [reach out](https://www.avo.app/docs/help/troubleshooting) if you have any thoughts on how you would like to act on issues and what would make your team more efficient
