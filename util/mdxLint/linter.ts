@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import glob from 'glob';
+import { globSync } from 'glob';
 import fs from 'fs';
 import path from 'path';
 
@@ -46,9 +46,9 @@ export const logError = (error: MDXError): void => {
 };
 
 const lintMdx = (rules: RuleFunction[]): number => {
-  console.log('\n🦺 Linting MDX files in pages directory');
+  const files = globSync('./pages/**/*.mdx');
 
-  const files = glob.sync('./pages/**/*.mdx');
+  console.log(`\n🦺 Linting ${files.length} MDX files in pages directory`);
 
   const results = files.map((filePath) => {
     const raw = fs.readFileSync(filePath);
