@@ -19,9 +19,32 @@ In Avo you can archive items that you don't want in your tracking plan anymore. 
 
 In the top right corner of the item you want to archive, click the `...` menu and select the "Archive ..." option.
 
-### Restoring an item
+### How do I unarchive an item?
 
-When an item is archived it is moved from your tracking plan to an archive store within your Avo workspace. Archived items are currently not accessible from the tracking plan UI but can be restored from the Activity log.
+When an item is archived it is moved from your tracking plan to an archive within your Avo workspace. Archived items can be browsed and unarchived from the Command Palette (cmd+k on Mac, ctrl+k on Windows), in your workspace Activity Log and on the branch review screen.
+
+#### Unarchive from the Command Palette
+
+1. Hit cmd+k on Mac, ctrl+k on Windows to open the Command Palette
+2. Select Unarchive from the menu
+3. Search for the name of the item you'd like to unarchive, or browse the archive by item type (event, property, metric, etc...)
+
+<center>
+  <video
+    loop
+    muted
+    autoPlay
+    controls
+    src={require('../../images/workspace/tracking-plan/command-palette-unarchive.mp4')}
+    width="100%"
+    alt="Unarchive from Command Palette"
+  />
+</center>
+
+#### Unarchive from the Activity Log
+
+1. Find the archive activity in <a href="https://www.avo.app/schemas/default">the Activity Log of your workspace</a>
+2. Click the `...` menu on the item and click "Restore"
 
 <center>
   <img
@@ -30,4 +53,15 @@ When an item is archived it is moved from your tracking plan to an archive store
   />
 </center>
 
-Find the archive activity in <a href="https://www.avo.app/schemas/default">the Activity Log of your workspace</a>, click the `...` menu on the item and select "Restore". Note: to be able to restore an archived item, you need to be on the branch where it was archived and the branch needs to be still open (not merged or closed).
+#### Unarchive from the branch review screen
+
+1. Navigate to the branch review screen on the branch the item was archived on
+2. Click the `...` menu on the item and click "Restore..."
+
+
+<center>
+  <img
+    src={require('../../images/workspace/tracking-plan/diff-view-unarchive.png')}
+    alt="Restore item from archive from the branch review screen"
+  />
+</center>
