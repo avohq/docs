@@ -576,7 +576,7 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Property groups in Codegen',
+        title: 'Property bundles in Codegen',
         path: '/implementation/property-groups-unfolding',
       },
       {
