@@ -1,0 +1,44 @@
+---
+layout: 'guide'
+title: 'Property bundles in Avo Codegen'
+---
+
+import Link from '../../components/Link';
+
+In Avo you can bundle multiple event properties that are commonly used together into a property bundle.
+
+Property bundles allow you to increase the consistency of your tracking plan as well as increasing efficiency when defining new events and implementing them.
+
+## Example
+
+In Avo we have a property bundle called "Source", that includes 2 properties: "Source Id" and "Source Name".
+
+We add this property bundle to any event that is related to a source instead of adding those 2 properties manually every time.
+
+Property bundles can include more than 2 properties, there is no upper limit.
+
+Read more about property bundles <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-bundlesa-event-property-bundles"><a>here</a></Link>.
+
+## Property bundles in Avo Codegen
+
+When generating code for a tracking plan with property bundles the property bundles can be in 2 states:
+
+- Bundled: in this case we can represent a property bundle as an object in the code. Every property included into the property bundle becomes a field of the object.
+
+- Unbundled: in this case all the properties from the property bundle are added to the event tracking function as if the properties were added individually to the event in Avo.
+
+Property bundles are currently supported in 4 languages: Kotlin, Swift, Objective-C and Rescript/ReasonML. Codegen for these languages will generate bundled properties, unless they have to be force unbundled. <Link passHref href="/help/troubleshooting"><a>Contact us</a></Link> if you want to force unbundle all property bundles in your workspace.
+
+### Force property bundle unbundling
+
+Sometimes a change in the tracking plan can cause a property bundle to be force unbundled.
+
+This happens if the property bundle data structure can not be represented as a specific type in the programming language anymore.
+
+One reason for that is when the property absence varies between different events.
+
+In that case a property can be optional on one event and required on another event.
+
+This circumstance makes it impossible to represent this property bundle type as a class in the code, because one filed of that class should be optional under one condition and non optional under another.
+
+When this happen we unbundle the property bundle, so each event can get granular property presence.
