@@ -27,6 +27,7 @@ const config = {
   webpack5: false,
 
   webpack: (config, { isServer }) => {
+    config.output.hashFunction = 'sha256';
     if (isServer) childProcess.execSync('yarn run generate-sitemap');
     return config;
   },
