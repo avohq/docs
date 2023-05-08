@@ -5,7 +5,7 @@
 
 ## Getting Started
 
-To get started developing clone the repository and run the following commands:
+Make sure you have Node.js installed (version 18 or later). To get started developing clone the repository and run the following commands:
 
 ```bash
 yarn
