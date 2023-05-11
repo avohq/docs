@@ -231,6 +231,15 @@ This makes sure that the property is replaced in all events where it is used.
   />
 </center>
 
+## <a name="mixpanel-super-properties"></a> Mixpanel Super Properties
+
+The closest equivalent to Mixpanel's Super properties are Avo System Properties. The difference: Mixpanel Super Properties persist on the device, while Avo System Properties persist in a session. All the Mixpanel Super Properties use cases can be achieved with manual usage of cookies/local storage + Avo System Properties.
+
+You would have two options for this:
+
+- Case 1: If you don't need persistence across sessions: You can replace Mixpanel Super Properties with Avo System Properties.
+- Case 2: If you need persistence across sessions: You would maintain the data in cookies/local storage, retrieve it when the app starts and provide the values when initializing Avo or before calling Avo functions.
+
 ## <a name="snowplow-objects"></a> Snowplow Contexts
 
 To set up a Snowplow object, the property has to be attached to an event that is being sent to Snowplow. This can be configured in the source configuration of an event. Then you can create a property and set it's type to an object. When you do that, then the option appears on the property to make it a Snowplow context. When you check that box, the code will be generated such that the object is converted to a Snowplow object.
