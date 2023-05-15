@@ -132,7 +132,7 @@ System properties are set in the Avo.initAvo() function. They can be updated wit
 
 ## <a name="property-bundles"></a> Event property bundles
 
-Event property bundles are a way to bundle two or more related event properties to quickly and consistently add them to all related events. You can create event property bundles from the [event property bundles screen](https://www.avo.app/schemas/default/properties/bundles)
+Event property bundles are a way to bundle two or more related event properties to quickly and consistently add them to all related events. You can create event property bundles from the [event property bundles screen in your Avo workspace](https://www.avo.app/schemas/default/properties/bundles).
 
 An e-commerce website might want to attach all product properties to cart and checkout events.
 An example event property bundle could be "Product" containing the following properties:
@@ -231,6 +231,15 @@ This makes sure that the property is replaced in all events where it is used.
     alt="Image shows the option to replace property with another property from a property's context menu"
   />
 </center>
+
+## <a name="mixpanel-super-properties"></a> Mixpanel Super Properties
+
+The closest equivalent to Mixpanel's Super properties are Avo System Properties. The difference: Mixpanel Super Properties persist on the device, while Avo System Properties persist in a session. All the Mixpanel Super Properties use cases can be achieved with manual usage of cookies/local storage + Avo System Properties.
+
+You would have two options for this:
+
+- Case 1: If you don't need persistence across sessions: You can replace Mixpanel Super Properties with Avo System Properties.
+- Case 2: If you need persistence across sessions: You would maintain the data in cookies/local storage, retrieve it when the app starts and provide the values when initializing Avo or before calling Avo functions.
 
 ## <a name="snowplow-objects"></a> Snowplow Contexts
 
