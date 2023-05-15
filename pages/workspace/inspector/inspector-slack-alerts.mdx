@@ -6,17 +6,32 @@ abstract: 'How to start recieving Slack alerts for your Inspector issues'
 
 import Link from '../../../components/Link';
 
-In the Inspector events view you can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
+You can connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
 
-Press the `Connect to Slack` button and follow the instructions.
+To connect find the "Connect to Slack button" in the Inspector Issues or Events view – or in your workspace settings.
 
 <center>
   <img
     src={require('../../../images/workspace/nav-inspector-slack-highlighted.png')}
-    alt="Inspector receiving events"
+    alt="Connect to Slack in the Issues view"
     width="100%"
   />
 </center>
+
+_Connect to Slack in the Issues view_
+
+<center>
+  <img
+    src={require('../../../images/workspace/nav-workspace-settings-slack-alerts-highlighted.png')}
+    alt="Connect to Slack in the Issues view"
+    width="50%"
+  />
+</center>
+
+_Connect to Slack in the Workspace Settings_
+
+
+Press the `Connect to Slack` button and follow the instructions.
 
 Avo Inspector will post new issues it finds in production hourly to the specified slack channel.
 

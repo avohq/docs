@@ -46,6 +46,15 @@ To narrow down your search to your most relevant issues, you can filter by the f
 > 💡 We are actively working on adding more filter options, and you can expect more filters in the near future. If there’s anything specific you’d like to be able to filter by, please [let us know](https://www.avo.app/docs/help/troubleshooting). 
 
 
+## Saving a filtered view
+Once you have filtered and/or sorted the issues, you can save the filtered view for quick access for you and your team. The saved view persists both the filters you have selected and the sorting.
+
+#### Creating a saved view
+
+#### Modifying a saved view
+
+#### Sharing a saved view
+
 ## Issue details
 
 Click any issue in the list to see more details. If you have multiple sources connected with Inspector, you can dig into which sources are impacted by the issue and uncover which sources are most severely affected. In the issue details view you will see:
@@ -93,3 +102,15 @@ If the tracking plan is not representing how the event should be, and the implem
 
 
 > 💡 We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please [reach out](https://www.avo.app/docs/help/troubleshooting) if you have any thoughts on how you would like to act on issues and what would make your team more efficient
+
+## Why are there no issues in my issues view?
+There can be a few reasons for no issues appearing in your issues view at all or for a specific source.
+
+### Inspector not installed on source
+The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. To fix that, [install Inspector](https://www.avo.app/docs/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on the source you'd like to see issues for. 
+
+### Inspector not installed on production
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed on production on any source, you won't see any issues in the issues view. To fix that, [install Inspector](https://www.avo.app/docs/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source you'd like to see issues for. 
+
+### No issues in production for the past 24 hours
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!
