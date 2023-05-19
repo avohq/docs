@@ -5,13 +5,13 @@ title: 'Add Events and properties from Inspector'
 
 import Link from '../../components/Link';
 
-The Inspector compares the events and properties coming in to the tracking plan and detects if there are any of the incoming missing from the tracking plan. Event and properties can both be added to the tracking plan from the <Link passHref href="/workspace/inspector/inspector-issues-view"><a>Issues view</a></Link> and the <Link passHref href="/workspace/inspector/inspector-events-view"><a>Events view</a></Link>.
+The Inspector compares the ingested events and properties against tracking plan and detects if there are any events or properties missing from the tracking plan. Unknown events and properties can both be added to the tracking plan from both the <Link passHref href="/workspace/inspector/inspector-issues-view"><a>Issues view</a></Link> and the <Link passHref href="/workspace/inspector/inspector-events-view"><a>Events view</a></Link>.
 
 ## Event not in Tracking Plan
 
 ### Issues view
 
-When an event is missing from the tracking plan, the issue details of the issue view will offer you to add it to the tracking plan right from there. Click the "Add to Tracking Plan" button and the event and all it's properties are created.
+When an event is missing from the tracking plan the issue details will offer you to quickly add it to the tracking plan. Click the "Add to Tracking Plan" button and the event and all it's properties are created.
 
 <center>
   <img
@@ -23,7 +23,7 @@ When an event is missing from the tracking plan, the issue details of the issue 
 
 ### Events view
 
-If the Inspector detects an Event that is not in your tracking plan, it will be highlighted in the events view with a red tracking plan icon next to the name, along with an "Add" button to add it to your tracking plan. The slide-over in the events view also has an option to add the event right from there. Click either button to add the event and all it's properties to the tracking plan.
+If the Inspector detects an event that is not in your tracking plan, it will be highlighted with a red tracking plan icon next to the name, along with an "Add" button to add it to your tracking plan. The events view sidebar also has an option to add the event right from there. Click either button to add the event and all it's properties to the tracking plan.
 
 <center>
   <img
@@ -59,7 +59,7 @@ In the issue details, you will always be able to see whether the event or proper
 
 ### Events view
 
-Selecting an event in the events view will expand down such that all the properties that were detected in this particular event are shown. If a property is missing from the tracking plan for that particular event, it is highlighted with a red tracking plan icon next to the property name, along with an "Add" button to add it to your tracking plan. The slide over in the events view also has an option to add the property to the tracking right from there. Click either button to add the event and all it's properties to the tracking plan. There are two cases for adding property to the event in the tracking plan:
+Clicking on the event name cell will expand it such that all the properties that were detected in this particular event are shown. If a property is missing from the tracking plan for that particular event, it is highlighted with a red tracking plan icon next to the property name, along with an "Add" button to add it to your tracking plan. The sidebar in the events view also has an option to add the property to the tracking right from there. Click either button to add the event and all it's properties to the tracking plan. There are two cases for adding property to the event in the tracking plan:
 
 1. If property exists in the tracking plan, but is not on the event, you are offered to add the property to this event in the tracking plan.
 2. If property does not exists on the tracking plan it will not be on the event either. Then you are offered to create the event in the tracking plan and add it to this event, with a single click of a button.
