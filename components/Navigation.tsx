@@ -726,6 +726,11 @@ const navigation: navigationItem[] = [
             title: 'Java SDK',
             path: '/implementation/inspector/sdk/java',
           },
+          {
+            type: 'route',
+            title: 'Go SDK',
+            path: '/implementation/inspector/sdk/go',
+          },
         ],
       },
       {
