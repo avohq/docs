@@ -364,13 +364,13 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
-        title: 'Events view',
-        path: '/workspace/inspector/inspector-events-view',
+        title: 'Issues view',
+        path: '/workspace/inspector/inspector-issues-view',
       },
       {
         type: 'route',
-        title: 'Issues view',
-        path: '/workspace/inspector/inspector-issues-view',
+        title: 'Events view',
+        path: '/workspace/inspector/inspector-events-view',
       },
       {
         type: 'route',

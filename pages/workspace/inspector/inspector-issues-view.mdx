@@ -46,6 +46,174 @@ To narrow down your search to your most relevant issues, you can filter by the f
 > 💡 We are actively working on adding more filter options, and you can expect more filters in the near future. If there’s anything specific you’d like to be able to filter by, please [let us know](https://www.avo.app/docs/help/troubleshooting). 
 
 
+## Saving a filtered view
+Once you have filtered and/or sorted the issues, you can save the filtered view for quick access for you and your team. The saved view persists both the filters you have selected and the sorting.
+
+### Creating a saved view
+When the issues view is opened, the default view is an unfiltered "All Issues" view ordered by last seen, such that the latest issues are on top. Until the a filter is added or the sorting is changed, the "Save View" button is disabled.
+
+<center>
+  <img
+    src={require('../../../images/inspector/all-events-unfiltered-unsorted.png')}
+    width="100%"
+    alt="Image shows the default all issues view ordered by issues last seen."
+  />
+</center>
+
+Once a filter is added or the sorting changed, the "Save View" button is enabled. Click that button to name the view and save it.
+
+<center>
+  <img
+    src={require('../../../images/inspector/naming-and-saving-a-view.png')}
+    width="100%"
+    alt="Image shows a filtered view with it's naming and saving modal open."
+  />
+</center>
+
+Once the "Save filtered view" button is clicked, the view is successfully saved and the new view is displayed.
+
+<center>
+  <img
+    src={require('../../../images/inspector/newly-saved-view.png')}
+    width="100%"
+    alt="Image shows a newly saved view."
+  />
+</center>
+
+In each saved view, there are buttons to copy the URL to the view, duplicated it and the disabled "Save View".
+
+### Duplicating and modifying a saved view
+
+To create a new view based on another saved view, you can either click the duplicate button to first duplicate it and then modify it or first modify an existing saved view and then click the "Save View as..." button to save it as a new view.
+
+#### Duplicate and modify
+
+To duplicate an existing saved view, click the duplicate button in the top right corner, next to the "Save View" button.
+
+<center>
+  <img
+    src={require('../../../images/inspector/duplicate-saved-view.png')}
+    width="100%"
+    alt="Image shows a saved view saved view with the duplicate button highlighted."
+  />
+</center>
+
+Then a modal to name and save the duplicated view is opened.
+
+<center>
+  <img
+    src={require('../../../images/inspector/naming-and-saving-a-duplicated-view.png')}
+    width="100%"
+    alt="Image shows a saved view saved view with the name and save a duplicated view modal open and highlight."
+  />
+</center>
+
+Once the "Save duplicate view" button is clicked, the view is successfully saved and the new duplicated view is displayed.
+
+<center>
+  <img
+    src={require('../../../images/inspector/newly-saved-duplicated-view.png')}
+    width="100%"
+    alt="Image shows a saved view saved view with the name and save a duplicated view modal open and highlight."
+  />
+</center>
+
+From here, the saved duplicated view can be modified by changing the filters or sorting and the changes saved by clicking the save button.
+
+<center>
+  <img
+    src={require('../../../images/inspector/modified-duplicated-view.png')}
+    width="100%"
+    alt="Image shows a saved view saved view with the name and save a duplicated view modal open and highlight."
+  />
+</center>
+
+
+#### Modify and Save as 
+
+To modify an existing saved view, you can adjust the filtering or sorting to your needs. It's safe to modify any view as the changes are not saved until you click the save button. Editors can only save changes to their own views.
+
+When a saved view has been modified, the following options are presented:
+- Save View: if you are the creator of the saved view or a workspace admin, you can save the changes to the modified view
+- Save as: anyone can save the changes as a new view by giving it a new name
+- Reset saved view: reset the adjusted filters and sorting to latest saved state of the saved view
+
+Below is an example of a saved view that has been modified, but changes unsaved.
+
+<center>
+  <img
+    src={require('../../../images/inspector/modified-view-with-unsaved-changes.png')}
+    width="100%"
+    alt="Image shows a modified saved view saved view with unsaved changes."
+  />
+</center>
+
+To save the changes as a new saved view, click "Save as...", give it a new name and save the changes.
+
+<center>
+  <img
+    src={require('../../../images/inspector/modified-view-with-saved-changes.png')}
+    width="100%"
+    alt="Image shows a modified saved view saved view with the Save as... modal open and highlighted."
+  />
+</center>
+
+### Sharing a saved view
+
+To share a saved view with a colleague, you can click the link button to copy the URL of the saved view. The copy link to view button is on all views, saved or not.
+
+<center>
+  <img
+    src={require('../../../images/inspector/sharing-a-saved-view.png')}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
+### Renaming a saved view
+
+To rename a saved view, click the title of the saved view to open a modal to rename it and save the changes.
+
+<center>
+  <img
+    src={require('../../../images/inspector/renaming-a-saved-view.png')}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
+### Accessing existing saved views
+
+To find and access saved views that you or other workspace members have created, click the "All saved views" button in the top right corner of any Inspector Issues view.
+
+<center>
+  <img
+    src={require('../../../images/inspector/all-saved-views-button-highlighted.png')}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
+There you will find an overview over all saved views with information about how many issues you they contain and who modified the view last and when.
+
+<center>
+  <img
+    src={require('../../../images/inspector/saved-views-overview.png')}
+    width="100%"
+    alt="Image shows a the Inspector Issues page with the All saved views button highlighted."
+  />
+</center>
+
+From there, the creator of each saved view and admins can archive saved views by opening the three dot menu on the right and click the Archive View button.
+
+<center>
+  <img
+    src={require('../../../images/inspector/archiving-a-saved-view.png')}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
 ## Issue details
 
 Click any issue in the list to see more details. If you have multiple sources connected with Inspector, you can dig into which sources are impacted by the issue and uncover which sources are most severely affected. In the issue details view you will see:
@@ -93,3 +261,15 @@ If the tracking plan is not representing how the event should be, and the implem
 
 
 > 💡 We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please [reach out](https://www.avo.app/docs/help/troubleshooting) if you have any thoughts on how you would like to act on issues and what would make your team more efficient
+
+## Why are there no issues in my issues view?
+There can be a few reasons for no issues appearing in your issues view at all or for a specific source.
+
+### Inspector not installed on source
+The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. To fix that, [install Inspector](https://www.avo.app/docs/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on the source you'd like to see issues for. 
+
+### Inspector not installed on production
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed on production on any source, you won't see any issues in the issues view. To fix that, [install Inspector](https://www.avo.app/docs/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source you'd like to see issues for. 
+
+### No issues in production for the past 24 hours
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!
