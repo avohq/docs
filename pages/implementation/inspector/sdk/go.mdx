@@ -34,7 +34,12 @@ Obtain the API key by opening your  <a target="_blank" rel="noopener noreferrer"
 You will need to create an instance of `AvoInspector`.
 
 ```go
-func NewAvoInspector(apiKey string, env AvoInspectorEnv, appVersion string, appName string) (*AvoInspector, error)
+func NewAvoInspector(
+	apiKey string,
+	env AvoInspectorEnv,
+	appVersion string,
+	appName string
+) (*AvoInspector, error)
 ```
 
 > #### Parameters:
@@ -53,7 +58,10 @@ Call the following method every time an event is tracked, so Inspector can analy
 ### Option 1
 
 ```go
-func (inspector *AvoInspector) TrackSchemaFromEvent(eventName string, eventProperties map[string]interface{}) ([]Property, error) {
+func (inspector *AvoInspector) TrackSchemaFromEvent(
+	eventName string,
+	eventProperties map[string]interface{}
+) ([]Property, error)
 ```
 
 > Example usage:
@@ -74,32 +82,32 @@ Extracts event schema from event properties represented by the second parameter 
 >
 > ##### Example format:
 >
-> ```go
-> map[string]interface{}{
->   "greeting":  "hello",
->		"answer":  42,
->	}
-> ```
+```go
+ map[string]interface{}{
+	"greeting":  "hello",
+	"answer":  42,
+}
+```
 
 > #### Return Type:
 >
 > - `[]avoinspector.Property` containing event schema, so you can verify that conversion was correct.
 >   Example format:
 >
-> ```go
-> []Property{
->				{
->					PropertyName: "greeting",
->					PropertyType: "string",
->					Children:     nil,
->				},
->       {
->					PropertyName: "answer",
->					PropertyType: "int",
->					Children:     nil,
->				}
-> }
-> ```
+```go
+[]Property{
+	{
+		PropertyName: "greeting",
+		PropertyType: "string",
+		Children:     nil,
+	},
+	{
+		PropertyName: "answer",
+		PropertyType: "int",
+		Children:     nil,
+	}
+}
+```
 
 See <Link passHref href="/inspector/sdk#standalone-usage"><a>this</a></Link> for details about event schema structure and schema types.
 
@@ -115,4 +123,4 @@ func (c *AvoInspector) ShouldLog(shouldLog bool)
 
 > #### Parameters:
 >
-> - `sh bool` - sets whether **Avo Inspector SDK** will print logs to console.
+> - `shouldLog bool` - sets whether **Avo Inspector SDK** will print logs to console.
