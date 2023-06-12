@@ -1,0 +1,99 @@
+---
+layout: 'guide'
+title: 'Send data from Google Tag Manager to Avo Inspector'
+---
+
+import Link from '../../components/Link';
+
+## Use Avo Inspector as a GTM tag
+
+You can use a server side GTM to analyze your tracking with Avo Inspector.
+
+We provide a tag template to import, which you can use to create a tag and connect it to your GTM clients.
+
+> Avo Inspector operates on the environment level, please keep it in mind and create separate tags for development, staging and production data.
+
+## Guide to connect GTM and Avo Inspector
+
+This tag is designed to be used with the server side Google Tag Manager, learn more [here](https://developers.google.com/tag-platform/tag-manager/server-side/overview)
+
+### Import Avo Inspector GTM tag template
+
+1. Download the tag template file from [GitHub](https://github.com/avohq/gtm-server-avo-inspector-template/blob/master/template.tpl), there is a download button in the top right of the file content area
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-download.png')}
+    alt="Download button in the GitHub interface"
+    height="200"
+  />
+</center>
+
+2. Navigate to the Templates tab in your server side GTM console
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-templates.png')}
+    alt="Templates option in the side menu"
+     height="100"
+  />
+</center>
+
+3. In the Tag Templates section, click New
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-template-new.png')}
+    alt="New button on the templates screen"
+  />
+</center>
+
+4. Click three dots in the top right and choose 'Import' in the drop-down menu
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-import.png')}
+    alt="Dropdown in the templates screen with the import button"
+    height="200"
+  />
+</center>
+
+5. Select the `template.tpl` file you downloaded on step 1
+
+### Create Avo Inspector GTM tag
+
+1. Navigate to the Tags tab in your server side GTM console
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-tags.png')}
+    alt="Tags option in the side menu"
+    height="100"
+  />
+</center>
+
+
+2. Click New in the top right
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-tag-new.png')}
+    alt="New button on the tags screen"
+  />
+</center>
+
+3. Click Tag Configuration section and choose Avo Inspector form the options
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-tag-configuration.png')}
+    alt="Tag configuration tile on the new tag screen"
+    height="200"
+  />
+</center>
+
+4. Paste you Avo Inspector key. To get the key open your Avo.app workspace, choose the source you want to connect the Inspector to and navigate to the Inspector Setup tab.
+<center style={{marginBottom: 16 + "px"}}>
+  <img
+    src={require('../../images/server-gtm-avo-inspector-setup.png')}
+    alt="Navigation to the inspector key in Avo"
+    height="100"
+  />
+</center>
+
+5. Choose which environment this tag is reporting from. Inspector distinguish development, staging, and production environments. Production is designed for high data volumes, while development and staging are designed for faster time to feedback in the Inspector dashboard. You'll see your dev and staging events in the Inspector dashboard almost instantly, while the production events can take up to an hour to appear
+6. Add a trigger, it's best to analyse all events in Inspector. We suggest to add a trigger that accepts all events, for example with the `.*` regex. Make sure that you are only sending the events from the environment configured on the step 3. Learn more about defining triggers [here](https://support.google.com/tagmanager/topic/7679384)
+7. Now all the data sent to this server side GTM will be analysed by Inspector. Learn more about sending data to the server side Tag Manager [here](https://developers.google.com/tag-platform/tag-manager/server-side/send-data)

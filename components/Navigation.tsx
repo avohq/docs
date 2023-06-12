@@ -393,6 +393,11 @@ const navigation: navigationItem[] = [
       },
       {
         type: 'route',
+        title: 'Inspector GTM integration',
+        path: '/workspace/connect-inspector-to-gtm',
+      },
+      {
+        type: 'route',
         title: 'Inspector Segment integration',
         path: '/workspace/connect-inspector-to-segment',
       },
