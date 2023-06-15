@@ -36,11 +36,13 @@ Codegen corresponding to the events with Identify action will require a userId p
 
 Server side Codegen does not have a way to maintain user identity.
 That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Codegen.
-An optional `anonymousUserId` parameter is available in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Codegen.
+An optional `anonymousUserId` parameter is available on demand in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Codegen.
 
 ### Identified users
 
 Given the server side functions can not maintain user identity, once the user is identified you still have to provide the `userId` with every function call.
-An optional `userId` parameter is automatically required in all the server side Codegen.
+A `userId` parameter is automatically required in all the server side Codegen functions.
+
+> The Identify action does not change the server codegen functions. Every single function is effectively an identify function, because you need to provide user id all the time.
 
 > Though both `anonymousUserId` and `userId` are optional make sure to provide one of them to be able to identify the user.
