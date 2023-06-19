@@ -2,71 +2,63 @@
 # yarn lockfile v1
 
 
-"@amplitude/analytics-browser@^1.10.8":
-  version "1.10.8"
-  resolved "https://registry.yarnpkg.com/@amplitude/analytics-browser/-/analytics-browser-1.10.8.tgz#8d1c74dc9bfdcaadfb220862e9086a1352d63f95"
-  integrity sha512-8rsOvU7fqBbkHaVSi/3WQ2bRvxR45n3Bqojk3UBxpypKAdqt2xcbngAuGD6/JdKBOJ4iJMwRAKojZgr1kzN3WQ==
+"@amplitude/analytics-browser@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@amplitude/analytics-browser/-/analytics-browser-2.0.0.tgz#2f3c813ccea6ed7027f70c8984884b25d3ce5d52"
+  integrity sha512-SIOxjSdefm7RVuwzkuTW7uMge4AKLOqcE1oJYQFF25jkmAiFfXnbrqlGgBflgqLRvAKudrwXn+NFfKqBfXfozw==
   dependencies:
-    "@amplitude/analytics-client-common" "^1.0.1"
-    "@amplitude/analytics-core" "^1.1.0"
-    "@amplitude/analytics-types" "^1.1.0"
-    "@amplitude/plugin-page-view-tracking-browser" "^1.0.2"
-    "@amplitude/plugin-web-attribution-browser" "^1.0.2"
-    "@amplitude/ua-parser-js" "^0.7.31"
+    "@amplitude/analytics-client-common" "^2.0.0"
+    "@amplitude/analytics-core" "^2.0.0"
+    "@amplitude/analytics-types" "^2.0.0"
+    "@amplitude/plugin-page-view-tracking-browser" "^2.0.0"
+    "@amplitude/plugin-web-attribution-browser" "^2.0.0"
     tslib "^2.4.1"
 
-"@amplitude/analytics-client-common@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@amplitude/analytics-client-common/-/analytics-client-common-1.0.1.tgz#18620d753c61097719e27acf1ea475075e7028a4"
-  integrity sha512-PEZrZzrAyVQKb+vYEc6cPBamFNH0XQ+LUIlROZWC78PmwcEfpZD/3/PQMqRQidyTsklpAx8vJgqJImyA/Hafng==
+"@amplitude/analytics-client-common@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@amplitude/analytics-client-common/-/analytics-client-common-2.0.0.tgz#96d7430ea18ecd9f14565c582982fc3db8772955"
+  integrity sha512-4+fSeElUzOJK0TjWYem/jWnKCQVBuACUaz/maaXnzQBSeeqXDLO8PsqdAZYr4mQ/zbAxtt2hJpaewXQBviNoJA==
   dependencies:
-    "@amplitude/analytics-connector" "^1.4.5"
-    "@amplitude/analytics-core" "^1.1.0"
-    "@amplitude/analytics-types" "^1.1.0"
+    "@amplitude/analytics-connector" "^1.4.8"
+    "@amplitude/analytics-core" "^2.0.0"
+    "@amplitude/analytics-types" "^2.0.0"
     tslib "^2.4.1"
 
-"@amplitude/analytics-connector@^1.4.5":
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/@amplitude/analytics-connector/-/analytics-connector-1.4.6.tgz#60a66eaf0bcdcd17db4f414ff340c69e63116a72"
-  integrity sha512-6jD2pOosRD4y8DT8StUCz7yTd5ZDkdOU9/AWnlWKM5qk90Mz7sdZrdZ9H7sA/L3yOJEpQOYZgQplQdWWUzyWug==
-  dependencies:
-    "@amplitude/ua-parser-js" "0.7.31"
+"@amplitude/analytics-connector@^1.4.8":
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/@amplitude/analytics-connector/-/analytics-connector-1.4.8.tgz#dd801303db2662bc51be7e0194eeb8bd72267c42"
+  integrity sha512-dFW7c7Wb6Ng7vbmzwbaXZSpqfBx37ukamJV9ErFYYS8vGZK/Hkbt3M7fZHBI4WFU6CCwakr2ZXPme11uGPYWkQ==
 
-"@amplitude/analytics-core@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@amplitude/analytics-core/-/analytics-core-1.1.0.tgz#a2700f167e8090c682232a816f59840ab32bfdd3"
-  integrity sha512-mWp753c9tAP54+9z+WFnZaUnWbhI4o3WQtRQIA954UEnqgKTuUIkKLyb8zrh8zKVf1MUuZDuEE+zI5Gs05mk7A==
+"@amplitude/analytics-core@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@amplitude/analytics-core/-/analytics-core-2.0.0.tgz#20f8c53740f54b04d9bfcab9312aaebc9ca1d4d7"
+  integrity sha512-aEssg0ZUU+Xe0g17mz1q24S+Ec3Q8I+RHIhQcTB/Quko4iKAspTrtI+lSCYh1SvTgSSfNTR3TuRR/QYwGjmdCQ==
   dependencies:
-    "@amplitude/analytics-types" "^1.1.0"
+    "@amplitude/analytics-types" "^2.0.0"
     tslib "^2.4.1"
 
-"@amplitude/analytics-types@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@amplitude/analytics-types/-/analytics-types-1.1.0.tgz#a737f48c0acbe6c9e85d5070fea4c225d6e5a319"
-  integrity sha512-FAJMewKuiDbcnG5aGSpxwXPy31clqyK0tIGi27AVL2Dnf+7jUbphMB6s1AijXfB5+OdMY51N+jzapD5C+pR0Wg==
+"@amplitude/analytics-types@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@amplitude/analytics-types/-/analytics-types-2.0.0.tgz#43636eb2e390f1eea2a2e9238f652d2587f6d3e5"
+  integrity sha512-YHFAHDGCoS+exBqdlhivfdomzL88msj++krObsVsBkLqlzXR+3x3lXVKQeCEEWG5GX7doB9KZPf70i8y/eyERQ==
 
-"@amplitude/plugin-page-view-tracking-browser@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@amplitude/plugin-page-view-tracking-browser/-/plugin-page-view-tracking-browser-1.0.2.tgz#39148d7af9623890fceefc8ffb1892dec3941eb3"
-  integrity sha512-jBReKXkn6Qq5fgAb7kR6YkPbdRi1idcH6u5iIPAGfuciAb9qKcNj7lAcAcIT9nS1DGsvRo1qsn1/UH548b/Tew==
+"@amplitude/plugin-page-view-tracking-browser@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@amplitude/plugin-page-view-tracking-browser/-/plugin-page-view-tracking-browser-2.0.0.tgz#3eb1c3c1ed400d7f3d72635948b5b6efd81b93ea"
+  integrity sha512-G2bAiavBvNbFjUDViGJyagpyCwSzir/TXDA3LsJbOLOkqEeO95ZIZGU7mM7eqOAB7Nuir5WsayuA0+Oau8DzMQ==
   dependencies:
-    "@amplitude/analytics-client-common" "^1.0.1"
-    "@amplitude/analytics-types" "^1.1.0"
+    "@amplitude/analytics-client-common" "^2.0.0"
+    "@amplitude/analytics-types" "^2.0.0"
     tslib "^2.4.1"
 
-"@amplitude/plugin-web-attribution-browser@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@amplitude/plugin-web-attribution-browser/-/plugin-web-attribution-browser-1.0.2.tgz#e46e12c946bdf4c77b2b6ccffe316ae9d057642c"
-  integrity sha512-80M4ZjZjlg7nmslIdWBOUBMVMZMa4OXoWmTviu38jFMjbO7JsZil/V1rwb3d/tpyceHt/yNQes4yknQWeiZAQw==
+"@amplitude/plugin-web-attribution-browser@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@amplitude/plugin-web-attribution-browser/-/plugin-web-attribution-browser-2.0.0.tgz#bcc56b3875ed6c64759ebc9a0d2e4bfe9da27e48"
+  integrity sha512-Y+zo2aTF2RSC+ATBdRff5zlgScJ5MWzqL0rzi696EP5zb4b7YIlEkG2V9XZlOGLQBYskF6NoBKMsoP0W2cROQw==
   dependencies:
-    "@amplitude/analytics-client-common" "^1.0.1"
-    "@amplitude/analytics-types" "^1.1.0"
+    "@amplitude/analytics-client-common" "^2.0.0"
+    "@amplitude/analytics-types" "^2.0.0"
     tslib "^2.4.1"
-
-"@amplitude/ua-parser-js@0.7.31", "@amplitude/ua-parser-js@^0.7.31":
-  version "0.7.31"
-  resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.31.tgz#749bf7cb633cfcc7ff3c10805bad7c5f6fbdbc61"
-  integrity sha512-+z8UGRaj13Pt5NDzOnkTBy49HE2CX64jeL0ArB86HAtilpnfkPB7oqkigN7Lf2LxscMg4QhFD7mmCfedh3rqTg==
 
 "@ampproject/remapping@^2.1.0":
   version "2.1.2"
