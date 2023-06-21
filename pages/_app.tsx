@@ -1,15 +1,12 @@
 import { FunctionComponent, useEffect } from 'react';
 import { AnalyticsBrowser } from '@segment/analytics-next';
 import { AppProps } from 'next/app';
-import { MDXProvider } from '@mdx-js/react';
 import mixpanel from 'mixpanel-browser';
 
 import Avo, { AvoEnv, CustomDestination } from '../Avo';
 
 import '../styles/global.css';
 
-import Layout from '../components/Layout';
-import MDComponents from '../styles/MDComponents';
 import useAvoPath from '../util/useAvoPath';
 import Head from 'next/head';
 
@@ -121,10 +118,8 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   }, []);
 
   return (
-    <MDXProvider components={MDComponents}>
-      <Layout>
+      <>
         <Head>
-          <meta name="theme-color" content="#000000" />
           <link
             rel="icon"
             type="image/png"
@@ -157,8 +152,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
           />
         </Head>
         <Component {...pageProps} />
-      </Layout>
-    </MDXProvider>
+      </>
   );
 };
 

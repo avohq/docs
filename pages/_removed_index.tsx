@@ -7,18 +7,11 @@ import PageLink, { CallToAction } from '../components/PageLink';
 import AnalyticsManagerIcon from '../images/svg/analyticsmanager.svg';
 import DevIcon from '../images/svg/dev.svg';
 
-import StickyBox from 'react-sticky-box';
-
 import styles from './index.module.scss';
 
 import Head from 'next/head';
-import { GitHubLinkStore } from '../util/gitHubLinkStore';
-import Toc from '../components/Toc';
 
 const LandingPage: FunctionComponent = () => {
-  GitHubLinkStore.update((s) => {
-    s.path = 'index.tsx';
-  });
 
   const headings = [
     {
@@ -63,12 +56,6 @@ const LandingPage: FunctionComponent = () => {
           can start them in any order or in parallel, and skip those you
           don&apos;t think apply to you.
         </p>
-
-        {headings != null && headings.length !== 0 && (
-          <div className={styles.inlineToc}>
-            <Toc headings={headings} />
-          </div>
-        )}
 
         <h2 id="workflow" className={[styles.label, styles.heading2].join(' ')}>
           Try the Avo workflow for your next analytics release
@@ -284,12 +271,6 @@ const LandingPage: FunctionComponent = () => {
           />
           <span />
         </div>
-      </div>
-
-      <div className={styles.sidebar}>
-        <StickyBox offsetTop={40} offsetBottom={20}>
-          <Toc headings={headings} />
-        </StickyBox>
       </div>
     </div>
   );
