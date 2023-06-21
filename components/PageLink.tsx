@@ -47,9 +47,7 @@ const PageLink: FunctionComponent<Props> = ({
     // Link content wrapped in an anchor to make cmd+click to open in a new tab work
     return (
       <Link scroll={true} href={callToAction ? callToAction.path : ''} passHref>
-        <a rel="noreferrer" style={{ textDecoration: 'none' }}>
           {returnDiv}
-        </a>
       </Link>
     );
   } else {

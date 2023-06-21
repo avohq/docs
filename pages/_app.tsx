@@ -124,7 +124,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
             rel="icon"
             type="image/png"
             sizes="96x96"
-            href={require('../images/favicon.png')}
+            href='../images/favicon.png'
           />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <script

@@ -1,20 +1,18 @@
 ---
-layout: 'guide'
 title: '1. Plan analytics update in Avo branch'
-abstract: ''
 ---
 
-import Link from '../../components/Link';
 import styles from '../index.module.scss';
 import PageLink, { CallToAction } from '../../components/PageLink';
-import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
-import DevIcon from '../../images/svg/dev.svg';
+import { Callout } from 'nextra/components';
 
 import { FunctionComponent } from 'react';
 
+# Plan analytics update in Avo branch
+
 ## 1.1 Decide what to track
 
-_Role: Product or Data (This initiative is usually led by a product oriented person)_
+*Role: Product or Data (This initiative is usually led by a product oriented person)*
 
 The hardest part in the whole analytics release process is usually to decide what events and properties you need, to be able to measure the success of the product change. There are many paths to a decision, but no matter which one you take, we recommend doing it as early as possible in the development process.
 
@@ -28,7 +26,7 @@ The result of the purpose meeting is usually a draft of events that someone take
 
 ## 1.2 Create a branch in Avo
 
-_Role: Product or Data. (This is also sometimes done by engineering, particularly when the engineering team is product driven.)_
+*Role: Product or Data. (This is also sometimes done by engineering, particularly when the engineering team is product driven.)*
 
 The first thing you do in Avo, for a product release, is to create a new branch.
 
@@ -36,23 +34,31 @@ A branch allows you to draft changes to the tracking plan in isolation, without 
 
 To create a new branch, first make sure you are on the main branch. You can see the name of the branch you’re currently on under your workspace name in the branch sidebar. Right next to the name of the branch, you can click the plus icon and there you can create a new branch as shown on the screenshot below.
 
+<br />
 <center>
   <img
     width="70%"
-    src={require('../../images/workflow/1.plan/create-new-branch.png')}
+    src="../images/workflow/1.plan/create-new-branch.png"
     alt="create a new branch from the navigation bar"
   />
 </center>
 
-> 💡 Name your branch in a way that helps your team mates know what the branch is about. We recommend the branch name references the product update or feature it’s connected to in some way. Some teams also like including a reference to the team involved in the change and/or a ticket number from their task management system.
+<Callout type="info" emoji="💡">
+  Name your branch in a way that helps your team mates know what the branch is
+  about. We recommend the branch name references the product update or feature
+  it’s connected to in some way. Some teams also like including a reference to
+  the team involved in the change and/or a ticket number from their task
+  management system.
+</Callout>
 
+<br />
 <video
   controls
   loop
   muted
   width="100%"
   autoPlay
-  src={require('../../images/workflow/1.plan/create-new-branch.mp4')}
+  src={'../images/workflow/1.plan/create-new-branch.mp4'}
   alt="Opening a branch"
 />
 
@@ -60,9 +66,14 @@ _Example: Creating a branch_
 
 ## 1.3 Define metrics, events and properties
 
-_Role: Product or Data_
+*Role: Product or Data*
 
-> The results of the purpose meeting can all be documented in Avo in context with your metrics and event definitions. Learn more in our <Link passHref href="/data-design/documenting-purpose-meetings-in-avo"><a>guide to use Categories and Metrics to document Purpose Meetings.</a></Link>
+<Callout type="info">
+  The results of the purpose meeting can all be documented in Avo in context
+  with your metrics and event definitions. Learn more in our [guide to use
+  Categories and Metrics to document Purpose
+  Meetings.](/data-design/documenting-purpose-meetings-in-avo)
+</Callout>
 
 Once you have an idea of what to track, you start defining the event structures on your branch in Avo.
 
@@ -70,14 +81,15 @@ There are a few things to keep in mind when doing so:
 
 - Check for existing events that you can use or expand with additional properties
 - Check for existing properties that you can use instead of defining new ones. You can search for existing properties using the command pallette (cmd+k on Mac, ctrl+k on Windows) or browse all your properties on the Properties screen in the Tracking Plan.
-- Follow the naming convention used in your workspace. The Avo <Link passHref href="/audit/rules"><a>issue reporter</a></Link> and <Link passHref href="/data-design/naming-conventions#3-how-does-avo-help-with-naming-consistencies"><a>naming assistant</a></Link> will help you do so.
+- Follow the naming convention used in your workspace. The Avo [issue reporter](/audit/rules) and [naming assistant](/data-design/naming-conventions#3-how-does-avo-help-with-naming-consistencies) will help you do so.
 - Add descriptions to your events and properties to keep transparency and clarity between those who design, implement and consume the data
-- Try to apply <Link passHref href="/audit/rules#property-rules"><a>property rules</a></Link> on your properties if possible. This is especially useful when you have a string property that has a finite number of possible values.
+- Try to apply [property rules](/audit/rules#property-rules) on your properties if possible. This is especially useful when you have a string property that has a finite number of possible values.
 
+<br />
 <center>
   <img
     width="70%"
-    src={require('../../images/workflow/1.plan/event.png')}
+    src={'../images/workflow/1.plan/event.png'}
     alt="even definition"
   />
 </center>
@@ -86,9 +98,10 @@ _Example: Event definition_
 
 ## What’s next?
 
+<br />
 <div className={styles.row}>
   <PageLink
-    image={AnalyticsManagerIcon}
+    image="../../images/svg/analyticsmanager.svg"
     title="2. Review suggestions in Avo"
     description="Learn how to review suggestions in Avo"
     callToAction={new CallToAction('/workflow/review')}
