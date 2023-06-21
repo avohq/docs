@@ -1,12 +1,9 @@
----
-layout: 'guide'
-title: 'Intro to Group analytics'
----
+import {Callout} from 'nextra/components'
 
-import Link from '../../components/Link';
+# Intro to Group analytics
 
-> 💡 **Group analytics** is a terminology used in product analytics tools, that 
-refers to grouping by unique product concepts other than unique users.
+<Callout>**Group analytics** is a terminology used in product analytics tools, that 
+refers to grouping by unique product concepts other than unique users.</Callout>
 
 The concept of <a href="../workspace/tracking-plan/properties#user-properties">grouping product analytics by unique _users_</a> 
 is well established. E.g. counting unique users who perform specific actions in your product, 
@@ -32,7 +29,7 @@ You can associate users with groups. Then that user profile, as well as every su
 
 This is useful for example for B2B products, when each individual user of the product belongs to a company, and every action of that user should be attributed to that one company.
 
-See further use cases and which analytics platforms support grouping users below in <Link passHref href="/data-design/groups#associate-user-with-group"><a>Associate user with group</a></Link>.
+See further use cases and which analytics platforms support grouping users below in [Associate user with group](/data-design/groups#associate-user-with-group).
 
 ## Grouping events
 
@@ -40,7 +37,7 @@ You can associate events with groups without associating the user with a group. 
 
 For example if you have a chat app and want to analyze the performance of different channels.
 
-See further use cases and which analytics platforms support grouping events below in <Link passHref href="/data-design/groups#associate-event-with-group"><a>Associate event with group</a></Link>.
+See further use cases and which analytics platforms support grouping events below in [Associate event with group](/data-design/groups#associate-event-with-group).
 
 ## Managing Group Analytics
 
@@ -70,7 +67,7 @@ This is supported by Avo, Amplitude, Mixpanel, and additionally you can use this
 
 For Mixpanel and Amplitude: All events logged with a group will be available for group analyses such as calculating metrics based on unique groups. See docs for Mixpanel and Amplitude.
 
-For your data warehouse: The events will have the Group ID associated with them. If you maintain a table with each group’s metadata (see <Link passHref href="/data-design/groups#update-group-properties"><a>Update Group Properties section</a></Link>), you can additionally enrich your events with the current state of the group metadata. This will allow you to query your events by the historical state of the group metadata, as it was at the time of the event.
+For your data warehouse: The events will have the Group ID associated with them. If you maintain a table with each group’s metadata (see [Update Group Properties section](/data-design/groups#update-group-properties)), you can additionally enrich your events with the current state of the group metadata. This will allow you to query your events by the historical state of the group metadata, as it was at the time of the event.
 
 This is not supported by Segment.
 
@@ -85,7 +82,7 @@ _Example_: If you have chat channels, you can log the “Message Sent” event w
 ### Update Group Properties
 
 Conceptually the group properties are quite similar to user properties. You can maintain group metadata, aka group properties, for the group IDs that you associate users or events with.
-The first step is defining your groups (<Link passHref href="/data-design/groups#groups-terminology-across-platforms"><a>group types and group ids</a></Link>). Then you can attach and update specific properties about the groups.
+The first step is defining your groups ([group types and group ids](/data-design/groups#groups-terminology-across-platforms)). Then you can attach and update specific properties about the groups.
 
 **Functionality**: This action will update metadata associated with a specific group (e.g. member count of a team). This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
 

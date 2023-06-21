@@ -1,10 +1,6 @@
----
-layout: 'guide'
-title: 'Naming conventions'
-abstract: 'Best practices and tools for naming conventions of events and properties'
----
+# Naming conventions
 
-import Link from '../../components/Link';
+*Best practices and tools for naming conventions of events and properties*
 
 Discrepancies in event and property names––seemingly minor (`game_started` and `gameStarted`) as well as major (`game_started` and `playButtonPress`)––are a surprisingly central pain point in data analytics; particularly when aiming for self-serve analytics culture.
 
@@ -59,7 +55,7 @@ In other words, event and property naming is abstracted entirely away from the e
 
 ### 2. How Avo helps with better data design with global namespace
 
-*Also covered in <Link passHref href="/data-design/global-namespace"><a>Global namespace for events and properties</a></Link> *
+*Also covered in [Global namespace for events and properties](/data-design/global-namespace)*
 
 As stated above, naming inconsistencies often arise either during the "data design" step, not only implementation step. This is particularly true as product organizations scale up and multiple teams contribute to the tracking plan. (It's difficult enough to remember all the events you _yourself_ created, let alone be aware of all the events other people have created).
 
@@ -72,7 +68,7 @@ Having a global namespace for all events and properties significantly reduces du
    For example: Avo won't allow you create a `signupStart` event if `SIGNUP_START` already exists:
 
    <img
-     src={require('../../images/best-practices/naming-conventions/already_exists.png')}
+     src={'../../images/best-practices/naming-conventions/already_exists.png'}
      alt="Property already exists"
      width="75%"
    />
@@ -82,7 +78,7 @@ Having a global namespace for all events and properties significantly reduces du
    For example: if the convention is `snake_case` and you type in `gameStarted` in the event creation modal, Avo will suggest the right casing to you before you create the event:
 
    <img
-     src={require('../../images/best-practices/naming-conventions/consistant_casing.png')}
+     src={'../../images/best-practices/naming-conventions/consistant_casing.png'}
      alt="Consistent casing suggestion"
      width="75%"
    />
@@ -92,7 +88,7 @@ Having a global namespace for all events and properties significantly reduces du
    For example: if you try to create `UPDATE_EMAIL` while `EMAIL_UPDATE` already exists.
 
    <img
-     src={require('../../images/best-practices/naming-conventions/similar_to.png')}
+     src={'../../images/best-practices/naming-conventions/similar_to.png'}
      alt="Similar to existing event"
      width="75%"
    />
@@ -126,7 +122,7 @@ The typical Avo customer has years of tracking in place when they start using Av
    So for example if you upload your current tracking plan in Avo, the issue reporter will highlight naming issues:
 
    <img
-     src={require('../../images/best-practices/naming-conventions/tracking_plan_validation.png')}
+     src={'../../images/best-practices/naming-conventions/tracking_plan_validation.png'}
      alt="Similar to existing event"
      width="75%"
    />

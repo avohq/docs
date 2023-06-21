@@ -1,9 +1,4 @@
----
-layout: 'guide'
-title: 'Defining descriptive events and properties'
----
-
-import Link from '../../components/Link';
+# Defining descriptive events and properties
 
 When designing good event structures it's important to create a common understanding of meaning between the data designer, the data consumer and the instrumenting developers. This is for example to avoid duplicates of events and properties and an event being sent at different times between platforms.
 
@@ -22,13 +17,16 @@ The **Avo Naming Assistant** helps you to avoid duplicates and be consistent in 
 selecting or changing event and property names. Note that some analytics tools
 require specific casing for events or properties.
 
+<br />
 <center>
   <video
     loop
     muted
     autoPlay
     controls
-    src={require('../../images/best-practices/descriptive-events-and-properties/naming-assistant.mp4')}
+    src={
+      '/images/best-practices/descriptive-events-and-properties/naming-assistant.mp4'
+    }
     width="75%"
     alt="Metric example"
   />
@@ -88,7 +86,7 @@ Events and properties with a descriptive name get you far to create a common und
 
 ### Events
 
-For <Link passHref href="/workspace/tracking-plan/events#a-nameevent-defintiona-event-definition"><a>events</a></Link> we recommend adding a description to an event with all the information required for a developers to trigger an event by the same user action for all code paths, platforms and products.
+For [events](/workspace/tracking-plan/events#a-nameevent-defintiona-event-definition) we recommend adding a description to an event with all the information required for a developers to trigger an event by the same user action for all code paths, platforms and products.
 
 For example for the "Purchase completed" a good description would be: _Event sent when the client receives a successful response when a user has completed a purchase._
 
@@ -102,12 +100,7 @@ For example for a "Search Result Position" property on a "Search Result Clicked"
 
 ## <a name="property-constraints"></a> Property constraints
 
-<Link
-  passHref
-  href="/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints"
->
-  <a>Property constraints</a>
-</Link> are very useful to ensure that the correct spelling or allowed numerical
+[Property constraints](/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints) are very useful to ensure that the correct spelling or allowed numerical
 values are sent with the event.
 
 We recommend using property constraints whenever possible, specifically in cases when:

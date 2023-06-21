@@ -1,9 +1,4 @@
----
-layout: 'guide'
-title: 'Authentication Methods'
----
-
-import Link from '../../components/Link';
+# Authentication Methods
 
 You can configure your workspace with three different authentication methods:
 
@@ -13,10 +8,11 @@ You can configure your workspace with three different authentication methods:
 
 You can configure the authentication method in the workspace settings modal. Note that for setting up SSO you will need to reach out to us for configuration details.
 
+<br />
 <center>
   <img
     width="400"
-    src={require('../../images/workspace/authentication-methods.png')}
+    src={'/images/workspace/authentication-methods.png'}
     alt="Authentication methods in workspace settings"
   />
 </center>
@@ -33,7 +29,7 @@ Allows anyone with your company domain Google account to log in to your workspac
 
 SAML SSO is a standard for authenticating users with a SAML service provider. This method allows you to set up SAML SSO for your Avo workspace, and connect it to your own SAML service provider. Example of SAML service providers are Okta, Active Directory, JumpCloud and Google.
 
-To enable SAML SSO for your Avo workspace, <Link passHref href="/help/troubleshooting"><a>reach out</a></Link> to us.
+To enable SAML SSO for your Avo workspace, [reach out](/help/troubleshooting) to us.
 
 > Currently Avo supports service provider–initiated sign-on, e. g. when the users type their SSO email on Avo and then they are redirected to the company's SSO page. Avo currently does not support IdP-initiated sign-on.
 
