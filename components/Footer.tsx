@@ -10,7 +10,7 @@ const Footer: FunctionComponent = () => {
       <div className={styles.col}>
         <Link href="/help/troubleshooting" passHref>
           <div className={classNames(styles.iconText, styles.link)}>
-            <img alt="Rescue ring" src={require('../images/svg/faq.svg')}></img>
+            <img alt="Rescue ring" src='../images/svg/faq.svg'></img>
             <div>Support</div>
           </div>
         </Link>
