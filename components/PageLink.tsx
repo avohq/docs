@@ -26,7 +26,7 @@ const PageLink: FunctionComponent<Props> = ({
     <div className={styles.root}>
       {image && (
         <div className={styles.image}>
-          <Image src={image} alt="" width="80" height="80" />
+          <Image src={image} alt="" width={80} height={80} />
         </div>
       )}
       <div className={styles.text}>
