@@ -1,20 +1,18 @@
----
-layout: 'guide'
-title: 'Branch Audits'
-#abstract: 'Learn how to use branch audits to identify and resolve issues introduced on branches.'
----
+import { Callout } from 'nextra/components'
 
-import Link from '../../components/Link';
+# Branch Audits
 
-> **Note:** Branch Audit is a feature for the _Team_ and _Enterprise_ plans
+_Learn how to use branch audits to identify and resolve issues introduced on branches._
+
+<Callout>Branch Audit is a feature for the _Team_ and _Enterprise_ plans</Callout>
 
 The branch audit reviews the changes you have made on your branch and flags issues which are introduced by your changes, such as unexpected naming or inconsistent types — helping you keep your tracking plan clean and consistent.
 
-When <Link passHref href="/workspace/branches#review-branch-changes"><a>reviewing changes on a branch</a></Link>, you can see issues directly on your tracking plan items and in the instance of inconsistent casing you can automatically fix the issue by the click of a button.
+When [reviewing changes on a branch](/workspace/branches#review-branch-changes), you can see issues directly on your tracking plan items and in the instance of inconsistent casing you can automatically fix the issue by the click of a button.
 
 <center>
   <img
-    src={require('../../images/audit/inline-audit.png')}
+    src={'../../images/audit/inline-audit.png'}
     width="75%"
     alt="Example of an inline audit in the diff screen showing changes to an event called add_to_cart. The audit suggests there are two issues: the event name is not consistent with the naming convention and it doesn't have a description."
   />
@@ -26,7 +24,7 @@ At the bottom of the diff screen you will have a summary of the issues introduce
 
 <center>
   <img
-    src={require('../../images/audit/branch-audit-summary.png')}
+    src={'../../images/audit/branch-audit-summary.png'}
     width="75%"
     alt="Example of a branch audit summary showing several issues."
   />
@@ -38,7 +36,7 @@ If there is a problem with casing in multiple instances, you can fix all of them
 
 <center>
   <img
-    src={require('../../images/audit/auto-correct.png')}
+    src={'../../images/audit/auto-correct.png'}
     width="75%"
     alt="Example of multiple issues being fixed at once when there is inconsistency in the casing of names of items."
   />
@@ -52,18 +50,16 @@ For Enterprise plans you have the possibility of enforcing that there are no iss
 
 <center>
   <img
-    src={require('../../images/audit/enforce-branch-audit.png')}
+    src={'../../images/audit/enforce-branch-audit.png'}
     width="75%"
     alt="A picture showing the setting for enforcing branch audits to pass before merging being enabled."
   />
 </center>
-<br />
-<br />
 
-To learn more about the audit rules, see <Link passHref href="/audit/rules"><a>Avo's tracking plan audit rules</a></Link>.
+To learn more about the audit rules, see [Avo's tracking plan audit rules](/audit/rules).
 
-> **Note:** The branch audit only audits the _branch_. If you want to identify issues in the tracking plan check out the <Link passHref href="/audit/overview"><a>Tracking Plan Audit</a></Link>. If you want to identify issues in your current tracking implementation and data streams, check out <Link passHref href="/workspace/inspector"><a>Tracking Observability</a></Link>.
+<Callout>The branch audit only audits the _branch_. If you want to identify issues in the tracking plan check out the [Tracking Plan Audit](/audit/overview). If you want to identify issues in your current tracking implementation and data streams, check out [Tracking Observability](/workspace/inspector).</Callout>
 
 ## What's next?
 
-Follow the <Link passHref href="/workspace/branches"><a>quickstart guide</a></Link> to start a branched workflow in Avo and see how you can get a review of your changes on the branch in 5 minutes.
+Follow the [quickstart guide](/workspace/branches) to start a branched workflow in Avo and see how you can get a review of your changes on the branch in 5 minutes.

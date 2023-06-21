@@ -1,22 +1,18 @@
----
-layout: 'guide'
-title: 'Avo tracking plan audit rules'
-abstract: 'Learn how to read, fix and configure your tracking plan audit'
----
+import { Callout } from 'nextra/components'
 
-import Link from '../../components/Link';
+# Avo tracking plan audit rules
 
-# Audit rules
+_Learn how to read, fix and configure your tracking plan audit_
 
-Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see <Link passHref href="/audit/quickstart"><a>Quickstart: Get your first audit</a></Link>.
+## Audit rules
+
+Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see [Quickstart: Get your first audit](/audit/quickstart).
 
 You will recognize the Tracking Plan Audit by the yellow exclamation point next to the Tracking Plan item in the sidebar. It’s meant to help teams follow their naming convention and surface issues like when a type is missing from a property.
 
 Below is an overview of the reported issues and how you can resolve them.
 
-<center>
-  <img width="543" src={require('../../images/audit/audit.png')} />
-</center>
+![Avo tracking plan audit UI](/images/audit/audit.png)
 
 ## Event Rules
 
@@ -29,11 +25,12 @@ Checks if any two event names in the tracking plan conflict with each other. For
 - "Checkout Started", "checkout started", "checkout-started"
 - "Checkout Completed", "checkout completed", "checkout-completed"
 
-##### How to resolve
+#### How to resolve
 
 Pick the casing that matches the one that is dominant one in your workspace and fix the implementation of those that don't fit your standards. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
-> **Best practice:** Have all event names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.
+
+<Callout>**Best practice:** Have all event names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.</Callout>
 
 ### Casing of event names is consistent
 
@@ -42,9 +39,11 @@ Checks if the casing of event names in the tracking plan is consistent. For even
 - "App Opened", "checkoutStarted", "checkout_completed"
 - "Add to Cart", "addToCart", "add-to-cart"
 
-> **Best practice:** Have all event names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the event name they are looking for, but also the casing of the event name.
 
-##### How to resolve
+
+<Callout>**Best practice:** Have all event names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the event name they are looking for, but also the casing of the event name.</Callout>
+
+#### How to resolve
 
 Fix the names and implementation of the events that don't fit your standards. Note that this will only be fixed for the data going forward, not historical data. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
@@ -52,7 +51,7 @@ Fix the names and implementation of the events that don't fit your standards. No
 
 Checks if all events in the tracking plan have a description.
 
-> **Best practice:** A well defined event description contains information such as when the event should be sent and why it's being tracked.
+<Callout>**Best practice:** A well defined event description contains information such as when the event should be sent and why it's being tracked.</Callout>
 
 ## Property Rules
 
@@ -63,7 +62,7 @@ Checks if there are more than one definition of a property with the same name. T
 - "User Id", type: string
 - "User Id", type: int
 
-##### How to resolve
+#### How to resolve
 
 Aligning the descriptions, types and property constraints of the conflicting properties and fix the implementation of those that don't fit your standards
 
@@ -74,11 +73,11 @@ Checks if any two property names in the tracking plan conflict with each other. 
 - "User ID", "User Id", "user_id", "user-id"
 - "email_adddress", "Email Address", "email_address", "Email-address"
 
-##### How to resolve
+#### How to resolve
 
 Pick the casing that matches the one that is dominant one in your workspace and fix the implementation of those that don't fit your standards. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
-> **Best practice:** Have all property names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.
+<Callout>**Best practice:** Have all property names unique to avoid confusion and conflicts in downstream tools, such as in data warehouses and dashboards.</Callout>
 
 ### Casing of property names is consistent
 
@@ -87,34 +86,31 @@ Checks if the casing of property names in the tracking plan is consistent. For p
 - "User Id", "userId", "USER_ID"
 - "Product Name", "product_name", "product-name"
 
-##### How to resolve
+#### How to resolve
 
 Fix the names and implementation of the properties that don't fit your standards. Note that this will only be fixed for the data going forward, not historical data. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
 
-> **Best practice:** Have all property names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the property name they are looking for, but also the casing of the property name.
+<Callout>**Best practice:** Have all property names defined with consistent casing to increases the usability of the data. If the casing is not consistent the person using the data would not only need to know the property name they are looking for, but also the casing of the property name.</Callout>
 
 ### All properties have defined types
 
-Checks if all properties in the tracking plan have a defined type. Every property should at least have their base type defined, one of: string, int, float, boolean or <Link passHref href="/data-design/object-properties"><a>object</a></Link>. In Avo you can in addition to the base types define a list of possible values for string properties, and min and max values for numeric properties.
+Checks if all properties in the tracking plan have a defined type. Every property should at least have their base type defined, one of: string, int, float, boolean or [object](/data-design/object-properties). In Avo you can in addition to the base types define a list of possible values for string properties, and min and max values for numeric properties.
 
-##### How to resolve
+#### How to resolve
 
 Assign the intended type for the property and make sure that the tracking implementation matches the assigned type.
 
-> **Best practice:** Have well defined types for all properties to increase the quality of the tracking implementation. Having well define types is the prerequisite for having your tracking consistent across all products and platforms.
+<Callout>**Best practice:** Have well defined types for all properties to increase the quality of the tracking implementation. Having well define types is the prerequisite for having your tracking consistent across all products and platforms.</Callout>
 
 ### All properties have description
 
 Checks if all properties in the tracking plan have a description.
 
-##### How to resolve
+#### How to resolve
 
 Add descriptions to all properties to increase the quality of your tracking plan.
 
-> **Best practice:** A well defined property description contains detailed description of what the property is describing, and how it's value should be fetched.
-
-<br />
-<br />
+<Callout>**Best practice:** A well defined property description contains detailed description of what the property is describing, and how it's value should be fetched.</Callout>
 
 \* These rules can only fail after importing an existing tracking plan to Avo. When editing your Tracking Plan in Avo, Avo prevents you from introducing conflicting events and properties.
 
@@ -122,8 +118,4 @@ Add descriptions to all properties to increase the quality of your tracking plan
 
 For new workspaces all rules are enabled in their default settings. Workspaces on the Team and Enterprise plans have the Tracking Plan Audit Config enabled which allows members that are Editors or Admins to change the audit behavior. All rules can be toggled on or off and the preferred casing can be configured separately for events and properties. Additionally workspaces on the Enterprise plan have the ability to force the preferred casing when events names are set, blocking the creation and editing of events and/or properties with invalid casing.
 
-<img
-  with="750"
-  src={require('../../images/audit/tracking-plan-audit-config.png')}
-  alt="Tracking Plan Audit Configuration"
-/>
+![Tracking Plan Audit Configuration](/images/audit/tracking-plan-audit-config.png)
