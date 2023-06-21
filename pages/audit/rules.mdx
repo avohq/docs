@@ -1,21 +1,17 @@
----
-layout: 'guide'
-title: 'Avo tracking plan audit rules'
-abstract: 'Learn how to read, fix and configure your tracking plan audit'
----
+# Avo tracking plan audit rules
 
-import Link from '../../components/Link';
+_Learn how to read, fix and configure your tracking plan audit_
 
-# Audit rules
+## Audit rules
 
-Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see <Link passHref href="/audit/quickstart"><a>Quickstart: Get your first audit</a></Link>.
+Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see [Quickstart: Get your first audit](/audit/quickstart).
 
 You will recognize the Tracking Plan Audit by the yellow exclamation point next to the Tracking Plan item in the sidebar. It’s meant to help teams follow their naming convention and surface issues like when a type is missing from a property.
 
 Below is an overview of the reported issues and how you can resolve them.
 
 <center>
-  <img width="543" src={require('../../images/audit/audit.png')} />
+  <img width="543" src={'../../images/audit/audit.png'} />
 </center>
 
 ## Event Rules
@@ -95,7 +91,7 @@ Fix the names and implementation of the properties that don't fit your standards
 
 ### All properties have defined types
 
-Checks if all properties in the tracking plan have a defined type. Every property should at least have their base type defined, one of: string, int, float, boolean or <Link passHref href="/data-design/object-properties"><a>object</a></Link>. In Avo you can in addition to the base types define a list of possible values for string properties, and min and max values for numeric properties.
+Checks if all properties in the tracking plan have a defined type. Every property should at least have their base type defined, one of: string, int, float, boolean or [object](/data-design/object-properties). In Avo you can in addition to the base types define a list of possible values for string properties, and min and max values for numeric properties.
 
 ##### How to resolve
 
@@ -113,9 +109,6 @@ Add descriptions to all properties to increase the quality of your tracking plan
 
 > **Best practice:** A well defined property description contains detailed description of what the property is describing, and how it's value should be fetched.
 
-<br />
-<br />
-
 \* These rules can only fail after importing an existing tracking plan to Avo. When editing your Tracking Plan in Avo, Avo prevents you from introducing conflicting events and properties.
 
 # Audit Rule Configuration
@@ -124,6 +117,6 @@ For new workspaces all rules are enabled in their default settings. Workspaces o
 
 <img
   with="750"
-  src={require('../../images/audit/tracking-plan-audit-config.png')}
+  src={'../../images/audit/tracking-plan-audit-config.png'}
   alt="Tracking Plan Audit Configuration"
 />
