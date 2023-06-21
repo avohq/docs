@@ -74,7 +74,7 @@ const LandingPage: FunctionComponent = () => {
           <img
             className={styles.image}
             width="100%"
-            src={require('../images/avo-workflow.png')}
+            src={require('../images/avo-workflow.png'}
             alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
           />
         </Zoom>
