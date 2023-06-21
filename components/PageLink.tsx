@@ -37,7 +37,8 @@ const PageLink: FunctionComponent<Props> = ({
             <span style={{ textDecoration: 'none', color: 'grey' }}>
               {'Read '}
             </span>
-            <Icon name="chevron-right" relativeSize="sm" color="inherit" />
+            {/* FIXME: Fix Fontawesome icons here
+            <Icon name="chevron-right" relativeSize="sm" color="inherit" /> */}
           </div>
         )}
       </div>

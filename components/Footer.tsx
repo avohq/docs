@@ -1,6 +1,8 @@
 import styles from './Footer.module.scss';
 import { FunctionComponent } from 'react';
 import Link from '../components/Link';
+import Image from 'next/image';
+import FaqSvg from '../public/images/svg/faq.svg';
 
 import classNames from 'classnames';
 
@@ -10,7 +12,12 @@ const Footer: FunctionComponent = () => {
       <div className={styles.col}>
         <Link href="/help/troubleshooting" passHref>
           <div className={classNames(styles.iconText, styles.link)}>
-            <img alt="Rescue ring" src='../images/svg/faq.svg'></img>
+            <Image
+              alt="Rescue ring"
+              src={FaqSvg}
+              width={20}
+              height={20}
+            ></Image>
             <div>Support</div>
           </div>
         </Link>
