@@ -1,9 +1,4 @@
----
-layout: 'guide'
-title: 'Avo Inspector Web SDK'
----
-
-import Link from '../../../../components/Link';
+# Avo Inspector Web SDK
 
 ## <a name="quick-start"></a>Quick Start Guide
 
@@ -22,7 +17,7 @@ $ npm install avo-inspector
 ##### <a name="import"></a>Import
 
 ```ts
-import * as Inspector from "avo-inspector";
+import * as Inspector from 'avo-inspector';
 ```
 
 ##### <a name="initialization"></a>Initialization
@@ -59,15 +54,42 @@ Make sure to update `__API_KEY__`, `__ENV__`, `__VERSION__` and `__APP_NAME__` b
 
 ```html
 <script>
-!function(){var t=window.inspector=window.inspector||[];t.methods=["trackSchemaFromEvent","trackSchema","setBatchSize","setBatchFlushSeconds"],t.factory=function(e){return function(){var r=Array.prototype.slice.call(arguments);return r.unshift(e),t.push(r),t}};for(var e=0;e<t.methods.length;e++){var r=t.methods[e];t[r]=t.factory(r)}t.load=function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://cdn.avo.app/inspector/inspector-v1.min.js";var e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(t,e)},t._scriptVersion=1}();
+  !(function () {
+    var t = (window.inspector = window.inspector || []);
+    (t.methods = [
+      'trackSchemaFromEvent',
+      'trackSchema',
+      'setBatchSize',
+      'setBatchFlushSeconds',
+    ]),
+      (t.factory = function (e) {
+        return function () {
+          var r = Array.prototype.slice.call(arguments);
+          return r.unshift(e), t.push(r), t;
+        };
+      });
+    for (var e = 0; e < t.methods.length; e++) {
+      var r = t.methods[e];
+      t[r] = t.factory(r);
+    }
+    (t.load = function () {
+      var t = document.createElement('script');
+      (t.type = 'text/javascript'),
+        (t.async = !0),
+        (t.src = 'https://cdn.avo.app/inspector/inspector-v1.min.js');
+      var e = document.getElementsByTagName('script')[0];
+      e.parentNode.insertBefore(t, e);
+    }),
+      (t._scriptVersion = 1);
+  })();
 
-// Update the following variables to match your project.
-inspector.__API_KEY__ = "YOUR-API-KEY";
-inspector.__ENV__ = "dev"; // or "prod"
-inspector.__VERSION__ = "YOUR-APP-VERSION";
-// inspector.__APP_NAME__ = "YOUR-APP-NAME"; // Optional 
+  // Update the following variables to match your project.
+  inspector.__API_KEY__ = 'YOUR-API-KEY';
+  inspector.__ENV__ = 'dev'; // or "prod"
+  inspector.__VERSION__ = 'YOUR-APP-VERSION';
+  // inspector.__APP_NAME__ = "YOUR-APP-NAME"; // Optional
 
-inspector.load();
+  inspector.load();
 </script>
 ```
 
@@ -87,7 +109,7 @@ trackSchemaFromEvent(eventName: string, eventProperties: {
 }): void;
 ```
 
-Extracts the event schema from event properties represented by the second parameter ({ [propName: string]: any; }) and sends the schema to **Avo** for analysis.
+Extracts the event schema from event properties represented by the second parameter `({ [propName: string]: any; })` and sends the schema to **Avo** for analysis.
 
 > #### Parameters:
 >
@@ -141,7 +163,7 @@ It's handy to extract the schema from your event properties with `extractSchema`
 > ];
 > ```
 >
-> See supported schema types <Link passHref href="/inspector/sdk#supported-types"><a>here</a></Link>.
+> See supported schema types [here](/inspector/sdk#supported-types).
 
 ## <a name="other-methods"></a>Other methods
 
