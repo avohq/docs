@@ -3,6 +3,7 @@ import { FunctionComponent } from 'react';
 import styles from './PageLink.module.scss';
 import Icon from './Icon';
 import Link from '../components/Link';
+import Image from 'next/image'
 
 export class CallToAction {
   constructor(readonly path: string) {}
@@ -25,7 +26,7 @@ const PageLink: FunctionComponent<Props> = ({
     <div className={styles.root}>
       {image && (
         <div className={styles.image}>
-          <img src={image} />
+          <Image src={image} alt="" width={80} height={80} />
         </div>
       )}
       <div className={styles.text}>
@@ -36,7 +37,6 @@ const PageLink: FunctionComponent<Props> = ({
             <span style={{ textDecoration: 'none', color: 'grey' }}>
               {'Read '}
             </span>
-            <Icon name="chevron-right" relativeSize="sm" color="inherit" />
           </div>
         )}
       </div>
