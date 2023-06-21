@@ -2,7 +2,6 @@ import { FunctionComponent } from 'react';
 
 import styles from '../index.module.scss';
 import PageLink, { CallToAction } from '../../components/PageLink';
-import AnalyticsManagerSvg from '../../public/images/svg/analyticsmanager.svg';
 
 # Avo Workflow
 
@@ -40,7 +39,7 @@ For your analytics release cycle (and Avo branches), we recommend following the 
 <br />
 <div className={styles.row}>
   <PageLink
-    image={AnalyticsManagerSvg}
+    image='/images/svg/analyticsmanager.svg'
     title="1. Plan analytics update in Avo branch"
     description="Learn how to plan an analytic update in Avo branch"
     callToAction={new CallToAction('/workflow/plan')}

@@ -37,8 +37,6 @@ const PageLink: FunctionComponent<Props> = ({
             <span style={{ textDecoration: 'none', color: 'grey' }}>
               {'Read '}
             </span>
-            {/* FIXME: Fix Fontawesome icons here, causing hydration error
-            <Icon name="chevron-right" relativeSize="sm" color="inherit" /> */}
           </div>
         )}
       </div>
