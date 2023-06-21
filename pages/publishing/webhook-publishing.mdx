@@ -1,17 +1,8 @@
----
-layout: 'guide'
-title: 'Webhook'
-# abstract: 'Publishing your tracking plan to a Webhook'
----
+# Webhook
 
-import Link from '../../components/Link';
+_Publishing your tracking plan to a Webhook_
 
-
-
-<img
-  src={'/images/publishing_webhook.svg')}
-  alt="Webhook"
-/>
+![Webhook](/images/publishing_webhook.svg)
 
 ## Introduction
 
@@ -41,42 +32,42 @@ You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/unders
 | :------------- | :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | eventSchemas   | array(Snowplow Event Schema)   | Schema for every event in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format            |
 | contextSchemas | array(Snowplow Context Schema) | Schema for every Snowplow context in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
-| context        | { publishInfo: PublishInfo }   | Metadata about the webhook call                                                                                                                                                                                                      |
+| context        | \{ publishInfo: PublishInfo }  | Metadata about the webhook call                                                                                                                                                                                                      |
 
 ### Avo Json
 
 Json representation of the state of your entire Avo workspace. Currently behind a feature flag. Contact us to enable.
 
-| Attribute | Type                         | Description                                      |
-| :-------- | :--------------------------- | :----------------------------------------------- |
-| model     | Avo Model                    | Json representation of your entire Avo workspace |
-| context   | { publishInfo: PublishInfo } | Metadata about the webhook call                  |
+| Attribute | Type                          | Description                                      |
+| :-------- | :---------------------------- | :----------------------------------------------- |
+| model     | Avo Model                     | Json representation of your entire Avo workspace |
+| context   | \{ publishInfo: PublishInfo } | Metadata about the webhook call                  |
 
 ### Json Schema (default)
 
-Json representation of your tracking plan, following the [Json Schema](https://json-schema.org/) standard. Example payload <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>can be found here</a></Link>
+Json representation of your tracking plan, following the [Json Schema](https://json-schema.org/) standard. Example payload [can be found here](/implementation/avo-tracking-plan-webhook)
 
-| Attribute    | Type                               | Description                                                                     |
-| :----------- | :--------------------------------- | :------------------------------------------------------------------------------ |
-| name         | string                             | The name of your Avo workspace                                                  |
-| events       | array(Event)                       | Array of Tracking Plan events                                                   |
-| metrics      | { metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids           |
-| sources      | { sourceId: Source ... }           | Objet where each Tracking Plan source is a field, keys are source ids           |
-| destinations | { destinationId: Destination ... } | Objet where each Tracking Plan destination is a field, keys are destination ids |
-| categories   | { categoryId: Category ... }       | Objet where each Tracking Plan metric is a field, keys are category ids         |
-| context      | { publishInfo: PublishInfo }       | Metadata about the webhook call                                                 |
+| Attribute    | Type                                | Description                                                                     |
+| :----------- | :---------------------------------- | :------------------------------------------------------------------------------ |
+| name         | string                              | The name of your Avo workspace                                                  |
+| events       | array(Event)                        | Array of Tracking Plan events                                                   |
+| metrics      | \{ metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids           |
+| sources      | \{ sourceId: Source ... }           | Objet where each Tracking Plan source is a field, keys are source ids           |
+| destinations | \{ destinationId: Destination ... } | Objet where each Tracking Plan destination is a field, keys are destination ids |
+| categories   | \{ categoryId: Category ... }       | Objet where each Tracking Plan metric is a field, keys are category ids         |
+| context      | \{ publishInfo: PublishInfo }       | Metadata about the webhook call                                                 |
 
 ##### Event Model
 
-| Attribute   | Type                                                  | Description                                     |
-| :---------- | :---------------------------------------------------- | :---------------------------------------------- |
-| name        | string                                                | Event name                                      |
-| description | string                                                | Event description and the list of triggers      |
-| rules       | Rules                                                 | Event JSON rules                                |
-| tags        | array(string)                                         | Array of all tags attached to event             |
-| categories  | array(string)                                         | Array of category ids this event is attached to |
-| triggers    | array({id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event    |
-| sources     | array({id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
+| Attribute   | Type                                                   | Description                                     |
+| :---------- | :----------------------------------------------------- | :---------------------------------------------- |
+| name        | string                                                 | Event name                                      |
+| description | string                                                 | Event description and the list of triggers      |
+| rules       | Rules                                                  | Event JSON rules                                |
+| tags        | array(string)                                          | Array of all tags attached to event             |
+| categories  | array(string)                                          | Array of category ids this event is attached to |
+| triggers    | array(\{id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event    |
+| sources     | array(\{id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
 
 ##### Rules Model
 
@@ -172,11 +163,11 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ##### PublishInfo Model
 
-| Attribute       | Type             | Description                                                                               |
-| :-------------- | :--------------- | :---------------------------------------------------------------------------------------- |
-| branchId        | id               | Branch id                                                                                 |
-| branchName      | string           | Branch name                                                                               |
-| integrationId   | string           | Id of the publish integration (consistently the same for this integration)                |
-| integrationName | string           | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName' |
-| publishDate     | Date string      | Timestamp when the webhook was triggered                                                  |
-| publishMethod   | { "type": type } | Description of the publish method, type can be "Manual" and "BranchMerge"                 |
+| Attribute       | Type              | Description                                                                                |
+| :-------------- | :---------------- | :----------------------------------------------------------------------------------------- |
+| branchId        | id                | Branch id                                                                                  |
+| branchName      | string            | Branch name                                                                                |
+| integrationId   | string            | Id of the publish integration (consistently the same for this integration)                 |
+| integrationName | string            | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName') |
+| publishDate     | Date string       | Timestamp when the webhook was triggered                                                   |
+| publishMethod   | \{ "type": type } | Description of the publish method, type can be "Manual" and "BranchMerge"                  |

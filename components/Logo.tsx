@@ -12,7 +12,7 @@ const Logo: FunctionComponent<LogoProps> = () => (
     <a className={styles.container}>
       <img
         alt="Avo logo"
-        src={require('../images/logo.svg')}
+        src={require('../images/logo.svg'}
         width={60}
         style={{ cursor: 'pointer' }}
       />

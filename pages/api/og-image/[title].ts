@@ -46,7 +46,7 @@ const generateHtml = (title: string): string => `
 </head>
 <body>
   <div class="content">
-    <img width=300 src="${require('../../../images/logo.svg')}" />
+    <img width=300 src="${require('../../../images/logo.svg'}" />
     <div class="title">${marked(title)}</div>
   </div>
 </body>

@@ -1,25 +1,15 @@
----
-layout: 'guide'
-title: 'Amplitude Govern (API deprecated by Amplitude)'
-abstract: 'Publishing your tracking plan to Amplitude Govern'
----
+import {Callout} from 'nextra/components'
 
-import Link from '../../components/Link';
+# Amplitude Govern
 
-<p>
+*Publishing your tracking plan to Amplitude Govern*
 
-<img
-  src={'/images/publishing_govern.svg')}
-  alt="Amplitude"
-/>
-
-</p>
+![Amplitude Logo](/images/publishing_govern.svg)
 
 ## Introduction
 
-> 💡 Amplitude has recently closed it's public API making us unable to offer this option to our users. We will make it available as soon as they offer an API to update Govern.
 
-The integration to [Amplitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the integration screen or download a CSV file on the Amplitude Govern format, which you can manually import into Govern. The events to be published can be <Link passHref href="/workspace/tracking-plan/publishing#filtering-events-for-publishing"><a>filtered by Sources, Destinations and Tags</a></Link>.
+The integration to [Amplitude Govern](https://amplitude.com/govern) allows for your Tracking Plan to be published into Amplitude Govern whenever a branch has been merged. You can also manually trigger a publish by clicking the "Publish to Govern" button on the integration screen or download a CSV file on the Amplitude Govern format, which you can manually import into Govern. The events to be published can be [filtered by Sources, Destinations and Tags](/workspace/tracking-plan/publishing#filtering-events-for-publishing).
 
 ## Configure the Govern integration
 
@@ -42,19 +32,19 @@ Here's how events, properties and categories are mapped from Avo to Govern:
 
 #### Event
 
-- **Event type**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for an Amplitude destination, the name defined by the name mapping is used here.
+- **Event type**: The event name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the event for an Amplitude destination, the name defined by the name mapping is used here.
 - **Category**: Amplitude Govern only supports one category per event, so the first category attached to the event in Avo is used here
 - **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 
 #### Event Property
 
-- **Event property**: The property name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the property for an Amplitude destination, the name defined by the name mapping is used here.
-- **Event type**: The name of the event this property is attached to. If the property is attached to multiple events in Avo, multiple properties will be created in Govern because Govern does not support reusing properties across multiple events with a <Link passHref href="/data-design/global-namespacesharing"><a>global namespace</a></Link>.
+- **Event property**: The property name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the property for an Amplitude destination, the name defined by the name mapping is used here.
+- **Event type**: The name of the event this property is attached to. If the property is attached to multiple events in Avo, multiple properties will be created in Govern because Govern does not support reusing properties across multiple events with a [global namespace](/data-design/global-namespacesharing).
 - **Type**: The property type in Avo mapped to one of Govern's supported property types: `string`, `number`, `boolean`, `enum` or `any`
 - **Is array**: `true` if the "list" checkbox is checked on the property in Avo
 - **Is required**: `true` if the property is marked as "Always sent" in Avo
 - **Description**: The property description as defined in Avo
-- **Enum values**: If the property is of type string, and the <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-enumsa-enumeration-of-allowed-string-values"><a>"property matches..." rule</a></Link> is applied in Avo, the allowed values are provided here
+- **Enum values**: If the property is of type string, and the ["property matches..." rule](/workspace/tracking-plan/properties#a-nameproperty-enumsa-enumeration-of-allowed-string-values) is applied in Avo, the allowed values are provided here
 
 #### Category
 

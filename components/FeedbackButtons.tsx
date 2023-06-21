@@ -41,7 +41,7 @@ const FeedbackButtons: FunctionComponent = () => {
         <img
           alt="Thumbs up"
           width={20}
-          src={require('../images/svg/thumbsup.svg')}
+          src={require('../images/svg/thumbsup.svg'}
         />
       </div>
       <div
@@ -54,7 +54,7 @@ const FeedbackButtons: FunctionComponent = () => {
         <img
           alt="Thumbs down"
           width={20}
-          src={require('../images/svg/thumbsdown.svg')}
+          src={require('../images/svg/thumbsdown.svg'}
         />
       </div>
     </div>
