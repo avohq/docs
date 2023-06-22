@@ -12,7 +12,7 @@ const SignIn: FunctionComponent = () => {
         href="https://avo.app/onboarding"
         onClick={() =>
           Avo.signUpStarted({
-            siteSection: Avo.SiteSection.HEADER,
+            siteSection: Avo.SiteSection.FOOTER,
             emailInput: undefined,
             path: path,
           })

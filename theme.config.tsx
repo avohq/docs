@@ -5,7 +5,7 @@ import { DocsThemeConfig } from 'nextra-theme-docs';
 
 const config: DocsThemeConfig = {
   logo: (
-    <Image alt="Avo logo" src={'/docs/images/logo.svg'} height={21} width={60} />
+    <Image alt="Avo logo" src="/docs/images/logo.svg" height={21} width={60} />
   ),
   project: {
     link: 'https://github.com/avohq/docs',
@@ -14,13 +14,15 @@ const config: DocsThemeConfig = {
   footer: {
     text: (
       <Link href="/help/troubleshooting">
-        <Image
-          alt="Rescue ring"
-          src="/docs/images/svg/faq.svg"
-          width={20}
-          height={20}
-        />{' '}
-        Support
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Image
+            alt="Rescue ring"
+            src="/docs/images/svg/faq.svg"
+            width={20}
+            height={20}
+          />
+          Support
+        </div>
       </Link>
     ),
   },
