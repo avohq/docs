@@ -11,10 +11,6 @@ import '../styles/global.css';
 import useAvoPath from '../util/useAvoPath';
 import Head from 'next/head';
 
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-config.autoAddCss = false;
-
 const getAvoEnv = () => {
   switch (process.env.NEXT_PUBLIC_AVO_ENV) {
     case 'production':

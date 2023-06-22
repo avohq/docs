@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { Image } from 'next/image';
+import Image from 'next/image';
 import Link from '../components/Link';
 
 import styles from './Logo.module.scss';
