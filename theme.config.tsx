@@ -1,6 +1,6 @@
 import React from 'react';
-import Footer from './components/Footer';
 import Image from 'next/image';
+import Link from 'next/link';
 import { DocsThemeConfig } from 'nextra-theme-docs';
 
 const config: DocsThemeConfig = {
@@ -12,7 +12,17 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/avohq/docs/tree/main',
   footer: {
-    text: <Footer />,
+    text: (
+      <Link href="/help/troubleshooting">
+        <Image
+          alt="Rescue ring"
+          src="/images/svg/faq.svg"
+          width={20}
+          height={20}
+        />{' '}
+        Support
+      </Link>
+    ),
   },
   sidebar: {
     defaultMenuCollapseLevel: 1,

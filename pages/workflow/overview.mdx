@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
 
-import styles from '../index.module.scss';
 import PageLink from '../../components/PageLink';
 
 # Avo Workflow
@@ -36,12 +35,9 @@ For your analytics release cycle (and Avo branches), we recommend following the 
 
 ## Ready to get going?
 
-<br />
-<div className={styles.row}>
-  <PageLink
-    image='/images/svg/analyticsmanager.svg'
-    title="1. Plan analytics update in Avo branch"
-    description="Learn how to plan an analytic update in Avo branch"
-    href={('/workflow/plan')}
-  />
-</div>
+<PageLink
+  image='/images/svg/analyticsmanager.svg'
+  title="1. Plan analytics update in Avo branch"
+  description="Learn how to plan an analytic update in Avo branch"
+  href={('/workflow/plan')}
+/>

@@ -1,4 +1,3 @@
-<img src="images/docs_logo.svg">
 <img align="right" src="https://github.com/avohq/docs/workflows/Lint%20and%20Typecheck/badge.svg">
 
 <hr>

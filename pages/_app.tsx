@@ -6,8 +6,6 @@ import mixpanel from 'mixpanel-browser';
 
 import Avo, { AvoEnv, CustomDestination } from '../Avo';
 
-import '../styles/global.css';
-
 import useAvoPath from '../util/useAvoPath';
 import Head from 'next/head';
 
