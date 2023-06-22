@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 import Link from '../components/Link';
 import styles from './Navigation.module.scss';
@@ -926,7 +927,7 @@ const Group: FunctionComponent<GroupProps> = ({ item }) => {
       >
         {icon && (
           <span className={styles.iconWrapper}>
-            <img src={icon} alt="" />
+            <Image height={25} width={25} src={icon} alt="" />
           </span>
         )}
         {item.title}

@@ -9,15 +9,15 @@ const Footer: FunctionComponent = () => {
   return (
     <div className={styles.root}>
       <div className={styles.col}>
-        <Link href="/help/troubleshooting" passHref>
+        <Link href="/help/troubleshooting">
           <div className={classNames(styles.iconText, styles.link)}>
             <Image
               alt="Rescue ring"
-              src='/images/svg/faq.svg'
+              src="/images/svg/faq.svg"
               width={20}
               height={20}
-            ></Image>
-            <div>Support</div>
+            />{' '}
+            Support
           </div>
         </Link>
       </div>

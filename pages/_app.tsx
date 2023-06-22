@@ -131,7 +131,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
       utmSource: router.query.utm_source as string | undefined,
       utmTerm: router.query.utm_term as string | undefined,
     });
-  }, [path]);
+  }, [path]); // eslint-disable-line
 
   return (
       <>
