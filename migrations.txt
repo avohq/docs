@@ -1,0 +1,113 @@
+	renamed:    pages/workspace/tracking-plan/_meta.json -> pages/data-design/avo-tracking-plan/_meta.json
+	renamed:    pages/workspace/tracking-plan/events.mdx -> pages/data-design/avo-tracking-plan/events.mdx
+	renamed:    pages/workspace/tracking-plan/implementation-status.mdx -> pages/data-design/avo-tracking-plan/implementation-status.mdx
+	renamed:    pages/workspace/index.mdx -> pages/data-design/avo-tracking-plan/index.mdx
+	renamed:    pages/workspace/tracking-plan/metrics.mdx -> pages/data-design/avo-tracking-plan/metrics.mdx
+	renamed:    pages/workspace/tracking-plan/properties.mdx -> pages/data-design/avo-tracking-plan/properties.mdx
+	renamed:    pages/workspace/tracking-plan/workbench.mdx -> pages/data-design/avo-tracking-plan/workbench.mdx
+	renamed:    pages/data-design/defining-descriptive-events-and-properties.mdx -> pages/data-design/best-practices/defining-descriptive-events-and-properties.mdx
+	renamed:    pages/data-design/global-namespace.mdx -> pages/data-design/best-practices/global-namespace.mdx
+	renamed:    pages/data-design/groups.mdx -> pages/data-design/best-practices/groups.mdx
+	renamed:    pages/data-design/naming-conventions.mdx -> pages/data-design/best-practices/naming-conventions.mdx
+	new file:   pages/data-design/branches/_meta.json
+	renamed:    pages/workspace/approval-workflows.mdx -> pages/data-design/branches/approval-workflows.mdx
+	renamed:    pages/workspace/code-changes.mdx -> pages/data-design/branches/code-changes.mdx
+	renamed:    pages/workspace/branches.mdx -> pages/data-design/branches/index.mdx
+	new file:   pages/data-design/collaboration/_meta.json
+	renamed:    pages/workspace/authentication.mdx -> pages/data-design/collaboration/authentication.mdx
+	renamed:    pages/data-design/start-collaborating.mdx -> pages/data-design/collaboration/index.mdx
+	renamed:    pages/workspace/members.mdx -> pages/data-design/collaboration/members.mdx
+	new file:   pages/data-design/guides/_meta.json
+	renamed:    pages/workspace/archive-and-restore.mdx -> pages/data-design/guides/archive-and-restore.mdx
+	renamed:    pages/data-design/documenting-downstream-dependancies.mdx -> pages/data-design/guides/documenting-downstream-dependancies.mdx
+	renamed:    pages/data-design/documenting-purpose-meetings-in-avo.mdx -> pages/data-design/guides/documenting-purpose-meetings-in-avo.mdx
+	renamed:    pages/data-design/event-triggers.mdx -> pages/data-design/guides/event-triggers.mdx
+	renamed:    pages/workspace/implementation-instructions.mdx -> pages/data-design/guides/implementation-instructions.mdx
+	renamed:    pages/data-design/multiple-sources-on-avo-branches.mdx -> pages/data-design/guides/multiple-sources-on-avo-branches.mdx
+	renamed:    pages/data-design/name-mapping.mdx -> pages/data-design/guides/name-mapping.mdx
+	renamed:    pages/data-design/object-properties.mdx -> pages/data-design/guides/object-properties.mdx
+	renamed:    pages/data-design/organizing-metrics-and-events.mdx -> pages/data-design/guides/organizing-metrics-and-events.mdx
+	renamed:    pages/data-design/organizing-multi-product-workspaces.mdx -> pages/data-design/guides/organizing-multi-product-workspaces.mdx
+	renamed:    pages/data-design/pinned-properties.mdx -> pages/data-design/guides/pinned-properties.mdx
+	renamed:    pages/workspace/reset-tracking-plan.mdx -> pages/data-design/guides/reset-tracking-plan.mdx
+	renamed:    pages/workspace/tracking-plan/index.mdx -> pages/data-design/index.mdx
+	deleted:    pages/glossary.mdx
+	new file:   pages/implementation/_meta.json
+	renamed:    pages/implementation/avo-and-existing-tracking.mdx -> pages/implementation/guides/avo-and-existing-tracking.mdx
+	renamed:    pages/implementation/avo-and-git.mdx -> pages/implementation/guides/avo-and-git.mdx
+	renamed:    pages/implementation/avo-and-linters.mdx -> pages/implementation/guides/avo-and-linters.mdx
+	renamed:    pages/implementation/avo-and-unit-tests.mdx -> pages/implementation/guides/avo-and-unit-tests.mdx
+	renamed:    pages/implementation/avo-in-monorepo.mdx -> pages/implementation/guides/avo-in-monorepo.mdx
+	renamed:    pages/implementation/avo-in-the-ci.mdx -> pages/implementation/guides/avo-in-the-ci.mdx
+	renamed:    pages/explore-tracking-plan/download-or-copy-avo-file-manually.mdx -> pages/implementation/guides/download-or-copy-avo-file-manually.mdx
+	renamed:    pages/implementation/explicit-null-in-codegen.mdx -> pages/implementation/guides/explicit-null-in-codegen.mdx
+	renamed:    pages/implementation/property-bundles-unbundling.mdx -> pages/implementation/guides/property-bundles-unbundling.mdx
+	renamed:    pages/implementation/start-implementing-tracking-changes.mdx -> pages/implementation/guides/start-implementing-tracking-changes.mdx
+	renamed:    pages/implementation/start-using-inspector-with-avo-codegen.mdx -> pages/implementation/guides/start-using-inspector-with-avo-codegen.mdx
+	renamed:    pages/explore-tracking-plan/start-using-visual-debuggers.mdx -> pages/implementation/guides/start-using-visual-debuggers.mdx
+	new file:   pages/inspector/_meta.json
+	renamed:    pages/workspace/add-events-from-inspector.mdx -> pages/inspector/add-events-from-inspector.mdx
+	renamed:    pages/implementation/avo-inspector-overview.mdx -> pages/inspector/avo-inspector-overview.mdx
+	renamed:    pages/workspace/inspector/configuring-inspector-sources.mdx -> pages/inspector/configuring-inspector-sources.mdx
+	renamed:    pages/workspace/connect-inspector-to-gtm.mdx -> pages/inspector/connect-inspector-to-gtm.mdx
+	renamed:    pages/workspace/connect-inspector-to-posthog.mdx -> pages/inspector/connect-inspector-to-posthog.mdx
+	renamed:    pages/workspace/connect-inspector-to-rudderstack.mdx -> pages/inspector/connect-inspector-to-rudderstack.mdx
+	renamed:    pages/workspace/connect-inspector-to-segment.mdx -> pages/inspector/connect-inspector-to-segment.mdx
+	renamed:    pages/workspace/inspector/inspector-events-view.mdx -> pages/inspector/inspector-events-view.mdx
+	renamed:    pages/workspace/inspector/inspector-issues-view.mdx -> pages/inspector/inspector-issues-view.mdx
+	renamed:    pages/workspace/inspector.mdx -> pages/inspector/inspector-overview.mdx
+	renamed:    pages/workspace/inspector/inspector-slack-alerts.mdx -> pages/inspector/inspector-slack-alerts.mdx
+	renamed:    pages/explore-tracking-plan/issue-types-in-inspector.mdx -> pages/inspector/issue-types-in-inspector.mdx
+	renamed:    pages/data-design/start-using-inspector.mdx -> pages/inspector/start-using-inspector.mdx
+	deleted:    pages/public-api/_meta.json
+	new file:   pages/publishing/_meta.json
+	renamed:    pages/workspace/tracking-plan/exporting.mdx -> pages/publishing/exporting.mdx
+	renamed:    pages/workspace/tracking-plan/importing.mdx -> pages/publishing/importing.mdx
+	new file:   pages/publishing/publishing/_meta.json
+	renamed:    pages/publishing/amplitude-govern.mdx -> pages/publishing/publishing/amplitude-govern.mdx
+	renamed:    pages/publishing/mixpanel-lexicon.mdx -> pages/publishing/publishing/mixpanel-lexicon.mdx
+	renamed:    pages/publishing/mparticle-data-master.mdx -> pages/publishing/publishing/mparticle-data-master.mdx
+	renamed:    pages/workspace/tracking-plan/publishing.mdx -> pages/publishing/publishing/overview.mdx
+	renamed:    pages/publishing/rudderstack.mdx -> pages/publishing/publishing/rudderstack.mdx
+	renamed:    pages/publishing/segment-protocols.mdx -> pages/publishing/publishing/segment-protocols.mdx
+	renamed:    pages/publishing/snowplow-data-structures.mdx -> pages/publishing/publishing/snowplow-data-structures.mdx
+	renamed:    pages/publishing/publishing-use-cases.mdx -> pages/publishing/publishing/use-cases.mdx
+	renamed:    pages/publishing/webhook-publishing.mdx -> pages/publishing/publishing/webhook-publishing.mdx
+	renamed:    pages/workspace/tracking-plan/webhook-signing.mdx -> pages/publishing/webhook-signing.mdx
+	new file:   pages/reference/_meta.json
+	new file:   pages/reference/avo-codegen/_meta.json
+	renamed:    pages/implementation/anonymous-user-id.mdx -> pages/reference/avo-codegen/anonymous-user-id.mdx
+	renamed:    pages/implementation/custom-loggers.mdx -> pages/reference/avo-codegen/custom-loggers.mdx
+	renamed:    pages/implementation/destinations.mdx -> pages/reference/avo-codegen/destinations.mdx
+	new file:   pages/reference/avo-codegen/programming-languages/_meta.json
+	renamed:    pages/implementation/reference/csharp.mdx -> pages/reference/avo-codegen/programming-languages/csharp.mdx
+	renamed:    pages/implementation/supported-programming-languages.mdx -> pages/reference/avo-codegen/programming-languages/index.mdx
+	renamed:    pages/implementation/reference/java.mdx -> pages/reference/avo-codegen/programming-languages/java.mdx
+	renamed:    pages/implementation/reference/javascript.mdx -> pages/reference/avo-codegen/programming-languages/javascript.mdx
+	renamed:    pages/implementation/reference/kotlin.mdx -> pages/reference/avo-codegen/programming-languages/kotlin.mdx
+	renamed:    pages/implementation/reference/objc.mdx -> pages/reference/avo-codegen/programming-languages/objc.mdx
+	renamed:    pages/implementation/reference/php.mdx -> pages/reference/avo-codegen/programming-languages/php.mdx
+	renamed:    pages/implementation/reference/python.mdx -> pages/reference/avo-codegen/programming-languages/python.mdx
+	renamed:    pages/implementation/reference/reasonml.mdx -> pages/reference/avo-codegen/programming-languages/reasonml.mdx
+	renamed:    pages/implementation/reference/rescript.mdx -> pages/reference/avo-codegen/programming-languages/rescript.mdx
+	renamed:    pages/implementation/reference/ruby.mdx -> pages/reference/avo-codegen/programming-languages/ruby.mdx
+	renamed:    pages/implementation/reference/swift.mdx -> pages/reference/avo-codegen/programming-languages/swift.mdx
+	renamed:    pages/implementation/reference/typescript.mdx -> pages/reference/avo-codegen/programming-languages/typescript.mdx
+	new file:   pages/reference/avo-debuggers/_meta.json
+	renamed:    pages/implementation/setup-mobile-debugger.mdx -> pages/reference/avo-debuggers/mobile.mdx
+	renamed:    pages/implementation/start-using-visual-debugger.mdx -> pages/reference/avo-debuggers/overview.mdx
+	renamed:    pages/implementation/start-using-web-debugger.mdx -> pages/reference/avo-debuggers/web.mdx
+	new file:   pages/reference/avo-inspector-sdks/_meta.json
+	renamed:    pages/implementation/inspector/sdk/android.mdx -> pages/reference/avo-inspector-sdks/android.mdx
+	renamed:    pages/implementation/inspector/sdk/dart.mdx -> pages/reference/avo-inspector-sdks/dart.mdx
+	renamed:    pages/implementation/inspector/sdk/go.mdx -> pages/reference/avo-inspector-sdks/go.mdx
+	renamed:    pages/implementation/inspector/sdk/ios.mdx -> pages/reference/avo-inspector-sdks/ios.mdx
+	renamed:    pages/implementation/inspector/sdk/java.mdx -> pages/reference/avo-inspector-sdks/java.mdx
+	renamed:    pages/implementation/inspector/sdk/node.mdx -> pages/reference/avo-inspector-sdks/node.mdx
+	renamed:    pages/implementation/avo-inspector-sdk-reference.mdx -> pages/reference/avo-inspector-sdks/overview.mdx
+	renamed:    pages/implementation/inspector/sdk/react-native.mdx -> pages/reference/avo-inspector-sdks/react-native.mdx
+	renamed:    pages/implementation/inspector/sdk/web.mdx -> pages/reference/avo-inspector-sdks/web.mdx
+	new file:   pages/reference/public-api/_meta.json
+	renamed:    pages/public-api/authentication.mdx -> pages/reference/public-api/authentication.mdx
+	renamed:    pages/public-api/export-tracking-plan.mdx -> pages/reference/public-api/export-tracking-plan.mdx
+	renamed:    pages/public-api/overview.mdx -> pages/reference/public-api/overview.mdx
