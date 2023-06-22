@@ -10,12 +10,10 @@ The integration to [Segment Protocols](https://segment.com/docs/protocols) allow
 
 ## Configure the Protocols integration
 
-> 💡 The Protocols integration currently supports the established [Config API](https://segment.com/docs/api/config-api/). If you are only able to use the new _Public API_, please reach out to us.
-
 To enable the direct integration with Segment Protocols, you need to configure it with the following parameters from Segment.
 
 - **Segment Workspace Slug**: Found in the URL when logged into Segment: `https://app.segment.com/{Segment workspace slug}/...` or in the workspace settings
-- **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_`
+- **Protocols Tracking Plan ID**: Found in the URL of the tracking plan page: starts with `rs_` for [Config API](https://segment.com/docs/api/config-api/), `tp_` for [Public API](https://segment.com/docs/api/public-api/)
 - **Segment Access Token**: [Create new API tokens](https://segment.com/docs/api/config-api/authentication/#create-an-access-token) for Avo and limit the scope of its permissions to ‘Protocol Admin’.
 
 ## Publishing to Protocols
