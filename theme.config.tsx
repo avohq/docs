@@ -7,6 +7,10 @@ const config: DocsThemeConfig = {
   logo: (
     <Image alt="Avo logo" src="/docs/images/logo.svg" height={21} width={60} />
   ),
+  logoLink: "https://www.avo.app/",
+  useNextSeoProps: () => ({
+    titleTemplate: '%s - Avo Docs'
+  }),
   project: {
     link: 'https://github.com/avohq/docs',
   },
