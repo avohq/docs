@@ -1,10 +1,6 @@
----
-layout: 'guide'
-title: 'Integrate with other tools'
-abstract: 'You can integrate Avo with your existing tools to streamline your analytics workflow'
----
+# Integrate with other tools
 
-import Link from '../../components/Link';
+_You can integrate Avo with your existing tools to streamline your analytics workflow_
 
 You can integrate Avo with your existing tools to streamline your analytics workflow:
 
@@ -37,66 +33,43 @@ You can integrate Avo with your existing tools to streamline your analytics work
 
 Destinations:
 
-- <Link
-    href="/data-design/define-sources-and-destinations#destinations"
-    passHref
-  >
-    Document destinations in your tracking plan
-  </Link>
-  : Document to which analytics tools and destinations your data should be sent in
+- [Document destinations in your tracking plan](/data-design/define-sources-and-destinations#destinations): Document to which analytics tools and destinations your data should be sent in
   your Avo Tracking plan
-- <Link href="/implementation/start-using-avo-codegen" passHref>
-    Implement tracking for your destinations with Avo Codegen
-  </Link>
-  : Type-safe implementation based on your Avo Tracking Plan, for all your analytics
+- [Implement tracking for your destinations with Avo Codegen](/implementation/start-using-avo-codegen): Type-safe implementation based on your Avo Tracking Plan, for all your analytics
   tools and destinations
 
 ## Schema Management
 
-With Avo you can _<Link passHref href="/workspace/tracking-plan/publishing">Publish</Link>_ your tracking plan to any downstream schema management to keep everything in sync, such as your analytics platforms, your production time validation schemas, your SQL table structures, etc. Go to <Link passHref href="/workspace/tracking-plan/publishing">Publishing</Link> to read more.
+With Avo you can _[Publish](/workspace/tracking-plan/publishing)_ your tracking plan to any downstream schema management to keep everything in sync, such as your analytics platforms, your production time validation schemas, your SQL table structures, etc. Go to [Publishing](/workspace/tracking-plan/publishing) to read more.
 
 ### Webhook
 
-<Link passHref href="/workspace/tracking-plan/publishing#webhook">
-  Publish to Webhook
-</Link> to post your JSON schema to any endpoint and sync your analytics schema with
+[Publish to Webhook](/workspace/tracking-plan/publishing#webhook) to post your JSON schema to any endpoint and sync your analytics schema with
 internal schema management such as production time validation, your SQL tables, etc.
 
 ### Segment Protocols
 
-<Link passHref href="/workspace/tracking-plan/publishing#segment-protocols">
-  Publish to Segment Protocols
-</Link> to sync your analytics schema downstream
+[Publish to Segment Protocols](/workspace/tracking-plan/publishing#segment-protocols) to sync your analytics schema downstream
 
 ### RudderStack Tracking Plans
 
-<Link passHref href="/workspace/tracking-plan/publishing#rudderstack">
-  Publish to RudderStack Tracking Plans
-</Link> to sync your analytics schema downstream
+[Publish to RudderStack Tracking Plans](/workspace/tracking-plan/publishing#rudderstack) to sync your analytics schema downstream
 
 ### Mixpanel Lexicon
 
-<Link passHref href="/workspace/tracking-plan/publishing#mixpanel-lexicon">
-  Publish to Mixpanel Lexicon
-</Link> to sync your analytics schema downstream
+[Publish to Mixpanel Lexicon](/workspace/tracking-plan/publishing#mixpanel-lexicon) to sync your analytics schema downstream
 
 ### Amplitude Govern
 
-<Link passHref href="/workspace/tracking-plan/publishing#amplitude-govern">
-  Publish to Amplitude Govern
-</Link> to sync your analytics schema to downstream
+[Publish to Amplitude Govern](/workspace/tracking-plan/publishing#amplitude-govern) to sync your analytics schema to downstream
 
 ### mParticle Data Master
 
-<Link passHref href="/workspace/tracking-plan/publishing#mparticle">
-  Publish to mParticle Data Master
-</Link> to sync your analytics schema downstream
+[Publish to mParticle Data Master](/workspace/tracking-plan/publishing#mparticle) to sync your analytics schema downstream
 
 ### Snowplow
 
-<Link passHref href="/workspace/tracking-plan/publishing#snowplow">
-  Publish to Snowplow Data Structures
-</Link> to sync your analytics schema to downstream
+[Publish to Snowplow Data Structures](/workspace/tracking-plan/publishing#snowplow) to sync your analytics schema to downstream
 
 ## Workflow
 
@@ -108,7 +81,7 @@ Configure notifications to be sent to a Slack channel:
 
 1. Open **Workspace Settings** ⚙️ > **Slack Integration**
    <img
-     src={require('../../images/workspace/integrations/workspace-settings.png')}
+     src={'/images/workspace/integrations/workspace-settings.png'}
      width="350px"
      alt="Workspace settings"
    />
@@ -116,7 +89,7 @@ Configure notifications to be sent to a Slack channel:
 3. Follow the instructions in the popup from Slack, where you pick the channel you want to receive the notifications in
 
    <img
-     src={require('../../images/workspace/integrations/workspace-notifications.png')}
+     src={'/images/workspace/integrations/workspace-notifications.png'}
      width="350px"
      alt="Workspace notifications"
    />
@@ -147,7 +120,7 @@ Configure notifications to be sent to a Slack channel:
 
 ### Jira
 
-When you make changes to your tracking plan on an Avo branch, Avo automatically generates <Link passHref href="/implementation/read-implementation-diff">implementation instructions</Link> that details all changes in your tracking plan branch, with deeplinks directly to the respective event and property in Avo. When your tracking plan branch is ready for review or implementation, with the push of a button you can copy/paste the instructions directly into a Jira ticket.
+When you make changes to your tracking plan on an Avo branch, Avo automatically generates [implementation instructions](/implementation/read-implementation-diff) that details all changes in your tracking plan branch, with deeplinks directly to the respective event and property in Avo. When your tracking plan branch is ready for review or implementation, with the push of a button you can copy/paste the instructions directly into a Jira ticket.
 
 **Coming Soon:** When a tracking plan branch is ready for review, Avo will automatically create a Jira ticket for the reviewer. When a tracking plan branch is ready for implementation, Avo will automatically create Jira tickets with instrumentation instructions.
 

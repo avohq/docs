@@ -1,10 +1,6 @@
----
-layout: 'guide'
-title: 'Webhook signing'
-abstract: 'Learn about how to secure your webhook endpoint'
----
+# Web signing
 
-import Link from '../../../components/Link';
+*Learn about how to secure your webhook endpoint*
 
 ## Check the webhook signatures
 
@@ -15,13 +11,7 @@ This allows you to verify that the events were sent by Avo and not by a third pa
 Before you can verify signatures, you need to retrieve your publishing webhook's secret from your Webhook publishing page in Avo.
 Avo generates a unique secret key for each webhook publishing integration. You should obtain a distinct key for every webhook integration you use.
 
-<p>
-  <img
-    src={require('../../../images/signing-secret.png')}
-    width="600px"
-    alt="The image shows a webhook integration and a button at the top labeled Webhook Secret which if clicked reveals the secret"
-  />
-</p>
+![The image shows a webhook integration and a button at the top labeled Webhook Secret which if clicked reveals the secret](/images/signing-secret.png)
 
 ### Verifying signatures
 
@@ -35,8 +25,6 @@ Avo generates signatures using a hash-based message authentication code (HMAC) w
   "typ": "Jwt"
 }
 ```
-
-<br />
 
 ### Verify authorization header
 

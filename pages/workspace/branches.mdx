@@ -1,10 +1,6 @@
----
-layout: 'guide'
-title: 'Quickstart: Branches'
-abstract: 'Seamlessly work together on multiple tracking plan updates using branches'
----
+# Quickstart: Branches
 
-import Link from '../../components/Link';
+_Seamlessly work together on multiple tracking plan updates using branches_
 
 ### What are branches?
 
@@ -16,46 +12,45 @@ We highly recommend always creating a branch first before making changes to the 
 
 To create a new branch, first make sure you are on the main branch. Then click the icon with the plus sign next to where it says `main`.
 
+<br />
 <center>
-  <video
-    controls
-    loop
-    muted
-    width="100%"
-    autoPlay
-    src={require('../../images/best-practices/day-to-day-workflow/open-branch.mp4')}
-    alt="Opening a branch"
-  />
+ <video
+   controls
+   loop
+   muted
+   width="100%"
+   autoPlay
+   src="/images/best-practices/day-to-day-workflow/open-branch.mp4"
+   alt="Opening a branch"
+ />
 </center>
+
 
 ### Request branch review
 
 When you've suggested changes to your tracking, mark the branch as ready for review, and @-mention a co-worker to ask them for a review.
 
-We recommend you <Link passHref href="/workspace/integrations#enable-slack-notifications-in-your-avo-workspace"><a>connect your Avo workspace to Slack</a></Link> for added visibility into tracking plan changes your team is making.
+We recommend you [connect your Avo workspace to Slack](/workspace/integrations#enable-slack-notifications-in-your-avo-workspace) for added visibility into tracking plan changes your team is making.
 
-<center style={{ marginBottom: 16 + 'px' }}>
-  <img
-    src={require('../../images/request_branch_review.png')}
-    alt="Request branch review"
-  />
-</center>
+![Request branch review](/images/request_branch_review.png)
 
 ### Review branch changes
 
 To compare the changes drafted on a branch to the source of truth on the main branch, go click the review changes button located under your branch name. There you can see which events or properties were added, deleted or updated.
 
+<br />
 <center>
-  <video
-    controls
-    loop
-    muted
-    width="100%"
-    autoPlay
-    src={require('../../images/workspace/tracking-plan/review_branch.mp4')}
-    alt="Opening a branch"
-  />
+ <video
+   controls
+   loop
+   muted
+   width="100%"
+   autoPlay
+   src="/images/workspace/tracking-plan/review_branch.mp4"
+   alt="Revewing a branch"
+ />
 </center>
+
 
 ### How should branches be structured?
 
@@ -67,43 +62,19 @@ Like in git, we recommend against creating big branches with a backlog of events
 
 Go to the branch review screen (“View Changes” in the Sidebar), click the tripple-dot in the top right corner. From there you can choose to delete the branch:
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/delete-branch.png')}
-    alt="Opening a branch"
-  />
-</center>
+![Opening a branch](/images/delete-branch.png)
 
 ### Branches Overview
 
 Click the Avo logo in the top left of your workspace to navigate to the branches overview. There you will find info about all your open branches like it's creator, the created date, the branch status, collaborators and more. The branch overview helps you make sure no tracking plan changes are left behind and that you don't miss out on progress that's happening in your workspace.
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/branches-overview.png')}
-    alt="Branches Overview"
-  />
-</center>
+![Branches Overview](/images/branches-overview.png)
 
 ## What's next?
 
-- <Link passHref href="/workspace/approval-workflows">
-    <a>Approval workflows for branches</a>
-  </Link>
-- <Link passHref href="/workspace/tracking-plan/workbench">
-    <a>Workbench</a>
-  </Link>
-- <Link passHref href="/workspace/code-changes">
-    <a>Share implementation instructions for a branch</a>
-  </Link>
-- <Link passHref href="/implementation/avo-and-git">
-    <a>Using Avo in parallel workflows for large development teams</a>
-  </Link>
-- <Link passHref href="/data-design/multiple-sources-on-avo-branches">
-    <a>How to manage branches with multiple sources</a>
-  </Link>
-- <Link passHref href="/data-design/start-data-design">
-    <a>Designing data in Avo</a>
-  </Link>
+- [Approval workflows for branches](/workspace/approval-workflows)
+- [Workbench](/workspace/tracking-plan/workbench)
+- [Share implementation instructions for a branch](/workspace/code-changes)
+- [Using Avo in parallel workflows for large development teams](/implementation/avo-and-git)
+- [How to manage branches with multiple sources](/data-design/multiple-sources-on-avo-branches)
+- [Designing data in Avo](/data-design/start-data-design)

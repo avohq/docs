@@ -1,27 +1,20 @@
----
-layout: 'guide'
-title: 'Publishing'
-abstract: 'Learn about how to publish your Tracking Plan to analytics platforms and APIs'
----
+import { Callout } from 'nextra/components';
 
-import Link from '../../../components/Link';
+# Publishing
 
-<p>
-  <img
-    src={require('../../../images/publishing.svg')}
-    width="200px"
-    alt="Avo Publishing"
-/>
+_Learn about how to publish your Tracking Plan to analytics platforms and APIs_
 
-</p>
+![Avo Publishing Integration](/images/publishing.svg)
 
 ## Why keep schema registries in sync
 
-> 💡 **Event schemas** are important in many layers of your data stack. Keeping schema
-> registries in sync across the stack can be a challenge, especially since stakeholders
-> involved vary from non-technical folks with a preference for human readable
-> tools like spreadsheets, to technical folks with a preference for computer
-> readable schemas like JSON.
+<Callout>
+  **Event schemas** are important in many layers of your data stack. Keeping
+  schema registries in sync across the stack can be a challenge, especially
+  since stakeholders involved vary from non-technical folks with a preference
+  for human readable tools like spreadsheets, to technical folks with a
+  preference for computer readable schemas like JSON.
+</Callout>
 
 **Publishing** is a way to push your tracking plan specs from Avo into your other
 schema registries and downstream tools, including analytics platforms like
@@ -35,11 +28,13 @@ Avo allows you to maintain a single source of truth for your schemas and keep
 your schema registries in sync, serving both your technical and non-technical
 stakeholders.
 
-> 💡 **Push or pull your schemas**: To keep your Avo tracking plan in sync with
-> your downstream schema registries you can either **push** your schema from Avo
-> via Avo Publishing or **pull** your Avo schema via Avo CLI. We recommend
-> leveraging _push_ since you can configure that to make sure your downstream
-> schema registries get updated when your main Avo schema gets updated.
+<Callout>
+  **Push or pull your schemas:** To keep your Avo tracking plan in sync with
+  your downstream schema registries you can either **push** your schema from Avo
+  via Avo Publishing or **pull** your Avo schema via Avo CLI. We recommend
+  leveraging _push_ since you can configure that to make sure your downstream
+  schema registries get updated when your main Avo schema gets updated.
+</Callout>
 
 1. **Push: Publishing your schema:** You can set up <a href="#publishing-integrations">Publishing integrations</a>
    where you publish your Avo schema into other schema registries. For example as
@@ -49,19 +44,20 @@ stakeholders.
 
 2. **Pull: Pull JSON schema via CLI:** An alternative to Avo Publishing integrations
    is pulling a JSON schema via the CLI. This way you can add a schema pull into
-   a CI/CD. See <Link passHref href="/workspace/tracking-plan/exporting#pull-json-schema-via-the-cli"><a>docs to pull schema via CLI</a></Link>.
+   a CI/CD. See [docs to pull schema via CLI](/workspace/tracking-plan/exporting#pull-json-schema-via-the-cli)
+   .
 
 ## Publishing Integrations
 
 Available integrations are:
 
-- <Link passHref href="/publishing/segment-protocols"><a>Segment Protocols</a></Link>
-- <Link passHref href="/publishing/mixpanel-lexicon"><a>Mixpanel Lexicon</a></Link>
-- <Link passHref href="/publishing/rudderstack"><a>RudderStack</a></Link>
-- <Link passHref href="/publishing/snowplow-data-structures"><a>Snowplow Data Structures</a></Link>
-- <Link passHref href="/publishing/mparticle-data-master"><a>mParticle Data Master</a></Link>
-- <Link passHref href="/publishing/amplitude-govern"><a>Amplitude Govern</a></Link> (deprecated by Amplitude)
-- <Link passHref href="/publishing/webhook-publishing"><a>Webhook</a></Link>
+- [Segment Protocols](/publishing/segment-protocols)
+- [Mixpanel Lexicon](/publishing/mixpanel-lexicon)
+- [RudderStack](/publishing/rudderstack)
+- [Snowplow Data Structures](/publishing/snowplow-data-structures)
+- [mParticle Data Master](/publishing/mparticle-data-master)
+- [Amplitude Data](/publishing/amplitude-govern)
+- [Webhook](/publishing/webhook-publishing)
 
 Publishing enables your Tracking Plan to be:
 
@@ -69,56 +65,32 @@ Publishing enables your Tracking Plan to be:
 - Published with a push of a button
 - Downloaded from your Avo workspace on relevant format
 
-
 ## Setting up and configuring a publishing integration
 
 ### Create a new publishing integration
 
 To create a new publishing integration, find the Publishing part of the tracking plan in the left side navigation bar. From there you can click the "Add Integration" button to create a new publishing integration.
 
-<center>
-  <img
-    src={require('../../../images/workspace/nav-publishing.png')}
-    width="100%"
-    alt="Creating a new Publishing Integration"
-  />
-</center>
+![Creating a new Publishing Integration](/images/workspace/nav-publishing.png)
 
 Then you can select the type of integration you want to create and give it a name.
 
-<center>
-  <img
-    src={require('../../../images/workspace/integrations/create-integration.png')}
-    width="75%"
-    alt="Creating a new Publishing Integration"
-  />
-</center>
+![Creating a new Publishing Integration](/images/workspace/integrations/create-integration.png)
 
-Note that the publishing integrations are independent of the destinations defined in the "Sources" tab. However the publishing integration can use those destinations to filter which events should be included in the publishing integration. See more below in <Link passHref href="/workspace/tracking-plan/publishing#filtering-events-for-publishing"><a>Filtering events for publishing</a></Link>.
+Note that the publishing integrations are independent of the destinations defined in the "Sources" tab. However the publishing integration can use those destinations to filter which events should be included in the publishing integration. See more below in [Filtering events for publishing](/workspace/tracking-plan/publishing#filtering-events-for-publishing)
+.
 
 ### Configure Auto publishing
 
 When Auto Publishing is enabled all changes made on a branch will be published to the integration when the branch is merged.
 
-<center>
-  <img
-    src={require('../../../images/auto_publishing.png')}
-    width="100%"
-    alt="Publishing filter to publish only events sent from Web to Amplitude"
-  />
-</center>
+![Publishing filter to publish only events sent from Web to Amplitude](/images/auto_publishing.png)
 
 ### Filtering events for publishing
 
 You can customize which events in Avo are published to which integrations by using the events filter. Events can be filtered by Sources, Destinations and Tags. For example the following integration will only publish events sent from Web to Amplitude.
 
-<center>
-  <img
-    src={require('../../../images/publish_filter.png')}
-    width="100%"
-    alt="Publishing filter to publish only events sent from Web to Amplitude"
-  />
-</center>
+![Publishing filter to publish only events sent from Web to Amplitude](/images/publish_filter.png)
 
 #### Filtering and source specific property presence
 
@@ -134,4 +106,5 @@ What does the "lowest common denominator" mean?
 - If the property is "Sometimes sent" on one or more sources being published, the property presence is set to "Sometimes sent" (optional)
 - If property is "Never sent" on all sources being published, the property is not included in the publishing
 
-You can learn more on <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional"><a>configuring when Properties are required or optional here</a></Link>.
+You can learn more on [configuring when Properties are required or optional here](/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional)
+.

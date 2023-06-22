@@ -1,19 +1,14 @@
 ---
 layout: 'guide'
-title: 'Publishing Use Cases'
-# abstract: 'The use cases for publishing your tracking plan from Avo to your analytics tool or CDP'
+title: ''
+# abstract: ''
 ---
 
-import Link from '../../components/Link';
+# Publishing Use Cases
 
-<p>
-  <img
-    src={require('../../images/publishing.svg')}
-    width="200px"
-    alt="Avo Publishing"
-/>
+*The use cases for publishing your tracking plan from Avo to your analytics tool or CDP*
 
-</p>
+![Avo Publishing](/images/publishing.svg)
 
 ## See event and property descriptions from Avo inline in your analytics tool
 
@@ -32,11 +27,11 @@ The publishing webhook is a building block that allows you to integrate your Avo
 What can you build with the webhook?
 Here are some ideas to get you started:
 
-- ### **Update ingestion time validation:**
+- **Update ingestion time validation:**
   _Automatically update your JSON Schema ingestion time validation whenever a tracking plan change is merged to the main branch. Making sure your pipeline is ready to approve the fresh events before they arrive._
-- ### **Manage tables in data warehouses:**
+- **Manage tables in data warehouses:**
   _Automatically keep raw event table schemas in SnowflakeDB, BigQuery or Redshift in sync with the Tracking Plan – keeping your data streaming in smoothly_
-- ### **Generate dbt models:**
+- **Generate dbt models:**
   _Generate .yml config files describing your raw event tables in dbt_
-- ### **Automatically build dashboards in your visualization tool:**
+- **Automatically build dashboards in your visualization tool:**
   _The webhook contains detailed specs on the metrics you've defined in your Tracking Plan. Those specs could be used to automatically build out feature dashboards in visualization tools like Looker, Mode, Mixpanel or Amplitude_

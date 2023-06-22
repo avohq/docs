@@ -1,52 +1,45 @@
----
-layout: 'guide'
-title: 'Events'
-abstract: 'Learn about the events in your tracking plan'
----
+# Events
 
-import Link from '../../../components/Link';
+*Learn about the events in your tracking plan*
 
 An event represents something that a user does or that happens in response to their actions. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
 
-<a
-  target="_blank"
-  rel="noopener noreferrer"
-  href="https://www.avo.app/blog/tracking-plan-guide-how-to-pick-your-events-and-properties"
->
-  Tracking Plan Guide: How to Pick Your Events and Properties
-</a>
+[Tracking Plan Guide: How to Pick Your Events and Properties](https://www.avo.app/blog/tracking-plan-guide-how-to-pick-your-events-and-properties)
+
 
 ## <a name="event-defintion"></a> Event Definition
 
 An event is defined in the Events section of the Tracking plan and can be organized into categories. The definition of an event includes:
 
-- A descriptive <Link passHref href="/data-design/naming-conventions#2-what-does-naming-convention-refer-to"><a>_Event Name_</a></Link>
-- A <Link passHref href="/data-design/defining-descriptive-events-and-properties#events-1"><a>_Description_</a></Link> with information about the event beyond what the name includes (optional but highly recommended)
-- The <Link passHref href="/data-design/event-triggers"><a>_Trigger(s)_</a></Link> that describe both visually and in words all the user or system actions that trigger the event (optional but highly recommended)
-- The <Link passHref href="/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from"><a>_Source(s)_</a></Link> that the event should be sent from
+- A descriptive [_Event Name_](/data-design/naming-conventions#2-what-does-naming-convention-refer-to)
+
+- A [_Description_](/data-design/defining-descriptive-events-and-properties#events-1)
+ with information about the event beyond what the name includes (optional but highly recommended)
+- The [_Trigger(s)_](/data-design/event-triggers)
+ that describe both visually and in words all the user or system actions that trigger the event (optional but highly recommended)
+- The [_Source(s)_](/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from)
+ that the event should be sent from
 - The <a href="#actions">_Actions(s)_</a> associated with the event
-- The <Link passHref href="/workspace/tracking-plan/metrics"><a>_Metrics(s)_</a></Link> related to the event (optional)
-- The <Link passHref href="/data-design/organizing-metrics-and-events#a-namecategoriesa-categories"><a>_Category(s)_</a></Link> that the event is a part of (optional)
+- The [_Metrics(s)_](/workspace/tracking-plan/metrics)
+ related to the event (optional)
+- The [_Category(s)_](/data-design/organizing-metrics-and-events#a-namecategoriesa-categories)
+ that the event is a part of (optional)
 - The _Tags_ associated with the event
-- The <Link passHref href="/data-design/name-mapping"><a>_Name Mapping(s)_</a></Link> that the event name is mapped to when sending to specific destinations
+- The [_Name Mapping(s)_](/data-design/name-mapping)
+ that the event name is mapped to when sending to specific destinations
 
 ## Sources
 
 Add all sources you want the event to be sent from to the event in Avo. If you want the event to be implemented with [Avo Codegen](https://www.avo.app/docs/implementation/avo-codegen-overview), make sure "Implement with Codegen" is checked. Having "Implement with Codegen" checked adds the event to your type-safe Avo Codegen file for that source. If you don't want the event to be implemented with Avo Codegen, leave "Implement with Codegen" unchecked.
 
-<center>
-  <img
-    src={require('../../../images/workspace/tracking-plan/event-sources.png')}
-    alt="The sources the event should be sent from"
-    width="75%"
-  />
-</center>
+![The sources the event should be sent from](/images/workspace/tracking-plan/event-sources.png)
 
 ## <a name="actions"></a> Actions
 
 Actions is Avo's umbrella term over all the tracking methods the analytics platforms offer, such as logging events, updating user properties, logging revenue, etc. In your Avo tracking plan you can configure which actions (tracking methods) should be triggered. Actions can be triggered on their own or together, for example it's common to update user properties along with logging an event.
 
-See <Link passHref href="/workspace/tracking-plan/events#supported-actions"><a>supported actions (tracking methods)</a></Link> below.
+See [supported actions (tracking methods)](/workspace/tracking-plan/events#supported-actions)
+ below.
 
 ### Configuring Actions
 
@@ -56,25 +49,13 @@ The default action when you add an event to your Avo tracking plan is to log an 
 
 To add an action, click `+Add Action` in the Event modal and select the relevant action:
 
-<center style={{ marginBottom: 16 + 'px' }}>
-  <img
-    style={{ height: 300 + 'px' }}
-    src={require('../../../images/workspace/tracking-plan/add-action.png')}
-    alt="Add Actions in the Actions section of the Event modal"
-  />
-</center>
+![Add Actions in the Actions section of the Event modal](/images/workspace/tracking-plan/add-action.png)
 
 #### Removing Actions
 
 To remove an action, click settings in the Action and select `Remove`:
 
-<center style={{ marginBottom: 16 + 'px' }}>
-  <img
-    style={{ height: 300 + 'px' }}
-    src={require('../../../images/workspace/tracking-plan/remove-action.png')}
-    alt="Add Actions in the Actions section of the Event modal"
-  />
-</center>
+![Add Actions in the Actions section of the Event modal](/images/workspace/tracking-plan/remove-action.png)
 
 ### Supported Actions
 
@@ -177,7 +158,8 @@ User properties are updated with the following methods according to analytics pl
 
 Avo is equipped with a familiar user interface to define and maintain Group Types
 and their properties and updating Group Properties is as easy as adding an action
-to your Event. Read more about Groups <Link passHref href="/data-design/groups"><a>here</a></Link>.
+to your Event. Read more about Groups [here](/data-design/groups)
+.
 
 Users can be associated with groups (and all subsequent calls) with the following methods
 according to analytics platform:

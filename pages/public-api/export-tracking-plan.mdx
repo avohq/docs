@@ -1,12 +1,13 @@
----
-layout: 'guide'
-title: 'Export Tracking Plan'
-abstract: 'Export tracking plan using Avo API'
----
+import { Callout } from 'nextra/components';
 
-> The Avo Public API is currently in beta and is not yet in general availability. Reach out to us for access.
+# Export Tracking Plan
 
-import Link from '../../components/Link';
+_Export tracking plan using Avo API_
+
+<Callout>
+  The Avo Public API is currently in beta and is not yet in general
+  availability. Reach out to us for access.
+</Callout>
 
 The Export API gives you the possibility to export your Avo tracking plan as JSON Schema from any branch.
 
@@ -18,11 +19,11 @@ https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1
 
 `:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`. `:branchId` is the ID of the branch you want to export. If you open a branch in Avo you can find it in the URL after `/branches/`. For the main branch simply use `main`. Note that the branch id is not the same as the branch name.
 
-Returns <Link passHref href="/workspace/tracking-plan/publishing#payload-format"><a>a Json payload representation of your tracking plan.</a></Link>
+Returns [a Json payload representation of your tracking plan](/workspace/tracking-plan/publishing#payload-format).
 
 ### Authentication
 
-This endpoint requires an <Link passHref href="/public-api/authentication#authenticating-with-avo-api"><a>authorization header</a></Link> containing a Base64 encoded service account name and secret.
+This endpoint requires an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
 
 ### Rate Limit
 
@@ -46,7 +47,7 @@ Locate your branchId by switching onto the branch and checking the URL
 
 The base64 encoded token expects `name:secret`
 
-See more on <Link passHref href="/public-api/authentication#authenticating-with-avo-api"><a>authorization</a></Link>
+See more on [authorization](/public-api/authentication#authenticating-with-avo-api)
 
 ## Example Usage
 

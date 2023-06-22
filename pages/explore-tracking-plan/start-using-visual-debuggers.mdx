@@ -1,9 +1,4 @@
----
-layout: 'guide'
-title: 'Visual debuggers'
----
-
-import Link from '../../components/Link';
+# Visual debuggers
 
 When testing analytics on web and mobile apps it’s hard to know if the events are being sent successfully or not, and if they are being sent at the correct time.
 
@@ -15,7 +10,7 @@ If Avo detects errors the visual debugger will highlight those.
 
 ### Accessing the web debugger
 
-> Currently the web visual debugger is only available when you use <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen</a></Link>.
+> Currently the web visual debugger is only available when you use [Avo Codegen](/implementation/avo-codegen-overview).
 
 The debuggers are on by default in development but can be accessed in production:
 
@@ -23,26 +18,17 @@ On web, add the `?avo_debug=1` query parameter to the URL.
 
 Example: `https://example.com/checkout?avo_debug=1`.
 
-<center>
-  <img
-    height="500"
-    src={require('../../images/web-debugger-example.png')}
-    alt="Web debugger example"
-  />
-</center>
+![Web debugger example](/images/web-debugger-example.png)
 
 ### Accessing mobile debuggers
 
 > Mobile debuggers are bundled with Inspector SDK on iOS and Android.
 
-Ask a developer to integrate the debugger into your application and provide a way to toggle it following <Link passHref href="/implementation/setup-mobile-debugger"><a>this guide</a></Link>.
+Ask a developer to integrate the debugger into your application and provide a way to toggle it following [this guide](/implementation/setup-mobile-debugger).
 
 ## <a name="look"></a> How it looks
 
-<img
-  src={require('../../images/mobile-debugger.png')}
-  alt="React native debugger example"
-/>
+![React native debugger example](/images/mobile-debugger.png)
 
 Here is a demonstration of the mobile debugger in a simple music player app.
 
@@ -63,7 +49,7 @@ Here is a demonstration of the mobile debugger in a simple music player app.
     muted
     width="100%"
     autoPlay
-    src={require('../../images/android-debugger-example.mp4')}
+    src={'/images/android-debugger-example.mp4'}
     alt="Android debugger example"
   />
  </td>
@@ -74,7 +60,7 @@ Here is a demonstration of the mobile debugger in a simple music player app.
     muted
     width="100%"
     autoPlay
-    src={require('../../images/ios-debugger-example.mp4')}
+    src={'/images/ios-debugger-example.mp4'}
     alt="iOS debugger example"
   />
  </td>
@@ -85,7 +71,7 @@ Here is a demonstration of the mobile debugger in a simple music player app.
     muted
     width="100%"
     autoPlay
-    src={require('../../images/rn-debugger-example.mp4')}
+    src={'/images/rn-debugger-example.mp4'}
     alt="React native debugger example"
   />
  </td>

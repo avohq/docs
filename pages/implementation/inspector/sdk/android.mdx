@@ -1,13 +1,8 @@
----
-layout: 'guide'
-title: 'Avo Inspector Android SDK'
----
-
-import Link from '../../../../components/Link';
+# Avo Inspector Android SDK
 
 ## <a name="quick-start"></a>Quick Start Guide
 
-Find the Quick Start Guide in our <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/android-avo-inspector">GitHub repo.</a>
+Find the Quick Start Guide in our [GitHub repo](https://github.com/avohq/android-avo-inspector).
 
 ## <a name="installation"></a>Installation
 
@@ -29,7 +24,7 @@ and in your module build.gradle:
 ```groovy
 dependencies {
     debugImplementation 'com.github.avohq.android-avo-inspector:dev:TAG' // Includes the visual inspector, a tool useful to monitor your analytics calls when developing
-    releaseImplementation 'com.github.avohq.android-avo-inspector:prod:TAG' // Does not include the visual inspector 
+    releaseImplementation 'com.github.avohq.android-avo-inspector:prod:TAG' // Does not include the visual inspector
 }
 ```
 
@@ -57,7 +52,7 @@ import app.avo.inspector.AvoInspectorEnv
 
 ## <a name="initialization"></a>Initialization
 
-Obtain the API key in Inspector tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app</a> workspace.
+Obtain the API key in Inspector tab in your [Avo.app](https://www.avo.app/welcome) workspace.
 
 You will need to create an instance of `AvoInspector` with the constructor.
 
@@ -76,7 +71,7 @@ class AvoInspector(apiKey: String?, application: Application?, env: AvoInspector
 > - `AvoInspectorEnv env` - current environment: development, staging or production
 > - `Activity rootActivityForVisualInspector` - you root activity that will be used to show Visual Inspector, a view where you can track the reported schemas.
 
-<a href="#visual-inspector">More about the Visual Inspector below</a>
+[More about the Visual Inspector below](#visual-inspector)
 
 ## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
 
@@ -98,7 +93,7 @@ fun trackSchemaFromEvent(eventName: String, eventProperties: JSONObject?): Map<S
 fun trackSchemaFromEvent(eventName: String, eventProperties: Map<String, *>?): Map<String, AvoEventSchemaType>
 ```
 
-Extracts event schema from event properties represented by the second parameter (`JSONObject` or Map<String, ?>) and sends the schema to **Avo** for analysis.
+Extracts event schema from event properties represented by the second parameter (`JSONObject` or `Map<String, ?>`) and sends the schema to **Avo** for analysis.
 
 > #### Parameters:
 >
@@ -178,7 +173,7 @@ It's handy to extract the schema from your event properties with `extractSchema(
 > }
 > ```
 
-See <Link passHref href="/inspector/sdk#standalone-usage"><a>this</a></Link> for details about event schema structure and schema types.
+See [this](/inspector/sdk#standalone-usage) for details about event schema structure and schema types.
 
 ## <a name="other-methods"></a>Other methods
 
@@ -243,7 +238,7 @@ static public void setBatchSize(int newBatchSize) // static method on AvoInspect
 fun setBatchSize(newBatchSize: Int) // static method on AvoInspector
 ```
 
-Enables manual control over events batching. Default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas. 
+Enables manual control over events batching. Default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas.
 In development batching is disabled by default.
 
 > #### Parameters:
@@ -268,7 +263,7 @@ Enables manual control over events batching. Default production batch flush inte
 
 ## <a name="visual-inspector"></a> Using the Visual Inspector
 
-Visual inspector is actually our <Link passHref href="/mobile-debuggers"><a>Mobile Debugger</a></Link> integrated in Avo Inspector SDK.
+Visual inspector is actually our [Mobile Debugger](/mobile-debuggers) integrated in Avo Inspector SDK.
 
 Visual Inspector is enabled in development and staging environments by default.
 
@@ -303,7 +298,7 @@ fun getVisualInspector(): Object?
 ```
 
 In the `:dev` dependency the returned object is a nullable `DebuggerManager`. In the `:prod` dependency it always returns null.
-See more about the DebuggerManager in it's <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/android-analytics-debugger">GitHub repo.</a>
+See more about the DebuggerManager in it's [GitHub repo](https://github.com/avohq/android-analytics-debugger).
 
 ## <a name="segment-middleware"></a>Auto inspection with Segment SDK
 
@@ -343,4 +338,4 @@ val analytics = Analytics.Builder(applicationContext, "SEGMENT_ANALYTICS_WRITE_K
     .build()
 ```
 
-See <a target="_blank" rel="noopener noreferrer" href="https://segment.com/docs/connections/sources/catalog/libraries/mobile/android/#middlewares">Segment android middleware docs</a> for more information.
+See [Segment android middleware docs](https://segment.com/docs/connections/sources/catalog/libraries/mobile/android/#middlewares) for more information.

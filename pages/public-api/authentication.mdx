@@ -1,12 +1,10 @@
----
-layout: 'guide'
-title: 'Authentication'
-abstract: 'Authentication for Avo API'
----
+import {Callout} from 'nextra/components'
 
-import Link from '../../components/Link';
+# Authentication
 
-> We are currently testing the Avo Public API and it's not yet in general availability. Reach out to us for access.
+_Authentication for Avo API_
+
+<Callout>We are currently testing the Avo Public API and it's not yet in general availability. Reach out to us for access.</Callout>
 
 Avo API uses `Basic authentication` to authenticate requests with Avo service accounts.
 
@@ -18,7 +16,7 @@ Authenticate with the API:
 
 1. Create Service Account
 
-   Start by <Link passHref href="/public-api/authentication#creating-service-accounts"><a>creating a Service Account</a></Link> and store the secret somewhere secure.
+   Start by [creating a Service Account](/public-api/authentication#creating-service-accounts) and store the secret somewhere secure.
 
 2. Authorization Header
 
@@ -36,54 +34,47 @@ Authenticate with the API:
    curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.app/workspaces/<WorkspaceId>/branches/<BranchId>/export/v1
    ```
 
-   > You can find the `<WorkspaceId>` and `<BranchId>` in the URL of your Avo workspace: `https://www.avo.app/schemas/<WorkspaceId>/branches/<BranchId>/`
+   <Callout>You can find the `<WorkspaceId>` and `<BranchId>` in the URL of your Avo workspace: `https://www.avo.app/schemas/<WorkspaceId>/branches/<BranchId>/`</Callout>
 
 ## Creating Service Accounts
 
 1. Navigate to your [Service Account Workspace Settings](https://www.avo.app/schemas/default?settings=service-accounts) or open the settings cogwheel in the Avo sidebar, select `Workspace Settings` and then open the `Service Accounts` tab.
 
-   > If you don't see the Service Account tab you might not have access yet. Reach out to us.
+   <Callout>If you don't see the Service Account tab you might not have access yet. Reach out to us.</Callout>
 
+   <br />
    <center>
-     <img src={require('../../images/public-api/service-accounts.png')} />
+     <img src={'/images/public-api/service-accounts.png'} />
    </center>
 
 2. Enter a descriptive name for where you'll be using this service account and press the `Generate Secret` button.
 
-   > Only workspace members with Admin access can create service accounts.
+   <Callout>Only workspace members with Admin access can create service accounts.</Callout>
 
 3. Once Avo has generated and securely stored your secret, you get one chance to view it. Copy the secret key and save it securely in your internal systems.
 
-   > Avo postfixes the name with `_sa_[randomId]` so make sure to copy the final name
+   <Callout>Avo postfixes the name with `_sa_[randomId]` so make sure to copy the final name</Callout>
 
+   <br />
    <center>
-     <img
-       src={require('../../images/public-api/create-service-account.png')}
-       width={411}
-     />
+     <img src={'/images/public-api/create-service-account.png'} width={411} />
    </center>
 
-   > You will never see the secret key again, so make sure to copy it.
+   <Callout>You will never see the secret key again, so make sure to copy it.</Callout>
 
 ## Deleting a Service Account
 
 If for some reason you need to delete your service account, you can do so from the service account management page.
 
-1. Navigate to your <Link passHref href="https://www.avo.app/schemas/default?settings=service-accounts"><a>Service Account Workspace Settings</a></Link> or open the settings cogwheel in the Avo sidebar, select `Workspace Settings` and then open the `Service Accounts` tab.
+1. Navigate to your [Service Account Workspace Settings](https://www.avo.app/schemas/default?settings=service-accounts) or open the settings cogwheel in the Avo sidebar, select `Workspace Settings` and then open the `Service Accounts` tab.
 
 2. Press the context menu to the right of the service account you want to remove and select `Delete Service Account`.
 
 3. Press `Delete` again in the confirm window that pops up.
 
-   > This action cannot be undone. Once deleted, there is no way to recover the service account again. As soon as a service account has been deleted it will stop working immediately.
+   <Callout>This action cannot be undone. Once deleted, there is no way to recover the service account again. As soon as a service account has been deleted it will stop working immediately.</Callout>
 
+   <br />
    <center>
-     <img
-       src={require('../../images/public-api/delete-service-account.png')}
-       width={416}
-     />
+     <img src={'/images/public-api/delete-service-account.png'} width={416} />
    </center>
-
-```
-
-```

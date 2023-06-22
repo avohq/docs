@@ -1,7 +1,4 @@
----
-layout: 'guide'
-title: 'Implementation Status'
----
+# Implementation Status
 
 import Link from '../../../components/Link';
 
@@ -9,23 +6,13 @@ When looking at from which sources an event is sent from in your Tracking Plan y
 
 Inside the indicator light is a letter, either "P" or "D", which represents "Production" or "Development" respectively. These indicators tell us where we are getting the data from. When looking at Inspector Implementation Status, we currently only provide production, with development and staging coming soon – let us know if you want to be part of the beta (at support@avo.app).
 
-<center>
-  <img
-    src={require('../../../images/workspace/tracking-plan/implementation-status.png')}
-    alt="Implementation status in a tracking plan"
-    width="75%"
-  />
-</center>
+![Implementation status in a tracking plan](/images/workspace/tracking-plan/implementation-status.png)
 
 The implementation status is twofold. If you're using Avo Codegen, you can see the state of implementation in your development environments (D). If you have Avo Inspector installed, you can see the state of implementation in your installed environments (P)(D)(S).
 
 ## Avo Codegen implementation status
 
-<img
-  src={require('../../../images/workspace/tracking-plan/functions-implementation-status.png')}
-  alt="Event always sent correctly using Avo Codegen"
-  width="50%"
-/>
+![Event always sent correctly using Avo Codegen](/images/workspace/tracking-plan/functions-implementation-status.png)
 
 Avo Codegen implementation status reports on how your Avo Codegen implementation is performing in development, compared to your Tracking Plan.
 
@@ -42,11 +29,7 @@ Learn more about <Link passHref href="/implementation/start-using-avo-codegen">h
 
 ### Production
 
-<img
-  src={require('../../../images/workspace/tracking-plan/inspector-implementation-status.png')}
-  alt="Event always sent correctly in a previous version"
-  width="50%"
-/>
+![Event always sent correctly in a previous version](/images/workspace/tracking-plan/inspector-implementation-status.png)
 
 Inspector implementation status reports on how your tracking implementation is performing in production, compared to your Tracking Plan. Note that Inspector implementation status can report on implementation status for all of your existing tracking code, and does not require the adoption of Avo Codegen to work.
 
@@ -76,11 +59,7 @@ We recommend using semantic versioning (e.g. "1.0.0") or other types of numeric 
 
 ### Development and Staging
 
-<img
-  src={require('../../../images/workspace/tracking-plan/dev-inspector-status.png')}
-  alt="Event never sent correctly with dev in the last 7d"
-  width="50%"
-/>
+![Event never sent correctly with dev in the last 7d](/images/workspace/tracking-plan/dev-inspector-status.png)
 
 Inspector implementation status can also report on how your tracking implementation is performing in dev and staging environments.
 
@@ -102,4 +81,4 @@ Based on these checks we report the implementation status using one of the follo
 
 > Inspector monitors events from all branches, so it may report 'Sometimes sent correctly' for events that have been correctly implemented on your branch if older versions are still being sent from other branches.
 
-Learn more about <Link passHref href="/implementation/avo-inspector-sdk-reference">how to install Inspector in this doc</Link>.
+Learn more about [how to install Inspector in this doc](/implementation/avo-inspector-sdk-reference).

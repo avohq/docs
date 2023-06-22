@@ -1,44 +1,56 @@
----
-layout: 'guide'
-title: 'Defining object properties'
----
+import { Callout } from 'nextra/components';
 
-import Link from '../../components/Link';
+# Defining object properties
 
-
-In your Avo Tracking Plan properties can have 5 different types, string, integer, float, boolean and object. Learn more about properties in general <Link passHref href="/workspace/tracking-plan/properties"><a>in this doc</a></Link>.
+In your Avo Tracking Plan properties can have 5 different types, string, integer, float, boolean and object. Learn more about properties in general [in this doc](/workspace/tracking-plan/properties).
 
 In this guide we'll go through the process of defining an object property, including constraints on its keys and values.
 
-> Note that the object type is currently behind a feature flag. Reach out to us if you want to start defining object properties in your tracking plan.
+<Callout>
+  The object type is currently behind a feature flag. Reach out to us if you
+  want to start defining object properties in your tracking plan.
+</Callout>
 
 ### Step 1: Set the property type to object
 
 Click the type dropdown in the property drawer and select "object"
 
 <center>
-  <img  src={require('../../images/workspace/tracking-plan/property-object-type.png')} />
+  <img src={'/images/workspace/tracking-plan/property-object-type.png'} />
 </center>
 
 ### Step 2: Define constraints on which keys and values the object should contain
 
 1. Click the "+ Add rule" button
-<center>
-  <img src={require('../../images/workspace/tracking-plan/property-add-rule.png')} />
-</center>
+
+   <center>
+     <img src={'/images/workspace/tracking-plan/property-add-rule.png'} />
+   </center>
 
 2. Add the properties you'd like to include in the object
-> All properties in Avo are shared globally throughout the tracking plan, this includes the sub-properties of object properties. You can <Link passHref href="/data-design/global-namespace"><a>learn more about the global namespace in Avo in this doc</a></Link>.
-<center>
-  <img src={require('../../images/workspace/tracking-plan/property-object-add-property.png')} />
-</center>
+   <Callout>
+     All properties in Avo are shared globally throughout the tracking plan,
+     this includes the sub-properties of object properties. You can [learn more
+     about the global namespace in Avo in this
+     doc](/data-design/global-namespace).
+   </Callout>
+   <center>
+     <img
+       src={'/images/workspace/tracking-plan/property-object-add-property.png'}
+     />
+   </center>
 
 ### Congrats, you've defined your first object property in Avo!
 
 <center>
-  <img src={require('../../images/workspace/tracking-plan/property-object-with-sub-properties.png')} />
+  <img
+    src={
+      '/images/workspace/tracking-plan/property-object-with-sub-properties.png'
+    }
+  />
 </center>
 
 ### What's next?
-- <Link passHref href="/data-design/pinned-properties"><a>Learn how to pin values of specific object keys in this guide on pinned properties</a></Link>
-- <Link passHref href="/workspace/tracking-plan/properties"><a>Learn more about properties in general</a></Link>
+
+- [Learn how to pin values of specific object keys in this guide on pinned properties](/data-design/pinned-properties)
+- [Learn more about properties in general](/workspace/tracking-plan/properties)

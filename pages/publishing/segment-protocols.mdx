@@ -1,15 +1,8 @@
----
-layout: 'guide'
-title: 'Segment Protocols'
-# abstract: 'Publishing your tracking plan to Segment Protocols'
----
+# Segment Protocols
 
-import Link from '../../components/Link';
+_Publishing your tracking plan to Segment Protocols_
 
-<img
-  src={require('../../images/publishing_protocols.svg')}
-  alt="Segment"
-/>
+![Segment Logo](/images/publishing_protocols.svg)
 
 ## Introduction
 
@@ -39,13 +32,13 @@ Here's how the Avo Tracking Plan is mapped to Protocols:
 
 #### Event
 
-- **Name**: The event name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the event for a Segment destination, the name defined by the name mapping is used here.
+- **Name**: The event name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the event for a Segment destination, the name defined by the name mapping is used here.
 - **Description**: This is the description as provided in Avo and list of triggers defined in Avo for each source
 - **Labels**: All tags attached to the event in Avo will be published to Protocols as labels, on the key:value format "[Avo tag]:avo"
 
 #### Event Property
 
-- **Name**: The property name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the property, the name defined by the name mapping is used here.
+- **Name**: The property name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the property, the name defined by the name mapping is used here.
 - **Description**: The property description as defined in Avo
 - **Type**: The property type and rules in Avo mapped to [JSON Schema](https://json-schema.org) compatible rules
 - **Required**: If the property is marked as "Always sent" in Avo it will be marked as required in Protocols
@@ -58,7 +51,7 @@ By default, all user properties that are attached to events that are sent from a
 
 Avo will not override any user properties (identify traits) that are only defined in Protocols, or user properties that are not included in the Protocols integration in Avo.
 
-- **Name**: The property name as defined in Avo. If <Link passHref href="/data-design/name-mapping"><a>name mapping</a></Link> is applied to the property, the name defined by the name mapping is used here. Note that event specific name mappings will not be applied because user properties are not event specific in Protocols.
+- **Name**: The property name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the property, the name defined by the name mapping is used here. Note that event specific name mappings will not be applied because user properties are not event specific in Protocols.
 - **Description**: The property description as defined in Avo
 - **Type**: The property type and rules in Avo mapped to [JSON Schema](https://json-schema.org) compatible rules
 - **Required**: If the property is marked as "Always sent" on all events in Avo, it will be marked as required in Protocols. Otherwise it will be marked as optional.
