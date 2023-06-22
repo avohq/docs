@@ -1,5 +1,3 @@
-import Link from '../../components/Link';
-
 # Getting started to implement tracking plan changes in code with Avo
 
 Data design on an Avo branch has been finished and it's time to implement new tracking in code.
@@ -8,27 +6,18 @@ Data design on an Avo branch has been finished and it's time to implement new tr
 
 First of all we recommend to open your Avo workspace and navigate to the branch you are about to implement, click *View changes* in the sidebar to access the diff for the changes in the branch. The diff is split in two, Tracking Plan Changes and Code Changes. The Tracking Plan Changes view is a summary of all changes to the items in the tracking plan and the Code Changes View represents the necessary code changes to start sending data according to the updated tracking plan.
 
-<img
-  src={'/images/implement/branch-changes-view-button-1.png'}
-  alt="Connections configuration"
-/>
-<center>
-  <i>Press `View changes` button</i>
-</center>
-<br />
+![Connections configuration](/images/implement/branch-changes-view-button-1.png)
+
+*Press `View changes` button*
 
 It's really valuable to understand what exactly needs to be tracked and clear all
 unknowns.
 
 We suggest using comments in the code changes view to ask for any clarification before starting to implement. 
 
-<img
-  src={'/images/code-changes/code-changes.png'}
-  width="100%"
-  alt="Overview of code changes"
-/>
+![Overview of code changes](/images/code-changes/code-changes.png)
 
-Read more on <Link passHref href="/workspace/code-changes">the branch changes view</Link>.
+Read more on [the branch changes view](/workspace/code-changes).
 
 ## Pull the new code with Avo CLI
 
@@ -74,18 +63,13 @@ avo pull --branch your_branch_name [SourceName]
 
 Now your Avo file will have the changes from the `your_branch_name` branch. Call all the new Avo Codegen functions in required places, update the new event properties. You can find a reference of all the code snippets required to implement your events in the `Codegen` tab.
 
-<img
-  src={'/images/workspace/nav-functions.png'}
-  alt="Connections configuration"
-/>
-<center>
-  <i>Codegen reference</i>
-</center>
-<br />
+![Connections configuration](/images/workspace/nav-functions.png)
+
+*Codegen reference*
 
 It might be useful to check the changes tab in your Avo workspace for overview while implementing.
 
-> If you are implementing the branch in multiple codebases we recommend you to read the <Link passHref href="/data-design/multiple-sources-on-avo-branches">Multiple sources on Avo branches</Link> guide.
+> If you are implementing the branch in multiple codebases we recommend you to read the [Multiple sources on Avo branches](/data-design/multiple-sources-on-avo-branches) guide.
 
 ## The most important part
 

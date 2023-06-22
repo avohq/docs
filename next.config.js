@@ -1,6 +1,7 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  basePath: '/docs',
 }
 
 const withNextra = require('nextra')({

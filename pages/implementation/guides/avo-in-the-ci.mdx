@@ -1,18 +1,16 @@
-import Link from '../../components/Link';
-
 # Avo in CI/CD
 
 The Avo CLI includes a command, `avo status` , which you can use ad-hoc or run in your CI to monitor that all expected analytics events are in fact implemented in your code.
 
 ## What is `avo status` ?
 
-When you implement your analytics events with <Link passHref href="/implementation/avo-codegen-overview">Avo Codegen</Link>, aka the type-safe analytics wrappers, you can run `avo status` to check where in your code base the analytics calls are made, or if they are missing.
+When you implement your analytics events with [Avo Codegen](/implementation/avo-codegen-overview), aka the type-safe analytics wrappers, you can run `avo status` to check where in your code base the analytics calls are made, or if they are missing.
 
 ## How does avo status work?
 
 - `avo status` runs through your code base, searches for instances Avo Codegen, and returns an error if there is no found instance of one or more of the analytics events that are marked as "Implement with Codegen" for this code base.
 - `avo status` searches in the folder where it's invoked and in the children subfolders. It requires Avo to be initialized in that folder, i.e. your `avo.json` file should be there.
-- It validates tracking calls implemented with <Link passHref href="/implementation/avo-codegen-overview">Avo Codegen</Link>, aka the Avo generated type-safe analytics wrappers.
+- It validates tracking calls implemented with [Avo Codegen](/implementation/avo-codegen-overview), aka the Avo generated type-safe analytics wrappers.
 - It will error if no instance of the event is found in your code. This means two things:
   1. It will not error if one tracking call instance is removed for a specific event, but there are still some tracking calls for this event remaining
   2. It will not error if the tracking call remains in a dead code path
