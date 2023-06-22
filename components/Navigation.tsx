@@ -458,7 +458,7 @@ const navigation: navigationItem[] = [
               },
               {
                 type: 'route',
-                title: 'Rudderstack Tracking Plans',
+                title: 'RudderStack Tracking Plans',
                 path: '/publishing/rudderstack',
               },
               {

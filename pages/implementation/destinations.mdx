@@ -3,27 +3,27 @@
 Destination Interface is a set of callback methods that you implement to route data from Avo to particular analytics destination in your client. Avo triggers specific methods when you call the functions from Codegen to send events, update user properties, identify users, etc.
 It provides the data ready to be sent to any analytics destination.
 
-You can use the destination interface with any analytics platform, please [contact usage](/help/troubleshooting) if you are unsure of what is
+You can use the destination interface with any analytics platform, please [contact](/help/troubleshooting) if you are unsure of what is
 the best solution for you.
 
 To get started using a destination interface you do the following:
 
-1. Create a [Destinationusage](/data-design/define-sources-and-destinations#destinations-1Destination) in the Connections tab
-2. Set the Destination Mode to Destination Interface in the [Codegen Setupusage](/data-design/define-sources-and-destinations#avo-codegen-setup) tab in your Source
+1. Create a [Destination](/data-design/define-sources-and-destinations#destinations-1Destination) in the Connections tab
+2. Set the Destination Mode to Destination Interface in the [Codegen Setup](/data-design/define-sources-and-destinations#avo-codegen-setup) tab in your Source
 3. Pull the updated code by doing `avo pull [--branch my-branch] [SourceName]` in the Avo CLI
-4. Initialize Avo with a custom destination ([view example for JavaScriptusage](/implementation/reference/javascript#destination-interface-example))
+4. Initialize Avo with a custom destination ([view example for JavaScript](/implementation/reference/javascript#destination-interface-example))
 5. Fill in the empty callback methods for sending the data to your analytics destination
 
 ## Destination Interface overview
 
-We will be referencing [\_Codegen_usage](/implementation/avo-codegen-overview), [\_events_usage](/workspace/tracking-plan/events), [\_actions_usage](/workspace/tracking-plan/events#a-nameactionsa-actions) and other Avo concepts in this document. Please read [the Tracking Plan docusage](/workspace/tracking-plan) and subdocs to get familiar with Avo concepts.
+We will be referencing _[Codegen](/implementation/avo-codegen-overview)_, _[events](/workspace/tracking-plan/events)_, _[actions](/workspace/tracking-plan/events#a-nameactionsa-actions)_ and other Avo concepts in this document. Please read [the Tracking Plan doc ](/workspace/tracking-plan) and subdocs to get familiar with Avo concepts.
 
-With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding [Codegenusage](/implementation/avo-codegen-overview) are called.
+With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding [Codegen](/implementation/avo-codegen-overview) are called.
 
 > Available event actions in Avo
 >
 > The callback methods mirror the Avo Actions you set up for given Avo Event in your tracking plan in your workspace.
-> Learn how to attach actions to events in [the Tracking Plan sectionusage](/workspace/tracking-plan/events#actions).
+> Learn how to attach actions to events in [the Tracking Plan section](/workspace/tracking-plan/events#actions).
 
 ### Destination Interface callback methods
 
@@ -39,7 +39,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a [Log Event actionusage](/workspace/tracking-plan/events#a-namelog-eventa-log-event) attached. This callback is invoked when an Avo function with Log Event action is called.
+- `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a [Log Event action](/workspace/tracking-plan/events#a-namelog-eventa-log-event) attached. This callback is invoked when an Avo function with Log Event action is called.
   Here you perform the actual event tracking, calling the track/log methods of your analytics destination. Event name and event properties are provided as parameters.
 
   ```pseudocode
@@ -49,7 +49,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `identify`: If you call an Avo Function for an event with the [Identify User actionusage](/workspace/tracking-plan/events#a-nameidentify-usera-identify-user) in the Tracking Plan, this callback will be invoked. When calling an Avo Function that includes the Identify User action you'll need to provide a user ID.
+- `identify`: If you call an Avo Function for an event with the [Identify User action](/workspace/tracking-plan/events#a-nameidentify-usera-identify-user) in the Tracking Plan, this callback will be invoked. When calling an Avo Function that includes the Identify User action you'll need to provide a user ID.
   The main use cases are signup and login.
   Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
 
@@ -60,7 +60,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `unidentify`: If you call an Avo Function for an event with the [Unidentify User actionusage](/workspace/tracking-plan/events#a-nameunidentify-usera-unidentify-user) in the Tracking Plan, this callback will be invoked.
+- `unidentify`: If you call an Avo Function for an event with the [Unidentify User action](/workspace/tracking-plan/events#a-nameunidentify-usera-unidentify-user) in the Tracking Plan, this callback will be invoked.
   Here you would call a destination SDK method to detach subsequent actions from the currently identified user.
 
   ```pseudocode
@@ -70,7 +70,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `revenue`: If you call an Avo Function for an event with the [Log Revenue actionusage](/workspace/tracking-plan/events#a-namelog-revenuea-log-revenue) in the Tracking Plan, this callback will be invoked.
+- `revenue`: If you call an Avo Function for an event with the [Log Revenue action](/workspace/tracking-plan/events#a-namelog-revenuea-log-revenue) in the Tracking Plan, this callback will be invoked.
   Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.
 
   > 💡 Note that if your destination does not support revenue tracking, you can leave this callback empty.
@@ -82,7 +82,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `page`: If you call an Avo Function for an event with the [Log Page Viewusage](/workspace/tracking-plan/events#a-namelog-page-viewa-log-page-view) action in the Tracking Plan, this callback will be invoked.
+- `page`: If you call an Avo Function for an event with the [Log Page View](/workspace/tracking-plan/events#a-namelog-page-viewa-log-page-view) action in the Tracking Plan, this callback will be invoked.
   Here you would report navigation to your analytics destination.
 
   > 💡 Note that if your destination does not support page/screen tracking, you can leave this callback empty.
@@ -94,7 +94,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `setUserProperties`: If you call an Avo Function for an event with the [Update User Properties actionusage](/workspace/tracking-plan/events#a-nameupdate-user-propsa-update-user-properties) in the Tracking Plan, this callback will be invoked.
+- `setUserProperties`: If you call an Avo Function for an event with the [Update User Properties action](/workspace/tracking-plan/events#a-nameupdate-user-propsa-update-user-properties) in the Tracking Plan, this callback will be invoked.
   Here you would attach user properties to the currently identified user in your analytics platform.
 
   > 💡 Note that if your destination does not support user properties / traits tracking, you can leave this callback empty.
@@ -106,7 +106,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `setGroupProperties`: You can update various group properties along with events in the Tracking Plan. If you call an Avo Function for an event with the [Update Groups actionusage](/workspace/tracking-plan/events#update-groups) in the Tracking Plan, this callback is invoked.
+- `setGroupProperties`: You can update various group properties along with events in the Tracking Plan. If you call an Avo Function for an event with the [Update Groups action](/workspace/tracking-plan/events#update-groups) in the Tracking Plan, this callback is invoked.
   Here you would update the properties for specified groups.
 
   > 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.

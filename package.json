@@ -1,6 +1,6 @@
 {
   "name": "avo-docs",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -10,9 +10,7 @@
     "spellcheck": "yarn mdspell 'pages/*.mdx' 'pages/*/*.mdx' 'pages/*/*/*.mdx' 'pages/*/*/*/*.mdx' --en-us -x -n -r",
     "fix-spelling": "yarn mdspell 'pages/*.mdx' 'pages/*/*.mdx' 'pages/*/*/*.mdx' 'pages/*/*/*/*.mdx' --en-us -x -n",
     "lint": "next lint",
-    "lint-mdx": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/mdxLint/index.ts",
-    "generate-sitemap": "ts-node -O '{ \"module\": \"commonjs\" }' --files util/generateSitemap.ts",
-    "_prepare": "husky install"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@segment/analytics-next": "^1.53.0",
@@ -32,6 +30,7 @@
     "@types/node": "20.3.1",
     "@types/react": "18.2.13",
     "@types/react-dom": "18.2.6",
+    "markdown-spellcheck": "^1.3.1",
     "avo": "^3.2.7",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.6",
