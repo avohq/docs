@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect } from 'react';
 import { AnalyticsBrowser } from '@segment/analytics-next';
 import { AppProps } from 'next/app';
+import { useRouter } from 'next/router';
 import mixpanel from 'mixpanel-browser';
 
 import Avo, { AvoEnv, CustomDestination } from '../Avo';
@@ -115,7 +116,22 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
     return () => {
       window.removeEventListener('copy', onCopy);
     };
-  }, []);
+  }, [path]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    Avo.docsPageViewed({
+      userId_: 'not-used',
+      path: path,
+      referrer: document.referrer,
+      utmCampaign: router.query.utm_campaign as string | undefined,
+      utmContent: router.query.utm_content as string | undefined,
+      utmMedium: router.query.utm_medium as string | undefined,
+      utmSource: router.query.utm_source as string | undefined,
+      utmTerm: router.query.utm_term as string | undefined,
+    });
+  }, [path]);
 
   return (
       <>

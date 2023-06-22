@@ -4,7 +4,7 @@ title: '4. Implement analytics events'
 
 import Link from '../../components/Link';
 import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
+import PageLink from '../../components/PageLink';
 
 import { FunctionComponent } from 'react';
 import Zoom from 'react-medium-image-zoom';
@@ -30,7 +30,7 @@ A typical implementation workflow looks like this:
     image='../../images/svg/analyticsmanager.svg'
     title="Branch Code Changes"
     description="Read more on using the branch code changes screen for a simple and accurate implementation"
-    callToAction={new CallToAction('/workspace/code-changes')}
+    href={('/workspace/code-changes')}
   />
 </div>
 
@@ -46,7 +46,7 @@ Learn more about Avo’s developer tools in Avo 101 for developers:
     image='../../images/svg/analyticsmanager.svg'
     title="Avo 101 for developers"
     description="Learn about Avo’s developer tools"
-    callToAction={new CallToAction('/implementation/devs-101')}
+    href={('/implementation/devs-101')}
   />
 </div>
 
@@ -64,7 +64,7 @@ If Avo Codegen haven’t been set up in your project yet, learn how to set them 
     image='../../images/svg/dev.svg'
     title="Avo Codegen overview"
     description="Start using Avo Codegen"
-    callToAction={new CallToAction('/implementation/start-using-avo-codegen')}
+    href={('/implementation/start-using-avo-codegen')}
   />
 </div>
 
@@ -76,6 +76,6 @@ If Avo Codegen haven’t been set up in your project yet, learn how to set them 
     image='../../images/svg/analyticsmanager.svg'
     title="5. Validate implementation"
     description="Learn how to validate implementation"
-    callToAction={new CallToAction('/workflow/validate')}
+    href={('/workflow/validate')}
   />
 </div>

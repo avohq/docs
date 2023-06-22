@@ -4,7 +4,7 @@ title: '3. Request implementation'
 
 import Link from '../../components/Link';
 import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
+import PageLink from '../../components/PageLink';
 
 import { FunctionComponent } from 'react';
 
@@ -34,7 +34,7 @@ You can copy a link to the branch review screen or even create a shared view ava
     image='../../images/svg/analyticsmanager.svg'
     title="Branch Code Changes"
     description="Using the branch code changes screen for a simple and accurate implementation"
-    callToAction={new CallToAction('/workspace/code-changes')}
+    href={('/workspace/code-changes')}
   />
 </div>
 
@@ -46,8 +46,7 @@ You can copy a link to the branch review screen or even create a shared view ava
     image='../../images/svg/analyticsmanager.svg'
     title="4. Implement analytics events"
     description="Learn how to implement analytics event"
-    callToAction={
-      new CallToAction('/workflow/implement')
+    href={('/workflow/implement')
     }
   />
 </div>

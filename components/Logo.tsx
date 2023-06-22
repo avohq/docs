@@ -8,8 +8,8 @@ interface LogoProps {
 }
 
 const Logo: FunctionComponent<LogoProps> = () => (
-  <Link href="/">
-    <a className={styles.container}>
+  <div className={styles.container}>
+    <Link href="/">
       <img
         alt="Avo logo"
         src={'/images/logo.svg'}
@@ -18,6 +18,7 @@ const Logo: FunctionComponent<LogoProps> = () => (
       />
       <span className={styles.text}>Documentation</span>
     </Link>
+  </div>
 );
 
 export default Logo;

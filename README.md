@@ -89,7 +89,3 @@ To catch spelling errors we rely on `mdspell` to set us straight. CI will use `y
 yarn run spellcheck     # Run spellcheck and gather errors
 yarn run fix-spelling   # Run spellcheck and fix errors one by one
 ```
-
-## Search
-
-We're using Algolia's free DocSearch. To update our scraping config send a pull request changing [avo.json](https://github.com/algolia/docsearch-configs/blob/master/configs/avo.json) in the DocSearch config repo. The documentation search index is updated every 24 hours.

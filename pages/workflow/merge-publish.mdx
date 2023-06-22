@@ -2,9 +2,7 @@
 title: '6. Merge branch and Publish'
 ---
 
-import Link from '../../components/Link';
-import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
+import PageLink from '../../components/PageLink';
 
 # Merge branch and Publish
 
@@ -16,17 +14,12 @@ We recommend merging your Avo branch after all related git branches containing t
 
 You can learn more about using Avo branches in a git workflow at scale here:
 
-<br />
-<div className={styles.row}>
-  <PageLink
-    image='../../images/svg/dev.svg'
-    title="Avo branches at a large scale"
-    description="​​Using Avo in large development teams with parallel workflows"
-    callToAction={
-      new CallToAction('/implementation/avo-and-git')
-    }
-  />
-</div>
+<PageLink
+  image="../../images/svg/dev.svg"
+  title="Avo branches at a large scale"
+  description="​​Using Avo in large development teams with parallel workflows"
+  href="/implementation/avo-and-git"
+/>
 
 ## Publish tracking plan updates to schema registries
 
@@ -36,19 +29,12 @@ You can configure Avo to auto-publish your tracking changes to your downstream s
 
 You can learn more about how to push or pull to keep schema registries in sync, including with publishing, here:
 
-<br />
-<div className={styles.row}>
-  <PageLink
-    image='../../images/svg/analyticsmanager.svg'
-    title="Publishing"
-    description="How to publish your tracking updates"
-    callToAction={
-      new CallToAction(
-        '/workspace/tracking-plan/publishing',
-      )
-    }
-  />
-</div>
+<PageLink
+  image="../../images/svg/analyticsmanager.svg"
+  title="Publishing"
+  description="How to publish your tracking updates"
+  href="/workspace/tracking-plan/publishing"
+/>
 
 ## You just completed the final step of the Avo workflow!
 
