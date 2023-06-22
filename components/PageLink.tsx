@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 
 import styles from './PageLink.module.scss';
-import Link from '../components/Link';
+import Link from 'next/link';
 import Image from 'next/image';
 
 interface Props {
