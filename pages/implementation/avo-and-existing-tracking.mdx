@@ -1,9 +1,6 @@
----
-layout: 'guide'
-title: 'Avo Codegen alongside existing tracking'
----
-
 import Link from '../../components/Link';
+
+# Avo Codegen alongside existing tracking
 
 You can safely keep raw tracking calls in your code when adopting Codegen. In this case we recommend to migrate gradually, following 2 steps below.
 
@@ -19,7 +16,7 @@ Mark the new events you want to implement with Avo Codegen as "Implement with Co
   />
 </center>
 
-Initiate Codegen with a <Link passHref href="/implementation/destinations#destination-interface-callback-methods"><a>destination interface</a></Link>.
+Initiate Codegen with a <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interface</Link>.
 
 In the track methods of the destination interface (logEvent, identify etc.) you use your existing tracking SDK instance to track events:
 

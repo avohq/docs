@@ -17,8 +17,7 @@ const Logo: FunctionComponent<LogoProps> = () => (
         style={{ cursor: 'pointer' }}
       />
       <span className={styles.text}>Documentation</span>
-    </a>
-  </Link>
+    </Link>
 );
 
 export default Logo;

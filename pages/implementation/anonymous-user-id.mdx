@@ -1,9 +1,6 @@
----
-layout: 'guide'
-title: 'Handling anonymous and identified users in the client and on the server'
----
-
 import Link from '../../components/Link';
+
+# Handling anonymous and identified users in the client and on the server
 
 ## User identity in the client side Codegen
 
@@ -25,7 +22,7 @@ To make an Avo function identify a user you add the Identify action to the corre
   href="/workspace/tracking-plan/events#a-nameidentify-usera-identify-user"
   passHref
 >
-  <a>Learn more about the Identify action.</a>
+  Learn more about the Identify action.
 </Link>
 
 Codegen corresponding to the events with Identify action will require a userId parameter automatically.
@@ -36,7 +33,7 @@ Codegen corresponding to the events with Identify action will require a userId p
 
 Server side Codegen does not have a way to maintain user identity.
 That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Codegen.
-An optional `anonymousUserId` parameter is available on demand in all server languages, <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you need to use it and don't see it in your Codegen.
+An optional `anonymousUserId` parameter is available on demand in all server languages, <Link passHref href="/help/troubleshooting">contact us</Link> if you need to use it and don't see it in your Codegen.
 
 ### Identified users
 

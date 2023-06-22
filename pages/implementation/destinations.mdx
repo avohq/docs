@@ -1,34 +1,31 @@
----
-layout: 'guide'
-title: 'Destinations in Avo Codegen'
----
-
 import Link from '../../components/Link';
+
+# Destinations in Avo Codegen
 
 Destination Interface is a set of callback methods that you implement to route data from Avo to particular analytics destination in your client. Avo triggers specific methods when you call the functions from Codegen to send events, update user properties, identify users, etc.
 It provides the data ready to be sent to any analytics destination.
 
-You can use the destination interface with any analytics platform, please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
+You can use the destination interface with any analytics platform, please <Link passHref href="/help/troubleshooting">contact us</Link> if you are unsure of what is
 the best solution for you.
 
 To get started using a destination interface you do the following:
 
-1. Create a <Link passHref href="/data-design/define-sources-and-destinations#destinations-1Destination"><a>Destination</a></Link> in the Connections tab
-2. Set the Destination Mode to Destination Interface in the <Link passHref href="/data-design/define-sources-and-destinations#avo-codegen-setup"><a>Codegen Setup</a></Link> tab in your Source
+1. Create a <Link passHref href="/data-design/define-sources-and-destinations#destinations-1Destination">Destination</Link> in the Connections tab
+2. Set the Destination Mode to Destination Interface in the <Link passHref href="/data-design/define-sources-and-destinations#avo-codegen-setup">Codegen Setup</Link> tab in your Source
 3. Pull the updated code by doing `avo pull [--branch my-branch] [SourceName]` in the Avo CLI
-4. Initialize Avo with a custom destination (<Link passHref href="/implementation/reference/javascript#destination-interface-example"><a>view example for JavaScript</a></Link>)
+4. Initialize Avo with a custom destination (<Link passHref href="/implementation/reference/javascript#destination-interface-example">view example for JavaScript</Link>)
 5. Fill in the empty callback methods for sending the data to your analytics destination
 
 ## Destination Interface overview
 
-We will be referencing <Link passHref href="/implementation/avo-codegen-overview"><a>_Codegen_</a></Link>, <Link passHref href="/workspace/tracking-plan/events"><a>_events_</a></Link>, <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>_actions_</a></Link> and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan"><a>the Tracking Plan doc</a></Link> and subdocs to get familiar with Avo concepts.
+We will be referencing <Link passHref href="/implementation/avo-codegen-overview">_Codegen_</Link>, <Link passHref href="/workspace/tracking-plan/events">_events_</Link>, <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">_actions_</Link> and other Avo concepts in this document. Please read <Link passHref href="/workspace/tracking-plan">the Tracking Plan doc</Link> and subdocs to get familiar with Avo concepts.
 
-With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-codegen-overview"><a>Codegen</a></Link> are called.
+With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding <Link passHref href="/implementation/avo-codegen-overview">Codegen</Link> are called.
 
 > Available event actions in Avo
 >
 > The callback methods mirror the Avo Actions you set up for given Avo Event in your tracking plan in your workspace.
-> Learn how to attach actions to events in <Link passHref href="/workspace/tracking-plan/events#actions"><a>the Tracking Plan section</a></Link>.
+> Learn how to attach actions to events in <Link passHref href="/workspace/tracking-plan/events#actions">the Tracking Plan section</Link>.
 
 ### Destination Interface callback methods
 
@@ -44,7 +41,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a <Link passHref href="/workspace/tracking-plan/events#a-namelog-eventa-log-event"><a>Log Event action</a></Link> attached. This callback is invoked when an Avo function with Log Event action is called.
+- `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a <Link passHref href="/workspace/tracking-plan/events#a-namelog-eventa-log-event">Log Event action</Link> attached. This callback is invoked when an Avo function with Log Event action is called.
   Here you perform the actual event tracking, calling the track/log methods of your analytics destination. Event name and event properties are provided as parameters.
 
   ```pseudocode
@@ -54,7 +51,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `identify`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-nameidentify-usera-identify-user"><a>Identify User action</a></Link> in the Tracking Plan, this callback will be invoked. When calling an Avo Function that includes the Identify User action you'll need to provide a user ID.
+- `identify`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-nameidentify-usera-identify-user">Identify User action</Link> in the Tracking Plan, this callback will be invoked. When calling an Avo Function that includes the Identify User action you'll need to provide a user ID.
   The main use cases are signup and login.
   Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
 
@@ -65,7 +62,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `unidentify`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-nameunidentify-usera-unidentify-user"><a>Unidentify User action</a></Link> in the Tracking Plan, this callback will be invoked.
+- `unidentify`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-nameunidentify-usera-unidentify-user">Unidentify User action</Link> in the Tracking Plan, this callback will be invoked.
   Here you would call a destination SDK method to detach subsequent actions from the currently identified user.
 
   ```pseudocode
@@ -75,7 +72,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `revenue`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-namelog-revenuea-log-revenue"><a>Log Revenue action</a></Link> in the Tracking Plan, this callback will be invoked.
+- `revenue`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-namelog-revenuea-log-revenue">Log Revenue action</Link> in the Tracking Plan, this callback will be invoked.
   Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.
 
   > 💡 Note that if your destination does not support revenue tracking, you can leave this callback empty.
@@ -87,7 +84,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `page`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-namelog-page-viewa-log-page-view"><a>Log Page View</a></Link> action in the Tracking Plan, this callback will be invoked.
+- `page`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-namelog-page-viewa-log-page-view">Log Page View</Link> action in the Tracking Plan, this callback will be invoked.
   Here you would report navigation to your analytics destination.
 
   > 💡 Note that if your destination does not support page/screen tracking, you can leave this callback empty.
@@ -99,7 +96,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `setUserProperties`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-nameupdate-user-propsa-update-user-properties"><a>Update User Properties action</a></Link> in the Tracking Plan, this callback will be invoked.
+- `setUserProperties`: If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#a-nameupdate-user-propsa-update-user-properties">Update User Properties action</Link> in the Tracking Plan, this callback will be invoked.
   Here you would attach user properties to the currently identified user in your analytics platform.
 
   > 💡 Note that if your destination does not support user properties / traits tracking, you can leave this callback empty.
@@ -111,7 +108,7 @@ With a destination interface you'll get access to callback methods for all the A
   }
   ```
 
-- `setGroupProperties`: You can update various group properties along with events in the Tracking Plan. If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#update-groups"><a>Update Groups action</a></Link> in the Tracking Plan, this callback is invoked.
+- `setGroupProperties`: You can update various group properties along with events in the Tracking Plan. If you call an Avo Function for an event with the <Link passHref href="/workspace/tracking-plan/events#update-groups">Update Groups action</Link> in the Tracking Plan, this callback is invoked.
   Here you would update the properties for specified groups.
 
   > 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.
@@ -156,140 +153,140 @@ each of the supported languages:
       passHref
       href="/implementation/reference/javascript#destination-interface-example"
     >
-      <a>JavaScript</a>
+      JavaScript
     </Link>
   - <Link
       passHref
       href="/implementation/reference/typescript#destination-interface-example"
     >
-      <a>TypeScript</a>
+      TypeScript
     </Link>
   - <Link
       passHref
       href="/implementation/reference/rescript#destination-interface-example"
     >
-      <a>Rescript</a>
+      Rescript
     </Link>
   - <Link
       passHref
       href="/implementation/reference/reasonml#destination-interface-example"
     >
-      <a>ReasonML</a>
+      ReasonML
     </Link>
 - Mobile
   - iOS
     - <Link
-        passHref
-        href="/implementation/reference/objc#destination-interface-example"
-      >
-        <a>Objective-C</a>
-      </Link>
+  passHref
+  href="/implementation/reference/objc#destination-interface-example"
+>
+  Objective-C</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/swift#destination-interface-example"
-      >
-        <a>Swift</a>
-      </Link>
+  passHref
+  href="/implementation/reference/swift#destination-interface-example"
+>
+  Swift</a>
+</Link>
   - Android
     - <Link
-        passHref
-        href="/implementation/reference/java#destination-interface-example"
-      >
-        <a>Java</a>
-      </Link>
+  passHref
+  href="/implementation/reference/java#destination-interface-example"
+>
+  Java</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/kotlin#destination-interface-example"
-      >
-        <a>Kotlin</a>
-      </Link>
+  passHref
+  href="/implementation/reference/kotlin#destination-interface-example"
+>
+  Kotlin</a>
+</Link>
   - React Native
     - <Link
-        passHref
-        href="/implementation/reference/javascript#destination-interface-example"
-      >
-        <a>JavaScript</a>
-      </Link>
+  passHref
+  href="/implementation/reference/javascript#destination-interface-example"
+>
+  JavaScript</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/typescript#destination-interface-example"
-      >
-        <a>TypeScript</a>
-      </Link>
+  passHref
+  href="/implementation/reference/typescript#destination-interface-example"
+>
+  TypeScript</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/rescript#destination-interface-example"
-      >
-        <a>Rescript</a>
-      </Link>
+  passHref
+  href="/implementation/reference/rescript#destination-interface-example"
+>
+  Rescript</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/reasonml#destination-interface-example"
-      >
-        <a>ReasonML</a>
-      </Link>
+  passHref
+  href="/implementation/reference/reasonml#destination-interface-example"
+>
+  ReasonML</a>
+</Link>
 - Backend
   - Node.js
     - <Link
-        passHref
-        href="/implementation/reference/javascript#destination-interface-example"
-      >
-        <a>JavaScript</a>
-      </Link>
+  passHref
+  href="/implementation/reference/javascript#destination-interface-example"
+>
+  JavaScript</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/typescript#destination-interface-example"
-      >
-        <a>TypeScript</a>
-      </Link>
+  passHref
+  href="/implementation/reference/typescript#destination-interface-example"
+>
+  TypeScript</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/rescript#destination-interface-example"
-      >
-        <a>Rescript</a>
-      </Link>
+  passHref
+  href="/implementation/reference/rescript#destination-interface-example"
+>
+  Rescript</a>
+</Link>
     - <Link
-        passHref
-        href="/implementation/reference/reasonml#destination-interface-example"
-      >
-        <a>ReasonML</a>
-      </Link>
+  passHref
+  href="/implementation/reference/reasonml#destination-interface-example"
+>
+  ReasonML</a>
+</Link>
   - <Link
       passHref
       href="/implementation/reference/java#destination-interface-example"
     >
-      <a>Java</a>
+      Java
     </Link>
   - <Link
       passHref
       href="/implementation/reference/php#destination-interface-example"
     >
-      <a>PHP</a>
+      PHP
     </Link>
   - <Link
       passHref
       href="/implementation/reference/python#destination-interface-example"
     >
-      <a>Python</a>
+      Python
     </Link>
   - <Link
       passHref
       href="/implementation/reference/ruby#destination-interface-example"
     >
-      <a>Ruby</a>
+      Ruby
     </Link>
   - <Link
       passHref
       href="/implementation/reference/csharp#destination-interface-example"
     >
-      <a>C#</a>
+      C#
     </Link>
 - Game Engines
   - <Link
       passHref
       href="/implementation/reference/csharp#destination-interface-example"
     >
-      <a>C#</a>
+      C#
     </Link>
 
 ## Snowplow destination interface
@@ -330,23 +327,23 @@ In each callback you would do a specific action, that maps directly to the Snowp
 ### Implementation instructions
 
 - <Link passHref href="/implementation/reference/kotlin#snowplow-interface">
-    <a>Kotlin</a>
+    Kotlin
   </Link>
 - <Link passHref href="/implementation/reference/swift#snowplow-interface">
-    <a>Swift</a>
+    Swift
   </Link>
 - <Link passHref href="/implementation/reference/javascript#snowplow-interface">
-    <a>JavaScript</a>
+    JavaScript
   </Link>
 - <Link passHref href="/implementation/reference/typescript#snowplow-interface">
-    <a>TypeScript</a>
+    TypeScript
   </Link>
 
 ## Avo Managed destination (legacy)
 
 When using some language + destination combinations you can pick Avo managed destination approach.
 
-If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: `Log Event`, `Update User Properties`, `Identify User`, `Unidentify User`, `Log Revenue`, `Log Page View`, `Update Groups`, will be handled by the <Link passHref href="/implementation/avo-codegen-overview"><a>Codegen in the Avo generated code</a></Link>.
+If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: `Log Event`, `Update User Properties`, `Identify User`, `Unidentify User`, `Log Revenue`, `Log Page View`, `Update Groups`, will be handled by the <Link passHref href="/implementation/avo-codegen-overview">Codegen in the Avo generated code</Link>.
 
 - Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specified environment when you initialize Avo
 - **Log Event**: Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call.
@@ -359,4 +356,4 @@ If you choose Avo to manage your destination, you'll still have to include the d
 - **Associate user with Group**: Avo will associate current user with the specified group when an Avo event with the 'Update Groups' action is triggered.
 - **Update Groups Properties**: Avo will update specified group metadata when an Avo event with the 'Update Groups' action is triggered.
 
-> Learn more about Avo actions and how to attach them to events in <Link passHref href="/workspace/tracking-plan/events#actions"><a>the Tracking Plan section</a></Link>.
+> Learn more about Avo actions and how to attach them to events in <Link passHref href="/workspace/tracking-plan/events#actions">the Tracking Plan section</Link>.

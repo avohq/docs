@@ -1,15 +1,12 @@
----
-layout: 'guide'
-title: 'Avo Codegen overview'
----
-
 import Link from '../../components/Link';
+
+# Avo Codegen overview
 
 ## What is Codegen
 
 Codegen produces type safe code for implementing analytics. 
 
-- The "data designer" specifies the event structure in the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link>, and which platforms should send the event
+- The "data designer" specifies the event structure in the <Link passHref href="/workspace">Avo Tracking Plan</Link>, and which platforms should send the event
 - then the developer who implements analytics can use Codegen to implement the analytics calls per each analytics event
 
 ## Why use Codegen
@@ -29,7 +26,7 @@ Adopting Codegen is not required to get value from Avo - many companies have the
 Avo is designed to be efficient and powerful without the Codegen, providing advanced tracking plan management and observability with Inspector. 
 The decision to use Codegen is usually in the hands of the engineering team on each platform. If you prefer to use a different approach for implementing your tracking code Avo can still help you by providing a platform to collaborate and align on the tracking specs, and by providing clear specs for the suggested tracking changes.
 
-Learn more in the <Link passHref href="/implementation/start-using-avo-codegen"><a>Codegen setup docs</a></Link>.
+Learn more in the <Link passHref href="/implementation/start-using-avo-codegen">Codegen setup docs</Link>.
 
 ## How does Codegen work
 
@@ -37,9 +34,9 @@ Codegen works with any analytics tool, whether it's any of the common event logg
 
 When designing the tracking plan you configure the list of data destinations for each source. In the generated code each destination is represented as its own Destination Interface in the initAvo method. This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
 
-In the Avo Tracking Plan you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
+In the Avo Tracking Plan you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">actions</Link> should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
 
-Learn more in the <Link passHref href="/implementation/avo-codegen-tech-deep-dive"><a>Codegen tech deep dive docs</a></Link>.
+Learn more in the <Link passHref href="/implementation/avo-codegen-tech-deep-dive">Codegen tech deep dive docs</Link>.
 
 ## Does my event data flow through Avo servers?
 
