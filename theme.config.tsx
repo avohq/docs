@@ -2,14 +2,15 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { DocsThemeConfig } from 'nextra-theme-docs';
+import SignIn from './components/SignIn';
 
 const config: DocsThemeConfig = {
   logo: (
     <Image alt="Avo logo" src="/docs/images/logo.svg" height={21} width={60} />
   ),
-  logoLink: "https://www.avo.app/",
+  logoLink: 'https://www.avo.app/',
   useNextSeoProps: () => ({
-    titleTemplate: '%s - Avo Docs'
+    titleTemplate: '%s - Avo Docs',
   }),
   project: {
     link: 'https://github.com/avohq/docs',
@@ -33,7 +34,10 @@ const config: DocsThemeConfig = {
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },
-  "primaryHue": 324,
+  primaryHue: 324,
+  navbar: {
+    extraContent: <SignIn />,
+  },
 };
 
 export default config;
