@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Quickstart: Tracking Plan in Avo
 
 Managing a tracking plan is hard. You have to make sure it's kept up to date to what is actually being tracked, make sure existing events and properties are reused where relevant, make sure new events and properties match with the naming conventions you have in place, communicating changes and collect feedback from the team, share implementation instructions with developers, and so on.
@@ -14,7 +16,7 @@ In this guide we'll walk through the process of setting up your tracking plan in
 
 Head to our [onboarding flow](https://avo.app/onboarding) and setup a new workspace.
 
-> 💡 If you already have an Avo workspace, you can skip this step.
+<Callout type="info" emoji="💡">If you already have an Avo workspace, you can skip this step.</Callout>
 
 ### Step 2: Import your existing tracking plan
 
@@ -33,7 +35,11 @@ If you have an existing tracking plan that you want to import, you can do so by 
 
 You can import a tracking plan from any of the following sources: Excel or Google Sheets (.csv), Mixpanel Lexicon or Amplitude Govern. Learn more about the available import formats in the [importing docs](/workspace/tracking-plan/importing). If you have your tracking plan on a format that's currently not supported by the tracking plan importer, [reach out](/workspace/tracking-plan/importing) to us and we'll import it for you.
 
-> 💡 If you don't have an existing tracking plan, or if you just want to start fresh, you can skip this step. No worries, you can always import your existing tracking plan later.
+<Callout type="info" emoji="💡">
+  If you don't have an existing tracking plan, or if you just want to start
+  fresh, you can skip this step. No worries, you can always import your existing
+  tracking plan later.
+</Callout>
 
 ### Step 3: Create a new branch and start making changes
 
@@ -122,7 +128,11 @@ When you're colleague has joined the workspace you can add them as a collaborato
 Branch collaborators can review all changes made on the branch, give feedback and approve the branch.
 
 <center>
-  <img width="450" src={'/docs/images/branch-review.png'} alt="Approving a branch" />
+  <img
+    width="450"
+    src={'/docs/images/branch-review.png'}
+    alt="Approving a branch"
+  />
 </center>
 
 ## What's next?

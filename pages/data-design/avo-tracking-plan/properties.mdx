@@ -39,9 +39,9 @@ Group properties describe the state of a group you defined previously.
 
 Similar to User properties, this information is usually relevant in a larger scope than for exactly that event.
 
-<Callout>
-  When should I use Groups and Group Properties? [Read more here about how
-  Group Properties work and why they may be the right choice for you
+<Callout type="info">
+  When should I use Groups and Group Properties? [Read more here about how Group
+  Properties work and why they may be the right choice for you
   ](/data-design/groups) .
 </Callout>
 
@@ -68,11 +68,11 @@ You can create Group Types either from the Properties screen or from the
 
 and fill in name and description of your Group Type.
 
-<Callout emoji="💡">
-  Each Group Type will need an ID for association (e.g. `Workspace` :
-  `Avo`). If you would like to strictly define possible ids for a type (e.g.
-  `Role` : [one of `Admin`, `Editor`, `Viewer`, etc.] you can choose `Property
-  Id should match one of` and define your possibilities.
+<Callout type="info" emoji="💡">
+  Each Group Type will need an ID for association (e.g. `Workspace` : `Avo`). If
+  you would like to strictly define possible ids for a type (e.g. `Role` : [one
+  of `Admin`, `Editor`, `Viewer`, etc.] you can choose `Property Id should match
+  one of` and define your possibilities.
 </Callout>
 
 #### Creating Group properties
@@ -139,7 +139,10 @@ An example event property bundle could be "Product" containing the following pro
 - Product Price
 - Product Quantity
 
-> 💡 A property can only belong to a single bundle. That's to avoid a conflict between bundles when using Avo Codegen
+<Callout type="info" emoji="💡">
+  A property can only belong to a single bundle. That's to avoid a conflict
+  between bundles when using Avo Codegen
+</Callout>
 
 ## <a name="property-types-and-constraints"></a> Property types and constraints
 
@@ -200,7 +203,9 @@ When these rules are applied on the property, the generated avo code will make s
 
 #### Source specific allowed values
 
-> Source specific property rules are available on the Team plan.
+<Callout type="info">
+  Source specific property rules are available on the Team plan.
+</Callout>
 
 When a property is sent from multiple sources, you can configure from which sources each value is allowed to be sent.
 

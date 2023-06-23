@@ -1,6 +1,7 @@
-# Implementation Status
-
+import { Callout } from 'nextra/components';
 import Link from 'next/link';
+
+# Implementation Status
 
 When looking at from which sources an event is sent from in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
 
@@ -47,7 +48,13 @@ Based on these checks we report the implementation status using one of the follo
 - Event has never been seen in the latest version, last seen in version [version number] where it was [always, sometimes or never] sent correctly
 - Never seen this even
 
-> Note that since Inspector does only process your event metadata, and not customer data such as property values, it can not validate property value rules such as matches, min and max. However, it does validate property types, so if a property is defined as int in your tracking plan but is being sent as string, Inspector implementation status will highlight that issue.
+<Callout type="info">
+  Note that since Inspector does only process your event metadata, and not
+  customer data such as property values, it can not validate property value
+  rules such as matches, min and max. However, it does validate property types,
+  so if a property is defined as int in your tracking plan but is being sent as
+  string, Inspector implementation status will highlight that issue.
+</Callout>
 
 #### App versions
 
@@ -66,7 +73,7 @@ Inspector implementation status can also report on how your tracking implementat
 However, because app version is rarely updated when working in dev environments, multiple versions of an event can exist between different branches
 that belong to the same app version. For that reason, instead of focusing on App version in dev and staging, each event is filtered by a time window (7d).
 
-> Time window will be editable in future release
+<Callout type="info">Time window will be editable in future release</Callout>
 
 For each source we check the following for all events in your Tracking Plan:
 
@@ -79,6 +86,10 @@ Based on these checks we report the implementation status using one of the follo
 - Event is sometimes sent correctly
 - Event is never sent correctly
 
-> Inspector monitors events from all branches, so it may report 'Sometimes sent correctly' for events that have been correctly implemented on your branch if older versions are still being sent from other branches.
+<Callout type="info">
+  Inspector monitors events from all branches, so it may report 'Sometimes sent
+  correctly' for events that have been correctly implemented on your branch if
+  older versions are still being sent from other branches.
+</Callout>
 
 Learn more about [how to install Inspector in this doc](/implementation/avo-inspector-sdk-reference).

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Callout } from 'nextra/components'
 
 # Avo Inspector SDKs
 
@@ -8,24 +9,23 @@ Avo Inspector SDK is designed to be small and easy to include in any project.
 
 **Table of Contents**
 
-- <a href="#platform-docs">Platform documentation</a>
-- <a href="#standalone-usage">Usage overview</a>
-- <a href="#supported-types">Supported event schema types</a>
-- <a href="#batching">Batching</a>
-- <a href="#segment-middleware">
-    Easy setup with Segment SDK on Android and iOS
-  </a>
+- [Platform documentation](#platform-docs)
+- [Usage overview](#standalone-usage)
+- [Supported event schema types](#supported-types)
+- [Batching](#batching)
+- [Easy setup with Segment SDK on Android and iOS](#segment-middleware)
+  
 
 ## <a name="platform-docs"></a> Platform documentation
 
-- <Link passHref href="/implementation/inspector/sdk/ios">iOS</Link>
-- <Link passHref href="/implementation/inspector/sdk/android">Android</Link>
-- <Link passHref href="/implementation/inspector/sdk/web">Web</Link>
-- <Link passHref href="/implementation/inspector/sdk/react-native">React Native</Link>
-- <Link passHref href="/implementation/inspector/sdk/node">Node.js</Link>
-- <Link passHref href="/implementation/inspector/sdk/dart">Flutter</Link>
-- <Link passHref href="/implementation/inspector/sdk/java">Java</Link>
-- <Link passHref href="/implementation/inspector/sdk/go">Go</Link>
+- [iOS](/implementation/inspector/sdk/ios)
+- [Android](/implementation/inspector/sdk/android)
+- [Web](/implementation/inspector/sdk/web)
+- [React Native](/implementation/inspector/sdk/react-native)
+- [Node.js](/implementation/inspector/sdk/node)
+- [Flutter](/implementation/inspector/sdk/dart)
+- [Java](/implementation/inspector/sdk/java)
+- [Go](/implementation/inspector/sdk/go)
 
 ## <a name="standalone-usage"></a> Usage overview
 
@@ -45,7 +45,7 @@ The printed logs are the following, in the chronological order:
 - `Avo Inspector: events ...`: before sending the data it prints the list of event schemas that are going to be sent 
 - `Avo Inspector: batch sent successfully.`: when the event schemas are successfully sent
 
-> When setting up Inspector make sure that you see the `Avo Inspector: batch sent successfully` log. That means that your setup is most likely correct.
+<Callout type="info">When setting up Inspector make sure that you see the `Avo Inspector: batch sent successfully` log. That means that your setup is most likely correct.</Callout>
 
 ## <a name="batching"></a> Batching
 

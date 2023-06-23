@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Callout } from 'nextra/components';
 
 # Avo Codegen technical deep dive
 
@@ -12,9 +13,18 @@ We generate the files and you can download them either with <Link passHref href=
 First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another.
 The generated file is the best source of truth when looking for implementation details.
 
-> You should never have to make changes to the Avo generated file. If you find yourself in the situation where you have to edit the file please <Link passHref href="/help/troubleshooting">contact us</Link>.
+<Callout type="info">
+  You should never have to make changes to the Avo generated file. If you find
+  yourself in the situation where you have to edit the file please [contact
+  us](/help/troubleshooting).
+</Callout>
 
-> Make sure all the events you want to implement using Codegen have the source attached to it, where "Implement with Codegen" has been checked. Learn more about how to [configure events in your tracking plan here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
+<Callout type="info">
+  Make sure all the events you want to implement using Codegen have the source
+  attached to it, where "Implement with Codegen" has been checked. Learn more
+  about how to [configure events in your tracking plan
+  here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
+</Callout>
 
 ### Avo Command Line Interface
 
@@ -113,7 +123,10 @@ The keys are set up in the Avo web UI and automatically fetched by Codegen, so y
 
 Codegen produces actual callable functions generated for events defined in your tracking plan.
 
-> On some server platforms Codegen produces functions which are async, e.g. on Node.js they return a Promise and on C# you can await on the function
+<Callout type="info">
+  On some server platforms Codegen produces functions which are async, e.g. on
+  Node.js they return a Promise and on C# you can await on the function
+</Callout>
 
 For example if you have an event defined with name `App Opened` connected to your source, Codegen interface will look like
 
@@ -132,11 +145,14 @@ public func App Opened(
 
 Each event in your tracking plan added to Codegen creates an event function that is a code generated wrapper that prepares and routes the event tracking data to your analytics SDK tracking libraries. Each event function can wrap multiple tracking methods, such as logging events, identifying users, updating user properties, etc. The default tracking method is to log an event. To configure which tracking methods each Avo Function wraps, you change or add "Action Types" on the event in your Avo Tracking Plan.
 
-> 💡 **Read more about actions and supported tracking methods:**
->
-> Read about <Link passHref href="/workspace/tracking-plan/events#actions">available Actions and how they work in the tracking plan</Link>.
->
-> Learn how <Link passHref href="/implementation/destinations">you can implement supported tracking methods in your destinations</Link>.
+<Callout type="info" emoji="📖">
+**Read more about actions and supported tracking methods:**
+
+Read about [available Actions and how they work in the tracking plan](/workspace/tracking-plan/events#actions).
+
+Learn how [you can implement supported tracking methods in your destinations](/implementation/destinations).
+
+</Callout>
 
 #### <a name="avo-generated-file-func-parameters"></a> Property types
 
@@ -177,7 +193,12 @@ string properties: a finite list of allowed string values
 int and float properties: a minimum and maximum value
 object properties: exact structure of the allowed keys and types of values in the object
 
-> Avo can add helper parameters that are not defined in the tracking plan, but are known to be required to make that specific call, for example in server environments Avo usually adds a userId parameter to each function, so server can provide user id to the analytics tracking services.
+<Callout type="info">
+  Avo can add helper parameters that are not defined in the tracking plan, but
+  are known to be required to make that specific call, for example in server
+  environments Avo usually adds a userId parameter to each function, so server
+  can provide user id to the analytics tracking services.
+</Callout>
 
 #### What's happening inside Codegen?
 
