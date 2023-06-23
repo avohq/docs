@@ -3,6 +3,7 @@ import { FunctionComponent } from 'react';
 import styles from './PageLink.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTheme } from 'nextra-theme-docs';
 
 interface Props {
   title: string;
@@ -17,6 +18,8 @@ const PageLink: FunctionComponent<Props> = ({
   image,
   href,
 }) => {
+  let { theme } = useTheme();
+
   return (
     <Link scroll={true} href={href}>
       <div className={styles.root}>
@@ -26,10 +29,25 @@ const PageLink: FunctionComponent<Props> = ({
           </div>
         )}
         <div className={styles.text}>
-          <div className={styles.title}>{title}</div>
-          <div className={styles.description}>{description}</div>
+          <div
+            className={styles.title}
+            style={theme === 'dark' ? { color: 'white' } : {}}
+          >
+            {title}
+          </div>
+          <div
+            className={styles.description}
+            style={theme === 'dark' ? { color: 'rgb(229, 231, 235)' } : {}}
+          >
+            {description}
+          </div>
           <div className={styles.callToAction}>
-            <span style={{ textDecoration: 'none', color: 'grey' }}>
+            <span
+              style={{
+                textDecoration: 'none',
+                color: theme === 'dark' ? 'lightGrey' : 'grey',
+              }}
+            >
               {'Read '}
             </span>
           </div>
