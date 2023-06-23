@@ -92,9 +92,10 @@ const config: DocsThemeConfig = {
     titleTemplate: '%s - Avo Docs',
   }),
   project: {
-    link: 'https://github.com/avohq/docs',
+    link: 'https://github.com/avohq',
   },
   docsRepositoryBase: 'https://github.com/avohq/docs/tree/main',
+  head: <></>,
   footer: {
     text: (
       <Link href="/help/troubleshooting">
