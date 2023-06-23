@@ -6,7 +6,7 @@ _Learn about the properties in your tracking plan_
 
 Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, users or groups that describe the state of the user or the product at the time of the event. Avo allows you to define event, group, user and system properties - each category described below.
 
-## <a name="property-defintion"></a> Property Definition
+## Property Definition
 
 A property is defined in the event details within the relevant [actions](/workspace/tracking-plan/events#a-nameactionsa-actions) or in the properties view.
 
@@ -19,7 +19,7 @@ A property is defined in the event details within the relevant [actions](/worksp
 - The [constraints](/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints) defined for the property values (optional but highly recommended)
 - The [name mappings](/data-design/name-mapping) the property name is mapped to when sending to specific destinations (optional)
 
-## <a name="event-properties"></a> Event properties
+## Event properties
 
 Event properties describe the current state of your product at the time of the
 event.
@@ -33,7 +33,7 @@ relevant for that specific event, when you analyze your data. You might be want 
 
 Event properties are sent with the event in the [event call](/workspace/tracking-plan/events#a-namelog-eventa-log-event).
 
-## <a name="group-properties"></a> Group properties
+## Group properties
 
 Group properties describe the state of a group you defined previously.
 
@@ -90,7 +90,7 @@ and fill in name and description of your Group property.
 Groups and Group Properties should then be available from the `Update Groups`
 action.
 
-## <a name="user-properties"></a> User Properties
+## User Properties
 
 User properties describe the state of your user. It is information that is
 usually relevant in a larger scope than for exactly that event.
@@ -110,7 +110,7 @@ along with your events when they actually change.
 
 User properties are updated with the [Update User Properties](/workspace/tracking-plan-actionvents#a-nameupdate-user-propsa-update-user-properties).
 
-## <a name="system-properties"></a> System properties
+## System properties
 
 System properties represent information that's relevant for all events that you send, and yet
 do not describe the state of the user.
@@ -127,7 +127,7 @@ App", "Android App", etc.
 
 System properties are set in the Avo.initAvo() function. They can be updated with `Avo.setSystemProperties()` if needed, but otherwise the values persist during the lifecycle of the application.
 
-## <a name="property-bundles"></a> Event property bundles
+## Event property bundles
 
 Event property bundles are a way to bundle two or more related event properties to quickly and consistently add them to all related events. You can create event property bundles from the [event property bundles screen in your Avo workspace](https://www.avo.app/schemas/default/properties/bundles).
 
@@ -144,7 +144,7 @@ An example event property bundle could be "Product" containing the following pro
   between bundles when using Avo Codegen
 </Callout>
 
-## <a name="property-types-and-constraints"></a> Property types and constraints
+## Property types and constraints
 
 In the property modal for event, user and system properties you need to define the type of the values allowed for the property. That definition is used to validate the property.
 
@@ -164,7 +164,7 @@ Properties values can also be a list of the above mentioned types:
 - `[true, false, true, true, false]`
 - `[{'key1': 'value1'}, {'key2': 'value2'}]`
 
-## <a name="property-presence-configuration"></a> Configuring when Properties are required or optional
+## Configuring when Properties are required or optional
 
 You can configure when Properties are required on a per-event and per-source basis. That means Avo will not give you an error if that property is missing from an event or source which the property is attached to, in other words it will sometimes be sent.
 
@@ -188,7 +188,7 @@ For configuring per-event and per-source you can change the overall setting for 
   />
 </center>
 
-## <a name="property-enums"></a> Enumeration of allowed string values
+## Enumeration of allowed string values
 
 Properties of type string can have rules that require the property to be a certain value or one of allowed values.
 When these rules are applied on the property, the generated avo code will make sure that these values are only being sent.
@@ -230,7 +230,7 @@ This makes sure that the property is replaced in all events where it is used.
   />
 </center>
 
-## <a name="mixpanel-super-properties"></a> Mixpanel Super Properties
+## Mixpanel Super Properties
 
 The closest equivalent to Mixpanel's Super properties are Avo System Properties. The difference: Mixpanel Super Properties persist on the device, while Avo System Properties persist in a session. All the Mixpanel Super Properties use cases can be achieved with manual usage of cookies/local storage + Avo System Properties.
 
@@ -239,7 +239,7 @@ You would have two options for this:
 - Case 1: If you don't need persistence across sessions: You can replace Mixpanel Super Properties with Avo System Properties.
 - Case 2: If you need persistence across sessions: You would maintain the data in cookies/local storage, retrieve it when the app starts and provide the values when initializing Avo or before calling Avo functions.
 
-## <a name="snowplow-objects"></a> Snowplow Contexts
+## Snowplow Contexts
 
 To set up a Snowplow object, the property has to be attached to an event that is being sent to Snowplow. This can be configured in the source configuration of an event. Then you can create a property and set it's type to an object. When you do that, then the option appears on the property to make it a Snowplow context. When you check that box, the code will be generated such that the object is converted to a Snowplow object.
 You would need to define the schema id at this stage.

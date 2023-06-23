@@ -67,7 +67,7 @@ func trackAppOpened(appOpenedEvent: Dictionary<String, Any>) {
 
 > Bonus: this docs you are reading [are open sourced](https://github.com/avohq/docs), if you find anything wrong or missing, please open a pull request or an issue!
 
-#### <a name="batching"></a> Batching
+#### Batching
 
 In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. In production, default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads. In development batching is disabled by default. You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlushSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
 

@@ -1,10 +1,10 @@
 # Avo Inspector Java SDK
 
-## <a name="quick-start"></a>Quick Start Guide
+## Quick Start Guide
 
 Find the Quick Start Guide in our <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/java-avo-inspector">GitHub repo.</a>
 
-## <a name="installation"></a>Installation
+## Installation
 
 We host the library on JitPack.io, so
 
@@ -28,7 +28,7 @@ dependencies {
 
 Use the latest GitHub release tag to get the latest version of the library.
 
-## <a name="import"></a>Import
+## Import
 
 ```java
 import is.avo.inspector.AvoEventSchemaType;
@@ -36,7 +36,7 @@ import is.avo.inspector.AvoInspector;
 import is.avo.inspector.AvoInspectorEnv;
 ```
 
-## <a name="initialization"></a>Initialization
+## Initialization
 
 Obtain the API key in Inspector tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app</a> workspace.
 
@@ -53,7 +53,7 @@ public AvoInspector(@NotNull String apiKey, @NotNull String appVersion, @NotNull
 > - `String appName` - application name
 > - `AvoInspectorEnv env` - current environment: AvoInspectorEnv.Dev, AvoInspectorEnv.Staging or AvoInspectorEnv.Prod
 
-## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
+## Sending event schemas to Avo Inspector
 
 This is the core of the **Avo Inspector SDK**.
 
@@ -129,7 +129,7 @@ It's handy to extract the schema from your event properties with `extractSchema(
 
 See [this](/inspector/sdk#standalone-usage) for details about event schema structure and schema types.
 
-## <a name="other-methods"></a>Other methods
+## Other methods
 
 ### 1. Extract schema from event properties
 

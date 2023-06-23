@@ -9,7 +9,7 @@ An event represents something that a user does or that happens in response to th
 [Tracking Plan Guide: How to Pick Your Events and Properties](https://www.avo.app/blog/tracking-plan-guide-how-to-pick-your-events-and-properties)
 
 
-## <a name="event-defintion"></a> Event Definition
+## Event Definition
 
 An event is defined in the Events section of the Tracking plan and can be organized into categories. The definition of an event includes:
 
@@ -36,7 +36,7 @@ Add all sources you want the event to be sent from to the event in Avo. If you w
 
 ![The sources the event should be sent from](/docs/images/workspace/tracking-plan/event-sources.png)
 
-## <a name="actions"></a> Actions
+## Actions
 
 Actions is Avo's umbrella term over all the tracking methods the analytics platforms offer, such as logging events, updating user properties, logging revenue, etc. In your Avo tracking plan you can configure which actions (tracking methods) should be triggered. Actions can be triggered on their own or together, for example it's common to update user properties along with logging an event.
 
@@ -83,7 +83,7 @@ Below is a list of possible actions, followed by a more detailed overview of eac
    groups and/or updates group properties. Adding users to groups will link them
    in all subsequent calls.
 
-#### <a name="log-event"></a> Log Event
+#### Log Event
 
 Logging an event is the fundamental action for behavioral analytics. An event describes an action that a user does in your application or something that happens for them. Additional information about the action, event properties, can be logged with the event.
 
@@ -95,7 +95,7 @@ Here's how sending and event called "Signup Completed" would look like:
 Avo.signupStarted({ authenticationMethod: 'Facebook', email: 'hi@avo.sh' });
 ```
 
-#### <a name="log-event-with-groups"></a> Log Event with Groups
+#### Log Event with Groups
 
 When associating the event with groups you can imply that the event is linked
 with a group. This would typically be done if only certain actions of the user
@@ -107,7 +107,7 @@ analytics platform:
 - **Amplitude**: [logEventWithGroups](https://developers.amplitude.com/docs/javascript#user-groups)
 - **Mixpanel**: [track_with_groups](https://developer.mixpanel.com/docs/javascript-full-api-reference#mixpaneltrack_with_groups)
 
-#### <a name="identify-user"></a> Identify User
+#### Identify User
 
 The Identify User action should be used when you want to identify users from your
 system in your analytics platform. This would typically be on done when users
@@ -124,7 +124,7 @@ In the Codegen when the Identify User action is selected, Avo will require a use
 - **Mixpanel**: [identify](https://help.mixpanel.com/hc/en-us/articles/360000865566-Set-up-Your-Tracking#user-and-identity-management)
 - **Fullstory**: Call [identify](https://help.fullstory.com/develop-js/identify?from_search=30537829)
 
-#### <a name="unidentify-user"></a> Unidentify User
+#### Unidentify User
 
 The Unidentify User action should be used when you want to unidentify users from
 your system in your analytics platform. This would typically be done when users
@@ -141,7 +141,7 @@ Below is a list of Unidentify User methods used for each supported analytics pla
 - **Mixpanel**: [identify](https://help.mixpanel.com/hc/en-us/articles/360000865566-Set-up-Your-Tracking#user-and-identity-management) with User Id as null
 - **Fullstory**: [identify](https://help.fullstory.com/develop-js/identify?from_search=30537829) with User Id as false
 
-#### <a name="update-user-props"></a> Update User Properties
+#### Update User Properties
 
 The Update User Properties action is used when the state of the user in your analytics platform should be updated. User properties are often updated at the same time as logging an event but they can also be updated independently.
 
@@ -179,7 +179,7 @@ analytics platform:
 
 <Callout type="info" emoji="💡">Note that **Segment** always links the user to a group when updating group properties.</Callout>
 
-#### <a name="log-revenue"></a> Log Revenue
+#### Log Revenue
 
 It's recommended to add the Log Revenue action with events that represent a successful purchase, such as `Purchase Completed`
 
@@ -187,7 +187,7 @@ It's recommended to add the Log Revenue action with events that represent a succ
 
 Below are details for what Avo Codegen automatically does for each analytics platform.
 
-##### <a name="revenue-amplitude"></a> Amplitude
+##### Amplitude
 
 For the Amplitude destination, Avo will add 4 event properties that match the
 [Amplitude logRevenue
@@ -202,7 +202,7 @@ with the prefix "Amplitude: ".
 Call logRevenueV2 with these properties as well as all other event properties,
 and then call logEvent.
 
-##### <a name="revenue-segment"></a> Segment
+##### Segment
 
 For the Segment destination, Avo Codegen will add 2 event properties that match the
 [Segment revenue properties](https://segment.com/docs/spec/track/#properties)
@@ -221,7 +221,7 @@ Enums are currently not supported on Android and iOS.
 Call track with the Segment revenue properties set in the correct keys to make
 sure that Segment recognizes the event as a Revenue event.
 
-##### <a name="revenue-mixpanel"></a> Mixpanel
+##### Mixpanel
 
 For the Mixpanel destination, Avo will add 1 event property that matches the
 [Mixpanel track_charge
@@ -233,7 +233,7 @@ with the prefix "Mixpanel: ".
 Call people.track_charge with the price and all additional event properties and
 then call track
 
-#### <a name="log-page-view"></a> Log Page View
+#### Log Page View
 
 Add the Log Page View action to include page tracking on web and screen tracking on mobile. 
 

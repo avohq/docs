@@ -3,7 +3,7 @@ import { Callout } from 'nextra/components';
 
 # Avo Codegen technical deep dive
 
-## <a name="avo-generated-file"></a> Avo generated file with event tracking functions
+## Avo generated file with event tracking functions
 
 The Avo generated code is the representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events.
 For example if you set up an iOS/Swift source the generated code will be in a `.swift` file.
@@ -54,7 +54,7 @@ Make sure to check the `avo.json` file in to your source control to keep the Avo
 
 Learn more about the CLI <Link passHref href="/implementation/cli">here</Link>.
 
-### <a name="avo-generated-file-init"></a> Initialization
+### Initialization
 
 First thing you need to do after importing the generated file is to initialize Avo.
 There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. <Link passHref href="/help/troubleshooting">Contact us</Link> if you want to change the setup.
@@ -96,7 +96,7 @@ Read more about property types later in the <Link passHref href="/implementation
 - `avoLogger` (not shown in the example) - custom logger implementation to control logs logic. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers">More about custom loggers</Link>.
 - `inspector` (not shown in the example) - instance of Avo Inspector to automatically send Codegen data to Avo Inspector (on the supported platforms)
 
-### <a name="avo-generated-file-init-inside"></a> What's inside the initAvo method / Avo constructor?
+### What's inside the initAvo method / Avo constructor?
 
 There are a few things happening, like setting the flags, system properties and reporting implementation status in development mode to the Avo servers, so you can check whether the event has ever been successfully invoked in development, on the Avo website.
 
@@ -141,7 +141,7 @@ public func App Opened(
     userId: String?) {...}
 ```
 
-#### <a name="avo-generated-file-supported-tracking-methods"></a> Supported tracking methods (Avo Actions)
+#### Supported tracking methods (Avo Actions)
 
 Each event in your tracking plan added to Codegen creates an event function that is a code generated wrapper that prepares and routes the event tracking data to your analytics SDK tracking libraries. Each event function can wrap multiple tracking methods, such as logging events, identifying users, updating user properties, etc. The default tracking method is to log an event. To configure which tracking methods each Avo Function wraps, you change or add "Action Types" on the event in your Avo Tracking Plan.
 
@@ -154,7 +154,7 @@ Learn how [you can implement supported tracking methods in your destinations](/i
 
 </Callout>
 
-#### <a name="avo-generated-file-func-parameters"></a> Property types
+#### Property types
 
 At this point you would notice that the parameters can have various types.
 

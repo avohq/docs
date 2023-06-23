@@ -3,7 +3,9 @@
 - <a href="#missing-usual-property-in-event">Property sometimes missing</a>
 - <a href="#event-property-type-inconsistency">Property type mismatch</a>
 - <a href="#unextpected-event">Unexpected event – not in tracking plan</a>
-- <a href="#missing-usual-property-in-event">Unexpected property – not in tracking plan</a>
+- <a href="#missing-usual-property-in-event">
+    Unexpected property – not in tracking plan
+  </a>
 - <a href="#event-is-not-present-on-some-platforms">
     Event missing on some platforms (coming soon)
   </a>
@@ -22,73 +24,75 @@
     Global property type mismatch (coming soon)
   </a>
 
-### <a name="missing-usual-property-in-event"></a>Property sometimes missing
+### Property sometimes missing
 
 There are two cases of this issue type:
+
 - When a property is required in the tracking plan but sometimes or always missing
 - Property not found in tracking plan but sometimes missing
 
 _**Example:** Property onboarding status is not sent with 30% of the App Opened event._
 
-### <a name="event-property-type-inconsistency"></a>Property type mismatch
+### Property type mismatch
 
 Detects type changes of event properties across tracking calls.
 
 There are two cases of this issue type:
+
 - More than one property value type seen
 - Property value type different from tracking plan
 
 _**Example:** Inconsistent type of property onboarding status on event App Opened: int (84%), string (16%)._
 
-### <a name="unextpected-event"></a>Unexpected event
+### Unexpected event
 
 Alert when an event that is not defined in the tracking plan is detected by Inspector
 
 _**Example:** Event Signup Completedd not found in Tracking Plan._
 
-### <a name="unextpected-property"></a>Unexpected property
+### Unexpected property
 
 Alert when an property that is not defined in the tracking plan is detected by Inspector
 
 _**Example:** Property authenticationMethod not found in Tracking Plan._
 
-### <a name="event-is-not-present-on-some-platforms"></a>Event missing on some platforms (coming soon)
+### Event missing on some platforms (coming soon)
 
 Detects events sent by one platform, but not sent by another. Can be a sign of missing tracking calls.
 
 _**Example:** iOS sends App Opened event, but Android does not._
 
-### <a name="property-missing-on-some-platforms"></a>Property missing on some platforms (coming soon)
+### Property missing on some platforms (coming soon)
 
 Detects properties sent by one platform, but not sent by another.
 
 _**Example:** iOS sends user id with the App Opened event, but Android does not._
 
-### <a name="event-volume-change-between-versions"></a>Event volume change significant between versions (coming soon)
+### Event volume change significant between versions (coming soon)
 
 Detects significant changes in event volume between app versions.
 
 _**Example:** Volume of event App Opened drop by 25% between versions v1.3.2 and v1.3.3 on iOS_
 
-### <a name="significant-volume-mismatch-between-platforms"></a>Event volume significantly different between platforms (coming soon)
+### Event volume significantly different between platforms (coming soon)
 
 Detects events sent way more frequently by one platform versus another adjusted for sessions number. Can be a sign of duplicated or missing tracking calls.
 
 _**Example:** iOS is sending 10x more volume per session than Android of the App Opened event._
 
-### <a name="event-name-casing"></a>Event name casing (coming soon)
+### Event name casing (coming soon)
 
 Detects event names spelled in undesirable casing.
 
 _**Example:** Event open_app is snake case, expected title case (Open App)._
 
-### <a name="property-name-casing"></a>Property name casing (coming soon)
+### Property name casing (coming soon)
 
 Detects property names spelled in undesirable casing.
 
 _**Example:** The property onboarding_status on event App Opened is snake_case, expected camel case (onboardingStatus)._
 
-### <a name="global-property-type-inconsistency"></a>Global property type mismatch (coming soon)
+### Global property type mismatch (coming soon)
 
 Detects properties with identical names and different types across all registered event schemas.
 
@@ -108,31 +112,31 @@ _**Example:** Inconsistent type of property revenue on events Purchase Completed
     Missing property based on property bundle pattern
   </a>
 
-### <a name="similar-event-names"></a>Similar event names
+### Similar event names
 
 Detects similar event names, that can point to duplicate tracking.
 
 _**Example:** Potentially multiple events describing the same user action: App Opened, App Open, open_app + 2 more events._
 
-### <a name="event-similar-property-names"></a>Similar property names within event
+### Similar property names within event
 
 Detects similar property names in a single event.
 
 _**Example:** Potentially multiple versions of the same property: onboarding_status, onboardingStatus, and Onboarding State._
 
-### <a name="property-expected-type-mismatch"></a>Unexpected type based on property name
+### Unexpected type based on property name
 
 Detects when a property name that is often associated with a specific type has some other type.
 
 _**Example:** Revenue property is string type (expected to be a number)._
 
-### <a name="global-similar-property-names"></a>Global similar property names (low)
+### Global similar property names (low)
 
 Detects similar property names across all registered event schemas.
 
 _**Example:** Potentially multiple versions of the same property: onboarding_status, onboardingStatus, and Onboarding State._
 
-### <a name="missing-usual-property-in-similar-events"></a>Missing property based on property bundle pattern
+### Missing property based on property bundle pattern
 
 Detects missing property in a bundle of similarly looking properties.
 

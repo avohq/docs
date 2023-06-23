@@ -2,11 +2,11 @@
 
 [Package on Pub.dev](https://pub.dev/packages/avo_inspector)
 
-## <a name="quick-start"></a>Quick Start Guide
+## Quick Start Guide
 
 Find the Quick Start Guide in our [GitHub repo](https://github.com/avohq/flutter-avo-inspector/tree/improve-score).
 
-## <a name="installation"></a> Installation
+##  Installation
 
 With Flutter:
 
@@ -21,7 +21,7 @@ dependencies:
   avo_inspector: ^0.9.9
 ```
 
-## <a name="import"></a>Import
+## Import
 
 Now in your Dart code, you can use:
 
@@ -29,7 +29,7 @@ Now in your Dart code, you can use:
 import 'package:avo_inspector/avo_inspector.dart';
 ```
 
-## <a name="initialization"></a>Initialization
+## Initialization
 
 Obtain the API key in Inspector tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app workspace</a>.
 
@@ -50,7 +50,7 @@ AvoInspector avoInspector = await AvoInspector.create(
 > - `appVersion` - your application version. Some Inspector features rely on versioning and you need to provide a comparable string here to get value from them. We recommend using semantic versioning or integers that are incremented in every release.
 > - `appName` - your application name. Optional; Provide it to make it easier to distinguish between data from different apps.
 
-## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
+## Sending event schemas to Avo Inspector
 
 This method gets the actual tracking event parameters, extracts the schema automatically and sends it to Avo Inspector backend. Just call this method at the same place you call your analytics tools' track methods with the same parameters.
 

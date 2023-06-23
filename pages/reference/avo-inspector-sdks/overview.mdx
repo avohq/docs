@@ -16,7 +16,7 @@ Avo Inspector SDK is designed to be small and easy to include in any project.
 - [Easy setup with Segment SDK on Android and iOS](#segment-middleware)
   
 
-## <a name="platform-docs"></a> Platform documentation
+## Platform documentation
 
 - [iOS](/implementation/inspector/sdk/ios)
 - [Android](/implementation/inspector/sdk/android)
@@ -27,11 +27,11 @@ Avo Inspector SDK is designed to be small and easy to include in any project.
 - [Java](/implementation/inspector/sdk/java)
 - [Go](/implementation/inspector/sdk/go)
 
-## <a name="standalone-usage"></a> Usage overview
+## Usage overview
 
 Find in <Link passHref href="/implementation/avo-inspector-overview">Avo Inspector overview</Link> guide.
 
-## <a name="logs"></a> Logs
+## Logs
 
 You can enable or disable logs with a method on the `AvoInspector` class (the interface may vary depending on platform, see <a href="#platform-docs">platform specific documentation</a> above)
 
@@ -47,13 +47,13 @@ The printed logs are the following, in the chronological order:
 
 <Callout type="info">When setting up Inspector make sure that you see the `Avo Inspector: batch sent successfully` log. That means that your setup is most likely correct.</Callout>
 
-## <a name="batching"></a> Batching
+## Batching
 
 In order to ensure our SDK doesn't have a large impact on performance or battery life it supports event schemas batching. In production, default values are 30 schemas per batch and smaller batches are sent if more than 30 seconds pass between uploads.
 In development batching is disabled by default.
 You can change the values using `AvoInspector.setBatchSize(newBatchSize: Int)` and `AvoInspector.setBatchFlushSeconds(newBatchFlushSeconds: Int)` class methods to fine tune the library performance.
 
-## <a name="versions"></a> App versions
+## App versions
 
 When initializing Inspector SDK you'll be prompted to provide the current app version. Providing correct app version is not required, but doing so significantly improves Inspector issue reporting. By providing app version Inspector is able to tell in what version an issue was first seen, and in what version the issue was fixed. Versions also allow Inspector to report more accurately on the implementation status of your events, by focusing on the implementation status in your latest app version for every source.
 
@@ -72,7 +72,7 @@ Examples of bad app versions:
 Don't have versioning for your app in place? Reach out to us and we'll help you set up versioning in your app.
 
 
-## <a name="segment-middlewares"></a> Easy setup with Segment SDK on Android and iOS
+## Easy setup with Segment SDK on Android and iOS
 
 If you are using **Segment Analytics** for tracking integrating **_Avo Inspector SDK_** is even easier.
 

@@ -1,10 +1,10 @@
 # Avo Inspector Web SDK
 
-## <a name="quick-start"></a>Quick Start Guide
+## Quick Start Guide
 
 Find the Quick Start Guide in our <a target="_blank" rel="noopener noreferrer" href="https://github.com/avohq/js-avo-inspector">GitHub repo.</a>
 
-## <a name="installation"></a>1. Installation
+## 1. Installation
 
 ### Installation option 1: NPM / Yarn
 
@@ -14,13 +14,13 @@ Inspector library is available through npm. Run the following command to install
 $ npm install avo-inspector
 ```
 
-##### <a name="import"></a>Import
+##### Import
 
 ```ts
 import * as Inspector from 'avo-inspector';
 ```
 
-##### <a name="initialization"></a>Initialization
+##### Initialization
 
 Obtain the API key in the Sources tab in your <a target="_blank" rel="noopener noreferrer" href="https://www.avo.app/welcome">Avo.app</a> workspace.
 
@@ -95,7 +95,7 @@ Make sure to update `__API_KEY__`, `__ENV__`, `__VERSION__` and `__APP_NAME__` b
 
 > Warning! This step is not enough to connect Avo Inspector. Make sure to proceed to step 2 to complete your setup.
 
-## <a name="event-tracking"></a>2. Send event schemas to Avo Inspector
+## 2. Send event schemas to Avo Inspector
 
 This is the core of the **Avo Inspector SDK**.
 
@@ -165,7 +165,7 @@ It's handy to extract the schema from your event properties with `extractSchema`
 >
 > See supported schema types [here](/inspector/sdk#supported-types).
 
-## <a name="other-methods"></a>Other methods
+## Other methods
 
 #### 1. Extract schema from event properties
 
@@ -228,7 +228,7 @@ Enables manual control over events batching. The default production batch flush 
 >
 > - `int newBatchFlushSeconds` - sets batch flush time in seconds.
 
-## <a name="web-workers"></a>Using in web workers
+## Using in web workers
 
 The Web SDK maintains some shared state across the tracking calls and stores the data for batching, which makes it not suitable for web workers usage.
 

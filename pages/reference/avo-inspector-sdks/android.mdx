@@ -1,10 +1,10 @@
 # Avo Inspector Android SDK
 
-## <a name="quick-start"></a>Quick Start Guide
+## Quick Start Guide
 
 Find the Quick Start Guide in our [GitHub repo](https://github.com/avohq/android-avo-inspector).
 
-## <a name="installation"></a>Installation
+## Installation
 
 We host the library on JitPack.io, so
 
@@ -30,7 +30,7 @@ dependencies {
 
 Use the latest GitHub release tag to get the latest version of the library.
 
-## <a name="proguard"></a>ProGuard
+## ProGuard
 
 If you are using ProGuard add the following line to your proguard rules file:
 
@@ -38,7 +38,7 @@ If you are using ProGuard add the following line to your proguard rules file:
 -keep class app.avo.** { *; }
 ```
 
-## <a name="import"></a>Import
+## Import
 
 ```java
 import app.avo.inspector.AvoInspector;
@@ -50,7 +50,7 @@ import app.avo.inspector.AvoInspector
 import app.avo.inspector.AvoInspectorEnv
 ```
 
-## <a name="initialization"></a>Initialization
+## Initialization
 
 Obtain the API key in Inspector tab in your [Avo.app](https://www.avo.app/welcome) workspace.
 
@@ -73,7 +73,7 @@ class AvoInspector(apiKey: String?, application: Application?, env: AvoInspector
 
 [More about the Visual Inspector below](#visual-inspector)
 
-## <a name="event-tracking"></a>Sending event schemas to Avo Inspector
+## Sending event schemas to Avo Inspector
 
 This is the core of the **Avo Inspector SDK**.
 
@@ -175,7 +175,7 @@ It's handy to extract the schema from your event properties with `extractSchema(
 
 See [this](/inspector/sdk#standalone-usage) for details about event schema structure and schema types.
 
-## <a name="other-methods"></a>Other methods
+## Other methods
 
 ### 1. Extract schema from event properties
 
@@ -261,7 +261,7 @@ Enables manual control over events batching. Default production batch flush inte
 >
 > - `int newBatchFlushSeconds` - sets batch flush time in seconds.
 
-## <a name="visual-inspector"></a> Using the Visual Inspector
+##  Using the Visual Inspector
 
 Visual inspector is actually our [Mobile Debugger](/mobile-debuggers) integrated in Avo Inspector SDK.
 
@@ -300,7 +300,7 @@ fun getVisualInspector(): Object?
 In the `:dev` dependency the returned object is a nullable `DebuggerManager`. In the `:prod` dependency it always returns null.
 See more about the DebuggerManager in it's [GitHub repo](https://github.com/avohq/android-analytics-debugger).
 
-## <a name="segment-middleware"></a>Auto inspection with Segment SDK
+## Auto inspection with Segment SDK
 
 Here is a code snippet you can use to easily integrate with **Segment**.
 After registering the middleware schemas of all the events sent to **Segment** will automatically be sent to **Avo**, i.e. you don't need to call `trackSchemaFromEvent` or `trackSchema` methods.
