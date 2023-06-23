@@ -18,7 +18,7 @@ const PageLink: FunctionComponent<Props> = ({
   image,
   href,
 }) => {
-  let { theme } = useTheme();
+  let { resolvedTheme } = useTheme();
 
   return (
     <Link scroll={true} href={href}>
@@ -31,13 +31,15 @@ const PageLink: FunctionComponent<Props> = ({
         <div className={styles.text}>
           <div
             className={styles.title}
-            style={theme === 'dark' ? { color: 'white' } : {}}
+            style={resolvedTheme === 'dark' ? { color: 'white' } : {}}
           >
             {title}
           </div>
           <div
             className={styles.description}
-            style={theme === 'dark' ? { color: 'rgb(229, 231, 235)' } : {}}
+            style={
+              resolvedTheme === 'dark' ? { color: 'rgb(229, 231, 235)' } : {}
+            }
           >
             {description}
           </div>
@@ -45,7 +47,7 @@ const PageLink: FunctionComponent<Props> = ({
             <span
               style={{
                 textDecoration: 'none',
-                color: theme === 'dark' ? 'lightGrey' : 'grey',
+                color: resolvedTheme === 'dark' ? 'lightGrey' : 'grey',
               }}
             >
               {'Read '}
