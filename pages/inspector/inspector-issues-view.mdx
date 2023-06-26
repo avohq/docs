@@ -1,0 +1,271 @@
+# Inspector Issues View
+
+*How to use the Inspector Issues view*
+
+The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter issues to uncover those relevant to you and gives you the overview and information needed to prioritize which of them to act on.
+
+<center>
+  <img
+    src={'/docs/images/inspector/inspector-issues-default.png'}
+    width="100%"
+    alt="Image shows an example default view of the Inspector issues view."
+  />
+</center>
+
+Each issue in the table represents an issue on a particular event, or a particular property contained within an event. In the table you will see:
+- The issue type – for example unexpected event or inconsistent property types, [(see list of issue types in Inspector)](https://www.avo.app/docs/explore-tracking-plan/issue-types-in-inspector)
+- The name of the event and property impacted
+- Sources impacted
+- Issue timing – when it was first and last seen
+- Event volume – how many instances of the event were seen across all sources
+- Issue volume – how many instances of the event were seen with this issue across all sources
+- Issue percentage – the proportion of events seen with this issue in relation to the event volume (issue volume / event volume)
+
+## Sorting and filtering
+
+The issue table can be sorted by any column. When prioritizing issues it’s helpful to sort by event volume, issue volume or issue percentage to quickly uncover which issues have the most impact on your data and prioritize accordingly.
+
+To narrow down your search to your most relevant issues, you can filter by the following:
+- Source
+- Event name
+- Property
+- Issue Type
+
+<center>
+  <img
+    src={'/docs/images/inspector/inspector-issues-filtering.png'}
+    width="100%"
+    alt="Image shows the inspector Issues table ordered by issue volume and filtered by Web source."
+  />
+</center>
+
+> 💡 We are actively working on adding more filter options, and you can expect more filters in the near future. If there’s anything specific you’d like to be able to filter by, please [let us know](https://www.avo.app/docs/help/troubleshooting). 
+
+
+## Saving a filtered view
+Once you have filtered and/or sorted the issues, you can save the filtered view for quick access for you and your team. The saved view persists both the filters you have selected and the sorting.
+
+### Creating a saved view
+When the issues view is opened, the default view is an unfiltered "All Issues" view ordered by last seen, such that the latest issues are on top. Until the a filter is added or the sorting is changed, the "Save View" button is disabled.
+
+<center>
+  <img
+    src={'/docs/images/inspector/all-events-unfiltered-unsorted.png'}
+    width="100%"
+    alt="Image shows the default all issues view ordered by issues last seen."
+  />
+</center>
+
+Once a filter is added or the sorting changed, the "Save View" button is enabled. Click that button to name the view and save it.
+
+<center>
+  <img
+    src={'/docs/images/inspector/naming-and-saving-a-view.png'}
+    width="100%"
+    alt="Image shows a filtered view with it's naming and saving modal open."
+  />
+</center>
+
+Once the "Save filtered view" button is clicked, the view is successfully saved and the new view is displayed.
+
+<center>
+  <img
+    src={'/docs/images/inspector/newly-saved-view.png'}
+    width="100%"
+    alt="Image shows a newly saved view."
+  />
+</center>
+
+In each saved view, there are buttons to copy the URL to the view, duplicated it and the disabled "Save View".
+
+### Duplicating and modifying a saved view
+
+To create a new view based on another saved view, you can either click the duplicate button to first duplicate it and then modify it or first modify an existing saved view and then click the "Save View as..." button to save it as a new view.
+
+#### Duplicate and modify
+
+To duplicate an existing saved view, click the duplicate button in the top right corner, next to the "Save View" button.
+
+<center>
+  <img
+    src={'/docs/images/inspector/duplicate-saved-view.png'}
+    width="100%"
+    alt="Image shows a saved view saved view with the duplicate button highlighted."
+  />
+</center>
+
+Then a modal to name and save the duplicated view is opened.
+
+<center>
+  <img
+    src={'/docs/images/inspector/naming-and-saving-a-duplicated-view.png'}
+    width="100%"
+    alt="Image shows a saved view saved view with the name and save a duplicated view modal open and highlight."
+  />
+</center>
+
+Once the "Save duplicate view" button is clicked, the view is successfully saved and the new duplicated view is displayed.
+
+<center>
+  <img
+    src={'/docs/images/inspector/newly-saved-duplicated-view.png'}
+    width="100%"
+    alt="Image shows a saved view saved view with the name and save a duplicated view modal open and highlight."
+  />
+</center>
+
+From here, the saved duplicated view can be modified by changing the filters or sorting and the changes saved by clicking the save button.
+
+<center>
+  <img
+    src={'/docs/images/inspector/modified-duplicated-view.png'}
+    width="100%"
+    alt="Image shows a saved view saved view with the name and save a duplicated view modal open and highlight."
+  />
+</center>
+
+
+#### Modify and Save as 
+
+To modify an existing saved view, you can adjust the filtering or sorting to your needs. It's safe to modify any view as the changes are not saved until you click the save button. Editors can only save changes to their own views.
+
+When a saved view has been modified, the following options are presented:
+- Save View: if you are the creator of the saved view or a workspace admin, you can save the changes to the modified view
+- Save as: anyone can save the changes as a new view by giving it a new name
+- Reset saved view: reset the adjusted filters and sorting to latest saved state of the saved view
+
+Below is an example of a saved view that has been modified, but changes unsaved.
+
+<center>
+  <img
+    src={'/docs/images/inspector/modified-view-with-unsaved-changes.png'}
+    width="100%"
+    alt="Image shows a modified saved view saved view with unsaved changes."
+  />
+</center>
+
+To save the changes as a new saved view, click "Save as...", give it a new name and save the changes.
+
+<center>
+  <img
+    src={'/docs/images/inspector/modified-view-with-saved-changes.png'}
+    width="100%"
+    alt="Image shows a modified saved view saved view with the Save as... modal open and highlighted."
+  />
+</center>
+
+### Sharing a saved view
+
+To share a saved view with a colleague, you can click the link button to copy the URL of the saved view. The copy link to view button is on all views, saved or not.
+
+<center>
+  <img
+    src={'/docs/images/inspector/sharing-a-saved-view.png'}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
+### Renaming a saved view
+
+To rename a saved view, click the title of the saved view to open a modal to rename it and save the changes.
+
+<center>
+  <img
+    src={'/docs/images/inspector/renaming-a-saved-view.png'}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
+### Accessing existing saved views
+
+To find and access saved views that you or other workspace members have created, click the "All saved views" button in the top right corner of any Inspector Issues view.
+
+<center>
+  <img
+    src={'/docs/images/inspector/all-saved-views-button-highlighted.png'}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
+There you will find an overview over all saved views with information about how many issues you they contain and who modified the view last and when.
+
+<center>
+  <img
+    src={'/docs/images/inspector/saved-views-overview.png'}
+    width="100%"
+    alt="Image shows a the Inspector Issues page with the All saved views button highlighted."
+  />
+</center>
+
+From there, the creator of each saved view and admins can archive saved views by opening the three dot menu on the right and click the Archive View button.
+
+<center>
+  <img
+    src={'/docs/images/inspector/archiving-a-saved-view.png'}
+    width="100%"
+    alt="Image shows a saved view with the copy link button highlighted."
+  />
+</center>
+
+## Issue details
+
+Click any issue in the list to see more details. If you have multiple sources connected with Inspector, you can dig into which sources are impacted by the issue and uncover which sources are most severely affected. In the issue details view you will see:
+
+### Event info
+The event impacted by the issue, its volume and whether it is documented in your Avo tracking plan.
+- If the event is present in the tracking plan, you can navigate to it to review and/or update the event definition
+- If the event is missing from your tracking plan, you can add it to your tracking plan.
+
+### Property info
+The property impacted by the issue, and whether it is documented to be sent with the event in your tracking plan.
+- If the property is present on the event in your tracking plan, you can navigate to it to review and/or update.
+- If the property is present in your tracking plan but not set to be sent with your event, you can add it to the event definition.
+- If the property is missing from your tracking plan, you can add it to your tracking plan.
+
+> 💡 Not all issues are related to properties. See [full list of issue types here](https://www.avo.app/docs/explore-tracking-plan/issue-types-in-inspector).
+
+<center>
+  <img
+    src={'/docs/images/inspector/inspector-issue-details.png'}
+    width="100%"
+    alt="Image shows example issue details for an unexpected property."
+  />
+</center>
+
+### Issue details per source
+Event volume, issue volume and issue percentage for all sources sending the event. Expanding a source will display
+When the issue was first and last seen and on which versions
+A list of all versions impacted by the issue
+
+<center>
+  <img
+    src={'/docs/images/inspector/inspector-issues-source-details.png'}
+    width="75%"
+    alt="Image shows an example issue details where the source details for iOS is expanded."
+  />
+</center>
+
+We have more insights into the issue details coming up. Please reach out if you have any thoughts on what to add! 
+
+## Fixing an issue found in Inspector
+When you find an issue in Inspector, the problem can either be on the implementation or tracking plan side:
+If the implementation is not what it should be according to the tracking plan, we recommend copying the issue link, creating a task in your task management system and assigning it to the relevant team to look into and fix in code
+If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in
+
+
+> 💡 We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please [reach out](https://www.avo.app/docs/help/troubleshooting) if you have any thoughts on how you would like to act on issues and what would make your team more efficient
+
+## Why are there no issues in my issues view?
+There can be a few reasons for no issues appearing in your issues view at all or for a specific source.
+
+### Inspector not installed on source
+The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. To fix that, [install Inspector](https://www.avo.app/docs/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on the source you'd like to see issues for. 
+
+### Inspector not installed on production
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed on production on any source, you won't see any issues in the issues view. To fix that, [install Inspector](https://www.avo.app/docs/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source you'd like to see issues for. 
+
+### No issues in production for the past 24 hours
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!

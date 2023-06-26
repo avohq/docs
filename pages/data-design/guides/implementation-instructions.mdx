@@ -1,0 +1,38 @@
+import { Callout } from 'nextra/components';
+
+# Share implementation instructions
+
+_Share auto-generated implementation instructions with your team in your favorite task management tool_
+
+<Callout>
+  This feature has been deprecated with the new [branch implementation
+  instructions](/workspace/code-changes) that include more details, better
+  filtering, visual diffing and more.
+</Callout>
+
+While the branch review screen is handy for understanding the changes done in the tracking plan, it’s not very convenient for implementation.
+For implementation we divide the changes per source and then group them by events, so developers can pick their platform and implement events once by one.
+
+If your branch includes changes on at least one source then the implementation instructions will be available on the diff screen
+
+<center>
+  <img
+    width="80%"
+    src={'/docs/images/implementation-diff-panel-options.png'}
+    alt="Opening a branch"
+  />
+</center>
+
+You can copy the instruction and pass them to developers for implementation in your communication tool of choice in either Markdown or in [Jira's text format](https://jira.atlassian.com/secure/WikiRendererHelpAction.jspa?section=all).
+
+<center>
+  <img
+    width="80%"
+    src={'/docs/images/implementation-diff-expanded.png'}
+    alt="Opening a branch"
+  />
+</center>
+
+## What's next?
+
+- [Developer's guide on reading the implementation instructions](/implementation/read-implementation-diff)

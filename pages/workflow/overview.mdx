@@ -1,36 +1,22 @@
----
-layout: 'guide'
-title: 'Avo Workflow'
-abstract: ''
----
-
-import Link from '../../components/Link';
-
 import { FunctionComponent } from 'react';
 
-import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
-import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
-import DevIcon from '../../images/svg/dev.svg';
+import PageLink from '../../components/PageLink';
+
+# Avo Workflow
 
 The Avo workflow is the recommended approach for a team working on an analytics release. The workflow is helpful both when new analytics tracking is being implemented, as well as when existing tracking is being updated.
 
 The Avo workflow for analytics releases is inspired by the general best practices of software development using branched change management, peer-reviews, and approval workflows.
 
-1. **<Link passHref href="/workflow/plan"><a>Plan</a></Link>** analytics update
-2. **<Link passHref href="/workflow/review"><a>Review</a></Link>** suggestions
-3. **<Link passHref href="/workflow/request-implementation"><a>Request</a></Link>** implementation instructions with developers
-4. **<Link passHref href="/workflow/implement"><a>Implement</a></Link>** analytics events
-5. **<Link passHref href="/workflow/validate"><a>Validate</a></Link>** implementation
-6. **<Link passHref href="/workflow/merge-publish"><a>Merge</a></Link>** Avo branch and **<Link passHref href="/workflow/merge-publish"><a>Publish</a></Link>** schema to downstream schema registries
+1. **[Plan](/workflow/plan)** analytics update
+2. **[Review](/workflow/review)** suggestions
+3. **[Request](/workflow/request-implementation)** implementation instructions with developers
+4. **[Implement](/workflow/implement)** analytics events
+5. **[Validate](/workflow/validate)** implementation
+6. **[Merge](/workflow/merge-publish)** Avo branch and **[Publish](/workflow/merge-publish)** schema to downstream schema registries
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/overview/avo-workflow.png')}
-    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
-  />
-</center>
+<br />
+![The Avo Workflow: Plan, review, implement, validate and publish your tracking changes](/docs/images/workflow/overview/avo-workflow.png)
 
 ## Your first release
 
@@ -49,11 +35,9 @@ For your analytics release cycle (and Avo branches), we recommend following the 
 
 ## Ready to get going?
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="1. Plan analytics update in Avo branch"
-    description="Learn how to plan an analytic update in Avo branch"
-    callToAction={new CallToAction('/workflow/plan')}
-  />
-</div>
+<PageLink
+  image='/docs/images/svg/analyticsmanager.svg'
+  title="1. Plan analytics update in Avo branch"
+  description="Learn how to plan an analytic update in Avo branch"
+  href={('/workflow/plan')}
+/>

@@ -1,9 +1,6 @@
----
-layout: 'guide'
-title: 'Using the Avo CLI'
----
+import Link from 'next/link';
 
-import Link from '../../components/Link';
+# Using the Avo CLI
 
 The [Avo command line interface](https://github.com/avohq/avo) provides a way to pull custom analytics wrappers from Avo. The CLI is designed to make developers more productive when implementing analytics.
 
@@ -111,7 +108,7 @@ info Looking for events in src/main/java/app/avo/musicplayerexample/Player.kt
 
 ### Interface files
 
-Some languages allow you to generate multiple files, for example Objective-C requires it and you can enable it in Kotlin and Swift using on-demand feature flags. <Link passHref href="/cli#step-3-pull-generated-analytics-wrappers-from-avo" passHref><a>see --forceFeatures pull flag above</a></Link>
+Some languages allow you to generate multiple files, for example Objective-C requires it and you can enable it in Kotlin and Swift using on-demand feature flags. <Link passHref href="/cli#step-3-pull-generated-analytics-wrappers-from-avo" passHref>see --forceFeatures pull flag above</Link>
 
 When initializing a source with CLI v3.2.0 and later it will ask you to specify a separate path for the interface file.
 

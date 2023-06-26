@@ -1,0 +1,120 @@
+import {Callout} from 'nextra/components'
+
+# Intro to Group analytics
+
+<Callout>**Group analytics** is a terminology used in product analytics tools, that 
+refers to grouping by unique product concepts other than unique users.</Callout>
+
+The concept of <a href="../workspace/tracking-plan/properties#user-properties">grouping product analytics by unique _users_</a> 
+is well established. E.g. counting unique users who perform specific actions in your product, 
+or individual user retention. In addition to unique users, most products have other core concepts 
+to group by, such as _unique workspaces_, _unique chat channels_, _unique games_, etc.  
+
+Group analytics are supported by product analytics tools and CDPs like Segment, 
+Amplitude and Mixpanel. You can also do group analytics in a fairly straight forward 
+way in your data warehouse, as long as you provide the unique id of the respective concept 
+in the relevant context.
+
+In this article we dive into <a href="#managing-group-analytics">Managing Group Analytics</a> 
+in practice (functionality, consequences, use cases, how to manage), for each of the two main 
+types of group analytics:
+
+-  <a href="#grouping-users">Grouping users</a>
+-  <a href="#grouping-events">Grouping events</a>
+
+
+## Grouping users
+
+You can associate users with groups. Then that user profile, as well as every subsequent event associated with that user, will be attributed to the respective groups.
+
+This is useful for example for B2B products, when each individual user of the product belongs to a company, and every action of that user should be attributed to that one company.
+
+See further use cases and which analytics platforms support grouping users below in [Associate user with group](/data-design/groups#associate-user-with-group).
+
+## Grouping events
+
+You can associate events with groups without associating the user with a group. This is useful if you have product concepts where each user can perform actions in different groups.
+
+For example if you have a chat app and want to analyze the performance of different channels.
+
+See further use cases and which analytics platforms support grouping events below in [Associate event with group](/data-design/groups#associate-event-with-group).
+
+## Managing Group Analytics
+
+### Associate user with group
+
+**Functionality**: This action will associate this user with a specific group ID in your downstream data.
+This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
+
+[//]: # 'TODO [TO CONFIRM] Consequences: All future [todo confirm this applies to Mixp and Segm as well] events triggered with this user ID, will be available for group analyses such as calculating metrics based on unique groups.'
+
+**Consequences**: All events triggered with this user ID will be available for group analyses. See [Amplitude](https://developers.amplitude.com/docs/javascript#user-groups),
+[Mixpanel](https://developer.mixpanel.com/docs/javascript#group-analytics) and [Segment](https://segment.com/docs/connections/spec/group/) docs.
+
+**Use case**: For example, if you have a "Workspace" group, you can associate a user with a specific workspace, according to your internal workspace IDs.
+This allows you to explore the workspace onboarding conversion rate, where different onboarding steps may be done by different users in the workspace.
+
+**How to manage in Avo**: Add the "Update Group" action type to an Avo event. Then select which Groups to associate the user with.
+
+### Associate event with group
+
+[//]: # 'TODO [Does it associate GROUP METADATA with event?].'
+
+**Functionality**: Associating an event with a group will associate that specific event with that specific group ID. It will not permanently update the group information or permanently associate this user with this group ID.
+This is supported by Avo, Amplitude, Mixpanel, and additionally you can use this method for your data warehouse via custom destinations in Avo. This is not supported by Segment.
+
+**Consequences**:
+
+For Mixpanel and Amplitude: All events logged with a group will be available for group analyses such as calculating metrics based on unique groups. See docs for Mixpanel and Amplitude.
+
+For your data warehouse: The events will have the Group ID associated with them. If you maintain a table with each group’s metadata (see [Update Group Properties section](/data-design/groups#update-group-properties)), you can additionally enrich your events with the current state of the group metadata. This will allow you to query your events by the historical state of the group metadata, as it was at the time of the event.
+
+This is not supported by Segment.
+
+**Use case**: You should log events with a group when you have product concepts where users can be associated with many groups through their lifetime.
+
+_Example_: If you have "Branches" in your product, of which users can create many through their lifetime, then you can create a "Branches" group to understand the lifetime of a branch, for example time from branch open to branch closed, etc. Then, instead of permanently associating the user profile with a specific branch, you associate only the branch related events to specific branch IDs.
+
+_Example_: If you have chat channels, you can log the “Message Sent” event with the “Channel” group and the specific channel ID, so you can do analysis of channels such as retention by channel (as opposed to retention by individual users).
+
+**How to manage in Avo**: Add the "Log Event" action type to an Avo event. Then add the Group you want to associate this event with.
+
+### Update Group Properties
+
+Conceptually the group properties are quite similar to user properties. You can maintain group metadata, aka group properties, for the group IDs that you associate users or events with.
+The first step is defining your groups ([group types and group ids](/data-design/groups#groups-terminology-across-platforms)). Then you can attach and update specific properties about the groups.
+
+**Functionality**: This action will update metadata associated with a specific group (e.g. member count of a team). This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
+
+**Consequences**:
+
+[//]: # 'TODO [TO CONFIRM] For Mixpanel and Amplitude: Future events associated with this specific group will have the updated metadata about the group available for filtering, segmentation, etc.'
+
+For Mixpanel and Amplitude: Future events associated with this specific group will have the updated metadata about the group available for filtering, segmentation, etc.
+
+For Segment: Note that you can not update group properties without associating the current user with that group. This means that when you update group properties, it will automatically associate the user permanently with this group.
+
+For your data warehouse: If you’re using a custom destination to send data into your data warehouse, you can use Update Group Properties to update a table that maintains the current state of group metadata.
+
+**Use cases**:
+
+_Example_: If you have a "Workspace" group, and that workspace just added a new member, or upgraded their subscription plan. You can then update the group metadata (aka group properties) with the new member count or subscription plan, to view workspace retention segmented by e.g. their current subscription plan.
+
+_Example_: If you have a “Company” group type, then group id could be “Microsoft”, with the group properties ”Location”: “Redmond”, “CEO”: “Satya Nadella” and “Employee Count”: “150 000 - 200 000”. When something changes, you can update the corresponding group property. For example in 2014 the Microsoft’s “CEO” property was updated from “Steve Ballmer” to “Satya Nadella”.
+
+**How to manage in Avo**: Add the "Update Group" action type to an Avo event. Then select which Groups to associate the user with.
+
+## Groups terminology across platforms
+
+There are two main concepts when working with group analytics. In Avo they are called “Group Types” and “Group Ids”. See reference table below for what “Group Types” and “Group IDs” are called in other platforms.
+
+Group types are the types of groups you manage, for example companies, branches, chats and so on.
+
+Group ids are identifiers of the individual groups of those group types, for example in the “Company” group type you’d have group ids as names of the companies, like “Alibaba”, “Moderna”, “Uber”.
+
+|                       |            |            |
+| --------------------- | ---------- | ---------- |
+| Concepts in Avo:      | Group Type | Group Id   |
+| Concept in Amplitude: | Group Type | Group Name |
+| Concept in Mixpanel:  | Group Key  | Group Id   |
+| Concept in Segment:   | Group Id   | Group Name |

@@ -1,0 +1,76 @@
+# Getting started to implement tracking plan changes in code with Avo
+
+Data design on an Avo branch has been finished and it's time to implement new tracking in code.
+
+## Familiarize yourself with the changes
+
+First of all we recommend to open your Avo workspace and navigate to the branch you are about to implement, click *View changes* in the sidebar to access the diff for the changes in the branch. The diff is split in two, Tracking Plan Changes and Code Changes. The Tracking Plan Changes view is a summary of all changes to the items in the tracking plan and the Code Changes View represents the necessary code changes to start sending data according to the updated tracking plan.
+
+![Connections configuration](/docs/images/implement/branch-changes-view-button-1.png)
+
+*Press `View changes` button*
+
+It's really valuable to understand what exactly needs to be tracked and clear all
+unknowns.
+
+We suggest using comments in the code changes view to ask for any clarification before starting to implement. 
+
+![Overview of code changes](/docs/images/code-changes/code-changes.png)
+
+Read more on [the branch changes view](/workspace/code-changes).
+
+## Pull the new code with Avo CLI
+
+### Install the [Avo CLI](https://www.npmjs.com/package/avo)
+
+Install the **Avo CLI** locally in your project, using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
+
+```bash
+npm install --save-dev avo
+```
+
+```bash
+yarn add --dev avo
+```
+
+or globally on your system, using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
+
+```bash
+npm install -g avo
+```
+
+```bash
+yarn global add -E avo
+```
+
+### Link your project to Avo
+
+Authenticate the **Avo CLI** with your Avo user:
+
+```bash
+avo login
+```
+
+Now you can pull your custom tracking snippet from your Avo workspace using Codegen.
+
+```bash
+avo pull --branch your_branch_name [SourceName]
+```
+
+> When you run Avo pull for the first time it will also initialize Avo in your project by adding an `avo.json` file, containing a pointer to your Avo workspace, source and current branch. This file should be checked into git along with Codegen file.
+
+## Implement new events
+
+Now your Avo file will have the changes from the `your_branch_name` branch. Call all the new Avo Codegen functions in required places, update the new event properties. You can find a reference of all the code snippets required to implement your events in the `Codegen` tab.
+
+![Connections configuration](/docs/images/workspace/nav-functions.png)
+
+*Codegen reference*
+
+It might be useful to check the changes tab in your Avo workspace for overview while implementing.
+
+> If you are implementing the branch in multiple codebases we recommend you to read the [Multiple sources on Avo branches](/data-design/multiple-sources-on-avo-branches) guide.
+
+## The most important part
+
+Once you are finished with implementing the code and your source control branch was merged remember to also **merge the Avo branch**!

@@ -1,22 +1,22 @@
 ---
-layout: 'guide'
 title: '5. Validate implementation'
-abstract: ''
 ---
 
-import Link from '../../components/Link';
-import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
-import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
-import DevIcon from '../../images/svg/dev.svg';
+import PageLink from '../../components/PageLink';
+import { Callout } from 'nextra/components';
 
-import { FunctionComponent } from 'react';
+# Validate implementation
 
 Avo provides a number of tools that help you verify that the events you’ve implemented are correct according to how you’ve defined them in your Avo Tracking Plan.
 
-Avo’s validation functionalities are built on top of two product offerings, <Link passHref href="/data-design/start-using-inspector"><a>Avo Inspector</a></Link> and <Link passHref href="/implementation/avo-codegen-overview"><a>Avo Codegen</a></Link>.
+Avo’s validation functionalities are built on top of two product offerings, [Avo Inspector](/data-design/start-using-inspector) and [Avo Codegen](/implementation/avo-codegen-overview).
 
-> 🔒 While Avo offers powerful tools for data quality monitoring and observability, Avo never receives or processes any PII data about the customers of Avo customers. Avo never receives or processes your actual analytics events, only the schemas.
+<Callout type="info" emoji="🔒">
+  While Avo offers powerful tools for data quality monitoring and observability,
+  Avo never receives or processes any PII data about the customers of Avo
+  customers. Avo never receives or processes your actual analytics events, only
+  the schemas.
+</Callout>
 
 # Validate implementation with Avo Inspector
 
@@ -24,14 +24,12 @@ For every source that has Inspector installed, you can validate if the implement
 
 If you don’t have Inspector installed yet, you can learn more about how to get started with Inspector here:
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="Avo Inspector"
-    description="Use Inspector to improve your tracking plan health"
-    callToAction={new CallToAction('/data-design/start-using-inspector')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Avo Inspector"
+  description="Use Inspector to improve your tracking plan health"
+  href={'/data-design/start-using-inspector'}
+/>
 
 ### Validate with Inspector dashboard
 
@@ -42,25 +40,13 @@ Here’s how you can validate tracking implementation for a particular branch us
 1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
 2. In Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/5.validate/dev-stag-production.png')}
-    alt="validate on inspector dashboard"
-  />
-</center>
+![Validate on inspector dashboard](/docs/images/workflow/5.validate/dev-stag-production.png)
 
 _Example: Inspector dashboard_
 
 3. In Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/5.validate/validate-dashboard-issue.png')}
-    alt="validate on inspector dashboard"
-  />
-</center>
+![Validate on inspector dashboard](/docs/images/workflow/5.validate/validate-dashboard-issue.png)
 
 _Example: Discrepancies in the event tracking_
 
@@ -72,18 +58,12 @@ You can hover over the source pill in the events table, or click into the event,
 
 Learn more about how to read Inspector implementation status:
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="Inspector implementation status"
-    description=""
-    callToAction={
-      new CallToAction(
-        '/workspace/tracking-plan/implementation-status#inspector-implementation-status',
-      )
-    }
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Inspector implementation status"
+  description=""
+  href="/workspace/tracking-plan/implementation-status#inspector-implementation-status"
+/>
 
 # Validate implementation with Avo Codegen
 
@@ -91,14 +71,12 @@ For all tracking implemented with Codegen, you can validate if the implementatio
 
 If you’re not using Codegen already, you can learn more about how to get started here:
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="Quickstart: Codegen"
-    description="Start using Codegen"
-    callToAction={new CallToAction('/implementation/start-using-avo-codegen')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Quickstart: Codegen"
+  description="Start using Codegen"
+  href={'/implementation/start-using-avo-codegen'}
+/>
 
 ### Validate with type-safety and runtime validation
 
@@ -106,27 +84,22 @@ All tracking code implemented with Codegen is type-safe and has built in runtime
 
 Learn more about how validations in Codegen work here:
 
-<div className={styles.row}>
-  <PageLink
-    image={DevIcon}
-    title="What's happening inside Codegen"
-    description="Learn about how validations in Codegen work"
-    callToAction={
-      new CallToAction(
-        '/implementation/avo-codegen-overview#whats-happening-inside-the-avo-codegen',
-      )
-    }
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/dev.svg"
+  title="What's happening inside Codegen"
+  description="Learn about how validations in Codegen work"
+  href="/implementation/avo-codegen-overview#whats-happening-inside-the-avo-codegen"
+/>
 
 ### Validate with the Avo In-app Debugger
 
 The Avo In-app Debugger is an addition on top of Avo Codegen that gives you better visibility into which events are being sent, which properties are attached, and whether any issues were detected or not.
 
+<br />
 <center>
   <img
     height="500"
-    src={require('../../images/web-debugger-example.png')}
+    src="/docs/images/web-debugger-example.png"
     alt="Web debugger example"
   />
 </center>
@@ -135,22 +108,20 @@ _Example: Web debugger example_
 
 The Avo debugger is available on Web, iOS, Android and React Native. Learn more about the Avo debugger here:
 
-<div className={styles.row}>
-  <PageLink
-    image={DevIcon}
-    title="Visual debuggers"
-    description="Learn about how Avo debugger works"
-    callToAction={
-      new CallToAction('/explore-tracking-plan/start-using-visual-debuggers')
-    }
-  />
-</div>
+{' '}
+
+<PageLink
+  image="/docs/images/svg/dev.svg"
+  title="Visual debuggers"
+  description="Learn about how Avo debugger works"
+  href="/explore-tracking-plan/start-using-visual-debuggers"
+/>
 
 ### Validate with the Avo CLI
 
-The Avo CLI has a command, ´avo status´, that will report on where Avo Codegen is being called from, and which events have not been implemented yet.
+The Avo CLI has a command, `avo status`, that will report on where Avo Codegen is being called from, and which events have not been implemented yet.
 
-We recommend adding the ´avo status´ check to your CI pipeline, and configure it to throw an error if an event that is supposed to be sent with Avo Codegen, is not found in the codebase.
+We recommend adding the `avo status` check to your CI pipeline, and configure it to throw an error if an event that is supposed to be sent with Avo Codegen, is not found in the codebase.
 
 ```sh
 > avo status
@@ -177,18 +148,18 @@ error 2 missing events
    └─ logout: no usage found
 ```
 
-_Example: The ´avo status´ command in Avo CLI_
+_Example: The `avo status` command in Avo CLI_
 
 You can learn more about using the Avo CLI in CI/CD here:
 
-<div className={styles.row}>
-  <PageLink
-    image={DevIcon}
-    title="Avo in CI/CD"
-    description="How to use the Avo CLI in CI/CD"
-    callToAction={new CallToAction('/implementation/avo-in-the-ci')}
-  />
-</div>
+{' '}
+
+<PageLink
+  image="/docs/images/svg/dev.svg"
+  title="Avo in CI/CD"
+  description="How to use the Avo CLI in CI/CD"
+  href="/implementation/avo-in-the-ci"
+/>
 
 ### Validate with implementation status in the tracking plan
 
@@ -196,22 +167,17 @@ For every source Avo Codegen is installed on, you’ll find an implementation st
 
 You can hover over the source pill in the events table, or click into the event, to learn more about the implementation status.
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/5.validate/pill.png')}
-    alt="hover the pill to see implementation status"
-  />
-</center>
+![Hover the pill to see implementation status](/docs/images/workflow/5.validate/pill.png)
 
 _Example: Implementation status in the event table of the tracking plan_
 
 You can also find a branch implementation status for Avo Codegen in the top right corner of the branch review screen.
 
+<br />
 <center>
   <img
     width="60%"
-    src={require('../../images/workflow/5.validate/event-implemented.png')}
+    src="/docs/images/workflow/5.validate/event-implemented.png"
     alt="hover the pill to see implementation status"
   />
 </center>
@@ -220,26 +186,18 @@ _Example: Implementation status on the branch review screen_
 
 Learn more about how to read Avo Codegen implementation status:
 
-<div className={styles.row}>
-  <PageLink
-    image={DevIcon}
-    title="Avo Codegen implementation status"
-    description="Learn how to read Avo Codegen implementation status"
-    callToAction={
-      new CallToAction(
-        '/workspace/tracking-plan/implementation-status#avo-codegen-implementation-status',
-      )
-    }
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/dev.svg"
+  title="Avo Codegen implementation status"
+  description="Learn how to read Avo Codegen implementation status"
+  href="/workspace/tracking-plan/implementation-status#avo-codegen-implementation-status"
+/>
 
 ## What’s next?
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="6. Merge branch and Publish"
-    description="Learn how to Merge branch and Publish your tracking plan updates to schema registries"
-    callToAction={new CallToAction('/workflow/merge-publish')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="6. Merge branch and Publish"
+  description="Learn how to Merge branch and Publish your tracking plan updates to schema registries"
+  href={'/workflow/merge-publish'}
+/>

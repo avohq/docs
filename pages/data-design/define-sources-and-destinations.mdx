@@ -1,19 +1,8 @@
----
-layout: 'guide'
-title: 'Sources'
----
-
-import Link from '../../components/Link';
+# Sources
 
 If you open the “Sources” tab in your Avo workspace you’ll find yourself in a place to define and configure sources and destinations.
 
-<center>
-  <img
-    src={require('../../images/workspace/nav-sources.png')}
-    alt="Connections Screen"
-    width="100%"
-  />
-</center>
+![Connections Screen](/docs/images/workspace/nav-sources.png)
 
 Sources and destinations are an important part of your tracking plan, and crucial for implementation, so we recommend maintaining an up-to-date list of them and attaching relevant sources and destinations to events. If you use Avo Codegen the same data is used to generate the tracking code. If you use Inspector, the sources represent the products/platforms where you install Inspector
 
@@ -27,23 +16,11 @@ In the tracking plan, the sources help you understand what app is sending partic
 
 To create a source press “Add Source” button in the “Sources” tab.
 
-<center>
-  <img
-    src={require('../../images/add-source.png')}
-    alt="Add Source button"
-    width="75%"
-  />
-</center>
+![Add Source button](/docs/images/add-source.png)
 
 Then you’ll see a configuration dialog, define necessary config and press “Create Source”.
 
-<center>
-  <img
-    src={require('../../images/source-configuration.png')}
-    alt="Source configuration"
-    width="75%"
-  />
-</center>
+![Source configuration](/docs/images/source-configuration.png)
 
 ### Overview
 
@@ -53,7 +30,7 @@ The overview section of the source setup contains the base configurations for th
 
 We recommend naming your source in a manner that is easy for anyone to understand what part of your product it refers to.
 
-For **single product organizations** we normally recommend creating sources representing each git repository that events should be sent from – and naming them accordingly.
+For **single product organizations** we normally recommend creating sources representing each git repository that events should be sent from – and naming them accordingly.
 
 - If you have a single repository per development platform then your sources could be named something like
   - "Web"
@@ -61,21 +38,22 @@ For **single product organizations** we normally recommend creating sources repr
   - "iOS" and "Android" (if using iOS and Android native platforms)
   - "Backend"
 - If you have multiple repositories for some of your development platforms, we recommend creating a source for each of them. For example if you have your backend split into micro-services your sources could be named something like:
-  - Backend – Authentication
-  - Backend – Payment
-  - Backend – Notifications
+  - Backend – Authentication
+  - Backend – Payment
+  - Backend – Notifications
 
 For **multi product organizations** we normally recommend creating a source per product per development platform. So that they will be named something like:
 
-- Product A – Web
-- Product A – Mobile
-- Product A – Backend
-- Product B – Web
-- Product B – Mobile
-- Product B – Backend
+- Product A – Web
+- Product A – Mobile
+- Product A – Backend
+- Product B – Web
+- Product B – Mobile
+- Product B – Backend
 - ...
 
-Read more about <Link passHref href="/data-design/organizing-multi-product-workspaces"><a>organizing multi-product workspaces</a></Link>.
+Read more about [organizing multi-product workspaces](/data-design/organizing-multi-product-workspaces)
+.
 
 #### Development platform
 
@@ -99,21 +77,15 @@ The development platform you select for your source indicates whether it's a web
 - Game Engines
   - Unity
 
-You don't have to define the programming language unless you want to set up and use Avo Codegen to implement your tracking. Read more about <Link passHref href="/implementation/supported-programming-languages"><a>supported and upcoming programming languages here</a></Link>.
+You don't have to define the programming language unless you want to set up and use Avo Codegen to implement your tracking. Read more about [supported and upcoming programming languages here](/implementation/supported-programming-languages).
 
 #### Destinations
 
-The destinations are the other end of the source <-> destination pair. You can configure which destinations should be connected to this source in the source details.
+The destinations are the other end of the source \<-> destination pair. You can configure which destinations should be connected to this source in the source details.
 
 To enable or disable a destination globally for a source, you can click the source name in the “Sources” tab it will open the source details. There you can pick the destinations you want this source to send data to.
 
-<center>
-  <img
-    src={require('../../images/web-source.png')}
-    alt="Web source details"
-    width="75%"
-  />
-</center>
+![Web source details](/docs/images/web-source.png)
 
 Think “Our web app sends data to Amplitude”.
 
@@ -129,35 +101,17 @@ If the "Implement with Codegen" check mark is checked, it means that the event s
 
 When creating an event we recommend to add it to all the existing sources where it should be sent from, whether you are using Codegen or existing implementation methods to implement. This information is both used by Codegen to automatically create the tracking code if you are using Codegen and to generate implementation instructions for a developer.
 
-<center>
-  <img
-    src={require('../../images/import-completed-event.png')}
-    alt="Source configuration"
-    width="75%"
-  />
-</center>
+![Source configuration](/docs/images/import-completed-event.png)
 
 Think “Import Completed event is sent from our web site”.
 
 To add or remove events event to/from the events list on this source, first click "edit"
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/edit-events-list-on-source.png')}
-    alt="Edit events list on a source"
-    width="75%"
-  />
-</center>
+![Edit events list on a source](/docs/images/workspace/connection-setup/edit-events-list-on-source.png)
 
 and then check or uncheck the events you want to add/remove on the modal that appears.
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/check-events-for-source.png')}
-    alt="Check or uncheck events to add/remove from events list"
-    width="60%"
-  />
-</center>
+![Check or uncheck events to add/remove from events list](/docs/images/workspace/connection-setup/check-events-for-source.png)
 
 This is a really convenient way to bulk add or remove a source to multiple events, instead of having to go into each event details to add or remove the source.
 
@@ -165,13 +119,7 @@ This is a really convenient way to bulk add or remove a source to multiple event
 
 Inspector Setup part of the source details contains an overview of how to set up Inspector for this source for the first time and the API key needed to be able to start sending data.
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/connections-inspector-setup.png')}
-    alt="Check or uncheck events to add/remove from events list"
-    width="60%"
-  />
-</center>
+![Check or uncheck events to add/remove from events list](/docs/images/workspace/connection-setup/connections-inspector-setup.png)
 
 #### API Key
 
@@ -181,67 +129,38 @@ This is your API key that is unique for each source. Follow the documentation in
 
 The setup status indicates whether Inspector is receiving events or not. If it has yet to be installed with the API key for this source, the setup status will show "Listening for the first event..."
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/inspector-listening.png')}
-    alt="Listening for the first event"
-    width="75%"
-  />
-</center>
+![Listening for the first event](/docs/images/workspace/connection-setup/inspector-listening.png)
 
 Once you have successfully installed Inspector, the setup status will show "Receiving Events" and a link to see them in Inspector dashboard.
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/inspector-receiving-events.png')}
-    alt="Listening for the first event"
-    width="75%"
-  />
-</center>
+![Listening for the first event](/docs/images/workspace/connection-setup/inspector-receiving-events.png)
 
 #### Documentation
 
 The documentation is automatically generated instructions with code snippets on how to install Inspector using either Segment functions or directly for your programming language.
 
-Check out the Tracking Observability part of this documentation to learn more on <Link passHref href="/data-design/start-using-inspector"><a>how to set up Inspector</a></Link>.
+Check out the Tracking Observability part of this documentation to learn more on [how to set up Inspector](/data-design/start-using-inspector).
 
 ### Avo Codegen Setup
 
 The Codegen Setup part of the source details contains a step by step guide on how to set up and Initialize Avo function for this source for the first time.
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/connections-avo-functions-setup.png')}
-    alt="Avo Codegen Setup Status"
-    width="60%"
-  />
-</center>
+![Avo Codegen Setup Status](/docs/images/workspace/connection-setup/connections-avo-functions-setup.png)
 
 #### Programming Language
 
-To start using Codegen for this source, you need to select which <Link passHref href="/implementation/supported-programming-languages"><a> programming languages here</a></Link> you want to generate the code in.
+To start using Codegen for this source, you need to select which [programming languages here](/implementation/supported-programming-languages)
+you want to generate the code in.
 
 #### Setup Status
 
 The setup status indicates whether Codegen has been successfully initialized or not. If they have yet to be Initialized for this source, the setup status will show "Listening for the first initialization..."
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/avo-functions-listening.png')}
-    alt="Avo Codegen listening for the first initialization"
-    width="75%"
-  />
-</center>
+![Avo Codegen listening for the first initialization](/docs/images/workspace/connection-setup/avo-functions-listening.png)
 
 Once you have successfully initialized Codegen, the setup status will show "Successfully Initialized", which means you can start implementing events using Codegen.
 
-<center>
-  <img
-    src={require('../../images/workspace/connection-setup/avo-functions-receiving-events.png')}
-    alt="Avo Codegen successfully initialized"
-    width="75%"
-  />
-</center>
+![Avo Codegen successfully initialized](/docs/images/workspace/connection-setup/avo-functions-receiving-events.png)
 
 #### Destination Interface
 
@@ -250,21 +169,16 @@ Destinations can have two modes: Destination Interface and Avo Managed:
 - When set to Destination Interface (recommended), Avo will provide a set of callback methods to connect your existing analytics destination to your Avo instance.
 - When set to Avo Managed, Avo will manage the destination for you, that includes initializing it and passing all data you send via Avo to relevant destination calls. Note that in Avo Managed mode you can't use your destination SDK outside of Avo, e.g. for existing tracking.
 
-Learn more about Destination Interface and Avo Managed destinations in the <Link passHref href="/implementation/destinations"><a>Destinations in Codegen doc</a></Link>.
+Learn more about Destination Interface and Avo Managed destinations in the [Destinations in Codegen doc](/implementation/destinations)
+.
 
-<center>
-  <img
-    src={require('../../images/data-design/destinations-interface-config.png')}
-    alt="Destinations Interface config in Avo Codegen Setup tab"
-    width="60%"
-  />
-</center>
+![Destinations Interface config in Avo Codegen Setup tab](/docs/images/data-design/destinations-interface-config.png)
 
 #### Documentation
 
 The documentation is automatically generated for your source and the connected destinations. First you have to generate your Avo file by using our CLI or downloading it from the UI, then you can initialize Avo and implement your events.
 
-Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on <Link passHref href="/implementation/avo-codegen-overview"><a>how to set up Codegen</a></Link>.
+Check out the Type Safe Code, unit tests and CI part of this documentation to learn more on [how to set up Codegen](/implementation/avo-codegen-overview).
 
 ## Destinations
 
@@ -275,25 +189,13 @@ In Avo you can use **any** event-based analytics destination.
 
 To create a destination press “Add Destination” button in the “Sources” tab
 
-<center>
-  <img
-    src={require('../../images/add-destination.png')}
-    alt="Add Destination button"
-    width="75%"
-  />
-</center>
+![Add Destination button](/docs/images/add-destination.png)
 
 Then you’ll see a configuration dialog, define necessary config and press “Create Destination”
 
 Can't find your analytics tool in the list of available destinations? In that case you can pick the "Custom" destination type and give a descriptive name.
 
-<center>
-  <img
-    src={require('../../images/destination-configuration.png')}
-    alt="Destination configuration"
-    width="75%"
-  />
-</center>
+![Destination configuration](/docs/images/destination-configuration.png)
 
 ### Managing destinations in the tracking plan
 
@@ -303,13 +205,7 @@ What destinations you send your events to is always defined on the source level 
 
 To enable or disable a destination globally for a source, you can click the source name in the “Sources” tab it will open the source details. There you can pick the destinations you want this source to send data to.
 
-<center>
-  <img
-    src={require('../../images/web-source.png')}
-    alt="Web source details"
-    width="75%"
-  />
-</center>
+![Web source details](/docs/images/web-source.png)
 
 Think “Our web app sends data to Amplitude”.
 
@@ -319,16 +215,10 @@ This can also be configured in the destination details, where sources can be tog
 
 To enable or disable a destination locally on an event for a specific source, you can find your event in the tracking plan, open it and find your source in the event details and click "edit" in the "To Destinations" part. There you can toggle specific destinations on or off.
 
-<center>
-  <img
-    src={require('../../images/workspace/configure-destination-per-event-per-source.png')}
-    alt="Web source details"
-    width="75%"
-  />
-</center>
+![Web source details](/docs/images/workspace/configure-destination-per-event-per-source.png)
 
-Think "We send the Signup Complete event from web and send it to our Custom Analytics API, Mixpanel and Amplitude – not our other destinations."
+Think "We send the Signup Complete event from web and send it to our Custom Analytics API, Mixpanel and Amplitude – not our other destinations."
 
 ## What's next?
 
-Now you know how to define and configure sources and destinations in Avo. Next thing to learn is <Link passHref href="/workspace/branches"><a>the branched workflows</a></Link>.
+Now you know how to define and configure sources and destinations in Avo. Next thing to learn is [the branched workflows](/workspace/branches).

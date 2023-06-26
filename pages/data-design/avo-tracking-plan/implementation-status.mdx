@@ -1,0 +1,95 @@
+import { Callout } from 'nextra/components';
+import Link from 'next/link';
+
+# Implementation Status
+
+When looking at from which sources an event is sent from in your Tracking Plan you will notice green, yellow or red status indicator lights next to each source name. This is the implementation status.
+
+Inside the indicator light is a letter, either "P" or "D", which represents "Production" or "Development" respectively. These indicators tell us where we are getting the data from. When looking at Inspector Implementation Status, we currently only provide production, with development and staging coming soon – let us know if you want to be part of the beta (at support@avo.app).
+
+![Implementation status in a tracking plan](/docs/images/workspace/tracking-plan/implementation-status.png)
+
+The implementation status is twofold. If you're using Avo Codegen, you can see the state of implementation in your development environments (D). If you have Avo Inspector installed, you can see the state of implementation in your installed environments (P)(D)(S).
+
+## Avo Codegen implementation status
+
+![Event always sent correctly using Avo Codegen](/docs/images/workspace/tracking-plan/functions-implementation-status.png)
+
+Avo Codegen implementation status reports on how your Avo Codegen implementation is performing in development, compared to your Tracking Plan.
+
+Avo Codegen implementation status can have four states:
+
+1. Always sent correctly
+2. Sometimes sent correctly
+3. Never sent correctly
+4. Never seen
+
+Learn more about <Link passHref href="/implementation/start-using-avo-codegen">how to start using Avo Codegen in this doc</Link>.
+
+## Inspector implementation status
+
+### Production
+
+![Event always sent correctly in a previous version](/docs/images/workspace/tracking-plan/inspector-implementation-status.png)
+
+Inspector implementation status reports on how your tracking implementation is performing in production, compared to your Tracking Plan. Note that Inspector implementation status can report on implementation status for all of your existing tracking code, and does not require the adoption of Avo Codegen to work.
+
+For each source we check the following for all events in your Tracking Plan:
+
+1. Have we seen the event on this source?
+2. Is the most recent version we have seen the event on, the most recent version we have seen for this source?
+3. Is the event being sent according to the event definition in the tracking plan?
+
+Based on these checks we report the implementation status using one of the following states:
+
+- Event is always sent correctly in the latest version
+- Event is sometimes sent correctly in the latest version
+- Event is never sent correctly in the latest version
+- Event has never been seen in the latest version, last seen in version [version number] where it was [always, sometimes or never] sent correctly
+- Never seen this even
+
+<Callout type="info">
+  Note that since Inspector does only process your event metadata, and not
+  customer data such as property values, it can not validate property value
+  rules such as matches, min and max. However, it does validate property types,
+  so if a property is defined as int in your tracking plan but is being sent as
+  string, Inspector implementation status will highlight that issue.
+</Callout>
+
+#### App versions
+
+By default Inspector implementation status reports on how your tracking is performing in the latest version of your app. As we all know apps and websites can be running on multiple versions simultaneously, and since our tracking code changes with every release, the events can differ between versions.
+
+If you have changed your event in the tracking plan, old versions of the event are expected to not match the current version of the tracking plan, and become noise. That’s why we built Inspector Implementation Status to focus on the tracking from your latest versions
+
+We recommend using semantic versioning (e.g. "1.0.0") or other types of numeric versioning (e.g. build number) which get incremented on every release. Providing a version to Inspector will help get the cleanest output from the status report and help you understand how your tracking is performing in your latest versions.
+
+### Development and Staging
+
+![Event never sent correctly with dev in the last 7d](/docs/images/workspace/tracking-plan/dev-inspector-status.png)
+
+Inspector implementation status can also report on how your tracking implementation is performing in dev and staging environments.
+
+However, because app version is rarely updated when working in dev environments, multiple versions of an event can exist between different branches
+that belong to the same app version. For that reason, instead of focusing on App version in dev and staging, each event is filtered by a time window (7d).
+
+<Callout type="info">Time window will be editable in future release</Callout>
+
+For each source we check the following for all events in your Tracking Plan:
+
+1. Have we seen the event on this source in the current timewindow provided?
+2. Is the event being sent according to the event definition in the current tracking plan?
+
+Based on these checks we report the implementation status using one of the following states:
+
+- Event is always sent correctly
+- Event is sometimes sent correctly
+- Event is never sent correctly
+
+<Callout type="info">
+  Inspector monitors events from all branches, so it may report 'Sometimes sent
+  correctly' for events that have been correctly implemented on your branch if
+  older versions are still being sent from other branches.
+</Callout>
+
+Learn more about [how to install Inspector in this doc](/implementation/avo-inspector-sdk-reference).

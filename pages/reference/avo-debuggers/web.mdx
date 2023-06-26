@@ -1,0 +1,64 @@
+import Link from 'next/link';
+
+# Start using Avo Visual Debugger in code
+
+Currently the web visual debugger is only available when you use <Link passHref href="/implementation/avo-codegen-overview">Avo Codegen</Link>.
+
+Each Avo function will automatically show events in the debugger with timestamp and all the properties.
+
+If Avo detects errors the visual debugger will highlight those.
+
+> Debuggers are disabled in the <Link passHref href="/implementation/avo-and-unit-tests">noop</Link> mode
+
+### Accessing the web debugger
+
+The Web Debugger is on by default in development.
+
+To disable the Web Debugger in development provide `webDebugger = false` to initAvo options:
+
+```typescript
+Avo.initAvo({ webDebugger: false, ... }, ...);
+```
+
+```ReasonML
+Avo.initAvo(~webDebugger=true, ...);
+```
+
+```ReScript
+Avo.initAvo(~webDebugger=true, ...)
+```
+
+To access it in production add the `?avo_debug=1` query parameter to the URL.
+
+#### Setting the position of the web debugger
+
+The default position of the Web Debugger is at the bottom right of the screen. However, if you wish to move it you can pass in the `position` object to the `webDebuggerOptions`. The bubble may be anchored to each corner of the screen (`BottomRight`, `BottomLeft`, `TopRight` or `TopLeft`) and each area will take a more fine grained offset relative to it's corner.
+
+> 💡 Using `WebDebuggerPosition` will guide you to pass the correct parameters.
+
+```typescript
+import Avo, { WebDebuggerPosition } from './path/to/Avo';
+Avo.initAvo({
+    webDebuggerOptions: {
+        position: WebDebuggerPosition.BottomRight({ bottom: 20, right: 20 }),
+    },
+    ...
+});
+```
+
+```javascript
+Avo.initAvo({
+    webDebuggerOptions: {
+        position: Avo.WebDebuggerPosition.TopLeft({ top: 20, left: 20 }),
+    },
+    ...
+});
+```
+
+```ReasonML
+Avo.initAvo(~webDebuggerOptions={position: BottomLeft{"bottom": 20, "left": 30}}, ...);
+```
+
+```ReScript
+Avo.initAvo(~webDebuggerOptions={position: TopRight{"top": 20, "right": 30}}, ...)
+```

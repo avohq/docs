@@ -1,0 +1,241 @@
+import Link from 'next/link';
+
+# Avo Codegen in Python
+
+### Platforms
+
+Avo can code generate Avo Codegen in Python for your server side tracking.
+Avo supports Python 2 and Python 3.
+
+### Quickstart
+
+Avo Codegen usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Python file you must be a member of an Avo workspace with a Python source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file and initialize it by calling the `init_avo` method before tracking
+
+```python
+import avo
+
+avo.init_avo({'env': 'dev'}, ...) # other parameters depend on your tracking plan setup
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/python#init_avo">the reference below</Link>.
+
+#### Step 3. Call Avo Codegen to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Codegen" checkbox, gets a function in the generated code, named according to the event name, in snake_case.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Codegen" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={'/docs/images/signup-start-ui.png'}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Codegen check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```python
+avo.signup_start(referral = 'direct')
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `set_system_properties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace to verify that your implementation is correct.
+
+### Reference
+
+#### init_avo
+
+```python
+avo.init_avo(options, [system_properties], [mixpanel_destination], [segment_destination], [other_destination], ...)
+```
+
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+
+##### Arguments
+
+`options (dict)`: a dictionary with env (one of: 'dev', 'prod'), strict bool, verbose bool, noop bool
+
+- `env`: string, one of 'dev' or 'prod'.
+- `[noop = false]`: bool, if set, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+- `[strict = true]`: bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+- `[verbose = true]`: bool, if set and strict is false, will print the error messages to console.
+
+`system_properties (dict)`: a dictionary containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
+
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+
+#### Destination interface example
+
+```python
+# Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+class CustomDestination(object):
+    # This method is optional, you can skip it if you've already initialized your Analytics SDK
+    def make(self, env, api_key):
+        self.mp = Mixpanel(api_key)
+
+    def track_event(self, user_id, event_name, event_properties):
+        self.mp.track(user_id, event_name, event_properties)
+
+    def set_user_properties(self, user_id, user_properties):
+        self.mp.people_set(user_id, user_properties)
+
+    def log_page(self, user_id, page_name, event_properties):
+        # Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+        event_properties["Page Name"] = page_name
+        self.mp.track(user_id, "Page Viewed", event_properties)
+
+    def revenue(self, user_id, amount, event_properties):
+        self.mp.people_track_charge(user_id, amount, user_properties)
+
+    # The following methods are used for group analytics and are not required.
+    def add_current_user_to_group(self, user_id, group_type, group_id, group_properties)
+        mp.people_set(user_id, {
+            group_type : group_id,
+        })
+        mp.group_set(group_type, group_id, group_properties)
+
+    def set_group_properties(self, group_type, group_id, group_properties)
+        mp.group_set(group_type, group_id, group_properties)
+
+    def track_event_with_groups(self, user_id, event_name, event_properties, group_types_to_group_ids)
+        for group_type in group_types_to_group_ids:
+            event_properties[group_type] = group_types_to_group_ids[group_type]
+        mp.track(user_id, event_name, event_properties)
+```
+
+> Learn more about group analytics <Link passHref href="/data-design/groups">here</Link>
+
+To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
+##### Segment example (without the group analytics)
+
+Here is a more specific example of how you can use the destination interface in Python to integrate with your Segment SDK. In this example we're using the [analytics](https://segment.com/docs/connections/sources/catalog/libraries/server/python/) Python SDK from Segment
+
+```python
+from __future__ import print_function
+
+import avo
+import analytics
+
+# An object representing your custom destination
+# that you pass into init_avo():
+class SegmentDestination(object):
+    def __init__(self):
+        self.env = None
+
+    def make(self, env):
+        analytics.write_key = 'YOUR_WRITE_KEY'
+
+    def track_event(self, user_id, event_name, event_properties):
+        analytics.track(user_id, event_name, event_properties)
+
+    def set_user_properties(self, user_id, user_properties):
+        analytics.identify(user_id, user_properties)
+
+    def log_page(self, user_id, page_name, event_properties):
+        analytics.page(user_id, page_name, event_properties)
+
+    def revenue(self, user_id, amount, event_properties):
+      analytics.track(user_id, 'Revenue', {
+          'revenue': amount
+      })
+```
+
+Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+
+#### set_system_properties
+
+```python
+avo.set_system_properties(system_props)
+```
+
+A method to update system properties.
+
+##### Arguments
+
+`system_props (dict)`: a dictionary containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types.
+
+#### Event tracking functions
+
+```python
+avo.your_event_name([event_property_0], [event_property_1], ..., [user_property_0], [user_property_1], ..., [user_id_], [anonymous_id_] })
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in snake_case. The arguments of the function depend on how it's defined in your tracking plan.
+
+##### Arguments
+
+`event_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool and list. The argument key is snake_case version of the property name defined in the Avo UI.
+This is an event property that should be tracked with given event. Pass the value of the property to track here.
+
+`user_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool and list. The argument key is snake_case version of the property name defined in the Avo UI.
+This is a user property that should be updated with given event. Pass the value of the property to update here.
+
+`user_id_`: string
+added to all events, used to connect event to specific user, you have to either provide it or the `anonymous_id_`
+
+`anonymous_id_`: string, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
+
+### Destinations
+
+You can send your data using the Avo generated JavaScript code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- RudderStack
+- Freshpaint
+- PostHog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

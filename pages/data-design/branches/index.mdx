@@ -1,0 +1,80 @@
+# Quickstart: Branches
+
+_Seamlessly work together on multiple tracking plan updates using branches_
+
+### What are branches?
+
+In Avo you can collaborate in real time on defining, expanding and implementing your tracking plan. But you might want to try out some changes or make sure that a change is implemented before you change your tracking plan source of truth. To capture this work in progress you can use branches.
+
+We highly recommend always creating a branch first before making changes to the tracking plan, no matter how small the changes are – in particular if the changes made require implementation. If changes are made directly on the main branch, then you risk someone else creating a branch that include your incomplete changes, which will very likely lead to conflicts in the future.
+
+### Creating a branch
+
+To create a new branch, first make sure you are on the main branch. Then click the icon with the plus sign next to where it says `main`.
+
+<br />
+<center>
+ <video
+   controls
+   loop
+   muted
+   width="100%"
+   autoPlay
+   src="/docs/images/best-practices/day-to-day-workflow/open-branch.mp4"
+   alt="Opening a branch"
+ />
+</center>
+
+
+### Request branch review
+
+When you've suggested changes to your tracking, mark the branch as ready for review, and @-mention a co-worker to ask them for a review.
+
+We recommend you [connect your Avo workspace to Slack](/workspace/integrations#enable-slack-notifications-in-your-avo-workspace) for added visibility into tracking plan changes your team is making.
+
+![Request branch review](/docs/images/request_branch_review.png)
+
+### Review branch changes
+
+To compare the changes drafted on a branch to the source of truth on the main branch, go click the review changes button located under your branch name. There you can see which events or properties were added, deleted or updated.
+
+<br />
+<center>
+ <video
+   controls
+   loop
+   muted
+   width="100%"
+   autoPlay
+   src="/docs/images/workspace/tracking-plan/review_branch.mp4"
+   alt="Revewing a branch"
+ />
+</center>
+
+
+### How should branches be structured?
+
+We recommend setting up branches that have isolated changes that can be opened, implemented and merged within a few days. Typically there's a one to one mapping between Avo branches and git branches.
+
+Like in git, we recommend against creating big branches with a backlog of events and properties to be implemented. We'd rather recommend splitting them in to manageable chunks that will be implemented together in a single git branch.
+
+### Deleting a branch
+
+Go to the branch review screen (“View Changes” in the Sidebar), click the tripple-dot in the top right corner. From there you can choose to delete the branch:
+
+![Opening a branch](/docs/images/delete-branch.png)
+
+### Branches Overview
+
+Click the Avo logo in the top left of your workspace to navigate to the branches overview. There you will find info about all your open branches like it's creator, the created date, the branch status, collaborators and more. The branch overview helps you make sure no tracking plan changes are left behind and that you don't miss out on progress that's happening in your workspace.
+
+![Branches Overview](/docs/images/branches-overview.png)
+
+## What's next?
+
+- [Approval workflows for branches](/workspace/approval-workflows)
+- [Workbench](/workspace/tracking-plan/workbench)
+- [Share implementation instructions for a branch](/workspace/code-changes)
+- [Using Avo in parallel workflows for large development teams](/implementation/avo-and-git)
+- [How to manage branches with multiple sources](/data-design/multiple-sources-on-avo-branches)
+- [Designing data in Avo](/data-design/start-data-design)

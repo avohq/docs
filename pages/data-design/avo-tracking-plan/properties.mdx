@@ -1,0 +1,327 @@
+import { Callout } from 'nextra/components';
+
+# Properties
+
+_Learn about the properties in your tracking plan_
+
+Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, users or groups that describe the state of the user or the product at the time of the event. Avo allows you to define event, group, user and system properties - each category described below.
+
+## Property Definition
+
+A property is defined in the event details within the relevant [actions](/workspace/tracking-plan/events#a-nameactionsa-actions) or in the properties view.
+
+- A descriptive [Property Name](/data-design/defining-descriptive-events-and-properties#properties)
+- A [Description](/data-design/defining-descriptive-events-and-properties#properties-1) that gives additional context of what the property is describing beyond the property name (optional but highly recommended)
+- The [property value type](/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints) (required)
+
+- The [events](/workspace/tracking-plan/events) that the property is attached to (required)
+- The [presence](/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional) of the property on each event – whether it's required or optional (required)
+- The [constraints](/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints) defined for the property values (optional but highly recommended)
+- The [name mappings](/data-design/name-mapping) the property name is mapped to when sending to specific destinations (optional)
+
+## Event properties
+
+Event properties describe the current state of your product at the time of the
+event.
+
+**Example**
+
+For example the property "Game Mode" on the event "Game Started", is
+relevant for that specific event, when you analyze your data. You might be want to correlate the completion rate of the game with the Game Mode, to decide how valuable the Game Modes are.
+
+**Functionality**
+
+Event properties are sent with the event in the [event call](/workspace/tracking-plan/events#a-namelog-eventa-log-event).
+
+## Group properties
+
+Group properties describe the state of a group you defined previously.
+
+Similar to User properties, this information is usually relevant in a larger scope than for exactly that event.
+
+<Callout type="info">
+  When should I use Groups and Group Properties? [Read more here about how Group
+  Properties work and why they may be the right choice for you
+  ](/data-design/groups) .
+</Callout>
+
+**Example**
+
+For B2B companies, products are used by multiple companies, each consisting of a number of users.
+In that case, you can maintain the state of each company with group properties, increase the count of employees when a new user joins a particular company for example.
+
+**Functionality**
+
+Group properties are updated with the event in the [Update Groups](/workspace/tracking-plan/events#update-groups) action.
+
+### Managing Groups
+
+To be able to manage a Group (update Group Properties, associate users or events with Groups) you first need to define the Group:
+
+#### Creating Group Types
+
+You can create Group Types either from the Properties screen or from the
+`Update Groups` action from the Event details.
+
+- From the Properties screen click `+ Add Group Type`
+- From the Update Groups action click `+ Add Group Type`
+
+and fill in name and description of your Group Type.
+
+<Callout type="info" emoji="💡">
+  Each Group Type will need an ID for association (e.g. `Workspace` : `Avo`). If
+  you would like to strictly define possible ids for a type (e.g. `Role` : [one
+  of `Admin`, `Editor`, `Viewer`, etc.] you can choose `Property Id should match
+  one of` and define your possibilities.
+</Callout>
+
+#### Creating Group properties
+
+Group Properties are properties which belong to a specific group type (e.g.
+Group Property `Member Count` for Group Type `Workspace`). There are also two ways to create
+Group properties
+
+- From the Properties screen, find the Group Properties section and your
+  Group Type's subsection and click `+ Add Group Property`
+- From the Update Groups action choose the Group Type and then `+ Add Group Property`
+
+and fill in name and description of your Group property.
+
+Groups and Group Properties should then be available from the `Update Groups`
+action.
+
+## User Properties
+
+User properties describe the state of your user. It is information that is
+usually relevant in a larger scope than for exactly that event.
+
+**Example**
+
+For example, you might want to correlate the Total Games Played of your users with how likely
+they are to recommend your product to their friend, to make sure you ask them to
+do that at the right time.
+
+Some User Properties change rarely, such as "Email",
+which mostly changes on Signup. And many analytics platforms support you in
+analyzing all of your data by your user properties, while only sending them
+along with your events when they actually change.
+
+**Functionality**
+
+User properties are updated with the [Update User Properties](/workspace/tracking-plan-actionvents#a-nameupdate-user-propsa-update-user-properties).
+
+## System properties
+
+System properties represent information that's relevant for all events that you send, and yet
+do not describe the state of the user.
+
+**Example**
+
+For example, the user could alter between mobile and web platforms, so you would not necessarily have "Platform" be a user property that
+gets overwritten each time the user switches platforms. Instead you could set
+"Platform" to be a System Property in Avo, which are properties that we send
+along with all events, as event properties for you. The values for such a property could be "Web App", "Desktop App", "iOS
+App", "Android App", etc.
+
+**Functionality**
+
+System properties are set in the Avo.initAvo() function. They can be updated with `Avo.setSystemProperties()` if needed, but otherwise the values persist during the lifecycle of the application.
+
+## Event property bundles
+
+Event property bundles are a way to bundle two or more related event properties to quickly and consistently add them to all related events. You can create event property bundles from the [event property bundles screen in your Avo workspace](https://www.avo.app/schemas/default/properties/bundles).
+
+An e-commerce website might want to attach all product properties to cart and checkout events.
+An example event property bundle could be "Product" containing the following properties:
+
+- Product ID
+- Product Name
+- Product Price
+- Product Quantity
+
+<Callout type="info" emoji="💡">
+  A property can only belong to a single bundle. That's to avoid a conflict
+  between bundles when using Avo Codegen
+</Callout>
+
+## Property types and constraints
+
+In the property modal for event, user and system properties you need to define the type of the values allowed for the property. That definition is used to validate the property.
+
+Avo supports properties with values of the following types and constraints:
+
+- string _(enumeration of allowed values)_
+- integer _(minimum and maximum value)_
+- float _(minimum and maximum value)_
+- boolean _(true or false)_
+- [object](/data-design/object-properties) ([reach out to us](/help/troubleshooting") for access)
+
+Properties values can also be a list of the above mentioned types:
+
+- `['foo', 'bar']`
+- `[1, 2, 3, 4, 5]`
+- `[1.2, 1.3, 1.6]`
+- `[true, false, true, true, false]`
+- `[{'key1': 'value1'}, {'key2': 'value2'}]`
+
+## Configuring when Properties are required or optional
+
+You can configure when Properties are required on a per-event and per-source basis. That means Avo will not give you an error if that property is missing from an event or source which the property is attached to, in other words it will sometimes be sent.
+
+For per-event granularity you can choose between _Sometimes Sent_ or _Always Sent_.
+
+<center>
+  <img
+    src={'/docs/images/property_presence_per_event.png'}
+    width="100%"
+    alt="Image shows how to change property presence between events"
+  />
+</center>
+
+For configuring per-event and per-source you can change the overall setting for the property to _Depending on Source_, revealing the sources available for each event for even more granular control.
+
+<center>
+  <img
+    src={'/docs/images/property_presence_per_source_and_event.png'}
+    width="100%"
+    alt="Image shows how to change property presence between events"
+  />
+</center>
+
+## Enumeration of allowed string values
+
+Properties of type string can have rules that require the property to be a certain value or one of allowed values.
+When these rules are applied on the property, the generated avo code will make sure that these values are only being sent.
+
+<center>
+  <img
+    src={'/docs/images/property_enum.png'}
+    width="100%"
+    alt="Image shows how allowed property values enumeration"
+  />
+</center>
+
+#### Source specific allowed values
+
+<Callout type="info">
+  Source specific property rules are available on the Team plan.
+</Callout>
+
+When a property is sent from multiple sources, you can configure from which sources each value is allowed to be sent.
+
+<center>
+  <img
+    src={'/docs/images/property_enum_source_specific.png'}
+    width="100%"
+    alt="Image shows how allowed property values can be enabled or disabled on each source"
+  />
+</center>
+
+## Replacing a Property
+
+To replace a property with another property, you can use the `Replace property with...` (see screenshot) action from the context menu in the property modal.
+This makes sure that the property is replaced in all events where it is used.
+
+<center>
+  <img
+    src={'/docs/images/replace-property-with-feature.png'}
+    width="100%"
+    alt="Image shows the option to replace property with another property from a property's context menu"
+  />
+</center>
+
+## Mixpanel Super Properties
+
+The closest equivalent to Mixpanel's Super properties are Avo System Properties. The difference: Mixpanel Super Properties persist on the device, while Avo System Properties persist in a session. All the Mixpanel Super Properties use cases can be achieved with manual usage of cookies/local storage + Avo System Properties.
+
+You would have two options for this:
+
+- Case 1: If you don't need persistence across sessions: You can replace Mixpanel Super Properties with Avo System Properties.
+- Case 2: If you need persistence across sessions: You would maintain the data in cookies/local storage, retrieve it when the app starts and provide the values when initializing Avo or before calling Avo functions.
+
+## Snowplow Contexts
+
+To set up a Snowplow object, the property has to be attached to an event that is being sent to Snowplow. This can be configured in the source configuration of an event. Then you can create a property and set it's type to an object. When you do that, then the option appears on the property to make it a Snowplow context. When you check that box, the code will be generated such that the object is converted to a Snowplow object.
+You would need to define the schema id at this stage.
+
+<center>
+  <img
+    src={'/docs/images/workspace/properties/snowplow-context-example.png'}
+    width="60%"
+    alt="Example of a Snowplow context definition in Avo"
+  />
+</center>
+
+Here's how an individual Snowplow context is translated from what is defined in the UI to the context data structure:
+
+```json
+{
+  "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
+  "data": {
+    "product_name": "product_name_value",
+    "product_price": 10.0,
+    "product_id": "product_id_value",
+    "product_type": "product_type_value"
+  }
+}
+```
+
+Each Snowplow context defined on an event in Avo then added to form an array of contexts:
+
+```json
+[
+  {
+    "schema": "iglu:com.acme_company/product_context/jsonschema/1-0-0",
+    "data": {
+      "product_name": "product_name_value",
+      "product_price": 10.0,
+      "product_id": "product_id_value",
+      "product_type": "product_type_value"
+    }
+  },
+  {
+    "schema": "iglu:com.acme_company/page_context/jsonschema/1-0-0",
+    "data": {
+      "page_name": "page_name_value",
+      "page_path": "page_path_value",
+      "page_category": "page_category_value"
+    }
+  }
+]
+```
+
+The array of context is then sent with the event where event call to Snowplow that looks like this:
+
+```javascript
+Snowplow.logEvent(
+  {
+    schema: 'iglu:com.acme_company/event_action/jsonschema/2-0-0',
+    data: {
+      avo_event_name: 'CART_UPDATED',
+      event_property_1: 'event_property_value_1',
+      event_property_2: 'event_property_value_2',
+    },
+  },
+  [
+    {
+      schema: 'iglu:com.acme_company/product_context/jsonschema/1-0-0',
+      data: {
+        product_name: 'product_name_value',
+        product_price: 10.0,
+        product_id: 'product_id_value',
+        product_type: 'product_type_value',
+      },
+    },
+    {
+      schema: 'iglu:com.acme_company/page_context/jsonschema/1-0-0',
+      data: {
+        page_name: 'page_name_value',
+        page_path: 'page_path_value',
+        page_category: 'page_category_value',
+      },
+    },
+  ],
+);
+```
+
+The Snowplow object above is provided by you, so you get full access to this payload and can easily route it to Snowplow.

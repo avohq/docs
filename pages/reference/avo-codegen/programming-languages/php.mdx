@@ -1,0 +1,206 @@
+import Link from 'next/link';
+
+# Avo Codegen in PHP
+
+### Platforms
+
+Avo can code generate Avo Codegen in PHP for your server side tracking.
+
+### Quickstart
+
+Avo Codegen usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated PHP file you must be a member of an Avo workspace with a PHP source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file and initialize it by calling the `init_avo` method before tracking
+
+```php
+require_once 'avo.php';
+
+Avo::init_avo(array("env" => "dev" /*, other parameters depending on your tracking plan setup*/), [$system_properties]);
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/php#init_avo">the reference below</Link>.
+
+#### Step 3. Call Avo Codegen to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Codegen" checkbox, gets a function in the generated code, named according to the event name, in snake_case.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Codegen" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={'/docs/images/signup-start-ui.png'}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Codegen check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```php
+Avo::signup_start(array('referral' => 'direct'));
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `set_system_properties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace to verify that your implementation is correct.
+
+### Reference
+
+#### init_avo
+
+```php
+public static function init_avo($options, $systemProperties)
+```
+
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+
+##### Arguments
+
+`options (array)`: an array with env (one of: 'dev', 'prod'), strict bool, verbose bool, logger object, customDestinationInstance object
+
+- `env`: string, one of 'dev' or 'prod'.
+- `[strict = TRUE]`: bool, if set, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+- `[verbose = TRUE]`: bool, if set and strict is false, will print the error messages to console.
+- `[logger]`: optional custom implementation of the logger, following the `\Psr\Log\LoggerInterface` format. Can be used to disable logs.
+
+Custom logger interface:
+
+```php
+interface LoggerInterface
+{
+    public function emergency($message, array $context = array());
+    public function alert($message, array $context = array());
+    public function critical($message, array $context = array());
+    public function error($message, array $context = array());
+    public function warning($message, array $context = array());
+    public function notice($message, array $context = array());
+    public function info($message, array $context = array());
+    public function debug($message, array $context = array());
+    public function log($level, $message, array $context = array());
+}
+```
+
+- `[destination_instance]`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+
+#### Destination interface example
+
+```php
+# Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+class CustomDestination {
+    private $mp;
+
+    # This method is optional, you can skip it if you've already initialized your Analytics SDK
+    function make($stub, $apiKey){
+      $this->mp = Mixpanel::getInstance(apiKey);
+    }
+    function log_event($user_id, $name, $properties){
+      $properties["distinct_id"] = $user_id;
+      $this->mp->track($name, $properties);
+    }
+    function set_user_properties($user_id, $array){
+      $this->mp->people->set($user_id, $array, $ip = 0, $ignore_time = true);
+    }
+    function log_page($user_id, $page_name, $event_properties){
+      # Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+      $event_properties["distinct_id"] = $user_id;
+      $event_properties["page_name"] = $page_name;
+      $this->mp->track("Page Viewed", $event_properties);
+    }
+    function revenue($userId, $amount, $event_properties){
+      $this->mp->people->trackCharge($userId, $amount);
+    }
+}
+```
+
+To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](https://www.avo.app/docs/help/troubleshooting).
+
+Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+
+#### set_system_properties
+
+```php
+public static function set_system_properties($system_props)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`system_props (array)`: an array containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool, array and object.
+
+#### Event tracking functions
+
+```php
+public static function [your_event_name]($properties = [])
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in snake_case. The arguments of the function depend on how it's defined in your tracking plan.
+
+##### Arguments
+
+`properties`: an associated array of properties, defined in your Avo tracking plan. Properties can be of types string, int, long, float, bool, array and object.
+
+Keys are:
+
+- `user_id_`: string, added to all events, used to connect event to specific user
+- snake_case converted event properties names defined in your Avo tracking plan and attached to this event.
+- snake_case converted user property names defined in your Avo tracking plan and attached to this event.
+
+### Destinations
+
+You can send your data using the Avo generated PHP code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- RudderStack
+- Freshpaint
+- PostHog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

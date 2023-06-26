@@ -1,14 +1,14 @@
-@use '../styles/brand';
-
 .root {
-  border: 1px solid brand.$gray-5;
+  border: 1px solid rgb(242, 242, 242);
   padding: 15px;
   border-radius: 8px;
   display: flex;
+  margin-top: 8px;
+  margin-bottom: 8px;
   // align-items: center;
 
   cursor: pointer;
-  color: brand.$black;
+  color: black;
   &:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   }
@@ -35,13 +35,13 @@
 
 .description {
   font-size: 13px;
-  color: brand.$gray-50;
+  color: rgb(128, 128, 128);
   margin-bottom: 10px;
   line-height: 1.3em;
 }
 
 .callToAction {
-  color: brand.$docs-accent-light;
+  color: #b4a3d9;
   font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;

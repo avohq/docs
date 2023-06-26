@@ -1,39 +1,30 @@
 ---
-layout: 'guide'
 title: '4. Implement analytics events'
-abstract: ''
 ---
 
-import Link from '../../components/Link';
-import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
-import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
-import DevIcon from '../../images/svg/dev.svg';
+import PageLink from '../../components/PageLink';
 
-import { FunctionComponent } from 'react';
-import Zoom from 'react-medium-image-zoom';
+# Implement analytics events
 
-Avo provides a set of developer tools to make it faster and less error prone to implement tracking code. <Link passHref href="/implementation/devs-101#avo-codegen-type-safe-analytics-wrappers"><a>Avo Codegen</a></Link>, our type safe analytics wrappers, are one of those tools. Using Avo’s developer tools is optional, but something we highly recommend.
+Avo provides a set of developer tools to make it faster and less error prone to implement tracking code. [Avo Codegen](/implementation/devs-101#avo-codegen-type-safe-analytics-wrappers), our type safe analytics wrappers, are one of those tools. Using Avo’s developer tools is optional, but something we highly recommend.
 
 In this guide we’ll cover how to implement analytics events with and without using Avo’s developer tools.
 
 # Implementing without using Avo’s developer tools
 
-You can continue implementing your tracking code like you are used to using analytics SDKs from analytics platforms (like Mixpanel, PostHog or Amplitude), SDKs from CDPs (like Rudderstack, Segment or mParticle), or using internal built SDKs or APIs.
+You can continue implementing your tracking code like you are used to using analytics SDKs from analytics platforms (like Mixpanel, PostHog or Amplitude), SDKs from CDPs (like RudderStack, Segment or mParticle), or using internal built SDKs or APIs.
 
 A typical implementation workflow looks like this:
 
-1. Use the branch *code changes* screen as a task list for what events need to be changed to successfully implement the tracking plan changes
+1. Use the branch _code changes_ screen as a task list for what events need to be changed to successfully implement the tracking plan changes
 2. Open a git branch to implement your analytics tracking changes on
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="Branch Code Changes"
-    description="Read more on using the branch code changes screen for a simple and accurate implementation"
-    callToAction={new CallToAction('/workspace/code-changes')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Branch Code Changes"
+  description="Read more on using the branch code changes screen for a simple and accurate implementation"
+  href={'/workspace/code-changes'}
+/>
 
 # Implementing with Avo Codegen
 
@@ -41,39 +32,33 @@ Avo Codegen produces type safe analytics wrappers that are code generated based 
 
 Learn more about Avo’s developer tools in Avo 101 for developers:
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="Avo 101 for developers"
-    description="Learn about Avo’s developer tools"
-    callToAction={new CallToAction('/implementation/devs-101')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Avo 101 for developers"
+  description="Learn about Avo’s developer tools"
+  href={'/implementation/devs-101'}
+/>
 
 For teams that are using Avo Codegen to implement their tracking code, the typical implementation workflow looks like this:
 
 1. Open a git branch to implement your analytics tracking changes on.
-2. Use the <Link passHref href="/implementation/cli"><a>Avo CLI</a></Link> to pull the updated code from the branch you are implementing. You can find the Avo CLI command for each source in the top right corner of the branch review screen under “Branch Implementation”. From there you can also access documentation for all the events that need to be implemented
+2. Use the [Avo CLI](/implementation/cli) to pull the updated code from the branch you are implementing. You can find the Avo CLI command for each source in the top right corner of the branch review screen under “Branch Implementation”. From there you can also access documentation for all the events that need to be implemented
 3. Use the functions provided Avo Codegen to implement your events in your source code. [Codegen tab in your workspace](https://www.avo.app/schemas/fwtXqAc0fCLy7b7oGW40/implement/fs/WUFObVFR4PVbZGtT1hQ5) provides documentation and code snippets for each event
 
 If Avo Codegen haven’t been set up in your project yet, learn how to set them up in our Avo Codegen quickstart guide:
 
-<div className={styles.row}>
-  <PageLink
-    image={DevIcon}
-    title="Avo Codegen overview"
-    description="Start using Avo Codegen"
-    callToAction={new CallToAction('/implementation/start-using-avo-codegen')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/dev.svg"
+  title="Avo Codegen overview"
+  description="Start using Avo Codegen"
+  href={'/implementation/start-using-avo-codegen'}
+/>
 
 ## What’s next?
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="5. Validate implementation"
-    description="Learn how to validate implementation"
-    callToAction={new CallToAction('/workflow/validate')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="5. Validate implementation"
+  description="Learn how to validate implementation"
+  href={'/workflow/validate'}
+/>

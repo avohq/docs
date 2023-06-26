@@ -1,0 +1,308 @@
+import Link from 'next/link';
+
+# Avo Codegen in Kotlin
+
+### Platforms
+
+Avo can code generate Avo Codegen in Kotlin targeted at the following platforms
+
+- Android
+- Server is coming soon, for now we recommend using the `Java` generated code for backend JVM projects
+
+> <Link passHref href="/help/troubleshooting">Reach out </Link> if you want to use Avo Codegen in Kotlin server
+
+> You can force the generated code to use Kotlin Coroutines for the network calls with "--forceFeatures KotlinCoroutines" flag when running the <Link passHref href="/implementation/cli#step-3-pull-generated-analytics-wrappers-from-avo">Avo CLI</Link>. <Link passHref href="/help/troubleshooting">Let us know</Link> if you want to enable coroutines by default in your workspace.
+
+### Quickstart
+
+Avo Codegen usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Kotlin file you must be a member of an Avo workspace with a Kotlin source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+
+```bash
+$ npm install -g avo
+$ avo login
+$ avo pull --branch my-branch-name
+```
+
+Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+
+You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Initialize Avo by creating an object using constructor from the generated Avo file
+
+```kotlin
+val avo = AvoImpl(env = AvoEnv.DEV/*, other parameters depending on your tracking plan setup*/)
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/kotlin#constructor">the reference below</Link>.
+
+#### Step 3. Call Avo Codegen to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Codegen" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Codegen" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+<center style={{ marginBottom: 16 + 'px' }}>
+  <img
+    style={{ height: 600 + 'px' }}
+    src={'/docs/images/signup-start-ui.png'}
+    alt="Event 'Signup Start' defined in Avo with referral string property and implement with Codegen check"
+  />
+</center>
+
+You'll be able to call it like this from the generated code
+
+```kotlin
+avo.signupStart(referral = "direct")
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/android">Avo Inspector</Link> to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the <a href="https://github.com/avohq/android-analytics-debugger">standalone visual debugger</a>.
+
+### Reference
+
+#### Constructor
+
+```kotlin
+class AvoImpl(env: AvoEnv,
+    // Other parameters may not be present, depending on your tracking plan
+    systemProperty0: int, systemProperty1: bool,
+    mixpanelDestination: ICustomDestination,
+    segmentDestination: ICustomDestination,
+    otherDestination: ICustomDestination,
+    avoInspector: Any? = null,
+    strict: Boolean = true,
+    application: Application, context: Context
+)
+```
+
+Creates the Avo object that will be used to track.
+This method will call the `Make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+
+##### Arguments
+
+`env: AvoEnv`: Can be set to dev, prod and staging.
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
+
+`destination: ICustomDestination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+
+```kotlin
+interface ICustomDestination {
+    fun make(env: AvoEnv, apiKey: String) {} // This method is optional, you can skip it if you've already initialized your Analytics SDK
+
+    fun logEvent(eventName: String, eventProperties: Map<String, *>)
+
+    fun logPage(pageName: String, eventProperties: Map<String, *>)
+
+    fun revenue(amount: Double, eventProperties: Map<String, *>)
+
+    fun setUserProperties(userId: String, userProperties: Map<String, *>)
+
+    fun identify(userId: String)
+
+    fun unidentify()
+}
+```
+
+`avoInspector: Any?`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
+
+`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+#### Destination interface example
+
+```kotlin
+// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+let mixpanelDestinationInterface = object : ICustomDestination {
+    var mixpanel: MixpanelAPI? = null
+        private set
+
+    override fun make(env: AvoEnv, apiKey: String) {
+        mixpanel = MixpanelAPI.getInstance(context.applicationContext, apiKey)
+    }
+
+    override fun logEvent(eventName: String, eventProperties: Map<String, *>) {
+        mixpanel?.track(eventName, eventProperties)
+    }
+
+    override fun setUserProperties(userId: String, userProperties: Map<String, *) {
+        mixpanel?.people?.set(userProperties)
+    }
+
+    override fun logPage(pageName: String, eventProperties: MutableMap<String, *>) {
+        // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+        let mutableEventprops = eventProperties.toMutableMap()
+        mutableEventprops["Page Name"] = pageName
+        mixpanel?.track("Page Viewed", mutableEventprops)
+    }
+
+    override fun revenue(amount: Double, eventProperties: Map<String, *>) {
+        mixpanel?.people?.trackCharge(amount, eventProperties)
+    }
+
+    override fun identify(userId: String) {
+        mixpanel?.identify(userId)
+    }
+
+    override fun unidentify() {
+        mixpanel?.reset()
+    }
+}
+```
+
+Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+
+###### Additional arguments
+
+`application: Application` and `context: Context` are required by some analytics destinations.
+
+#### setAvoLogger
+
+```kotlin
+fun setAvoLogger(logger: (String) -> Unit)
+```
+
+This method allows you to provide custom implementation of the logger used by Avo Codegen.
+Can for example be used to disable logs or change which logging method is used.
+
+##### Arguments
+
+`avoLogger: (String) -> Unit`: custom implementation of the logger, e.g. `{ logMessage: String -> Log.d(this.localClassName, logMessage) }`
+
+#### setSystemProperties
+
+```kotlin
+fun setSystemProperties(systemProperty0: Int, systemProperty1: Boolean?, ...)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
+
+#### Event tracking functions
+
+```kotlin
+fun [yourEventName](eventProperty0: Int, eventProperty1: Double?, ..., userProperty0: Boolean?, userProperty1: List<Int>, ..., userId_: String)
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool and list`:
+Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to track here.
+
+`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool and list`:
+Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to update here.
+
+`userId_: String`: used to connect event to specific user.
+Added if the event has the `Identify User` action
+
+### Snowplow interface
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+If you add a snowplow destination to a Kotlin source you'll get an additional constructor parameter
+
+```kotlin
+snowplowDestination: AvoSnowplowDestination
+```
+
+You'll implement it like this:
+
+```kotlin
+val avo = AvoImpl(...,
+    snowplowDestination = object : AvoSnowplowDestination {
+        override fun make(env: AvoEnv) {
+            // Your custom Snowplow initialization, that includes the `createTracker` call
+            Snowplow.createTracker(this@MainActivity, "appTracker", "COLLECTOR_URL", HttpMethod.POST)
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/
+        }
+
+        override fun trackSelfDescribingEvent(schema: String, data: Map<String, *>, contexts: List<Map<String, Any>>) {
+            val eventContent = SelfDescribingJson(schema, data)
+
+            val event = SelfDescribing(eventContent)
+            contexts.forEach { customContext ->
+                val contextSchema = customContext["schema"]
+                val contextData = customContext["data"]
+                if (contextSchema is String && contextData is Any) {
+                    event.customContexts.add(
+                            SelfDescribingJson(contextSchema, contextData)
+                    )
+                }
+            }
+
+            Snowplow.getDefaultTracker()?.track(event)
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
+        }
+
+        override fun trackPageView(title: String) {
+            Snowplow.getDefaultTracker()?.track(ScreenView(title))
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
+        }
+
+        override fun identify(userId: String) {
+            Snowplow.getDefaultTracker()?.subject?.userId = userId
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        }
+
+        override fun unidentify() {
+            Snowplow.getDefaultTracker()?.subject?.userId = null
+            // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        }
+    })
+```
+
+### Destinations
+
+You can send your data using the Avo generated Kotlin code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- RudderStack
+- Freshpaint
+- PostHog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

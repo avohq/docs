@@ -1,0 +1,21 @@
+# Avo generated code and linters
+
+Avo obsesses over making the generated code human readable, so you can open the generated Avo file at any point of time and easily understand what's happening there.
+
+At the same time, since the Avo file is added to your codebase as any other code you read, it falls under investigation of your linter, if you use some.
+
+Given the variety of different linting rules we decided to not try to conform any particular one, but instead provide human readable code and exclude it from linting. That's a common practice for generated code, like protobuf files are excluded for example.
+
+###  Step 1: Excluding the file
+
+Avo generated files contain commands disabling some linters automatically, including `eslint`, `swiftlint` and `pylint`.
+
+For other linters you'll need to add the Avo file to the excluded files list in the linter config.
+
+### Optional step 2: Set up auto reformat
+
+If you wish to apply your code style to the Avo file for better readability, we recommend you to set up automatic formatter.
+
+Some linters allow you to automatically reformat a file according to your config, for example with `ktlint` you can run `ktlint -F ./Avo.kt` and it will bring the Avo file to your code style.
+
+You can enable this as a commit hook and keep the Avo file formatted exactly as you want automatically.

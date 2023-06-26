@@ -1,0 +1,102 @@
+# Add Events and properties from Inspector
+
+The Inspector compares the ingested events and properties against tracking plan and detects if there are any events or properties missing from the tracking plan. Unknown events and properties can both be added to the tracking plan from both the [Issues view](/workspace/inspector/inspector-issues-view) and the [Events view](/workspace/inspector/inspector-events-view).
+
+## Event not in Tracking Plan
+
+### Issues view
+
+When an event is missing from the tracking plan the issue details will offer you to quickly add it to the tracking plan. Click the "Add to Tracking Plan" button and the event and all it's properties are created.
+
+<center>
+  <img
+    src={'/docs/images/inspector/add-event-from-issue-details.png'}
+    width="100%"
+    alt='Image shows issue details with "Add to tracking plan" highlighted for the event.'
+  />
+</center>
+
+### Events view
+
+If the Inspector detects an event that is not in your tracking plan, it will be highlighted with a red tracking plan icon next to the name, along with an "Add" button to add it to your tracking plan. The events view sidebar also has an option to add the event right from there. Click either button to add the event and all it's properties to the tracking plan.
+
+<center>
+  <img
+    src={'/docs/images/inspector/add-event-from-events-view.png'}
+    width="100%"
+    alt='Image shows the Inspector events view with "Add" and "Add event to tracking plan" buttons highlighted.'
+  />
+</center>
+
+## Property not in tracking plan 
+
+### Issues view
+
+If the Inspector detects a property that is not in you tracking plan, the issue type "Unexpected Property" is presented. The issues view can be filtered by issue type, so when that filter is applied you get a good overview over all unexpected properties. 
+
+<center>
+  <img
+    src={'/docs/images/inspector/filter-by-unexpected-property.png'}
+    width="100%"
+    alt='Image shows the Inspector issues view filters with Unexpected property filter selected.'
+  />
+</center>
+
+In the issue details, you will always be able to see whether the event or property is currently in the tracking plan and you get an option to add it if it's not. Click the "Add to tracking plan" button by the property name to add it to your tracking plan.
+
+<center>
+  <img
+    src={'/docs/images/inspector/add-property-from-issue-details.png'}
+    width="100%"
+    alt='Image shows issue details with "Add to tracking plan" highlighted for the property.'
+  />
+</center>
+
+### Events view
+
+Clicking on the event name cell will expand it such that all the properties that were detected in this particular event are shown. If a property is missing from the tracking plan for that particular event, it is highlighted with a red tracking plan icon next to the property name, along with an "Add" button to add it to your tracking plan. The sidebar in the events view also has an option to add the property to the tracking right from there. Click either button to add the event and all it's properties to the tracking plan. There are two cases for adding property to the event in the tracking plan:
+
+1. If property exists in the tracking plan, but is not on the event, you are offered to add the property to this event in the tracking plan.
+2. If property does not exists on the tracking plan it will not be on the event either. Then you are offered to create the event in the tracking plan and add it to this event, with a single click of a button.
+
+<center>
+  <img
+    src={'/docs/images/inspector/add-property-from-events-view.png'}
+    width="100%"
+    alt='Image shows the Inspector events view with "Add" and "Create and add property to tracking plan" buttons highlighted.'
+  />
+</center>
+
+
+### Details about adding an event to the tracking plan
+
+Before creating the event, the Inspector will first validate the event name against all events in the tracking plan, to determine if the event might already exist with different casing.
+If that happens, a confirm dialog pops up showing the user that the Inspector found an existing event with the same name.
+
+<center>
+  <img
+    src={'/docs/images/inspector/confirm-dialog.png'}
+    width="100%"
+    alt="Image shows a confirm dialog to make sure the user wants to add this event"
+  />
+</center>
+
+Adding the event to the tracking plan will create the Event and do the following:
+
+- Add all sources the event has according to the inspector
+- Add properties that exist in the tracking plan and are on the event in the inspector.
+- Create and add properties that are missing from the tracking plan but are on the event in the inspector
+  - If the property already exists in different casing, it will not be created.
+  - If the property has reported seeing 2 types (int, string for example) it will select the type that Inspector has seen more of.
+  - Each property will be created with presence "Always Sent"
+  - All new properties created will be created as **Event properties**
+
+### Details about adding a property to the tracking plan
+
+Adding a Property directly from the inspector will create the Property and do the following:
+
+- Validate that the property does not exist already in the workspace
+  - If a property with different casing already exists, a window will pop up asking you to confirm your creation of the property.
+- If the property has reported seeing 2 types (int, string for example) it will select the type that Inspector has seen more of.
+- Each property will be created with presence "Always Sent"
+- The property will be created as **Event property**

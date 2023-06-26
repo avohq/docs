@@ -1,60 +1,62 @@
 import { FunctionComponent } from 'react';
 
 import styles from './PageLink.module.scss';
-import Icon from './Icon';
-import Link from '../components/Link';
-
-export class CallToAction {
-  constructor(readonly path: string) {}
-}
+import Link from 'next/link';
+import Image from 'next/image';
+import { useTheme } from 'nextra-theme-docs';
 
 interface Props {
   title: string;
   description?: string;
   image?: string;
-  callToAction?: CallToAction;
+  href: string;
 }
 
 const PageLink: FunctionComponent<Props> = ({
   title,
   description,
   image,
-  callToAction,
+  href,
 }) => {
-  const returnDiv = (
-    <div className={styles.root}>
-      {image && (
-        <div className={styles.image}>
-          <img src={image} />
-        </div>
-      )}
-      <div className={styles.text}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.description}>{description}</div>
-        {callToAction && (
-          <div className={styles.callToAction}>
-            <span style={{ textDecoration: 'none', color: 'grey' }}>
-              {'Read '}
-            </span>
-            <Icon name="chevron-right" relativeSize="sm" color="inherit" />
+  let { resolvedTheme } = useTheme();
+
+  return (
+    <Link scroll={true} href={href}>
+      <div className={styles.root}>
+        {image && (
+          <div className={styles.image}>
+            <Image src={image} alt="" width={80} height={80} />
           </div>
         )}
+        <div className={styles.text}>
+          <div
+            className={styles.title}
+            style={resolvedTheme === 'dark' ? { color: 'white' } : {}}
+          >
+            {title}
+          </div>
+          <div
+            className={styles.description}
+            style={
+              resolvedTheme === 'dark' ? { color: 'rgb(229, 231, 235)' } : {}
+            }
+          >
+            {description}
+          </div>
+          <div className={styles.callToAction}>
+            <span
+              style={{
+                textDecoration: 'none',
+                color: resolvedTheme === 'dark' ? 'lightGrey' : 'grey',
+              }}
+            >
+              {'Read '}
+            </span>
+          </div>
+        </div>
       </div>
-    </div>
+    </Link>
   );
-
-  if (callToAction) {
-    // Link content wrapped in an anchor to make cmd+click to open in a new tab work
-    return (
-      <Link scroll={true} href={callToAction ? callToAction.path : ''} passHref>
-        <a rel="noreferrer" style={{ textDecoration: 'none' }}>
-          {returnDiv}
-        </a>
-      </Link>
-    );
-  } else {
-    return returnDiv;
-  }
 };
 
 export default PageLink;

@@ -1,21 +1,13 @@
 import { FunctionComponent, useEffect } from 'react';
 import { AnalyticsBrowser } from '@segment/analytics-next';
 import { AppProps } from 'next/app';
-import { MDXProvider } from '@mdx-js/react';
+import { useRouter } from 'next/router';
 import mixpanel from 'mixpanel-browser';
 
 import Avo, { AvoEnv, CustomDestination } from '../Avo';
 
-import '../styles/global.css';
-
-import Layout from '../components/Layout';
-import MDComponents from '../styles/MDComponents';
 import useAvoPath from '../util/useAvoPath';
 import Head from 'next/head';
-
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-config.autoAddCss = false;
 
 const getAvoEnv = () => {
   switch (process.env.NEXT_PUBLIC_AVO_ENV) {
@@ -118,18 +110,31 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
     return () => {
       window.removeEventListener('copy', onCopy);
     };
-  }, []);
+  }, [path]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    Avo.docsPageViewed({
+      userId_: 'not-used',
+      path: path,
+      referrer: document.referrer,
+      utmCampaign: router.query.utm_campaign as string | undefined,
+      utmContent: router.query.utm_content as string | undefined,
+      utmMedium: router.query.utm_medium as string | undefined,
+      utmSource: router.query.utm_source as string | undefined,
+      utmTerm: router.query.utm_term as string | undefined,
+    });
+  }, [path]); // eslint-disable-line
 
   return (
-    <MDXProvider components={MDComponents}>
-      <Layout>
+      <>
         <Head>
-          <meta name="theme-color" content="#000000" />
           <link
             rel="icon"
             type="image/png"
             sizes="96x96"
-            href={require('../images/favicon.png')}
+            href="/docs/images/favicon.png"
           />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <script
@@ -151,14 +156,9 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
             src="//cdn.iubenda.com/cs/iubenda_cs.js"
             async
           />
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
-          />
         </Head>
         <Component {...pageProps} />
-      </Layout>
-    </MDXProvider>
+      </>
   );
 };
 
