@@ -4,16 +4,16 @@
 
 ## Getting Started
 
-To get started developing clone the repository and run the following commands:
+Avo Docs runs on [Node.js](https://nodejs.org/) 16.8 or later. To get started developing clone the repository and run the following commands:
 
 ```bash
-yarn
-yarn dev
+yarn # or "npm install"
+yarn dev # or "npm run dev"
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Each page lives in a separate file in the `pages/` directory. Start editing and see the site update live in your browser. To add a new page, simply create a new .md or .mdx file inside the pages folder (or sub-folder depending on where you want to have it) and it should be in the relevant place in the navigation.
+Each page lives in a separate file in the `pages/` directory. Start editing and see the site update live in your browser. To add a new page, simply create a new .md or .mdx file inside the pages folder (or sub-folder depending on where in the navigation you want to have it).
 
 > This project uses TypeScript, ESLint and Prettier. We recommend configuring your editor so that it automatically formats your files using our config and displays type and linting errors inline.
 
@@ -34,6 +34,10 @@ Each page in the docs lives in a file in the `pages/` directory. This directory'
 ### Body
 
 The page's body is written in MDX, a markdown extension that allows you to embed React components.
+
+### Moving pages
+
+Sometimes we like to put a page to a different place in the navigation hierarchy. You can do that by simply moving the file. As that changes the url, we need to make sure that old links end up in the new location by adding a re-direct to the next.config.js file.
 
 ## Linting
 
