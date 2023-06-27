@@ -170,18 +170,18 @@ You can configure when Properties are required on a per-event and per-source bas
 
 For per-event granularity you can choose between _Sometimes Sent_ or _Always Sent_.
 
-![Image shows how to change property presence between events](/docs/images/property_presence_per_event.png)
+![Image shows how to change property presence between events](/images/property_presence_per_event.png)
 
 For configuring per-event and per-source you can change the overall setting for the property to _Depending on Source_, revealing the sources available for each event for even more granular control.
 
-![Image shows how to change property presence between events](/docs/images/property_presence_per_source_and_event.png)
+![Image shows how to change property presence between events](/images/property_presence_per_source_and_event.png)
 
 ## Enumeration of allowed string values
 
 Properties of type string can have rules that require the property to be a certain value or one of allowed values.
 When these rules are applied on the property, the generated avo code will make sure that these values are only being sent.
 
-![Image shows how allowed property values enumeration](/docs/images/property_enum.png)
+![Image shows how allowed property values enumeration](/images/property_enum.png)
 
 #### Source specific allowed values
 
@@ -191,14 +191,14 @@ When these rules are applied on the property, the generated avo code will make s
 
 When a property is sent from multiple sources, you can configure from which sources each value is allowed to be sent.
 
-![Image shows how allowed property values can be enabled or disabled on each source](/docs/images/property_enum_source_specific.png)
+![Image shows how allowed property values can be enabled or disabled on each source](/images/property_enum_source_specific.png)
 
 ## Replacing a Property
 
 To replace a property with another property, you can use the `Replace property with...` (see screenshot) action from the context menu in the property modal.
 This makes sure that the property is replaced in all events where it is used.
 
-![Image shows the option to replace property with another property from a property's context menu](/docs/images/replace-property-with-feature.png)
+![Image shows the option to replace property with another property from a property's context menu](/images/replace-property-with-feature.png)
 
 ## Mixpanel Super Properties
 
@@ -214,7 +214,7 @@ You would have two options for this:
 To set up a Snowplow object, the property has to be attached to an event that is being sent to Snowplow. This can be configured in the source configuration of an event. Then you can create a property and set it's type to an object. When you do that, then the option appears on the property to make it a Snowplow context. When you check that box, the code will be generated such that the object is converted to a Snowplow object.
 You would need to define the schema id at this stage.
 
-![Example of a Snowplow context definition in Avo](/docs/images/workspace/properties/snowplow-context-example.png)
+![Example of a Snowplow context definition in Avo](/images/workspace/properties/snowplow-context-example.png)
 
 Here's how an individual Snowplow context is translated from what is defined in the UI to the context data structure:
 

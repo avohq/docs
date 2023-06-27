@@ -23,17 +23,17 @@ For example:
 1. Avo **prevents creating a duplicate event** whose only difference from an existing event is the _casing_. Same for property names.
 
    For example: Avo won't allow you create a `signupStart` event if `SIGNUP_START` already exists:
-   ![Property already exists](/docs/images/best-practices/naming-conventions/already_exists.png)
+   ![Property already exists](/images/best-practices/naming-conventions/already_exists.png)
    
 2. Avo **_nudges_ you if you try to create an event in a casing that contradicts** your tracking plan casing convention. Same for property names.
 
    For example: if the convention is `snake_case` and you type in `gameStarted` in the event creation modal, Avo will suggest the right casing to you before you create the event:
-   ![Consistent casing suggestion](/docs/images/best-practices/naming-conventions/consistant_casing.png)
+   ![Consistent casing suggestion](/images/best-practices/naming-conventions/consistant_casing.png)
    
 3. Avo **_nudges_ you if you try to create an event with similar words as an event that already exists**.
 
    For example: if you try to create `UPDATE_EMAIL` while `EMAIL_UPDATE` already exists.
-   ![Similar to existing event](/docs/images/best-practices/naming-conventions/similar_to.png)
+   ![Similar to existing event](/images/best-practices/naming-conventions/similar_to.png)
    
 4. Avo **_prevents_ you from creating properties with slightly different meaning depending on which event** they are sent from.
 
