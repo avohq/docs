@@ -21,7 +21,7 @@ An event is defined in the Events section of the Tracking plan and can be organi
  that describe both visually and in words all the user or system actions that trigger the event (optional but highly recommended)
 - The [_Source(s)_](/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from)
  that the event should be sent from
-- The <a href="#actions">_Actions(s)_</a> associated with the event
+- The [_Actions(s)_](#actions) associated with the event
 - The [_Metrics(s)_](/workspace/tracking-plan/metrics)
  related to the event (optional)
 - The [_Category(s)_](/data-design/organizing-metrics-and-events#a-namecategoriesa-categories)
@@ -63,23 +63,23 @@ To remove an action, click settings in the Action and select `Remove`:
 
 Below is a list of possible actions, followed by a more detailed overview of each:
 
-1. <a href="#identify-user">Identify User</a>: identifies the user in
+1. [Identify User](#identify-user): identifies the user in
    the analytics tool when sent. All events sent after this event
    will be tied to the identified user. Usually set on sign in events.
-2. <a href="#update-user-props">Update User Properties</a>: updates the
+2. [Update User Properties]#update-user-props): updates the
    associated user properties when sent.
-3. <a href="#log-event">Log Event</a> logs/tracks an event in your
+3. [Log Event](#log-event) logs/tracks an event in your
    analytics tool.
-4. <a href="#log-revenue">Log Revenue</a>: logs revenue when this event is sent. Usually set on
+4. [Log Revenue](#log-revenue): logs revenue when this event is sent. Usually set on
    checkout events.
-5. <a href="#log-page-view">Log Page View</a>: logs page view in your
+5. [Log Page View](#log-page-view): logs page view in your
    analytics tool when this event is sent. Usually set on events that are sent
    on screen/page navigation.
-6. <a href="#unidentify-user">Unidentify User</a>: unidentifies the user
+6. [Unidentify User](#unidentify-user): unidentifies the user
    in your analytics tool when this event is sent. All events sent after this
    event will not be tied to the previously identified user. Usually set on sign
    out events.
-7. <a href="#update-groups">Update Groups</a>: associates users with
+7. [Update Groups](#update-groups): associates users with
    groups and/or updates group properties. Adding users to groups will link them
    in all subsequent calls.
 

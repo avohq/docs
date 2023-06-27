@@ -35,6 +35,14 @@ Each page in the docs lives in a file in the `pages/` directory. This directory'
 
 The page's body is written in MDX, a markdown extension that allows you to embed React components.
 
+### Links
+
+To create links, simply use the standard markdown syntax. When linking to another docs page, you should skip the "/docs" part of the url. E.g. `[Link to FAQ](/help/faq)` will link to the FAQ page.
+
+### Images
+
+To add an image, add it to the `public/images` folder and then reference it using the standard markdown syntax. E.g. `![Alt text](/images/image.png)`. Just as with links, you should skip the "/docs" part of the url.
+
 ### Moving pages
 
 Sometimes we like to put a page to a different place in the navigation hierarchy. You can do that by simply moving the file. As that changes the url, we need to make sure that old links end up in the new location by adding a re-direct to the next.config.js file.
