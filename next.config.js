@@ -554,7 +554,7 @@ const redirects = [
   },
   {
     source: '/workspace/index',
-    destination: '/data-design/avo-tracking-plan/index',
+    destination: '/data-design/avo-tracking-plan',
     permanent: true,
   },
   {
@@ -605,7 +605,7 @@ const redirects = [
   },
   {
     source: '/workspace/branches',
-    destination: '/data-design/branches/index',
+    destination: '/data-design/branches',
     permanent: true,
   },
   {
@@ -615,7 +615,7 @@ const redirects = [
   },
   {
     source: '/data-design/start-collaborating',
-    destination: '/data-design/collaboration/index',
+    destination: '/data-design/collaboration',
     permanent: true,
   },
   {
@@ -684,8 +684,8 @@ const redirects = [
     permanent: true,
   },
   {
-    source: '/workspace/tracking-plan/index',
-    destination: '/data-design/index',
+    source: '/workspace/tracking-plan',
+    destination: '/data-design',
     permanent: true,
   },
   {
@@ -896,7 +896,7 @@ const redirects = [
   },
   {
     source: '/implementation/supported-programming-languages',
-    destination: '/reference/avo-codegen/programming-languages/index',
+    destination: '/reference/avo-codegen/programming-languages',
     permanent: true,
   },
   {
