@@ -10,51 +10,21 @@ The branch audit reviews the changes you have made on your branch and flags issu
 
 When [reviewing changes on a branch](/workspace/branches#review-branch-changes), you can see issues directly on your tracking plan items and in the instance of inconsistent casing you can automatically fix the issue by the click of a button.
 
-<center>
-  <img
-    src={'/docs/images/audit/inline-audit.png'}
-    width="75%"
-    alt="Example of an inline audit in the diff screen showing changes to an event called add_to_cart. The audit suggests there are two issues: the event name is not consistent with the naming convention and it doesn't have a description."
-  />
-</center>
-<br />
-<br />
+![Example of an inline audit in the diff screen showing changes to an event called add_to_cart. The audit suggests there are two issues: the event name is not consistent with the naming convention and it doesn't have a description.](/images/audit/inline-audit.png)
 
 At the bottom of the diff screen you will have a summary of the issues introduced on the branch, indicating whether you have to take action or not. Expanding the sections will let you see in more details which items are affected and whether there are any automated actions to take, for instance for inconsistent casing.
 
-<center>
-  <img
-    src={'/docs/images/audit/branch-audit-summary.png'}
-    width="75%"
-    alt="Example of a branch audit summary showing several issues."
-  />
-</center>
-<br />
-<br />
+![Example of a branch audit summary showing several issues.](/images/audit/branch-audit-summary.png)
 
 If there is a problem with casing in multiple instances, you can fix all of them at once by clicking the auto correct button. This will take care of fixing all of the issues which Avo is able to fix automatically, but in some cases it might not be possible to fix the casing due to naming conflicts in which case they will be left out for manual fixing.
 
-<center>
-  <img
-    src={'/docs/images/audit/auto-correct.png'}
-    width="75%"
-    alt="Example of multiple issues being fixed at once when there is inconsistency in the casing of names of items."
-  />
-</center>
-<br />
-<br />
+![Example of multiple issues being fixed at once when there is inconsistency in the casing of names of items.](/images/audit/auto-correct.png)
 
 ## Enforce a 0 issue policy
 
 For Enterprise plans you have the possibility of enforcing that there are no issues introduced on branches before they are merged.
 
-<center>
-  <img
-    src={'/docs/images/audit/enforce-branch-audit.png'}
-    width="75%"
-    alt="A picture showing the setting for enforcing branch audits to pass before merging being enabled."
-  />
-</center>
+![A picture showing the setting for enforcing branch audits to pass before merging being enabled.](/images/audit/enforce-branch-audit.png)
 
 To learn more about the audit rules, see [Avo's tracking plan audit rules](/audit/rules).
 

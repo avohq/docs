@@ -44,27 +44,13 @@ You can use Event Triggers to communicate very clearly from where the event shou
 
 When you have an application on web and mobile, they often have different triggers for the events. In that case it's very convenient to be able to communicate visually when the event is sent on mobile on one hand and on web on the other hand.
 
-<center>
-  <img
-    src={
-      '/docs/images/best-practices/triggers/different-visuals-for-platforms.png'
-    }
-    width="75%"
-    alt="Multiple visuals for different platforms"
-  />
-</center>
+![Multiple visuals for different platforms](/images/best-practices/triggers/different-visuals-for-platforms.png)
 
 ### Multiple locations in your application to perform a user action
 
 When you have multiple locations in your application where a user can perform an action (for example with multiple buttons to sign up) then it's good practice to include all scenarios such that the developers implementing don't forget to add the event to a specific call site in their code.
 
-<center>
-  <img
-    src={'/docs/images/best-practices/triggers/multiple-call-sites.png'}
-    width="75%"
-    alt="Multiple triggers for multiple call sites"
-  />
-</center>
+![Multiple triggers for multiple call sites](/images/best-practices/triggers/multiple-call-sites.png)
 
 ### Fat events
 
@@ -72,34 +58,16 @@ When you have fat events (events that include multiple related user actions, dis
 
 For example if you have an event for all interactions to a billing modal, you can add triggers for every single interaction.
 
-<center>
-  <img
-    src={'/docs/images/best-practices/triggers/fat-events.png'}
-    width="75%"
-    alt="Multiple triggers for user actions within an event"
-  />
-</center>
+![Multiple triggers for user actions within an event](/images/best-practices/triggers/fat-events.png)
 
 ### Adding a call site for an event
 
 Triggers facilitate a very nice way to communicate to a developer when they need to add a new call site to an event. For example when a new button for the user action is added or a new option in a setting screen is added. Then the new trigger for the event is displayed in the review screen, implementation instructions and Avo Codegen.
 
-<center>
-  <img
-    src={'/docs/images/best-practices/triggers/diff-view.png'}
-    width="75%"
-    alt="Multiple triggers for user actions within an event"
-  />
-</center>
+![Multiple triggers for user actions within an event](/images/best-practices/triggers/diff-view.png)
 
 ### One trigger for all scenarios
 
 Whenever there is simply one location that a user can perform an action or when a single screenshot is sufficient to describe when an event is sent, it can be useful to simply add one trigger and have it "source independent".
 
-<center>
-  <img
-    src={'/docs/images/best-practices/triggers/single-trigger.png'}
-    width="75%"
-    alt="Single trigger for an event"
-  />
-</center>
+![Single trigger for an event](/images/best-practices/triggers/single-trigger.png)
