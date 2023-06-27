@@ -9,7 +9,8 @@ const SignIn: FunctionComponent = () => {
   return (
     <div className={styles.root}>
       <a
-        href="https://avo.app/onboarding"
+        className={styles.signUp}
+        href="https://www.avo.app/onboarding"
         onClick={() =>
           Avo.signUpStarted({
             siteSection: Avo.SiteSection.HEADER,
@@ -18,10 +19,10 @@ const SignIn: FunctionComponent = () => {
           })
         }
       >
-        <div className={styles.signUp}>Sign up</div>
+        Sign up
       </a>
-      <a href="https://avo.app/login">
-        <div className={styles.signIn}>Sign in</div>
+      <a href="https://www.avo.app/login" className={styles.signIn}>
+        Sign in
       </a>
     </div>
   );

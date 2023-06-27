@@ -21,7 +21,7 @@ Avo Codegen usage consists of 4 steps.
 
 ##### Pull the generated code with the Avo CLI
 
-To get the Avo generated JavaScript file you must be a member of an Avo workspace with a JavaScript source. Ask for an invite from a colleague or create a <a href="https://avo.app/onboarding" target="_blank">new workspace</a>
+To get the Avo generated JavaScript file you must be a member of an Avo workspace with a JavaScript source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
 
 ```bash
 $ npm install -g avo
@@ -103,7 +103,7 @@ This method will call the `make(env, apiKey)` callback in all the provided <Link
 - `[strict = true]`: bool defaulting to true, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
 - `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers#javascript">Find the code snippet here</Link>.
 - `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
-- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check <a target="\_blank" rel="noopener noreferrer" href="https://github.com/avohq/react-native-analytics-debugger">React Native mobile debugger repo</a> to learn more about it.
+- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check [React Native mobile debugger repo](https://github.com/avohq/react-native-analytics-debugger) to learn more about it.
 
 `systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
