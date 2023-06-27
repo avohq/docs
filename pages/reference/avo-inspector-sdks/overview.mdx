@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Callout } from 'nextra/components'
 
 # Avo Inspector SDKs
@@ -6,15 +5,6 @@ import { Callout } from 'nextra/components'
 Avo Inspector analyzes the analytics events sent from your app, without collecting the actual data (not yet another tool to add to your privacy policy). Based on that analysis Avo automatically builds a single source of truth tracking plan, covering all your products and platforms, giving you a complete overview of which is tracking what, and which is not.
 
 Avo Inspector SDK is designed to be small and easy to include in any project.
-
-**Table of Contents**
-
-- [Platform documentation](#platform-docs)
-- [Usage overview](#standalone-usage)
-- [Supported event schema types](#supported-types)
-- [Batching](#batching)
-- [Easy setup with Segment SDK on Android and iOS](#segment-middleware)
-  
 
 ## Platform documentation
 
@@ -29,11 +19,11 @@ Avo Inspector SDK is designed to be small and easy to include in any project.
 
 ## Usage overview
 
-Find in <Link passHref href="/implementation/avo-inspector-overview">Avo Inspector overview</Link> guide.
+Find in [Avo Inspector overview](/implementation/avo-inspector-overview) guide.
 
 ## Logs
 
-You can enable or disable logs with a method on the `AvoInspector` class (the interface may vary depending on platform, see <a href="#platform-docs">platform specific documentation</a> above)
+You can enable or disable logs with a method on the `AvoInspector` class (the interface may vary depending on platform, see [platform specific documentation](#platform-docs) above)
 
 `AvoInspector.enableLogging(isEnabled)`
 
