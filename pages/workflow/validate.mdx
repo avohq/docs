@@ -40,13 +40,13 @@ Here’s how you can validate tracking implementation for a particular branch us
 1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
 2. In Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
 
-![Validate on inspector dashboard](/docs/images/workflow/5.validate/dev-stag-production.png)
+![Validate on inspector dashboard](/images/workflow/5.validate/dev-stag-production.png)
 
 _Example: Inspector dashboard_
 
 3. In Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
 
-![Validate on inspector dashboard](/docs/images/workflow/5.validate/validate-dashboard-issue.png)
+![Validate on inspector dashboard](/images/workflow/5.validate/validate-dashboard-issue.png)
 
 _Example: Discrepancies in the event tracking_
 
@@ -95,20 +95,11 @@ Learn more about how validations in Codegen work here:
 
 The Avo In-app Debugger is an addition on top of Avo Codegen that gives you better visibility into which events are being sent, which properties are attached, and whether any issues were detected or not.
 
-<br />
-<center>
-  <img
-    height="500"
-    src="/docs/images/web-debugger-example.png"
-    alt="Web debugger example"
-  />
-</center>
+![Web debugger example](/images/web-debugger-example.png)
 
 _Example: Web debugger example_
 
 The Avo debugger is available on Web, iOS, Android and React Native. Learn more about the Avo debugger here:
-
-{' '}
 
 <PageLink
   image="/docs/images/svg/dev.svg"
@@ -167,20 +158,13 @@ For every source Avo Codegen is installed on, you’ll find an implementation st
 
 You can hover over the source pill in the events table, or click into the event, to learn more about the implementation status.
 
-![Hover the pill to see implementation status](/docs/images/workflow/5.validate/pill.png)
+![Hover the pill to see implementation status](/images/workflow/5.validate/pill.png)
 
 _Example: Implementation status in the event table of the tracking plan_
 
 You can also find a branch implementation status for Avo Codegen in the top right corner of the branch review screen.
 
-<br />
-<center>
-  <img
-    width="60%"
-    src="/docs/images/workflow/5.validate/event-implemented.png"
-    alt="hover the pill to see implementation status"
-  />
-</center>
+![Hover the pill to see implementation status](/images/workflow/5.validate/event-implemented.png)
 
 _Example: Implementation status on the branch review screen_
 
@@ -199,5 +183,5 @@ Learn more about how to read Avo Codegen implementation status:
   image="/docs/images/svg/analyticsmanager.svg"
   title="6. Merge branch and Publish"
   description="Learn how to Merge branch and Publish your tracking plan updates to schema registries"
-  href={'/workflow/merge-publish'}
+  href="/workflow/merge-publish"
 />

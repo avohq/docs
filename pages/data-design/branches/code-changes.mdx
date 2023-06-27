@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components';
 
 The code changes screen helps your team quickly and accurately implement tracking plan changes on a branch. You can find it by navigating to a branch, selecting _View changes_ in the sidebar and then clicking the _Code changes_ tab. You can even share it with someone outside your Avo workspace using the public sharing feature.
 
-![Overview of code changes](/docs/images/code-changes/code-changes.png)
+![Overview of code changes](/images/code-changes/code-changes.png)
 
 On the code changes screen you see all events that are affected by your tracking plan changes, grouped by source. The event code snippet highlights exactly what has changed in the implementation of the event on the branch and makes it fast and easy for developers to understand what changes they need to make to successfully implement the branch. Your workspace members can comment directly on the events to address any uncertainties about the changes.
 
@@ -18,7 +18,7 @@ If you are sharing implementation instructions with someone outside your workspa
 
 Only workspace Admins and Editors can generate a public link but once generated, anyone in the workspace can copy the link to share. Deleting a public link will permanently invalidate all existing links and generating a new one will be behind a new, unique share ID.
 
-![Share code changes](/docs/images/code-changes/code-changes-share.png)
+![Share code changes](/images/code-changes/code-changes-share.png)
 
 The public view looks and functions similarly to the one in the workspace, but there are some key differences:
 
@@ -30,9 +30,9 @@ To maintain as much security and privacy as we can given the public access, we'v
 
 For a preview, take a look at this [example public view](https://www.avo.app/s/TZ0YwKaQ9).
 
-![Public code changes](/docs/images/code-changes/code-changes-public.png)
+![Public code changes](/images/code-changes/code-changes-public.png)
 
-![Code changes shared](/docs/images/code-changes/code-changes-shared.png)
+![Code changes shared](/images/code-changes/code-changes-shared.png)
 
 To maintain as much security and privacy as we can given the public access, we've gone to great lengths to expose nothing but the information necessary to display the code changes. All tracking plan calculations happen on the server side and we only send the browser the exact strings needed to display the page. Deleting a public link will permanently invalidate all existing links as generating a new one will be behind a new, unique share ID.
 
@@ -44,21 +44,9 @@ There are 2 filters
 - By source
 - By event implementation type (Codegen/Non-Codegen)
 
-<div style={{height: '200px', width: '500px', display: 'flex', flexDirection: 'row'}}>
-<img
-  src={'/docs/images/code-changes/source-filter.png'}
-  height="200px"
-  alt="source filter"
-/>
+![Source filter](/images/code-changes/source-filter.png)
 
-<div style={{ width: '50px' }} />
-
-<img
-  src={'/docs/images/code-changes/implementation-filter.png'}
-  height="200px"
-  alt="Implementation filter"
-/>
-</div>
+![Implementation filter](/images/code-changes/implementation-filter.png)
 
 ## Code Snippets
 
@@ -78,25 +66,25 @@ To show an example, we have an event called REACTION_REMOVED where we modified t
 
 When viewing the events unified, the diff between main branch and your branch will be shown in the code snippet inline.
 
-![code snippet unified diff](/docs/images/code-changes/unified-snippet.png)
+![code snippet unified diff](/images/code-changes/unified-snippet.png)
 
 #### Split
 
 When viewing the events with split view, it will show the main state on the left hand side, while your current branch changes on the right hand side, with highlights on which properties were modified
 
-![code snippet split diff](/docs/images/code-changes/split-snippet.png)
+![code snippet split diff](/images/code-changes/split-snippet.png)
 
 #### No diff
 
 When viewing the events with `No diff` view. The code snippet will display only the branch current changes.
 
-![code snippet no diff](/docs/images/code-changes/nodiff-snippet.png)
+![code snippet no diff](/images/code-changes/nodiff-snippet.png)
 
 ## Codegen snippets
 
 When reviewing sources that are using the Avo Codegen, the snippet will generate the function call to the Avo generated function created. The code snippet will be in the source's selected programming language and can be copy and pasted directly into code.
 
-![Codegen code snippet](/docs/images/code-changes/codegen-snippet.png)
+![Codegen code snippet](/images/code-changes/codegen-snippet.png)
 
 ## Non-Codegen snippets
 
@@ -113,4 +101,4 @@ The Pseudocodegen will attempt to display all the complexity that can be in impl
   developer make sure to implement it correctly.
 </Callout>
 
-![PseudoCode code snippet](/docs/images/code-changes/pseudo-snippet.png)
+![PseudoCode code snippet](/images/code-changes/pseudo-snippet.png)
