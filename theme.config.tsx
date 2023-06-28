@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { DocsThemeConfig, useTheme } from 'nextra-theme-docs';
+import { useRouter } from 'next/router';
+import { useConfig, DocsThemeConfig, useTheme } from 'nextra-theme-docs';
 import SignIn from './components/SignIn';
 
 interface LogoProps {
@@ -95,7 +96,32 @@ const config: DocsThemeConfig = {
     link: 'https://github.com/avohq',
   },
   docsRepositoryBase: 'https://github.com/avohq/docs/tree/main',
-  head: <></>,
+  head: function Head() {
+    const { frontMatter } = useConfig();
+    const router = useRouter();
+    const baseUrl = 'https://www.avo.app/docs';
+    const fullUrl =
+      router.asPath === '/' ? baseUrl : `${baseUrl}${router.asPath}`;
+
+    const ogUrl = frontMatter.title
+      ? `${baseUrl}/api/og?title=${encodeURIComponent(frontMatter.title)}`
+      : `${baseUrl}/api/og`;
+
+    return (
+      <>
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@avohq" />
+        <meta name="twitter:creator" content="@avohq" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={fullUrl} />
+        <link rel="canonical" href={fullUrl} />
+        <meta property="twitter:image" content={ogUrl} />
+        <meta property="og:image" content={ogUrl} />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="Avo Docs" />
+      </>
+    );
+  },
   footer: {
     text: (
       <Link href="/help/troubleshooting">
