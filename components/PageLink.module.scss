@@ -3,20 +3,21 @@
   padding: 15px;
   border-radius: 8px;
   display: flex;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  // align-items: center;
+  margin-top: 16px;
+  align-items: center;
 
   cursor: pointer;
   color: black;
   &:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border-color: #E9E9E9 !important;
   }
-  transition: box-shadow 0.3s;
+  transition: all 0.3s;
 }
 
 .image {
   margin-right: 20px;
+  flex-shrink: 0;
   img {
     width: 75px;
   }
@@ -47,9 +48,16 @@
   text-transform: uppercase;
 }
 
-@media (max-width: 840px) {
-  .root {
-    display: block;
-    min-width: 80vw;
+
+.twoCol {
+  display: grid;
+  column-gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  justify-items: stretch;
+}
+
+@media (max-width: 1024px) {
+  .twoCol {
+    grid-template-columns: 1fr;
   }
 }

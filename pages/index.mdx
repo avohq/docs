@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 
-import PageLink from '../components/PageLink';
+import PageLink, { TwoCol } from '../components/PageLink';
 
 # Get Started With Avo
 
@@ -19,7 +19,11 @@ The Avo workflow covers all the steps required to plan, review,
 request implementation, implement, validate and publish your analytics
 release.
 
-<Zoom>![The Avo Workflow: Plan, review, implement, validate and publish your tracking changes](/images/avo-workflow.png)</Zoom>
+<br />
+<Zoom>
+  ![The Avo Workflow: Plan, review, implement, validate and publish your
+  tracking changes](/images/avo-workflow.png)
+</Zoom>
 
 We recommend your first “full-circle” release in Avo be a small one,
 for example a product release that includes a handful of new or
@@ -74,79 +78,84 @@ and health of the event implementation.
 
 ### Guides and best practices
 
-<PageLink
-  image={'/docs/images/svg/dev.svg'}
-  title="Avo 101 For Developers"
-  description="Codegen, Inspector and Debuggers—What’s the difference?"
-  href={'/implementation/devs-101'}
-/>
-<PageLink
-  image={'/docs/images/svg/analyticsmanager.svg'}
-  title="Designing Data In Avo"
-  description="How to define metrics, events and properties step by step"
-  href={'/data-design/start-data-design'}
-/>
-<PageLink
-  image={'/docs/images/svg/analyticsmanager.svg'}
-  title="Multi-Product Workspaces"
-  description="How to organize a tracking plan for multiple products"
-  href={('/data-design/organizing-multi-product-workspaces')
-  }
-/>
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo 101 For Developers"
+    description="Codegen, Inspector and Debuggers—What’s the difference?"
+    href={'/implementation/devs-101'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Designing Data In Avo"
+    description="How to define metrics, events and properties step by step"
+    href={'/data-design/start-data-design'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Multi-Product Workspaces"
+    description="How to organize a tracking plan for multiple products"
+    href={'/data-design/organizing-multi-product-workspaces'}
+  />
+</TwoCol>
 
 ### Browse by product
 
-<PageLink
-  image={'/docs/images/svg/analyticsmanager.svg'}
-  title="Tracking Plan Management"
-  description="Collaborate with your team on tracking plan changes"
-  href={'/data-design/quick-start'}
-/>
-<PageLink
-  image={'/docs/images/svg/analyticsmanager.svg'}
-  title="Tracking Plan Audit"
-  description="Verify that all tracking plan changes follow your tracking plan rules"
-  href={'/audit/overview'}
-/>
-<PageLink
-  image={'/docs/images/svg/analyticsmanager.svg'}
-  title="Avo Inspector"
-  description="Get overview of your current state of tracking"
-  href={'/data-design/start-using-inspector'}
-/>
-<PageLink
-  image={'/docs/images/svg/analyticsmanager.svg'}
-  title="Publishing"
-  description="Keep your downstream schema registries in sync with the Avo"
-  href={'/workspace/tracking-plan/publishing'}
-/>
-<PageLink
-  image={'/docs/images/svg/dev.svg'}
-  title="Avo Codegen"
-  description="Faster, more reliable implementation with type-safe tracking functions"
-  href={'/implementation/avo-codegen-overview'}
-/>
-<PageLink
-  image={'/docs/images/svg/dev.svg'}
-  title="Avo Debuggers"
-  description="Observe events and properties as you trigger them in your app"
-  href={'/implementation/start-using-visual-debugger'}
-/>
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Tracking Plan Management"
+    description="Collaborate with your team on tracking plan changes"
+    href={'/data-design/quick-start'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Tracking Plan Audit"
+    description="Verify that all tracking plan changes follow your tracking plan rules"
+    href={'/audit/overview'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Avo Inspector"
+    description="Get overview of your current state of tracking"
+    href={'/data-design/start-using-inspector'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Publishing"
+    description="Keep your downstream schema registries in sync with the Avo"
+    href={'/workspace/tracking-plan/publishing'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Codegen"
+    description="Faster, more reliable implementation with type-safe tracking functions"
+    href={'/implementation/avo-codegen-overview'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Debuggers"
+    description="Observe events and properties as you trigger them in your app"
+    href={'/implementation/start-using-visual-debugger'}
+  />
+</TwoCol>
 
 ### Developer Reference
 
-<PageLink
-  image={'/docs/images/svg/dev.svg'}
-  title="Avo Codegen"
-  href={'/implementation/destinations'}
-/>
-<PageLink
-  image={'/docs/images/svg/dev.svg'}
-  title="Avo Inspector"
-  href={'/implementation/avo-inspector-sdk-reference'}
-/>
-<PageLink
-  image={'/docs/images/svg/dev.svg'}
-  title="Avo Debuggers"
-  href={'/implementation/start-using-visual-debugger'}
-/>
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Codegen"
+    href={'/implementation/destinations'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Inspector"
+    href={'/implementation/avo-inspector-sdk-reference'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Debuggers"
+    href={'/implementation/start-using-visual-debugger'}
+  />
+</TwoCol>

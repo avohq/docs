@@ -109,6 +109,12 @@ const config: DocsThemeConfig = {
 
     return (
       <>
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="96x96"
+          href="/docs/images/favicon.png"
+        />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@avohq" />
         <meta name="twitter:creator" content="@avohq" />
