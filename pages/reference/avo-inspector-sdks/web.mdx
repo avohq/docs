@@ -48,9 +48,13 @@ All the following methods are available in the **AvoInspector** class.
 
 ### Installation option 2: HTML Tag
 
+> Warning! This step is not enough to connect Avo Inspector. Make sure to proceed to step 2 to complete your setup.
+
 Paste the HTML script tag snippet within the `<head>` tag of your page, or into a tag manager like Google Tag Manager (GTM).
+> When pasting the HTML script snippet into GTM, paste it into a GTM Tag and have it load as early as possible. It needs to be loaded before you call your events.
 
 Make sure to update `__API_KEY__`, `__ENV__`, `__VERSION__` and `__APP_NAME__` based on your project. Obtain the API key in the Sources tab in your [Avo.app](https://www.avo.app/welcome) workspace.
+
 
 ```html
 <script>
@@ -93,7 +97,8 @@ Make sure to update `__API_KEY__`, `__ENV__`, `__VERSION__` and `__APP_NAME__` b
 </script>
 ```
 
-> Warning! This step is not enough to connect Avo Inspector. Make sure to proceed to step 2 to complete your setup.
+> When Setting Up GTM, you can use the inspect tool in your browser to see if your GTM tag is firing the track call correctly.
+
 
 ## 2. Send event schemas to Avo Inspector
 
@@ -104,7 +109,7 @@ Call \***\*one of the methods\*\*** in this section every time an event is track
 #### Track option 1
 
 ```ts
-trackSchemaFromEvent(eventName: string, eventProperties: {
+inspector.trackSchemaFromEvent(eventName: string, eventProperties: {
     [propName: string]: any;
 }): void;
 ```
@@ -129,7 +134,7 @@ Extracts the event schema from event properties represented by the second parame
 #### Track option 2
 
 ```js
-trackSchema(eventName: string, eventSchema: Array<{
+inspector.trackSchema(eventName: string, eventSchema: Array<{
     propertyName: string;
     propertyType: string;
     children?: any;
@@ -170,7 +175,7 @@ It's handy to extract the schema from your event properties with `extractSchema`
 #### 1. Extract schema from event properties
 
 ```ts
-extractSchema(eventProperties: {
+inspector.extractSchema(eventProperties: {
     [propName: string]: any;
 }): Array<{
     propertyName: string;
@@ -194,7 +199,7 @@ This is the method used by `trackSchemaFromEvent` internally. The event schema i
 #### 2. Print logs
 
 ```js
-enableLogging(enable: boolean): void;
+inspector.enableLogging(enable: boolean): void;
 ```
 
 `enableLogging` controls printing of tracked event schemas and other helpful information to logcat. Enabled by default in development environments.
