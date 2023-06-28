@@ -97,14 +97,14 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/avohq/docs/tree/main',
   head: function Head() {
-    const { frontMatter } = useConfig();
+    const { title } = useConfig();
     const router = useRouter();
     const baseUrl = 'https://www.avo.app/docs';
     const fullUrl =
       router.asPath === '/' ? baseUrl : `${baseUrl}${router.asPath}`;
 
-    const ogUrl = frontMatter.title
-      ? `${baseUrl}/api/og?title=${encodeURIComponent(frontMatter.title)}`
+    const ogUrl = title
+      ? `${baseUrl}/api/og?title=${encodeURIComponent(title)}`
       : `${baseUrl}/api/og`;
 
     return (
