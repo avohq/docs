@@ -140,13 +140,18 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
       />
       <Script
         id="iubenda-script"
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html:
-              'var _iub = _iub || []; _iub.csConfiguration = {"lang":"en","siteId":1197126,"countryDetection":true,"enableCcpa":true,"cookiePolicyId":91875699, "banner":{ "slideDown":false,"position":"float-bottom-right","textColor":"#333","backgroundColor":"#ffffff", "height": "150px !important", "overflow": "auto !important", "width": "200px !important" }};',
-          }}
-        />
+        type="text/javascript"
+        dangerouslySetInnerHTML={{
+          __html:
+            'var _iub = _iub || []; _iub.csConfiguration = {"lang":"en","siteId":1197126,"countryDetection":true,"enableCcpa":true,"cookiePolicyId":91875699, "banner":{ "slideDown":false,"position":"float-bottom-right","textColor":"#333","backgroundColor":"#ffffff", "height": "150px !important", "overflow": "auto !important", "width": "200px !important" }};',
+        }}
+      />
       <Component {...pageProps} />
+      <style jsx>{`
+        :global(.nextra-content img) {
+          border-radius: 4px;
+        }
+      `}</style>
     </>
   );
 };
