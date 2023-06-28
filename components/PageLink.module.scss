@@ -1,5 +1,5 @@
 .root {
-  border: 1px solid rgb(242, 242, 242);
+  border: 1px solid #e9e9e9;
   padding: 15px;
   border-radius: 8px;
   display: flex;
@@ -10,7 +10,6 @@
   color: black;
   &:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    border-color: #E9E9E9 !important;
   }
   transition: all 0.3s;
 }
@@ -20,6 +19,14 @@
   flex-shrink: 0;
   img {
     width: 75px;
+  }
+}
+
+:global(.dark) .root {
+  border-color: #434a54;
+
+  &:hover {
+    border-color: #7a818f;
   }
 }
 
@@ -34,6 +41,10 @@
   margin-bottom: 8px;
 }
 
+:global(.dark) .title {
+  color: white;
+}
+
 .description {
   font-size: 13px;
   color: rgb(128, 128, 128);
@@ -41,13 +52,21 @@
   line-height: 1.3em;
 }
 
+:global(.dark) .description {
+  color: #aab2bd;
+}
+
 .callToAction {
   color: #b4a3d9;
   font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;
+  color: grey;
 }
 
+:global(.dark) .callToAction {
+  color: lightgrey;
+}
 
 .twoCol {
   display: grid;
