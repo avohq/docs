@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 # Avo Codegen in C#
 
 ### Platforms
@@ -21,9 +19,9 @@ $ avo login
 $ avo pull --branch my-branch-name
 ```
 
-Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+Learn more about [the CLI here](/implementation/cli).
 
-You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
 
 #### Step 2. Initialize Avo
 
@@ -35,7 +33,7 @@ using Avo;
 Avo.Avo avo = new Avo.Avo(Avo.AvoEnv.Dev/*, other parameters depending on your tracking plan setup*/);
 ```
 
-The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/csharp#constructor">the reference below</Link>.
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/csharp#constructor).
 
 #### Step 3. Call Avo Codegen to track your product usage
 
@@ -58,7 +56,7 @@ avo.SignupStart(referral = "direct")
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace to verify that your implementation is correct.
+Use the [Implementation status](/workspace/tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
 
 ### Reference
 
@@ -76,7 +74,7 @@ public Avo(AvoEnv env,
 ```
 
 Creates the Avo object that will be used to track.
-This method will call the `Make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+This method will call the `Make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
 
 ##### Arguments
 
@@ -85,7 +83,7 @@ This method will call the `Make(env, apiKey)` callback in all the provided <Link
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool and list.
 
-`IDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+`IDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/workspace/tracking-plan/events#a-nameactionsa-actions).
 
 ```csharp
 interface IDestination {
@@ -99,7 +97,7 @@ interface IDestination {
 
     Task Revenue(string userId, double amount, IDictionary<string, object> eventProperties);
 
-    // The following methods are used for group analytics  and are not required. Learn, more about group analytics <Link passHref href="/data-design/groups">here</Link>
+    // The following methods are used for group analytics  and are not required. Learn, more about group analytics here: /docs/data-design/groups
     Task AddCurrentUserToGroup(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
 
     Task SetGroupProperties(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
@@ -145,7 +143,7 @@ public class CustomDestination : IDestination{
         return await _client!.TrackAsync("Purchase Completed", userId, eventProperties);
     }
 
-    // The following methods are used for group analytics and are not required. Learn, more about group analytics <Link passHref href="/data-design/groups">here</Link>
+    // The following methods are used for group analytics and are not required. Learn, more about group analytics here: /docs/data-design/groups
     public async Task AddCurrentUserToGroup(string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
         // Conceptual code, Mixpanel C# library does not support group analytics yet
         await _client!.SetGroup(groupType, groupId);
@@ -234,7 +232,7 @@ In `Unity` all the method are synchronous `void` type and there are 2 additional
     }
 ```
 
-Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+Read more about the destination interface [here](/implementation/destinations).
 
 #### setAvoLogger
 

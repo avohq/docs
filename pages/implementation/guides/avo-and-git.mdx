@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 # Using Avo in large development teams with parallel workflows
 
 In this doc we’ll cover how you can use Avo in large development teams, where multiple teams are working on multiple conflicting analytics changes in parallel, across multiple platforms.
@@ -18,7 +16,7 @@ Let’s say the iOS team at our fictional company is working on an updated check
 
 #### Branched tracking plan changes
 
-First, they <Link passHref href="/workspace/branches#how-to-create-branches">open a new branch</Link> in their Avo tracking plan, where they can modify the tracking plan without changing it for anyone else. They <Link passHref href="/data-design/day-to-day-workflow#a-namestep-3-defining-events-and-propertiesa-step-3--define-events-and-properties">create the new events</Link>, and mark them to be <Link passHref href="/workspace/tracking-plan/events#sources">sent from the iOS source</Link>. They add the new properties to the existing events and <Link passHref href="/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional">mark the properties to be always sent on iOS</Link>.
+First, they [open a new branch](/workspace/branches#how-to-create-branches) in their Avo tracking plan, where they can modify the tracking plan without changing it for anyone else. They [create the new events](/data-design/day-to-day-workflow#a-namestep-3-defining-events-and-propertiesa-step-3--define-events-and-properties), and mark them to be [sent from the iOS source](/workspace/tracking-plan/events#sources). They add the new properties to the existing events and [mark the properties to be always sent on iOS](/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional).
 
 ![Onboarding flow event in Avo, sent from iOS](/images/best-practices/avo-in-large-dev-teams/event-sent-from-ios.png)
 
@@ -30,9 +28,9 @@ _Property always sent from iOS, never from Android_
 
 #### Branched tracking plan implementation
 
-When the tracking plan changes made on the branch have been <Link passHref href="/data-design/day-to-day-workflow#a-namestep-4-ask-for-reviewa-step-4--ask-for-review">peer-reviewed and approved</Link> in Avo, they can start the tracking implementation.
+When the tracking plan changes made on the branch have been [peer-reviewed and approved](/data-design/day-to-day-workflow#a-namestep-4-ask-for-reviewa-step-4--ask-for-review) in Avo, they can start the tracking implementation.
 
-Using <Link passHref href="/implementation/cli#using-avo-branches">the Avo CLI</Link> the iOS developer can pull their type-safe generated Avo code based on the tracking plan from the Avo branch, into their feature branch on git: `avo pull new-onboarding-events` where `new-onboarding-events` is the Avo branch containing the Tracking Plan changes. By doing so, they've pinned the `avo.json` file in their project to the current state of the Tracking Plan on that Avo branch.
+Using [the Avo CLI](/implementation/cli#using-avo-branches) the iOS developer can pull their type-safe generated Avo code based on the tracking plan from the Avo branch, into their feature branch on git: `avo pull new-onboarding-events` where `new-onboarding-events` is the Avo branch containing the Tracking Plan changes. By doing so, they've pinned the `avo.json` file in their project to the current state of the Tracking Plan on that Avo branch.
 
 > `avo status` uses the Tracking Plan version defined in `avo.json`to verify everything is implemented. That means `avo status` doesn't break if changes are made to your Tracking Plan that haven't been pulled into code.
 
@@ -65,7 +63,7 @@ Yes, the generated code from Avo as well as avo.json should be checked into your
 
 #### Do I need to manually resolve git conflicts in the Avo generated code and avo.json?
 
-No, if you have git conflicts in any Avo related files (Avo generated code or avo.json), run `avo pull` and the Avo CLI will take care of resolving the conflicts automatically. Learn more in the <Link passHref href="/implementation/cli#using-avo-branches">CLI documentation</Link>.
+No, if you have git conflicts in any Avo related files (Avo generated code or avo.json), run `avo pull` and the Avo CLI will take care of resolving the conflicts automatically. Learn more in the [CLI documentation](/implementation/cli#using-avo-branches).
 
 #### The avo.json on my git main branch is pointing to an Avo branch that has already been merged, is that expected?
 
@@ -73,16 +71,10 @@ Yes, that is expected! The Avo CLI uses this information to verify that the Avo 
 
 #### What if one source is done with their Avo implementation before the other sources on that branch?
 
-If one of the sources completes their implementation ahead of the other sources, and are merging that implementation in the main git branch, we recommend merging only that source into your Avo main branch. Read more about how to <Link passHref href="/data-design/multiple-sources-on-avo-branches">manage branches with multiple sources</Link> to keep your Avo main branch in sync with your git main branch.
+If one of the sources completes their implementation ahead of the other sources, and are merging that implementation in the main git branch, we recommend merging only that source into your Avo main branch. Read more about how to [manage branches with multiple sources](/data-design/multiple-sources-on-avo-branches) to keep your Avo main branch in sync with your git main branch.
 
 ## Want to learn more?
 
-- <Link passHref href="/implementation/devs-101">
-    Avo 101 for developers
-  </Link>
-- <Link passHref href="/data-design/day-to-day-workflow">
-    Day to day Avo workflow
-  </Link>
-- <Link passHref href="/implementation/cli">
-    Using the Avo CLI
-  </Link>
+- [Avo 101 for developers](/implementation/devs-101)
+- [Day to day Avo workflow](/data-design/day-to-day-workflow)
+- [Using the Avo CLI](/implementation/cli)
