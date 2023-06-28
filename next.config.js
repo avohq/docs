@@ -553,7 +553,7 @@ const redirects = [
     permanent: true,
   },
   {
-    source: '/workspace/index',
+    source: '/workspace',
     destination: '/data-design/avo-tracking-plan',
     permanent: true,
   },
