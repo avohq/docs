@@ -67,7 +67,7 @@ Avo.signupStart({ referral: 'direct' });
 
 #### Step 4. Verify the implementation
 
-Use the [Implementation status](/workspace/tracking-plan/implementation-status) in your Avo workspace and the [visual debuggers](/explore-tracking-plan/start-using-visual-debuggers) to verify that your implementation is correct.
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace and the [visual debuggers](/explore-tracking-plan/start-using-visual-debuggers) to verify that your implementation is correct.
 
 ### Reference
 
@@ -100,7 +100,7 @@ This method will call the `make(env, apiKey)` callback in all the provided [dest
 `systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
 
-`destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/workspace/tracking-plan/events#a-nameactionsa-actions).
+`destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 ```javascript
 {

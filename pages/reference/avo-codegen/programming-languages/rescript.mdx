@@ -66,7 +66,7 @@ Avo.signupStart(~referral="direct");
 
 #### Step 4. Verify the implementation
 
-Use the [Implementation status](/workspace/tracking-plan/implementation-status) in your Avo workspace and the [visual debuggers](/explore-tracking-plan/start-using-visual-debuggers) to verify that your implementation is correct.
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace and the [visual debuggers](/explore-tracking-plan/start-using-visual-debuggers) to verify that your implementation is correct.
 
 ### Reference
 
@@ -105,7 +105,7 @@ This method will call the `make(env)` callback in all the provided [destination 
 - `amplitudeDestinationName`: optional Js.t, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
 - `segmentDestinationName`: optional Js.t, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
 
-`destination`: CustomDestination, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/workspace/tracking-plan/events#a-nameactionsa-actions).
+`destination`: CustomDestination, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 Custom destination interface format:
 

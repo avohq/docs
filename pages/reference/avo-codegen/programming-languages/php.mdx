@@ -60,7 +60,7 @@ Avo::signup_start(array('referral' => 'direct'));
 
 #### Step 4. Verify the implementation
 
-Use the [Implementation status](/workspace/tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
 
 ### Reference
 
@@ -99,7 +99,7 @@ interface LoggerInterface
 }
 ```
 
-- `[destination_instance]`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/workspace/tracking-plan/events#a-nameactionsa-actions).
+- `[destination_instance]`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 #### Destination interface example
 
