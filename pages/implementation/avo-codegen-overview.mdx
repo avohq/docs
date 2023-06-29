@@ -6,7 +6,7 @@ import { Callout } from 'nextra/components';
 
 Codegen produces type safe code for implementing analytics.
 
-- The "data designer" specifies the event structure in the [Avo Tracking Plan](/workspace), and which platforms should send the event
+- The "data designer" specifies the event structure in the [Avo Tracking Plan](/data-design/avo-tracking-plan), and which platforms should send the event
 - then the developer who implements analytics can use Codegen to implement the analytics calls per each analytics event
 
 ## Why use Codegen
@@ -34,7 +34,7 @@ Codegen works with any analytics tool, whether it's any of the common event logg
 
 When designing the tracking plan you configure the list of data destinations for each source. In the generated code each destination is represented as its own Destination Interface in the initAvo method. This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
 
-In the Avo Tracking Plan you can configure which analytics [actions](/workspace/tracking-plan/events#a-nameactionsa-actions) should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
+In the Avo Tracking Plan you can configure which analytics [actions](/data-design/avo-tracking-plan/events#actions) should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
 
 Learn more in the [Codegen tech deep dive docs](/implementation/avo-codegen-tech-deep-dive).
 

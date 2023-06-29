@@ -16,7 +16,7 @@ Let’s say the iOS team at our fictional company is working on an updated check
 
 #### Branched tracking plan changes
 
-First, they [open a new branch](/workspace/branches#how-to-create-branches) in their Avo tracking plan, where they can modify the tracking plan without changing it for anyone else. They [create the new events](/data-design/day-to-day-workflow#a-namestep-3-defining-events-and-propertiesa-step-3--define-events-and-properties), and mark them to be [sent from the iOS source](/workspace/tracking-plan/events#sources). They add the new properties to the existing events and [mark the properties to be always sent on iOS](/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional).
+First, they [open a new branch](/data-design/branches#how-to-create-branches) in their Avo tracking plan, where they can modify the tracking plan without changing it for anyone else. They [create the new events](/data-design/day-to-day-workflow#step-3--define-events-and-properties), and mark them to be [sent from the iOS source](/data-design/avo-tracking-plan/events#sources). They add the new properties to the existing events and [mark the properties to be always sent on iOS](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional).
 
 ![Onboarding flow event in Avo, sent from iOS](/images/best-practices/avo-in-large-dev-teams/event-sent-from-ios.png)
 
@@ -28,7 +28,7 @@ _Property always sent from iOS, never from Android_
 
 #### Branched tracking plan implementation
 
-When the tracking plan changes made on the branch have been [peer-reviewed and approved](/data-design/day-to-day-workflow#a-namestep-4-ask-for-reviewa-step-4--ask-for-review) in Avo, they can start the tracking implementation.
+When the tracking plan changes made on the branch have been [peer-reviewed and approved](/data-design/day-to-day-workflow#step-4--ask-for-review) in Avo, they can start the tracking implementation.
 
 Using [the Avo CLI](/implementation/cli#using-avo-branches) the iOS developer can pull their type-safe generated Avo code based on the tracking plan from the Avo branch, into their feature branch on git: `avo pull new-onboarding-events` where `new-onboarding-events` is the Avo branch containing the Tracking Plan changes. By doing so, they've pinned the `avo.json` file in their project to the current state of the Tracking Plan on that Avo branch.
 

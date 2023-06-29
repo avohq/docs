@@ -68,7 +68,7 @@ _Our Source and Destination_
 
 #### Configure events
 
-Head to the Tracking Plan tab. If no events exist in your tracking plan yet you can either [import your existing tracking plan](/workspace/tracking-plan/importing) or [define events in the Tracking Plan](/data-design/start-data-design#defining-and-configuring-events). Make sure to attach the source you'll be implementing to all events you want to implement. Learn more about [attaching sources to events here](/workspace/tracking-plan/events#sources).
+Head to the Tracking Plan tab. If no events exist in your tracking plan yet you can either [import your existing tracking plan](/publishing/importing) or [define events in the Tracking Plan](/data-design/start-data-design#defining-and-configuring-events). Make sure to attach the source you'll be implementing to all events you want to implement. Learn more about [attaching sources to events here](/data-design/avo-tracking-plan/events#sources).
 
 ### 2. Install Avo to your project
 
@@ -211,7 +211,7 @@ Detailed instructions on how to initialize Avo with Custom Destinations for all 
 
 #### Send an event
 
-Now we're ready to start implementing reliably analytics tracking with Codegen. Every Event defined in our [Tracking Plan on avo.app](/workspace/tracking-plan) has it's own function in Codegen file.
+Now we're ready to start implementing reliably analytics tracking with Codegen. Every Event defined in our [Tracking Plan on avo.app](/data-design/avo-tracking-plan) has it's own function in Codegen file.
 
 Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, with two Event Properties, "Client" and "Screen Name". Here's how we would send the event using Codegen:
 
@@ -222,5 +222,3 @@ Avo.appOpened({ client: 'Web', screenName: 'Home Screen' });
 > On some server platforms Codegen functions are async, e.g. on Node.js they return a Promise and on C# you can await on the functions
 
 When the Avo Function is called Avo will run validation on the event properties, making sure they fit the spec defined in the Tracking Plan in Avo. Note that this validation is only run in development mode. If you are using a Custom destination Avo passes the event name and properties to the logEvent function in the Custom Destination interface defined above, otherwise it will pass the event directly to the analytics tool defined in your destination.
-
-You can find tailor made documentation for your Codegen, based on your Tracking Plan, in the [Codegen tab](/workspace/implement#a-nameimplement-actionsa-implement-events) in [your Avo workspace](https://www.avo.app/welcome).

@@ -60,7 +60,7 @@ Avo.signup_start(referral: 'direct')
 
 #### Step 4. Verify the implementation
 
-Use the [Implementation status](/workspace/tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
 
 ### Reference
 
@@ -80,7 +80,7 @@ This method will call the `make(env, apiKey)` callback in all the provided [dest
 `system_properties (Hash)`: a Hash containing the system properties that should be sent with every event.
 When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
-`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/workspace/tracking-plan/events#a-nameactionsa-actions).
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 #### Destination interface example
 
