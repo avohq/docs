@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import Zoom from 'react-medium-image-zoom';
+import Image from 'next/image';
 import 'react-medium-image-zoom/dist/styles.css';
 
 import PageLink, { TwoCol } from '../components/PageLink';
@@ -21,8 +22,12 @@ release.
 
 <br />
 <Zoom>
-  ![The Avo Workflow: Plan, review, implement, validate and publish your
-  tracking changes](/images/avo-workflow.png)
+  <Image
+    src="/docs/images/avo-workflow.png"
+    width={3776}
+    height={2263}
+    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+  />
 </Zoom>
 
 We recommend your first “full-circle” release in Avo be a small one,
