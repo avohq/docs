@@ -1,14 +1,12 @@
-import Link from 'next/link';
-
 # Subscribe to Tracking Plan changes with webhooks
 
-After setting up Webhook integration in <Link passHref href="/workspace/tracking-plan/publishing">Tracking Plan Publishing</Link>, your endpoint provided there will be called with a JSON payload representing the state of your tracking plan when your tracking plan is published.
+After setting up Webhook integration in [Tracking Plan Publishing](/publishing/publishing/overview), your endpoint provided there will be called with a JSON payload representing the state of your tracking plan when your tracking plan is published.
 
 You can examine and download the exact JSON in the Publishing tab of your [Avo workspace](https://www.avo.app/schemas/).
 
 > To see your exact Webhook payload in your Avo workspace choose `Tracking plan` - `Publishing` in the sidebar, then pick you Webhook in the menu and expand the `Payload preview` section.
 
-<Link passHref href="/workspace/tracking-plan/publishing#tracking-plan-model">The format is documented here</Link>, an example payload is:
+[The format is documented here](/publishing/publishing/overview#tracking-plan-model), an example payload is:
 
 ```JSON
 {
@@ -236,4 +234,4 @@ You can examine and download the exact JSON in the Publishing tab of your [Avo w
 
 ## What's next?
 
-Now when you've set up a webhook we recommend to <Link passHref href="/implementation/avo-inspector-overview">integrate Avo Inspector</Link>.
+Now when you've set up a webhook we recommend to [integrate Avo Inspector](/implementation/avo-inspector-overview).

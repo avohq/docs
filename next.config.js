@@ -34,7 +34,7 @@ const redirects = [
   },
   {
     source: '/datascope/state-of-tracking',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
@@ -54,12 +54,12 @@ const redirects = [
   },
   {
     source: '/datascope',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
     source: '/datascope/avo-inspector',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
@@ -79,7 +79,7 @@ const redirects = [
   },
   {
     source: '/datascope/issue-identifier',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
@@ -319,12 +319,12 @@ const redirects = [
   },
   {
     source: '/workspace/publishing',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {
     source: '/workspace/publishing/',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {
@@ -359,12 +359,12 @@ const redirects = [
   },
   {
     source: '/data-design/import-tracking-plan/',
-    destination: '/workspace/tracking-plan/importing',
+    destination: '/publishing/importing',
     permanent: true,
   },
   {
     source: '/data-design/import-tracking-plan',
-    destination: '/workspace/tracking-plan/importing',
+    destination: '/publishing/importing',
     permanent: true,
   },
   {
@@ -403,12 +403,12 @@ const redirects = [
   },
   {
     source: '/data-design/start-publishing/',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {
     source: '/data-design/start-publishing',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {

@@ -1,9 +1,8 @@
-import { FunctionComponent } from 'react';
+import React from 'react';
 
 import styles from './PageLink.module.scss';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTheme } from 'nextra-theme-docs';
 
 interface Props {
   title: string;
@@ -12,51 +11,27 @@ interface Props {
   href: string;
 }
 
-const PageLink: FunctionComponent<Props> = ({
-  title,
-  description,
-  image,
-  href,
-}) => {
-  let { resolvedTheme } = useTheme();
-
+const PageLink: React.FC<Props> = ({ title, description, image, href }) => {
   return (
-    <Link scroll={true} href={href}>
-      <div className={styles.root}>
-        {image && (
-          <div className={styles.image}>
-            <Image src={image} alt="" width={80} height={80} />
-          </div>
-        )}
-        <div className={styles.text}>
-          <div
-            className={styles.title}
-            style={resolvedTheme === 'dark' ? { color: 'white' } : {}}
-          >
-            {title}
-          </div>
-          <div
-            className={styles.description}
-            style={
-              resolvedTheme === 'dark' ? { color: 'rgb(229, 231, 235)' } : {}
-            }
-          >
-            {description}
-          </div>
-          <div className={styles.callToAction}>
-            <span
-              style={{
-                textDecoration: 'none',
-                color: resolvedTheme === 'dark' ? 'lightGrey' : 'grey',
-              }}
-            >
-              {'Read '}
-            </span>
-          </div>
+    <Link scroll={true} href={href} className={styles.root}>
+      {image && (
+        <div className={styles.image}>
+          <Image src={image} alt="" width={80} height={80} />
         </div>
+      )}
+      <div className={styles.text}>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.description}>{description}</div>
+        <div className={styles.callToAction}>Read</div>
       </div>
     </Link>
   );
+};
+
+export const TwoCol: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return <div className={styles.twoCol}>{children}</div>;
 };
 
 export default PageLink;

@@ -2,7 +2,7 @@
 
 ### Can I use Avo to diagnose analytics issues?
 
-Yes, you can! The [Avo Inspector SDK](/implementation/avo-inspector-sdk-reference) will automatically [monitor the health of your current tracking](/workspace/inspector) and suggest fixes for issues such as missing events or properties, casing inconsistencies, property type mismatches, significant difference in volumes between platforms and many more.
+Yes, you can! The [Avo Inspector SDK](/implementation/avo-inspector-sdk-reference) will automatically [monitor the health of your current tracking](/inspector/inspector-overview) and suggest fixes for issues such as missing events or properties, casing inconsistencies, property type mismatches, significant difference in volumes between platforms and many more.
 
 ### Can I use Avo without adjusting my Privacy Policy?
 
@@ -11,15 +11,14 @@ Yes, you can! Avo does not collect any user data. We only collect metadata about
 ### Can I use Avo to fix analytics issues?
 
 Yes, you can! The [Avo Inspector SDK](/implementation/avo-inspector-sdk-reference)
-will automatically [monitor the health of your current tracking](/workspace/inspector)
+will automatically [monitor the health of your current tracking](/inspector/inspector-overview)
 and suggest fixes for issues such as missing events or properties, casing inconsistencies, property type mismatches, significant difference in volumes between platforms and many more.
 
 ### Can I use Avo to generate analytics tracking code?
 
 Yes, you can! We offer a few different ways to do this. You can pull the [
 analytics wrappers from the CLI](/implementation/cli#step-3-pull-generated-analytics-wrappers-from-avo)
-, or you can copy them from [within the Avo UI](/workspace/implement#a-nameavo-filea-get-the-avo-file)
-.
+, or you can copy them from the Codegen tab within the Avo UI.
 
 ### Can I use Inspector on my dev environment? What about production?
 
@@ -37,7 +36,7 @@ and tags to keep track of events from different product features.
 ### Can I implement platform-specific events or metrics?
 
 Yes, you can! Within the Avo UI, you will be able to select platform-specific sources and destinations if you are on the Team or Enterprise Plans. For more information about source availability, [
-check out what we support here](/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from)
+check out what we support here](/data-design/define-sources-and-destinations#sources-where-the-data-comes-from)
 .
 
 ### Can I use Avo with my git workflow?
@@ -107,39 +106,39 @@ Yes, you can! [Check out our integration here](/data-design/analytics#intercom)
 ### Can I publish my Avo tracking plan to Segment Protocols?
 
 Yes, you can! We integrate directly with Segment Protocols. [
-Find out more here](/workspace/tracking-plan/publishing#a-namesegment-protocolsa-segment-protocols)
+Find out more here](/publishing/publishing/overview#segment-protocols)
 .
 
 ### Can I publish my Avo tracking plan to RudderStack?
 
-Yes, you can! We integrate directly with RudderStack. [Find out more here](/workspace/tracking-plan/publishing#rudderstack)
+Yes, you can! We integrate directly with RudderStack. [Find out more here](/publishing/publishing/overview#rudderstack)
 .
 
 ### Can I publish my Avo tracking plan to mParticle Data Master?
 
-Yes, you can! We integrate directly with mParticle Data Master. [Find out more here](/workspace/tracking-plan/publishing#mparticle)
+Yes, you can! We integrate directly with mParticle Data Master. [Find out more here](/publishing/publishing/overview#mparticle)
 .
 
 ### Can I publish my Avo tracking plan to Mixpanel Lexicon?
 
 Yes, you can! We integrate with Mixpanel Lexicon. [
-Find out more here](/workspace/tracking-plan/publishing#a-namemixpanel-lexicona-mixpanel-lexicon)
+Find out more here](/publishing/publishing/overview#mixpanel-lexicon)
 .
 
 ### Can I publish my Avo tracking plan to Snowplow?
 
-Yes, you can! We integrate directly with Snowplow. [Find out more here](/workspace/tracking-plan/publishing#snowplow)
+Yes, you can! We integrate directly with Snowplow. [Find out more here](/publishing/publishing/overview#snowplow)
 .
 
 ### Can I publish my Avo tracking plan to Amplitude Govern?
 
 Yes, you can! We integrate with Amplitude’s Govern (Taxonomy) tool. [
-Check out our integration here](/workspace/tracking-plan/publishing#a-nameamplitude-governa-amplitude-govern)
+Check out our integration here](/publishing/publishing/overview#amplitude-govern)
 .
 
 ### Can I publish my Avo tracking plan to my custom tracking tool?
 
-Yes, you can! [Check out our Webhook integration here](/workspace/tracking-plan/publishing#a-namewebhooka-webhook)
+Yes, you can! [Check out our Webhook integration here](/publishing/publishing/overview#webhook)
 .
 
 ### Can I implement Avo with JavaScript?
@@ -209,12 +208,12 @@ Yes, you can! For more information on the languages we support, [check out our d
 
 ### Can I export my tracking plan from Avo?
 
-Yes, you can! You can use our [publishing feature](/workspace/tracking-plan/publishing)
+Yes, you can! You can use our [publishing feature](/publishing/publishing/overview)
 to export it on either JSON schema format with a Webhook or the Amplitude/Mixpanel/Segment formats.
 
 ### Can I document my metrics in context with my tracking plan?
 
-Yes, you can! We recommend [defining metrics](/workspace/tracking-plan/metrics)
+Yes, you can! We recommend [defining metrics](/data-design/avo-tracking-plan/metrics)
 before adding events to your tracking plan. In Avo, they are connected to events and help stakeholders understand why this event is being tracked.
 
 ### Can I use Avo to QA my events?
@@ -228,7 +227,7 @@ Yes you can! Avo’s property library is global in scope, so you don’t have to
 
 ### Can I define what property values are allowed in Avo?
 
-Yes you can! [Property constraints](/data-design/defining-descriptive-events-and-properties#a-nameproperty-constraintsa-property-constraints)
+Yes you can! [Property constraints](/data-design/defining-descriptive-events-and-properties#property-constraints)
 within Avo allow you to create predefined rules about the values you will allow for any given property. Say goodbye to the days of nonsense metadata like “age” = “-1”.
 
 ### Can I use Avo in my unit tests?
@@ -238,13 +237,13 @@ can be initialized with a noop flag that disables network requests and only run 
 
 ### Can I add descriptions to my events and properties with Avo?
 
-Yes you can! [Defining descriptive events and properties](/data-design/defining-descriptive-events-and-properties#a-namedescriptionsa-descriptions-for-events-and-properties)
+Yes you can! [Defining descriptive events and properties](/data-design/defining-descriptive-events-and-properties#descriptions-for-events-and-properties)
 is a best practice for keeping all your current and future teammates on the same page.
 
 ### Can I use Avo to help stick to my naming convention?
 
-Yes, you can! In Inspector, you will see issues when naming conventions have been violated. You will also receive [feedback in event and property naming modals](/data-design/defining-descriptive-events-and-properties#a-namenaming-conventionsa-naming-conventions-for-events-and-properties)
-and a summary in our [issue reporter](/workspace/tracking-plan/issue-reporter)
+Yes, you can! In Inspector, you will see issues when naming conventions have been violated. You will also receive [feedback in event and property naming modals](/data-design/defining-descriptive-events-and-properties#naming-conventions-for-events-and-properties)
+and a summary in our [issue reporter](/audit/overview)
 within your tracking plan.
 
 [Get in touch](/help/troubleshooting) for more information.

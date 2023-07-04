@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Callout } from 'nextra/components';
 
 # Avo Codegen technical deep dive
@@ -8,7 +7,7 @@ import { Callout } from 'nextra/components';
 The Avo generated code is the representation of the tracking plan you define in Avo for a given source. You can think of a source as a platform that sends events.
 For example if you set up an iOS/Swift source the generated code will be in a `.swift` file.
 Since the tracking plans are different for each customer the content of this file is also different.
-We generate the files and you can download them either with <Link passHref href="/implementation/cli">the Avo CLI</Link> or in the Avo web interface in <Link passHref href="/workspace/implement">Codegen tab</Link>.
+We generate the files and you can download them either with [the Avo CLI](/implementation/cli) or in the Avo web interface in [Codegen tab](/implementation/guides/download-or-copy-avo-file-manually).
 
 First of all, feel free to explore your generated file. It's deliberately designed to be easily readable. Our code generation is under active development and some advanced or new features may slightly differ from one platform to another.
 The generated file is the best source of truth when looking for implementation details.
@@ -23,7 +22,7 @@ The generated file is the best source of truth when looking for implementation d
   Make sure all the events you want to implement using Codegen have the source
   attached to it, where "Implement with Codegen" has been checked. Learn more
   about how to [configure events in your tracking plan
-  here](/workspace/tracking-plan/events#sources).
+  here](/data-design/avo-tracking-plan/events#sources).
 </Callout>
 
 ### Avo Command Line Interface
@@ -52,13 +51,13 @@ it will guide you through the initial setup and will create a config file called
 
 Make sure to check the `avo.json` file in to your source control to keep the Avo configuration is in sync across your team.
 
-Learn more about the CLI <Link passHref href="/implementation/cli">here</Link>.
+Learn more about the CLI [here](/implementation/cli).
 
 ### Initialization
 
 First thing you need to do after importing the generated file is to initialize Avo.
-There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. <Link passHref href="/help/troubleshooting">Contact us</Link> if you want to change the setup.
-Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the <Link passHref href="/workspace/implement">Codegen tab</Link> for specific recommendations.
+There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. [Contact us](/help/troubleshooting) if you want to change the setup.
+Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the [Codegen tab](/implementation/guides/download-or-copy-avo-file-manually) for specific recommendations.
 Samples below are in Swift and the code is very similar in other programming languages:
 
 ```swift
@@ -85,15 +84,15 @@ public static func setSystemProperties(
     optionalListSystemProperty: [Int]?);
 ```
 
-Read more about property types later in the <Link passHref href="/implementation/avo-codegen-overview#avo-generated-file-func-parameters">Codegen section.</Link>
+Read more about property types later in the [Codegen section](/implementation/avo-codegen-overview#avo-generated-file-func-parameters).
 
-- `firstDestination` and `secondDestination` - each destination from the source/destination connections you've defined in the Avo dashboard is represented as its own <Link passHref href="/implementation/destinations">Destination Interface</Link> in the init call.
+- `firstDestination` and `secondDestination` - each destination from the source/destination connections you've defined in the Avo dashboard is represented as its own [Destination Interface](/implementation/destinations) in the init call.
   This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
-- `debugger` - mobile platforms (Android, iOS, React Native) support <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers">the Avo Analytics Debuggers</Link>, provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
+- `debugger` - mobile platforms (Android, iOS, React Native) support [the Avo Analytics Debuggers](/explore-tracking-plan/start-using-visual-debuggers), provide one here if you want to connect it to Avo events. You don't need to provide the debugger on the web to use it there.
 - `strict` - if this is set to true Avo would crash your app in the development environment when it sees errors. Note that the Avo validation will never crash your app if env is set to Production.
 - `noop` - if this flag is set to true Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is dismissed in production.
 - `destination options` (not shown in the example) - some platforms, for example JavaScript, allow you to provide destination options for the analytics destinations that will be passed during tracking SDK initialization. This allows you to pass config/options through Avo to the init functions of the underlying analytics SDKs.
-- `avoLogger` (not shown in the example) - custom logger implementation to control logs logic. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers">More about custom loggers</Link>.
+- `avoLogger` (not shown in the example) - custom logger implementation to control logs logic. Can be used to disable logs. [More about custom loggers](/implementation/custom-loggers).
 - `inspector` (not shown in the example) - instance of Avo Inspector to automatically send Codegen data to Avo Inspector (on the supported platforms)
 
 ### What's inside the initAvo method / Avo constructor?
@@ -148,7 +147,7 @@ Each event in your tracking plan added to Codegen creates an event function that
 <Callout type="info" emoji="📖">
 **Read more about actions and supported tracking methods:**
 
-Read about [available Actions and how they work in the tracking plan](/workspace/tracking-plan/events#actions).
+Read about [available Actions and how they work in the tracking plan](/data-design/avo-tracking-plan/events#actions).
 
 Learn how [you can implement supported tracking methods in your destinations](/implementation/destinations).
 
@@ -204,7 +203,7 @@ object properties: exact structure of the allowed keys and types of values in th
 
 Avo makes sure that the event names and provided properties are correct according to the tracking plan with compile time and runtime validations and development invocations are reported to Avo servers so you can check the invocation status on the Avo website.
 
-Then it sends the provided data to all the configured analytics destinations, using the destination interfaces you've defined during initialization. There are different <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">actions</Link> that can be tracked:
+Then it sends the provided data to all the configured analytics destinations, using the destination interfaces you've defined during initialization. There are different [actions](/data-design/avo-tracking-plan/events#actions) that can be tracked:
 identify, log event, update user properties, unidentify, log revenue, log page view, but everything is checked and the payload is prepared inside the Avo file and delivered in a correct form to the destination interfaces.
 
 The Avo generated tracking code will look similar to this:
@@ -222,7 +221,7 @@ secondDestination.logEvent(eventName: "Logged Out", eventProperties: customDestE
 secondDestination.unidentify()
 ```
 
-This particular event has `log event` and `unidentify` actions. The methods called above will vary based on the actions of the given event. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Read more about actions here.</Link>
+This particular event has `log event` and `unidentify` actions. The methods called above will vary based on the actions of the given event. [Read more about actions here](/data-design/avo-tracking-plan/events#actions).
 
 ### Data Validations
 

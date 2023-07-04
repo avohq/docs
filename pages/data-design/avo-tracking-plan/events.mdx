@@ -19,12 +19,12 @@ An event is defined in the Events section of the Tracking plan and can be organi
  with information about the event beyond what the name includes (optional but highly recommended)
 - The [_Trigger(s)_](/data-design/event-triggers)
  that describe both visually and in words all the user or system actions that trigger the event (optional but highly recommended)
-- The [_Source(s)_](/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from)
+- The [_Source(s)_](/data-design/define-sources-and-destinations#sources-where-the-data-comes-from)
  that the event should be sent from
 - The [_Actions(s)_](#actions) associated with the event
-- The [_Metrics(s)_](/workspace/tracking-plan/metrics)
+- The [_Metrics(s)_](/data-design/avo-tracking-plan/metrics)
  related to the event (optional)
-- The [_Category(s)_](/data-design/organizing-metrics-and-events#a-namecategoriesa-categories)
+- The [_Category(s)_](/data-design/organizing-metrics-and-events#categories)
  that the event is a part of (optional)
 - The _Tags_ associated with the event
 - The [_Name Mapping(s)_](/data-design/name-mapping)
@@ -40,7 +40,7 @@ Add all sources you want the event to be sent from to the event in Avo. If you w
 
 Actions is Avo's umbrella term over all the tracking methods the analytics platforms offer, such as logging events, updating user properties, logging revenue, etc. In your Avo tracking plan you can configure which actions (tracking methods) should be triggered. Actions can be triggered on their own or together, for example it's common to update user properties along with logging an event.
 
-See [supported actions (tracking methods)](/workspace/tracking-plan/events#supported-actions)
+See [supported actions (tracking methods)](/data-design/avo-tracking-plan/events#supported-actions)
  below.
 
 ### Configuring Actions
