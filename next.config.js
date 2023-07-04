@@ -568,6 +568,11 @@ const redirects = [
     permanent: true,
   },
   {
+    source: '/workspace/integrations',
+    destination: '/publishing/integrations',
+    permanent: true,
+  },
+  {
     source: '/workspace/tracking-plan/workbench',
     destination: '/data-design/avo-tracking-plan/workbench',
     permanent: true,

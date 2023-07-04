@@ -39,7 +39,7 @@ Here's how events, properties and categories are mapped from Avo to Govern:
 #### Event Property
 
 - **Event property**: The property name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the property for an Amplitude destination, the name defined by the name mapping is used here.
-- **Event type**: The name of the event this property is attached to. If the property is attached to multiple events in Avo, multiple properties will be created in Govern because Govern does not support reusing properties across multiple events with a [global namespace](/data-design/global-namespacesharing).
+- **Event type**: The name of the event this property is attached to. If the property is attached to multiple events in Avo, multiple properties will be created in Govern because Govern does not support reusing properties across multiple events with a [global namespace](/data-design/global-namespace).
 - **Type**: The property type in Avo mapped to one of Govern's supported property types: `string`, `number`, `boolean`, `enum` or `any`
 - **Is array**: `true` if the "list" checkbox is checked on the property in Avo
 - **Is required**: `true` if the property is marked as "Always sent" in Avo
@@ -63,7 +63,7 @@ The following errors might occur when publishing your tracking to Govern. When p
 
   - We tried to update an event that doesn't exist in your Amplitude Govern Schema
   - If this error only occurs for events and properties Amplitude hasn't seen yet, it might indicate that the schema in Amplitude Govern hasn't been initialized, or that you don't have access to the "Plan data" functionality in Amplitude Govern
-  - If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/360047579451-Initialize-and-manage-the-Schema).
+  - If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Govern Schema has not been initialized. Learn more about initializing your Amplitude Govern Schema in [the Amplitude Govern docs](https://help.amplitude.com/hc/en-us/articles/5078848559259).
     After you Govern Schema is initialized usually the API continues to return occasional 404 errors for a few more hours. If your Govern Schema has been initialized more than 6 hours ago and the error persists, please contact support.
 
 - **408 Timeout**: The publishing operation took too long. This can happen when publishing large tracking plans for the first time. Click publish again to resume the publish, it will continue from where it left off.
