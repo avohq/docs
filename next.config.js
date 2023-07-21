@@ -831,7 +831,12 @@ const redirects = [
   },
   {
     source: '/publishing/amplitude-govern',
-    destination: '/publishing/publishing/amplitude-govern',
+    destination: '/publishing/publishing/amplitude-data',
+    permanent: true,
+  },
+  {
+    source: '/publishing/publishing/amplitude-govern',
+    destination: '/publishing/publishing/amplitude-data',
     permanent: true,
   },
   {
