@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Send data from Google Tag Manager to Avo Inspector
 
 ## Use Avo Inspector as a GTM tag
@@ -54,5 +56,9 @@ This tag is designed to be used with the server side Google Tag Manager, learn m
 6. Add a trigger, it's best to analyse all events in Inspector. We suggest to add a trigger that accepts all events, for example with the `.*` regex. Make sure that you are only sending the events from the environment configured on the step 3. Learn more about defining triggers [here](https://support.google.com/tagmanager/topic/7679384)
 7. Now all the data sent to this server side GTM will be analysed by Inspector. Learn more about sending data to the server side Tag Manager [here](https://developers.google.com/tag-platform/tag-manager/server-side/send-data)
 
-## Inspector Web GTM integration
+## Inspector Web GTM integration (beta)
+
+<Callout type="info">
+The Inspector Web GTM integration is currently in beta so please reach out to us at support@avo.app or in the chat bubble in the bottom right corner if you have any feedback.
+</Callout>
 
