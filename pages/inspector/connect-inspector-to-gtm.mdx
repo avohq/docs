@@ -55,9 +55,13 @@ The Initialization code is already included in a tag, so you just need to provid
 
 ### Inspector Get Schema function
 
-If you prefer not to use our client side importable recipe, it is also possible to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup. If you have occasions where data layer events could fire before GTM loads and you wish you add observability, we'd recommend initializing inspector outside of Google Tag Manager, and perhaps adding our initialization code to the header of the page or using one of our other Inspector SDKs and adding it more native to your codebase. The flexibility here is a feature.
+Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
 
 To add observability to single events with our Inspector Get Schema function, create a HTML script tag for each event you want to add observability to. The steps are shown in the screen shot below and make sure to use the same trigger and variables as you are using for the event you're dispatching to your analytics vendor. 
+
+<Callout type="info" emoji="💡">
+If you have occasions where data layer events could fire before GTM loads and you wish you add observability, we'd recommend initializing inspector outside of Google Tag Manager, and perhaps adding our initialization code to the header of the page or using one of our other Inspector SDKs and adding it more native to your codebase. The flexibility here is a feature.
+</Callout>
 
 [insert image from our latest blog on GTM]
 
