@@ -1,16 +1,51 @@
 import { Callout } from 'nextra/components';
 
-# Send data from Google Tag Manager to Avo Inspector
+# Google Tag Manager Source (beta)
 
-## Use Avo Inspector as a GTM tag
+## Send data from Google Tag Manager to Avo Inspector
 
-You can use a server side GTM to analyze your tracking with Avo Inspector.
+**Destination Info**
 
-We provide a tag template to import, which you can use to create a tag and connect it to your GTM clients.
+* Supports both client side and server side Google Tag Manager  
+* Inspector events can be verified using the browser developer console
+* Observability can be added to all data layer events using client side GTM in under 90 seconds
+* Observability can be added to all Google Analytics events using our server side GTM installation option
+* Events detected by Inspector can be added to the Avo tracking plan within the Inspector UI, allowing you to fill a documentation gap on leggacy events in seconds
 
-> Avo Inspector operates on the environment level, please keep it in mind and create separate tags for development, staging and production data.
 
-## Inspector Server side GTM integration
+Google Tag Manager (GTM) is a tag management system that allows you to quickly update tags and code snippets on your website, web apps, and apps. Once you deploy the Tag Manager snippet, you can configure (trigger) tags using a web-based user interface without having to alter and deploy additional code. It is common for early stage companies to use Google Tag Manager to take care of dispatching their core analytics events to reduce developer dependnecies whenever new events are needed, and as the analytics maturity grow and more accuracy is needed, developers will deploy in-code data layer events, and then GTM tag onwers will trigger the analytics service events off the data layer events acordingly. [Learn more about that here](https://www.loom.com/share/22c9e0f1175141efa7a0bdbf51201096). 
+
+> **_Reminders:_** 
+- The Inspector SDKs are designed with flexibility in mind, so you should always be able to add observability to the source of your pipelines.
+- Avo Inspector operates on the environment level, please keep it in mind and create separate tags for development, staging and production data.
+
+##Getting Started
+Avo Inspector requires two core steps to add observability. First is initialisation of the Inspector. Second is sending events to Inspector. Both steps have instalation options available to you to support different configurations. Which ever path you take, your data observability journey starts with creating an Avo source because this is where you create source specific API keys and can get the initialisation code. From the Avo Sources UI, click New source and give it a memorable name to describe the data source you are adding observability too. 
+
+> **Notes:_** 
+For our client side GTM importable recipe, the initialisation code is already included in a tag, so you would just need to give the Inspector API GTM variable your source specific API key, which you can find in your Avo source Inspector setup. Please note that the Inspector GTM recipe defaults to the 'prod' environment, and this results in a 1 hour lag between tracking and displaying events in Inspector report. If you wish to verify Inspector events are recieved instantly, adjust the Avo Inspector Init tag by changing the 'prod' value to 'dev' on the inspector.__ENV__ key. If you prefer not to use our client side importable recipe, it is also possible to initialise Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup. If you have occasions where data layer events could fire before GTM loads and you wish you add observability, we'd recomend initialising inspector outside of Google Tag Manager, and perhaps adding our initialisation code to the header of the page or using one of our other Inspector SDKs and adding it more native to your codebase. The flexibility here is a feature.
+
+## Inspector Client side GTM integration (beta)
+(option 1) Add obsevability to all data layer events with our importable GTM recipe [in under 90 seconds](https://www.loom.com/share/c659b857d4d947729683bf11691f441e)
+1. [Download our GTM recipe here]()
+2. Import the recipe into your GTM container. 
+3. Add the source specific Inspector API key. 
+4. Publish the container.
+5. Visit the Avo Inspector dashboard in one hour to see
+6. Consider creating a filtered issues view for the data bugs you care about. [learn more here](https://www.avo.app/docs/inspector/inspector-issues-view).
+
+> **Notes:_** 
+If you want to test Inspector is working correctly. Adjust the Avo Inspector Init tag by changing the 'prod' value to 'dev' on the inspector.__ENV__ key. This results in events showing in the Inspector dashboard instantly.
+
+(option 2) Add observability to single events with our Inspector Get Schema function
+Create a HTML script tag for each event you want to add observability too as shown in the screen shot below and make sure to use the same trigger and variables as you ar eusing for the event you're dispatching to your analytics vendor. 
+
+[insert image from our latest blog on GTM]
+
+> **_Notes:_** 
+While our importable recipe allows you to add observability to all data layer events in production in under 90 seconds, we are aware that many GTM containers are a hybrid of data layer based triggered tags for analytics events, and GTM native ones (think source selectors). If your GTM analytics implementation uses a hybrid trigger setup, to increase Inspector coverage, you could use our recipe to catch all data layer events with a single tag, and then single event Inspector Tags for native GTM trigger based events. If you wanted a single tag that catches both data layer and native GTM triggered events sent Google Analytics 4, for example, ask your developer to code a tag that detects all analytics track calls via the GA4 end point calls, parses the payload, and loops through the properties to then foreward the track on to Inspector. We're currently investigating this for our new recipe. 
+
+## Inspector Server side GTM integration (beta)
 
 This tag is designed to be used with the server side Google Tag Manager, learn more [here](https://developers.google.com/tag-platform/tag-manager/server-side/overview)
 
