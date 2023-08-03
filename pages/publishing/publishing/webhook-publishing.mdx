@@ -163,11 +163,13 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ##### PublishInfo Model
 
-| Attribute       | Type              | Description                                                                                |
-| :-------------- | :---------------- | :----------------------------------------------------------------------------------------- |
-| branchId        | id                | Branch id                                                                                  |
-| branchName      | string            | Branch name                                                                                |
-| integrationId   | string            | Id of the publish integration (consistently the same for this integration)                 |
-| integrationName | string            | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName') |
-| publishDate     | Date string       | Timestamp when the webhook was triggered                                                   |
-| publishMethod   | \{ "type": type } | Description of the publish method, type can be "Manual" and "BranchMerge"                  |
+| Attribute       | Type              | Description                                                                                               |
+| :-------------- | :---------------- | :-------------------------------------------------------------------------------------------------------- |
+| branchId        | id                | Branch id                                                                                                 |
+| branchName      | string            | Branch name                                                                                               |
+| integrationId   | string            | Id of the publish integration (consistently the same for this integration)                                |
+| integrationName | string            | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName')                |
+| publishDate     | Date string       | Timestamp when the webhook was triggered                                                                  |
+| publishMethod   | \{ "type": type } | Description of the publish method, type can be "Manual" and "BranchMerge"                                 |
+| lastUpdateId    | id                | Unique identifier of the last modification made to the tracking plan before the generation of this schema |
+| lastUpdateDate  | Date string       | Time of the last modification made to the tracking plan before the generation of this schema               |
