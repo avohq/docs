@@ -8,7 +8,7 @@ _This document describes how to send data from Google Tag Manager to Avo Inspect
 The Inspector Google Tag Manager integrations are currently in beta so please reach out to us at support@avo.app or in the chat bubble in the bottom right corner if you have any feedback.
 </Callout>
 
-## Destination Info
+## Source Info
 
 * Supports both client side and server side Google Tag Manager  
 * Inspector events can be verified using the browser developer console
@@ -17,7 +17,13 @@ The Inspector Google Tag Manager integrations are currently in beta so please re
 * Events detected by Inspector can be added to the Avo tracking plan within the Inspector UI, allowing you to fill a documentation gap on legacy events in seconds
 
 
-Google Tag Manager (GTM) is a tag management system that allows you to quickly update tags and code snippets on your website, web apps, and apps. Once you deploy the Tag Manager snippet, you can configure (trigger) tags using a web-based user interface without having to alter and deploy additional code. It is common for early stage companies to use Google Tag Manager to take care of dispatching their core analytics events to reduce developer dependencies whenever new events are needed, and as the analytics maturity grow and more accuracy is needed, developers will deploy in-code data layer events, and then GTM tag owners will trigger the analytics service events off the data layer events accordingly. [Learn more about that here](https://www.loom.com/share/22c9e0f1175141efa7a0bdbf51201096). 
+Google Tag Manager (GTM) is a tag management system that allows you to quickly update tags and code snippets on your website, web apps, and apps. Once you deploy the Tag Manager snippet, you can configure (trigger) tags using a web-based user interface without having to alter and deploy additional code. It is common for early stage companies to use Google Tag Manager to take care of dispatching their core analytics events to reduce developer dependencies whenever new events are needed. Typically, as the analytics maturity grow and more accuracy is needed, developers will deploy data layer events in their codebase, and then GTM tag owners will trigger the analytics service events from these data layer events. [Learn more about that in this short video](https://www.loom.com/share/22c9e0f1175141efa7a0bdbf51201096).
+
+<Callout type="info">
+**_Reminders:_** 
+- The Inspector SDKs are designed with flexibility in mind, so you should always be able to add observability to the source of your pipelines.
+- Avo Inspector operates on the environment level, please keep it in mind and create separate tags for development, staging and production data.
+</Callout>
 
 **_Reminders:_** 
 - The Inspector SDKs are designed with flexibility in mind, so you should always be able to add observability to the source of your pipelines.
@@ -26,13 +32,13 @@ Google Tag Manager (GTM) is a tag management system that allows you to quickly u
 ## Getting Started
 Avo Inspector requires two core steps to add observability:
 1. Initializing the Inspector
-2. Sending events to Inspector
+2. Sending your events to Inspector
 
 Both steps have installation options available to you to support different configurations. Which ever path you take, your data observability journey starts with creating an Avo source because this is where you create source specific API keys and can get the initialization code. If you haven't created a source yet, follow the docs to [create and set up your GTM source](/inspector/configuring-inspector-sources).
 
-## Inspector Client side GTM integration (beta)
+## Inspector Client side GTM integration
 
-There are two options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events.
+There are two options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events. If you choose to use the GTM recipe, The Initialization code is already included in a tag, so you just need to provide the Inspector API GTM variable the source specific API key, which you can find in your Avo source Inspector setup. Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
 
 <Callout type="info" emoji="💡">
 We recommend starting by installing the Inspector on your development or testing GTM container and connect it to the Inspector dev environment. That is both so your Inspector production environment is not contaminated by testing data and because the Inspector development environment is designed to handle low data volumes real time while the production environment is optimized for large amount of production data and has 1 - 2 hour delay.
@@ -41,29 +47,55 @@ We recommend starting by installing the Inspector on your development or testing
 ### Importable GTM recipe
 
 To add observability to all data layer events with our importable GTM recipe [in under 90 seconds](https://www.loom.com/share/c659b857d4d947729683bf11691f441e), follow the steps below:
-1. [Download our GTM recipe here]()
-2. Import the recipe into your GTM container. 
-3. Add the source specific Inspector API key. 
-4. When testing, adjust the the Avo Inspector Init tag by changing the 'prod' value to 'dev' on the inspector.__ENV__ key.
-5. Publish the container.
-6. Visit the Avo Inspector dashboard in one hour to see
-7. Consider creating a filtered issues view for the data bugs you care about. [learn more here](/inspector/inspector-issues-view).
+**Step 1: [Download our GTM recipe here]()**
 
-<Callout type="info" emoji="💡">
-The Initialization code is already included in a tag, so you just need to provide the Inspector API GTM variable the source specific API key, which you can find in your Avo source Inspector setup. 
-</Callout>
+**Step 2: Import the recipe into your GTM container**  
+Go to the Google Tag Manager container you want to install the Inspector on and import the recipe.
+
+![Import screen in Google Tag Manager](/images/inspector/import-gtm-recipe-to-container.png)
+
+The recipe contains the following tags and variables:
+- Tags
+    - Avo Inspector Init
+    - Avo Inspector Send
+- Variables
+    - Avo Inspector API Key
+
+**Step 3: Add the source specific Inspector API key**  
+To get the API key, navigate to the Inspector Setup tab of your Inspector source, and copy the API key:
+
+![Copy Inspector API key in source settings](/images/inspector/copy-inspector-api-key.png)
+
+Then go into your GTM container, find the "Avo Inspector API key" variable and paste it there:
+
+![Avo Inspector API key variable in Google Tag Manager](/images/inspector/paste-gtm-inspector-api-key.png)
+
+**Step 4: When testing change the environment to dev**  
+The environment is set to production by default. When testing, we recommend using your development GTM container and send the data to your Inspector development environment. You do that by opening the Avo Inspector Init tag in GTM, find the inspector.__ ENV __ key and change the value from 'prod' to 'dev'.
+
+![Changing environment in the Inspector Init tag.](/images/inspector/web-gtm-change-env.png)
+
+**Step 5: Publish the GTM container**
+
+**Step 6: See your data flowing into the Inspector**  
+If you are testing in the development environment, the data will start appearing almost immediately. To see development data, open the Inspector Events view and change the environment to dev:
+
+![Accessing dev data in the Inspector events view.](/images/inspector/accessing-dev-data.png)
+
+If you have published your production container to send data to the production environment in Inspector, we recommend opening the [Issues view](/inspector/inspector-issues-view) to see the issues Inspector detects. You can also open the [Events view](/inspector/inspector-events-view) in production to see all events that are coming in, with or without issues.
+
+**Step 7: Filter your issues and save a view**  
+If you are getting issues into your issues view, we recommend filtering the issues and creating a saved view that includes issues that you care about. [Learn more in our Issues view documentation](/inspector/inspector-issues-view).
 
 ### Inspector Get Schema function
 
-Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
+To add observability to single events with our Inspector Get Schema function, create a HTML script tag for each event you want to add observability to. The screen shot below provides an example of how the script tag should look like. Make sure to use the same trigger and variables as you are using for the event you're dispatching to your analytics vendor. 
 
-To add observability to single events with our Inspector Get Schema function, create a HTML script tag for each event you want to add observability to. The steps are shown in the screen shot below and make sure to use the same trigger and variables as you are using for the event you're dispatching to your analytics vendor. 
+![Example Inspector get schema function.](/images/inspector/inspector-get-schema-function.png)
 
 <Callout type="info" emoji="💡">
-If you have occasions where data layer events could fire before GTM loads and you wish you add observability, we'd recommend initializing inspector outside of Google Tag Manager, and perhaps adding our initialization code to the header of the page or using one of our other Inspector SDKs and adding it more native to your codebase. The flexibility here is a feature.
+If you have occasions where data layer events could fire before GTM loads and you wish to add observability, we'd recommend initializing inspector outside of Google Tag Manager, and perhaps adding our initialization code to the header of the page or using one of our other Inspector SDKs and adding it more native to your codebase. The flexibility here is a feature.
 </Callout>
-
-[insert image from our latest blog on GTM]
 
 > **_Notes:_** 
 While our importable recipe allows you to add observability to all data layer events in production in under 90 seconds, we are aware that many GTM containers are a hybrid of data layer based triggered tags for analytics events, and GTM native ones (think source selectors). If your GTM analytics implementation uses a hybrid trigger setup, to increase Inspector coverage, you could use our recipe to catch all data layer events with a single tag, and then single event Inspector Tags for native GTM trigger based events. If you wanted a single tag that catches both data layer and native GTM triggered events sent Google Analytics 4, for example, ask your developer to code a tag that detects all analytics track calls via the GA4 end point calls, parses the payload, and loops through the properties to then forward the track on to Inspector. We're currently investigating this for our new recipe. 
