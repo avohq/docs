@@ -40,10 +40,6 @@ Both steps have installation options available to you to support different confi
 
 There are two options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events. If you choose to use the GTM recipe, The Initialization code is already included in a tag, so you just need to provide the Inspector API GTM variable the source specific API key, which you can find in your Avo source Inspector setup. Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
 
-<Callout type="info" emoji="💡">
-We recommend starting by installing the Inspector on your development or testing GTM container and connect it to the Inspector dev environment. That is both so your Inspector production environment is not contaminated by testing data and because the Inspector development environment is designed to handle low data volumes real time while the production environment is optimized for large amount of production data and has 1 - 2 hour delay.
-</Callout>
-
 ### Importable GTM recipe
 
 To add observability to all data layer events with our importable GTM recipe [in under 90 seconds](https://www.loom.com/share/c659b857d4d947729683bf11691f441e), follow the steps below:
@@ -70,19 +66,19 @@ Then go into your GTM container, find the "Avo Inspector API key" variable and p
 
 ![Avo Inspector API key variable in Google Tag Manager](/images/inspector/paste-gtm-inspector-api-key.png)
 
-**Step 4: When testing change the environment to dev**  
-The environment is set to production by default. When testing, we recommend using your development GTM container and send the data to your Inspector development environment. You do that by opening the Avo Inspector Init tag in GTM, find the inspector.__ ENV __ key and change the value from 'prod' to 'dev'.
+**Step 4: Test the GTM tag**  
+The environment is set to development by default when you are running your GTM container in preview mode. We recommend doing that first to make sure that everything is working smoothly.  To see development data, open the Inspector Events view and change the environment to dev:
 
-![Changing environment in the Inspector Init tag.](/images/inspector/web-gtm-change-env.png)
+![Accessing dev data in the Inspector events view.](/images/inspector/accessing-dev-data.png)
 
 **Step 5: Publish the GTM container**
 
 **Step 6: See your data flowing into the Inspector**  
-If you are testing in the development environment, the data will start appearing almost immediately. To see development data, open the Inspector Events view and change the environment to dev:
+When you have published your GTM container, it will start sending data to the production environment in Inspector. We recommend opening the [Issues view](/inspector/inspector-issues-view) to see the issues Inspector detects. You can also open the [Events view](/inspector/inspector-events-view) in production to see all events that are coming in, with or without issues.
 
-![Accessing dev data in the Inspector events view.](/images/inspector/accessing-dev-data.png)
-
-If you have published your production container to send data to the production environment in Inspector, we recommend opening the [Issues view](/inspector/inspector-issues-view) to see the issues Inspector detects. You can also open the [Events view](/inspector/inspector-events-view) in production to see all events that are coming in, with or without issues.
+<Callout type="info" emoji="💡">
+Note that the Inspect production environment is optimized to handle large volume of data so there will be 1 - 2 hour delay in seeing your data flowing into production.
+</Callout>
 
 **Step 7: Filter your issues and save a view**  
 If you are getting issues into your issues view, we recommend filtering the issues and creating a saved view that includes issues that you care about. [Learn more in our Issues view documentation](/inspector/inspector-issues-view).
