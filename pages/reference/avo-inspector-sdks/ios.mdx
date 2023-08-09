@@ -287,6 +287,28 @@ debugger.hide()
 
 ```
 
+To see the events you send to Inspector in the Mobile Debugger add the following code next to the Inspector call.
+
+Given you have the following code to report to Inspector
+
+```swift
+avoInspector.trackSchema(fromEvent: myEventName, eventParams: myEventProps)
+```
+
+add the following code to see the same event in the Mobile Debugger
+
+```swift
+var debuggerProps: [DebuggerProp] = []
+let debuggerErrors: [Any] = []
+for (key, value) in myEventProps {
+    debuggerProps.append(DebuggerProp(id: key, name: key, value: String(describing: value)))
+}
+debugger.publishEvent(myEventName, withTimestamp: NSNumber(value: NSDate().timeIntervalSince1970),
+    withProperties: debuggerProps, withErrors: debuggerErrors)
+```
+
+Learn more about the debugger setup and initialization [here](https://github.com/avohq/ios-analytics-debugger).
+
 ##  Using the Mobile Debugger
 
 When using the Inspector SDK we recommend to also add the [Avo Mobile Debugger](/mobile-debuggers) to your development builds to verify tracking implementation.
