@@ -244,7 +244,7 @@ Enables manual control over events batching. Default production batch flush inte
 
 ## Migrating from v1 to v2 of CocoaPods distribution
 
-Before the release 2.0.0 the CocoaPods Inspector SDK bundled the [Mobile Debugger](/reference/avo-debuggers/mobile#open-source-repositories-and-platform-specific-integration-docs). Starting from release 2.0.0 the Mobile Debugger is available as a standalone library. This approach will allow you to get greater control over your app dependencies, not including the Mobile Debugger into the production build. The Mobile Debugger was designed to be used in the development and staging build.
+Before the release 2.0.0 the CocoaPods Inspector SDK bundled the [Mobile Debugger](/reference/avo-debuggers/mobile#open-source-repositories-and-platform-specific-integration-docs). Starting from release 2.0.0 the Mobile Debugger is available as a standalone library. This approach will allow you to get greater control over your app dependencies, not including the Mobile Debugger into the production build. The Mobile Debugger is designed to be used in development and staging builds only.
 
 After including the [Mobile debugger](https://cocoapods.org/pods/IosAnalyticsDebugger) into your project the Visual Inspector methods from versions prior to 2.0.0 map to the Mobile debugger methods in the following way:
 
