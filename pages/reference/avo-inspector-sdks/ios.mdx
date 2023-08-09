@@ -10,14 +10,17 @@ Quick start guides are available in the GitHub repos:
 
 ## Installation
 
-AvoInspector is available through CocoaPods. To install
-it, simply add the following line to your Podfile:
+AvoInspector is available through CocoaPods and Swift Package manager.
+
+To install it through CocoaPods, add the following line to your Podfile:
 
 ```ruby
 pod 'AvoInspector'
 ```
 
 The latest version can be found in [GitHub releases](https://github.com/avohq/ios-avo-inspector/releases) tab.
+
+To install with SPM, search for `https://github.com/avohq/ios-avo-inspector-spm` in Xcode.
 
 ## Import
 
@@ -239,25 +242,31 @@ Enables manual control over events batching. Default production batch flush inte
 >
 > - `newBatchFlushSeconds: Int32` - sets batch flush time in seconds.
 
-##  Using the Visual Inspector
+## Migrating from v1 to v2 of CocoaPods distribution
 
-> To use the Visual Inspector with Swift Package Manager you need to include it manually from https://github.com/avohq/ios-analytics-debugger-spm
+Before the release 2.0.0 the CocoaPods Inspector SDK bundled the [Mobile Debugger](/reference/avo-debuggers/mobile#open-source-repositories-and-platform-specific-integration-docs). Starting from release 2.0.0 the Mobile Debugger is available as a standalone library. This approach will allow you to get greater control over your app dependencies, not including the Mobile Debugger into the production build. The Mobile Debugger is designed to be used in development and staging builds only.
 
-Visual inspector is actually our [Mobile Debugger](/mobile-debuggers) integrated in Avo Inspector SDK.
-
-Visual Inspector is enabled in development and staging environments by default.
-
-### Show
+After including the [Mobile debugger](https://cocoapods.org/pods/IosAnalyticsDebugger) into your project the Visual Inspector methods from versions prior to 2.0.0 map to the Mobile debugger methods in the following way:
 
 ```swift
-func show(type: AvoVisualInspectorType)
+inspector.show(avoVisualInspectorType)
 ```
 
 ```objectivec
-- (void) showVisualInspector: (AvoVisualInspectorType) type;
+[inspector showVisualInspector: avoVisualInspectorType];
 ```
 
-### Hide
+becomes
+
+```swift
+debugger.showBubble()
+```
+
+```objectivec
+[debugger showBubbleDebugger];
+```
+
+and
 
 ```swift
 func hideVisualInspector()
@@ -267,17 +276,46 @@ func hideVisualInspector()
 - (void) hideVisualInspector;
 ```
 
-### Get instance of `AnalyticsDebugger`
+becomes
 
 ```swift
-func getVisualInspector(): AnalyticsDebugger?
+debugger.hide()
 ```
 
 ```objectivec
-- (AnalyticsDebugger *) getVisualInspector;
+[debugger hideDebugger];
+
 ```
 
-See more about the AnalyticsDebugger in it's [GitHub repo](https://github.com/avohq/ios-analytics-debugger).
+To see the events you send to Inspector in the Mobile Debugger add the following code next to the Inspector call.
+
+Given you have the following code to report to Inspector
+
+```swift
+avoInspector.trackSchema(fromEvent: myEventName, eventParams: myEventProps)
+```
+
+add the following code to see the same event in the Mobile Debugger
+
+```swift
+var debuggerProps: [DebuggerProp] = []
+let debuggerErrors: [Any] = []
+for (key, value) in myEventProps {
+    debuggerProps.append(DebuggerProp(id: key, name: key, value: String(describing: value)))
+}
+debugger.publishEvent(myEventName, withTimestamp: NSNumber(value: NSDate().timeIntervalSince1970),
+    withProperties: debuggerProps, withErrors: debuggerErrors)
+```
+
+Learn more about the debugger setup and initialization [here](https://github.com/avohq/ios-analytics-debugger).
+
+##  Using the Mobile Debugger
+
+When using the Inspector SDK we recommend to also add the [Avo Mobile Debugger](/mobile-debuggers) to your development builds to verify tracking implementation.
+
+To use the Visual Inspector with Swift Package Manager, include https://github.com/avohq/ios-analytics-debugger-spm
+
+To use the Mobile Debugger with CocoaPods, include https://cocoapods.org/pods/IosAnalyticsDebugger
 
 ## Auto inspection with Segment SDK
 
