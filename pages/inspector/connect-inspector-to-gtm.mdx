@@ -11,19 +11,12 @@ The Inspector Google Tag Manager integrations are currently in beta so please re
 ## Source Info
 
 * Supports both client side and server side Google Tag Manager  
-* Inspector events can be verified using the browser developer console
+* Inspector events can be verified using the browser developer console by searching for `Avo Inspector`. All keys from Avo Inspector contain that name.
 * Observability can be added to all data layer events using client side GTM in under 90 seconds
 * Observability can be added to all Google Analytics events using our server side GTM installation option
 * Events detected by Inspector can be added to the Avo tracking plan within the Inspector UI, allowing you to fill a documentation gap on legacy events in seconds
 
-
 Google Tag Manager (GTM) is a tag management system that allows you to quickly update tags and code snippets on your website, web apps, and apps. Once you deploy the Tag Manager snippet, you can configure (trigger) tags using a web-based user interface without having to alter and deploy additional code. It is common for early stage companies to use Google Tag Manager to take care of dispatching their core analytics events to reduce developer dependencies whenever new events are needed. Typically, as the analytics maturity grow and more accuracy is needed, developers will deploy data layer events in their codebase, and then GTM tag owners will trigger the analytics service events from these data layer events. [Learn more about that in this short video](https://www.loom.com/share/22c9e0f1175141efa7a0bdbf51201096).
-
-<Callout type="info">
-**_Reminders:_** 
-- The Inspector SDKs are designed with flexibility in mind, so you should always be able to add observability to the source of your pipelines.
-- Avo Inspector operates on the environment level, please keep it in mind and create separate tags for development, staging and production data.
-</Callout>
 
 ## Getting Started
 Avo Inspector requires two core steps to add observability:
@@ -34,7 +27,7 @@ Both steps have installation options available to you to support different confi
 
 ## Inspector Client side GTM integration
 
-There are two options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events. If you choose to use the GTM recipe, The Initialization code is already included in a tag, so you just need to provide the Inspector API GTM variable the source specific API key, which you can find in your Avo source Inspector setup. Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
+There are two options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events. If you choose to use the GTM recipe, the initialization code is already included in a tag, so you just need to provide the Inspector API GTM variable the source specific API key, which you can find in your Avo source Inspector setup. Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
 
 ### Importable GTM recipe
 
@@ -46,12 +39,21 @@ Go to the Google Tag Manager container you want to install the Inspector on and 
 
 ![Import screen in Google Tag Manager](/images/inspector/import-gtm-recipe-to-container.png)
 
-The recipe contains the following tags and variables:
+The recipe contains the following tags, triggers and variables:
 - Tags
     - Avo Inspector Init
     - Avo Inspector Send
+- Triggers
+    - All Custom Events
+    - Initialization
 - Variables
-    - Avo Inspector API Key
+    - Avo Inspector API Key (needs to be populated before initialization)
+    - gtm.uniqueEventId
+- Built-in Variables 
+    - Debug Mode
+    - Event
+
+The only thing that needs to be touched is the Avo Inspector API key. 
 
 **Step 3: Add the source specific Inspector API key**  
 To get the API key, navigate to the Inspector Setup tab of your Inspector source, and copy the API key:
