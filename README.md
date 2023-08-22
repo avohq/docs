@@ -57,9 +57,8 @@ yarn lint # runs Next.js's linting
 
 ## Spelling
 
-To catch spelling errors we rely on `mdspell` to set us straight. CI will use `yarn spellcheck` to check for any errors, as can any dev locally but sometimes `mdspell` will not recognize some of our fancy developer speak. This is where using `yarn fix-spelling` comes in handy to deal with those situations, handily creating ignores for us globally or on page level.
+To catch spelling errors we rely on `cspell` to set us straight. CI will use `yarn spellcheck` to check for any errors, as can any dev locally but sometimes `cspell` will not recognize some of our fancy developer speak. You might want to add a word to the dictionary in `cspell.json` to help it better understand.
 
 ```
 yarn run spellcheck     # Run spellcheck and gather errors
-yarn run fix-spelling   # Run spellcheck and fix errors one by one
 ```

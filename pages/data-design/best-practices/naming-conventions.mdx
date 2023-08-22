@@ -47,7 +47,7 @@ Typically the following four things.
 
 Inconsistent event names and property names can arise either during the "data design" step or the implementation step.
 
-### 1. How Avo Codegen ensure consistent event and property names across platforms and codebases
+### 1. How Avo Codegen ensure consistent event and property names across platforms and code bases
 
 **_What is Codegen?_** Codegen produces type safe code for implementing analytics. The "data designer" specifies the event structure in the Avo app, and which platforms should send the event, and then the developer who implements analytics can use Codegen per each analytics event.
 
@@ -78,7 +78,7 @@ Having a global namespace for all events and properties significantly reduces du
 
    For example: if the convention is `snake_case` and you type in `gameStarted` in the event creation modal, Avo will suggest the right casing to you before you create the event:
 
-   ![Consistent casing suggestion](/images/best-practices/naming-conventions/consistant_casing.png)
+   ![Consistent casing suggestion](/images/best-practices/naming-conventions/consistent_casing.png)
 
 3. Avo **_nudges_ you if you try to create an event with similar words as an event that already exists**.
 
@@ -124,7 +124,7 @@ The typical Avo customer has years of tracking in place when they start using Av
 
    > \*_ It's impossible to ship events or properties with names that don't match your tracking plan when you implement using Codegen, but, when companies adopt Avo, they often have multiple product teams and years of analytics tracking code in place._
 
-   1. For adoption, we recommend adopting Avo team by team (not flag-day switch-over for entire company). This means: While some teams will implement with type-safe Codegen, other teams and codebases will still implement "the old way". Which means, implementation errors will slip through 😅
+   1. For adoption, we recommend adopting Avo team by team (not flag-day switch-over for entire company). This means: While some teams will implement with type-safe Codegen, other teams and code bases will still implement "the old way". Which means, implementation errors will slip through 😅
    2. For replacing old tracking code, we recommend the "scout rule"; always leaving the analytics code better than when you found it, and porting analytics code to Codegen as it makes sense.
 
 3. Inspector **shows you all your tracked events**
