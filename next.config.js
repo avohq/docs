@@ -1039,4 +1039,9 @@ const redirects = [
     destination: '/reference/public-api/overview',
     permanent: true,
   },
+  {
+    source: '/data-design/documenting-downstream-dependancies',
+    destination: '/data-design/documenting-downstream-dependencies',
+    permanent: true,
+  },
 ];

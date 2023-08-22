@@ -170,7 +170,7 @@ let myAnalyticsSDKBridge = {
   },
   setUserProperties: (userId, userProperties) => {
     /*
-      You can add User Properties to events in the Trackin Plan in Avo. When an Avo Function with attached user properties
+      You can add User Properties to events in the Tracking Plan in Avo. When an Avo Function with attached user properties
       is called, this callback is triggered. Here you would attach user properties to the currently identified user in your
       analytics platform.
 
@@ -179,7 +179,7 @@ let myAnalyticsSDKBridge = {
   },
   identify: (userId) => {
     /*
-      You can add the Identify User action to events in the Trackin Plan in Avo. When calling an Avo Function that includes
+      You can add the Identify User action to events in the Tracking Plan in Avo. When calling an Avo Function that includes
       the Identify User action you'll need to provide a user ID. Calling an Avo Function that has the Identify User action
       will trigger this callback. The main use cases are signup and login. Here you would pass the user ID to the analytics
       SDK for it to create a new user or attach a session to an existing user.
@@ -189,7 +189,7 @@ let myAnalyticsSDKBridge = {
   },
   unidentify: () => {
     /*
-      You can add the Unidentify User action to events in the Trackin Plan in Avo When calling an Avo Function that includes
+      You can add the Unidentify User action to events in the Tracking Plan in Avo When calling an Avo Function that includes
       the Unidentify User action this callback will be triggered. Here you would call an analytics SDK method to detach subsequent
       actions from the currently identified user.
 
