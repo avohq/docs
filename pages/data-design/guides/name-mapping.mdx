@@ -90,7 +90,8 @@ Name mapping is a powerful tool for many different use cases for events and prop
 
 ### For Events
 
-** A single destination requires a specific event name **
+#### A single destination requires a specific event name
+
 Some destinations require a specific event name for certain user actions that might not be according to your naming convention. Name mapping enables you to have a single event for all destinations and map the name to a different name when needed.
 
 _Example:_
@@ -98,7 +99,8 @@ A marketing tool requires the purchase event to be named "purchase", but your na
 
 ![Event name mapping for a destination](/images/best-practices/name-mapping/event-name-mapping-marketing.png)
 
-** An event has different shapes based on scenarios **
+#### An event has different shapes based on scenarios
+
 Some companies have multiple platforms or products and have complex event shapes that vary depending on platform, product or context. In those cases it's useful to create multiple events in Avo for the different shapes, differentiate between the event names in Avo but send all of them as the same event name to your destinations.
 
 _Example:_
@@ -114,7 +116,8 @@ These events have some properties in common but some not at all. But the company
 
 ### For Properties
 
-** A single destination requires a specific property name **
+#### A single destination requires a specific property name
+
 Some destinations require a specific property name for certain events that might not be according to your naming convention. Name mapping enables you to have a single property for all destinations and map the name to a different name when needed.
 
 _Example:_
@@ -122,7 +125,8 @@ A marketing tool requires the currency property to be spelled in upper case but 
 
 ![Property name mapping for a destination](/images/best-practices/name-mapping/property-name-mapping-marketing.png)
 
-** A property has different definitions based on use case **
+#### A property has different definitions based on use case
+
 Some teams use pretty general property names that are used in different context and therefore could have different descriptions, constraints and types. Name mapping is a great way to keep track of the different versions of such properties. Then you are able to define all the different properties in Avo with descriptive names and Avo will take care of sending them with the same name to all your destinations. That way you are able to manage the types, constraints and descriptions per use case and have a clear descriptive name for each property to make data design easier while having them all be sent with the same property name to your destinations
 
 Example:
@@ -141,7 +145,7 @@ A team has the property "source" can mean a few different thing depending on con
   - Value type: String
   - Constraints: "Apple App Store", "Google Play Store", "Hockey App"
 
-** Different property types should have the same name **
+#### Different property types should have the same name
 Some teams have a history of having event and user properties with the same name before starting to use Avo. Avo encourages teams to use different names between property types as it can be confusing in the analytics tool to differentiate between the two properties. But to be able to keep history intact, then you can name the event and user properties differently in Avo, but send them with the same name to your destinations.
 
 Example:
