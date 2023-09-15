@@ -10,7 +10,7 @@ is well established. E.g. counting unique users who perform specific actions in 
 or individual user retention. In addition to unique users, most products have other core concepts 
 to group by, such as _unique workspaces_, _unique chat channels_, _unique games_, etc.  
 
-Group analytics are supported by product analytics tools and CDPs like Segment, 
+Group analytics are supported by product analytics tools and CDPs like Segment, RudderStack,
 Amplitude and Mixpanel. You can also do group analytics in a fairly straight forward 
 way in your data warehouse, as long as you provide the unique id of the respective concept 
 in the relevant context.
@@ -44,12 +44,12 @@ See further use cases and which analytics platforms support grouping events belo
 ### Associate user with group
 
 **Functionality**: This action will associate this user with a specific group ID in your downstream data.
-This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
+This is supported by Avo, Segment, RudderStack, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
 
 [//]: # 'TODO [TO CONFIRM] Consequences: All future [todo confirm this applies to Mixpanel and Segment as well] events triggered with this user ID, will be available for group analyses such as calculating metrics based on unique groups.'
 
 **Consequences**: All events triggered with this user ID will be available for group analyses. See [Amplitude](https://developers.amplitude.com/docs/javascript#user-groups),
-[Mixpanel](https://developer.mixpanel.com/docs/javascript#group-analytics) and [Segment](https://segment.com/docs/connections/spec/group/) docs.
+[Mixpanel](https://developer.mixpanel.com/docs/javascript#group-analytics), [Segment](https://segment.com/docs/connections/spec/group/) and [RudderStack](https://www.rudderstack.com/docs/event-spec/standard-events/group/) docs.
 
 **Use case**: For example, if you have a "Workspace" group, you can associate a user with a specific workspace, according to your internal workspace IDs.
 This allows you to explore the workspace onboarding conversion rate, where different onboarding steps may be done by different users in the workspace.
@@ -61,7 +61,7 @@ This allows you to explore the workspace onboarding conversion rate, where diffe
 [//]: # 'TODO [Does it associate GROUP METADATA with event?].'
 
 **Functionality**: Associating an event with a group will associate that specific event with that specific group ID. It will not permanently update the group information or permanently associate this user with this group ID.
-This is supported by Avo, Amplitude, Mixpanel, and additionally you can use this method for your data warehouse via custom destinations in Avo. This is not supported by Segment.
+This is supported by Avo, Amplitude, Mixpanel, and additionally you can use this method for your data warehouse via custom destinations in Avo. This is not supported by Segment and RudderStack.
 
 **Consequences**:
 
@@ -69,7 +69,7 @@ For Mixpanel and Amplitude: All events logged with a group will be available for
 
 For your data warehouse: The events will have the Group ID associated with them. If you maintain a table with each group’s metadata (see [Update Group Properties section](/data-design/groups#update-group-properties)), you can additionally enrich your events with the current state of the group metadata. This will allow you to query your events by the historical state of the group metadata, as it was at the time of the event.
 
-This is not supported by Segment.
+This is not supported by Segment and RudderStack.
 
 **Use case**: You should log events with a group when you have product concepts where users can be associated with many groups through their lifetime.
 
@@ -84,7 +84,7 @@ _Example_: If you have chat channels, you can log the “Message Sent” event w
 Conceptually the group properties are quite similar to user properties. You can maintain group metadata, aka group properties, for the group IDs that you associate users or events with.
 The first step is defining your groups ([group types and group ids](/data-design/groups#groups-terminology-across-platforms)). Then you can attach and update specific properties about the groups.
 
-**Functionality**: This action will update metadata associated with a specific group (e.g. member count of a team). This is supported by Avo, Segment, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
+**Functionality**: This action will update metadata associated with a specific group (e.g. member count of a team). This is supported by Avo, Segment, RudderStack, Mixpanel and Amplitude, and additionally you can use this method for your data warehouse via custom destinations in Avo.
 
 **Consequences**:
 
@@ -92,7 +92,7 @@ The first step is defining your groups ([group types and group ids](/data-design
 
 For Mixpanel and Amplitude: Future events associated with this specific group will have the updated metadata about the group available for filtering, segmentation, etc.
 
-For Segment: Note that you can not update group properties without associating the current user with that group. This means that when you update group properties, it will automatically associate the user permanently with this group.
+For Segment and RudderStack: Note that you can not update group properties without associating the current user with that group. This means that when you update group properties, it will automatically associate the user permanently with this group.
 
 For your data warehouse: If you’re using a custom destination to send data into your data warehouse, you can use Update Group Properties to update a table that maintains the current state of group metadata.
 
@@ -112,9 +112,10 @@ Group types are the types of groups you manage, for example companies, branches,
 
 Group ids are identifiers of the individual groups of those group types, for example in the “Company” group type you’d have group ids as names of the companies, like “Alibaba”, “Moderna”, “Uber”.
 
-|                       |            |            |
-| --------------------- | ---------- | ---------- |
-| Concepts in Avo:      | Group Type | Group Id   |
-| Concept in Amplitude: | Group Type | Group Name |
-| Concept in Mixpanel:  | Group Key  | Group Id   |
-| Concept in Segment:   | Group Id   | Group Name |
+|                        |            |            |
+| ---------------------- | ---------- | ---------- |
+| Concepts in Avo:       | Group Type | Group Id   |
+| Concept in Amplitude:  | Group Type | Group Name |
+| Concept in Mixpanel:   | Group Key  | Group Id   |
+| Concept in Segment:    | Group Id   | Group Name |
+| Concept in RudderStack:| Group Id   | Group Name |
