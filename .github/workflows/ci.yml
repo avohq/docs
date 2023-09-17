@@ -12,17 +12,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version: 18
-          cache: 'yarn'
+          bun-version: latest
       - name: Install modules
-        run: yarn install --immutable
+        run: bun install
       - name: Check linting
-        run: yarn lint
+        run: bun run lint
         env:
           CI: true
       - name: Check spelling
-        run: yarn spellcheck
+        run: bun run spellcheck
       - name: Check avo status
-        run: yarn avo status
+        run: bun run avo status
