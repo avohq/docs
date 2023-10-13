@@ -1,23 +1,27 @@
-# Inspector Issues View beta
+# Custom Inspector alerts (beta)
 
-*Information and disclaimers for the Inspector issues view closed beta*
+*Information and disclaimers for the Inspector issues view beta*
 
-## What is new in this beta?
+## What's this beta about and how do I get access?
 
-We've built a new infrastructure for generating issues, that allows for more flexibility and speed. That means that loading your issues will be faster and we're able to provide more detailed information in issue details. In addition we've added alerts for saved views.
+### What is new in this beta?
 
-## How to get access to the beta
+We've built a new infrastructure for generating issues, that allows for more flexibility and speed. That means that loading your issues will be faster and we're able to provide more detailed information in issue details.
 
-Are you not in the beta, but are interested getting faster and better issues and alerts for saved views? Reach out to us via the chat bubble right here in the lower right corner or email us at beta@avo.sh!
+In addition we've added custom alerts for saved views. It enables you to define parameters for issues that you do want to monitor closely, and set up Slack alerts for only those issues
 
-## What to look out for in this beta
+### How do I get access to the beta?
+
+Are you not in the beta, but are interested getting faster and better issues and custom alerts for saved views? Reach out to us via the chat bubble right here in the lower right corner or email us at beta@avo.sh!
+
+### What to look out for in this beta?
 
 We are still tweaking the issue generation and the issue details so in the beginning you might encounter:
 - Issues with no issue event volume
 - Edge cases where an issue is displayed and alerted on that may not be an actual issue
 - We might wipe out all issues and regenerate them, which means an alert may be resent
 
-## How to use alerts for saved views
+## How do I setup custom alerts for saved views?
 
 We've added alerts for saved views that use the issues from the new infrastructure. Now you can save a view and connect alerts for a saved view.
 
@@ -28,16 +32,19 @@ If you haven't already created a saved view, start by [filtering all issues](/in
 #### Inside a specific saved view
 
 Once you have a saved view, you click the "Set up Alerts" button to initialize the connection
-
+<div style={{ maxWidth: 600, paddingTop: '1.5rem' , margin: 'auto'}}>
 ![Image shows a saved view with the Set up Alerts button highlighted.](/images/inspector/alerts-setup-alerts-highlighted.png)
+</div>
 
 That triggers a modal to be opened, where you can choose to connect to Slack or give us feedback on how you would like your alerts delivered.
 
+<div style={{ maxWidth: 600, paddingTop: '1.5rem' , margin: 'auto'}}>
 ![Image shows a modal with information about Slack alerts and a button to continue connecting to Slack.](/images/inspector/alerts-connect-to-slack-modal.png)
+</div>
 
 Then you get the native Slack modal where you can select a Slack workspace and channel that you want to connect. Once you have made your selection, you can hit allow to finish setting up alerts.
 
-<div style={{ maxWidth: 400, marginTop: '1.5rem' , margin: 'auto'}}>
+<div style={{ maxWidth: 400, paddingTop: '1.5rem' , margin: 'auto'}}>
    ![Image shows the Slack native modal where a Slack workspace and a channel have been selected and the Allow button highlighted.](/images/inspector/alerts-slack-channel-selection-modal.png)
 </div>
 
