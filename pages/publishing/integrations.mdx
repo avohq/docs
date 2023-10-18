@@ -1,0 +1,82 @@
+# Integrate with other tools
+
+_You can integrate Avo with your existing tools to streamline your analytics workflow_
+
+You can integrate Avo with your existing tools to streamline your analytics workflow:
+
+[Schema management](#schema-management):
+
+- [Webhook](#webhook): Sync your analytics schema to any endpoint to
+  manage downstream schemas such as ingestion time validation or SQL table
+  structures
+- [Segment Protocols](#segment-protocols): Sync your analytics schema
+  to Segment Protocols
+- [RudderStack Tracking Plans](#rudderstack-tracking-plans): Sync
+  your analytics schema to RudderStack
+- [Mixpanel Lexicon](#mixpanel-lexicon): Sync your analytics schema
+  to Mixpanel Lexicon
+- [Amplitude Data](#amplitude-data): Sync your analytics schema
+  to Amplitude Data
+- [mParticle Data Master](#mparticle-data-master): Sync your
+  analytics schema to mParticle Data Master
+- [Snowplow Data Structures](#snowplow): Sync your
+  analytics schema to Snowplow Data Structures
+
+[Workflow](#workflow):
+
+- [Slack](/data-design/branches/workspace-notifications): Configure notifications to be sent to a Slack
+  channel.
+- [Jira](#jira): Automatically create tickets with instrumentation
+  instructions and a list of changes for review or implementation.
+- [GitHub](#github): Automatically create pull requests with an
+  updated tracking library.
+
+Destinations:
+
+- [Document destinations in your tracking plan](/data-design/define-sources-and-destinations#destinations): Document to which analytics tools and destinations your data should be sent in
+  your Avo Tracking plan
+- [Implement tracking for your destinations with Avo Codegen](/implementation/start-using-avo-codegen): Type-safe implementation based on your Avo Tracking Plan, for all your analytics
+  tools and destinations
+
+## Schema Management
+
+With Avo you can _[Publish](/publishing/publishing)_ your tracking plan to any downstream schema management to keep everything in sync, such as your analytics platforms, your production time validation schemas, your SQL table structures, etc. Go to [Publishing](/publishing/publishing) to read more.
+
+### Webhook
+
+[Publish to Webhook](/publishing/publishing/webhook-publishing) to post your JSON schema to any endpoint and sync your analytics schema with
+internal schema management such as production time validation, your SQL tables, etc.
+
+### Segment Protocols
+
+[Publish to Segment Protocols](/publishing/publishing/segment-protocols) to sync your analytics schema downstream
+
+### RudderStack Tracking Plans
+
+[Publish to RudderStack Tracking Plans](/publishing/publishing/rudderstack) to sync your analytics schema downstream
+
+### Mixpanel Lexicon
+
+[Publish to Mixpanel Lexicon](/publishing/publishing/mixpanel-lexicon) to sync your analytics schema downstream
+
+### Amplitude Data
+
+[Publish to Amplitude Data](/publishing/publishing/amplitude-data) to sync your analytics schema to downstream
+
+### mParticle Data Master
+
+[Publish to mParticle Data Master](/publishing/publishing/mparticle-data-master) to sync your analytics schema downstream
+
+### Snowplow
+
+[Publish to Snowplow Data Structures](/publishing/publishing/snowplow-data-structures) to sync your analytics schema to downstream
+
+### Jira
+
+When you make changes to your tracking plan on an Avo branch, Avo automatically generates [code changes](/data-design/branches/code-changes) that details all changes in your tracking plan branch, with deep-links directly to the respective event and property in Avo.
+
+**Coming Soon:** When a tracking plan branch is ready for review, Avo will automatically create a Jira ticket for the reviewer. When a tracking plan branch is ready for implementation, Avo will automatically create Jira tickets with instrumentation instructions.
+
+### GitHub
+
+**Coming Soon:** When a tracking plan branch is ready to implement Avo will auto create a pull request for your development team that includes the latest analytics changes.

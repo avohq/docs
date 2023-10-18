@@ -1,0 +1,44 @@
+# Workspace Notifications
+
+Configure notifications to be sent to a Slack channel
+
+## Enable Slack notifications in your Avo Workspace
+
+1. Open **Workspace Settings** ⚙️ > **Slack Integration**
+   <img
+     src="/docs/images/workspace/integrations/workspace-settings.png"
+     width="350px"
+     alt="Workspace settings"
+   />
+2. Select **Connect to Slack**
+3. Follow the instructions in the popup from Slack, where you pick the channel you want to receive the notifications in
+
+   <img
+     src="/docs/images/workspace/integrations/workspace-notifications.png"
+     width="350px"
+     alt="Workspace notifications"
+   />
+
+4. Save and enjoy!
+
+## Types of notifications delivered to Slack
+
+- Branches:
+  - Branch created
+  - Ready for review
+  - Approved
+  - Request changes
+  - Merged
+  - Closed
+  - Example:
+    - Solvi approved the `onboarding-funnel` branch 🎉
+- Comments:
+  - New comment added
+  - Examples:
+    - Solvi commented on the `Account Created` event on the `onboarding-funnel` branch: \_“Should we include the `role` property?”
+    - Stefania commented on the `authentication config` property on the `main` branch: _“Should we have `auto login` as a property value here when we auto login the customer from the landing page?”_
+- Collaborators:
+  - Collaborator added
+  - Collaborator removed
+  - Example:
+    - Stefania added Solvi as a collaborator on the `onboarding-funnel` branch

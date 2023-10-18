@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 # Avo Codegen in JavaScript
 
 ### Platforms
@@ -23,15 +21,15 @@ Avo Codegen usage consists of 4 steps.
 
 To get the Avo generated JavaScript file you must be a member of an Avo workspace with a JavaScript source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
 
-```bash
-$ npm install -g avo
-$ avo login
-$ avo pull --branch my-branch-name
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
 ```
 
-Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+Learn more about [the CLI here](/implementation/cli).
 
-You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
 
 #### Step 2. Initialize Avo
 
@@ -46,7 +44,7 @@ Avo.initAvo(
 );
 ```
 
-The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/javascript#initavo">the reference below</Link>.
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/javascript#initavo).
 
 #### Step 3. Call Avo Codegen to track your product usage
 
@@ -69,7 +67,7 @@ Avo.signupStart({ referral: 'direct' });
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace and the <Link passHref href="/explore-tracking-plan/start-using-visual-debuggers">visual debuggers</Link> to verify that your implementation is correct.
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace and the [visual debuggers](/explore-tracking-plan/start-using-visual-debuggers) to verify that your implementation is correct.
 
 ### Reference
 
@@ -86,7 +84,7 @@ Avo.initAvo(
 );
 ```
 
-This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
 
 ##### Arguments
 
@@ -95,14 +93,14 @@ This method will call the `make(env, apiKey)` callback in all the provided <Link
 - `env`: string, one of 'dev', 'prod' or 'staging'.
 - `[noop = false]`: bool defaulting to false, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 - `[strict = true]`: bool defaulting to true, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
-- `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. <Link passHref href="/implementation/custom-loggers#javascript">Find the code snippet here</Link>.
+- `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. [Find the code snippet here](/implementation/custom-loggers#javascript).
 - `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
 - `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check [React Native mobile debugger repo](https://github.com/avohq/react-native-analytics-debugger) to learn more about it.
 
 `systemProperties`: an object where each field represents a system property in your tracking plan.
 When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
 
-`destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+`destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 ```javascript
 {
@@ -114,7 +112,7 @@ When you define system properties in your Avo workspace you set name and type - 
   [revenue]: function(amount, eventProperties),
   [page]: function(pageName, eventProperties),
 
-  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups">here</Link>
+  // The following methods are used for group analytics and are not required. Learn more about group analytics here: /docs/data-design/groups
   [setGroupProperties]: function(groupType, groupId, groupProperties),
   [addCurrentUserToGroup]: function(groupType, groupId, groupProperties),
   [logEventWithGroups]: function(eventName, eventProperties, groupTypesToGroupIds)
@@ -160,7 +158,7 @@ const mixpanelDestinationInterface = {
       eventProperties.assign({ pageName: pageName }),
     );
   },
-  // The following methods are used for group analytics and are not required. Learn more about group analytics <Link passHref href="/data-design/groups">here</Link>
+  // The following methods are used for group analytics and are not required. Learn more about group analytics here: /docs/data-design/groups
   setGroupProperties(groupType, groupId, groupProperties) {
     // Mixpanel example
     mixpanel.get_group(groupType, groupId).set(groupProperties);
@@ -287,7 +285,7 @@ var mixpanelDestinationInterface = {
 };
 ```
 
-Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+Read more about the destination interface [here](/implementation/destinations).
 
 #### setAvoLogger
 
@@ -300,7 +298,7 @@ Can for example be used to disable logs or change which logging method is used.
 
 ##### Arguments
 
-`avoLogger`: custom implementation of the logger. <Link passHref href="/implementation/custom-loggers#javascript">Find the code snippet here</Link>.
+`avoLogger`: custom implementation of the logger. [Find the code snippet here](/implementation/custom-loggers#javascript).
 
 #### setSystemProperties
 

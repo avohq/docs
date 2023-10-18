@@ -29,7 +29,7 @@ quickly.
   group properties, and name mapping.
 </Callout>
 
-See [supported formats for importing event schemas, aka tracking plans](/workspace/tracking-plan/importing#tracking-plan-import-formats).
+See [supported formats for importing event schemas, aka tracking plans](/publishing/importing#tracking-plan-import-formats).
 
 ![Screenshot of the Avo Importer](/images/workspace/importing/avo-importer.png)
 
@@ -39,20 +39,20 @@ See [supported formats for importing event schemas, aka tracking plans](/workspa
   **User properties** are helpful to segment behaviors by current state of
   users, as opposed to the state at the time of an event trigger. Read about
   [user property use cases and how they
-  work](/workspace/tracking-plan/properties#user-properties).
+  work](/data-design/avo-tracking-plan/properties#user-properties).
 </Callout>
 
-See [supported formats for importing user properties](/workspace/tracking-plan/importing#user-property-import-format).
+See [supported formats for importing user properties](/publishing/importing#user-property-import-format).
 
 ### Import Group Properties
 
 <Callout>
   **Group analytics** are important for b2b companies and can be useful in many
   other cases. Read about [group analytics use cases and how it
-  works](/workspace/data-design/groups).
+  works](/data-design/best-practices/groups).
 </Callout>
 
-See [supported formats for importing group properties](/workspace/tracking-plan/importing#group-property-import-format).
+See [supported formats for importing group properties](/publishing/importing#group-property-import-format).
 
 ### Import Name Mapping
 
@@ -72,13 +72,13 @@ name mappings for event and property names.
 
 ### Importing from Amplitude
 
-1. Export your Tracking Plan from Amplitude. Open up Govern (at the bottom of the left sidebar) and then click the download arrow:
+1. Export your Tracking Plan from Amplitude. Open up Amplitude Data and then click the download arrow:
 
-![Screenshot of Amplitude Govern](/images/workspace/importing/govern-download.png)
+![Screenshot of Amplitude Data](/images/workspace/importing/govern-download.png)
 
 2. In the popup, select "Schema of all events and their properties" or "Schema of all user properties" and click download:
 
-![Screenshot of the download modal on Amplitude Govern](/images/workspace/importing/govern-download-select-schema.png)
+![Screenshot of the download modal on Amplitude Data](/images/workspace/importing/govern-download-select-schema.png)
 
 3. Finally open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
 
@@ -94,7 +94,7 @@ name mappings for event and property names.
 
 2. In the popup, select "Events & Properties" and Send CSV. Also check "User Profile Properties" if you want to include user properties:
 
-![Screenshot of the download modal on Amplitude Govern](/images/workspace/importing/lexicon-download-popup.png)
+![Screenshot of the download modal on Amplitude Data](/images/workspace/importing/lexicon-download-popup.png)
 
 3. Within few minutes you should receive an email from Mixpanel with a CSV export. Open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
 
@@ -104,7 +104,7 @@ name mappings for event and property names.
 
 ### Importing from a Google Sheet
 
-Avo supports importing various tracking plan formats. See [supported formats for importing tracking plans](/workspace/tracking-plan/importing#tracking-plan-import-formats).
+Avo supports importing various tracking plan formats. See [supported formats for importing tracking plans](/publishing/importing#tracking-plan-import-formats).
 
 #### How to import from a Google Sheet
 
@@ -215,7 +215,7 @@ CSV format for importing.
   other event related columns empty. 3. If you want to import user properties
   without associating them with an event, leave the event related columns empty
   Read [how user properties
-  work](/workspace/tracking-plan/properties#user-properties).
+  work](/data-design/avo-tracking-plan/properties#user-properties).
 </Callout>
 
 **Note:**
@@ -254,7 +254,7 @@ CSV format for importing.
 | Group Type                   | The group type (e.g. "Workspace" if you have a Workspace group)               | Workspace                                                                                     |
 | Property Name                | The name of the property as you want it sent to the analytics destination     | Member Count                                                                                  |
 | Property Description         | The description of the property                                               | The number of members of a workspace                                                          |
-| Property Value Type          | The type of the property                                                      | int (see [supported types](/workspace/tracking-plan/roperties#property-types-and-constraints) |
+| Property Value Type          | The type of the property                                                      | int (see [supported types](/data-design/avo-tracking-plan/properties#property-types-and-constraints) |
 | )                            |
 | Is Property Array?           | "Y" or "N" for whether this property is an array of property values           | "Y"                                                                                           |
 | Sent with Events             | "/" separated list of events with which this group property should be updated | Invite Accepted / Member Removed                                                              |
@@ -278,9 +278,9 @@ of what the property should contain in different context.
 
 In the case where you have aligned your names and types, but the description is different, you can:
 
-- **If the properties should be merged and you are in a position to reset your tracking plan**: Unify the description in your import file, [reset the tracking plan](/workspace/eset-tracking-plan)
+- **If the properties should be merged and you are in a position to reset your tracking plan**: Unify the description in your import file, [reset the tracking plan](/data-design/guides/reset-tracking-plan)
   , and re-run the import. This will result in the properties being merged on import.
-- **If the properties should be merged**: Use the ["Replace property with..." feature](/workspace/tracking-plan/properties#replacing-a-property) in the context menu of the property modal
+- **If the properties should be merged**: Use the ["Replace property with..." feature](/data-design/avo-tracking-plan/properties#replacing-a-property) in the context menu of the property modal
 - **If the properties should not be merged**: Provide unique name and descriptions to better differentiate between these properties in the tracking plan
 
 ## What's next?

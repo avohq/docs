@@ -1,0 +1,35 @@
+# Temporarily ignore Inspector issues (beta)
+
+This doc contains everything you need to know about the new feature to ignore certain Inspector issues temporarily.
+
+## Overview
+
+When you merge an Avo branch with changes, sometimes you get Inspector issues and alerts from older release versions. This feature lets you ignore those alerts until your new changes go live.
+
+## Want to Try the Beta?
+
+Seeing unwanted alerts after merging your Avo branches? Talk to us! Click the chat bubble at the bottom right, or send an email to beta@avo.sh.
+
+When you're in the beta, you'll find a new option under the "Merge branch" button on the branch review screen. This helps you stop unwanted issues and alerts from old release versions.
+
+<div style={{ paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Image shows a panel below the branch merge button, highlighting there are
+  changes on this branch that could cause irrelevant issues and alerts in
+  Inspector](/images/inspector/inspector-branch-merge-ignore.png)
+</div>
+
+## How to Use
+
+1. Press "Configure" at the bottom of your branch review
+2. For each source, pick how you want to ignore:
+   - Ignore until version
+     - **Latest version on branch merge**: _Inspector will validate the changes introduced on this branch in the latest release version after merge_
+     - **Next version on branch merge**: _Inspector will validate the changes introduced on this branch in the next release version after merge_
+   - Ignore until time
+     - **One hour after branch merge**: _Inspector will start validating the changes introduced on this branch 1 hour after merge_
+     - **24 hours after branch merge**: _Inspector will start validating the changes introduced on this branch 24 hours after merge_
+   - **Don't ignore** (this is the default)
+
+<div style={{ maxWidth: '400px', paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Image shows a modal where you can configure issue ignoring for each source](/images/inspector/inspector-branch-merge-ignore-configure.png)
+</div>

@@ -12,9 +12,9 @@ Avo offers three ways to validate your tracking implementation:
 
 ### What is Codegen?
 
-[Codegen](/implementation/avo-codegen-overview) produces type safe analytics wrappers that are code generated based on your [tracking plan](/workspace).
+[Codegen](/implementation/avo-codegen-overview) produces type safe analytics wrappers that are code generated based on your [tracking plan](/data-design/avo-tracking-plan).
 
-Technical or non-technical people can define analytics event schemas in the [Avo Tracking Plan](/workspace),
+Technical or non-technical people can define analytics event schemas in the [Avo Tracking Plan](/data-design/avo-tracking-plan),
 and you can generate human readable type safe code based on that. The days of unstructured
 and outdated tracking plan spreadsheets and Jira tickets are over 🥳 So are the days of brittle
 analytics implementation you have to revisit to fix again and again and again 😌
@@ -30,7 +30,7 @@ represented as its own Destination Interface in the initAvo method of your Codeg
 locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections
 you've defined in the Avo dashboard.
 
-In the [Avo Tracking Plan](/workspace) you can configure which analytics [actions](/workspace/tracking-plan/events#a-nameactionsa-actions)
+In the [Avo Tracking Plan](/data-design/avo-tracking-plan) you can configure which analytics [actions](/data-design/avo-tracking-plan/events#actions)
 should be triggered with an Avo Function (for example you might want to update user properties or log revenue along with logging an event), and Codegen
 will handle calling all the relevant Destination Interface methods. All you have to do is call the Avo Function in your
 code base and pass in type safe key-value pairs, and the Avo Function will take care of the rest.
@@ -66,7 +66,7 @@ the Avo servers. To repeat: None of the PII data ever flows through Avo servers;
 
 ### How do I use Inspector?
 
-You can view the overview of your current tracking in the [Inspector dashboard](/workspace/inspector) and you can connect Avo Inspector to a Slack channel to receive alerts when Inspector detects
+You can view the overview of your current tracking in the [Inspector dashboard](/inspector/inspector-overview) and you can connect Avo Inspector to a Slack channel to receive alerts when Inspector detects
 a new issue that has not been seen in production for 30 days.
 
 ### How do I send data into Inspector?
@@ -75,7 +75,7 @@ You can send data into Inspector three ways:
 
 1.  [Inspector SDKs](#inspector-sdks)
 2.  [Connect with CDPs and analytics platforms](#connect-with-cdps-and-analytics-platforms)
-3.  [Inspector API](#inspector-api) ([contact us to get access](help/troubleshooting))
+3.  [Inspector API](#inspector-api) ([contact us to get access](/help/troubleshooting))
 
 #### Inspector SDKs
 
@@ -98,9 +98,9 @@ Initialize Codegen SDK with an instance of Inspector SDK.
 
 You can pipe your analytics data into Inspector API via your CDPs or analytics providers:
 
-- Segment: [Set Inspector up via Segment Functions](/workspace/connect-inspector-to-segment)
-- RudderStack: [Set Inspector up via RudderStack Functions](/workspace/connect-inspector-to-rudderstack)
-- PostHog: [Set Inspector up via PostHog Plugin](/workspace/connect-inspector-to-posthog)
+- Segment: [Set Inspector up via Segment Functions](/inspector/connect-inspector-to-segment)
+- RudderStack: [Set Inspector up via RudderStack Functions](/inspector/connect-inspector-to-rudderstack)
+- PostHog: [Set Inspector up via PostHog Plugin](/inspector/connect-inspector-to-posthog)
 - Mixpanel: Coming soon.
 - mParticle: Coming soon.
 

@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 # Avo Codegen in Ruby
 
 ### Platforms
@@ -19,15 +17,15 @@ Avo Codegen usage consists of 4 steps.
 
 To get the Avo generated Ruby file you must be a member of an Avo workspace with a Ruby source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
 
-```bash
-$ npm install -g avo
-$ avo login
-$ avo pull --branch my-branch-name
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
 ```
 
-Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+Learn more about [the CLI here](/implementation/cli).
 
-You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
 
 #### Step 2. Initialize Avo
 
@@ -39,7 +37,7 @@ require './avo.rb'
 Avo.init_avo(options: { env: :dev }, ...) # other parameters depend on your tracking plan setup
 ```
 
-The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/python#init_avo">the reference below</Link>.
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/python#init_avo).
 
 #### Step 3. Call Avo Codegen to track your product usage
 
@@ -62,7 +60,7 @@ Avo.signup_start(referral: 'direct')
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace to verify that your implementation is correct.
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
 
 ### Reference
 
@@ -73,7 +71,7 @@ def self.init_avo(options:, [system_properties:], [mixpanel_destination:], [segm
 ```
 
 Initializes Avo, needs to be called before the tracking methods.
-This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
 
 ##### Arguments
 
@@ -82,7 +80,7 @@ This method will call the `make(env, apiKey)` callback in all the provided <Link
 `system_properties (Hash)`: a Hash containing the system properties that should be sent with every event.
 When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
-`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 #### Destination interface example
 
@@ -117,7 +115,7 @@ end
 
 To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](/help/troubleshooting).
 
-Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+Read more about the destination interface [here](/implementation/destinations).
 
 #### set_system_properties
 

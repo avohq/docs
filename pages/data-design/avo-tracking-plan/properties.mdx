@@ -8,15 +8,15 @@ Properties are also known as traits, attributes, metadata, etc. They are informa
 
 ## Property Definition
 
-A property is defined in the event details within the relevant [actions](/workspace/tracking-plan/events#a-nameactionsa-actions) or in the properties view.
+A property is defined in the event details within the relevant [actions](/data-design/avo-tracking-plan/events#actions) or in the properties view.
 
 - A descriptive [Property Name](/data-design/defining-descriptive-events-and-properties#properties)
 - A [Description](/data-design/defining-descriptive-events-and-properties#properties-1) that gives additional context of what the property is describing beyond the property name (optional but highly recommended)
-- The [property value type](/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints) (required)
+- The [property value type](/data-design/avo-tracking-plan/properties#property-types-and-constraints) (required)
 
-- The [events](/workspace/tracking-plan/events) that the property is attached to (required)
-- The [presence](/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional) of the property on each event – whether it's required or optional (required)
-- The [constraints](/workspace/tracking-plan/properties#a-nameproperty-types-and-constraintsa-property-types-and-constraints) defined for the property values (optional but highly recommended)
+- The [events](/data-design/avo-tracking-plan/events) that the property is attached to (required)
+- The [presence](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) of the property on each event – whether it's required or optional (required)
+- The [constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined for the property values (optional but highly recommended)
 - The [name mappings](/data-design/name-mapping) the property name is mapped to when sending to specific destinations (optional)
 
 ## Event properties
@@ -31,7 +31,7 @@ relevant for that specific event, when you analyze your data. You might be want 
 
 **Functionality**
 
-Event properties are sent with the event in the [event call](/workspace/tracking-plan/events#a-namelog-eventa-log-event).
+Event properties are sent with the event in the [event call](/data-design/avo-tracking-plan/events#log-event).
 
 ## Group properties
 
@@ -52,7 +52,7 @@ In that case, you can maintain the state of each company with group properties, 
 
 **Functionality**
 
-Group properties are updated with the event in the [Update Groups](/workspace/tracking-plan/events#update-groups) action.
+Group properties are updated with the event in the [Update Groups](/data-design/avo-tracking-plan/events#update-groups) action.
 
 ### Managing Groups
 
@@ -108,7 +108,7 @@ along with your events when they actually change.
 
 **Functionality**
 
-User properties are updated with the [Update User Properties](/workspace/tracking-plan-actionvents#a-nameupdate-user-propsa-update-user-properties).
+User properties are updated with the [Update User Properties](/data-design/avo-tracking-plan/events#update-user-properties).
 
 ## System properties
 
@@ -154,7 +154,7 @@ Avo supports properties with values of the following types and constraints:
 - integer _(minimum and maximum value)_
 - float _(minimum and maximum value)_
 - boolean _(true or false)_
-- [object](/data-design/object-properties) ([reach out to us](/help/troubleshooting") for access)
+- [object](/data-design/object-properties) ([reach out to us](/help/troubleshooting) for access)
 
 Properties values can also be a list of the above mentioned types:
 

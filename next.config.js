@@ -34,7 +34,7 @@ const redirects = [
   },
   {
     source: '/datascope/state-of-tracking',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
@@ -54,12 +54,12 @@ const redirects = [
   },
   {
     source: '/datascope',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
     source: '/datascope/avo-inspector',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
@@ -79,7 +79,7 @@ const redirects = [
   },
   {
     source: '/datascope/issue-identifier',
-    destination: '/workspace/inspector',
+    destination: '/inspector/start-using-inspector',
     permanent: true,
   },
   {
@@ -319,12 +319,12 @@ const redirects = [
   },
   {
     source: '/workspace/publishing',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {
     source: '/workspace/publishing/',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {
@@ -359,12 +359,12 @@ const redirects = [
   },
   {
     source: '/data-design/import-tracking-plan/',
-    destination: '/workspace/tracking-plan/importing',
+    destination: '/publishing/importing',
     permanent: true,
   },
   {
     source: '/data-design/import-tracking-plan',
-    destination: '/workspace/tracking-plan/importing',
+    destination: '/publishing/importing',
     permanent: true,
   },
   {
@@ -403,12 +403,12 @@ const redirects = [
   },
   {
     source: '/data-design/start-publishing/',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {
     source: '/data-design/start-publishing',
-    destination: '/workspace/tracking-plan/publishing',
+    destination: '/publishing/publishing/overview',
     permanent: true,
   },
   {
@@ -553,7 +553,7 @@ const redirects = [
     permanent: true,
   },
   {
-    source: '/workspace/index',
+    source: '/workspace',
     destination: '/data-design/avo-tracking-plan',
     permanent: true,
   },
@@ -565,6 +565,11 @@ const redirects = [
   {
     source: '/workspace/tracking-plan/properties',
     destination: '/data-design/avo-tracking-plan/properties',
+    permanent: true,
+  },
+  {
+    source: '/workspace/integrations',
+    destination: '/publishing/integrations',
     permanent: true,
   },
   {
@@ -826,7 +831,12 @@ const redirects = [
   },
   {
     source: '/publishing/amplitude-govern',
-    destination: '/publishing/publishing/amplitude-govern',
+    destination: '/publishing/publishing/amplitude-data',
+    permanent: true,
+  },
+  {
+    source: '/publishing/publishing/amplitude-govern',
+    destination: '/publishing/publishing/amplitude-data',
     permanent: true,
   },
   {
@@ -1027,6 +1037,11 @@ const redirects = [
   {
     source: '/public-api/overview',
     destination: '/reference/public-api/overview',
+    permanent: true,
+  },
+  {
+    source: '/data-design/documenting-downstream-dependancies',
+    destination: '/data-design/documenting-downstream-dependencies',
     permanent: true,
   },
 ];

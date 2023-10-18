@@ -44,7 +44,7 @@ stakeholders.
 
 2. **Pull: Pull JSON schema via CLI:** An alternative to Avo Publishing integrations
    is pulling a JSON schema via the CLI. This way you can add a schema pull into
-   a CI/CD. See [docs to pull schema via CLI](/workspace/tracking-plan/exporting#pull-json-schema-via-the-cli)
+   a CI/CD. See [docs to pull schema via CLI](/publishing/exporting#pull-json-schema-via-the-cli)
    .
 
 ## Publishing Integrations
@@ -56,7 +56,7 @@ Available integrations are:
 - [RudderStack](/publishing/rudderstack)
 - [Snowplow Data Structures](/publishing/snowplow-data-structures)
 - [mParticle Data Master](/publishing/mparticle-data-master)
-- [Amplitude Data](/publishing/amplitude-govern)
+- [Amplitude Data](/publishing/amplitude-data)
 - [Webhook](/publishing/webhook-publishing)
 
 Publishing enables your Tracking Plan to be:
@@ -77,7 +77,7 @@ Then you can select the type of integration you want to create and give it a nam
 
 ![Creating a new Publishing Integration](/images/workspace/integrations/create-integration.png)
 
-Note that the publishing integrations are independent of the destinations defined in the "Sources" tab. However the publishing integration can use those destinations to filter which events should be included in the publishing integration. See more below in [Filtering events for publishing](/workspace/tracking-plan/publishing#filtering-events-for-publishing)
+Note that the publishing integrations are independent of the destinations defined in the "Sources" tab. However the publishing integration can use those destinations to filter which events should be included in the publishing integration. See more below in [Filtering events for publishing](/publishing/publishing/overview#filtering-events-for-publishing)
 .
 
 ### Configure Auto publishing
@@ -106,5 +106,5 @@ What does the "lowest common denominator" mean?
 - If the property is "Sometimes sent" on one or more sources being published, the property presence is set to "Sometimes sent" (optional)
 - If property is "Never sent" on all sources being published, the property is not included in the publishing
 
-You can learn more on [configuring when Properties are required or optional here](/workspace/tracking-plan/properties#a-nameproperty-presence-configurationa-configuring-when-properties-are-required-or-optional)
+You can learn more on [configuring when Properties are required or optional here](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional)
 .

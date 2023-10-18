@@ -13,7 +13,7 @@
 
 ## Defining a metric
 
-To help decide what events and properties are needed to measure the success of your feature, it is useful to start by defining a metric in Avo. The added benefit of documenting metrics in context of your events is knowing what metrics are effected by changing this event. Read more in our [documenting downstream dependencies guide](/data-design/documenting-downstream-dependancies).
+To help decide what events and properties are needed to measure the success of your feature, it is useful to start by defining a metric in Avo. The added benefit of documenting metrics in context of your events is knowing what metrics are effected by changing this event. Read more in our [documenting downstream dependencies guide](/data-design/documenting-downstream-dependencies).
 
 ### Step 1 – Open a branch in Avo
 
@@ -201,13 +201,13 @@ We always recommend adding a descriptive description to every event, that descri
 #### Add a source (required)
 
 Add a
-[source](/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from) to your event to define where it should be sent from and in which programming language the tracking code will be generated in. If you have an established workspace you probably have the sources you need already set up and can select them from the drop down that appears when you click "+ Add Source". If not, you might need to set up and configure your sources and destinations in the
-[Sources tab](/workspace/connections).
+[source](/data-design/define-sources-and-destinations) to your event to define where it should be sent from and in which programming language the tracking code will be generated in. If you have an established workspace you probably have the sources you need already set up and can select them from the drop down that appears when you click "+ Add Source". If not, you might need to set up and configure your sources and destinations in the
+[Sources tab](/data-design/define-sources-and-destinations).
 
 #### Add actions and properties
 
 All events in Avo have the
-["Log Event" action](/workspace/tracking-plan/events#a-namelog-eventa-log-event) by default, which means that a user action is logged as an event to the analytics platform. This is the most common use case and the one that we are focusing on in this guide. With the "Log Event" action you can add event properties, which allows you to attach detailed information about the action the user performed. See how to create, add and configure event properties in the section below.
+["Log Event" action](/data-design/avo-tracking-plan/events#log-event) by default, which means that a user action is logged as an event to the analytics platform. This is the most common use case and the one that we are focusing on in this guide. With the "Log Event" action you can add event properties, which allows you to attach detailed information about the action the user performed. See how to create, add and configure event properties in the section below.
 
 #### Add a category
 
@@ -233,10 +233,10 @@ _Example: Configuring an event._
 ## Defining and configuring event properties
 
 In this guide we're focusing on
-[event properties](/workspace/tracking-plan/properties#a-nameevent-propertiesa-event-properties) on events with the Log Event action, as that is the most common use case for beginners. There are a few more
-[actions](/workspace/tracking-plan/events#a-nameactionsa-actions) available as well as two other kinds of properties (
-[user properties](/workspace/tracking-plan/properties#a-nameuser-propertiesa-user-properties) and
-[system properties](/workspace/tracking-plan/properties#a-namesystem-propertiesa-system-properties)).
+[event properties](/data-design/avo-tracking-plan/properties#event-properties) on events with the Log Event action, as that is the most common use case for beginners. There are a few more
+[actions](/data-design/avo-tracking-plan/events#actions) available as well as two other kinds of properties (
+[user properties](/data-design/avo-tracking-plan/properties#properties) and
+[system properties](/data-design/avo-tracking-plan/properties#system-properties)).
 
 ### Step 1 – Create a new event property
 

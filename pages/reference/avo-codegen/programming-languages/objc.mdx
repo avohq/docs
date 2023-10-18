@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 # Avo Codegen in Objective-C
 
 ### Platforms
@@ -19,15 +17,15 @@ Avo Codegen usage consists of 4 steps.
 
 To get the Avo generated Objective-C file you must be a member of an Avo workspace with an Objective-C source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding).
 
-```bash
-$ npm install -g avo
-$ avo login
-$ avo pull --branch my-branch-name
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
 ```
 
-Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+Learn more about [the CLI here](/implementation/cli).
 
-You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
 
 #### Step 2. Initialize Avo
 
@@ -40,7 +38,7 @@ val avo = Avo(env: .dev/*, other parameters depending on your tracking plan setu
         /*other parameters depending on your tracking plan setup*/];
 ```
 
-The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/objc#initAvo">the reference below</Link>.
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/objc#initAvo).
 
 #### Step 3. Call Avo Codegen to track your product usage
 
@@ -63,7 +61,7 @@ You'll be able to call it like this from the generated code
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace and the <Link passHref href="/implementation/inspector/sdk/ios">Avo Inspector</Link> to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the [standalone visual debugger](https://github.com/avohq/ios-analytics-debugger).
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace and the [Avo Inspector](/implementation/inspector/sdk/ios) to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the [standalone visual debugger](https://github.com/avohq/ios-analytics-debugger).
 
 ### Reference
 
@@ -81,7 +79,7 @@ Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Imp
   noop:(BOOL)noop;
 ```
 
-This method will call the `makeWithEnv:withApiKey:` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+This method will call the `makeWithEnv:withApiKey:` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
 
 ##### Arguments
 
@@ -90,7 +88,7 @@ This method will call the `makeWithEnv:withApiKey:` callback in all the provided
 `systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
 The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
 
-`(nonnull id<AVOCustomDestination>) destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+`(nonnull id<AVOCustomDestination>) destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 ```objectivec
 @protocol AVOCustomDestination
@@ -108,7 +106,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 
 `(BOOL) noop`: bool, default value is `false`, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
 
-> Note that you do not need to pass Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. <Link passHref href="/implementation/start-using-inspector-with-avo-codegen">Read more here</Link>.
+> Note that you do not need to pass Avo Inspector instance to the constructor. It will be automatically picked up if you include the library and enable Avo Inspector for your iOS source in the Avo workspace. [Read more here](/implementation/start-using-inspector-with-avo-codegen).
 
 #### Destination interface example
 
@@ -160,7 +158,7 @@ The parameters are named the same as system properties, in camelCase, and requir
 }
 ```
 
-Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+Read more about the destination interface [here](/implementation/destinations).
 
 #### setSystemProperties
 

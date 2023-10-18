@@ -1,5 +1,6 @@
 import { FunctionComponent } from 'react';
 import Zoom from 'react-medium-image-zoom';
+import Image from 'next/image';
 import 'react-medium-image-zoom/dist/styles.css';
 
 import PageLink, { TwoCol } from '../components/PageLink';
@@ -21,8 +22,12 @@ release.
 
 <br />
 <Zoom>
-  ![The Avo Workflow: Plan, review, implement, validate and publish your
-  tracking changes](/images/avo-workflow.png)
+  <Image
+    src="/docs/images/avo-workflow.png"
+    width={3776}
+    height={2263}
+    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+  />
 </Zoom>
 
 We recommend your first “full-circle” release in Avo be a small one,
@@ -50,7 +55,7 @@ the import is completed.
   image={'/docs/images/svg/analyticsmanager.svg'}
   title="Get Your Tracking Plan Into Avo"
   description="Our recommendations for getting your existing tracking plan into Avo"
-  href={'/workspace/tracking-plan/importing'}
+  href={'/publishing/importing'}
 />
 
 ## Get overview of your current state of tracking with Inspector
@@ -124,7 +129,7 @@ and health of the event implementation.
     image={'/docs/images/svg/analyticsmanager.svg'}
     title="Publishing"
     description="Keep your downstream schema registries in sync with the Avo"
-    href={'/workspace/tracking-plan/publishing'}
+    href={'/publishing/publishing/overview'}
   />
   <PageLink
     image={'/docs/images/svg/dev.svg'}

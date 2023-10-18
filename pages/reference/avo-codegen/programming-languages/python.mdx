@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 # Avo Codegen in Python
 
 ### Platforms
@@ -20,15 +18,15 @@ Avo Codegen usage consists of 4 steps.
 
 To get the Avo generated Python file you must be a member of an Avo workspace with a Python source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
 
-```bash
-$ npm install -g avo
-$ avo login
-$ avo pull --branch my-branch-name
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
 ```
 
-Learn more about <Link passHref href="/implementation/cli">the CLI here</Link>.
+Learn more about [the CLI here](/implementation/cli).
 
-You can also <Link passHref href="/explore-tracking-plan/download-or-copy-avo-file-manually">download the file manually</Link> from your Avo workspace.
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
 
 #### Step 2. Initialize Avo
 
@@ -40,7 +38,7 @@ import avo
 avo.init_avo({'env': 'dev'}, ...) # other parameters depend on your tracking plan setup
 ```
 
-The actual parameters depend on your tracking plan setup, see the parameters explanation in <Link passHref href="/implementation/reference/python#init_avo">the reference below</Link>.
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/python#init_avo).
 
 #### Step 3. Call Avo Codegen to track your product usage
 
@@ -63,7 +61,7 @@ avo.signup_start(referral = 'direct')
 
 #### Step 4. Verify the implementation
 
-Use the <Link passHref href="/workspace/tracking-plan/implementation-status">Implementation status</Link> in your Avo workspace to verify that your implementation is correct.
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
 
 ### Reference
 
@@ -74,7 +72,7 @@ avo.init_avo(options, [system_properties], [mixpanel_destination], [segment_dest
 ```
 
 Initializes Avo, needs to be called before the tracking methods.
-This method will call the `make(env, apiKey)` callback in all the provided <Link passHref href="/implementation/destinations#destination-interface-callback-methods">destination interfaces</Link>. It will also initialize the analytics SDKs of the legacy <Link passHref href="/implementation/destinations#avo-managed-destination-legacy">Avo Managed destinations</Link>.
+This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
 
 ##### Arguments
 
@@ -88,48 +86,57 @@ This method will call the `make(env, apiKey)` callback in all the provided <Link
 `system_properties (dict)`: a dictionary containing the system properties that should be sent with every event.
 When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
 
-`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions">Learn more about event Actions in this doc</Link>.
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
 
 #### Destination interface example
 
 ```python
 # Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
-class CustomDestination(object):
+class CustomDestination:
     # This method is optional, you can skip it if you've already initialized your Analytics SDK
-    def make(self, env, api_key):
-        self.mp = Mixpanel(api_key)
+    def make(self, env, apiKey):
+        # TODO: Replace the call below with a call to your destination
+        self.mp = Mixpanel(apiKey)
 
-    def track_event(self, user_id, event_name, event_properties):
+    def track_event(self, user_id, event_name, event_properties):
+        # TODO: Replace the call below with a call to your destination
         self.mp.track(user_id, event_name, event_properties)
 
-    def set_user_properties(self, user_id, user_properties):
+    def set_user_properties(self, user_id, user_properties):
+        # TODO: Replace the call below with a call to your destination
         self.mp.people_set(user_id, user_properties)
 
     def log_page(self, user_id, page_name, event_properties):
+        # TODO: Replace the call below with a call to your destination
         # Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
         event_properties["Page Name"] = page_name
         self.mp.track(user_id, "Page Viewed", event_properties)
 
     def revenue(self, user_id, amount, event_properties):
-        self.mp.people_track_charge(user_id, amount, user_properties)
+        # TODO: Replace the call below with a call to your destination
+        self.mp.people_track_charge(user_id, amount, event_properties)
 
-    # The following methods are used for group analytics and are not required.
-    def add_current_user_to_group(self, user_id, group_type, group_id, group_properties)
-        mp.people_set(user_id, {
-            group_type : group_id,
-        })
-        mp.group_set(group_type, group_id, group_properties)
+    # The following methods are used for group analytics and are not required
+    def add_current_user_to_group(self, user_id, group_type, group_id, group_properties):
+        # TODO: Replace the call below with a call to your destination
+        self.mp.people_set(user_id, { group_type : group_id })
+        self.mp.group_set(group_type, group_id, group_properties)
 
-    def set_group_properties(self, group_type, group_id, group_properties)
-        mp.group_set(group_type, group_id, group_properties)
+    def set_group_properties(self, group_type, group_id, group_properties):
+        # TODO: Replace the call below with a call to your destination
+        self.mp.group_set(group_type, group_id, group_properties)
 
-    def track_event_with_groups(self, user_id, event_name, event_properties, group_types_to_group_ids)
+    def track_event_with_groups(self, user_id, event_name, event_properties, group_types_to_group_ids):
+        # TODO: Replace the call below with a call to your destination
         for group_type in group_types_to_group_ids:
             event_properties[group_type] = group_types_to_group_ids[group_type]
-        mp.track(user_id, event_name, event_properties)
+        self.mp.track(user_id, event_name, event_properties)
+
+# You can then call avo.init_avo with your destination interface
+avo.init_avo({'env': 'dev'}, CustomDestination())
 ```
 
-> Learn more about group analytics <Link passHref href="/data-design/groups">here</Link>
+> Learn more about group analytics [here](/data-design/groups)
 
 To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](/help/troubleshooting).
 
@@ -138,36 +145,28 @@ To add the optional `anonymousId` parameter to the callbacks in your workspace [
 Here is a more specific example of how you can use the destination interface in Python to integrate with your Segment SDK. In this example we're using the [analytics](https://segment.com/docs/connections/sources/catalog/libraries/server/python/) Python SDK from Segment
 
 ```python
-from __future__ import print_function
-
-import avo
 import analytics
 
 # An object representing your custom destination
 # that you pass into init_avo():
-class SegmentDestination(object):
-    def __init__(self):
-        self.env = None
-
-    def make(self, env):
+class SegmentDestination:
+    def make(self, env):
         analytics.write_key = 'YOUR_WRITE_KEY'
 
-    def track_event(self, user_id, event_name, event_properties):
+    def track_event(self, user_id, event_name, event_properties):
         analytics.track(user_id, event_name, event_properties)
 
-    def set_user_properties(self, user_id, user_properties):
+    def set_user_properties(self, user_id, user_properties):
         analytics.identify(user_id, user_properties)
 
     def log_page(self, user_id, page_name, event_properties):
         analytics.page(user_id, page_name, event_properties)
 
-    def revenue(self, user_id, amount, event_properties):
-      analytics.track(user_id, 'Revenue', {
-          'revenue': amount
-      })
+    def revenue(self, user_id, amount, event_properties):
+      analytics.track(user_id, 'Revenue', { 'revenue': amount })
 ```
 
-Read more about the destination interface <Link passHref href="/implementation/destinations">here</Link>.
+Read more about the destination interface [here](/implementation/destinations).
 
 #### set_system_properties
 
