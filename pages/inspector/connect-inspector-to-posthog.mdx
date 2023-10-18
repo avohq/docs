@@ -67,3 +67,11 @@ You’ll see the event in your dashboard under the source from where you got the
 ![Source overview in Inspector](/images/guide-segment-to-inspector/source-in-inspector.png)
 
 This means that the PostHog plugin is working 🎉
+
+## Error response from API
+
+The calls to the API are fire and forget, so the API tries to return 200 if it can.
+The API will accept multiple events in a batch, and returns a 200 with `{"ok": true}` if all the events managed to get processed.
+
+If any of the events were invalid or if the API failed to decode them, it will return a 200 response, with
+`{"ok": false, "errors": [{"message": <Error message>, "json": <jsonString>}]}` which contains the Json for each event that failed.
