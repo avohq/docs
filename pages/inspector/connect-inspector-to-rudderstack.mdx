@@ -119,3 +119,11 @@ Then go to the `Sources` tab and make sure that the destination is connected to 
 ![Connecting a source for the destination in RudderStack](/images/guide-rudder-to-inspector/rudder-destination-sources.png)
 
 Now your RudderStack events stream from this source to this destination is analyzed by Avo Inspector.
+
+## Error response from API
+
+The calls to the API are fire and forget, so the API tries to return 200 if it can.
+The API will accept multiple events in a batch, and returns a 200 with `{"ok": true}` if all the events managed to get processed.
+
+If any of the events were invalid or if the API failed to decode them, it will return a 200 response, with
+`{"ok": false, "errors": [{"message": <Error message>, "json": <jsonString>}]}` which contains the Json for each event that failed.
