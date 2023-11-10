@@ -32,7 +32,7 @@ Authenticate with the API:
    curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.app/workspaces/<WorkspaceId>/branches/<BranchId>/export/v1
    ```
 
-   <Callout>You can find the `<WorkspaceId>` and `<BranchId>` in the URL of your Avo workspace: `https://www.avo.app/schemas/<WorkspaceId>/branches/<BranchId>/`</Callout>
+   <Callout type="info" emoji="💡">You can find the `<WorkspaceId>` and `<BranchId>` in the URL of your Avo workspace: `https://www.avo.app/schemas/<WorkspaceId>/branches/<BranchId>/`</Callout>
 
 ## Creating Service Accounts
 
@@ -42,20 +42,20 @@ Authenticate with the API:
 
 2. Enter a descriptive name for where you'll be using this service account and press the `Generate Secret` button.
 
-   <Callout>
+   <Callout type="info" emoji="💡">
      Only workspace members with Admin access can create service accounts.
    </Callout>
 
 3. Once Avo has generated and securely stored your secret, you get one chance to view it. Copy the secret key and save it securely in your internal systems.
 
-   <Callout>
+   <Callout type="info" emoji="💡">
      Avo postfixes the name with `_sa_[randomId]` so make sure to copy the final
      name
    </Callout>
 
    ![](/images/public-api/create-service-account.png)
 
-   <Callout>
+   <Callout type="info" emoji="💡">
      You will never see the secret key again, so make sure to copy it.
    </Callout>
 
@@ -69,7 +69,7 @@ If for some reason you need to delete your service account, you can do so from t
 
 3. Press `Delete` again in the confirm window that pops up.
 
-   <Callout>
+   <Callout type="info" emoji="💡">
      This action cannot be undone. Once deleted, there is no way to recover the
      service account again. As soon as a service account has been deleted it
      will stop working immediately.
