@@ -23,7 +23,7 @@ Codegen corresponding to the events with Identify action will require a userId p
 
 Server side Codegen does not have a way to maintain user identity.
 That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Codegen.
-An optional `anonymousUserId` parameter is available on demand in all server languages, [contact us](/help/troubleshooting) if you need to use it and don't see it in your Codegen.
+An optional `anonymousUserId` parameter is available on demand in all server languages, run `avo pull` with the `--forceFeatures ServerTrackingWithDeviceId` flag if you don't see it in your generated code. You can [contact us](/help/troubleshooting) to have it enabled by default.
 
 ### Identified users
 
