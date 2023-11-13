@@ -1,10 +1,6 @@
-<img align="right" src="https://github.com/avohq/docs/workflows/Lint%20and%20Typecheck/badge.svg">
-
-<hr>
-
 ## Getting Started
 
-Avo Docs runs on [Node.js](https://nodejs.org/) 16.8 or later. To get started developing clone the repository and run the following commands:
+Avo Docs runs on [Node.js](https://nodejs.org/) 18 or later. To get started developing clone the repository and run the following commands:
 
 ```bash
 yarn # or "npm install"
