@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # Inspector Issues View
 
 *How to use the Inspector Issues view*
@@ -9,10 +11,13 @@ The Inspector issues view displays information about anomalies and discrepancies
 Each issue in the table represents an issue on a particular event, or a particular property contained within an event. In the table you will see:
 - The issue type – for example unexpected event or inconsistent property types, [(see list of issue types in Inspector)](/explore-tracking-plan/issue-types-in-inspector)
 - The name of the event and property impacted
-- Sources impacted
+- The source impacted
 - Issue timing – when it was first and last seen
-- Event volume – how many instances of the event were seen across all sources
-- Issue volume – how many instances of the event were seen with this issue across all sources
+- First seen – when the issue was first seen
+- Last seen – when the issue was seen most recently
+- Event volume – how many instances of the event were seen
+- Issue volume – how many instances of the event were seen with this issue 
+- Impacted releases – which release versions were impacted by the issue, sorted by the most recent release first
 - Issue percentage – the proportion of events seen with this issue in relation to the event volume (issue volume / event volume)
 
 ## Sorting and filtering
@@ -24,13 +29,12 @@ To narrow down your search to your most relevant issues, you can filter by the f
 - Source
 - Event name
 - Property
-– Category
-– Tag
+- Category
+- Tag
 
 ![Image shows the inspector Issues table ordered by issue volume and filtered by Web source.](/images/inspector/inspector-issues-filtering.png)
 
-> 💡 We are actively working on adding more filter options, and you can expect more filters in the near future. If there’s anything specific you’d like to be able to filter by, please [let us know](/help/troubleshooting). 
-
+<Callout type="info">We are actively working on adding more filter options, and you can expect more filters in the near future. If there’s anything specific you’d like to be able to filter by, please [let us know](/help/troubleshooting).</Callout>
 
 ## Saving a filtered view
 Once you have filtered and/or sorted the issues, you can save the filtered view for quick access for you and your team. The saved view persists both the filters you have selected and the sorting.
@@ -131,18 +135,16 @@ The property impacted by the issue, and whether it is documented to be sent with
 - If the property is present in your tracking plan but not set to be sent with your event, you can add it to the event definition.
 - If the property is missing from your tracking plan, you can add it to your tracking plan.
 
-> 💡 Not all issues are related to properties. See [full list of issue types here](/explore-tracking-plan/issue-types-in-inspector).
+<Callout type="info">Not all issues are related to properties. See [full list of issue types here](/explore-tracking-plan/issue-types-in-inspector).</Callout>
 
 ![Image shows example issue details for an unexpected property.](/images/inspector/inspector-issue-details.png)
 
-### Issue details per source
-Event volume, issue volume and issue percentage for all sources sending the event. Expanding a source will display
-When the issue was first and last seen and on which versions
-A list of all versions impacted by the issue
+### Issue across sources
 
-![Image shows an example issue details where the source details for iOS is expanded.](/images/inspector/inspector-issues-source-details.png)
+At the bottom of your issue details, you will see a list of all sources that are impacted by the issue. For each source you will see:
+Event volume, issue volume and issue percentage and a link to the issue details on the other sources.
 
-We have more insights into the issue details coming up. Please reach out if you have any thoughts on what to add! 
+![An example iOS issue that also impacts Android](/images/inspector/inspector-issue-details-sources.png)
 
 ## Fixing an issue found in Inspector
 When you find an issue in Inspector, the problem can either be on the implementation or tracking plan side:
@@ -150,7 +152,7 @@ If the implementation is not what it should be according to the tracking plan, w
 If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in
 
 
-> 💡 We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please [reach out](/help/troubleshooting) if you have any thoughts on how you would like to act on issues and what would make your team more efficient
+<Callout type="info">We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please [reach out](/help/troubleshooting) if you have any thoughts on how you would like to act on issues and what would make your team more efficient</Callout>
 
 ## Why are there no issues in my issues view?
 There can be a few reasons for no issues appearing in your issues view at all or for a specific source.
