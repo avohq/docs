@@ -1,49 +1,59 @@
 # Issue Types in Avo Inspector
 
-- [Property sometimes missing](#missing-usual-property-in-event)
-- [Property type mismatch](#event-property-type-inconsistency)
-- [Unexpected event – not in tracking plan](#unexpected-event)
-- [Unexpected property – not in tracking plan](#missing-usual-property-in-event)
-- [Event missing on some platforms (coming soon)](#event-is-not-present-on-some-platforms)
-- [Property missing on some platforms (coming soon)](#property-missing-on-some-platforms)
-- [Event volume change significant between versions (coming soon)](#event-volume-change-between-versions)
-- [Event volume significantly different between platforms (coming soon)](#significant-volume-mismatch-between-platforms)
-- [Event name casing (coming soon)](#event-name-casing)
-- [Property name casing (coming soon)](#property-name-casing)
-- [Global property type mismatch (coming soon)](#global-property-type-inconsistency)
-  
+- [Event unexpected by tracking plan](#event-unexpected-by-tracking-plan)
+- [Event unexpected on source](#event-unexpected-on-source)
+- [Property type does not match tracking plan](#property-type-does-not-match-tracking-plan)
+- [Property type inconsistent](#property-type-inconsistent)
+- [Property unexpected on event](#property-unexpected-on-event)
+- [Required property sometimes missing from event](#required-property-sometimes-missing-from-event)
 
-### Property sometimes missing
+### Event unexpected by tracking plan
 
-There are two cases of this issue type:
+Detects events that are not defined in the tracking plan
 
-- When a property is required in the tracking plan but sometimes or always missing
-- Property not found in tracking plan but sometimes missing
+_**Example:** Event Signup Completed not found in Tracking Plan._
 
-_**Example:** Property onboarding status is not sent with 30% of the App Opened event._
+### Event unexpected on source
 
-### Property type mismatch
+Detects events that are not expected from a specific source according to the Tracking Plan
 
-Detects type changes of event properties across tracking calls.
+_**Example:** Event unexpected on iOS by tracking plan_
 
-There are two cases of this issue type:
+### Property type does not match tracking plan
 
-- More than one property value type seen
-- Property value type different from tracking plan
+Detects properties with different types than defined in the tracking plan
 
-_**Example:** Inconsistent type of property onboarding status on event App Opened: int (84%), string (16%)._
+_**Example:** Property seen as *bool* but expected as *string*._
 
-### Unexpected event
+### Property type inconsistent
 
-Alert when an event that is not defined in the tracking plan is detected by Inspector
+Detects properties seen with multiple different types
 
-_**Example:** Event Signup Completedd not found in Tracking Plan._
+_**Example:** Property types seen: **object**, **string**._
 
-### Unexpected property
+### Property unexpected on event
 
-Alert when an property that is not defined in the tracking plan is detected by Inspector
+Detects properties on events where they are not expected according to the tracking plan
 
-_**Example:** Property authenticationMethod not found in Tracking Plan._
+_**Example:** Property unexpected on event by tracking plan_
+
+### Required property sometimes missing from event
+
+Detects properties that are required in the tracking plan but sometimes missing
+
+_**Example:** Property set as *always sent* on "App Opened" in tracking plan but missing on event_
+
+## Upcoming Issue Types in Avo Inspector
+
+Here are some of the issue types we're planning on adding in the future. Reach out if you'd like to see any of these sooner than others.
+
+- [Event missing on some platforms (coming soon)](#event-missing-on-some-platforms-coming-soon)
+- [Property missing on some platforms (coming soon)](#property-missing-on-some-platforms-coming-soon)
+- [Event volume change significant between versions (coming soon)](#event-volume-change-significant-between-versions-coming-soon)
+- [Event volume significantly different between platforms (coming soon)](#event-volume-significantly-different-between-platforms-coming-soon)
+- [Event name casing (coming soon)](#event-name-casing-coming-soon)
+- [Property name casing (coming soon)](#property-name-casing-coming-soon)
+- [Global property type mismatch (coming soon)](#global-property-type-mismatch-coming-soon)
 
 ### Event missing on some platforms (coming soon)
 
@@ -94,7 +104,6 @@ _**Example:** Inconsistent type of property revenue on events Purchase Completed
 - [Unexpected type based on property name](#property-expected-type-mismatch)
 - [Global similar property names](#global-similar-property-names)
 - [Missing property based on property bundle pattern](#missing-usual-property-in-similar-events)
-  
 
 ### Similar event names
 
