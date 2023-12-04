@@ -21,6 +21,8 @@ func identify(userId: String)
 func unidentify()
 ```
 
+> In the server side Codegen we add extra `userId_` and `anonymousUserId_` parameters to the `trackSelfDescribingEvent` method for the user management, [learn more here.](/reference/avo-codegen/anonymous-user-id#user-identity-in-the-server-side-codegen)
+
 In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are are available below.
 
 1. `make` - here you would initialize your Snowplow SDK, you can also skip this callback if you already have the Snowplow SDK initialized, the parameter will be one of `AvoEnv.Dev`, `AvoEnv.Prod`, `AvoEnv.Staging`
