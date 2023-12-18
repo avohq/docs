@@ -64,15 +64,12 @@ Click any issue in the list to see more details. If you have multiple sources co
 The event impacted by the issue, its volume and whether it is documented in your Avo tracking plan.
 
 - If the event is present in the tracking plan, you can navigate to it to review and/or update the event definition
-- If the event is missing from your tracking plan, you can add it to your tracking plan.
 
 ### Property info
 
 The property impacted by the issue, and whether it is documented to be sent with the event in your tracking plan.
 
 - If the property is present on the event in your tracking plan, you can navigate to it to review and/or update.
-- If the property is present in your tracking plan but not set to be sent with your event, you can add it to the event definition.
-- If the property is missing from your tracking plan, you can add it to your tracking plan.
 
 <Callout type="info">
   Not all issues are related to properties. See [full list of issue types
@@ -104,6 +101,7 @@ This breakdown can be helpful to understand which releases have been fully rolle
 
 !["X releases on Y sources" button"](/images/inspector/inspector-issues-release-breakdown-modal.png)
 
+In the example above, Inspector has seen a very low volume of events from the latest release on iOS (2.3.0) compared to prior releases. This is a strong indication that the latest release has not fully rolled out yet.
 
 ## Saving a filtered Issues view
 
@@ -206,18 +204,20 @@ If the tracking plan is not representing how the event should be, and the implem
   make your team more efficient
 </Callout>
 
-## Why are there no issues in my issues view?
+
+## Troubleshooting
+### Why are there no issues in my issues view?
 
 There can be a few reasons for no issues appearing in your issues view at all or for a specific source.
 
-### Inspector not installed on source
+#### Inspector not installed on source
 
 The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. To fix that, [install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on the source you'd like to see issues for.
 
-### Inspector not installed on production
+#### Inspector not installed on production
 
 The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed on production on any source, you won't see any issues in the issues view. To fix that, [install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source you'd like to see issues for.
 
-### No issues in production for the past 24 hours
+#### No issues in production for the past 24 hours
 
 The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!
