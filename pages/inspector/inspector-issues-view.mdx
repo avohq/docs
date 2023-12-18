@@ -1,14 +1,15 @@
-import { Callout } from 'nextra/components'
+import { Callout } from 'nextra/components';
 
 # Inspector Issues View
 
-*How to use the Inspector Issues view*
+_How to use the Inspector Issues view_
 
 The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter issues to uncover those relevant to you and gives you the overview and information needed to prioritize which of them to act on.
 
 ![Image shows an example default view of the Inspector issues view.](/images/inspector/inspector-issues-default.png)
 
 Each issue in the table represents an issue on a particular event, or a particular property contained within an event. In the table you will see:
+
 - The issue type – for example unexpected event or inconsistent property types, [(see list of issue types in Inspector)](/explore-tracking-plan/issue-types-in-inspector)
 - The name of the event and property impacted
 - The source impacted
@@ -16,7 +17,7 @@ Each issue in the table represents an issue on a particular event, or a particul
 - First seen – when the issue was first seen
 - Last seen – when the issue was seen most recently
 - Event volume – how many instances of the event were seen
-- Issue volume – how many instances of the event were seen with this issue 
+- Issue volume – how many instances of the event were seen with this issue
 - Impacted releases – which release versions were impacted by the issue, sorted by the most recent release first
 - Issue percentage – the proportion of events seen with this issue in relation to the event volume (issue volume / event volume)
 
@@ -25,22 +26,89 @@ Each issue in the table represents an issue on a particular event, or a particul
 The issue table can be sorted by any column. When prioritizing issues it’s helpful to sort by event volume, issue volume or issue percentage to quickly uncover which issues have the most impact on your data and prioritize accordingly.
 
 To narrow down your search to your most relevant issues, you can filter by the following:
-- Issue Type
-- Source
-- Event name
-- Property
-- Category
-- Tag
-- Release
+
+- **Issue Type**: The [Inspector Issue Type](/inspector/issue-types-in-inspector)
+- **Source**: The source where the issue was seen
+- **Event**: The event impacted by the issue
+- **Property**: The property impacted by the issue
+- **Category**: The category of the event impacted by the issue
+- **Tag**: The tag of the event impacted by the issue
+- **Release**: The product release version impacted by the issue. Currently there are three release filters available:
+  - **Latest release**: The latest product release version seen on each of your sources
+  - **Two latest releases**: The two latest product release versions seen on each of your sources. This option can be helpful if the latest release is not yet fully rolled out.
+  - **Three latest releases**: The three latest product release versions seen on each of your sources. This option can be helpful if the two latest release are not yet fully rolled out.
 
 ![Image shows the inspector Issues table ordered by issue volume and filtered by Web source.](/images/inspector/inspector-issues-filtering.png)
 
-<Callout type="info">We are actively working on adding more filter options, and you can expect more filters in the near future. If there’s anything specific you’d like to be able to filter by, please [let us know](/help/troubleshooting).</Callout>
+<Callout type="info">
+  We are actively working on adding more filter options, and you can expect more
+  filters in the near future. If there’s anything specific you’d like to be able
+  to filter by, please [let us know](/help/troubleshooting).
+</Callout>
 
-## Saving a filtered view
+## Issue details
+
+Click any issue in the list to see more details. If you have multiple sources connected with Inspector, you can dig into which sources are impacted by the issue and uncover which sources are most severely affected.
+
+<br />
+<center>
+  <img
+    src="/docs/images/inspector/inspector-issue-details.png"
+    width="500px"
+    alt="Image shows example issue details for an unexpected property."
+  />
+</center>
+
+### Event info
+
+The event impacted by the issue, its volume and whether it is documented in your Avo tracking plan.
+
+- If the event is present in the tracking plan, you can navigate to it to review and/or update the event definition
+
+### Property info
+
+The property impacted by the issue, and whether it is documented to be sent with the event in your tracking plan.
+
+- If the property is present on the event in your tracking plan, you can navigate to it to review and/or update.
+
+<Callout type="info">
+  Not all issues are related to properties. See [full list of issue types
+  here](/explore-tracking-plan/issue-types-in-inspector).
+</Callout>
+
+### Releases
+
+The releases impacted by the issue in the last 24 hours, sorted by the most recent release first. For each release you will see:
+- The release version (hover over the clock icon to see when that particular release was first seen (release date))
+- The event volume seen on that release in the past 24 hours
+- The issue volume seen on that release in the past 24 hours
+- The issue percentage seen on that release in the past 24 hours
+
+### Issue across sources
+
+At the bottom of your issue details, you will see a list of all sources that are impacted by the issue. For each source you will see:
+Event volume, issue volume and issue percentage and a link to the issue details on the other sources.
+
+![An example iOS issue that also impacts Android](/images/inspector/inspector-issue-details-sources.png)
+
+## Release and source breakdown
+
+By clicking the "X releases on Y sources" button right above the issues table, you can see a breakdown of the releases we saw in the past 24 hours and we used to calculate the issues you're looking at.
+
+!["X releases on Y sources" button"](/images/inspector/inspector-issues-release-breakdown.png)
+
+This breakdown can be helpful to understand which releases have been fully rolled out and you can rely on the data from and which releases are still being rolled out and you could expect to see more issues from.
+
+!["X releases on Y sources" button"](/images/inspector/inspector-issues-release-breakdown-modal.png)
+
+In the example above, Inspector has seen a very low volume of events from the latest release on iOS (2.3.0) compared to prior releases. This is a strong indication that the latest release has not fully rolled out yet.
+
+## Saving a filtered Issues view
+
 Once you have filtered and/or sorted the issues, you can save the filtered view for quick access for you and your team. The saved view persists both the filters you have selected and the sorting.
 
 ### Creating a saved view
+
 When the issues view is opened, the default view is an unfiltered "All Issues" view ordered by last seen, such that the latest issues are on top. Until the a filter is added or the sorting is changed, the "Save View" button is disabled.
 
 ![Image shows the default all issues view ordered by issues last seen.](/images/inspector/all-events-unfiltered-unsorted.png)
@@ -77,12 +145,12 @@ From here, the saved duplicated view can be modified by changing the filters or 
 
 ![Image shows a saved view saved view with the name and save a duplicated view modal open and highlight.](/images/inspector/modified-duplicated-view.png)
 
-
-#### Modify and Save as 
+#### Modify and Save as
 
 To modify an existing saved view, you can adjust the filtering or sorting to your needs. It's safe to modify any view as the changes are not saved until you click the save button. Editors can only save changes to their own views.
 
 When a saved view has been modified, the following options are presented:
+
 - Save View: if you are the creator of the saved view or a workspace admin, you can save the changes to the modified view
 - Save as: anyone can save the changes as a new view by giving it a new name
 - Reset saved view: reset the adjusted filters and sorting to latest saved state of the saved view
@@ -121,48 +189,35 @@ From there, the creator of each saved view and admins can archive saved views by
 
 ![Image shows a saved view with the copy link button highlighted.](/images/inspector/archiving-a-saved-view.png)
 
-## Issue details
 
-Click any issue in the list to see more details. If you have multiple sources connected with Inspector, you can dig into which sources are impacted by the issue and uncover which sources are most severely affected. In the issue details view you will see:
-
-### Event info
-The event impacted by the issue, its volume and whether it is documented in your Avo tracking plan.
-- If the event is present in the tracking plan, you can navigate to it to review and/or update the event definition
-- If the event is missing from your tracking plan, you can add it to your tracking plan.
-
-### Property info
-The property impacted by the issue, and whether it is documented to be sent with the event in your tracking plan.
-- If the property is present on the event in your tracking plan, you can navigate to it to review and/or update.
-- If the property is present in your tracking plan but not set to be sent with your event, you can add it to the event definition.
-- If the property is missing from your tracking plan, you can add it to your tracking plan.
-
-<Callout type="info">Not all issues are related to properties. See [full list of issue types here](/explore-tracking-plan/issue-types-in-inspector).</Callout>
-
-![Image shows example issue details for an unexpected property.](/images/inspector/inspector-issue-details.png)
-
-### Issue across sources
-
-At the bottom of your issue details, you will see a list of all sources that are impacted by the issue. For each source you will see:
-Event volume, issue volume and issue percentage and a link to the issue details on the other sources.
-
-![An example iOS issue that also impacts Android](/images/inspector/inspector-issue-details-sources.png)
 
 ## Fixing an issue found in Inspector
+
 When you find an issue in Inspector, the problem can either be on the implementation or tracking plan side:
 If the implementation is not what it should be according to the tracking plan, we recommend copying the issue link, creating a task in your task management system and assigning it to the relevant team to look into and fix in code
 If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in
 
+<Callout type="info">
+  We are very excited about streamlining the process of fixing issues and are
+  going to be working on that soon. Please [reach out](/help/troubleshooting) if
+  you have any thoughts on how you would like to act on issues and what would
+  make your team more efficient
+</Callout>
 
-<Callout type="info">We are very excited about streamlining the process of fixing issues and are going to be working on that soon. Please [reach out](/help/troubleshooting) if you have any thoughts on how you would like to act on issues and what would make your team more efficient</Callout>
 
-## Why are there no issues in my issues view?
+## Troubleshooting
+### Why are there no issues in my issues view?
+
 There can be a few reasons for no issues appearing in your issues view at all or for a specific source.
 
-### Inspector not installed on source
-The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. To fix that, [install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on the source you'd like to see issues for. 
+#### Inspector not installed on source
 
-### Inspector not installed on production
-The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed on production on any source, you won't see any issues in the issues view. To fix that, [install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source you'd like to see issues for. 
+The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. To fix that, [install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on the source you'd like to see issues for.
 
-### No issues in production for the past 24 hours
+#### Inspector not installed on production
+
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed on production on any source, you won't see any issues in the issues view. To fix that, [install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source you'd like to see issues for.
+
+#### No issues in production for the past 24 hours
+
 The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!
