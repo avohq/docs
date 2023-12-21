@@ -1046,7 +1046,7 @@ const redirects = [
   },
   {
     source: '/inspector/inspector-issues-beta',
-    destination: '/inspector//inspector-slack-alerts',
+    destination: '/inspector/inspector-issues-view',
     permanent: true,
   },
 ];

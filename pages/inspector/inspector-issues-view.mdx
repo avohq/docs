@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components';
+import PageLink, { TwoCol } from '../../components/PageLink';
 
 # Inspector Issues View
 
@@ -6,7 +7,6 @@ _How to use the Inspector Issues view_
 
 The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter issues to uncover those relevant to you and gives you the overview and information needed to prioritize which of them to act on.
 
-// TODO: Update screenshot to include status (and regression?)
 ![Image shows an example default view of the Inspector issues view.](/images/inspector/inspector-issues-default.png)
 
 Each issue in the table represents an issue on a particular event, or a particular property contained within an event. In the table you will see:
@@ -42,7 +42,6 @@ To narrow down your search to your most relevant issues, you can filter by the f
 
 In addition you can view issues that have been marked as resolved or ignored. The unresolved and ignored views show you info from the past 24 hours but the resolved view contains every issue you have ever marked as resolved and has not regressed.
 
-// TODO: Update image with new status filter
 ![Image shows the inspector Issues table ordered by issue volume and filtered by Web source.](/images/inspector/inspector-issues-filtering.png)
 
 <Callout type="info">
@@ -67,9 +66,10 @@ Click any issue in the list to see more details. If you have multiple sources co
 ### Issue status
 
 Setting the status of an issue is a way to communicate with your team about the status of an issue. The status can be set to one of the following:
+
 - Unresolved: The default status for new issues. This status indicates that the issue has not yet been looked into.
 - Ignore: If you know you're not planning to fix an issue, you can set the status to ignore. This help you focus on those issues that you do want to act on.
-- Resolved: If you have looked into the issue and fixed it, you can set the status to resolved. To help  If the issue reappears, it will be marked as a regression. If you have alerts enabled for a saved view that's resolved, you will be notified when the issue reappears.
+- Resolved: If you have looked into the issue and fixed it, you can set the status to resolved. To help If the issue reappears, it will be marked as a regression. If you have alerts enabled for a saved view that's resolved, you will be notified when the issue reappears.
 
 ### Event info
 
@@ -91,6 +91,7 @@ The property impacted by the issue, and whether it is documented to be sent with
 ### Releases
 
 The releases impacted by the issue in the last 24 hours, sorted by the most recent release first. For each release you will see:
+
 - The release version (hover over the clock icon to see when that particular release was first seen (release date))
 - The event volume seen on that release in the past 24 hours
 - The issue volume seen on that release in the past 24 hours
@@ -105,9 +106,16 @@ Event volume, issue volume and issue percentage and a link to the issue details 
 
 ### Activity log and comments
 
-The activity log lives at the bottom of your issue details. The activity log includes the issue creation date, a breakdown of when someone changed the issue’s status or a regression happened. The Activity Log is a bit like commits in Github, where you can see time stamped changes and the team member who made the change. The activity log also includes your comments on that issue. With comments, you can communicate on a specific issue in a pinch, and tag your team members to weigh in on an issue you need to fix together. Below the comment section, you’ll also see the 
+The activity log lives at the bottom of your issue details. The activity log includes the issue creation date, a breakdown of when someone changed the issue’s status or a regression happened. The Activity Log is a bit like commits in Github, where you can see time stamped changes and the team member who made the change. The activity log also includes your comments on that issue. With comments, you can communicate on a specific issue in a pinch, and tag your team members to weigh in on an issue you need to fix together.
 
-// TODO: Add screenshot/image of the activity log with comments 
+<br />
+<center>
+  <img
+    src="/docs/images/inspector/inspector-issue-activity-log.png"
+    width="500px"
+    alt="Image shows example issue activity log"
+  />
+</center>
 
 ## Release and source breakdown
 
@@ -211,9 +219,10 @@ From there, the creator of each saved view and admins can archive saved views by
 
 When you find an issue in Inspector, the problem can either be on the implementation or tracking plan side:
 If the implementation is not what it should be according to the tracking plan, we recommend copying the issue link, creating a task in your task management system and assigning it to the relevant team to look into and fix in code
-If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in. Once the issue has been fixed you can update the issue status to _Resolved_. If the issue reappears, it will be marked as a regression. 
+If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in. Once the issue has been fixed you can update the issue status to _Resolved_. If the issue reappears, it will be marked as a regression.
 
 ## Troubleshooting
+
 ### Why are there no issues in my issues view?
 
 There can be a few reasons for no issues appearing in your issues view at all or for a specific source.
@@ -229,3 +238,14 @@ The issues view currently only displays issues from the past 24 hours in product
 #### No issues in production for the past 24 hours
 
 The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!
+
+## What's next?
+
+Once you've created your first saved filter view in Inspector Issues, it's time to connect alerts.
+
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Inspector Alerts for Slack"
+  description="How to start receiving Slack alerts for your Inspector issues"
+  href={'/inspector/inspector-slack-alerts'}
+/>
