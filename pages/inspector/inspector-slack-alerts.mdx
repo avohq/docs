@@ -2,31 +2,55 @@
 
 _How to start receiving Slack alerts for your Inspector issues_
 
-Connect Inspector to your Slack to receive alerts when new issues appear in your production environments.
+Connect Inspector to your Slack to receive alerts when new issues appear in your production environments or when an issue marked as resolved regresses.
 
-To connect find the "Set up alerts" in the Inspector Issues or Events view – or in your workspace settings.
+To connect find the "Set up alerts" in the Inspector Issues or Events view – or in your workspace settings.
 
 ![Connect to Slack in the Issues view](/images/workspace/nav-inspector-slack-highlighted.png)
 
-_Connect to Slack in the Issues view_
+## Custom Inspector alerts
 
-<div style={{ maxWidth: 400, paddingTop: '1.5rem', margin: 'auto' }}>
-  ![Connect to Slack in the Issues
-  view](/images/workspace/nav-workspace-settings-slack-alerts-highlighted.png)
+Custom Inspector alerts for saved views enables you to define parameters for issues that you do want to monitor closely, and set up Slack alerts for only those issues.
+
+### Connecting alerts to a saved view
+
+If you haven't already created a saved view, start by [filtering all issues](/inspector/inspector-issues-view#sorting-and-filtering) and [saving the view](/inspector/inspector-issues-view#saving-a-filtered-view).
+
+#### Inside a specific saved view
+
+Once you have a saved view, you click the "Set up Alerts" button to initialize the connection
+<div style={{ maxWidth: 600, paddingTop: '1.5rem' , margin: 'auto'}}>
+![Image shows a saved view with the Set up Alerts button highlighted.](/images/inspector/alerts-setup-alerts-highlighted.png)
 </div>
 
-_Connect to Slack in the Workspace Settings_
+That triggers a modal to be opened, where you can choose to connect to Slack or give us feedback on how you would like your alerts delivered.
 
-Press the `Connect to Slack` button and follow the instructions.
+<div style={{ maxWidth: 600, paddingTop: '1.5rem' , margin: 'auto'}}>
+![Image shows a modal with information about Slack alerts and a button to continue connecting to Slack.](/images/inspector/alerts-connect-to-slack-modal.png)
+</div>
 
-Avo Inspector will post new issues it finds in production hourly to the specified Slack channel.
+Then you get the native Slack modal where you can select a Slack workspace and channel that you want to connect. Once you have made your selection, you can hit allow to finish setting up alerts.
 
-The Inspector integration for Slack currently alerts on the following issues:
+<div style={{ maxWidth: 400, paddingTop: '1.5rem' , margin: 'auto'}}>
+   ![Image shows the Slack native modal where a Slack workspace and a channel have been selected and the Allow button highlighted.](/images/inspector/alerts-slack-channel-selection-modal.png)
+</div>
 
-- Property is sometimes not provided
-- Property is sent with inconsistent types
-- New event seen that is not in the Tracking Plan
-- New property seen that is not in the Tracking Plan
-- Property type does not match the Tracking Plan
+Now we have completed setting up alerts for our "Onboarding events" saved view, as indicated in the screenshot below.
+
+![Image shows the Slack native modal where a Slack workspace and a channel have been selected and the Allow button highlighted.](/images/inspector/alerts-successfully-connected-to-saved-view.png)
+
+#### In saved views overview
+
+For your existing saved views, you can connect alerts in the Saved Views overview accessible from the navigation on the left
+
+![Image shows saved views overview with Slack alerts and Set up alerts buttons highlighted.](/images/inspector/alerts-saved-views-overview-with-alerts-highlighted.png)
+
+### Disconnecting alerts
+
+Alerts can be disconnected both in the Saved Views overview and inside an individual saved view, by clicking the Slack connection button.
+
+![Image shows saved views overview with Slack alerts button highlighted and a tooltip on what happens when it's clicked.](/images/inspector/alerts-disconnect-from-saved-views-overview.png)
+
+You'll get a modal for you to confirm disconnecting the alerts, and the button will be replaced with the "Set up Alerts" button.
 
 ![Inspector Integration for Slack](/images/workspace/inspector/inspector-slack-integration.png)

@@ -6,10 +6,12 @@ _How to use the Inspector Issues view_
 
 The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter issues to uncover those relevant to you and gives you the overview and information needed to prioritize which of them to act on.
 
+// TODO: Update screenshot to include status (and regression?)
 ![Image shows an example default view of the Inspector issues view.](/images/inspector/inspector-issues-default.png)
 
 Each issue in the table represents an issue on a particular event, or a particular property contained within an event. In the table you will see:
 
+- Regression: If you've marked an issue as resolved and it has reappeared, it will be marked as a regression
 - The issue type – for example unexpected event or inconsistent property types, [(see list of issue types in Inspector)](/explore-tracking-plan/issue-types-in-inspector)
 - The name of the event and property impacted
 - The source impacted
@@ -38,6 +40,9 @@ To narrow down your search to your most relevant issues, you can filter by the f
   - **Two latest releases**: The two latest product release versions seen on each of your sources. This option can be helpful if the latest release is not yet fully rolled out.
   - **Three latest releases**: The three latest product release versions seen on each of your sources. This option can be helpful if the two latest release are not yet fully rolled out.
 
+In addition you can view issues that have been marked as resolved or ignored. The unresolved and ignored views show you info from the past 24 hours but the resolved view contains every issue you have ever marked as resolved and has not regressed.
+
+// TODO: Update image with new status filter
 ![Image shows the inspector Issues table ordered by issue volume and filtered by Web source.](/images/inspector/inspector-issues-filtering.png)
 
 <Callout type="info">
@@ -58,6 +63,13 @@ Click any issue in the list to see more details. If you have multiple sources co
     alt="Image shows example issue details for an unexpected property."
   />
 </center>
+
+### Issue status
+
+Setting the status of an issue is a way to communicate with your team about the status of an issue. The status can be set to one of the following:
+- Unresolved: The default status for new issues. This status indicates that the issue has not yet been looked into.
+- Ignore: If you know you're not planning to fix an issue, you can set the status to ignore. This help you focus on those issues that you do want to act on.
+- Resolved: If you have looked into the issue and fixed it, you can set the status to resolved. To help  If the issue reappears, it will be marked as a regression. If you have alerts enabled for a saved view that's resolved, you will be notified when the issue reappears.
 
 ### Event info
 
@@ -90,6 +102,12 @@ At the bottom of your issue details, you will see a list of all sources that are
 Event volume, issue volume and issue percentage and a link to the issue details on the other sources.
 
 ![An example iOS issue that also impacts Android](/images/inspector/inspector-issue-details-sources.png)
+
+### Activity log and comments
+
+The activity log lives at the bottom of your issue details. The activity log includes the issue creation date, a breakdown of when someone changed the issue’s status or a regression happened. The Activity Log is a bit like commits in Github, where you can see time stamped changes and the team member who made the change. The activity log also includes your comments on that issue. With comments, you can communicate on a specific issue in a pinch, and tag your team members to weigh in on an issue you need to fix together. Below the comment section, you’ll also see the 
+
+// TODO: Add screenshot/image of the activity log with comments 
 
 ## Release and source breakdown
 
@@ -189,21 +207,11 @@ From there, the creator of each saved view and admins can archive saved views by
 
 ![Image shows a saved view with the copy link button highlighted.](/images/inspector/archiving-a-saved-view.png)
 
-
-
 ## Fixing an issue found in Inspector
 
 When you find an issue in Inspector, the problem can either be on the implementation or tracking plan side:
 If the implementation is not what it should be according to the tracking plan, we recommend copying the issue link, creating a task in your task management system and assigning it to the relevant team to look into and fix in code
-If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in
-
-<Callout type="info">
-  We are very excited about streamlining the process of fixing issues and are
-  going to be working on that soon. Please [reach out](/help/troubleshooting) if
-  you have any thoughts on how you would like to act on issues and what would
-  make your team more efficient
-</Callout>
-
+If the tracking plan is not representing how the event should be, and the implementation is correct, we recommend updating the tracking plan accordingly. In the issue details, you can add events and properties with a click of a button and view the tracking plan definition in the context you are in. Once the issue has been fixed you can update the issue status to _Resolved_. If the issue reappears, it will be marked as a regression. 
 
 ## Troubleshooting
 ### Why are there no issues in my issues view?
