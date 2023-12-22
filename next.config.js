@@ -1044,4 +1044,9 @@ const redirects = [
     destination: '/data-design/documenting-downstream-dependencies',
     permanent: true,
   },
+  {
+    source: '/inspector/inspector-issues-beta',
+    destination: '/inspector/inspector-issues-view',
+    permanent: true,
+  },
 ];
