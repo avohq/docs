@@ -181,13 +181,13 @@ analytics platform:
 
 #### Log Revenue
 
-It's recommended to add the Log Revenue action with events that represent a successful purchase, such as `Purchase Completed`
+Some analytics destinations have revenue tracking separate from event tracking. Add the *Log Revenue* action to indicate that the event represents a successful purchace and should be used to track revenue. When using Avo Codegen this will result in your event funtion receiving an additional _amount_ parameter that will then be passed on to the `revenue` function in your destination interface. Read more on it in [the Codegen docs](/reference/avo-codegen/destinations#destination-interface-callback-methods).
 
-##### Log Revenue in Codegen
+##### Log Revenue in legacy Codegen destinations
 
-Below are details for what Avo Codegen automatically does for each analytics platform.
+Below are details for what Avo Codegen automatically does for each analytics platform. Note that this only applies to legacy Avo destinations and does not apply to destinations using the destination interface.
 
-##### Amplitude
+##### Legacy Amplitude Destination
 
 For the Amplitude destination, Avo will add 4 event properties that match the
 [Amplitude logRevenue
@@ -202,7 +202,7 @@ with the prefix "Amplitude: ".
 Call logRevenueV2 with these properties as well as all other event properties,
 and then call logEvent.
 
-##### Segment
+##### Legacy Segment Destination
 
 For the Segment destination, Avo Codegen will add 2 event properties that match the
 [Segment revenue properties](https://segment.com/docs/spec/track/#properties)
@@ -221,7 +221,7 @@ Enums are currently not supported on Android and iOS.
 Call track with the Segment revenue properties set in the correct keys to make
 sure that Segment recognizes the event as a Revenue event.
 
-##### Mixpanel
+##### Legacy Mixpanel Destination
 
 For the Mixpanel destination, Avo will add 1 event property that matches the
 [Mixpanel track_charge
