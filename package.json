@@ -9,7 +9,7 @@
     "start": "next start",
     "spellcheck": "yarn cspell --no-progress --show-suggestions --show-context 'pages/**/*.mdx' --locale en-us",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@segment/analytics-next": "^1.63.0",
@@ -34,7 +34,7 @@
     "cspell": "^8.3.2",
     "eslint": "^8.56.0",
     "eslint-config-next": "^13.5.6",
-    "husky": "^8.0.3",
+    "husky": "^9.0.6",
     "typescript": "^5.3.3"
   }
 }
