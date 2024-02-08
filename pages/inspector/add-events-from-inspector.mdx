@@ -1,45 +1,72 @@
-# Add Events and properties from Inspector
+# Add events and properties from Inspector
 
-The Inspector compares the ingested events and properties against tracking plan and detects if there are any events or properties missing from the tracking plan. Unknown events and properties can both be added to the tracking plan from the [Events view](/inspector/inspector-events-view).
+The Inspector compares ingested events and properties against the tracking plan and detects if there are any events or properties missing from the tracking plan. You can add missing events or properties from both the [Issues](/inspector/inspector-issues-view) and [Events](/inspector/inspector-events-view) views. 
 
-## Event not in Tracking Plan
+## Import events and properties in bulk from Inspector Issues view
 
-If the Inspector detects an event that is not in your tracking plan, it will be highlighted with a red tracking plan icon next to the name, along with an "Add" button to add it to your tracking plan. The events view sidebar also has an option to add the event right from there. Click either button to add the event and all it's properties to the tracking plan.
+In addition to providing the "Add to Tracking Plan" button for events not present in the tracking plan within the [Issue Status view](/inspector/inspector-issues-view#event-info),  you can review all of the events and properties missing from the tracking plan.
+
+If there are events unexpected by the tracking plan detected in Inspector Issues, there will be a "Add X new events" button at the upper right of the main Inspector Issues table.
+![NEED TO INSERT IMAGE HERE, NOT SURE HOW TO UPLOAD IMAGES]
+If there are no events unexpected by the tracking plan, this button will be greyed out and read "No new events".
+
+Once you click the button, a "Review import data" screen will pop up with the following information on top:
+
+- The number of unexpected events and associated sources found by Inspector
+- The number of Tracking Plan Audit alerts triggered by the unexpected events and properties
+
+The list of unexpected events and associated sources then follows, with the ability to expand each event to view the associated properties for each event.
+From here you can:
+
+- Select which events you'd like to include in your import
+- Select the sources you'd like to include for each event selected for import
+- Select the properties you'd like to include for each event selected for import; properties that do not exist in the tracking plan will also be created if included
+- Select the branch on which you'd like to perform the import; if you're on the main branch you can create a new branch for import here
+
+![NEED TO INSERT IMAGE HERE, NOT SURE HOW TO UPLOAD IMAGES]
+
+Once you have made your desired selections, click the "Import to Tracking Plan" button to create a branch which adds all of the selected events and associated properties to your tracking plan.
+
+## Add events and properties from Inspector Events view
+
+You can add individual events and properties that are missing from your tracking plan from the [Events view](/inspector/inspector-events-view).
+
+### Event not in Tracking Plan
+
+If the Inspector detects an event that is not in your tracking plan, it will be highlighted with a red tracking plan icon next to the name, along with an "Add" button to add it to your tracking plan. The events view sidebar also has an inline option to add the event. Click either button to add the event and all associated properties to the tracking plan.
 
 ![Image shows the Inspector events view with "Add" and "Add event to tracking plan" buttons highlighted](/images/inspector/add-event-from-events-view.png)
 
-## Property not in tracking plan
-
-Clicking on the event name cell will expand it such that all the properties that were detected in this particular event are shown. If a property is missing from the tracking plan for that particular event, it is highlighted with a red tracking plan icon next to the property name, along with an "Add" button to add it to your tracking plan. The sidebar in the events view also has an option to add the property to the tracking right from there. Click either button to add the event and all it's properties to the tracking plan. There are two cases for adding property to the event in the tracking plan:
-
-1. If property exists in the tracking plan, but is not on the event, you are offered to add the property to this event in the tracking plan.
-2. If property does not exists on the tracking plan it will not be on the event either. Then you are offered to create the event in the tracking plan and add it to this event, with a single click of a button.
-
-![Image shows the Inspector events view with "Add" and "Create and add property to tracking plan" buttons highlighted](/images/inspector/add-property-from-events-view.png)
-
-### Details about adding an event to the tracking plan
-
-Before creating the event, the Inspector will first validate the event name against all events in the tracking plan, to determine if the event might already exist with different casing.
-If that happens, a confirm dialog pops up showing the user that the Inspector found an existing event with the same name.
+Before creating an event in the tracking plan, Inspector will first validate the event name against all existing tracking plan events to determine if the event may already be present with different casing.
+If the event already exists with different casing, a dialog will pop up to to inform the user of the potential duplication and confirm or cancel the addition of the event.
 
 ![Image shows a confirm dialog to make sure the user wants to add this event](/images/inspector/confirm-dialog.png)
 
-Adding the event to the tracking plan will create the Event and do the following:
+In addition to creating the event in the tracking plan, adding an event from Inspector will also do the following:
 
-- Add all sources the event has according to the inspector
-- Add properties that exist in the tracking plan and are on the event in the inspector.
-- Create and add properties that are missing from the tracking plan but are on the event in the inspector
-  - If the property already exists in different casing, it will not be created.
-  - If the property has reported seeing 2 types (int, string for example) it will select the type that Inspector has seen more of.
-  - Each property will be created with presence "Always Sent"
+- Add all sources for the event according to Inspector
+- Add all associated existing properties from the tracking plan onto the event based on Inspector
+- Create and add properties that are missing from the tracking plan but are on the event based on Inspector
+  - If the property already exists in different casing, it will not be created
+  - If the property has reported seeing two types (int, string for example) the more prevalent type in Inspector will be selected
+  - Each property will be created with the presence "Always Sent"
   - All new properties created will be created as **Event properties**
 
-### Details about adding a property to the tracking plan
+### Property not in tracking plan
 
-Adding a Property directly from the inspector will create the Property and do the following:
+Clicking on the event name cell will expand it such that its detected and associated properties are shown. If a property is missing from the tracking plan for that particular event, it is highlighted with a red tracking plan icon next to the property name, along with an "Add" button to add it to your tracking plan. The sidebar in the events view also has an inline option to add the property to the tracking plan. Click either button to add the missing property to the tracking plan. 
+There are two cases for adding property to the event in the tracking plan:
 
-- Validate that the property does not exist already in the workspace
-  - If a property with different casing already exists, a window will pop up asking you to confirm your creation of the property.
-- If the property has reported seeing 2 types (int, string for example) it will select the type that Inspector has seen more of.
-- Each property will be created with presence "Always Sent"
+1. If property exists in the tracking plan but is not on the event, you can add the existing property to this event in the tracking plan.
+2. If property does not exists on the tracking plan, you are can create the event in the tracking plan and add it immediately to this event.
+
+![Image shows the Inspector events view with "Add" and "Create and add property to tracking plan" buttons highlighted](/images/inspector/add-property-from-events-view.png)
+
+Before creating a standalone property in the tracking plan, Inspector will first validate the property name against all existing tracking plan properties to determine if the property may already be present with different casing.
+If the property already exists with different casing, a dialog will pop up to to inform the user of the potential duplication and confirm or cancel the addition of the property.
+
+In addition to creating the property in the tracking plan, adding a Property directly from Inspector will also do the following:
+
+- If the property has reported seeing 2 types (int, string for example) the more prevalent type in Inspector will be selected
+- The property will be created with the presence "Always Sent"
 - The property will be created as **Event property**
