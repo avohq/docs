@@ -1,21 +1,21 @@
-# Add events and properties from Inspector
+# Import events from Inspector
 
-The Inspector compares ingested events and properties against the tracking plan and detects if there are any events or properties missing from the tracking plan. You can add missing events or properties from both the [Issues](/inspector/inspector-issues-view) and [Events](/inspector/inspector-events-view) views. 
+Inspector compares ingested events and properties against the tracking plan and detects if any are missing. You can import missing events or properties to your tracking plan from both the [Issues](/inspector/inspector-issues-view) and [Events](/inspector/inspector-events-view) views. 
 
-## Import events and properties in bulk from Inspector Issues view
+## Import events in bulk from Inspector Issues view
 
-In addition to providing the "Add to Tracking Plan" button for events not present in the tracking plan within the [Issue Status view](/inspector/inspector-issues-view#event-info),  you can review all of the events and properties missing from the tracking plan.
 
-If there are events unexpected by the tracking plan detected in Inspector Issues, there will be a "Add X new events" button at the upper right of the main Inspector Issues table.
+If Inspector has detected events unexpected by the tracking plan, there will be a "Add X new events" button at the upper right of the main Inspector Issues table in the [Issues View](/inspector/inspector-issues-view#event-info).
 <div style={{ maxWidth: 600, paddingTop: '1.5rem' , margin: 'auto'}}>
 ![Image shows a test.](/images/inspector/test-killit.png)
 </div>
 If there are no events unexpected by the tracking plan, this button will be greyed out and read "No new events".
 
-Once you click the button, a "Review import data" screen will pop up with the following information on top:
+###Reviewing your import
+Once you click the button, a "Review import data" screen will open. At the top you will see a summary of:
 
 - The number of unexpected events and associated sources found by Inspector
-- The number of Tracking Plan Audit alerts triggered by the unexpected events and properties
+- The number of conflict alerts for the unexpected events and properties, which indicate whether the events in review are similar to events already documented in the tracking plan
 
 The list of unexpected events and associated sources then follows, with the ability to expand each event to view the associated properties for each event.
 From here you can:
