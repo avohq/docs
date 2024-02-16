@@ -229,12 +229,12 @@ const redirects = [
   },
   {
     source: '/inspector/faq',
-    destination: '/faqs/faq-inspector',
+    destination: '/faqs/inspector-faq',
     permanent: true,
   },
   {
     source: '/inspector/faq/',
-    destination: '/faqs/faq-inspector',
+    destination: '/faqs/inspector-faq',
     permanent: true,
   },
   {
@@ -1047,6 +1047,11 @@ const redirects = [
   {
     source: '/inspector/inspector-issues-beta',
     destination: '/inspector/inspector-issues-view',
+    permanent: true,
+  },
+  {
+    source: '/faqs/faq-inspector',
+    destination: '/faqs/inspector-faq',
     permanent: true,
   },
 ];
