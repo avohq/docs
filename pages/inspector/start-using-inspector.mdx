@@ -29,6 +29,36 @@ Inspector does not process property values or PII data, only event names, proper
 
 TL;DR: No PII data ever flows through Avo servers; only event schemas.
 
+## Learning about Inspector issues and events
+
+After [setting up your sources](/inspector/inspector-overview#configuring-sources) to send data to the Inspector with the direct CDP integrations or [Avo Inspector SDKs](/implementation/avo-inspector-sdk-reference) you will see the data appearing in the the Inspector tab.
+There are two Inspector overviews available for your incoming data and issues, the [Issues view](/inspector/inspector-issues-view) and the [Events view](/inspector/inspector-events-view) – and you can set up [Slack Alerts](/inspector/inspector-slack-alerts) to be notified about new issues.
+
+### Issues view
+
+The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter issues to uncover those relevant to you and gives you the overview and information needed to prioritize which of them to act on.
+
+![Image shows an example default view of the Inspector issues view.](/images/inspector/inspector-issues-default.png)
+
+Learn more about the [Issues view here](/inspector/inspector-issues-view).
+
+### Events view
+
+The Inspector events view provides a report on all event tracking Inspector has seen in your development, staging and production environments. You can use the dashboard to evaluate the health of your tracking implementation and prioritize issues.
+
+![Inspector tab](/images/workspace/nav-inspector.png)
+
+Learn more about the [Events view here](/inspector/inspector-events-view).
+
+> The production environment in Inspector is designed to handle large amounts of data and has up to 2 hours delay from receiving events to displaying them on a dashboard.
+
+> Events on dev and staging have no delay in processing and will be shown on the dashboard immediately.
+
+### Building your tracking plan using Inspector
+
+You can add both events and properties from Inspector, both via the issues view (where you can bulk import events and properties) and the events view (where you can add individual events). Learn more [here](/inspector/add-events-from-inspector)
+.
+
 ## How to send metadata to the Inspector
 
 ### Install Inspector in your CDP
@@ -74,36 +104,6 @@ Not seeing your platform in the list?
 No. Inspector does not receive any PII data. Inspector only takes schema metadata, containing event names, property names, and types of properties.
 
 Learn more technical details about the [Avo Inspector here](/implementation/avo-inspector-overview).
-
-## Learning about Inspector issues and events
-
-After [setting up your sources](/inspector/inspector-overview#configuring-sources) to send data to the Inspector with the direct CDP integrations or [Avo Inspector SDKs](/implementation/avo-inspector-sdk-reference) you will see the data appearing in the the Inspector tab.
-There are two Inspector overviews available for your incoming data and issues, the [Issues view](/inspector/inspector-issues-view) and the [Events view](/inspector/inspector-events-view) – and you can set up [Slack Alerts](/inspector/inspector-slack-alerts) to be notified about new issues.
-
-### Issues view
-
-The Inspector issues view displays information about anomalies and discrepancies seen in your production data for the past 24 hours. This view allows you to sort and filter issues to uncover those relevant to you and gives you the overview and information needed to prioritize which of them to act on.
-
-![Image shows an example default view of the Inspector issues view.](/images/inspector/inspector-issues-default.png)
-
-Learn more about the [Issues view here](/inspector/inspector-issues-view).
-
-### Events view
-
-The Inspector events view provides a report on all event tracking Inspector has seen in your development, staging and production environments. You can use the dashboard to evaluate the health of your tracking implementation and prioritize issues.
-
-![Inspector tab](/images/workspace/nav-inspector.png)
-
-Learn more about the [Events view here](/inspector/inspector-events-view).
-
-> The production environment in Inspector is designed to handle large amounts of data and has up to 2 hours delay from receiving events to displaying them on a dashboard.
-
-> Events on dev and staging have no delay in processing and will be shown on the dashboard immediately.
-
-### Building your tracking plan using Inspector
-
-You can add both events and properties from Inspector, both via the issues view (where you can bulk import events and properties) and the events view (where you can add individual events). Learn more [here](/inspector/add-events-from-inspector)
-.
 
 ## What's next?
 
