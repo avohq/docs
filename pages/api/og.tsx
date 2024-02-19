@@ -59,48 +59,26 @@ export default async function OGImage(request: NextRequest) {
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'space-between',
             width: '100%',
             height: '100%',
             backgroundImage: `url(data:image/jpeg;base64,${bg})`,
             backgroundSize: '1200px 630px',
             color: '#fff',
-            paddingTop: '60px',
           }}
         >
           <div
             style={{
               fontFamily: 'Inter',
-              fontWeight: 700,
-              textAlign: 'center',
-              padding: '8px 24px 6px 24px',
-              borderRadius: '100px',
-              backgroundColor: 'rgba(72, 207, 173, 0.07)',
-              color: 'rgba(72, 207, 173, 1)',
-              fontSize: 18,
-              letterSpacing: '2px',
-              flexShrink: 0,
-            }}
-          >
-            AVO DOCUMENTATION
-          </div>
-          <div
-            style={{
-              fontFamily: 'Inter',
+              padding: '42px',
               fontWeight: 700,
               fontSize: 80,
-              padding: '15px 100px 30px',
-              textAlign: 'center',
-              maxHeight: '320px',
+              maxWidth: '900px',
               overflow: 'hidden',
               flexShrink: 1,
             }}
           >
             {title}
           </div>
-          <div style={{ height: 100, flexShrink: 0, flexGrow: 0 }} />
         </div>
       ),
       {
