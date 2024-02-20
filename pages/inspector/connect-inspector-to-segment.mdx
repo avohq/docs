@@ -1,27 +1,26 @@
+import { Callout } from 'nextra/components';
+
 # Send data from Segment to Avo Inspector
 
 ## Use Avo Inspector as a Segment destination
 
-Stream your event schemas to Segment to Avo Inspector without adding any code to your codebase. Simply set up a Segment native destination powered by Segment actions and your Data should be visible in Avo within couple of seconds (in rare cases it can take up to 2 minutes).
+Stream your event schemas from Segment to Avo Inspector without adding any code to your codebase. Simply set up a Segment native destination powered by Segment actions and your Data should be visible in Avo within couple of seconds (in rare cases it can take up to 2 minutes).
 
-
-You will need to create a connection between your source and the destination **for each environment you use** (`Dev | Staging | Prod`)
-
-
+<Callout type="info">
+  You will need to create a connection between your source and the destination
+  for each environment you use (`Development | Staging | Production`).
+</Callout>
 
 ### Step 1. Create or select an Avo source to set up Inspector
 
-A source in Avo is a code base where your events are sent from, for example your website, mobile application or server.
-
-When setting up Inspector, you can select an existing Avo source or create a new one in the setup flow.
-
-Open `Sources` in the Avo sidebar or `Manage Sources` in Inspector tab
-
+A source in Avo is a code base where events are tracked, for example your website, mobile application or server.
 ![Navigation to Inspector sources screen in Avo](/images/workspace/nav-inspector-sources-highlighted.png)
 
 If you already have the source, pick it. If you don’t have the source corresponding to your app, [add a new one](/inspector/inspector-overview#configuring-sources).
 
-![Image of the Add Source button in Avo](/images/add-source.png)
+<div style={{ maxWidth: 400, paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Select Source](/images/guide-segment-to-inspector/select-data-source.png)
+</div>
 
 In the source details, go to "Inspector Setup" and there you’ll see options to integrate Inspector. Pick Segment to see the integration code snippets.
 
@@ -39,7 +38,10 @@ The link will open the Avo Destination in your segment workspace, click `Add Des
 
 Select your source that you want to connect to Avo and give the destination connection a name.
 
-> We recommend giving it a name to describe your source and environment, (Avo Web Prod)
+<Callout type="info">
+  We recommend giving your destination a name to describe your source and
+  environment, (Avo Web Prod)
+</Callout>
 
 Fill in the Destination settings to connect your source with the Avo Inspector.
 
@@ -49,33 +51,31 @@ Fill in the Destination settings to connect your source with the Avo Inspector.
 
 ##### Avo Inspector API Key
 
-You can copy the API key from your source in Avo, Next to the `Connect to Segment` button in Step 1. of this guide
-Avo Inspector API key connects your source in segment to your source in Avo, allowing us to map the events from your source into the Avo source, so we can accurately compare your source to your Tracking Plan in Avo.
+You can copy the API key from your source in Avo.The Avo Inspector API key allows Avo to map the events from your Segment source to the Avo source, to accurately compare your source’s event schemas to your Tracking Plan in Avo.
 
-#### Environment
+##### Environment
 
-Environment describes which app environment the source is sending from, `Development | Staging | Production`.
-Avo only generates issues for events in `Production` environment, but you can see the event shapes for staging and development environments to make sure they are implemented correctly.
+Environment describes which app environment the source is sent from, `Development | Staging | Production`.
+Avo only generates issues for events in the `Production` environment, but you can see the event shapes for staging and development environments to make sure they are implemented correctly.
 
-#### App Version Property
+##### App Version Property
 
-App Version Property is an optional **(But recommended!)** field.
-If you have an event property describing the app release version of your source you can provide it under App Version. For most mobile sources, we will automatically fetch the app version from Segment Context. Having accurate app release versions in Avo Inspector will help you identify which releases an issue is impacting, and monitor for regressions in future releases after you’ve resolved the issue.
+App Version Property is an optional **(But recommended!)** field. Having accurate app release versions in Avo Inspector allows you to see how events change across releases. This will help you identify which releases an issue is impacting, and monitor for regressions in future releases after an issue has been resolved.
 
-The App Version allows the inspector to monitor your events and how they change across releases. This will allow you to resolve issues into the future `(Resolve in version X.XX.XX)` or `Next Release` and effectively reduces the amount of issues generated by old events.
+Without App versions, the inspector has no way of differentiating between old and new releases, and might surface irrelevant issues based on old releases. [Learn more about how Inspector uses releases](https://www.avo.app/docs/inspector/inspector-issues-view#release-and-source-breakdown)
 
-![Inspector Issues With App Version Data](/images/guide-segment-to-inspector/inspector-issue-app-version.png)
+For most mobile sources, we will automatically fetch the app version from Segment Context. If you have an event property describing the app release version of your source (“E.g “app_version”) you can provide it under App Version.
 
-Without App version, the inspector has no way of differentiating between old and new events, and therefore might surface issues based on old releases.
+If you are unsure of whether this applies to your source, or if you don’t know which event property to use, you can proceed with setting up the source and add this information later.
 
-### Step 4. Monitor Avo
+### Step 3. Monitor Avo
 
 After you have enabled your destination in Segment, you can visit [Inspector Events](https://www.avo.app/schemas/fwtXqAc0fCLy7b7oGW40/inspector/events) and monitor the events coming into the inspector.
 
-> This can take up to 2 minutes to be populated, make sure you are monitoring the environment that you connected in the segment destination.
+> This can take up to 2 minutes to be populated, make sure you are monitoring the environment that you connected in the Segment destination.
 
-### Next Steps:
+## Next Steps
 
 - [Import events from Inspector](https://www.avo.app/docs/inspector/add-events-from-inspector)
-- [Reviewing Issues](https://www.avo.app/docs/inspector/inspector-issues-view)
+- [Review Issues](https://www.avo.app/docs/inspector/inspector-issues-view)
 - [Set up Alerts](https://www.avo.app/docs/inspector/inspector-slack-alerts)
