@@ -1,5 +1,10 @@
 # Inspector FAQ
 
+### I'm new to Avo. Is Inspector a good place to start?
+
+Yes! Inspector provides you with immediate observability into your current state of tracking and you can even build your tracking plan based on live data via Inspector. To get going quickly, check out our [Inspector Quickstart](/inspector/start-using-inspector)
+.
+
 ### Do I need to replace my existing tracking code?
 
 No, you don’t! The [Avo Inspector SDK](/implementation/avo-inspector-sdk-reference)
@@ -10,7 +15,7 @@ is designed to not require any changes to your existing tracking code. [Read mor
 
 No, you don’t! Avo doesn’t collect any user data. We only collect metadata about your user data. Read more on what kind of data Avo collects in **What kind of data does Avo collect?** below.
 
-### What kind of data does Avo collect?
+### What kind of data does Avo collect when I use Inspector?
 
 Avo doesn’t collect any user data. We only collect metadata about your user data. So what does that mean?
 Let’s take an example. If you are sending the following event from your app:
@@ -39,13 +44,13 @@ our SDK will analyze that and store it as:
 
 Avo doesn’t need to know the actual values, we only need to understand the shape of the data.
 
-### What does Avo do with my data?
+### What does Avo and Inspector do with my data?
 
 The [Avo Inspector SDK](/implementation/avo-inspector-sdk-reference)
 analyzes your user data and delivers metadata about the user data to Avo’s servers. Based on that metadata we build your tracking plan and [alert on any issues](/inspector/inspector-overview#issue-types)
 .
 
-### Does Avo batch events in the SDK?
+### Does Avo batch events in the Inspector SDK?
 
 Avo Inspector SDKs does batch events before sending metadata about them to Avo’s servers. The details of the batching may vary between platforms, [read more in the docs for the SDKs](/implementation/avo-inspector-sdk-reference)
 .
@@ -54,9 +59,9 @@ Avo Inspector SDKs does batch events before sending metadata about them to Avo�
 
 Reach out to support@avo.app or on Intercom, we would love to help!
 
-### What kind of alerts can I set, if any?
+### What kind of alerts can I set using Inspector, if any?
 
-You can receive email alerts when new issues are detected. Head to the Issues dashboard on avo.app to configure email alerts.
+You can receive [Slack alerts](/inspector/inspector-slack-alerts) when new issues are detected. Head to the Issues dashboard on avo.app to configure Slack alerts.
 
 ### When will the "bubble" from the In-App Inspector (aka Avo Debuggers) be visible in my app?
 
@@ -67,6 +72,6 @@ On Android and iOS the bubble will be shown if you include Inspector SDK and ini
 On Web the bubble will be shown if you are using Avo Codegen and the env parameter in `initAvo` is set to `dev`.
 On React Native the bubble is not shown automatically. You will have to trigger it manually.
 
-### If I ship Inspector SDK to prod, will the In-App Inspector bubble be visible in prod?
+### If I ship the Inspector SDK to prod, will the In-App Inspector bubble be visible in prod?
 
 Nope! The "bubble" is only on when env is set to `dev`. (More in above answer).
