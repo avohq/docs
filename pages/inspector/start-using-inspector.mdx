@@ -17,9 +17,9 @@ Teams spend months and years and pay for expensive data audits, only to be left 
 Inspector gives you:
 
 - An overview of your current state of tracking, highlighting implementation issues as well as discrepancies with your desired tracking plan.
-- Implementation status for every analytics release in your Avo Branch, available for Development, Staging and Production environments. This gives you confidence and visibility into the status and health of the events that developers are implementing.
+- Implementation status for every analytics release in your Avo Branch, available for Development, Staging and Production environments. This gives you confidence in and visibility into the status and health of the events that developers are implementing.
 - Implementation status for the events in your entire tracking plan, so you can see which events are actually implemented and whether they’re sent correctly or not.
-- Inspector helps you migrate your tracking plan to Avo. Skip importing things you’re skeptical of. Then leverage Inspector to detect how events and properties are actually tracked, and gradually add them to your tracking plan via Avo branches.
+- The ability to seamlessly build your Avo tracking plan on top of live data, with the option to build gradually or through a bulk import directly from Inspector. 
 
 ## How does Inspector work
 
@@ -29,7 +29,7 @@ Inspector does not process property values or PII data, only event names, proper
 
 TL;DR: No PII data ever flows through Avo servers; only event schemas.
 
-## Learning about Inspector issues
+## Learning about Inspector issues and events
 
 After [setting up your sources](/inspector/inspector-overview#configuring-sources) to send data to the Inspector with the direct CDP integrations or [Avo Inspector SDKs](/implementation/avo-inspector-sdk-reference) you will see the data appearing in the the Inspector tab.
 There are two Inspector overviews available for your incoming data and issues, the [Issues view](/inspector/inspector-issues-view) and the [Events view](/inspector/inspector-events-view) – and you can set up [Slack Alerts](/inspector/inspector-slack-alerts) to be notified about new issues.
@@ -54,7 +54,12 @@ Learn more about the [Events view here](/inspector/inspector-events-view).
 
 > Events on dev and staging have no delay in processing and will be shown on the dashboard immediately.
 
-## How to send metadata to the Inspector?
+### Building your tracking plan using Inspector
+
+You can add both events and properties from Inspector, both via the issues view (where you can bulk import events and properties) and the events view (where you can add individual events). Learn more [here](/inspector/add-events-from-inspector)
+.
+
+## How to send metadata to the Inspector
 
 ### Install Inspector in your CDP
 
