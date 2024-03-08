@@ -1,3 +1,5 @@
+// cSpell:disable
+
 # Export Tracking Plan
 
 _Export tracking plan using Avo API_
@@ -7,7 +9,7 @@ The Export API gives you the possibility to export your Avo tracking plan as JSO
 ## Endpoint
 
 ```Url
-https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1
+https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v2
 ```
 
 `:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`. `:branchId` is the ID of the branch you want to export. If you open a branch in Avo you can find it in the URL after `/branches/`. For the main branch simply use `main`. Note that the branch id is not the same as the branch name.
@@ -54,64 +56,2912 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
 
 ```json
 {
-  "name": "Avo's Tracking Plan:main",
+  "name": "Sandbox:main",
   "events": [
     {
-      "id": "-PHsAi6jC6",
-      "name": "my_event",
-      "description": "Event description",
+      "id": "C3XnUJ3kRq",
+      "name": "page_viewed",
+      "description": "When a user views a web page within the website",
       "triggers": [],
-      "tags": ["Tag1"],
-      "categories": [],
+      "tags": ["Tier 3 - UI"],
+      "categories": ["ujPLZEoj9"],
+      "actions": ["skipLogEvent", "page"],
       "sources": [
         {
-          "id": "5GHrzRFAb",
-          "name": "web_source",
+          "id": "Z8siDew5I",
+          "name": "Website",
           "implementWithCodegen": true,
-          "destinations": [{ "id": "hvCvaCl5H" }]
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
         }
       ],
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["properties", "nameMapping"],
+        "required": ["nameMapping"],
         "nameMapping": [],
-        "properties": {
+        "eventProperties": {
+          "type": "object",
           "properties": {
-            "type": "object",
-            "properties": {
-              "my_property": {
-                "id": "cem9e4kyn",
-                "index": 0,
-                "description": "Property description",
-                "nameMapping": [],
-                "type": "string"
+            "page_title": {
+              "id": "ElSfT9WzR",
+              "index": 0,
+              "description": "Title of the web page",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "page_url": {
+              "id": "ojoRkR5_-",
+              "index": 1,
+              "description": "URL of the web page",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "page_query": {
+              "id": "rQ8gO_Oyf",
+              "index": 2,
+              "description": "HTML query string from page URL (?variable=value etc)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 3,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 4,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "page_title",
+            "page_url",
+            "page_query",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "3ysJ7dtvo",
+      "name": "link_clicked",
+      "description": "When a user clicks a web link",
+      "triggers": [],
+      "tags": ["Tier 3 - UI"],
+      "categories": ["ujPLZEoj9"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "link_label": {
+              "id": "PBwPS4fHR",
+              "index": 0,
+              "description": "The label on the link as seen by the user",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "link_url": {
+              "id": "najwoUnNr",
+              "index": 1,
+              "description": "The destination URL of the link",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 2,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 3,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["link_label", "link_url", "app_name", "app_version"]
+        }
+      }
+    },
+    {
+      "id": "IoEtIvfQBw",
+      "name": "user_account_created",
+      "description": "When a user creates an account",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["U2yiEhv-z"],
+      "actions": ["identify"],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "MrfxKOlw8"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [
+          {
+            "name": "accountCreated",
+            "destinationId": "jNEdDoL-7"
+          }
+        ],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "authentication_method": {
+              "id": "AQlf1NLD_k",
+              "index": 0,
+              "description": "The mechanism by which the user authenticated their account (e.g. Google SSO, Apple SSO, email/pass)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 1,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 2,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["authentication_method", "app_name", "app_version"]
+        },
+        "userProperties": {
+          "type": "object",
+          "properties": {
+            "user_first_name": {
+              "id": "HSBADFYrPB",
+              "index": 0,
+              "description": "User's first name",
+              "nameMapping": [
+                {
+                  "name": "userFirstName",
+                  "destinationId": "YQ2yA9OUm"
+                },
+                {
+                  "name": "userName",
+                  "destinationId": "jNEdDoL-7"
+                }
+              ],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "user_surname": {
+              "id": "rSGLlBzhEg",
+              "index": 1,
+              "description": "User's surname",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "user_email_address": {
+              "id": "sEaU5fCUNz",
+              "index": 2,
+              "description": "User's email address",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "user_country": {
+              "id": "pQqfhfFcMZ",
+              "index": 3,
+              "description": "The country the user is based in",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "user_language": {
+              "id": "jHb6HjMpbB",
+              "index": 4,
+              "description": "The language the user has set within the application",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "user_first_name",
+            "user_surname",
+            "user_email_address",
+            "user_country",
+            "user_language"
+          ]
+        }
+      }
+    },
+    {
+      "id": "usqGPDSbeL",
+      "name": "product_viewed",
+      "description": "When a user views a product page",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["o2odrHGgK"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "id": "Bslqe3Ili",
+              "index": 0,
+              "description": "Identifier for the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "product_display_name": {
+              "id": "f2SJjht-L",
+              "index": 1,
+              "description": "The name of the product as shown to the user",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "product_price_usd": {
+              "id": "kzGzqqf6D",
+              "index": 2,
+              "description": "The price of the product in USD (ex tax+shipping)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "product_category": {
+              "id": "QqDB4vxlK",
+              "index": 3,
+              "description": "The category of the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["electronics", "clothing", "food", "outdoors"]
+            },
+            "product_description": {
+              "id": "8ZoOLi3hF",
+              "index": 4,
+              "description": "Description of the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 5,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 6,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "product_display_name",
+            "product_price_usd",
+            "product_category",
+            "product_description",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "VSKv7P38Cg",
+      "name": "product_added_to_basket",
+      "description": "When a user adds a product to their basket",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["o2odrHGgK"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "id": "Bslqe3Ili",
+              "index": 0,
+              "description": "Identifier for the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "product_display_name": {
+              "id": "f2SJjht-L",
+              "index": 1,
+              "description": "The name of the product as shown to the user",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "product_price_usd": {
+              "id": "kzGzqqf6D",
+              "index": 2,
+              "description": "The price of the product in USD (ex tax+shipping)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "product_category": {
+              "id": "QqDB4vxlK",
+              "index": 3,
+              "description": "The category of the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["electronics", "clothing", "food", "outdoors"]
+            },
+            "product_description": {
+              "id": "8ZoOLi3hF",
+              "index": 4,
+              "description": "Description of the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 5,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 6,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "product_display_name",
+            "product_price_usd",
+            "product_category",
+            "product_description",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "7G61o4B9G",
+      "name": "checkout_started",
+      "description": "When a user starts the checkout process",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["crsxPVqkt"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "MrfxKOlw8"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "MrfxKOlw8"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "checkout_id": {
+              "id": "9_FVqqEuw",
+              "index": 0,
+              "description": "Identifier for the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_basket": {
+              "id": "SqIVNBclU",
+              "index": 1,
+              "description": "List of product property bundle objects",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
               }
             },
-            "additionalProperties": false,
-            "required": ["my_property"]
-          }
+            "checkout_payment_method": {
+              "id": "TXFbynuna",
+              "index": 2,
+              "description": "The payment method selected during the checkout",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["paypal", "card", "gpay", "apple_pay"]
+            },
+            "checkout_total_local": {
+              "id": "0pM63DmMx",
+              "index": 3,
+              "description": "Total amount of the order in local currency (ex shipping + tax)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "checkout_delivery_address": {
+              "id": "IR8foGF9s",
+              "index": 4,
+              "description": "Delivery address for the order to be shipped to",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_delivery_method": {
+              "id": "Ew_BIhOfS",
+              "index": 5,
+              "description": "The delivery method selected during the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["next_day", "standard", "named_day"]
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 6,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 7,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "checkout_id",
+            "checkout_basket",
+            "checkout_total_local",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "dKxlmCGgz",
+      "name": "product_removed_from_basket",
+      "description": "When a user removes a product from the basket",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["o2odrHGgK"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "product_id": {
+              "id": "Bslqe3Ili",
+              "index": 0,
+              "description": "Identifier for the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "product_display_name": {
+              "id": "f2SJjht-L",
+              "index": 1,
+              "description": "The name of the product as shown to the user",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "product_price_usd": {
+              "id": "kzGzqqf6D",
+              "index": 2,
+              "description": "The price of the product in USD (ex tax+shipping)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "product_category": {
+              "id": "QqDB4vxlK",
+              "index": 3,
+              "description": "The category of the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["electronics", "clothing", "food", "outdoors"]
+            },
+            "product_description": {
+              "id": "8ZoOLi3hF",
+              "index": 4,
+              "description": "Description of the product",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 5,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 6,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "product_id",
+            "product_display_name",
+            "product_price_usd",
+            "product_category",
+            "product_description",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "taWnl30zC",
+      "name": "user_logged_in",
+      "description": "When a user logs into their account",
+      "triggers": [],
+      "tags": ["Tier 3 - UI"],
+      "categories": ["ujPLZEoj9"],
+      "actions": ["identify"],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "authentication_method": {
+              "id": "AQlf1NLD_k",
+              "index": 0,
+              "description": "The mechanism by which the user authenticated their account (e.g. Google SSO, Apple SSO, email/pass)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 1,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 2,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["authentication_method", "app_name", "app_version"]
+        }
+      }
+    },
+    {
+      "id": "UZqMos5s2",
+      "name": "checkout_delivery_confirmed",
+      "description": "When a user adds/confirms their delivery details",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["crsxPVqkt"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "checkout_id": {
+              "id": "9_FVqqEuw",
+              "index": 0,
+              "description": "Identifier for the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_basket": {
+              "id": "SqIVNBclU",
+              "index": 1,
+              "description": "List of product property bundle objects",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "checkout_payment_method": {
+              "id": "TXFbynuna",
+              "index": 2,
+              "description": "The payment method selected during the checkout",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["paypal", "card", "gpay", "apple_pay"]
+            },
+            "checkout_total_local": {
+              "id": "0pM63DmMx",
+              "index": 3,
+              "description": "Total amount of the order in local currency (ex shipping + tax)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "checkout_delivery_address": {
+              "id": "IR8foGF9s",
+              "index": 4,
+              "description": "Delivery address for the order to be shipped to",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_delivery_method": {
+              "id": "Ew_BIhOfS",
+              "index": 5,
+              "description": "The delivery method selected during the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["next_day", "standard", "named_day"]
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 6,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 7,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "checkout_id",
+            "checkout_basket",
+            "checkout_total_local",
+            "checkout_delivery_address",
+            "checkout_delivery_method",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DsgnVFXkV",
+      "name": "checkout_payment_confirmed",
+      "description": "When a user adds/confirms their payment details",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["crsxPVqkt"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "checkout_id": {
+              "id": "9_FVqqEuw",
+              "index": 0,
+              "description": "Identifier for the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_basket": {
+              "id": "SqIVNBclU",
+              "index": 1,
+              "description": "List of product property bundle objects",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "checkout_payment_method": {
+              "id": "TXFbynuna",
+              "index": 2,
+              "description": "The payment method selected during the checkout",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["paypal", "card", "gpay", "apple_pay"]
+            },
+            "checkout_total_local": {
+              "id": "0pM63DmMx",
+              "index": 3,
+              "description": "Total amount of the order in local currency (ex shipping + tax)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "checkout_delivery_address": {
+              "id": "IR8foGF9s",
+              "index": 4,
+              "description": "Delivery address for the order to be shipped to",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_delivery_method": {
+              "id": "Ew_BIhOfS",
+              "index": 5,
+              "description": "The delivery method selected during the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["next_day", "standard", "named_day"]
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 6,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 7,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "checkout_id",
+            "checkout_basket",
+            "checkout_payment_method",
+            "checkout_total_local",
+            "checkout_delivery_address",
+            "checkout_delivery_method",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "BtBhbKNW1",
+      "name": "checkout_completed",
+      "description": "When a checkout has completed successfully",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["crsxPVqkt"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "MrfxKOlw8"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "checkout_id": {
+              "id": "9_FVqqEuw",
+              "index": 0,
+              "description": "Identifier for the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_basket": {
+              "id": "SqIVNBclU",
+              "index": 1,
+              "description": "List of product property bundle objects",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "checkout_payment_method": {
+              "id": "TXFbynuna",
+              "index": 2,
+              "description": "The payment method selected during the checkout",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["paypal", "card", "gpay", "apple_pay"]
+            },
+            "checkout_total_local": {
+              "id": "0pM63DmMx",
+              "index": 3,
+              "description": "Total amount of the order in local currency (ex shipping + tax)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "checkout_delivery_address": {
+              "id": "IR8foGF9s",
+              "index": 4,
+              "description": "Delivery address for the order to be shipped to",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_delivery_method": {
+              "id": "Ew_BIhOfS",
+              "index": 5,
+              "description": "The delivery method selected during the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["next_day", "standard", "named_day"]
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 6,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 7,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "checkout_id",
+            "checkout_basket",
+            "checkout_payment_method",
+            "checkout_total_local",
+            "checkout_delivery_address",
+            "checkout_delivery_method",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lNHB3Im57",
+      "name": "checkout_failed",
+      "description": "When a checkout is unable to complete",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["crsxPVqkt"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "checkout_id": {
+              "id": "9_FVqqEuw",
+              "index": 0,
+              "description": "Identifier for the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_basket": {
+              "id": "SqIVNBclU",
+              "index": 1,
+              "description": "List of product property bundle objects",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "checkout_payment_method": {
+              "id": "TXFbynuna",
+              "index": 2,
+              "description": "The payment method selected during the checkout",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["paypal", "card", "gpay", "apple_pay"]
+            },
+            "checkout_total_local": {
+              "id": "0pM63DmMx",
+              "index": 3,
+              "description": "Total amount of the order in local currency (ex shipping + tax)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "checkout_delivery_address": {
+              "id": "IR8foGF9s",
+              "index": 4,
+              "description": "Delivery address for the order to be shipped to",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_delivery_method": {
+              "id": "Ew_BIhOfS",
+              "index": 5,
+              "description": "The delivery method selected during the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["next_day", "standard", "named_day"]
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 6,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 7,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "checkout_id",
+            "checkout_basket",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "Ds6WH3R15",
+      "name": "user_logged_out",
+      "description": "When a user logs out of their account",
+      "triggers": [],
+      "tags": ["Tier 3 - UI"],
+      "categories": ["ujPLZEoj9"],
+      "actions": ["unidentify"],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 0,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 1,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["app_name", "app_version"]
+        }
+      }
+    },
+    {
+      "id": "eznH-ro_n",
+      "name": "checkout_abandoned",
+      "description": "When a user starts the checkout process but fails to complete within the session",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["crsxPVqkt"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "checkout_id": {
+              "id": "9_FVqqEuw",
+              "index": 0,
+              "description": "Identifier for the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_basket": {
+              "id": "SqIVNBclU",
+              "index": 1,
+              "description": "List of product property bundle objects",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "checkout_payment_method": {
+              "id": "TXFbynuna",
+              "index": 2,
+              "description": "The payment method selected during the checkout",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["paypal", "card", "gpay", "apple_pay"]
+            },
+            "checkout_total_local": {
+              "id": "0pM63DmMx",
+              "index": 3,
+              "description": "Total amount of the order in local currency (ex shipping + tax)",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "checkout_delivery_address": {
+              "id": "IR8foGF9s",
+              "index": 4,
+              "description": "Delivery address for the order to be shipped to",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "checkout_delivery_method": {
+              "id": "Ew_BIhOfS",
+              "index": 5,
+              "description": "The delivery method selected during the checkout process",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string",
+              "enum": ["next_day", "standard", "named_day"]
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 6,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 7,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "checkout_id",
+            "checkout_basket",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "7npoe1yq6",
+      "name": "user_account_verified",
+      "description": "When a user confirms their email address and successfully verifies their account",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["U2yiEhv-z"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "MrfxKOlw8"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 0,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 1,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["app_name", "app_version"]
+        }
+      }
+    },
+    {
+      "id": "jsvqaGWpl",
+      "name": "screen_viewed",
+      "description": "When a user views a screen within the mobile apps",
+      "triggers": [],
+      "tags": ["Tier 3 - UI"],
+      "categories": ["ujPLZEoj9"],
+      "actions": ["skipLogEvent", "page"],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "screen_name": {
+              "id": "ewJGkBUN4B",
+              "index": 0,
+              "description": "Name of the screen",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 1,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 2,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["screen_name", "app_name", "app_version"]
+        }
+      }
+    },
+    {
+      "id": "l_-GUpBCa",
+      "name": "app_opened",
+      "description": "When the user opens the app",
+      "triggers": [],
+      "tags": ["Tier 3 - UI"],
+      "categories": ["ujPLZEoj9"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "utm_term": {
+              "id": "P0RqnLoYI",
+              "index": 0,
+              "description": "The value for the UTM term parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_source": {
+              "id": "nt_xkeJ_X",
+              "index": 1,
+              "description": "The value for the UTM source parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_medium": {
+              "id": "PYlRhqIbU",
+              "index": 2,
+              "description": "The value for the UTM medium parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_content": {
+              "id": "BnYpd6LGX",
+              "index": 3,
+              "description": "The value for the UTM content parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_campaign": {
+              "id": "_7cSXSWo1",
+              "index": 4,
+              "description": "The value for the UTM campaign parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 5,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 6,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "utm_term",
+            "utm_source",
+            "utm_medium",
+            "utm_content",
+            "utm_campaign",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "KxcSTbeTj",
+      "name": "button_pressed",
+      "description": "When a user presses a button on the app",
+      "triggers": [],
+      "tags": ["Tier 3 - UI"],
+      "categories": ["ujPLZEoj9"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "button_name": {
+              "id": "h6kSgMmQKU",
+              "index": 0,
+              "description": "The name of the button",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "button_label": {
+              "id": "wAtfDzKQEY",
+              "index": 1,
+              "description": "The text on the button as seen by the user",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "screen_name": {
+              "id": "ewJGkBUN4B",
+              "index": 2,
+              "description": "Name of the screen",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 3,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 4,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "button_name",
+            "button_label",
+            "screen_name",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "COlxu-Qod",
+      "name": "search_completed",
+      "description": "When a user completes a search",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["wDR6HdP7z"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "Z8siDew5I",
+          "name": "Website",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "search_term": {
+              "id": "hWvlLV5G9x",
+              "index": 0,
+              "description": "The term used to complete a search",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 1,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 2,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["search_term", "app_name", "app_version"]
+        }
+      }
+    },
+    {
+      "id": "FLcYab-wM",
+      "name": "app_installed",
+      "description": "When a user first opens the app",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["ujPLZEoj9"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "WmAiFg1DR",
+          "name": "Android",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "MrfxKOlw8"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        },
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "MrfxKOlw8"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "utm_source": {
+              "id": "nt_xkeJ_X",
+              "index": 0,
+              "description": "The value for the UTM source parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_medium": {
+              "id": "PYlRhqIbU",
+              "index": 1,
+              "description": "The value for the UTM medium parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_campaign": {
+              "id": "_7cSXSWo1",
+              "index": 2,
+              "description": "The value for the UTM campaign parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_term": {
+              "id": "P0RqnLoYI",
+              "index": 3,
+              "description": "The value for the UTM term parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "utm_content": {
+              "id": "BnYpd6LGX",
+              "index": 4,
+              "description": "The value for the UTM content parameter if a deep link was used",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 5,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 6,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["app_name", "app_version"]
+        }
+      }
+    },
+    {
+      "id": "5eYj0JckP",
+      "name": "order_placed",
+      "description": "When an order has been placed by a customer",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["KUZGzImDf"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "MrfxKOlw8"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "id": "W-TO6kmYQ",
+              "index": 0,
+              "description": "Unique identifier for an order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_total_usd": {
+              "id": "OxYb5LiYR",
+              "index": 1,
+              "description": "Total cost for the order (ex tax + shipping) in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_items": {
+              "id": "VIErVoXme",
+              "index": 2,
+              "description": "An array of product objects that contain the order items",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "order_tax_usd": {
+              "id": "U4Ce_L656",
+              "index": 3,
+              "description": "Total tax in USD payable on the order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "order_total_shipping_usd": {
+              "id": "V9ndt9dYl",
+              "index": 4,
+              "description": "Total shipping cost payable in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_guaranteed_delivery_date": {
+              "id": "UeJ98YTT1",
+              "index": 5,
+              "description": "Date the order is guaranteed to be delivered by",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_date": {
+              "id": "HQrVJ4iKk",
+              "index": 6,
+              "description": "Date the order was placed",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 7,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 8,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "order_id",
+            "order_total_usd",
+            "order_items",
+            "order_tax_usd",
+            "order_total_shipping_usd",
+            "order_guaranteed_delivery_date",
+            "order_date",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "QiP29Bls-",
+      "name": "order_confirmed",
+      "description": "When a placed order has been confirmed",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["KUZGzImDf"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "id": "W-TO6kmYQ",
+              "index": 0,
+              "description": "Unique identifier for an order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_total_usd": {
+              "id": "OxYb5LiYR",
+              "index": 1,
+              "description": "Total cost for the order (ex tax + shipping) in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_items": {
+              "id": "VIErVoXme",
+              "index": 2,
+              "description": "An array of product objects that contain the order items",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "order_tax_usd": {
+              "id": "U4Ce_L656",
+              "index": 3,
+              "description": "Total tax in USD payable on the order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "order_total_shipping_usd": {
+              "id": "V9ndt9dYl",
+              "index": 4,
+              "description": "Total shipping cost payable in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_guaranteed_delivery_date": {
+              "id": "UeJ98YTT1",
+              "index": 5,
+              "description": "Date the order is guaranteed to be delivered by",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_date": {
+              "id": "HQrVJ4iKk",
+              "index": 6,
+              "description": "Date the order was placed",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 7,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 8,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "order_id",
+            "order_total_usd",
+            "order_items",
+            "order_tax_usd",
+            "order_total_shipping_usd",
+            "order_guaranteed_delivery_date",
+            "order_date",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "_dW34bUce",
+      "name": "order_dispatched",
+      "description": "When an order has been dispatched to the customer",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["KUZGzImDf"],
+      "actions": ["revenue"],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "id": "W-TO6kmYQ",
+              "index": 0,
+              "description": "Unique identifier for an order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_total_usd": {
+              "id": "OxYb5LiYR",
+              "index": 1,
+              "description": "Total cost for the order (ex tax + shipping) in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_items": {
+              "id": "VIErVoXme",
+              "index": 2,
+              "description": "An array of product objects that contain the order items",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "order_tax_usd": {
+              "id": "U4Ce_L656",
+              "index": 3,
+              "description": "Total tax in USD payable on the order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "order_total_shipping_usd": {
+              "id": "V9ndt9dYl",
+              "index": 4,
+              "description": "Total shipping cost payable in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_guaranteed_delivery_date": {
+              "id": "UeJ98YTT1",
+              "index": 5,
+              "description": "Date the order is guaranteed to be delivered by",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_date": {
+              "id": "HQrVJ4iKk",
+              "index": 6,
+              "description": "Date the order was placed",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 7,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 8,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "order_id",
+            "order_total_usd",
+            "order_items",
+            "order_tax_usd",
+            "order_total_shipping_usd",
+            "order_guaranteed_delivery_date",
+            "order_date",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "axH6Fn4Ki",
+      "name": "order_delivered",
+      "description": "When an order has been successfully delivered",
+      "triggers": [],
+      "tags": ["Tier 1 - Customer/Revenue"],
+      "categories": ["KUZGzImDf"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "g8jALgEm8",
+          "name": "Backend",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "YQ2yA9OUm"
+            },
+            {
+              "id": "jNEdDoL-7"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "id": "W-TO6kmYQ",
+              "index": 0,
+              "description": "Unique identifier for an order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_total_usd": {
+              "id": "OxYb5LiYR",
+              "index": 1,
+              "description": "Total cost for the order (ex tax + shipping) in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_items": {
+              "id": "VIErVoXme",
+              "index": 2,
+              "description": "An array of product objects that contain the order items",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            },
+            "order_tax_usd": {
+              "id": "U4Ce_L656",
+              "index": 3,
+              "description": "Total tax in USD payable on the order",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "number"
+            },
+            "order_total_shipping_usd": {
+              "id": "V9ndt9dYl",
+              "index": 4,
+              "description": "Total shipping cost payable in USD",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_guaranteed_delivery_date": {
+              "id": "UeJ98YTT1",
+              "index": 5,
+              "description": "Date the order is guaranteed to be delivered by",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "order_date": {
+              "id": "HQrVJ4iKk",
+              "index": 6,
+              "description": "Date the order was placed",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 7,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 8,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "order_id",
+            "order_total_usd",
+            "order_items",
+            "order_tax_usd",
+            "order_total_shipping_usd",
+            "order_guaranteed_delivery_date",
+            "order_date",
+            "app_name",
+            "app_version"
+          ]
+        }
+      }
+    },
+    {
+      "id": "_CAGHkyxZ",
+      "name": "user_app_tracking_presented",
+      "description": "When a user is presented with the iOS App Tracking Transparency message",
+      "triggers": [],
+      "tags": ["Tier 2 - Product"],
+      "categories": ["U2yiEhv-z"],
+      "actions": [],
+      "sources": [
+        {
+          "id": "8ZF8Z5i4M",
+          "name": "iOS",
+          "implementWithCodegen": true,
+          "destinations": [
+            {
+              "id": "MrfxKOlw8"
+            },
+            {
+              "id": "jNEdDoL-7"
+            },
+            {
+              "id": "YQ2yA9OUm"
+            }
+          ]
+        }
+      ],
+      "rules": {
+        "$schema": "http://json-schema.org/draft-06/schema#",
+        "type": "object",
+        "required": ["nameMapping"],
+        "nameMapping": [],
+        "eventProperties": {
+          "type": "object",
+          "properties": {
+            "ios_tracking_enabled": {
+              "id": "MLjH5QhC8u",
+              "index": 0,
+              "description": "Whether the user has enabled app tracking for the app within iOS",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "string"
+            },
+            "app_name": {
+              "id": "T3A3iFXh7P",
+              "index": 1,
+              "description": "Name of the application that is generating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            },
+            "app_version": {
+              "id": "EPZIK4ZilD",
+              "index": 2,
+              "description": "Version of the application that is creating the events",
+              "nameMapping": [],
+              "isSystem": true,
+              "context": {},
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["ios_tracking_enabled", "app_name", "app_version"]
+        },
+        "userProperties": {
+          "type": "object",
+          "properties": {
+            "user_ios_tracking_enabled": {
+              "id": "kc8fxETds",
+              "index": 0,
+              "description": "Whether the user has enabled app tracking for the app within iOS",
+              "nameMapping": [],
+              "isSystem": false,
+              "context": {},
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["user_ios_tracking_enabled"]
         }
       }
     }
   ],
   "metrics": {},
   "sources": {
-    "5GHrzRFAb": {
-      "id": "5GHrzRFAb",
-      "name": "web_source",
-      "programmingLanguage": null,
+    "Z8siDew5I": {
+      "id": "Z8siDew5I",
+      "name": "Website",
+      "programmingLanguage": "JavaScript_V2",
       "developmentPlatform": "Web",
-      "destinations": ["hvCvaCl5H"]
+      "destinations": ["YQ2yA9OUm", "jNEdDoL-7"]
+    },
+    "g8jALgEm8": {
+      "id": "g8jALgEm8",
+      "name": "Backend",
+      "programmingLanguage": "Python3",
+      "developmentPlatform": "Python",
+      "destinations": ["YQ2yA9OUm", "jNEdDoL-7", "MrfxKOlw8"]
+    },
+    "8ZF8Z5i4M": {
+      "id": "8ZF8Z5i4M",
+      "name": "iOS",
+      "programmingLanguage": "Swift",
+      "developmentPlatform": "IOS",
+      "destinations": ["MrfxKOlw8", "jNEdDoL-7", "YQ2yA9OUm"]
+    },
+    "WmAiFg1DR": {
+      "id": "WmAiFg1DR",
+      "name": "Android",
+      "programmingLanguage": "Java",
+      "developmentPlatform": "Android",
+      "destinations": ["MrfxKOlw8", "jNEdDoL-7", "YQ2yA9OUm"]
     }
   },
   "destinations": {
-    "hvCvaCl5H": {
-      "id": "hvCvaCl5H",
-      "name": "webhook_destination",
-      "type": "Custom"
+    "YQ2yA9OUm": {
+      "id": "YQ2yA9OUm",
+      "name": "RudderStack",
+      "type": "Rudderstack"
+    },
+    "jNEdDoL-7": {
+      "id": "jNEdDoL-7",
+      "name": "Braze",
+      "type": "Braze"
+    },
+    "MrfxKOlw8": {
+      "id": "MrfxKOlw8",
+      "name": "AppsFlyer",
+      "type": "AppsFlyer"
     }
   },
-  "categories": {}
+  "categories": {
+    "wDR6HdP7z": {
+      "id": "wDR6HdP7z",
+      "name": "Search",
+      "description": "{\"ops\":[]}",
+      "metrics": [],
+      "events": ["COlxu-Qod"]
+    },
+    "KUZGzImDf": {
+      "id": "KUZGzImDf",
+      "name": "Order",
+      "description": "{\"ops\":[{\"insert\":\"Events relating to orders\\n\"}]}",
+      "metrics": [],
+      "events": ["5eYj0JckP", "QiP29Bls-", "_dW34bUce", "axH6Fn4Ki"]
+    },
+    "crsxPVqkt": {
+      "id": "crsxPVqkt",
+      "name": "Checkout",
+      "description": "{\"ops\":[{\"insert\":\"Events relating to checkouts\\n\"}]}",
+      "metrics": [],
+      "events": [
+        "7G61o4B9G",
+        "UZqMos5s2",
+        "DsgnVFXkV",
+        "BtBhbKNW1",
+        "lNHB3Im57",
+        "eznH-ro_n"
+      ]
+    },
+    "U2yiEhv-z": {
+      "id": "U2yiEhv-z",
+      "name": "Onboarding",
+      "description": "{\"ops\":[{\"insert\":\"Events related to user onboarding\\n\"}]}",
+      "metrics": [],
+      "events": ["IoEtIvfQBw", "7npoe1yq6", "_CAGHkyxZ"]
+    },
+    "o2odrHGgK": {
+      "id": "o2odrHGgK",
+      "name": "Products",
+      "description": "{\"ops\":[]}",
+      "metrics": [],
+      "events": ["VSKv7P38Cg", "usqGPDSbeL", "dKxlmCGgz"]
+    },
+    "ujPLZEoj9": {
+      "id": "ujPLZEoj9",
+      "name": "User Interaction",
+      "description": "{\"ops\":[]}",
+      "metrics": [],
+      "events": [
+        "C3XnUJ3kRq",
+        "3ysJ7dtvo",
+        "taWnl30zC",
+        "Ds6WH3R15",
+        "jsvqaGWpl",
+        "l_-GUpBCa",
+        "KxcSTbeTj",
+        "FLcYab-wM"
+      ]
+    }
+  },
+  "propertyGroups": {}
 }
 ```
