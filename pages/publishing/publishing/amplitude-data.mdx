@@ -30,11 +30,11 @@ To publish your Avo tracking plan to Amplitude Data, click the "Publish to Ampli
 
 ### What Is Included In The Publish to Amplitude Data?
 
-On publish, Avo will merge your Avo tracking plan with any existing events in Amplitude Data. Any changes made to an event in Amplitude Data between Avo publish will be overridden on next Avo publish.
+On publish, Avo will merge your Avo tracking plan with any existing events and user properties in Amplitude Data. Any changes made to an event or a user property in Amplitude Data between Avo publish will be overridden on next Avo publish.
 
-Avo will not impact any events or properties that are not defined in Avo, or events that have not been added to the Amplitude Data integration in Avo. Avo will not impact any custom events defined in Amplitude Data.
+Avo will not impact any events or properties that are not defined in Avo, or events that have not been added to the Amplitude Data integration in Avo. Avo will publish all the user properties defined in your tracking plan to Amplitude. Avo will not impact any custom events or custom user properties defined in Amplitude Data and not defined in Avo.
 
-Here's how events, properties and categories are mapped from Avo to Amplitude Data:
+Here's how events, event properties properties, categories and user properties are mapped from Avo to Amplitude Data:
 
 #### Event
 
@@ -44,7 +44,7 @@ Here's how events, properties and categories are mapped from Avo to Amplitude Da
 
 #### Event Property
 
-- **Event property**: The property name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the property for an Amplitude destination, the name defined by the name mapping is used here.
+- **Event property**: The property name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the property for an Amplitude destination or all destinations, the name defined by the name mapping is used here.
 - **Event type**: The name of the event this property is attached to. If the property is attached to multiple events in Avo, multiple properties will be created in Amplitude Data because Amplitude Data does not support reusing properties across multiple events with a [global namespace](/data-design/global-namespace).
 - **Type**: The property type in Avo mapped to one of Amplitude Data's supported property types: `string`, `number`, `boolean`, `enum` or `any`
 - **Is array**: `true` if the "list" checkbox is checked on the property in Avo
@@ -56,10 +56,18 @@ Here's how events, properties and categories are mapped from Avo to Amplitude Da
 
 - **Name**: The name of the category as defined in Avo. If the category already exists in Amplitude Data, we reuse that one.
 
+#### User Property
+
+- **User Property**: The property name as defined in Avo. If [name mapping](/data-design/name-mapping) is applied to the property for an Amplitude destination or all destinations, the name defined by the name mapping is used here.
+- **Description**: The property description as defined in Avo
+- **Type**: The property type in Avo mapped to one of Amplitude Data's supported property types: `string`, `number`, `boolean`, `enum` or `any`
+- **Enum values**: If the property is of type string, and the ["property matches..." rule](/data-design/avo-tracking-plan/properties#enumeration-of-allowed-string-values) is applied in Avo, the allowed values are provided here
+- **Is array**: `true` if the "list" checkbox is checked on the property in Avo
+
 ## Amplitude Data Publishing Warnings
 
-- **409 Conflict**: Some events that are in your Amplitude Data Schema are not recognized by the Amplitude Data API, for example events that have been merged into other events in Amplitude Data or events that are blocked.
-  Events that end up returning 409 error in Amplitude are likely not active. If you'd like to get rid of this warning please double check them and remove them from your Avo tracking plan if they are not active anymore.
+- **409 Conflict**: Some events or properties that are in your Amplitude Data Schema are not recognized by the Amplitude Data API, for example events that have been merged into other events in Amplitude Data or events/properties that are blocked.
+  Events and properties that end up returning 409 error in Amplitude are likely not active. If you'd like to get rid of this warning please double check them and remove them from your Avo tracking plan if they are not active anymore.
 
 ## Amplitude Data Publishing Errors
 
@@ -67,7 +75,7 @@ The following errors might occur when publishing your tracking to Amplitude Data
 
 - **404 Not Found**: This error can be thrown in few scenarios:
 
-  - We tried to update an event that doesn't exist in your Amplitude Data Schema
+  - We tried to update an event or property that doesn't exist in your Amplitude Data Schema
   - If this error only occurs for events and properties Amplitude hasn't seen yet, it might indicate that the schema in Amplitude Data hasn't been initialized, or that you don't have access to the "Plan data" functionality in Amplitude Data
   - If this error occurs for all of the events you are attempting to publish it might indicate that your Amplitude Data Schema has not been initialized. Learn more about initializing your Amplitude Data Schema in [the Amplitude Data docs](https://help.amplitude.com/hc/en-us/articles/5078848559259).
     After you Amplitude Data Schema is initialized usually the API continues to return occasional 404 errors for a few more hours. If your Amplitude Data Schema has been initialized more than 6 hours ago and the error persists, please contact support.
