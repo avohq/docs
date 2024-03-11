@@ -85,7 +85,7 @@ const config: DocsThemeConfig = {
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },
-  primaryHue: 324,
+  primaryHue: 319,
   navbar: {
     extraContent: <SignIn />,
   },

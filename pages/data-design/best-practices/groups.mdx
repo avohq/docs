@@ -104,18 +104,29 @@ _Example_: If you have a “Company” group type, then group id could be “Mic
 
 **How to manage in Avo**: Add the "Update Group" action type to an Avo event. Then select which Groups to associate the user with.
 
-## Groups terminology across platforms
+## Simplified groups terminology guide
 
-There are two main concepts when working with group analytics. In Avo they are called “Group Types” and “Group Ids”. See reference table below for what “Group Types” and “Group IDs” are called in other platforms.
+This guide simplifies the understanding of group analytics across various platforms, focusing on Avo's "Group Types" and "Group Ids" and their equivalents in other tools.
 
-Group types are the types of groups you manage, for example companies, branches, chats and so on.
+### Key concepts
 
-Group ids are identifiers of the individual groups of those group types, for example in the “Company” group type you’d have group ids as names of the companies, like “Alibaba”, “Moderna”, “Uber”.
+- **Group Types:** Categories for organizing groups, such as companies, branches, or chats.
+- **Group Ids:** Unique identifiers for individual groups within a type, like specific company names or unique codes.
 
-|                        |            |            |
-| ---------------------- | ---------- | ---------- |
-| Concepts in Avo:       | Group Type | Group Id   |
-| Concept in Amplitude:  | Group Type | Group Name |
-| Concept in Mixpanel:   | Group Key  | Group Id   |
-| Concept in Segment:    | Group Id   | Group Name |
-| Concept in RudderStack:| Group Id   | Group Name |
+In Avo, groups are sorted by their type and each one is uniquely identified by an ID. For example in the “Company” group type you’d have group ids as identifiers of the companies, such as “Alibaba”, “Moderna”, “Company A” or "s5WLukvxA8". This organization method is prevalent in many analytics platforms. However, platforms like Segment and RudderStack identify groups solely by their IDs, without categorizing them into types.
+
+### Leveraging group properties
+
+Utilizing group properties is a powerful method for adding metadata to groups. This extra layer of information can enhance analytics by providing more context about each group, facilitating more detailed and targeted analysis.
+
+### Equivalents across platforms
+
+| Platform               | Equivalent to Avo’s Group Type | Equivalent to Avo’s Group Id |
+| ---------------------- | ------------------------------ | ---------------------------- |
+| Avo                    | Group Type                     | Group Id                     |
+| Amplitude              | Group Type                     | Group Name                   |
+| Mixpanel               | Group Key                      | Group Id                     |
+| Segment                | -                              | Group Id                     |
+| RudderStack            | -                              | Group Id                     |
+
+<Callout type="info" emoji="💡">The approach to group analytics varies across platforms. Some focus on unique identifiers without categorizing them into types, while the addition of group properties allows for enriched metadata, enhancing the understanding and analysis of group data.</Callout>
