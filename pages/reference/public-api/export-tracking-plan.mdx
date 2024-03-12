@@ -56,7 +56,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
 
 ```json
 {
-  "name": "Sandbox:main",
+  "name": "Exported Tracking Plan: main",
   "events": [
     {
       "id": "C3XnUJ3kRq",
@@ -81,65 +81,67 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "page_title": {
-              "id": "ElSfT9WzR",
-              "index": 0,
-              "description": "Title of the web page",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "page_title": {
+                "id": "ElSfT9WzR",
+                "index": 0,
+                "description": "Title of the web page",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "page_url": {
+                "id": "ojoRkR5_-",
+                "index": 1,
+                "description": "URL of the web page",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "page_query": {
+                "id": "rQ8gO_Oyf",
+                "index": 2,
+                "description": "HTML query string from page URL (?variable=value etc)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 3,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 4,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "page_url": {
-              "id": "ojoRkR5_-",
-              "index": 1,
-              "description": "URL of the web page",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "page_query": {
-              "id": "rQ8gO_Oyf",
-              "index": 2,
-              "description": "HTML query string from page URL (?variable=value etc)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 3,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 4,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "page_title",
-            "page_url",
-            "page_query",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "page_title",
+              "page_url",
+              "page_query",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -150,7 +152,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 3 - UI"],
       "categories": ["ujPLZEoj9"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "Z8siDew5I",
@@ -166,50 +168,52 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "link_label": {
-              "id": "PBwPS4fHR",
-              "index": 0,
-              "description": "The label on the link as seen by the user",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "link_label": {
+                "id": "PBwPS4fHR",
+                "index": 0,
+                "description": "The label on the link as seen by the user",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "link_url": {
+                "id": "najwoUnNr",
+                "index": 1,
+                "description": "The destination URL of the link",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 2,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 3,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "link_url": {
-              "id": "najwoUnNr",
-              "index": 1,
-              "description": "The destination URL of the link",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 2,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 3,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["link_label", "link_url", "app_name", "app_version"]
+            "additionalProperties": false,
+            "required": ["link_label", "link_url", "app_name", "app_version"]
+          }
         }
       }
     },
@@ -220,7 +224,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 1 - Customer/Revenue"],
       "categories": ["U2yiEhv-z"],
-      "actions": ["identify"],
+      "actions": ["logEvent", "identify"],
       "sources": [
         {
           "id": "g8jALgEm8",
@@ -242,113 +246,101 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [
-          {
-            "name": "accountCreated",
-            "destinationId": "jNEdDoL-7"
+        "required": ["properties", "nameMapping"],
+        "nameMapping": [],
+        "properties": {
+          "properties": {
+            "type": "object",
+            "properties": {
+              "authentication_method": {
+                "id": "AQlf1NLD_k",
+                "index": 0,
+                "description": "The mechanism by which the user authenticated their account (e.g. Google SSO, Apple SSO, email/pass)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 1,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 2,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": ["authentication_method", "app_name", "app_version"]
+          },
+          "userProperties": {
+            "type": "object",
+            "properties": {
+              "user_first_name": {
+                "id": "HSBADFYrPB",
+                "index": 0,
+                "description": "User's first name",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "user_surname": {
+                "id": "rSGLlBzhEg",
+                "index": 1,
+                "description": "User's surname",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "user_email_address": {
+                "id": "sEaU5fCUNz",
+                "index": 2,
+                "description": "User's email address",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "user_country": {
+                "id": "pQqfhfFcMZ",
+                "index": 3,
+                "description": "The country the user is based in",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "user_language": {
+                "id": "jHb6HjMpbB",
+                "index": 4,
+                "description": "The language the user has set within the application",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "user_first_name",
+              "user_surname",
+              "user_email_address",
+              "user_country",
+              "user_language"
+            ]
           }
-        ],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "authentication_method": {
-              "id": "AQlf1NLD_k",
-              "index": 0,
-              "description": "The mechanism by which the user authenticated their account (e.g. Google SSO, Apple SSO, email/pass)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 1,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 2,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["authentication_method", "app_name", "app_version"]
-        },
-        "userProperties": {
-          "type": "object",
-          "properties": {
-            "user_first_name": {
-              "id": "HSBADFYrPB",
-              "index": 0,
-              "description": "User's first name",
-              "nameMapping": [
-                {
-                  "name": "userFirstName",
-                  "destinationId": "YQ2yA9OUm"
-                },
-                {
-                  "name": "userName",
-                  "destinationId": "jNEdDoL-7"
-                }
-              ],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "user_surname": {
-              "id": "rSGLlBzhEg",
-              "index": 1,
-              "description": "User's surname",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "user_email_address": {
-              "id": "sEaU5fCUNz",
-              "index": 2,
-              "description": "User's email address",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "user_country": {
-              "id": "pQqfhfFcMZ",
-              "index": 3,
-              "description": "The country the user is based in",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "user_language": {
-              "id": "jHb6HjMpbB",
-              "index": 4,
-              "description": "The language the user has set within the application",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "user_first_name",
-            "user_surname",
-            "user_email_address",
-            "user_country",
-            "user_language"
-          ]
         }
       }
     },
@@ -359,7 +351,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["o2odrHGgK"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "WmAiFg1DR",
@@ -395,86 +387,88 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "product_id": {
-              "id": "Bslqe3Ili",
-              "index": 0,
-              "description": "Identifier for the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "id": "Bslqe3Ili",
+                "index": 0,
+                "description": "Identifier for the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "product_display_name": {
+                "id": "f2SJjht-L",
+                "index": 1,
+                "description": "The name of the product as shown to the user",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "product_price_usd": {
+                "id": "kzGzqqf6D",
+                "index": 2,
+                "description": "The price of the product in USD (ex tax+shipping)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "product_category": {
+                "id": "QqDB4vxlK",
+                "index": 3,
+                "description": "The category of the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["electronics", "clothing", "food", "outdoors"]
+              },
+              "product_description": {
+                "id": "8ZoOLi3hF",
+                "index": 4,
+                "description": "Description of the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 5,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 6,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "product_display_name": {
-              "id": "f2SJjht-L",
-              "index": 1,
-              "description": "The name of the product as shown to the user",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "product_price_usd": {
-              "id": "kzGzqqf6D",
-              "index": 2,
-              "description": "The price of the product in USD (ex tax+shipping)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "product_category": {
-              "id": "QqDB4vxlK",
-              "index": 3,
-              "description": "The category of the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["electronics", "clothing", "food", "outdoors"]
-            },
-            "product_description": {
-              "id": "8ZoOLi3hF",
-              "index": 4,
-              "description": "Description of the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 5,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 6,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "product_id",
-            "product_display_name",
-            "product_price_usd",
-            "product_category",
-            "product_description",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "product_display_name",
+              "product_price_usd",
+              "product_category",
+              "product_description",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -485,12 +479,12 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["o2odrHGgK"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "WmAiFg1DR",
           "name": "Android",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "jNEdDoL-7"
@@ -503,7 +497,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
         {
           "id": "8ZF8Z5i4M",
           "name": "iOS",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "jNEdDoL-7"
@@ -516,7 +510,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
         {
           "id": "Z8siDew5I",
           "name": "Website",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "YQ2yA9OUm"
@@ -527,86 +521,88 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "product_id": {
-              "id": "Bslqe3Ili",
-              "index": 0,
-              "description": "Identifier for the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "id": "Bslqe3Ili",
+                "index": 0,
+                "description": "Identifier for the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "product_display_name": {
+                "id": "f2SJjht-L",
+                "index": 1,
+                "description": "The name of the product as shown to the user",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "product_price_usd": {
+                "id": "kzGzqqf6D",
+                "index": 2,
+                "description": "The price of the product in USD (ex tax+shipping)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "product_category": {
+                "id": "QqDB4vxlK",
+                "index": 3,
+                "description": "The category of the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["electronics", "clothing", "food", "outdoors"]
+              },
+              "product_description": {
+                "id": "8ZoOLi3hF",
+                "index": 4,
+                "description": "Description of the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 5,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 6,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "product_display_name": {
-              "id": "f2SJjht-L",
-              "index": 1,
-              "description": "The name of the product as shown to the user",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "product_price_usd": {
-              "id": "kzGzqqf6D",
-              "index": 2,
-              "description": "The price of the product in USD (ex tax+shipping)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "product_category": {
-              "id": "QqDB4vxlK",
-              "index": 3,
-              "description": "The category of the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["electronics", "clothing", "food", "outdoors"]
-            },
-            "product_description": {
-              "id": "8ZoOLi3hF",
-              "index": 4,
-              "description": "Description of the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 5,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 6,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "product_id",
-            "product_display_name",
-            "product_price_usd",
-            "product_category",
-            "product_description",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "product_display_name",
+              "product_price_usd",
+              "product_category",
+              "product_description",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -617,12 +613,12 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 1 - Customer/Revenue"],
       "categories": ["crsxPVqkt"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "WmAiFg1DR",
           "name": "Android",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "MrfxKOlw8"
@@ -638,7 +634,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
         {
           "id": "8ZF8Z5i4M",
           "name": "iOS",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "MrfxKOlw8"
@@ -654,7 +650,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
         {
           "id": "Z8siDew5I",
           "name": "Website",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "YQ2yA9OUm"
@@ -668,99 +664,101 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "checkout_id": {
-              "id": "9_FVqqEuw",
-              "index": 0,
-              "description": "Identifier for the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_basket": {
-              "id": "SqIVNBclU",
-              "index": 1,
-              "description": "List of product property bundle objects",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "checkout_id": {
+                "id": "9_FVqqEuw",
+                "index": 0,
+                "description": "Identifier for the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_basket": {
+                "id": "SqIVNBclU",
+                "index": 1,
+                "description": "List of product property bundle objects",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              "checkout_payment_method": {
+                "id": "TXFbynuna",
+                "index": 2,
+                "description": "The payment method selected during the checkout",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["paypal", "card", "gpay", "apple_pay"]
+              },
+              "checkout_total_local": {
+                "id": "0pM63DmMx",
+                "index": 3,
+                "description": "Total amount of the order in local currency (ex shipping + tax)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "checkout_delivery_address": {
+                "id": "IR8foGF9s",
+                "index": 4,
+                "description": "Delivery address for the order to be shipped to",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_delivery_method": {
+                "id": "Ew_BIhOfS",
+                "index": 5,
+                "description": "The delivery method selected during the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["next_day", "standard", "named_day"]
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 6,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 7,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
               }
             },
-            "checkout_payment_method": {
-              "id": "TXFbynuna",
-              "index": 2,
-              "description": "The payment method selected during the checkout",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["paypal", "card", "gpay", "apple_pay"]
-            },
-            "checkout_total_local": {
-              "id": "0pM63DmMx",
-              "index": 3,
-              "description": "Total amount of the order in local currency (ex shipping + tax)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "checkout_delivery_address": {
-              "id": "IR8foGF9s",
-              "index": 4,
-              "description": "Delivery address for the order to be shipped to",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_delivery_method": {
-              "id": "Ew_BIhOfS",
-              "index": 5,
-              "description": "The delivery method selected during the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["next_day", "standard", "named_day"]
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 6,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 7,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "checkout_id",
-            "checkout_basket",
-            "checkout_total_local",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "checkout_id",
+              "checkout_basket",
+              "checkout_total_local",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -771,7 +769,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["o2odrHGgK"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "WmAiFg1DR",
@@ -807,86 +805,88 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "product_id": {
-              "id": "Bslqe3Ili",
-              "index": 0,
-              "description": "Identifier for the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "product_id": {
+                "id": "Bslqe3Ili",
+                "index": 0,
+                "description": "Identifier for the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "product_display_name": {
+                "id": "f2SJjht-L",
+                "index": 1,
+                "description": "The name of the product as shown to the user",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "product_price_usd": {
+                "id": "kzGzqqf6D",
+                "index": 2,
+                "description": "The price of the product in USD (ex tax+shipping)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "product_category": {
+                "id": "QqDB4vxlK",
+                "index": 3,
+                "description": "The category of the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["electronics", "clothing", "food", "outdoors"]
+              },
+              "product_description": {
+                "id": "8ZoOLi3hF",
+                "index": 4,
+                "description": "Description of the product",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 5,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 6,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "product_display_name": {
-              "id": "f2SJjht-L",
-              "index": 1,
-              "description": "The name of the product as shown to the user",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "product_price_usd": {
-              "id": "kzGzqqf6D",
-              "index": 2,
-              "description": "The price of the product in USD (ex tax+shipping)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "product_category": {
-              "id": "QqDB4vxlK",
-              "index": 3,
-              "description": "The category of the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["electronics", "clothing", "food", "outdoors"]
-            },
-            "product_description": {
-              "id": "8ZoOLi3hF",
-              "index": 4,
-              "description": "Description of the product",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 5,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 6,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "product_id",
-            "product_display_name",
-            "product_price_usd",
-            "product_category",
-            "product_description",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "product_id",
+              "product_display_name",
+              "product_price_usd",
+              "product_category",
+              "product_description",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -897,7 +897,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 3 - UI"],
       "categories": ["ujPLZEoj9"],
-      "actions": ["identify"],
+      "actions": ["logEvent", "identify"],
       "sources": [
         {
           "id": "WmAiFg1DR",
@@ -933,41 +933,43 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "authentication_method": {
-              "id": "AQlf1NLD_k",
-              "index": 0,
-              "description": "The mechanism by which the user authenticated their account (e.g. Google SSO, Apple SSO, email/pass)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "authentication_method": {
+                "id": "AQlf1NLD_k",
+                "index": 0,
+                "description": "The mechanism by which the user authenticated their account (e.g. Google SSO, Apple SSO, email/pass)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 1,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 2,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 1,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 2,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["authentication_method", "app_name", "app_version"]
+            "additionalProperties": false,
+            "required": ["authentication_method", "app_name", "app_version"]
+          }
         }
       }
     },
@@ -978,7 +980,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["crsxPVqkt"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "WmAiFg1DR",
@@ -1014,101 +1016,103 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "checkout_id": {
-              "id": "9_FVqqEuw",
-              "index": 0,
-              "description": "Identifier for the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_basket": {
-              "id": "SqIVNBclU",
-              "index": 1,
-              "description": "List of product property bundle objects",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "checkout_id": {
+                "id": "9_FVqqEuw",
+                "index": 0,
+                "description": "Identifier for the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_basket": {
+                "id": "SqIVNBclU",
+                "index": 1,
+                "description": "List of product property bundle objects",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              "checkout_payment_method": {
+                "id": "TXFbynuna",
+                "index": 2,
+                "description": "The payment method selected during the checkout",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["paypal", "card", "gpay", "apple_pay"]
+              },
+              "checkout_total_local": {
+                "id": "0pM63DmMx",
+                "index": 3,
+                "description": "Total amount of the order in local currency (ex shipping + tax)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "checkout_delivery_address": {
+                "id": "IR8foGF9s",
+                "index": 4,
+                "description": "Delivery address for the order to be shipped to",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_delivery_method": {
+                "id": "Ew_BIhOfS",
+                "index": 5,
+                "description": "The delivery method selected during the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["next_day", "standard", "named_day"]
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 6,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 7,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
               }
             },
-            "checkout_payment_method": {
-              "id": "TXFbynuna",
-              "index": 2,
-              "description": "The payment method selected during the checkout",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["paypal", "card", "gpay", "apple_pay"]
-            },
-            "checkout_total_local": {
-              "id": "0pM63DmMx",
-              "index": 3,
-              "description": "Total amount of the order in local currency (ex shipping + tax)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "checkout_delivery_address": {
-              "id": "IR8foGF9s",
-              "index": 4,
-              "description": "Delivery address for the order to be shipped to",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_delivery_method": {
-              "id": "Ew_BIhOfS",
-              "index": 5,
-              "description": "The delivery method selected during the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["next_day", "standard", "named_day"]
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 6,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 7,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "checkout_id",
-            "checkout_basket",
-            "checkout_total_local",
-            "checkout_delivery_address",
-            "checkout_delivery_method",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "checkout_id",
+              "checkout_basket",
+              "checkout_total_local",
+              "checkout_delivery_address",
+              "checkout_delivery_method",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -1119,12 +1123,12 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["crsxPVqkt"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "WmAiFg1DR",
           "name": "Android",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "YQ2yA9OUm"
@@ -1134,7 +1138,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
         {
           "id": "8ZF8Z5i4M",
           "name": "iOS",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "YQ2yA9OUm"
@@ -1144,7 +1148,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
         {
           "id": "Z8siDew5I",
           "name": "Website",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "YQ2yA9OUm"
@@ -1155,102 +1159,104 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "checkout_id": {
-              "id": "9_FVqqEuw",
-              "index": 0,
-              "description": "Identifier for the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_basket": {
-              "id": "SqIVNBclU",
-              "index": 1,
-              "description": "List of product property bundle objects",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "checkout_id": {
+                "id": "9_FVqqEuw",
+                "index": 0,
+                "description": "Identifier for the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_basket": {
+                "id": "SqIVNBclU",
+                "index": 1,
+                "description": "List of product property bundle objects",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              "checkout_payment_method": {
+                "id": "TXFbynuna",
+                "index": 2,
+                "description": "The payment method selected during the checkout",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["paypal", "card", "gpay", "apple_pay"]
+              },
+              "checkout_total_local": {
+                "id": "0pM63DmMx",
+                "index": 3,
+                "description": "Total amount of the order in local currency (ex shipping + tax)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "checkout_delivery_address": {
+                "id": "IR8foGF9s",
+                "index": 4,
+                "description": "Delivery address for the order to be shipped to",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_delivery_method": {
+                "id": "Ew_BIhOfS",
+                "index": 5,
+                "description": "The delivery method selected during the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["next_day", "standard", "named_day"]
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 6,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 7,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
               }
             },
-            "checkout_payment_method": {
-              "id": "TXFbynuna",
-              "index": 2,
-              "description": "The payment method selected during the checkout",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["paypal", "card", "gpay", "apple_pay"]
-            },
-            "checkout_total_local": {
-              "id": "0pM63DmMx",
-              "index": 3,
-              "description": "Total amount of the order in local currency (ex shipping + tax)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "checkout_delivery_address": {
-              "id": "IR8foGF9s",
-              "index": 4,
-              "description": "Delivery address for the order to be shipped to",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_delivery_method": {
-              "id": "Ew_BIhOfS",
-              "index": 5,
-              "description": "The delivery method selected during the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["next_day", "standard", "named_day"]
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 6,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 7,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "checkout_id",
-            "checkout_basket",
-            "checkout_payment_method",
-            "checkout_total_local",
-            "checkout_delivery_address",
-            "checkout_delivery_method",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "checkout_id",
+              "checkout_basket",
+              "checkout_payment_method",
+              "checkout_total_local",
+              "checkout_delivery_address",
+              "checkout_delivery_method",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -1261,7 +1267,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 1 - Customer/Revenue"],
       "categories": ["crsxPVqkt"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "g8jALgEm8",
@@ -1283,102 +1289,104 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "checkout_id": {
-              "id": "9_FVqqEuw",
-              "index": 0,
-              "description": "Identifier for the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_basket": {
-              "id": "SqIVNBclU",
-              "index": 1,
-              "description": "List of product property bundle objects",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "checkout_id": {
+                "id": "9_FVqqEuw",
+                "index": 0,
+                "description": "Identifier for the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_basket": {
+                "id": "SqIVNBclU",
+                "index": 1,
+                "description": "List of product property bundle objects",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              "checkout_payment_method": {
+                "id": "TXFbynuna",
+                "index": 2,
+                "description": "The payment method selected during the checkout",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["paypal", "card", "gpay", "apple_pay"]
+              },
+              "checkout_total_local": {
+                "id": "0pM63DmMx",
+                "index": 3,
+                "description": "Total amount of the order in local currency (ex shipping + tax)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "checkout_delivery_address": {
+                "id": "IR8foGF9s",
+                "index": 4,
+                "description": "Delivery address for the order to be shipped to",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_delivery_method": {
+                "id": "Ew_BIhOfS",
+                "index": 5,
+                "description": "The delivery method selected during the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["next_day", "standard", "named_day"]
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 6,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 7,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
               }
             },
-            "checkout_payment_method": {
-              "id": "TXFbynuna",
-              "index": 2,
-              "description": "The payment method selected during the checkout",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["paypal", "card", "gpay", "apple_pay"]
-            },
-            "checkout_total_local": {
-              "id": "0pM63DmMx",
-              "index": 3,
-              "description": "Total amount of the order in local currency (ex shipping + tax)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "checkout_delivery_address": {
-              "id": "IR8foGF9s",
-              "index": 4,
-              "description": "Delivery address for the order to be shipped to",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_delivery_method": {
-              "id": "Ew_BIhOfS",
-              "index": 5,
-              "description": "The delivery method selected during the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["next_day", "standard", "named_day"]
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 6,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 7,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "checkout_id",
-            "checkout_basket",
-            "checkout_payment_method",
-            "checkout_total_local",
-            "checkout_delivery_address",
-            "checkout_delivery_method",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "checkout_id",
+              "checkout_basket",
+              "checkout_payment_method",
+              "checkout_total_local",
+              "checkout_delivery_address",
+              "checkout_delivery_method",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -1389,7 +1397,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["crsxPVqkt"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "g8jALgEm8",
@@ -1408,98 +1416,100 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "checkout_id": {
-              "id": "9_FVqqEuw",
-              "index": 0,
-              "description": "Identifier for the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_basket": {
-              "id": "SqIVNBclU",
-              "index": 1,
-              "description": "List of product property bundle objects",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "checkout_id": {
+                "id": "9_FVqqEuw",
+                "index": 0,
+                "description": "Identifier for the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_basket": {
+                "id": "SqIVNBclU",
+                "index": 1,
+                "description": "List of product property bundle objects",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              "checkout_payment_method": {
+                "id": "TXFbynuna",
+                "index": 2,
+                "description": "The payment method selected during the checkout",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["paypal", "card", "gpay", "apple_pay"]
+              },
+              "checkout_total_local": {
+                "id": "0pM63DmMx",
+                "index": 3,
+                "description": "Total amount of the order in local currency (ex shipping + tax)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "checkout_delivery_address": {
+                "id": "IR8foGF9s",
+                "index": 4,
+                "description": "Delivery address for the order to be shipped to",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_delivery_method": {
+                "id": "Ew_BIhOfS",
+                "index": 5,
+                "description": "The delivery method selected during the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["next_day", "standard", "named_day"]
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 6,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 7,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
               }
             },
-            "checkout_payment_method": {
-              "id": "TXFbynuna",
-              "index": 2,
-              "description": "The payment method selected during the checkout",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["paypal", "card", "gpay", "apple_pay"]
-            },
-            "checkout_total_local": {
-              "id": "0pM63DmMx",
-              "index": 3,
-              "description": "Total amount of the order in local currency (ex shipping + tax)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "checkout_delivery_address": {
-              "id": "IR8foGF9s",
-              "index": 4,
-              "description": "Delivery address for the order to be shipped to",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_delivery_method": {
-              "id": "Ew_BIhOfS",
-              "index": 5,
-              "description": "The delivery method selected during the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["next_day", "standard", "named_day"]
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 6,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 7,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "checkout_id",
-            "checkout_basket",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "checkout_id",
+              "checkout_basket",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -1510,7 +1520,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 3 - UI"],
       "categories": ["ujPLZEoj9"],
-      "actions": ["unidentify"],
+      "actions": ["logEvent", "unidentify"],
       "sources": [
         {
           "id": "WmAiFg1DR",
@@ -1546,32 +1556,34 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 0,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 0,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 1,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 1,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["app_name", "app_version"]
+            "additionalProperties": false,
+            "required": ["app_name", "app_version"]
+          }
         }
       }
     },
@@ -1582,7 +1594,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["crsxPVqkt"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "g8jALgEm8",
@@ -1601,98 +1613,100 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "checkout_id": {
-              "id": "9_FVqqEuw",
-              "index": 0,
-              "description": "Identifier for the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_basket": {
-              "id": "SqIVNBclU",
-              "index": 1,
-              "description": "List of product property bundle objects",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "checkout_id": {
+                "id": "9_FVqqEuw",
+                "index": 0,
+                "description": "Identifier for the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_basket": {
+                "id": "SqIVNBclU",
+                "index": 1,
+                "description": "List of product property bundle objects",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {},
+                  "additionalProperties": false
+                }
+              },
+              "checkout_payment_method": {
+                "id": "TXFbynuna",
+                "index": 2,
+                "description": "The payment method selected during the checkout",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["paypal", "card", "gpay", "apple_pay"]
+              },
+              "checkout_total_local": {
+                "id": "0pM63DmMx",
+                "index": 3,
+                "description": "Total amount of the order in local currency (ex shipping + tax)",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "number"
+              },
+              "checkout_delivery_address": {
+                "id": "IR8foGF9s",
+                "index": 4,
+                "description": "Delivery address for the order to be shipped to",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "checkout_delivery_method": {
+                "id": "Ew_BIhOfS",
+                "index": 5,
+                "description": "The delivery method selected during the checkout process",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string",
+                "enum": ["next_day", "standard", "named_day"]
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 6,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 7,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
               }
             },
-            "checkout_payment_method": {
-              "id": "TXFbynuna",
-              "index": 2,
-              "description": "The payment method selected during the checkout",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["paypal", "card", "gpay", "apple_pay"]
-            },
-            "checkout_total_local": {
-              "id": "0pM63DmMx",
-              "index": 3,
-              "description": "Total amount of the order in local currency (ex shipping + tax)",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "checkout_delivery_address": {
-              "id": "IR8foGF9s",
-              "index": 4,
-              "description": "Delivery address for the order to be shipped to",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "checkout_delivery_method": {
-              "id": "Ew_BIhOfS",
-              "index": 5,
-              "description": "The delivery method selected during the checkout process",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string",
-              "enum": ["next_day", "standard", "named_day"]
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 6,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 7,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "checkout_id",
-            "checkout_basket",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "checkout_id",
+              "checkout_basket",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -1703,7 +1717,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["U2yiEhv-z"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "g8jALgEm8",
@@ -1725,32 +1739,34 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 0,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 0,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 1,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 1,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["app_name", "app_version"]
+            "additionalProperties": false,
+            "required": ["app_name", "app_version"]
+          }
         }
       }
     },
@@ -1787,41 +1803,43 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "screen_name": {
-              "id": "ewJGkBUN4B",
-              "index": 0,
-              "description": "Name of the screen",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "screen_name": {
+                "id": "ewJGkBUN4B",
+                "index": 0,
+                "description": "Name of the screen",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 1,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 2,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 1,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 2,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["screen_name", "app_name", "app_version"]
+            "additionalProperties": false,
+            "required": ["screen_name", "app_name", "app_version"]
+          }
         }
       }
     },
@@ -1832,7 +1850,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 3 - UI"],
       "categories": ["ujPLZEoj9"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "WmAiFg1DR",
@@ -1858,915 +1876,87 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "utm_term": {
-              "id": "P0RqnLoYI",
-              "index": 0,
-              "description": "The value for the UTM term parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_source": {
-              "id": "nt_xkeJ_X",
-              "index": 1,
-              "description": "The value for the UTM source parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_medium": {
-              "id": "PYlRhqIbU",
-              "index": 2,
-              "description": "The value for the UTM medium parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_content": {
-              "id": "BnYpd6LGX",
-              "index": 3,
-              "description": "The value for the UTM content parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_campaign": {
-              "id": "_7cSXSWo1",
-              "index": 4,
-              "description": "The value for the UTM campaign parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 5,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 6,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "utm_term",
-            "utm_source",
-            "utm_medium",
-            "utm_content",
-            "utm_campaign",
-            "app_name",
-            "app_version"
-          ]
-        }
-      }
-    },
-    {
-      "id": "KxcSTbeTj",
-      "name": "button_pressed",
-      "description": "When a user presses a button on the app",
-      "triggers": [],
-      "tags": ["Tier 3 - UI"],
-      "categories": ["ujPLZEoj9"],
-      "actions": [],
-      "sources": [
-        {
-          "id": "WmAiFg1DR",
-          "name": "Android",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            }
-          ]
-        },
-        {
-          "id": "8ZF8Z5i4M",
-          "name": "iOS",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            }
-          ]
-        }
-      ],
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "button_name": {
-              "id": "h6kSgMmQKU",
-              "index": 0,
-              "description": "The name of the button",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "button_label": {
-              "id": "wAtfDzKQEY",
-              "index": 1,
-              "description": "The text on the button as seen by the user",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "screen_name": {
-              "id": "ewJGkBUN4B",
-              "index": 2,
-              "description": "Name of the screen",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 3,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 4,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "button_name",
-            "button_label",
-            "screen_name",
-            "app_name",
-            "app_version"
-          ]
-        }
-      }
-    },
-    {
-      "id": "COlxu-Qod",
-      "name": "search_completed",
-      "description": "When a user completes a search",
-      "triggers": [],
-      "tags": ["Tier 2 - Product"],
-      "categories": ["wDR6HdP7z"],
-      "actions": [],
-      "sources": [
-        {
-          "id": "WmAiFg1DR",
-          "name": "Android",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            }
-          ]
-        },
-        {
-          "id": "8ZF8Z5i4M",
-          "name": "iOS",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            }
-          ]
-        },
-        {
-          "id": "Z8siDew5I",
-          "name": "Website",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            }
-          ]
-        }
-      ],
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "search_term": {
-              "id": "hWvlLV5G9x",
-              "index": 0,
-              "description": "The term used to complete a search",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 1,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 2,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["search_term", "app_name", "app_version"]
-        }
-      }
-    },
-    {
-      "id": "FLcYab-wM",
-      "name": "app_installed",
-      "description": "When a user first opens the app",
-      "triggers": [],
-      "tags": ["Tier 1 - Customer/Revenue"],
-      "categories": ["ujPLZEoj9"],
-      "actions": [],
-      "sources": [
-        {
-          "id": "WmAiFg1DR",
-          "name": "Android",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "MrfxKOlw8"
-            },
-            {
-              "id": "jNEdDoL-7"
-            },
-            {
-              "id": "YQ2yA9OUm"
-            }
-          ]
-        },
-        {
-          "id": "8ZF8Z5i4M",
-          "name": "iOS",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "MrfxKOlw8"
-            },
-            {
-              "id": "jNEdDoL-7"
-            },
-            {
-              "id": "YQ2yA9OUm"
-            }
-          ]
-        }
-      ],
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "utm_source": {
-              "id": "nt_xkeJ_X",
-              "index": 0,
-              "description": "The value for the UTM source parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_medium": {
-              "id": "PYlRhqIbU",
-              "index": 1,
-              "description": "The value for the UTM medium parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_campaign": {
-              "id": "_7cSXSWo1",
-              "index": 2,
-              "description": "The value for the UTM campaign parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_term": {
-              "id": "P0RqnLoYI",
-              "index": 3,
-              "description": "The value for the UTM term parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "utm_content": {
-              "id": "BnYpd6LGX",
-              "index": 4,
-              "description": "The value for the UTM content parameter if a deep link was used",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 5,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 6,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["app_name", "app_version"]
-        }
-      }
-    },
-    {
-      "id": "5eYj0JckP",
-      "name": "order_placed",
-      "description": "When an order has been placed by a customer",
-      "triggers": [],
-      "tags": ["Tier 1 - Customer/Revenue"],
-      "categories": ["KUZGzImDf"],
-      "actions": [],
-      "sources": [
-        {
-          "id": "g8jALgEm8",
-          "name": "Backend",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            },
-            {
-              "id": "jNEdDoL-7"
-            },
-            {
-              "id": "MrfxKOlw8"
-            }
-          ]
-        }
-      ],
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "order_id": {
-              "id": "W-TO6kmYQ",
-              "index": 0,
-              "description": "Unique identifier for an order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_total_usd": {
-              "id": "OxYb5LiYR",
-              "index": 1,
-              "description": "Total cost for the order (ex tax + shipping) in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_items": {
-              "id": "VIErVoXme",
-              "index": 2,
-              "description": "An array of product objects that contain the order items",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
+            "type": "object",
+            "properties": {
+              "utm_term": {
+                "id": "P0RqnLoYI",
+                "index": 0,
+                "description": "The value for the UTM term parameter if a deep link was used",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "utm_source": {
+                "id": "nt_xkeJ_X",
+                "index": 1,
+                "description": "The value for the UTM source parameter if a deep link was used",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "utm_medium": {
+                "id": "PYlRhqIbU",
+                "index": 2,
+                "description": "The value for the UTM medium parameter if a deep link was used",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "utm_content": {
+                "id": "BnYpd6LGX",
+                "index": 3,
+                "description": "The value for the UTM content parameter if a deep link was used",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "utm_campaign": {
+                "id": "_7cSXSWo1",
+                "index": 4,
+                "description": "The value for the UTM campaign parameter if a deep link was used",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 5,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 6,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
               }
             },
-            "order_tax_usd": {
-              "id": "U4Ce_L656",
-              "index": 3,
-              "description": "Total tax in USD payable on the order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "order_total_shipping_usd": {
-              "id": "V9ndt9dYl",
-              "index": 4,
-              "description": "Total shipping cost payable in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_guaranteed_delivery_date": {
-              "id": "UeJ98YTT1",
-              "index": 5,
-              "description": "Date the order is guaranteed to be delivered by",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_date": {
-              "id": "HQrVJ4iKk",
-              "index": 6,
-              "description": "Date the order was placed",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 7,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 8,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "order_id",
-            "order_total_usd",
-            "order_items",
-            "order_tax_usd",
-            "order_total_shipping_usd",
-            "order_guaranteed_delivery_date",
-            "order_date",
-            "app_name",
-            "app_version"
-          ]
-        }
-      }
-    },
-    {
-      "id": "QiP29Bls-",
-      "name": "order_confirmed",
-      "description": "When a placed order has been confirmed",
-      "triggers": [],
-      "tags": ["Tier 1 - Customer/Revenue"],
-      "categories": ["KUZGzImDf"],
-      "actions": [],
-      "sources": [
-        {
-          "id": "g8jALgEm8",
-          "name": "Backend",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            },
-            {
-              "id": "jNEdDoL-7"
-            }
-          ]
-        }
-      ],
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "order_id": {
-              "id": "W-TO6kmYQ",
-              "index": 0,
-              "description": "Unique identifier for an order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_total_usd": {
-              "id": "OxYb5LiYR",
-              "index": 1,
-              "description": "Total cost for the order (ex tax + shipping) in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_items": {
-              "id": "VIErVoXme",
-              "index": 2,
-              "description": "An array of product objects that contain the order items",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
-              }
-            },
-            "order_tax_usd": {
-              "id": "U4Ce_L656",
-              "index": 3,
-              "description": "Total tax in USD payable on the order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "order_total_shipping_usd": {
-              "id": "V9ndt9dYl",
-              "index": 4,
-              "description": "Total shipping cost payable in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_guaranteed_delivery_date": {
-              "id": "UeJ98YTT1",
-              "index": 5,
-              "description": "Date the order is guaranteed to be delivered by",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_date": {
-              "id": "HQrVJ4iKk",
-              "index": 6,
-              "description": "Date the order was placed",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 7,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 8,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "order_id",
-            "order_total_usd",
-            "order_items",
-            "order_tax_usd",
-            "order_total_shipping_usd",
-            "order_guaranteed_delivery_date",
-            "order_date",
-            "app_name",
-            "app_version"
-          ]
-        }
-      }
-    },
-    {
-      "id": "_dW34bUce",
-      "name": "order_dispatched",
-      "description": "When an order has been dispatched to the customer",
-      "triggers": [],
-      "tags": ["Tier 1 - Customer/Revenue"],
-      "categories": ["KUZGzImDf"],
-      "actions": ["revenue"],
-      "sources": [
-        {
-          "id": "g8jALgEm8",
-          "name": "Backend",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            },
-            {
-              "id": "jNEdDoL-7"
-            }
-          ]
-        }
-      ],
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "order_id": {
-              "id": "W-TO6kmYQ",
-              "index": 0,
-              "description": "Unique identifier for an order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_total_usd": {
-              "id": "OxYb5LiYR",
-              "index": 1,
-              "description": "Total cost for the order (ex tax + shipping) in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_items": {
-              "id": "VIErVoXme",
-              "index": 2,
-              "description": "An array of product objects that contain the order items",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
-              }
-            },
-            "order_tax_usd": {
-              "id": "U4Ce_L656",
-              "index": 3,
-              "description": "Total tax in USD payable on the order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "order_total_shipping_usd": {
-              "id": "V9ndt9dYl",
-              "index": 4,
-              "description": "Total shipping cost payable in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_guaranteed_delivery_date": {
-              "id": "UeJ98YTT1",
-              "index": 5,
-              "description": "Date the order is guaranteed to be delivered by",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_date": {
-              "id": "HQrVJ4iKk",
-              "index": 6,
-              "description": "Date the order was placed",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 7,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 8,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "order_id",
-            "order_total_usd",
-            "order_items",
-            "order_tax_usd",
-            "order_total_shipping_usd",
-            "order_guaranteed_delivery_date",
-            "order_date",
-            "app_name",
-            "app_version"
-          ]
-        }
-      }
-    },
-    {
-      "id": "axH6Fn4Ki",
-      "name": "order_delivered",
-      "description": "When an order has been successfully delivered",
-      "triggers": [],
-      "tags": ["Tier 1 - Customer/Revenue"],
-      "categories": ["KUZGzImDf"],
-      "actions": [],
-      "sources": [
-        {
-          "id": "g8jALgEm8",
-          "name": "Backend",
-          "implementWithCodegen": true,
-          "destinations": [
-            {
-              "id": "YQ2yA9OUm"
-            },
-            {
-              "id": "jNEdDoL-7"
-            }
-          ]
-        }
-      ],
-      "rules": {
-        "$schema": "http://json-schema.org/draft-06/schema#",
-        "type": "object",
-        "required": ["nameMapping"],
-        "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
-          "properties": {
-            "order_id": {
-              "id": "W-TO6kmYQ",
-              "index": 0,
-              "description": "Unique identifier for an order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_total_usd": {
-              "id": "OxYb5LiYR",
-              "index": 1,
-              "description": "Total cost for the order (ex tax + shipping) in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_items": {
-              "id": "VIErVoXme",
-              "index": 2,
-              "description": "An array of product objects that contain the order items",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {},
-                "additionalProperties": false
-              }
-            },
-            "order_tax_usd": {
-              "id": "U4Ce_L656",
-              "index": 3,
-              "description": "Total tax in USD payable on the order",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "number"
-            },
-            "order_total_shipping_usd": {
-              "id": "V9ndt9dYl",
-              "index": 4,
-              "description": "Total shipping cost payable in USD",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_guaranteed_delivery_date": {
-              "id": "UeJ98YTT1",
-              "index": 5,
-              "description": "Date the order is guaranteed to be delivered by",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "order_date": {
-              "id": "HQrVJ4iKk",
-              "index": 6,
-              "description": "Date the order was placed",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
-            },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 7,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 8,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "order_id",
-            "order_total_usd",
-            "order_items",
-            "order_tax_usd",
-            "order_total_shipping_usd",
-            "order_guaranteed_delivery_date",
-            "order_date",
-            "app_name",
-            "app_version"
-          ]
+            "additionalProperties": false,
+            "required": [
+              "utm_term",
+              "utm_source",
+              "utm_medium",
+              "utm_content",
+              "utm_campaign",
+              "app_name",
+              "app_version"
+            ]
+          }
         }
       }
     },
@@ -2777,12 +1967,12 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "triggers": [],
       "tags": ["Tier 2 - Product"],
       "categories": ["U2yiEhv-z"],
-      "actions": [],
+      "actions": ["logEvent"],
       "sources": [
         {
           "id": "8ZF8Z5i4M",
           "name": "iOS",
-          "implementWithCodegen": true,
+          "implementWithCodegen": false,
           "destinations": [
             {
               "id": "MrfxKOlw8"
@@ -2799,57 +1989,59 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
       "rules": {
         "$schema": "http://json-schema.org/draft-06/schema#",
         "type": "object",
-        "required": ["nameMapping"],
+        "required": ["properties", "nameMapping"],
         "nameMapping": [],
-        "eventProperties": {
-          "type": "object",
+        "properties": {
           "properties": {
-            "ios_tracking_enabled": {
-              "id": "MLjH5QhC8u",
-              "index": 0,
-              "description": "Whether the user has enabled app tracking for the app within iOS",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "string"
+            "type": "object",
+            "properties": {
+              "ios_tracking_enabled": {
+                "id": "MLjH5QhC8u",
+                "index": 0,
+                "description": "Whether the user has enabled app tracking for the app within iOS",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "string"
+              },
+              "app_name": {
+                "id": "T3A3iFXh7P",
+                "index": 1,
+                "description": "Name of the application that is generating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              },
+              "app_version": {
+                "id": "EPZIK4ZilD",
+                "index": 2,
+                "description": "Version of the application that is creating the events",
+                "nameMapping": [],
+                "isSystem": true,
+                "context": {},
+                "type": "string"
+              }
             },
-            "app_name": {
-              "id": "T3A3iFXh7P",
-              "index": 1,
-              "description": "Name of the application that is generating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
+            "additionalProperties": false,
+            "required": ["ios_tracking_enabled", "app_name", "app_version"]
+          },
+          "userProperties": {
+            "type": "object",
+            "properties": {
+              "user_ios_tracking_enabled": {
+                "id": "kc8fxETds",
+                "index": 0,
+                "description": "Whether the user has enabled app tracking for the app within iOS",
+                "nameMapping": [],
+                "isSystem": false,
+                "context": {},
+                "type": "boolean"
+              }
             },
-            "app_version": {
-              "id": "EPZIK4ZilD",
-              "index": 2,
-              "description": "Version of the application that is creating the events",
-              "nameMapping": [],
-              "isSystem": true,
-              "context": {},
-              "type": "string"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["ios_tracking_enabled", "app_name", "app_version"]
-        },
-        "userProperties": {
-          "type": "object",
-          "properties": {
-            "user_ios_tracking_enabled": {
-              "id": "kc8fxETds",
-              "index": 0,
-              "description": "Whether the user has enabled app tracking for the app within iOS",
-              "nameMapping": [],
-              "isSystem": false,
-              "context": {},
-              "type": "boolean"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["user_ios_tracking_enabled"]
+            "additionalProperties": false,
+            "required": ["user_ios_tracking_enabled"]
+          }
         }
       }
     }
