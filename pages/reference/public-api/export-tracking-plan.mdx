@@ -2970,16 +2970,15 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
 
 ### V1 -> V2
 
-#### BREAKING CHANGES
-
-- The `properties` array has been renamed to `eventProperties` in the `event.rules` object in the event.
-
 ### Bug Fixes
 
 - Optional Lists are now defined as optional, instead of the values inside them.
 
 #### New Features
 
-- The `userProperties` array has been added to the `event.rules` object
-- The `groupProperties` array has been added to the `event.rules` object
-- The `isSystem` field has been added to property object, set to true for properties that are system properties in Avo.
+- `userProperties` array has been added to the `event.rules.properties` object
+- `groupProperties` array has been added to the `event.rules.properties` object
+- `isSystemProperty` field has been added to property object, set to true for properties that are system properties in Avo.
+- `groupTypeId` optional field has been added to property object for groupProperties.
+- `propertyGroups` array has been added to schema object
+- `actions` array has been added to `event` object.
