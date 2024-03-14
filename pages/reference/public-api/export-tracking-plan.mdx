@@ -9,7 +9,7 @@ The Export API gives you the possibility to export your Avo tracking plan as JSO
 ## Endpoint
 
 ```Url
-https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v2
+https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1
 ```
 
 `:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`. `:branchId` is the ID of the branch you want to export. If you open a branch in Avo you can find it in the URL after `/branches/`. For the main branch simply use `main`. Note that the branch id is not the same as the branch name.
@@ -2158,9 +2158,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
 }
 ```
 
-## Changelog
-
-### V1 -> V2
+## Changelog 14 march 2024
 
 ### Bug Fixes
 
