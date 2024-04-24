@@ -150,13 +150,13 @@ You can learn more about common Tracking Plan spreadsheet formats [on our blog.]
 | Event Name                   | The name of your event                                            | App Opened                                 |
 | Event Description            | The description of your event                                     | Sent when the user opens the app           |
 | Event Category               | The category your event belongs to, if any                        | App Lifecycle                              |
-| Platforms                    | The name of the platforms this event should be sent from          | iOS, Android, Web                          |
-| Event Property Name          | The name of a property that should be sent with your event        | Device Type                                |
+| Sources                      | The name of the sources this event should be sent from            | iOS, Android, Web                          |
+| Property Name                | The name of a property that should be sent                        | Device Type                                |
 | Property Description         | The description of the property                                   | The type of client user is currently using |
 | Property Value Type          | The type of the property                                          | string                                     |
 | Is Property Required?        | True if the property should always be sent with your event        | true                                       |
 | Is Property Array?           | True if property should be array of values                        | false                                      |
-| Property Enumeration options | Finite list of all values allowed for the property, if applicable | iOS, Android, Web, Desktop, Fire           |
+| Property Enumeration Options | Finite list of all values allowed for the property, if applicable | iOS, Android, Web, Desktop, Fire           |
 
 ##### Optional columns for property bundles
 
@@ -168,13 +168,13 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 | Property Bundle Description | The description of the property bundle                                                                                                                | Required on all A/B tested events |
 | Event Property Bundle Name  | The name of the property bundle you'd like to attach to an event you're importing                                                                     | A/B Testing Properties            |
 
-##### Optional columns
+##### Other optional columns
 
-| Column Name                 | Description                                                                                                                                           | Example value                     |
-| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------- |
-| Event Tags                  | The tags attached to your event (separate multiple tags with ';')                                                                                     | Owner:Growth                      |
-| Pinned Value                | The pinned value of the property on this event                                                                                                        | iOS                               |
-
+| Column Name   | Description                                                           | Example value                                  |
+| :------------ | :-------------------------------------------------------------------- | :--------------------------------------------- |
+| Property Type | The type of the property as it is sent to your downstream destination | Event property, User property, System property |
+| Event Tags    | The tags attached to your event (separate multiple tags with ';')     | Owner:Growth                                   |
+| Pinned Value  | The pinned value of the property on this event                        | iOS                                            |
 
 #### Amplitude Taxonomy Template
 
