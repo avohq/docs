@@ -6,6 +6,8 @@ When defining a tracking plan for events that are used in multiple scenarios wit
 
 Event variants streamline the tracking plan by allowing variations of an event to suit different scenarios, making the specification more precise. Each variant, inheriting properties from a base event, can be modified and enhanced. This approach simplifies both implementation and communication with developers, as it narrows the scope of changes to only necessary areas. Additionally, event variants generate their own Codegen functions, facilitating quick and accurate implementation by developers and reducing uncertainty about property values. Existing events with numerous conditional properties used across various scenarios can greatly benefit from event variants.
 
+Let’s take a concrete but simplified example: You have an event called _Song played_ and it has a property called _song name_. Now you want to know when it's sent from a playlist and when it's sent from a search result with the _playlist_ and _search query_ properties. Without variants you'd have those properties as _sometimes sent_ and you might use triggers to describe what properties to send in what scenario. In this simple example it should be trivial to understand these properties and when to send them but this event might get complex fast, leading to confused data users and disgruntled developers. Using variants you'd only have the _song name_ property on the base event and then you'd create a _Playlist_ variant with the _playlist_ property as _always sent_ and another variant called _Search_ with the _search query_ property as _always sent_. This makes the relationship between the properties and the scenarios concrete and improves both the tracking plan specificity and the Codegen implementation for the developer. Furthermore if you make changes to the either variant, let's say you add a _playlist index_ property to the _Playlist_ variant, that change will only impact the implementation of the _Playlist_ scenario and not the base or _Search_ scenario, reducing the scope of the implementation and making it easier to maintain and improve the tracking.
+
 ## Using event variants
 
 Event variants can be created and edited by workspace members with _Editor_ and _Admin_ roles. They are available for users on the _Team_ and _Enterprise_ plans and you also get full access to event variants when you have an active trial.
@@ -34,11 +36,11 @@ Below is a description field that allows you to extend the base event descriptio
 
 The sources reflect the same sources as the base event.
 
-The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the … icon next to the property and select Remove property on this variant. To add a property, click the + add property to variant button and select the property you want to add. 
+The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the triple-dot icon next to the property and select Remove property on this variant. To add a property, click the _+ add property to variant_ button and select the property you want to add. 
 
 At the bottom of the event variant you will find the activity log that shows you all the changes that workspace members have made on the variant and, if the change was made on a branch, a link to it.
 
-Finally you can press the … icon in the header to copy a short-link to share the variant or archive it. You can unarchive it from the activity log in the branch overview if you change your mind.
+Finally you can press the triple-dot icon in the header to copy a short-link to share the variant or archive it. You can unarchive it from the activity log in the branch overview if you change your mind.
 
 
 ### Implementing event variants
@@ -52,7 +54,9 @@ Event variants show up in the diff view under the event and allow you to see a p
 In the branch code changes, event variants are displayed as a separate event to implement. This gives the developer a tailored, well typed Avo function to call for the specific scenario that event variant applies to.
 
 ### Publishing events with variants
-[Publishing](/publishing/publishing/overview) is a great way to push your tracking plan specs from Avo into your other schema registries and downstream tools. As event variants get sent using their base event name we need to account for them when publishing the event. To do that we create a “union” of the event and its variants. For example if you have an event that has an always sent property A, a variant that adds property B and another variant that has property C, the published event will include the always sent property A, _sometimes sent_ property B and _sometimes sent_ property C. This effectively mirrors how you might have defined the event without variants and allows your downstream tools to correctly validate and work with all events in Avo, whether they have variants or not.
+[Publishing](/publishing/publishing/overview) is a great way to push your tracking plan specs from Avo into your other schema registries and downstream tools. As event variants get sent using their base event name we need to account for them when publishing the event. To do that we create a “union” of the event and its variants. 
+
+For example: If you have an event that has an _always sent_ property A, a variant that adds property B and another variant that has property C, the published event will include the _always sent_ property A, _sometimes sent_ property B and _sometimes sent_ property C. This effectively mirrors how you might have defined the event without variants and allows your downstream tools to correctly validate and work with all events in Avo, whether they have variants or not.
 
 ### Event variants and Inspector 
 
