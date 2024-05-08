@@ -59,7 +59,7 @@ Each event variant gets their own Codegen function. This allows developers to ea
 
 Event variants show up in the diff view under the event and allow you to see a precise changelog of the variations on the event.
 
-In the branch code changes, event variants are displayed as a separate event to implement. This gives the developer a tailored, well typed Avo function to call for the specific scenario that event variant applies to.
+In the branch code changes, event variants are displayed as a separate event to implement. This gives the developer a tailored, well typed Codegen function or [pseudocode snippet](/data-design/branches/code-changes#non-codegen-snippets) to call for the specific scenario that event variant applies to.
 
 ### Publishing events with variants
 [Publishing](/publishing/publishing/overview) is a great way to push your tracking plan specs from Avo into your other schema registries and downstream tools. As event variants get sent using their base event name we need to account for them when publishing the event. To do that we create a “union” of the event and its variants. 
