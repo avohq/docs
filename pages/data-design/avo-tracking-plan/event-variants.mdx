@@ -68,7 +68,7 @@ For example: If you have an event that has an `always sent` property `A`, a vari
 
 ### Event variants and Inspector 
 
-We’ve engineered Inspector to be able to detect issues on events, even if they include complex and mutually exclusive variants. We do that by validating each incoming event structure against each event variant and if it doesn’t match the base or any of them, we create an issue on the base event. This means that even if you start using event variants you will not have to make any changes on how you send your events to Inspector. 
+We’ve engineered Inspector to be able to detect issues on events, even if they include complex and mutually exclusive variants. We do that by validating each incoming event structure against each event variant and if it doesn’t match the base event or any of its variants, we create an issue on the base event. This means that even if you start using event variants you will not have to make any changes on how you send your events to Inspector. 
 
 <Callout emoji="⚠️">The Inspector events view has not been updated to include event variants so you might see unexpected warnings there. For events with variants we’re showing a disclaimer to help you identify when an event warning might be a false-positive.</Callout>
 
