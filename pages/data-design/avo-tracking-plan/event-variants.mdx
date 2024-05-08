@@ -12,17 +12,17 @@ Event variants streamline the tracking plan by allowing variations of an event t
 
 ### A concrete example
 
-Let’s take a concrete but simplified example: You have an event called _Song played_ and it has a property called _song name_. Now you want to know when it's sent from a playlist and when it's sent from a search result with the _playlist_ and _search query_ properties. Without variants you'd have those properties as _sometimes sent_ and you might use triggers to describe what properties to send in what scenario. In this simple example it should be trivial to understand these properties and when to send them but this event might get complex fast, leading to confused data users and disgruntled developers. 
+Let’s take a concrete but simplified example: You have an event called _Song played_ and it has a property called `song name`. Now you want to know when it's sent from a playlist and when it's sent from a search result with the `playlist` and `search query` properties. Without variants you'd have those properties as `sometimes sent` and you might use triggers to describe what properties to send in what scenario. In this simple example it should be trivial to understand these properties and when to send them but this event might get complex fast, leading to confused data users and disgruntled developers. 
 
-Using variants you'd only have the _song name_ property on the base event and then you'd create a _Playlist_ variant with the _playlist_ property as _always sent_ and another variant called _Search_ with the _search query_ property as _always sent_. This makes the relationship between the properties and the scenarios clear and improves both the tracking plan specificity and the Codegen implementation for the developer. Furthermore if you make changes to the either variant, let's say you add a _playlist index_ property to the _Playlist_ variant, that change will only impact the implementation of the _Playlist_ scenario and not the base or _Search_ scenario, reducing the scope of the implementation and making it easier to maintain and improve the tracking.
+Using variants you'd only have the `song name` property on the base event and then you'd create a _Playlist_ variant with the `playlist` property as `always sent` and another variant called _Search_ with the `search query` property as `always sent`. This makes the relationship between the properties and the scenarios clear and improves both the tracking plan specificity and the Codegen implementation for the developer. Furthermore if you make changes to the either variant, let's say you add a `playlist index` property to the _Playlist_ variant, that change will only impact the implementation of the _Playlist_ scenario and not the base or _Search_ scenario, reducing the scope of the implementation and making it easier to maintain and improve the tracking.
 
 ## Using event variants
 
-Event variants can be created and edited by workspace members with _Editor_ and _Admin_ roles. They are available for users on the _Team_ and _Enterprise_ plans and you also get full access to event variants when you have an active trial.
+Event variants can be created and edited by workspace members with _Editor_ and _Admin_ roles. They are available for users on the _Team_ and _Enterprise_ plans and you also get full access to event variants when you have an active Team plan trial.
 
 ### Creating an event variant
 
-To create a new event variant, click the _+ New variant_ button close to the top of the event details view: 
+To create a new event variant, click the `+ New variant` button close to the top of the event details view: 
 
 ![Screenshot of the top-half of event details](/images/event-variants/event-details.png)
 
@@ -30,9 +30,9 @@ This opens up the event variant creation modal and allows you to pick a name for
 
 ![Screenshot of the event variant creation modal](/images/event-variants/create-event-variant-modal.png)
 
-<Callout type="info" emoji="💡">Avo validates your variant name against the event namespace to make sure that there are no clashes when using Codegen. In the same vein, you won’t be able to create an event name that conflicts with an existing event name + variant name.</Callout>
+<Callout type="info" emoji="💡">Avo validates your variant name against the event namespace to make sure that there are no clashes when using Codegen. In the same vein, you won’t be able to create an event name that conflicts with an existing event name + variant name. Note that variants are always tracked using the base event name, the variant name is only used for documentation.</Callout>
 
-Once you’ve found a good and valid name, press _Create variant_. That will open a new view with the event variant. 
+Once you’ve found a good and valid name, press `Create variant`. That will open a new view with the event variant. 
 
 ### The event variant view
 
@@ -44,7 +44,7 @@ Below is a description field that allows you to extend the base event descriptio
 
 The sources reflect the same sources as the base event.
 
-The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the triple-dot icon next to the property and select Remove property on this variant. To add a property, click the _+ add property to variant_ button and select the property you want to add. 
+The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the triple-dot icon next to the property and select Remove property on this variant. To add a property, click the `+ Add Property to Variant` button and select the property you want to add. 
 
 At the bottom of the event variant you will find the activity log that shows you all the changes that workspace members have made on the variant and, if the change was made on a branch, a link to it.
 
@@ -64,7 +64,7 @@ In the branch code changes, event variants are displayed as a separate event to 
 ### Publishing events with variants
 [Publishing](/publishing/publishing/overview) is a great way to push your tracking plan specs from Avo into your other schema registries and downstream tools. As event variants get sent using their base event name we need to account for them when publishing the event. To do that we create a “union” of the event and its variants. 
 
-For example: If you have an event that has an _always sent_ property A, a variant that adds property B and another variant that has property C, the published event will include the _always sent_ property A, _sometimes sent_ property B and _sometimes sent_ property C. This effectively mirrors how you might have defined the event without variants and allows your downstream tools to correctly validate and work with all events in Avo, whether they have variants or not.
+For example: If you have an event that has an `always sent` property `A`, a variant that adds property `B` and another variant that has property `C`, the published event will include the `always sent_` property `A`, `sometimes sent` property `B` and `sometimes sent` property `C`. This effectively mirrors how you might have defined the event without variants and allows your downstream tools to correctly validate and work with all events in Avo, whether they have variants or not.
 
 ### Event variants and Inspector 
 
