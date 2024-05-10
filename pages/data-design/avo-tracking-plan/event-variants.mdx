@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components'
+import Image from 'next/image'
 
 # Event variants
 
@@ -28,7 +29,9 @@ To create a new event variant, click the `+ New variant` button close to the top
 
 This opens up the event variant creation modal and allows you to pick a name for your new variant. 
 
+<div style={{maxWidth: 484, marginTop: "1em"}}>
 ![Screenshot of the event variant creation modal](/images/event-variants/create-event-variant-modal.png)
+</div>
 
 <Callout type="info" emoji="💡">Avo validates your variant name against the event namespace to make sure that there are no clashes when using Codegen. In the same vein, you won’t be able to create an event name that conflicts with an existing event name + variant name. Note that variants are always tracked using the base event name, the variant name is only used for documentation.</Callout>
 
@@ -46,10 +49,19 @@ The sources reflect the same sources as the base event.
 
 The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the triple-dot icon next to the property and select Remove property on this variant. To add a property, click the `+ Add Property to Variant` button and select the property you want to add. 
 
+Following the actions is the code snippet to track that event, with all the variations applied. If you're using Codegen, you'll get a tailored Codegen function for this variant else you'll see a pseudocode snippet with the base event name.
+
+<div style={{maxWidth: 678, marginTop: "1em"}}>
+![Screenshot of an event variant code snippet and activity log](/images/event-variants/event-variant-code-snippet.png)
+</div>
+
 At the bottom of the event variant you will find the activity log that shows you all the changes that workspace members have made on the variant and, if the change was made on a branch, a link to it.
 
 Finally you can press the triple-dot icon in the header to copy a short-link to share the variant or archive it. You can unarchive it from the activity log in the branch overview if you change your mind.
 
+<div style={{maxWidth: 313, marginTop: "1em"}}>
+    ![Screenshot of the option to restore an event variant from the workspace overview activity log](/images/event-variants/restore-event-variant.png)
+</div>
 
 ### Implementing event variants
 
@@ -70,8 +82,8 @@ For example: If you have an event that has an `always sent` property `A`, a vari
 
 We’ve engineered Inspector to be able to detect issues on events, even if they include complex and mutually exclusive variants. We do that by validating each incoming event structure against each event variant and if it doesn’t match the base event or any of its variants, we create an issue on the base event. This means that even if you start using event variants you will not have to make any changes on how you send your events to Inspector. 
 
-<Callout emoji="⚠️">The Inspector events view has not been updated to include event variants so you might see unexpected warnings there. For events with variants we’re showing a disclaimer to help you identify when an event warning might be a false-positive.</Callout>
+<Callout emoji="⚠️">The Inspector Events view has not been updated to include event variants so you might see unexpected warnings there. For events with variants we’re showing a disclaimer to help you identify when an event warning might be a false-positive.</Callout>
 
 ## Coming soon
 
-We’re stoked to introduce event variants to Avo and can’t wait to see how you use them to better define your tracking plan. As with any new features, there might be some things we need to iron out and iterate on. We are currently working on adding more variations like pinned properties, as well as commenting on variants, adding triggers and showing code snippets on the slide-over. If you come across any problems or find something missing for your use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app). 
+We’re stoked to introduce event variants to Avo and can’t wait to see how you use them to better define your tracking plan. As with any new features, there might be some things we need to iron out and iterate on. We are currently working on adding more variations like pinned properties, as well as commenting on variants and adding triggers to them. If you come across any problems or find something missing for your use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app). 
