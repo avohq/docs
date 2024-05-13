@@ -1,0 +1,90 @@
+For certain larger organizations, consisting of multiple sub-companies or products, it may be unfeasible or unwanted for the entire organization to share the same name space – but there may still be a need to centrally define and manage core events and properties across the organization. 
+
+For these scenarios, Avo offers the solution of setting up an Avo Organization containing multiple workspaces. In an Avo Organization, a central governance team is able to define core events and properties that should be sent consistently from some or all workspaces. These requirements are defined on a branch in a Global Requirements workspace.
+
+The core data structures of globally required events have limited editing capabilities in each local workspace. They can, however, be extended and modified within the constraints of the global definition.
+
+<Callout type="info" emoji="💡">**Reach Out for Beta Access** 
+Please note that the functionality described here is currently in beta. If you are interested in accessing these features, reach out to us for more information and inclusion in the beta program.</Callout>
+
+# The Global Requirements workflow
+
+## The Global Requirements workspace
+
+Once your Organization has been set up, a Global Requirements workspace is created. This workspace has a tracking plan of events and properties and is connected to all workspaces under the organization (an overview of these can be seen under “workspaces” in the main navigation bar. 
+
+## Defining and distributing Global requirements
+
+To define and distribute new or updated Global requirements, take the following steps:
+1. **Create a branch and draft changes**
+Define the global events and properties (link to section below) you want tracked across your organization. For each event, make sure to document the workspaces you want to adopt the requirements for each event. 
+2. **Review your branch**
+Review the data design of the branch in the same way you would any branch in Avo. See review suggestions in Avo. We also highly recommend navigating to and/or communicating with the owners of each local workspace that will be impacted by the new requirements to mitigate conflicts between what is being introduced globally and what already exists in each local workspace.
+3. **Merge branch and push to workspaces**
+After the branch has been reviewed, hit merge and push. This action will
+- Merge your requirements into the main branch of the global tracking plan
+- Automatically create branches specific to any local workspace which is affected by the changes to alter and update its tracking plan according to the merged global requirements.
+
+After merging the branch, you can monitor each workspace’s progress in adopting the new or updated global events and properties. On the branches overview screen in the global workspace – under the “merged” tab – you will see your merged branch as well as an overview of all derived branches in local workspaces and their respective statuses.
+
+## Receiving, implementing and merging global branches
+When a global branch is merged in the global workspace, it is pushed to each local workspace on branches containing the changes for each respective workspace. Thes branches will appear in the branches overview screen in each local workspace and are labeled as “global”.
+
+After a global branch is created in a local workspace, users in each local workspace can add their own specific context or modifications to the global requirements:
+- Add local event and property descriptions
+- Document triggers to describe the user and system actions that trigger the event in the product
+- Attach sources to events to define where they should be sent from
+- Add more properties, specific to their workspace, to events 
+- Define property presence rules for properties within the constraints of the global requirements
+
+After this, the branch goes through the same workflow as any other Avo branch. For additional information, see steps 4-6 of the Avo workflow: [Implement analytics events](/workflow/implement), [validate implementation](/workflow/validate) and [merge branch and publish](/workflow/merge-publish).
+
+##Resolving conflicts between global and local data structures
+When distributing global requirements, a global event or property may match the exact name of an event or property that already exists in the local workspace where the requirements are being introduced.
+
+In this scenario, the preexisting event or property in the local workspace will be converted to a global requirement and linked to the respective event or property in the global workspace. 
+
+The only exception to this is if the global requirements introduce a property that has the exact name as a preexisting local property, but has conflicting attributes. In this case, the global property will be added to the local tracking plan and replace the local property on any globally required event.
+
+Once the branch has been merged, the global events and properties will have limited editing capabilities in the local workspace. Any data structures or metadata on the local event or property that are not present in the global definition will persist and be editable in the local workspace, see Local edits to global events and properties).
+
+# Global events and properties
+The data structures in the global workspace are mostly defined in the same way as they would be in any other workspace, but with some exceptions, detailed below:
+
+## Global Events
+A Global event is defined in the Events section of the Global Tracking plan. The definition of a global event includes:
+- A descriptive [_Event Name_](/data-design/naming-conventions#2-what-does-naming-convention-refer-to)
+- A Global[_Description_](/data-design/defining-descriptive-events-and-properties#events-1). This field will be passed down to the local workspaces and be locked for editing, but each workspace can add their own “local description”
+- Workspaces that the event should be present in
+- [_Actions_](#actions) associated with the event, including global properties
+- [_Categories_](/data-design/organizing-metrics-and-events#categories) that the event is a part of (optional)
+- _Tags_ associated with the event
+- Workspace Name Mapping(s) for cases where local workspaces track the action of a globally required event under a different name.
+
+## Global Properties
+A Global property is defined in the event details within the relevant actions, or in the properties view and includes:
+- A descriptive [Property Name](/data-design/defining-descriptive-events-and-properties#properties). 
+- A Global [Description](/data-design/defining-descriptive-events-and-properties#properties-1). This field will be passed down to the local workspaces and be locked for editing, but each workspace can add their own “local description”
+- The [property value type](/data-design/avo-tracking-plan/properties#property-types-and-constraints) (required)
+- The [events](/data-design/avo-tracking-plan/events) that the property is attached to (required)
+- The [presence](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) of the property on each event – whether it's required or optional (required)
+- The [constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined for the property values (optional but highly recommended)
+- Workspace Name Mapping(s) for cases where local workspaces track the globally required property under a different name.
+
+## Local edits to global events and properties
+The core data structures of globally required events and properties are locked for edits in each local workspace, and can only be modified centrally in the Global workspace. These restrictions include:
+- Renaming or archiving local events and properties
+- Changing global definitions
+- Removing global properties from global events
+- Value rules which do not fall in the constraints of the globally required rule set
+- Setting properties on an event globally defined as “always sent” to be “sometimes sent” or “never sent”
+- Removing global categories and tags
+
+However, it is possible (and recommended) to add locally specific data structures and context to global events and properties. The following can be added or modified locally:
+- A local description for events and properties
+- The [Triggers](/data-design/guides/event-triggers) that describe the actions that trigger the global event
+- The [Sources](/data-design/define-sources-and-destinations) that events should be sent from
+- The [Metrics](/data-design/avo-tracking-plan/metrics) related to events
+- More specific [property presence rules](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) for global events set as “sometimes sent” from the global definition
+- Additional properties to be sent with global event
+- Tags and categories specific to the local workspace
