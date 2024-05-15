@@ -7,23 +7,22 @@ import PageLink, { TwoCol } from '../components/PageLink';
 
 # Get Started With Avo
 
-Below are the key areas to consider when getting started with Avo. You
-can start them in any order or in parallel, and skip those you
+There are a few ways to get started in Avo, all depending on your immediate needs:
+- [**Find (and fix) your data quality issues**](#get-an-overview-of-your-current-state-of-tracking-with-inspector): For teams that are struggling with data quality, install Inspector and get a view of all your data quality issues in one place
+- [**Try the Avo workflow**](#try-the-avo-workflow-for-your-next-analytics-release): For teams that want a solid workflow for their next analytics release, create a branch in Avo and define new events and properties
+- [**Audit your tracking plan**](#audit-your-tracking-plan): For teams that want a single source of truth for their tracking plan and review their event and property definitions, import your existing tracking plan into Avo or manually create one
+
+You can do these steps in any order or in parallel, and skip those you
 don’t think apply to you.
 
-## Get an overview of your current state of tracking with Inspector
+## Find (and fix) your data quality issues
 
-Avo Inspector gives you an overview of your current state of tracking
-and highlights issues and discrepancies in your tracking. Once you
-have your tracking plan in Avo, it flags discrepancies between your
-tracking plan and your actual tracking so you can see which events in
-your tracking plan are actually implemented and whether they’re being
-sent correctly.
+The first step to better analytics governance is knowing what’s wrong with your data today. Avo Inspector gives you an overview of your current state of tracking
+and highlights issues and discrepancies in your live event tracking. Avo then provides you with the tools to systematically get to better data, one resolved issue at a time. 
 
-Inspector also gives you an implementation status for every analytics
-release in your Avo Branch, available for dev, staging and production
-environments. This gives you confidence and visibility into the status
-and health of the event implementation.
+Install Inspector to get started. From install to live observability, Inspector is ready in under 89 seconds. Set up Inspector via your CDP and get to work on your data quality right away. 
+
+No CDP? No problem. Install via GTM or via a custom SDK.
 
 <PageLink
   image={'/docs/images/svg/analyticsmanager.svg'}
@@ -54,7 +53,7 @@ release.
 We recommend your first “full-circle” release in Avo be a small one,
 for example a product release that includes a handful of new or
 updated events. This will enable you to quickly go through your first
-analytics release in Avo, from start to finish.
+analytics release in Avo, from start to finish. You can do this with or without your tracking plan in Avo.
 
 <PageLink
   image={'/docs/images/svg/analyticsmanager.svg'}
@@ -63,27 +62,46 @@ analytics release in Avo, from start to finish.
   href={'/workflow/overview'}
 />
 
-## Import your tracking plan into Avo
+## Audit your tracking plan
 
-If you have an existing tracking plan we recommend importing it into
-Avo.
+Getting your tracking plan into Avo gives you an instant audit of your event structures. There are three ways to get your tracking plan into Avo:
 
-In the guide below you'll find information on what to consider
-before importing, how to import, and our suggested next steps after
-the import is completed.
+### Import from Amplitude, Mixpanel or Google Sheets
+
+If you are using Amplitude or Mixpanel, you can easily export your tracking plan from there and import it into Avo. If you have your tracking plan in Google Sheets or Excel, you can export a CSV and import it into Avo.
 
 <PageLink
   image={'/docs/images/svg/analyticsmanager.svg'}
-  title="Get Your Tracking Plan Into Avo"
-  description="Our recommendations for getting your existing tracking plan into Avo"
+  title="Import Tracking Plan"
+  description="Import your existing tracking plan into Avo"
   href={'/publishing/importing'}
 />
 
+### Import events from Inspector
 
+You can easily get your tracking plan into Avo by installing Inspector and importing your events one by one or in bulk.
+
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Import events from Inspector"
+  description="Import events from Inspector one by one or in bulk"
+  href={'/inspector/add-events-from-inspector'}
+/>
+
+### Build your tracking plan from scratch
+
+If you don't have a tracking plan or want to methodically make changes to it while getting it into Avo, you can lean on the real time feedback Avo provides to manually define it.
+
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Designing Data In Avo"
+    description="How to define metrics, events and properties step by step"
+    href={'/data-design/start-data-design'}
+  />
 
 ---
 
-### Guides and best practices
+## Guides and best practices
 
 <TwoCol>
   <PageLink
@@ -106,7 +124,7 @@ the import is completed.
   />
 </TwoCol>
 
-### Browse by product
+## Browse by product
 
 <TwoCol>
   <PageLink
@@ -147,7 +165,7 @@ the import is completed.
   />
 </TwoCol>
 
-### Developer Reference
+## Developer Reference
 
 <TwoCol>
   <PageLink
