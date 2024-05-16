@@ -31,7 +31,7 @@ To define and distribute new or updated Global requirements, take the following 
 
     ![The branch merge button in the global workspace](/images/data-design/global-branch-merge.png)
 
-After merging the branch, you can monitor each workspace’s progress in adopting the new or updated global events and properties. On the branches overview screen in the global workspace – under the “merged” tab – you will see your merged branch as well as an overview of all derived branches in local workspaces and their respective statuses.
+After merging the branch, you can monitor each local workspace’s progress in adopting the new or updated global events and properties. On the branches overview screen in the global workspace – under the “merged” tab – you will see your merged branch as well as an overview of all derived branches in local workspaces and their respective statuses.
 
 ![The overview of merged global branches and their respective branches in local workspaces](/images/data-design/global-branch-adoption-overview.png)
 
@@ -85,11 +85,11 @@ A Global property is defined in the event details within the relevant actions, o
 ### Local edits to global events and properties
 
 The core data structures of globally required events and properties are locked for edits in each local workspace, and can only be modified centrally in the Global workspace. These restrictions include:
-- Renaming or archiving local events and properties
-- Changing global definitions
+- Renaming or archiving global events and properties
+- Changing global descriptions
 - Removing global properties from global events
-- Value rules which do not fall in the constraints of the globally required rule set
-- Setting properties on an event globally defined as “always sent” to be “sometimes sent” or “never sent”
+- Value rules on globally required properties which do not fall in the constraints of the globally required rule set
+- Setting globally required properties that is on an event globally defined as “always sent” to be “sometimes sent” or “never sent” on globally required events
 - Removing global categories and tags
 
 However, it is possible (and recommended) to add locally specific data structures and context to global events and properties. The following can be added or modified locally:
