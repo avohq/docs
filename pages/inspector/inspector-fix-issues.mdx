@@ -8,7 +8,7 @@ When you find an issue in Inspector, the problem can due to either tracking impl
 
 ## Fixing an implementation issue found in Inspector
 
-If the implementation is incorrect according to the tracking plan, we recommend the following steps:
+If the implementation is incorrect according to the tracking plan, such that the data coming in is incorrect but the tracking plan is correct, we recommend the following steps:
 
 ### Step 1 - Copy the issue link
 
@@ -36,7 +36,7 @@ In your task management system, create a task or ticket and append the issue lin
 
 ### Step 3 - Validate
 
-Validate that the issue is fixed by checking the issue details again and verify that Inspector has seen the release version the issue was fixed in and that it's not an issue in that version. 
+Validate that the issue is fixed by checking that Inspector has seen the release version the issue was fixed in and go back to the issue details and verify that it's not an issue in that version. 
 
 To check what versions Inspector has seen, you click the button highlighted in the image below:
 
@@ -72,7 +72,7 @@ Once you have verified that the issue has been fixed in code, you can resolve th
 
 ## Fixing a tracking plan issue found in Inspector
 
-If the tracking plan is not representing the event correctly (and the implementation is correct), we recommend the following steps:
+If the tracking plan is not representing the event correctly (and the implementation is correct), such as the data coming in is correct and the tracking plan is incorrect, we recommend the following steps:
 
 ### Step 1 - Fix issue
 
@@ -92,7 +92,7 @@ If the issue is that the event or property is unexpected by the tracking plan, b
 
 **Event or property already in tracking plan but has an issue**
 
-If the issue is with an event or property that is already in the tracking plan, but for example the type does not match the tracking plan or the property is unexpected on the event, navigate to the event or property in the tracking plan and fix the issue.
+If the issue is on an event or property that is already in the tracking plan, such that the structure of data coming in is correct but the definition in the tracking plan is not correct, then you need to change the definition in the tracking plan. For example the issue can be that the type of the property does not match the tracking plan or the property is unexpected on the event. Then you can navigate to the event or property in the tracking plan and fix the issue.
 
 The issue details has links to the associated event and property in the tracking plan as shown below.
 
@@ -104,7 +104,7 @@ The issue details has links to the associated event and property in the tracking
   />
 </center>
 
-Once you are in the event or property, fix the issue accordingly. In this example, the type of the property was `float` in the tracking plan but the data coming in was `string`. The data coming in is correct and therefore we need to update the property type to `string` in the tracking plan.
+Once you are in the event or property details, fix the issue accordingly. In this example, the type of the property was `float` in the tracking plan but the data coming in was `string`. The data coming in is correct and therefore we need to update the property type to `string` in the tracking plan.
 
 <center>
   <img
