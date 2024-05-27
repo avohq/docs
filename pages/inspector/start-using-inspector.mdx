@@ -31,6 +31,28 @@ Inspector does not process property values or PII data, only event names, proper
 
 TL;DR: No PII data ever flows through Avo servers; only event schemas.
 
+## Start sending metadata to Inspector
+
+There are a [few ways to install Inspector](/inspector/inspector-installation-overview) to add observability to your events, depending on how you send your events from your product already as well as your preferences.
+
+- [CDP Integration (Customer Data Platform)](/inspector/inspector-installation-overview#install-inspector-in-your-cdp): If you are already sending events through a CDP, then this is a great option as it does not require a developer to update your application and release a new version.
+- [GTM Integration (Google Tag Manager)](/inspector/connect-inspector-to-gtm): If you are sending events from GTM, you can use our GTM integration to observe those events
+- [Inspector SDKs](/reference/avo-inspector-sdks/overview): If you are not sending events through a CDP or GTM, then a developer can install our easy to use SDKs into your application to observe events directly from the source
+- [HTML tag](/reference/avo-inspector-sdks/web#installation-option-2-html-tag): This is a good option for those that are using other tag managers than GTM
+
+<PageLink
+  image={'/docs/images/svg/dev.svg'}
+  title="Inspector Installation Overview"
+  description="All the methods available to install Inspector to your application."
+  href={'/inspector/inspector-installation-overview'}
+/>
+
+### Does Inspector receive PII data?
+
+No. Inspector does not receive any PII data. Inspector only takes schema metadata, containing event names, property names, and types of properties.
+
+Learn more technical details about the [Avo Inspector here](/implementation/avo-inspector-overview).
+
 ## Learning about Inspector issues and events
 
 After [setting up your sources](/inspector/configuring-inspector-sources) to send data to the Inspector with the direct CDP integrations or [Avo Inspector SDKs](/implementation/avo-inspector-sdk-reference) you will see the data appearing in the the Inspector tab.
@@ -42,7 +64,12 @@ The Inspector issues view displays information about anomalies and discrepancies
 
 ![Image shows an example default view of the Inspector issues view.](/images/inspector/inspector-issues-default.png)
 
-Learn more about the [Issues view here](/inspector/inspector-issues-view).
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Issues View"
+  description="What is the issues view and what can I learn from it?."
+  href={'/inspector/inspector-issues-view'}
+/>
 
 ### Events view
 
@@ -50,37 +77,58 @@ The Inspector events view provides a report on all event tracking Inspector has 
 
 ![Inspector tab](/images/workspace/nav-inspector.png)
 
-Learn more about the [Events view here](/inspector/inspector-events-view).
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Events view"
+  description="What is the events view and what can I learn from it?."
+  href={'/inspector/inspector-events-view'}
+/>
+
 
 > The production environment in Inspector is designed to handle large amounts of data and has up to 2 hours delay from receiving events to displaying them on a dashboard.
 
 > Events on dev and staging have no delay in processing and will be shown on the dashboard immediately.
 
-### Building your tracking plan using Inspector
+## Building your tracking plan using Inspector
 
-You can add both events and properties from Inspector, both via the issues view (where you can bulk import events and properties) and the events view (where you can add individual events). Learn more [here](/inspector/add-events-from-inspector).
+You can add both events and properties from Inspector, both via the issues view (where you can bulk import events and properties) and the events view (where you can add individual events).
 
-## How to send metadata to Inspector
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Import events from Inspector"
+  description="How to import your tracking plan from your live data in Inspector."
+  href={'/inspector/add-events-from-inspector'}
+/>
 
-There are a [few ways to install Inspector](/inspector/inspector-installation-overview) to add observability to your events, depending on how you send your events from your product already as well as your preferences.
+## Finding data quality issues
 
-- [CDP Integration (Customer Data Platform)](/inspector/inspector-installation-overview#install-inspector-in-your-cdp): If you are already sending events through a CDP, then this is a great option as it does not require a developer to update your application and release a new version.
-- [GTM Integration (Google Tag Manager)](/inspector/connect-inspector-to-gtm): If you are sending events from GTM, you can use our GTM integration to observe those events
-- [Inspector SDKs](/reference/avo-inspector-sdks/overview): If you are not sending events through a CDP or GTM, then a developer can install our easy to use SDKs into your application to observe events directly from the source
-- [HTML tag](/reference/avo-inspector-sdks/web#installation-option-2-html-tag): This is a good option for those that are using other tag managers than GTM
+The issues view is great for finding data quality issues that are important to you and your team. There you can sort and filter your issues - and save views to be able to get back to your custom view fast and get alerted when new issues match your criteria.
 
- <PageLink
-   image={'/docs/images/svg/dev.svg'}
-   title="Inspector Installation Overview"
-   description="All the methods available to install Inspector to your application."
-   href={'/inspector/inspector-installation-overview'}
- />
+<TwoCol>
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Find Issues"
+  description="How to use the Issues view to find your data quality issues."
+  href={'/inspector/inspector-find-issues'}
+/>
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Inspector Alerts for Slack"
+  description="How to start receiving Slack alerts for your Inspector issues"
+  href={'/inspector/inspector-slack-alerts'}
+/>
+</TwoCol>
 
-### Does Inspector receive PII data?
+## Fixing data quality issues
 
-No. Inspector does not receive any PII data. Inspector only takes schema metadata, containing event names, property names, and types of properties.
+Whether your data quality issue is because the implementation is incorrect compared to the tracking plan or the tracking plan is incorrect compared to the data coming in, Inspector provides you with tool to fix your issues.
 
-Learn more technical details about the [Avo Inspector here](/implementation/avo-inspector-overview).
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Fix Issues"
+  description="How to fix issues found with Inspector"
+  href={'/docs/inspector/inspector-fix-issues'}
+/>
 
 ## What's next?
 
