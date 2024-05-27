@@ -108,6 +108,24 @@ This breakdown can be helpful to understand which releases have been fully rolle
 
 In the example above, Inspector has seen a very low volume of events from the latest release on iOS (2.3.0) compared to prior releases. This is a strong indication that the latest release has not been fully rolled out.
 
+## Troubleshooting
+
+### Why are there no issues in my issues view?
+
+There are several reasons that may cause no issues to appear in your issues view, whether it's for a specific source or overall.
+
+#### Inspector not installed on source
+
+The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. [install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on the source for which you'd like to see issues.
+
+#### Inspector not installed on production
+
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed for production on any given source, you won't see any issues in the Issues view. [Install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source for which you'd like to see issues.
+
+#### No issues in production for the past 24 hours
+
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!
+
 ## What's next?
 
 Now that you have issues in your issues view, you can start learning about the [issue types](/inspector/issue-types-in-inspector'), [finding issues](/inspector/inspector-find-issues) that are important to you and [fixing issues](/inspector/inspector-fix-issues) to systematically getting to better data, one resolved issue at a time. You can also start building your tracking plan by [importing events from Inspector](/inspector/add-events-from-inspector) into you Avo tracking plan.
