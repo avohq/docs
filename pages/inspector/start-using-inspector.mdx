@@ -1,3 +1,5 @@
+import PageLink, { TwoCol } from '../../components/PageLink';
+
 # Use Inspector to improve your tracking plan health
 
 ## What is Avo Inspector
@@ -60,12 +62,19 @@ You can add both events and properties from Inspector, both via the issues view 
 
 ## How to send metadata to Inspector
 
-There are a few ways to install Inspector to add observability to your events, depending on how you send your events from your product already as well as your preferences.
+There are a [few ways to install Inspector](/inspector/inspector-installation-overview) to add observability to your events, depending on how you send your events from your product already as well as your preferences.
 
 - [CDP Integration (Customer Data Platform)](/inspector/inspector-installation-overview#install-inspector-in-your-cdp): If you are already sending events through a CDP, then this is a great option as it does not require a developer to update your application and release a new version.
 - [GTM Integration (Google Tag Manager)](/inspector/connect-inspector-to-gtm): If you are sending events from GTM, you can use our GTM integration to observe those events
 - [Inspector SDKs](/reference/avo-inspector-sdks/overview): If you are not sending events through a CDP or GTM, then a developer can install our easy to use SDKs into your application to observe events directly from the source
 - [HTML tag](/reference/avo-inspector-sdks/web#installation-option-2-html-tag): This is a good option for those that are using other tag managers than GTM
+
+ <PageLink
+   image={'/docs/images/svg/dev.svg'}
+   title="Inspector Installation Overview"
+   description="All the methods available to install Inspector to your application."
+   href={'/inspector/inspector-installation-overview'}
+ />
 
 ### Does Inspector receive PII data?
 
