@@ -1054,4 +1054,15 @@ const redirects = [
     destination: '/faqs/inspector-faq',
     permanent: true,
   },
+  {
+    source: '/inspector/inspector-overview',
+    destination: '/inspector/start-using-inspector',
+    permanent: true,
+  },
+  {
+    source: '/inspector/avo-inspector-overview',
+    destination: '/reference/avo-inspector-sdks/overview',
+    permanent: true,
+  },
+
 ];

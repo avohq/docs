@@ -1,0 +1,138 @@
+import { Callout } from 'nextra/components';
+import PageLink, { TwoCol } from '../../components/PageLink';
+
+
+# Fixing Inspector issues
+
+When you find an issue in Inspector, the problem can due to either tracking implementation or the tracking plan.
+
+## Fixing an implementation issue found in Inspector
+
+If the implementation is incorrect according to the tracking plan, such that the data coming in is incorrect but the tracking plan is correct, we recommend the following steps:
+
+### Step 1 - Copy the issue link
+
+In the issue details, copy the link to the individual issue
+
+<center>
+  <img
+    src="/docs/images/inspector/inspector-issue-details-copy-link.png"
+    width="500px"
+    alt="Image shows issue details with copy link highlighted."
+  />
+</center>
+
+### Step 2 - Create a ticket and assign
+
+In your task management system, create a task or ticket and append the issue link and relevant details. Assign the task or ticket to the relevant individual and/or team to investigate and fix the issue in the corresponding code.
+
+<center>
+  <img
+    src="/docs/images/inspector/inspector-issue-in-project-management-tool.png"
+    width="600px"
+    alt="Image shows an example ticket in a project management tool to fix an issue found in Inspector."
+  />
+</center>
+
+### Step 3 - Validate
+
+Validate that the issue is fixed by checking that Inspector has seen the release version the issue was fixed in and go back to the issue details and verify that it's not an issue in that version. 
+
+To check what versions Inspector has seen, you click the button highlighted in the image below:
+
+<center>
+  <img
+    src="/docs/images/inspector/inspector-release-version-overview.png"
+    width="600px"
+    alt="Image shows what button to click to get an overview of the release versions Inspector has seen."
+  />
+</center>
+
+In this example, the latest version on Android is `6.23.9` and the issue has not been seen in that version as can be seen in the image below.
+
+<center>
+  <img
+    src="/docs/images/inspector/issue-details-release-versions-highlighted.png"
+    width="600px"
+    alt="Image shows issue details with the release version highlighted."
+  />
+</center>
+
+### Step 4 - Resolve issue
+
+Once you have verified that the issue has been fixed in code, you can resolve the issue for the release it was fixed in. If the issue reappears, it will be marked as a regression.
+
+<center>
+  <img
+    src="/docs/images/inspector/issue-resolved-in-release-version.png"
+    width="600px"
+    alt="Image shows how to resolve an issue in the current release version."
+  />
+</center>
+
+## Fixing a tracking plan issue found in Inspector
+
+If the tracking plan is not representing the event correctly (and the implementation is correct), such as the data coming in is correct and the tracking plan is incorrect, we recommend the following steps:
+
+### Step 1 - Fix issue
+
+The first step is to fix the issue in the tracking plan. Depending on the issue, it can either be done by adding the event or property to the tracking plan or fixing an event or property that is already in the tracking plan.
+
+**Event or property unexpected by tracking plan**
+
+If the issue is that the event or property is unexpected by the tracking plan, but it is correctly sent and should be in the tracking plan, you can add it to the tracking plan directly from the issue details.
+
+<center>
+  <img
+    src="/docs/images/inspector/issue-details-add-to-tracking-plan.png"
+    width="600px"
+    alt="Image shows how to add an event to the tracking plan from the issue details."
+  />
+</center>
+
+**Event or property already in tracking plan but has an issue**
+
+If the issue is on an event or property that is already in the tracking plan, such that the structure of data coming in is correct but the definition in the tracking plan is not correct, then you need to change the definition in the tracking plan. For example the issue can be that the type of the property does not match the tracking plan or the property is unexpected on the event. Then you can navigate to the event or property in the tracking plan and fix the issue.
+
+The issue details has links to the associated event and property in the tracking plan as shown below.
+
+<center>
+  <img
+    src="/docs/images/inspector/navigate-to-property-from-issue-details.png"
+    width="600px"
+    alt="Image shows how to navigate from the issues view to the affected property."
+  />
+</center>
+
+Once you are in the event or property details, fix the issue accordingly. In this example, the type of the property was `float` in the tracking plan but the data coming in was `string`. The data coming in is correct and therefore we need to update the property type to `string` in the tracking plan.
+
+<center>
+  <img
+    src="/docs/images/inspector/update-property-type-in-property-details.png"
+    width="600px"
+    alt="Image shows how to update the type of the property."
+  />
+</center>
+
+### Step 2 - Resolve issue
+
+Once the necessary updates are made in the Tracking Plan, update the issue status to _Resolved_. If the issue reappears, it will be marked as a regression.
+
+<center>
+  <img
+    src="/docs/images/inspector/resolve-tracking-plan-issue.png"
+    width="600px"
+    alt="Image shows how to resolve an issue."
+  />
+</center>
+
+## What's next
+
+Now that you have started fixing issues, we recommend using Avo to plan your next feature release.
+
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Designing data in Avo"
+  description="How to plan your next feature release in Avo."
+  href={'/data-design/start-data-design'}
+/>
