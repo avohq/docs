@@ -93,12 +93,19 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | ?enum        | array(string)                | Allowed enum values                           |
 | ?operations  | array(string)                | Array of property ops, e.g. "SnowplowContext" |
 
-##### NameMapping Model
+##### NameMapping Model for regular workspaces
 
-| Attribute     | Type   | Description                                                                                                                               |
-| :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| name          | string | New mapped name                                                                                                                           |
-| destinationId | string | Either a destination id for which this property mapping applies, or "all", meaning that this property mapping applies to all destinations |
+| Attribute     | Type   | Description                                                                                                                                           |
+| :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name          | string | New mapped name                                                                                                                                       |
+| destinationId | string | Either a destination id for which this event/property mapping applies, or "all", meaning that this event/property mapping applies to all destinations |
+
+##### NameMapping Model for global workspaces in an Organization
+
+| Attribute   | Type   | Description                                                                                                                                                                |
+| :---------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| name        | string | New mapped name                                                                                                                                                            |
+| workspaceId | string | Either a workspace id for which this event/property mapping applies, or "all", meaning that this event/property mapping applies to all local workspace in the Organization |
 
 ##### Metric Model
 
@@ -163,13 +170,23 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ##### PublishInfo Model
 
-| Attribute       | Type              | Description                                                                                               |
-| :-------------- | :---------------- | :-------------------------------------------------------------------------------------------------------- |
-| branchId        | id                | Branch id                                                                                                 |
-| branchName      | string            | Branch name                                                                                               |
-| integrationId   | string            | Id of the publish integration (consistently the same for this integration)                                |
-| integrationName | string            | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName')                |
-| publishDate     | Date string       | Timestamp when the webhook was triggered                                                                  |
-| publishMethod   | \{ "type": type } | Description of the publish method, type can be "Manual" and "BranchMerge"                                 |
-| lastUpdateId    | id                | Unique identifier of the last modification made to the tracking plan before the generation of this schema |
-| lastUpdateDate  | Date string       | Time of the last modification made to the tracking plan before the generation of this schema               |
+| Attribute       | Type               | Description                                                                                               |
+| :-------------- | :----------------- | :-------------------------------------------------------------------------------------------------------- |
+| branchId        | string             | Branch id                                                                                                 |
+| branchName      | string             | Branch name                                                                                               |
+| integrationId   | string             | Id of the publish integration (consistently the same for this integration)                                |
+| integrationName | string             | Name of the publish integration (seen in Tracking Plan -> publishing -> 'IntegrationName')                |
+| publishDate     | Date string        | Timestamp when the webhook was triggered                                                                  |
+| publishMethod   | \{ "type": type }  | Description of the publish method, type can be "Manual" and "BranchMerge"                                 |
+| lastUpdateId    | id                 | Unique identifier of the last modification made to the tracking plan before the generation of this schema |
+| lastUpdateDate  | Date string        | Time of the last modification made to the tracking plan before the generation of this schema              |
+| organization    | Organization Model | Provided if the workspace being published belongs to an organization                                      |
+
+##### Organization Model
+
+| Attribute          | Type          | Description                                                              |
+| :----------------- | :------------ | :----------------------------------------------------------------------- |
+| organizationId     | string        | Organization id                                                          |
+| globalWorkspaceIds | array(string) | List of all global workspaces in Organization                            |
+| localWorkspaceIds  | array(string) | List of all local workspaces in Organization                             |
+| workspaceType      | string        | Describes the type of the workspace being published, "local" or "global" |
