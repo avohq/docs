@@ -60,7 +60,7 @@ In this example, the latest version on Android is `6.23.9` and the issue has not
 
 ### Step 4 - Resolve issue
 
-Once you have verified that the issue has been fixed in code, you can resolve the issue for the release it was fixed in. If the issue reappears, it will be marked as a regression.
+Once you have verified that the issue has been fixed in code, you can update the issue status to _Resolved_ for the release it was fixed in. See details about [resolved issue status]() below. If the issue reappears, it will be marked as a regression.
 
 <center>
   <img
@@ -116,13 +116,54 @@ Once you are in the event or property details, fix the issue accordingly. In thi
 
 ### Step 2 - Resolve issue
 
-Once the necessary updates are made in the Tracking Plan, update the issue status to _Resolved_. If the issue reappears, it will be marked as a regression.
+Once the necessary updates are made in the Tracking Plan, update the issue status to _Resolved_. See details about [resolved issue status]() below. If the issue reappears, it will be marked as a regression.
 
 <center>
   <img
     src="/docs/images/inspector/resolve-tracking-plan-issue.png"
     width="600px"
     alt="Image shows how to resolve an issue."
+  />
+</center>
+
+## Resolved issue status
+
+When setting an issue status to _Resolved_ ([see available issue statues](/inspector/inspector-issues-view#issue-status)), you have to specify for what version or what time point the issue should be resolved for.
+
+<center>
+  <img
+    src="/docs/images/inspector/inspector-resolved-issue-status.png"
+    width="600px"
+    alt="Image shows resolved issue options."
+  />
+</center>
+
+The available options are:
+- **Latest release**: The issue will be resolved for the latest release version that Inspector has seen when the issue is marked as resolved.
+- **Next release**: The issue will be resolved for the next release version that is incremented higher than the latest release version that Inspector sees. For example if the latest version is `2.2.1.` and the next version seen that is incremented higher is `2.2.2`, then the issue will be resolved for version `2.2.2` and every version after that.
+- **Specify version**: The issue will be resolved for the release version specified and all versions incremented higher than that.
+- **1 hour**: The issue will be resolved for all release versions seen after 1 hour of marking the issue as resolved.
+- **24 hours**: The issue will be resolved for all release versions seen after 24 hours of marking the issue as resolved.
+
+When an issue is marked as resolved, it will immediately be moved to the _Resolved_ section of the issues view.
+
+<center>
+  <img
+    src="/docs/images/inspector/inspector-resolved-issue.png"
+    width="600px"
+    alt="Image shows resolved issues."
+  />
+</center>
+
+
+If the issue reappears, that is it happens in a release 
+version that is incremented higher than the version selected or after the time point selected, then the issue moves back to unresolved marked as a regression.
+
+<center>
+  <img
+    src="/docs/images/inspector/inspector-regression.png"
+    width="600px"
+    alt="Image shows an issue regression."
   />
 </center>
 
