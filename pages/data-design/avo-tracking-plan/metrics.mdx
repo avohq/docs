@@ -1,12 +1,50 @@
+import PageLink, { TwoCol } from '../../../components/PageLink';
+
 # Metrics
 
 *Learn about the metrics in your tracking plan*
 
+We always recommend starting with the why in data design. That means thinking about your research questions, goals and metrics before your start defining your event structures. That way you are more likely to **design the events and properties you need to measure the success of your product update** – and won't end up with designing and implementing data structures that you don't have any use for. The added benefit of documenting metrics in context of your events is **knowing what metrics are affected by changing this event**. Read more in our [documenting downstream dependencies guide](/data-design/documenting-downstream-dependencies).
+
+At Avo, we have developed a framework that we call the **Purpose Meeting** to help us align on goals and metrics. Read more in the blog post about [tracking the right product metrics]() by our CEO, Stef.
+
+Metrics as well as purpose meetings can be documented in Avo.
+
+## What are metrics in Avo?
+
 Metrics are used to measure the success of a feature. Usually more than one metrics are necessary to be able to evaluate the success of a feature. Example metrics for a feature that is meant to improve signup experience are:
-Conversion to complete email step of the signup funnel
-Conversion to complete signup
-Proportion of daily active users that are signed up
+- Conversion from clicking a button to sign up to completing signup
+- Proportion of daily active users that are signed up
 
-Events are tied to metrics and can be thought as the building blocks of the metrics - the events necessary to be able to visualize the metric in your analytics tool. The metrics are therefore not only visible in the Metrics tab, but also in the event view. That way everyone can easily understand why this particular event should be track - because it is associated with a metric which is a part of a goal.
+Events are tied to metrics and can be thought as the building blocks of the metrics - the events necessary to be able to visualize the metric in your analytics tool. The metrics are therefore not only visible in the Metrics tab, but also in the event details. That way everyone can easily understand why this particular event should be track - because it is associated with a metric which is a part of a goal.
 
-Read more about how to [organize metrics and events](/data-design/organizing-metrics-and-events).
+## Metric types
+
+The available metric types in Avo are currently:
+- **Funnel**: a series of events describing a user journey. Can filter on a property in each event
+- **Segmentation**: typically used for analyzing a single event by filtering on or grouping by some properties. Can use multiple events and filter and group by properties on each of them.
+- **Retention**: a born event followed by a return event. Used to analyze how well users retain in your product by defining a born cohort and analyzing how many of those that were born return to do an action some days, weeks or months later. Can use 2 events and filter by a property on each of them.
+- **Proportion**: event A divided by event B, used to measure how many user perform an action as a proportion of some baseline. Can use 2 events and filter by a property on each of them.
+
+## What's next?
+
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Defining a metric in Avo"
+    description="Step by step guide on how to define a metric in Avo"
+    href={'/data-design/start-data-design#defining-a-metric'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Organizing Metrics and Events"
+    description="How to organize metrics and events in Avo."
+    href={'/data-design/organizing-metrics-and-events'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Documenting Purpose Meetings in Avo"
+    description="How to document the result of a purpose meeting in Avo."
+    href={'/docs/data-design/guides/documenting-purpose-meetings-in-avo'}
+  />
+</TwoCol>
