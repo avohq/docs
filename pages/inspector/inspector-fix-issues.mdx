@@ -139,11 +139,11 @@ When setting an issue status to _Resolved_ ([see available issue statues](/inspe
 </center>
 
 The available options are:
-- **Latest release**: The issue will be resolved for the latest release version that Inspector has seen when the issue is marked as resolved.
-- **Next release**: The issue will be resolved for the next release version that is incremented higher than the latest release version that Inspector sees. For example if the latest version is `2.2.1.` and the next version seen that is incremented higher is `2.2.2`, then the issue will be resolved for version `2.2.2` and every version after that.
-- **Specify version**: The issue will be resolved for the release version specified and all versions incremented higher than that.
-- **1 hour**: The issue will be resolved for all release versions seen after 1 hour of marking the issue as resolved.
-- **24 hours**: The issue will be resolved for all release versions seen after 24 hours of marking the issue as resolved.
+- **Latest release**: The issue will be resolved for every release version that is lower than the latest version Inspector has seen when the issue is marked as resolved. The latest release version and higher will continue to be validated.
+- **Next release**: The issue will be resolved for the latest release version that Inspector has seen and every lower version that than that. Every release version incremented higher than the latest release version will continue to be validated.
+- **Specify version**: The issue will be resolved for the release version specified and all versions lower than that. Every release version incremented higher than the specified release version will continue to be validated.
+- **1 hour**: The issue will be resolved for all release versions seen until 1 hour after marking the issue as resolved. Every release version seen after that will continue to be validated.
+- **24 hours**: The issue will be resolved for all release versions seen until 24 hours after marking the issue as resolved. Every release version seen after that will continue to be validated.
 
 When an issue is marked as resolved, it will immediately be moved to the _Resolved_ section of the issues view.
 
