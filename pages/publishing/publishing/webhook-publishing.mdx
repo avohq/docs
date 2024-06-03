@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # Webhook
 
 _Publishing your tracking plan to a Webhook_
@@ -61,6 +63,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 | Attribute   | Type                                                   | Description                                     |
 | :---------- | :----------------------------------------------------- | :---------------------------------------------- |
+| id          | string                                                 | Event id                                        |
 | name        | string                                                 | Event name                                      |
 | description | string                                                 | Event description and the list of triggers      |
 | rules       | Rules                                                  | Event JSON rules                                |
@@ -68,6 +71,13 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | categories  | array(string)                                          | Array of category ids this event is attached to |
 | triggers    | array(\{id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event    |
 | sources     | array(\{id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
+
+
+<Callout type="info" emoji="💡">
+Each event variant is represented by a standalone event in the JSON payload. It will have the same `name`, as the base event.
+You can distinguish an event, that is generated from a variant, from a base/standalone event, by checking for a `.` symbol in the id. 
+The event id of events that are generated from variants have the `${baseEventId}.${variantId}` structure.
+</Callout>
 
 ##### Rules Model
 
