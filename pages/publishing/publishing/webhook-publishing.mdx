@@ -59,8 +59,14 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ##### Event Model
 
+> Event variants in the JSON payload:
+> Each event variant is represented by a standalone event in the JSON payload. It will have the same `name`, as the base event.
+> You can distinguish an event, that is generated from a variant, from a base/standalone event, by checking for a `.` symbol in the id. 
+> The event id of events that are generated from variants have the `${baseEventId}.${variantId}` structure.
+
 | Attribute   | Type                                                   | Description                                     |
 | :---------- | :----------------------------------------------------- | :---------------------------------------------- |
+| id          | string                                                 | Event id                                        |
 | name        | string                                                 | Event name                                      |
 | description | string                                                 | Event description and the list of triggers      |
 | rules       | Rules                                                  | Event JSON rules                                |
