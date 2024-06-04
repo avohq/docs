@@ -35,7 +35,7 @@ _Example: Creating a branch in Avo_
 
 Now you should see the name of your branch instead of "main".
 
-### Step 2 – Navigate to the metrics tab
+### Step 2 – Navigate to the metrics view
 
 Navigate to the metrics screen by clicking "Metrics" in the "Tracking Plan" section of the left sidebar.
 
@@ -85,7 +85,7 @@ _Example: Adding metric to a category._
 
 ### Step 5 – Select metric type
 
-The metric type determines how you will construct your metric in your analytics platform or raw database. The available metrics in Avo are Funnel, Segmentation, Retention and Proportion. Read about their unique capabilities in our [Metrics page](/data-design/avo-tracking-plan/metrics).
+The metric type determines how you will construct your metric in your analytics platform or raw database. The available metrics types in Avo are _Funnel_, _Segmentation_, _Retention_ and _Proportion_. Read about their unique capabilities in our [Metrics page](/data-design/avo-tracking-plan/metrics).
 
 <video
   controls
@@ -113,7 +113,7 @@ To add your existing events to a metric, you can simply click "Add Event..." and
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/add-existing-events-to-metric.mp4'}
+  src={'/docs/images/data-design/deep-dive/add-existing-events-to-metric.mp4'}
   alt="Adding an existing event to a metric"
 />
 
@@ -121,9 +121,9 @@ _Example: Adding an existing event to a metric._
 
 #### Adding new events to a metric
 
-If the user action that you want represented in your metric is not already defined in an event, you can create one from the metrics view.
+If the user action that you want represented in your metric is not already defined as an event, you can create one from the metrics view.
 
-In the metrics view, click "Add Event..." and start typing the name of the event you want to create. Instead of selecting an existing event from the drop down, hit enter and create a new one. The name editor will pop up and you can edit the spelling or casing using the naming assistant. Once you have created your event, you can configure it (see Configuring your event below) or continue adding events to your metric and configure later.
+In the metrics details, click "Add Event..." and start typing the name of the event you want to create. If Avo doesn't find an event with a matching name, you will be offered to create one. The name of your new event will be autimatically audited by Avo (see [Audit rules and configurations](/audit/rules)). Once you have created your event you can add more to the metric, or click it to configure it (see [Configuring your event](/data-design/start-data-design#step-4-configure-your-event) below).
 
 <video
   controls
@@ -131,7 +131,7 @@ In the metrics view, click "Add Event..." and start typing the name of the event
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/new-event-from-metric.mp4'}
+  src={'/docs/images/data-design/deep-dive/create-event-in-a-metric.mp4'}
   alt="Adding a new event to a metric"
 />
 
@@ -139,11 +139,13 @@ _Example: Adding a new event to a metric._
 
 ## Defining and configuring events
 
+[Events](/data-design/avo-tracking-plan/events) are the core of event based product analytics. They are sent to your analytics platform when a user performs actions in your product. The technical structure of an event is in form of an event name and properties that describe the user action further. In addition, Avo allows you to describe events with descriptions, screenshots, variants and more. See step by step definition and configuration of an example event below.
+
 ### Step 1 – Open a branch in Avo
 
 If you are making changes to your tracking plan in Avo, we always recommend creating a branch first – no matter how small your change might be. That allows you to make suggestions in isolation from the source of truth on your main branch and get feedback from your peers.
 
-Open a new branch by clicking the three line icon beside where it says "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
+Open a new branch by clicking the icon "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
 
 <video
   controls
@@ -151,15 +153,15 @@ Open a new branch by clicking the three line icon beside where it says "main" in
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/opening-a-branch.mp4'}
-  alt="Opening a branch"
+  src={'/docs/images/data-design/deep-dive/create-branch-deep-dive.mp4'}
+  alt="Creating a branch"
 />
 
-_Example: Opening a branch in Avo_
+_Example: Creating a branch in Avo_
 
-### Step 2 – Navigate to the events tab
+### Step 2 – Navigate to the events view
 
-Navigate to the events tab by clicking "Tracking Plan" and then "Events", which lives under the Tracking Plan.
+If you are not in the Events view already, click "Events" under tracking plan in the sidebar on the left.
 
 <video
   controls
@@ -167,15 +169,15 @@ Navigate to the events tab by clicking "Tracking Plan" and then "Events", which 
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/navigate-to-events.mp4'}
+  src={'/docs/images/data-design/deep-dive/navigate-to-events.mp4'}
   alt="Navigating to events"
 />
 
-_Example: Navigating to metrics._
+_Example: Navigating to events._
 
 ### Step 3 – Create a new event
 
-Create a new event by clicking the "+ Add Event" button in the top left corner. Give it a name and try to follow the naming convention in your tracking plan. The Avo naming assistant will help you follow the casing used in your workspace.
+Create a new event by clicking the "+ Add Event" button in the top left corner. Give it a name and try to follow the naming convention in your tracking plan. Avo will automatically audit the name (see [Audit rules and configurations](/audit/rules)) and help you follow the casing used in your workspace.
 
 <video
   controls
@@ -183,7 +185,7 @@ Create a new event by clicking the "+ Add Event" button in the top left corner. 
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/create-event.mp4'}
+  src={'/docs/images/data-design/deep-dive/create-new-event.mp4'}
   alt="Creating a new event"
 />
 _Example: Creating a new event._
@@ -192,24 +194,51 @@ _Example: Creating a new event._
 
 #### Add a description
 
-We always recommend adding a descriptive description to every event, that describes when the event should be sent. That will help prevent discrepancies between platforms and code paths. Read more in our
+We always recommend adding a descriptive description to every event, that describes when the event should be sent. That will help prevent discrepancies between products, platforms and code paths. Read more in our
 [defining descriptive events and properties guide](/data-design/defining-descriptive-events-and-properties).
 
 #### Add a source (required)
 
 Add a
-[source](/data-design/define-sources-and-destinations) to your event to define where it should be sent from and in which programming language the tracking code will be generated in. If you have an established workspace you probably have the sources you need already set up and can select them from the drop down that appears when you click "+ Add Source". If not, you might need to set up and configure your sources and destinations in the
-[Sources tab](/data-design/define-sources-and-destinations).
+[source](/data-design/define-sources-and-destinations) to your event to define where it should be sent from and in which programming language the implemented in. If you have an established workspace you probably have the sources you need already set up and can select them from the drop down that appears when you click "+ Add Source". If not, you might need to set up and configure your sources and destinations in the
+[Sources view](/data-design/define-sources-and-destinations).
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/event-description-and-source.mp4'}
+  alt="Adding a description and sources to an event"
+/>
+
+_Example: Adding a description and sources to an event._
 
 #### Add actions and properties
 
 All events in Avo have the
-["Log Event" action](/data-design/avo-tracking-plan/events#log-event) by default, which means that a user action is logged as an event to the analytics platform. This is the most common use case and the one that we are focusing on in this guide. With the "Log Event" action you can add event properties, which allows you to attach detailed information about the action the user performed. See how to create, add and configure event properties in the section below.
+["Log Event" action](/data-design/avo-tracking-plan/events#log-event) by default, which means that a user action is logged as an event to the analytics platform. This is the most common use case and the one that we are focusing on in this guide. With the "Log Event" action you can add [event properties](data-design/avo-tracking-plan/properties#event-properties), which allows you to attach detailed information about the action the user performed. See how to [create and configure event properties](/data-design/start-data-design#defining-and-configuring-event-properties) in the section below.
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/event-description-and-source.mp4'}
+  alt="Adding existing properties to an event"
+/>
+
+
+#### Add variants
+
+#### Add event triggers (screenshots)
 
 #### Add a category
 
 We recommend
-[organizing your metrics and events](/data-design/organizing-metrics-and-events) by using categories. Add your event to a category by clicking "+ Add to Category" below the Actions section in the event. If a relevant category doesn't already exist, first create a new one by clicking "+ Add Category" next to the "+ Add Event" button, and then add your metric to the category.
+[organizing your metrics and events](/data-design/organizing-metrics-and-events) by using categories. Add your event to a category by clicking "+ Add to Category" below the Actions section in the event. If a relevant category doesn't already exist you can create it there and add the event to it.
 
 #### Add a tag
 
