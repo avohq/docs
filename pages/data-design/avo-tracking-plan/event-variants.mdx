@@ -47,7 +47,7 @@ Below is a description field that allows you to extend the base event descriptio
 
 The sources reflect the same sources as the base event.
 
-The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the triple-dot icon next to the property and select Remove property on this variant. To add a property, click the `+ Add Property to Variant` button and select the property you want to add. 
+The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the triple-dot icon next to the property and select Remove property on this variant. To add a property, click the `+ Add Property to Variant` button and select the property you want to add. You can pin a property value on the variant or override a value that has been pinned on the base event. 
 
 Following the actions is the code snippet to track that event, with all the variations applied. If you're using Codegen, you'll get a tailored Codegen function for this variant else you'll see a pseudocode snippet with the base event name.
 
@@ -74,9 +74,14 @@ Event variants show up in the diff view under the event and allow you to see a p
 In the branch code changes, event variants are displayed as a separate event to implement. This gives the developer a tailored, well typed Codegen function or [pseudocode snippet](/data-design/branches/code-changes#non-codegen-snippets) to call for the specific scenario that event variant applies to.
 
 ### Publishing events with variants
+
 [Publishing](/publishing/publishing/overview) is a great way to push your tracking plan specs from Avo into your other schema registries and downstream tools. As event variants get sent using their base event name we need to account for them when publishing the event. To do that we create a “union” of the event and its variants. 
 
 For example: If you have an event that has an `always sent` property `A`, a variant that adds property `B` and another variant that has property `C`, the published event will include the `always sent_` property `A`, `sometimes sent` property `B` and `sometimes sent` property `C`. This effectively mirrors how you might have defined the event without variants and allows your downstream tools to correctly validate and work with all events in Avo, whether they have variants or not.
+
+#### Event variants in webhook publishing
+
+When publishing via the webhook each event variant is represented by a standalone event in the JSON payload. It will have the same `name` as the base event. You can distinguish between an event that is generated from a variant and a base/standalone event by checking for a `.` symbol in the id. The event id of events that are generated from variants have the `${baseEventId}.${variantId}` format.
 
 ### Event variants and Inspector 
 
@@ -86,4 +91,4 @@ We’ve engineered Inspector to be able to detect issues on events, even if they
 
 ## Coming soon
 
-We’re stoked to introduce event variants to Avo and can’t wait to see how you use them to better define your tracking plan. As with any new features, there might be some things we need to iron out and iterate on. We are currently working on adding more variations like pinned properties, as well as commenting on variants and adding triggers to them. If you come across any problems or find something missing for your use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app). 
+We’re stoked to introduce event variants to Avo and can’t wait to see how you use them to better define your tracking plan. As with any new features, there might be some things we need to iron out and iterate on. We are currently working on adding more variations like sources as well as adding triggers to them. If you come across any problems or find something missing for your use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app). 
