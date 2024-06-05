@@ -252,6 +252,11 @@ extension SnowplowDestination: AvoSnowplowDestination {
         // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/#Self_Describing
     }
 
+    fun trackPageView(title: String) {
+        Snowplow.getDefaultTracker()?.track(ScreenView(title))
+        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
+    }
+
     func identify(userId: String) {
         Snowplow.getDefaultTracker().subject.setUserId(userId)
         // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
