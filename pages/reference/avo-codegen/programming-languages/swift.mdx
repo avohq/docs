@@ -252,8 +252,8 @@ extension SnowplowDestination: AvoSnowplowDestination {
         // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/#Self_Describing
     }
 
-    fun trackPageView(title: String) {
-        Snowplow.getDefaultTracker()?.track(ScreenView(title))
+    func trackPageView(pageName: String) {
+        Snowplow.getDefaultTracker().track(ScreenView(title))
         // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/
     }
 
