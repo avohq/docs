@@ -11,17 +11,17 @@ The Inspector issues view displays information about anomalies and discrepancies
 
 Each issue in the table represents an issue on a particular event, or a particular property contained within an event. In the table you will see:
 
-- Regression: If you've marked an issue as resolved and it has reappeared, it will be marked as a regression
-- The issue type – for example, unexpected event or inconsistent property types; you can see the [(full list of issue types in Inspector here)](/explore-tracking-plan/issue-types-in-inspector)
-- The name of the event and/or property impacted
-- The source impacted; each impacted source will be flagged individually
-- Issue timing – when it was first and last seen
-- First seen – when the issue was first seen
-- Last seen – when the issue was seen most recently
-- Event volume – how many total instances of the event were seen
-- Issue volume – how many instances of the event were seen with this issue
-- Impacted releases – which release versions were impacted by the issue, sorted by the most recent release first
-- Issue percentage – the proportion of events seen with this issue in relation to total event volume (issue volume / event volume)
+- **Regression** - If you've marked an issue as resolved and it has reappeared, it will be marked as a regression
+- **The issue type** – for example, unexpected event or inconsistent property types; you can see the [(full list of issue types in Inspector here)](/explore-tracking-plan/issue-types-in-inspector)
+- **The name** of the event and/or property impacted
+- **The source impacted**; each impacted source will be flagged individually
+- **Issue timing** – when it was first and last seen
+- **First seen** – when the issue was first seen
+- **Last seen** – when the issue was seen most recently
+- **Event volume** – how many total instances of the event were seen
+- **Issue volume** – how many instances of the event were seen with this issue
+- **Impacted releases** – which release versions were impacted by the issue, sorted by the most recent release first
+- **Issue percentage** – the proportion of events seen with this issue in relation to total event volume (issue volume / event volume)
 
 
 ## Issue details
@@ -41,9 +41,9 @@ Click any issue in the list to see more details. If you have multiple sources co
 
 Set the status of an issue to communicate its current status to your team. The status can be set to one of the following:
 
-- Unresolved: The default status for new issues. This status indicates that the issue has not been investigated.
-- Ignore: If you know you're not planning to fix an issue, you can set the status to ignore. This help you focus on those issues on which you want to act.
-- Resolved: If you have looked into the issue and fixed it, you can set the status to resolved. If the issue reappears, it will be marked as a regression. If you have alerts enabled for a saved view with a resolved issue, you will be notified when the issue reappears.
+- **Unresolved**: The default status for new issues. This status indicates that the issue has not been investigated.
+- **Ignore**: If you know you're not planning to fix an issue, you can set the status to ignore. This help you focus on those issues on which you want to act.
+- **Resolved**: If you have looked into the issue and fixed it, you can set the status to resolved. If the issue reappears, it will be marked as a regression. If you have alerts enabled for a saved view with a resolved issue, you will be notified when the issue reappears.
 
 ### Event info
 
@@ -107,6 +107,24 @@ This breakdown can be helpful to understand which releases have been fully rolle
 !["X releases on Y sources" button"](/images/inspector/inspector-issues-release-breakdown-modal.png)
 
 In the example above, Inspector has seen a very low volume of events from the latest release on iOS (2.3.0) compared to prior releases. This is a strong indication that the latest release has not been fully rolled out.
+
+## Troubleshooting
+
+### Why are there no issues in my issues view?
+
+There are several reasons that may cause no issues to appear in your issues view, whether it's for a specific source or overall.
+
+#### Inspector not installed on source
+
+The most obvious reason is that you have not yet installed Inspector at all, or on the source that you are looking for. [install Inspector](/docs/inspector/inspector-installation-overview) on the source for which you'd like to see issues.
+
+#### Inspector not installed on production
+
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have Inspector installed for production on any given source, you won't see any issues in the Issues view. [Install Inspector](/data-design/start-using-inspector#how-to-send-metadata-to-the-inspector) on production for the source for which you'd like to see issues.
+
+#### No issues in production for the past 24 hours
+
+The issues view currently only displays issues from the past 24 hours in production. That means that if you don't have any issues in the past 24 hours, then you won't see any issues. Yay!
 
 ## What's next?
 

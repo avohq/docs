@@ -169,7 +169,7 @@ You would be required to provide a list of things if the property is marked as a
 
 ##### Required / Optional
 
-In Avo we made a design decision that you always need to provide a value of a property, even if it is optional to mitigate the risk of accidentally not providing the value and damaging the data. But if the property is marked as optional you would be able to provide `null` as it's value and it won't be sent to your analytics tool.
+In Avo we made a design decision that you always need to provide a value of a property, even if it is optional to mitigate the risk of accidentally not providing the value and damaging the data. If the property is marked as optional you would be able to provide `null` as it's value in the cases when the property should not be sent.
 
 ##### Value Constraints
 
