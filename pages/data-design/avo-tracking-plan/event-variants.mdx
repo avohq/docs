@@ -3,13 +3,29 @@ import Image from 'next/image'
 
 # Event variants
 
-Event variants are a powerful feature that allows you to create variations of an event to suit different scenarios. This makes the tracking plan more precise, reduces the scope of tracking changes and simplifies Codegen implementation.
+Event variants are a powerful feature that allows you to create variations of an event to suit different scenarios.
+Some of the advantages that event variants bring are:
+- enhancing the precision of the tracking plan
+- narrowing the scope of tracking changes
+- simplifying the implementation of Codegen
 
 ## Introduction
 
-When defining a tracking plan for events that are used in multiple scenarios within a product, there can often be a need for making the specifications for an event more granular. For example, some properties might need to be included in some scenarios but not others. Property descriptions, event descriptions and triggers can help clarify the data structures needed for each scenario but it still leaves a communication gap, for example when the developer is implementing an event. Making trivial changes to an event that’s implemented in many scenarios can cause widespread changes in the implementation of an event, even if it’s only meant to target a specific scenario. This slows down implementation and makes those designing data hesitant to introduce improvements to the tracking plan.
+When defining a tracking plan for events that are used in multiple scenarios within a product, there can often be a need for making the specifications for an event more granular. A few scenarios to mention:
+- some properties might need to be included depending on the context an event sent from
+- property descriptions, event descriptions and triggers can help clarify the desired behavior in each point the event is sent, but it still leaves a communication gap, for example when the developer is implementing an event. With triggers, you can define those requirements in the tracking plan, and they will be translated into code
+- making trivial changes to an event that’s triggered in many places can cause widespread changes in the implementation of an event, even if it’s only meant to target a single invocation point. This slows down implementation and makes those designing data hesitant to introduce improvements to the tracking plan
 
-Event variants streamline the tracking plan by allowing variations of an event to suit different scenarios, making the specification more precise. Each variant, inheriting properties from a base event, can be modified and enhanced. This approach simplifies both implementation and communication with developers, as it narrows the scope of changes to only necessary areas. Additionally, event variants generate their own Codegen functions, facilitating quick and accurate implementation by developers and reducing uncertainty about property values. Existing events with numerous conditional properties used across various scenarios can greatly benefit from event variants.
+Event variants streamline the tracking plan by allowing variations of an event to suit different scenarios, making the specification more precise. Each variant, inheriting properties from a base event, can be modified and enhanced.
+
+### Developers love variants
+
+This approach simplifies both implementation and communication with developers, because
+- it narrows the scope of changes to only necessary areas
+- event variants generate their own Codegen functions, facilitating quick and accurate implementation
+- it reduces the uncertainty about property values
+
+Existing events with numerous conditional properties used across various scenarios can greatly benefit from event variants.
 
 ### A concrete example
 
@@ -47,9 +63,15 @@ Below is a description field that allows you to extend the base event descriptio
 
 The sources reflect the same sources as the base event.
 
-The event variant actions reflect the actions on the base event. An event variant inherits its base event properties but you can remove unwanted properties and add properties that you only need on that variant. To remove a property, click the triple-dot icon next to the property and select Remove property on this variant. To add a property, click the `+ Add Property to Variant` button and select the property you want to add. You can pin a property value on the variant or override a value that has been pinned on the base event. 
+The event variant actions reflect the actions on the base event. An event variant inherits its base event properties, then you can add overrides on top of them
 
-Following the actions is the code snippet to track that event, with all the variations applied. If you're using Codegen, you'll get a tailored Codegen function for this variant else you'll see a pseudocode snippet with the base event name.
+- remove properties: click the triple-dot icon next to the property and select Remove property on this variant.
+- add properties: click the `+ Add Property to Variant` button and select the property you want to add.
+- pin property or override existing pin: in the triple-dot menu, choose `Pin Property Value on Variant`
+- override property presence: click the presence label in the variant details view
+- add variant specific triggers: click the `+ New Trigger` button
+
+Below the actions you can find the code snippet to track that event variant, with all the overrides applied. If you're using Codegen, you'll get a tailored Codegen function for this variant else you'll see a pseudocode snippet with the base event name.
 
 <div style={{maxWidth: 678, marginTop: "1em"}}>
 ![Screenshot of an event variant code snippet and activity log](/images/event-variants/event-variant-code-snippet.png)
@@ -91,4 +113,4 @@ We’ve engineered Inspector to be able to detect issues on events, even if they
 
 ## Coming soon
 
-We’re stoked to introduce event variants to Avo and can’t wait to see how you use them to better define your tracking plan. As with any new features, there might be some things we need to iron out and iterate on. We are currently working on adding more variations like sources as well as adding triggers to them. If you come across any problems or find something missing for your use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app). 
+We’re stoked to introduce event variants to Avo and can’t wait to see how you use them to better define your tracking plan. As with any new features, there might be some things we need to iron out and iterate on. We are currently working on adding more variations like sources and assigning variant specific rules. If you come across any problems or find something missing for your use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app).
