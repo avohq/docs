@@ -11,7 +11,7 @@ Some of the advantages that event variants bring are:
 
 ## Introduction
 
-When defining a tracking plan for events that are used in multiple scenarios within a product, there can often be a need for making the specifications for an event more granular.A few scenarios to mention:
+When defining a tracking plan for events that are used in multiple scenarios within a product, there can often be a need for making the specifications for an event more granular. A few scenarios to mention:
 - some properties might need to be included depending on the context an event sent from
 - property descriptions, event descriptions and triggers can help clarify the desired behavior in each point the event is sent, but it still leaves a communication gap, for example when the developer is implementing an event. With triggers, you can define those requirements in the tracking plan, and they will be translated into code
 - making trivial changes to an event that’s triggered in many places can cause widespread changes in the implementation of an event, even if it’s only meant to target a single invocation point. This slows down implementation and makes those designing data hesitant to introduce improvements to the tracking plan
