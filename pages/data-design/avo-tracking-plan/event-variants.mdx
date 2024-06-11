@@ -45,7 +45,7 @@ To create a new event variant, click the `+ New variant` button close to the top
 
 This opens up the event variant creation modal and allows you to pick a name for your new variant. 
 
-<div style={{maxWidth: 484, marginTop: "1em"}}>
+<div style={{maxWidth: 543, marginTop: "1em"}}>
 ![Screenshot of the event variant creation modal](/images/event-variants/create-event-variant-modal.png)
 </div>
 
@@ -63,13 +63,14 @@ Below is a description field that allows you to extend the base event descriptio
 
 The sources reflect the same sources as the base event.
 
-The event variant actions reflect the actions on the base event. An event variant inherits its base event properties, then you can add overrides on top of them
+The event variant actions reflect the actions on the base event. An event variant inherits its base event properties, then you can add overrides on top of them:
 
-- remove properties: click the triple-dot icon next to the property and select Remove property on this variant.
-- add properties: click the `+ Add Property to Variant` button and select the property you want to add.
-- pin property or override existing pin: in the triple-dot menu, choose `Pin Property Value on Variant`
-- override property presence: click the presence label in the variant details view
-- add variant specific triggers: click the `+ New Trigger` button
+- **Description**: Add a description to explain the context of the variant
+- **Add variant specific triggers**: Click the _+ New Trigger_ button
+- **Edit sources**: Click the _Edit Sources_ button to narrow down sources from the 
+- **Add properties**: Click the _+ Add Property to Variant_ button and select the property you want to add.
+- **Set property presence**: Click the presence label in the variant details view to toggle between `always sent`, `sometimes sent` and `never sent` for this variant
+- **Pin a property value**: In the triple-dot menu, choose _Pin Property Value on Variant_ to pin a property value or override an existing pin
 
 Below the actions you can find the code snippet to track that event variant, with all the overrides applied. If you're using Codegen, you'll get a tailored Codegen function for this variant else you'll see a pseudocode snippet with the base event name.
 
@@ -111,6 +112,6 @@ We’ve engineered Inspector to be able to detect issues on events, even if they
 
 <Callout emoji="⚠️">The Inspector Events view has not been updated to include event variants so you might see unexpected warnings there. For events with variants we’re showing a disclaimer to help you identify when an event warning might be a false-positive.</Callout>
 
-## Coming soon
+## Conclusion
 
-We’re stoked to introduce event variants to Avo and can’t wait to see how you use them to better define your tracking plan. As with any new features, there might be some things we need to iron out and iterate on. We are currently working on adding more variations like sources and assigning variant specific rules. If you come across any problems or find something missing for your use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app).
+We hope you find event variants useful to better define your tracking plan and improve the implementation. If you come across any problems or find something missing for your event variant use case, we’d love to hear about it. Reach out right here in the chat or send us a line at [hi@avo.app](mailto:hi@avo.app).
