@@ -1,3 +1,5 @@
+import PageLink, { TwoCol } from '../../components/PageLink';
+
 # Data design in Avo
 
 ### Who is this guide useful for?
@@ -233,7 +235,12 @@ All events in Avo have the
 
 #### Add variants
 
-[Variants]() allow you to customize your events based on scenarios. 
+[Event variants](/data-design/avo-tracking-plan/event-variants) allow you to customize your events based on scenarios. Their main advantages are:
+- enhancing the precision of the tracking plan
+- narrowing the scope of tracking changes
+- simplifying the implementation of Codegen
+
+In the example below, a variant of the `Purchase Completed` is created. It's a customized view of the event for when boosters are purchased. Only them, the `Booster ID` property is relevant and therefore it's required when `Product Category` is `Boosters` but not attached to the event otherwise. See more example in our [Event variant docs](/data-design/avo-tracking-plan/event-variants).
 
 <video
   controls
@@ -242,15 +249,28 @@ All events in Avo have the
   width="100%"
   autoPlay
   src={'/docs/images/data-design/deep-dive/create-event-variant.mp4'}
-  alt="Creating an event variant
+  alt="Creating an event variant"
 />
 
 #### Add event triggers (screenshots)
 
+[Event triggers](/data-design/guides/event-triggers) allow you to attach screenshots from your product to visually describe where events are triggered from. Triggers can be associated with a specific source if the location of the trigger looks different between sources. They can also be source independent if it is not specific to a certain source.
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/add-trigger-to-event.mp4'}
+  alt="Adding a trigger to an event"
+/>
+
+
 #### Add a category
 
 We recommend
-[organizing your metrics and events](/data-design/organizing-metrics-and-events) by using categories. Add your event to a category by clicking "+ Add to Category" below the Actions section in the event. If a relevant category doesn't already exist you can create it there and add the event to it.
+[organizing your metrics and events](/data-design/organizing-metrics-and-events) by using categories. Categories often represent product areas or journeys. Add your event to a category by clicking "+ Add to Category" below the Actions section in the event. If a relevant category doesn't already exist you can create it there and add the event to it.
 
 #### Add a tag
 
@@ -262,11 +282,11 @@ Tags can be used to organize and your events further than with categories. For e
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/configuring-an-event.mp4'}
-  alt="Configuring an event"
+  src={'/docs/images/data-design/deep-dive/tags-and-categories.mp4'}
+  alt="Adding tags and categories"
 />
 
-_Example: Configuring an event._
+_Example: Adding tags and categories to an event._
 
 ## Defining and configuring event properties
 
@@ -278,7 +298,7 @@ In this guide we're focusing on
 
 ### Step 1 – Create a new event property
 
-To create a new event property and add it to an event, first open the event you want to add it to. Then click "+ Add Event Property" under the "Log Event" section of the actions and type the name of the property that you want to create. Then click "Create New Property" and review and confirm the name of the property in the naming editor that pops up. As with event names, the naming assistant will help you follow the casing in your workspace and prevent duplicate property names. Now you have created a new event property and added it to your event.
+You can create new properties from the event details or the properties view. In this example we will create a new event property and add it to an event from the event details. First open the event you want to add it to, then click "+ Add Event Property" under the "Log Event" section of the actions and type the name of the property that you want to create. If there is no property with the same or similar name, Avo will offer you to create a new one while automatically auditing it's name according to your workspace's standards. Hit enter or click create and you have created your property.
 
 <video
   controls
@@ -286,40 +306,48 @@ To create a new event property and add it to an event, first open the event you 
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/add-new-property-to-event.mp4'}
-  alt="Creating a new event property for an event"
+  src={'/docs/images/data-design/deep-dive/create-new-properties.mp4'}
+  alt="Creating new event properties from event details"
 />
 
-_Example: Creating a new event property for an event._
+_Example: Creating new event properties from event details._
 
 ### Step 2 – Configure a property
 
 #### Add a description
 
-As with event, we highly recommend adding descriptions to all properties. That helps the ones that implement to know exactly what variable in their code they should assign to that property.
+As with events, we highly recommend adding descriptions to all properties. That creates a common understanding between the data designer and those that use the data or implement it. It's especially important to make sure the implementation is consistent across products, platforms, events and code paths as the description helps the ones that implement to know exactly what variable in their code they should assign to that property.
 
 #### Select the data type
 
-Change the data type of your property to match the one you need by clicking on where it says "String" below the description input. Then you will be able to pick from the following types:
+Change the [data type of your property](/data-design/avo-tracking-plan/properties#property-types-and-constraints) to match the one you need by clicking on where it says "String" below the description input. Then you will be able to pick from the following types:
 
-- string: only all string values are allowed
-- int: only whole number values are allowed
-- float: only floating point values are allowed
-- boolean: only `true` or `false` values are allowed
-- [object](/data-design/object-properties): only dictionary or nested object structures are allowed, learn more about objects in Avo
-  [here](/data-design/object-properties)
-- any (available upon request): any data type is allowed and not type validation will occur
+- **string**: only all string values are allowed
+- **int**: only whole number values are allowed
+- **float**: only floating point values are allowed
+- **boolean**: only `true` or `false` values are allowed
+- **[object](/data-design/object-properties)**: only dictionary or nested object structures are allowed (learn more in our
+  [object docs](/data-design/object-properties))
+- **any** (available upon request): any data type is allowed and not type validation will occur
 
-#### Decide if it's optional or required
+All of the above data types can be used with the list checkmark. That means that the property will become a list/array of the data type. For example, if the property value type `string` is selected and `list` checked, then the property is a list of strings: ["pants", "socks", "hats"]
 
-All properties are required by default and we recommend trying to keep them required in as many cases a possible. That means that the Avo developer tools will throw and error if the property is not assigned a value in development, which reduces the risk of missing data significantly. You can however set a property to be optional by checking the "Optional" check box beside the data type, if it's not always relevant to send a value for that property.
+#### Select the property presence
+
+The [property presence](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) defines whether the property is required, optional or not allowed. In Avo it is described with `Always sent` which means the property is required, `Sometimes sent` which means it's optional and `Never sent` which means is not allowed. Presence can be configured per event and per source.
+
+All properties are required by default and we recommend trying to keep them required in as many cases a possible. That means that the Avo developer tools will throw and error if the property is not assigned a value in development, which reduces the risk of missing data significantly. It the property is only applicable in some cases, we recommend using [event variants](/data-design/avo-tracking-plan/event-variants) to define each case. It's also possible to use `Sometimes sent`, but that means that the validation will not be as rigorous.
 
 #### Add rules
 
 Properties don't have any rules by default, but we recommend setting rules that match the limitation of the possible values for every property.
 
-- String rules: you can pick exactly which string values are allowed for your property. We recommend doing so for all string properties that have a limited number of allowed values.
-- Int and Float rules: Numerical properties can have rules that limit the value to a range between a minimum and maximum value. We recommend to set a min and max where relevant, for example to prevent negative values for count properties.
+- **String rules**: you can pick exactly which string values are allowed for your property. We recommend doing so for all string properties that have a limited number of allowed values. String rules can be configured per source and event.
+- **Int and Float rules**: Numerical properties can have rules that limit the value to a range between a minimum and maximum value. We recommend to set a min and max where relevant, for example to prevent negative values for count properties.
+
+#### Example property configurations
+
+Below is an example of a pretty simple numerical property definition:
 
 <video
   controls
@@ -327,11 +355,13 @@ Properties don't have any rules by default, but we recommend setting rules that 
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/configuring-an-event-property.mp4'}
+  src={'/docs/images/data-design/deep-dive/configure-property.mp4'}
   alt="Configuring a new property"
 />
 
-_Example: Configuring a new property._
+_Example: Configuring a new numerical property._
+
+Below is an example of a string property with presence depending on source and string rules varied per source.
 
 ### Step 3 – Add existing event property to an event
 
@@ -345,13 +375,52 @@ To add an existing event property to your event, click "+ Add Event Property" un
   muted
   width="100%"
   autoPlay
-  src={'/docs/images/best-practices/getting-started-to-design-data/add-existing-property-to-event.mp4'}
-  alt="Adding an existing property to an event"
+  src={'/docs/images/data-design/deep-dive/add-existing-property-to-event.mp4'}
+  alt="Adding existing properties to an event"
 />
 
 _Example: Adding an existing property to an event._
 
+### Step 4 - Create and add property bundle to an event
+
+[Event property bundles](/data-design/avo-tracking-plan/properties#event-property-bundles) is a way to bundle related properties that are often added to events together to make it faster and more consistent to add those properties to events. 
+
+In the example below we create the Product property bundle with all the product properties that should go together on events, preventing us from sometimes forgetting the `Product Price` property for example. Property bundles are created in the "Properties" page and added to events the same way as event properties, by clicking "+ Add event property" under the "Log Event" action.
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/create-and-add-property-bundle.mp4'}
+  alt="Adding existing properties to an event"
+/>
+
+_Example: Creating and adding a property bundle to an event._
+
 ## What's next?
 
-Now you know how to define and maintain your metrics and events in Avo and it's time to learn
-[how to manage sources and destinations](/data-design/define-sources-and-destinations).
+Now you know how to define and maintain your metrics and events in Avo and it's time to learn how to [review branch changes](/workflow/review) and [request implementation](/workflow/request-implementation). If you haven't set up your sources and destinations yet, now is a good time to learn how [sources and destinations](data-design/define-sources-and-destinations) are defined.
+
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Review branch changes"
+    description="How the review workflow in Avo works"
+    href={'/workflow/review'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Requesting implementation"
+    description="How to request implementation in Avo."
+    href={'/workflow/request-implementation'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Sources and destinations"
+    description="How to set up your sources and destinations in Avo."
+    href={'data-design/define-sources-and-destinations'}
+  />
+</TwoCol>
+
