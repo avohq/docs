@@ -65,18 +65,18 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 |:------------|:-------------------------------------------------------|:---------------------------------------------------------------------------------------------------------|
 | id          | string                                                 | Event id                                                                                                 |
 | name        | string                                                 | Event name                                                                                               |
-| eventType   | enum: ["event", "variant"]                                   | Indicates if this event is based on an event or a event variant                                          |
+| eventType   | enum: ["event", "variant"]                             | Indicates if this event is based on an event or an event variant                                         |
 | description | string                                                 | Event description and the list of triggers                                                               |
 | rules       | Rules                                                  | Event JSON rules                                                                                         |
 | tags        | array(string)                                          | Array of all tags attached to event                                                                      |
 | categories  | array(string)                                          | Array of category ids this event is attached to                                                          |
 | triggers    | array(\{id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event                                                             |
 | sources     | array(\{id, name, implementWithCodegen, destinations}) | Details about all sources sending event                                                                  |
-| variantName | optional string                                        | If the event is generated from an event variant, this field id added and contains the event variant name |
+| variantName | optional string                                        | If the event is generated from an event variant, this field is provided, contains the event variant name |
 
 
 <Callout type="info" emoji="💡">
-Each event variant is represented by a standalone event in the JSON payload. It will have the same `name`, as the base event. Additionally, it will have the `variantName` field included, with the event variant name defined in the Avo workspace.
+Each event variant is represented by a standalone event in the JSON payload. It will have the same `name`, as the base event. Additionally, it will have the `variantName` field included, with the event variant name defined in the Avo Tracking Plan.
 You can distinguish an event, that is generated from a variant, from a base/standalone event, by checking the `eventType` field. 
 The `eventType` of events that are generated from variants is `variant`, while regular events have it as `event`.
 </Callout>
