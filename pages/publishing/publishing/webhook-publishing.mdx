@@ -31,7 +31,7 @@ Json containing a Snowplow Schema for every event included in the Publishing int
 You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#:~:text=%E2%80%9Cvendor%E2%80%9D%20%E2%80%93%20This%20usually%20refers,events%20and%20contexts%20) value via the "Vendor" input in the publishing integration config.
 
 | Attribute      | Type                           | Description                                                                                                                                                                                                                          |
-| :------------- | :----------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:---------------|:-------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | eventSchemas   | array(Snowplow Event Schema)   | Schema for every event in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format            |
 | contextSchemas | array(Snowplow Context Schema) | Schema for every Snowplow context in your tracking plan, following the [Snowplow Schema](https://docs.snowplowanalytics.com/docs/understanding-tracking-design/understanding-schemas-and-validation/#the-anatomy-of-a-schema) format |
 | context        | \{ publishInfo: PublishInfo }  | Metadata about the webhook call                                                                                                                                                                                                      |
@@ -41,7 +41,7 @@ You can provide your own [vendor](https://docs.snowplowanalytics.com/docs/unders
 Json representation of the state of your entire Avo workspace. Currently behind a feature flag. Contact us to enable.
 
 | Attribute | Type                          | Description                                      |
-| :-------- | :---------------------------- | :----------------------------------------------- |
+|:----------|:------------------------------|:-------------------------------------------------|
 | model     | Avo Model                     | Json representation of your entire Avo workspace |
 | context   | \{ publishInfo: PublishInfo } | Metadata about the webhook call                  |
 
@@ -50,7 +50,7 @@ Json representation of the state of your entire Avo workspace. Currently behind 
 Json representation of your tracking plan, following the [Json Schema](https://json-schema.org/) standard. Example payload [can be found here](/implementation/avo-tracking-plan-webhook)
 
 | Attribute    | Type                                | Description                                                                     |
-| :----------- | :---------------------------------- | :------------------------------------------------------------------------------ |
+|:-------------|:------------------------------------|:--------------------------------------------------------------------------------|
 | name         | string                              | The name of your Avo workspace                                                  |
 | events       | array(Event)                        | Array of Tracking Plan events                                                   |
 | metrics      | \{ metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids           |
@@ -61,41 +61,43 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ##### Event Model
 
-| Attribute   | Type                                                   | Description                                     |
-| :---------- | :----------------------------------------------------- | :---------------------------------------------- |
-| id          | string                                                 | Event id                                        |
-| name        | string                                                 | Event name                                      |
-| description | string                                                 | Event description and the list of triggers      |
-| rules       | Rules                                                  | Event JSON rules                                |
-| tags        | array(string)                                          | Array of all tags attached to event             |
-| categories  | array(string)                                          | Array of category ids this event is attached to |
-| triggers    | array(\{id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event    |
-| sources     | array(\{id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
+| Attribute   | Type                                                   | Description                                                                                              |
+|:------------|:-------------------------------------------------------|:---------------------------------------------------------------------------------------------------------|
+| id          | string                                                 | Event id                                                                                                 |
+| name        | string                                                 | Event name                                                                                               |
+| eventType   | enum: ["event", "variant"]                             | Indicates if this event is based on an event or an event variant                                         |
+| description | string                                                 | Event description and the list of triggers                                                               |
+| rules       | Rules                                                  | Event JSON rules                                                                                         |
+| tags        | array(string)                                          | Array of all tags attached to event                                                                      |
+| categories  | array(string)                                          | Array of category ids this event is attached to                                                          |
+| triggers    | array(\{id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event                                                             |
+| sources     | array(\{id, name, implementWithCodegen, destinations}) | Details about all sources sending event                                                                  |
+| variantName | optional string                                        | If the event is generated from an event variant, this field is provided, contains the event variant name |
 
 
 <Callout type="info" emoji="💡">
-Each event variant is represented by a standalone event in the JSON payload. It will have the same `name`, as the base event.
-You can distinguish an event, that is generated from a variant, from a base/standalone event, by checking for a `.` symbol in the id. 
-The event id of events that are generated from variants have the `${baseEventId}.${variantId}` structure.
+Each event variant is represented by a standalone event in the JSON payload. It will have the same `name`, as the base event. Additionally, it will have the `variantName` field included, with the event variant name defined in the Avo Tracking Plan.
+You can distinguish an event, that is generated from a variant, from a base/standalone event, by checking the `eventType` field. 
+The `eventType` of events that are generated from variants is `variant`, while regular events have it as `event`.
 </Callout>
 
 ##### Rules Model
 
 | Attribute    | Type               | Description                           |
-| :----------- | :----------------- | :------------------------------------ |
+|:-------------|:-------------------|:--------------------------------------|
 | properties   | PropertiesRule     | Properties JSON rules                 |
 | nameMappings | array(NameMapping) | Name mappings defined for given event |
 
 ### PropertiesRule Model
 
 | Attribute  | Type                | Description         |
-| :--------- | :------------------ | :------------------ |
+|:-----------|:--------------------|:--------------------|
 | properties | array(PropertyRule) | Property JSON rules |
 
 ##### PropertyRule Model
 
 | Attribute    | Type                         | Description                                   |
-| :----------- | :--------------------------- | :-------------------------------------------- |
+|:-------------|:-----------------------------|:----------------------------------------------|
 | description  | string                       | Property description                          |
 | type         | string                       | Property type                                 |
 | nameMappings | array(NameMapping)           | Name mappings defined for given property      |
@@ -106,21 +108,21 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### NameMapping Model for regular workspaces
 
 | Attribute     | Type   | Description                                                                                                                                           |
-| :------------ | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:--------------|:-------|:------------------------------------------------------------------------------------------------------------------------------------------------------|
 | name          | string | New mapped name                                                                                                                                       |
 | destinationId | string | Either a destination id for which this event/property mapping applies, or "all", meaning that this event/property mapping applies to all destinations |
 
 ##### NameMapping Model for global workspaces in an Organization
 
 | Attribute   | Type   | Description                                                                                                                                                                |
-| :---------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|:------------|:-------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | name        | string | New mapped name                                                                                                                                                            |
 | workspaceId | string | Either a workspace id for which this event/property mapping applies, or "all", meaning that this event/property mapping applies to all local workspace in the Organization |
 
 ##### Metric Model
 
 | Attribute   | Type                  | Description                                                |
-| :---------- | :-------------------- | :--------------------------------------------------------- |
+|:------------|:----------------------|:-----------------------------------------------------------|
 | id          | string                | Metric id                                                  |
 | name        | string                | Metric name                                                |
 | description | string                | Metric description                                         |
@@ -131,7 +133,7 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### Nested Event Model
 
 | Attribute | Type                 | Description                                          |
-| :-------- | :------------------- | :--------------------------------------------------- |
+|:----------|:---------------------|:-----------------------------------------------------|
 | eventId   | string               | Event id                                             |
 | where     | array(whereFilter)   | Array of where filters                               |
 | groupBy   | array(groupByFilter) | array of objects containing property ids to group by |
@@ -139,13 +141,13 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### groupByFilter
 
 | Attribute  | Type   | Description                            |
-| :--------- | :----- | :------------------------------------- |
+|:-----------|:-------|:---------------------------------------|
 | propertyId | string | property Id being used in group filter |
 
 ##### Where filter
 
 | Attribute  | Type     | Description                      |
-| :--------- | :------- | :------------------------------- |
+|:-----------|:---------|:---------------------------------|
 | propertyId | string   | property id                      |
 | operation  | string   | binary operation as string       |
 | values     | array(t) | array of values of the same type |
@@ -153,7 +155,7 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### Source Model
 
 | Attribute           | Type          | Description                                                |
-| :------------------ | :------------ | :--------------------------------------------------------- |
+|:--------------------|:--------------|:-----------------------------------------------------------|
 | id                  | string        | Source id                                                  |
 | name                | string        | Source name                                                |
 | programmingLanguage | string        | Name of programming language (e.g. "JavaScript", "Python") |
@@ -163,7 +165,7 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### Destination Model
 
 | Attribute | Type   | Description                                                                                                        |
-| :-------- | :----- | :----------------------------------------------------------------------------------------------------------------- |
+|:----------|:-------|:-------------------------------------------------------------------------------------------------------------------|
 | id        | string | Destination id                                                                                                     |
 | name      | string | Destination name                                                                                                   |
 | type      | string | Name of the provider (e.g. "Segment", "Mixpanel") where the data is sent to if managed by Avo, "Custom" otherwise. |
@@ -171,7 +173,7 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### Category Model
 
 | Attribute   | Type          | Description                        |
-| :---------- | :------------ | :--------------------------------- |
+|:------------|:--------------|:-----------------------------------|
 | id          | string        | Category id                        |
 | name        | string        | Category name                      |
 | description | string        | Category description               |
@@ -181,7 +183,7 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### PublishInfo Model
 
 | Attribute       | Type               | Description                                                                                               |
-| :-------------- | :----------------- | :-------------------------------------------------------------------------------------------------------- |
+|:----------------|:-------------------|:----------------------------------------------------------------------------------------------------------|
 | branchId        | string             | Branch id                                                                                                 |
 | branchName      | string             | Branch name                                                                                               |
 | integrationId   | string             | Id of the publish integration (consistently the same for this integration)                                |
@@ -195,7 +197,7 @@ The event id of events that are generated from variants have the `${baseEventId}
 ##### Organization Model
 
 | Attribute          | Type          | Description                                                              |
-| :----------------- | :------------ | :----------------------------------------------------------------------- |
+|:-------------------|:--------------|:-------------------------------------------------------------------------|
 | organizationId     | string        | Organization id                                                          |
 | globalWorkspaceIds | array(string) | List of all global workspaces in Organization                            |
 | localWorkspaceIds  | array(string) | List of all local workspaces in Organization                             |
