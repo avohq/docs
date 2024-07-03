@@ -114,14 +114,14 @@ Add descriptions to all properties to increase the quality of your tracking plan
 
 \* These rules can only fail after importing an existing tracking plan to Avo. When editing your Tracking Plan in Avo, Avo prevents you from introducing conflicting events and properties.
 
-# Audit Rule Configuration
+## Audit Rule Configuration
 
 For new workspaces all rules are enabled in their default settings. Workspaces on the Team and Enterprise plans have the Tracking Plan Audit Config enabled which allows members that are Editors or Admins to change the audit behavior. All rules can be toggled on or off and the preferred casing can be configured separately for events and properties. Additionally workspaces on the Enterprise plan have the ability to enforce each rule, making sure changes can not be merged with validation errors.
 
 ### Enforcement
 You can set the enforcement status to block status to two options `[Request for review | Branch merge]` 
- - Request for review: Blocks the branch from being able to be set up for a peer review if there are any events or properties that have audit errors which are enforced.
- - Branch merge: Blocks the branch from being able to be merged if there are any events or properties that have audit errors which are enforced.
+ - **Request for review**: Blocks the branch from being able to be set up for a peer review if there are any events or properties that have audit errors which are enforced.
+ - **Branch merge**: Blocks the branch from being able to be merged if there are any events or properties that have audit errors which are enforced.
 
  <Callout type="info" emoji="💡"> Marking the branch status as `Request for review` will also block the branch from being merged if any changes where made after approval  </Callout>
 
