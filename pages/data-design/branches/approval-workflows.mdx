@@ -1,8 +1,50 @@
+import { Callout } from 'nextra/components';
+
 # Approval workflows
 
 _Increase the quality of your tracking plan with protected main branch and branch approvals_
 
-Building a tracking plan is a team sport. Getting feedback from your team on the changes you're making to the tracking plan helps with building alignment and keeping the plan consistent. That's why we built approval workflows. Approval workflows can be configured in three ways:
+<Callout type="info" emoji="💡">Approval workflows are available on the team and enterprise plans. See [plans and pricing](https://www.avo.app/pricing).</Callout>
+
+Building a tracking plan is a team sport. Getting feedback from your team on the changes you're making to the tracking plan helps with building alignment and keeping the plan consistent. Approval workflows are a powerful tool for the peer-review process. Typical workflow looks something like this:
+
+1. Product manager creates a branch and updates the tracking plan
+2. Product manager requests a review from a data person and a developer
+3. Data person and developer review the branch and provide feedback
+4. Reviewers might request changes to the branch
+5. Once everyone is aligned, the branch is approved
+6. Developer implements the tracking from the branch
+7. The branch is merged
+
+
+<Callout type="info" emoji="💡">This is an example of a workflow and roles that participate in each step. The workflow is unique for every team.</Callout>
+
+
+## Branch status
+
+Branch status makes it transparent at which step the peer-review process is and when it is changed, notifications are sent out to all branch collaborators so everyone is up to date on what the status is.
+
+The branch status is always visible in the left sidebar and in the [branch overview](/data-design/branches#branches-overview), accessible by clicking the Avo logo in the top left corner:
+
+![Branch status](/images/data-design/branch-status.png)
+
+The branch status is changed on the [tracking plan changes page](docs/workflow/review), accessible by clicking "View Changes" next to the branch status and below the branch name.
+
+![How to access the tracking plan changes page](/images/data-design/tracking-plan-changes.png)
+
+
+The available branch statuses in Avo are:
+
+- **Open**: Indicates that the branch is in draft state and is currently being worked on. The main call to action when the branch status is _Open_ is _Ready for review_
+- **Ready for review**: Indicates that a review has been requested. Make sure to at-mention the people you want a review from or add them as branch collaborators before you change the status to ensure they are notified. The main call to action when the branch status is _Ready for review_ is _Approve_
+- **Request changes**: Indicates that a reviewer has requested changes to the branch before it can be approved. The main call to action when the branch status is _Request changes_ state is _Ready for review_
+- **Approved**: Indicates that the suggestions in this branch have been approved and are ready to be implemented. The main call to action when the branch status is _Approved_ is _Merge branch_
+- **Merged**: Indicates that the branch has been merged to the main tracking plan and that the branch has now served its purpose. A merged branch has no call to action
+- **Closed**: Indicates that the branch has been closed and the changes are not intended to be merged into the main tracking plan. A closed branch has no call to action 
+
+## Configuring approval workflows
+
+Approval workflows can be configured in three ways:
 
 1. [Protected main branch](/data-design/branches/approval-workflows#protected-main-branch)
 2. [Require admin approval](/data-design/branches/approval-workflows#require-admin-approval)
