@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Members
 
 Expand your Avo team and manage your members access by opening the workspace settings modal from the settings wheel located next to your workspace name:
@@ -10,10 +12,10 @@ Admins can assign roles when inviting new users as well as for existing users, e
 
 Role overview:
 
-|                                        | [**Billing**](/data-design/collaboration/members#billing-only) | [**Viewer**](/data-design/collaboration/members#viewer) | [**Editor**](/data-design/collaboration/members#editor) | [**Admin**](/data-design/collaboration/members#admin) |
+|                                        | [Billing](/data-design/collaboration/members#billing-only) | [Viewer](/data-design/collaboration/members#viewer) | [Editor](/data-design/collaboration/members#editor) | [Admin](/data-design/collaboration/members#admin) |
 |----------------------------------------|---------|--------|--------|-------|
 | View tracking plan                     |         | ✅      | ✅      | ✅     |
-| Pull generated code using the Avo CLI  |         | ✅✳️     | ✅      | ✅     |
+| Pull generated code using the Avo CLI  |         | ✅*     | ✅      | ✅     |
 | Comment                                |         | ✅      | ✅      | ✅     |
 | Create branches and edit tracking plan |         |        | ✅      | ✅     |
 | Change branch status                   |         |        | ✅      | ✅     |
@@ -26,7 +28,9 @@ Role overview:
 | Manage service accounts                |         |        |        | ✅     |
 | View and manage billing                | ✅       |        |        | ✅     |
 
-✳️ Viewers can pull code using the CLI on the team and enterprise plans. On the free plan, only editors can pull code.
+<Callout type="info" emoji="💡">
+\* Viewers can pull code using the CLI on the team and enterprise plans. On the free plan, only editors can pull code. [See details below](/data-design/collaboration/members#codegen-access-for-non-editors).
+</Callout>
 
 ### Admin
 
