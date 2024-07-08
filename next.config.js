@@ -1064,5 +1064,10 @@ const redirects = [
     destination: '/reference/avo-inspector-sdks/overview',
     permanent: true,
   },
+  {
+    source: '/audit/get-tracking-plan-into-avo',
+    destination: '/publishing/get-tracking-plan-into-avo',
+    permanent: true,
+  },
 
 ];
