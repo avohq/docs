@@ -6,7 +6,7 @@ _Learn how to read, fix and configure your tracking plan audit_
 
 ## Audit rules
 
-Following are the static rules Avo tests for in the tracking plan audit. To learn more about how to get started with the tracking plan audit, see [Quickstart: Get your first audit](/audit/quickstart).
+Following are the rules Avo tests for in the tracking plan and branch audits. To learn more about how to get started with the tracking plan audit, see [Quickstart: Get your first audit](/audit/quickstart).
 
 You will recognize the Tracking Plan Audit by the yellow exclamation point next to the Tracking Plan item in the sidebar. It’s meant to help teams follow their naming convention and surface issues like when a type is missing from a property.
 
@@ -46,6 +46,8 @@ Checks if the casing of event names in the tracking plan is consistent. For even
 #### How to resolve
 
 Fix the names and implementation of the events that don't fit your standards. Note that this will only be fixed for the data going forward, not historical data. Note that changing your existing tracking might cause issues in downstream tools and metrics. **Make sure to discuss with the consumers of the data before making such change**.
+
+<Callout type="info" emoji="💡">To enforce more granular event name rules in your workspace, including event name structure (such as “object action”) or hybrid casing conventions, you can set up [advanced event naming rules](/audit/advanced-event-naming-rules</Callout>
 
 ### All events have description
 
@@ -116,12 +118,19 @@ Add descriptions to all properties to increase the quality of your tracking plan
 
 ## Audit Rule Configuration
 
-For new workspaces all rules are enabled in their default settings. Workspaces on the Team and Enterprise plans have the Tracking Plan Audit Config enabled which allows members that are Editors or Admins to change the audit behavior. All rules can be toggled on or off and the preferred casing can be configured separately for events and properties. Additionally workspaces on the Enterprise plan have the ability to enforce each rule, making sure changes can not be merged with validation errors.
+For new workspaces all rules are enabled by default, and casing rules default to the most common casing seen in the workspace. Workspaces on the Team and Enterprise plans are able to configure the audit to include or exclude each rule and manually set their casing rules for events and properties. 
+
+Additionally, workspaces on the Enterprise plan are able to define [advanced event naming rules](/audit/advanced-event-naming-rules) that include event name structure (such as “object action”) and hybrid casing conventions.
+
+![navigating to configure rules](/images/audit/audit config nav 1)
+
+To configure your audit – click the yellow exclamation point next to the Tracking Plan item in the sidebar and then click “configure”
 
 ### Enforcement
-You can set the enforcement status to block status to two options `[Request for review | Branch merge]` 
- - **Request for review**: Blocks the branch from being able to be set up for a peer review if there are any events or properties that have audit errors which are enforced.
- - **Branch merge**: Blocks the branch from being able to be merged if there are any events or properties that have audit errors which are enforced.
+Workspaces on the Enterprise plan are able to enforce each audit rule to ensure no new issues are introduced to your tracking plan.
+Depending on your team’s preferred workflow, you can set the enforcement to two different stages of the branch lifecycle:
+- Request for review: Requires the branch to pass all enforced audit rules before being reviewed
+- Branch merge: Requires the branch to pass all enforced audit rules before it is merged to the main branch.
 
  <Callout type="info" emoji="💡"> Marking the branch status as `Request for review` will also block the branch from being merged if any changes where made after approval  </Callout>
 
