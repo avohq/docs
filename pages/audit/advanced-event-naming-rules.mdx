@@ -1,6 +1,6 @@
 import { Callout } from 'nextra/components'
 
-#Advanced event naming rules
+# Advanced event naming rules
 
 To ensure anyone on your team is able to create events that match your naming convention, you can define advanced event naming rules. The advanced rules setting lets you break down your events into its components and define and enforce rules for each component.
 
@@ -19,12 +19,13 @@ Advanced naming rules in Avo will help teams configure rules to guide workspace 
 
 <Callout type="info" emoji="💡">Validation of advanced event name rules is currently not supported in the [branch audit](/audit/branch-audit) or the [tracking plan audit](/audit/overview).</Callout>
 
-![Creating new events with event name rules in place](/images/audit/advanced name rules intro.png)
+![Creating new events with event name rules in place](/images/audit/advanced-name-rules-intro.png)
 
 To define advanced event name rules, click the tracking plan audit icon next to the Tracking Plan item in the sidebar and then click “configure”. This will open up a view to configure your tracking plan audit. Under “Event naming conventions”, click “set advanced rules”.
 
-![Navigating to audit config step 1](/images/audit/audit config nav 1.png)
-![Navigating to audit config step 1](/images/audit/audit config nav 2.png)
+![Navigating to audit config step 1](/images/audit/audit-config-nav-1.png)
+
+![Navigating to audit config step 1](/images/audit/audit-config-nav-2..png)
 
 ## Event name components
 
@@ -35,9 +36,16 @@ When adding a component you have three options:
 - Allowed values
 - Separators
 
-![Name components](/images/audit/name components.png)
+<center>
+  <img
+    src="/docs/images/audit/name-components.png"
+    width="60%"
+    alt="Name components."
+  />
+</center>
 
-###Free input
+
+### Free input
 
 An event name field where any string value is accepted, with the only constraint being that it adheres to the correct casing. 
 
@@ -45,13 +53,13 @@ The casing rule for the free input will serve to prevent users from typing value
 
 Example: A common example of this is an *object* component – where the object value could represent any feature, flow or ui element the user interacts with.
 
-###Allowed values
+### Allowed values
 
 An event name field where only values from a predefined list of allowed values are accepted.
 
 The allowed values can be added or removed on the [advanced rules configuration screen](/audit/rules#audit-rule-configuration), accessible from the [tracking plan audit](/audit/overview), or added directly from the event creation modal when creating new events.
 
-![Adding allowed values when creating an event](/images/audit/add allowed value)
+![Adding allowed values when creating an event](/images/audit/add-allowed-value.png)
 
 When adding allowed values, the casing rule for the component will prevent users from typing values that don’t match this casing. 
 
@@ -61,15 +69,15 @@ When adding allowed values, the casing rule for the component will prevent users
 
 **Example:** A common example of this is an action component – where there is an established terminology for user actions in your product (such as “clicked”, “opened” or “viewed” and you want to prevent duplicate events being created for the same action (such as “banner_viewed” and (“banner_seen”)
 
-###Separators
+### Separators
 
 One or more characters that separate the event name fields. Separators are usually between other event name components, but can also be added before the first event name component or after the last. This is useful for teams that use a hybrid naming convention where the separator between name fields is different from those within 
 
-![Separators](/images/audit/separators)
+![Separators](/images/audit/separators.png)
 
 Example: If your naming convention is object_action, the _ (underscore) is a separator.
 
-##Guardrails for advanced event name rules
+## Guardrails for advanced event name rules
 
 Guardrails guide users to correctly name events when a workspace has advanced name rules in place:
 
@@ -78,6 +86,6 @@ The name input is broken down into its components and each name field is labeled
 - For allowed value fields, users can select an allowed value
 - Separators are already in place and do not need to be typed manually
 
-![Guardrails](/images/audit/guardrails)
+![Guardrails](/images/audit/guardrails.png)
 
 <Callout type="info" emoji="💡">If a legitimate need arises to create events that deviate from the naming convention, admins can switch off the guardrails and type the event name as a simple string.</Callout>
