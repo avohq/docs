@@ -1066,7 +1066,12 @@ const redirects = [
   },
   {
     source: '/audit/get-tracking-plan-into-avo',
-    destination: '/publishing/get-tracking-plan-into-avo',
+    destination: '/publishing/import/get-tracking-plan-into-avo',
+    permanent: true,
+  },
+  {
+    source: '/publishing/importing',
+    destination: '/publishing/import/importing',
     permanent: true,
   },
 
