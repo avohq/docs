@@ -181,17 +181,29 @@ For configuring per-event and per-source you can change the overall setting for 
 Properties of type string can have rules that require the property to be a certain value or one of allowed values.
 When these rules are applied on the property, the generated avo code will make sure that these values are only being sent.
 
+// TODO new screenshot
+
 ![Image shows how allowed property values enumeration](/images/property_enum.png)
 
-#### Source specific allowed values
+#### Event and source specific allowed values
 
 <Callout type="info">
-  Source specific property rules are available on the Team plan.
+  Event and source specific property rules are available on the Team plan.
 </Callout>
 
-When a property is sent from multiple sources, you can configure from which sources each value is allowed to be sent.
+When a property is sent from multiple events and sources, you can configure the allowed values granularly for each event and each source.
 
-![Image shows how allowed property values can be enabled or disabled on each source](/images/property_enum_source_specific.png)
+It can be configured both from the property details
+
+// TODO new screenshot
+
+![Image shows how allowed property values can be enabled or disabled on each event and source from property details](/images/property_enum_source_specific.png)
+
+And from the event details
+
+// TODO new screenshot
+
+![Image shows how allowed property values can be enabled or disabled on specific event and the event sources from the event details](/images/property_enum_source_specific.png)
 
 ## Replacing a Property
 
