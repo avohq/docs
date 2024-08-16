@@ -31,7 +31,7 @@ async function loadAssets(): Promise<
       {
         name: 'Acid Grotesk',
         data: font,
-        weight: 600 as const,
+        weight: 700 as const,
         style: 'normal' as const,
       },
     ],
@@ -72,7 +72,7 @@ export default async function OGImage(request: NextRequest) {
             style={{
               fontFamily: 'Acid Grotesk',
               padding: '42px',
-              fontWeight: 600,
+              fontWeight: 700,
               fontSize: 70,
               maxWidth: '750px',
               overflow: 'hidden',
