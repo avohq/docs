@@ -146,11 +146,11 @@ An example event property bundle could be "Product" containing the following pro
 
 ## Property types and constraints
 
-In the property modal for event, user and system properties you need to define the type of the values allowed for the property. That definition is used to validate the property.
+In the property view for event, user and system properties you need to define the type of the values allowed for the property. That definition is used to validate the property.
 
 Avo supports properties with values of the following types and constraints:
 
-- string _(enumeration of allowed values)_
+- string _(enumeration of allowed values or regex pattern)_
 - integer _(minimum and maximum value)_
 - float _(minimum and maximum value)_
 - boolean _(true or false)_
@@ -178,8 +178,7 @@ For configuring per-event and per-source you can change the overall setting for 
 
 ## Enumeration of allowed string values
 
-Properties of type string can have rules that require the property to be a certain value or one of allowed values.
-When these rules are applied on the property, the generated avo code will make sure that these values are only being sent.
+If you have a pre-defined set of string values that the property can take, defining them as part of your tracking plan will make it easier to maintain and to implement tracking. Codegen will treat these values as enums in the code, making it impossible to send undesired values in programming languages that enforce type safety. Allowed values can be configured to be sent by source and even per-event allowing very fine-grained control over what values are sent where.
 
 ![Image shows allowed values on a property](/images/property_enum.png)
 
@@ -189,13 +188,24 @@ When a property is sent from multiple events and sources, you can configure the 
 
 It can be configured both from the property details view
 
-![Image shows how allowed property values can be enabled or disabled on each event and source from property details](/images/property_enum_edit_in_property.png)
+<img
+  src="/docs/images/property_enum_edit_in_property.png"
+  width="446"
+  alt="Allowed property values can be enabled or disabled on each event and source from property details"
+/>
+
 
 And from the event details view
 
 ![Image shows a menu to open the edit allowed values dialog from event details](/images/property_enum_edit_in_event.png)
 
 ![Image shows a dialog to edit allowed values for a property on a single event](/images/property_enum_dialog_in_event.png)
+
+### Regex pattern validation
+
+The regex validation is useful if you want to allow any string value, but want to make sure that the value conforms to a certain pattern. As regex doesn't have build-time validation, it's not enforced when using Codegen but the desired regex pattern is communicated to developers with comments in the code. We are planning to implement runtime validation for regex patterns in the future that will be able to catch incorrect values at runtime, for example when testing the implementation as a developer or as part of a quality assurance process (QA). When defining a regex pattern your regex is validated and you can provide an example value that will be validated against the regex. Furthermore you can define overrides for the regex pattern for each event.
+
+![Property Regex Validation Modal](/images/property_regex_validation_modal.png)
 
 ## Replacing a Property
 
