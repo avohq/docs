@@ -151,7 +151,7 @@ const mixpanelDestinationInterface = {
   revenue: function (amount, eventProperties) {
     mixpanel.people.track_charge(amount, eventProperties);
   },
-  page: function (pageName, eventProperties) {
+  logPage: function (pageName, eventProperties) {
     // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
     mixpanel.track(
       'Page Viewed',
@@ -223,7 +223,7 @@ var googleAnalyticsDestinationInterface = {
   revenue: function (amount, eventProperties) {
     gtag('event', 'purchase', { ...eventProperties, amount });
   },
-  page: function (screenName, eventProperties) {
+  logPage: function (screenName, eventProperties) {
     gtag('event', 'screen_view', {
       ...eventProperties,
       screen_name: screenName,
@@ -275,7 +275,7 @@ var mixpanelDestinationInterface = {
   revenue: function (amount, eventProperties) {
     mixpanel.getPeople().trackCharge(amount, eventProperties);
   },
-  page: function (pageName, eventProperties) {
+  logPage: function (pageName, eventProperties) {
     // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
     mixpanel.track(
       'Page Viewed',
