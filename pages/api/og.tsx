@@ -17,11 +17,11 @@ async function loadAssets(): Promise<
     string,
   ]
 > {
-  const [inter, bg] = await Promise.all([
-    fetch(String(new URL('../../assets/inter-bold.ttf', import.meta.url))).then(
+  const [font, bg] = await Promise.all([
+    fetch(String(new URL('../../assets/FFF-AcidGrotesk-Medium.otf', import.meta.url))).then(
       (res) => res.arrayBuffer(),
     ),
-    fetch(String(new URL('../../assets/og-bg.jpg', import.meta.url))).then(
+    fetch(String(new URL('../../public/og.jpg', import.meta.url))).then(
       (res) => res.arrayBuffer(),
     ),
   ]);
@@ -29,8 +29,8 @@ async function loadAssets(): Promise<
   return [
     [
       {
-        name: 'Inter',
-        data: inter,
+        name: 'Acid Grotesk',
+        data: font,
         weight: 700 as const,
         style: 'normal' as const,
       },
@@ -64,17 +64,21 @@ export default async function OGImage(request: NextRequest) {
             backgroundImage: `url(data:image/jpeg;base64,${bg})`,
             backgroundSize: '1200px 630px',
             color: '#fff',
+            alignItems: 'center',
+            paddingBottom: '110px',
           }}
         >
           <div
             style={{
-              fontFamily: 'Inter',
+              fontFamily: 'Acid Grotesk',
               padding: '42px',
               fontWeight: 700,
-              fontSize: 80,
-              maxWidth: '900px',
+              fontSize: 70,
+              maxWidth: '750px',
               overflow: 'hidden',
               flexShrink: 1,
+              lineHeight: 0.9,
+              letterSpacing: '-0.01em',
             }}
           >
             {title}

@@ -29,9 +29,15 @@ Avo Inspector requires two core steps to add observability:
 
 Both steps have installation options available to you to support different configurations. Which ever path you take, your data observability journey starts with creating an Avo source because this is where you create source specific API keys and can get the initialization code. If you haven't created a source yet, follow the docs to [create and set up your GTM source](/inspector/configuring-inspector-sources).
 
-## Inspector Client side GTM integration
+## Inspector Client side GTM integration with a template
 
-There are two options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events. If you choose to use the GTM recipe, the initialization code is already included in a tag, so you just need to provide the Inspector API GTM variable the source specific API key, which you can find in your Avo source Inspector setup. Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
+The simplest way to integrate GTM with inspector is to use the Avo Inspector template provided in the official Template Gallery.
+
+Follow the Avo in-app instructions to set up the GTM Template.
+
+## Other ways to integrate Inspector Client side GTM
+
+There are two extra options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events. If you choose to use the GTM recipe, the initialization code is already included in a tag, so for the Inspector API GTM variable you need to provide the source specific API key, which you can find in your Avo source Inspector setup. Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
 
 ### Importable GTM recipe
 
@@ -117,23 +123,13 @@ This tag is designed to be used with the server side Google Tag Manager, learn m
 
 ### Import Avo Inspector GTM tag template
 
-1. Download the tag template file from [GitHub](https://github.com/avohq/gtm-server-avo-inspector-template/blob/master/template.tpl), there is a download button in the top right of the file content area
-
-![Download button in the GitHub interface](/images/server-gtm-download.png)
-
-2. Navigate to the Templates tab in your server side GTM console
-
-![Templates option in the side menu](/images/server-gtm-templates.png)
-
-3. In the Tag Templates section, click New
+1. In the Tag Templates section, click Search Gallery
 
 ![New button on the templates screen](/images/server-gtm-template-new.png)
 
-4. Click three dots in the top right and choose 'Import' in the drop-down menu
+2. Search for "Avo Inspector" and press "Add to workspace". Press "Add" in the following modal.
 
-![Dropdown in the templates screen with the import button](/images/server-gtm-import.png)
-
-5. Select the `template.tpl` file you downloaded on step 1
+![Dropdown in the templates screen with the import button](/images/server-gtm-in-store.png)
 
 ### Create Avo Inspector GTM tag
 

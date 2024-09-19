@@ -88,7 +88,7 @@ With a destination interface you'll get access to callback methods for all the A
   > 💡 Note that if your destination does not support page/screen tracking, you can leave this callback empty.
 
   ```pseudocode
-  page(pageName, eventProperties) {
+  logPage(pageName, eventProperties) {
     // Log page/screen view in your destination, if your destination supports it
     analytics.page(pageName, eventProperties)
   }
