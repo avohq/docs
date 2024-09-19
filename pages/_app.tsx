@@ -22,6 +22,18 @@ const getAvoEnv = () => {
   }
 };
 
+const getAvoInspectorEnv = () => {
+  switch (process.env.NEXT_PUBLIC_AVO_ENV) {
+    case 'production':
+      return Inspector.AvoInspectorEnv.Prod;
+    case 'staging':
+      return Inspector.AvoInspectorEnv.Staging;
+    case 'development':
+    default:
+      return Inspector.AvoInspectorEnv.Dev;
+  }
+};
+
 let analytics: AnalyticsBrowser | undefined;
 
 const segmentDestinationInterface: CustomDestination = {
@@ -94,11 +106,11 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   Avo.initAvo(
     {
       env: getAvoEnv(), inspector: new Inspector.AvoInspector({
-        apiKey: "BwkDME183dWUrP3OGqv1",
-        env: Inspector.AvoInspectorEnv.Dev,
+        apiKey: "mT3lTbBrUn6bYCxICbcz",
+        env: getAvoInspectorEnv(),
         version: "1.0.0",
-        appName: "My app",
-        suffix: "instance0"
+        appName: "Avo Docs",
+        suffix: "main"
       })
     },
     { client: 'Docs', version: '2.0' },
