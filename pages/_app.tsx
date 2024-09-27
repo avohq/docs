@@ -4,6 +4,7 @@ import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import mixpanel from 'mixpanel-browser';
+import * as Inspector from "ssr-web-avo-inspector";
 
 import Avo, { AvoEnv, CustomDestination } from '../Avo';
 
@@ -18,6 +19,18 @@ const getAvoEnv = () => {
     case 'development':
     default:
       return AvoEnv.Dev;
+  }
+};
+
+const getAvoInspectorEnv = () => {
+  switch (process.env.NEXT_PUBLIC_AVO_ENV) {
+    case 'production':
+      return Inspector.AvoInspectorEnv.Prod;
+    case 'staging':
+      return Inspector.AvoInspectorEnv.Staging;
+    case 'development':
+    default:
+      return Inspector.AvoInspectorEnv.Dev;
   }
 };
 
@@ -91,7 +104,15 @@ const mixpanelDestinationInterface: CustomDestination = {
 
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   Avo.initAvo(
-    { env: getAvoEnv() },
+    {
+      env: getAvoEnv(), inspector: new Inspector.AvoInspector({
+        apiKey: "mT3lTbBrUn6bYCxICbcz",
+        env: getAvoInspectorEnv(),
+        version: "1.0.0",
+        appName: "Avo Docs",
+        suffix: "main"
+      })
+    },
     { client: 'Docs', version: '2.0' },
     {},
     segmentDestinationInterface,
