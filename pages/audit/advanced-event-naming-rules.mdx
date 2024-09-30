@@ -16,8 +16,8 @@ To ensure anyone on your team is able to create events that match your naming co
 
 Advanced naming rules in Avo will help teams configure rules to guide workspace editors making new or updated event names to…
 - adhere to the correct event name structure (e.g object action)
-- ensure they use allowed values for certain components of the event name
-- prevent them from using blocked values for certain components of the event name
+- ensure they use allowed words for certain components of the event name
+- prevent them from using blocked words for certain components of the event name
 - prevent them from making casing mistakes, even with complex casing conventions. 
 
 <Callout type="info" emoji="💡">Validation of advanced event name rules currently has limited support in the [branch audit](/audit/branch-audit) and the [tracking plan audit](/audit/overview). The audit will do its best to identify discrepancies, but there may be cases it cannot catch. The best way to ensure the correct naming convention when creating and/or renaming events is to have the "Guardrails" enabled in the event name input.</Callout>
@@ -50,7 +50,7 @@ When adding a component you have three options:
 
 An event name field where any string value is accepted, with the only constraint being that it adheres to the correct casing. 
 
-The casing rule for the free input will serve to prevent users from typing values that don't match the correct casing when creating new events.
+The casing rule for the free input will serve to prevent users from typing words that don't match the correct casing when creating new events.
 
 Example: A common example of this is an *object* component – where the object value could represent any feature, flow or ui element the user interacts with.
 
@@ -62,17 +62,17 @@ The allowed values can be added or removed on the [advanced rules configuration 
 
 ![Adding allowed values when creating an event](/images/audit/add-allowed-value.png)
 
-When adding allowed values, the casing rule for the component will prevent users from typing values that don't match this casing. 
+When adding allowed words, the casing rule for the component will prevent users from typing words that don't match this casing. 
 
 <Callout type="info" emoji="💡">Only workspace admins are able to add or remove allowed component values.</Callout>
 
-When adding allowed values, the casing rule for the component will prevent users from typing values that don't match this casing. If you need to bypass casing rules for your allowed values, you can set the component casing to "custom" to permit values that deviate from your casing.
+When adding allowed words, the casing rule for the component will prevent users from typing words that don't match this casing. If you need to bypass casing rules for your allowed words, you can set the component casing to "custom" to permit words that deviate from your casing.
 
 **Example:** A common example of this is an action component – where there is an established terminology for user actions in your product (such as "clicked", "opened" or "viewed" and you want to prevent duplicate events being created for the same action (such as "banner_viewed" and ("banner_seen"))
 
 ### Blocked values
 
-Similar to allowed values, blocked values enable users to define a list of prohibited values for every event name component. This feature helps prevent the use of specific terms or phrases that may be inconsistent with your naming conventions.
+Similar to allowed words, blocked words enable users to define a list of prohibited words for every event name component. This feature helps prevent the use of specific terms or phrases that may be inconsistent with your naming conventions.
 
 ### Separators
 
@@ -104,8 +104,8 @@ Users on the Free plan have access to two pre-configured event naming Frameworks
 
 ### Team plan
 In addition to the Free plan functionality, Team plan users can:
-- Add "Allowed values" for both the "Object" and "Action" event name components
-- Add "Blocked values" for both the "Object" and "Action" event name components
+- Add "Allowed words" for both the "Object" and "Action" event name components
+- Add "Blocked words" for both the "Object" and "Action" event name components
 
 ### Enterprise plan
 Enterprise plan users have full access to all advanced event naming rules features, including custom frameworks, separators and additional components.
