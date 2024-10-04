@@ -1,0 +1,57 @@
+# Export Branch stats
+
+_Export branch stats using Avo API_
+
+The Export API gives you the possibility to export your Avo branches as CSV.
+
+## Endpoint
+
+```Url
+https://api.avo.app/workspaces/:workspaceId/branches/export/v1
+```
+
+`:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`.
+
+Returns [a CSV string that is a representation of your branch stats for all branches in the workspace]
+
+CSV Headers
+
+- `branchName`: Name of the branch
+- `branchId`: Id of the branch
+- `branchCreatorId`: userId of the branch creator
+- `branchCreatorEmail`: email of the branch creator
+- `creationDate`: UTC timestamp when the branch was created
+- `branchStatus`: current status on the branch [Merged | Closed | Approved | Draft | ReadyForReview]
+- `collaborators`: array of user emails that helped on the branch.
+- `lastPublishedDate`: UTC timestamp of last time when the branch was published to a downstream publishing integration
+- `markedReadyForReviewDate`: UTC timestamp when the branch was marked as ReadyForReview. This will return the date of the first ReadyForReview event.
+- `markedReadyForReviewerUserEmail`: email of the user who marked the branch as ReadyForReview. This will return the email of the user who first marked the branch as ReadyForReview.
+- `branchMergedDate`: UTC timestamp when the branch was merged
+- `branchMergedUserEmail`: email of the user who merged the branch.
+
+### Authentication
+
+This endpoint requires an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
+
+### Rate Limit
+
+We currently soft-enforce 1/req/s rate limit per service account for this endpoint. Please reach out to us if you have a use case in mind that requires a higher rate limit.
+
+## Parameters
+
+### - _workspaceId_
+
+Locate your workspaceId in the URL
+`avo.app/schemas/:workspaceId`
+
+### - Base64 encoding secret header
+
+The base64 encoded token expects `name:secret`
+
+See more on [authorization](/public-api/authentication#authenticating-with-avo-api)
+
+### Request
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.app/workspaces/:workspaceId/export/v1
+```
