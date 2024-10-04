@@ -1,5 +1,3 @@
-{/* cSpell:disable */}
-
 # Export Branch stats
 
 _Export branch stats using Avo API_
@@ -14,7 +12,7 @@ https://api.avo.app/workspaces/:workspaceId/branches/export/v1
 
 `:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`.
 
-Returns [a CSV string that is a representation of your branch stats]
+Returns [a CSV string that is a representation of your branch stats for all branches in the workspace]
 
 CSV Headers
 
@@ -26,8 +24,8 @@ CSV Headers
 - `branchStatus`: current status on the branch [Merged | Closed | Approved | Draft | ReadyForReview]
 - `collaborators`: array of user emails that helped on the branch.
 - `lastPublishedDate`: UTC timestamp of last time when the branch was published to a downstream publishing integration
-- `markedReadyForReviewDate`: UTC timestamp when the branch was marked as ReadyForReview
-- `markedReadyForReviewerUserEmail`: email of the user who marked the branch as ReadyForReview
+- `markedReadyForReviewDate`: UTC timestamp when the branch was marked as ReadyForReview. This will return the date of the first ReadyForReview event.
+- `markedReadyForReviewerUserEmail`: email of the user who marked the branch as ReadyForReview. This will return the email of the user who first marked the branch as ReadyForReview.
 - `branchMergedDate`: UTC timestamp when the branch was merged
 - `branchMergedUserEmail`: email of the user who merged the branch.
 
