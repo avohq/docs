@@ -1074,5 +1074,14 @@ const redirects = [
     destination: '/publishing/import/importing',
     permanent: true,
   },
-
+  {
+    source: '/data-design/collaboration/members',
+    destination: '/managing-your-workspace/members',
+    permanent: true,
+  },
+  {
+    source: '/data-design/collaboration/authentication',
+    destination: '/managing-your-workspace/authentication',
+    permanent: true,
+  },
 ];
