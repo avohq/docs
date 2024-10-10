@@ -1076,12 +1076,17 @@ const redirects = [
   },
   {
     source: '/data-design/collaboration/members',
-    destination: '/managing-your-workspace/members',
+    destination: '/workspace-management/members',
     permanent: true,
   },
   {
     source: '/data-design/collaboration/authentication',
-    destination: '/managing-your-workspace/authentication',
+    destination: '/workspace-management/authentication',
+    permanent: true,
+  },
+  {
+    source: '/data-design/define-sources-and-destinations',
+    destination: '/data-design/avo-tracking-plan/define-sources-and-destinations',
     permanent: true,
   },
 ];
