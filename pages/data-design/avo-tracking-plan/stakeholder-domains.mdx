@@ -1,0 +1,53 @@
+import PageLink from '../../../components/PageLink';
+
+# Stakeholder Domains
+
+In Avo, you can assign one or multiple domains as stakeholders to events in your tracking plan. This is vital for large organizations sharing a schema registry, to better define areas of accountability and ownership. It makes it clear which parts of the tracking plan are relevant to each function or team within the organization and – more importantly – streamlines the workflow for when changes are suggested on shared data structures.
+
+## Domains
+
+![Schematics of tracking plan in Avo broken down into a few example domains](/images/domains/domains.png)
+
+A domain refers to a certain function or area within your organization. It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Marketing, Sales, Finance, etc.).
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Managing domains"
+  description="How to set up and manage domains"
+  href="/workspace-management/domains"
+/>
+
+## Stakeholders
+
+A domain should be assigned as a stakeholder on an event if it depends on the event and/or is directly accountable for implementing it and ensuring it’s being sent correctly.
+
+By having assigned stakeholder domains on events, it’s clear to anyone navigating your tracking plan who is relying on which events and who to loop in if an issue comes up with an event or when changes are suggested to shared data structures.
+
+### Stakeholders in the tracking plan
+
+In the Events table in your tracking plan, you will see a column labeled “Stakeholders”. This column shows which domain each event is assigned to. You can filter your events table by stakeholders and share the filtered view with the domain team to give everyone a clearer overview of the events relevant to them.
+
+![Avo events page with domain filters applied](/images/domains/events-domain-filter.png)
+
+In the Event details view for each event, you can see which domains are stakeholders in the event. To easily connect the dots between the stakeholder domain and the people behind it, click the domain name to see a preview of the domain members or navigate to the domain details view.
+
+![Avo event details view with domain stakeholders](/images/domains/domains-on-event.png)
+
+### Assigning stakeholders to events
+
+#### From the tracking plan
+
+1. Navigate to the event and scroll down to the “Stakeholder” section in the event details
+1. Click “Add Stakeholder domain”
+1. Select the domain you want to assign as a stakeholder
+
+![Assigning a stakeholder domain to an event in Avo](/images/domains/event-add-stakeholder-domain.png)
+
+#### From the Domain details view
+
+From the domain details view you can search all events and filter by category or tag to attach multiple events to the domain in one go. [See instructions](/workspace-management/domains).
+
+#### Who can assign domains as stakeholders
+
+- **Workspace admins:** Workspace admins can assign any domain as stakeholder
+- **Editors:** Editors can only assign domains they are members of as stakeholders
