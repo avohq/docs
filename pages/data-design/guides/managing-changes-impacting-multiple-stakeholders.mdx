@@ -1,0 +1,73 @@
+import { Callout } from 'nextra/components'
+import PageLink from '../../../components/PageLink';
+
+# Managing changes impacting multiple stakeholders
+
+When a large organization is sharing a single tracking plan, it’s not unlikely that changes to the tracking plan will impact multiple domains within your organization. To prevent users from unknowingly making changes that may disrupt the events other teams rely on, Avo offers tools to surface this potential impact and mitigate it.
+
+<Callout type="info" emoji="💡">
+  A domain refers to a certain function or area within your organization. It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Marketing, Sales, Finance, etc.). [Learn more](/data-design/avo-tracking-plan/stakeholder-domains)
+</Callout>
+
+In Avo you can assign domains as stakeholders on events and event variants in your tracking plan, to ensure that anyone making changes in Avo is aware of who those changes will impact. With this awareness, they can choose to [tweak the changes to reduce the scope](#minimizing-stakeholder-impact), or [loop in the relevant stakeholders](#aligning-on-cross-domain-changes).
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Stakeholder domains"
+  description="How to assign domains as stakeholders to events and event variants"
+  href="/data-design/avo-tracking-plan/stakeholder-domains"
+/>
+
+## Impacted stakeholders 
+
+When a user in your workspace drafts changes on a branch in Avo, the “Impacted stakeholders” indicator in the branch header keeps track of how many stakeholder domains will be impacted by the suggested changes.
+
+![The Avo Branch Bar with impacted stakeholders](/images/domains/impacted-stakeholders-in-branch-bar.png)
+
+When you click the indicator it will expand to show the following:
+- Which domains are impacted by the changes on your branch. The domains you are not a member of will be surfaced at the top of the list and indicated with a pink dot. 
+- A preview of the members of each domain team – you can also click the domain name to see more details on the domain name and its members
+- For each domain a list of the events and event variants you have changed that they are marked as stakeholders of.
+
+![Schematics of tracking plan in Avo broken down into a few example domains](/images/domains/impacted-stakeholders.png)
+
+## Minimizing stakeholder impact
+
+While there are fundamental data structures that need to be consistent across multiple teams and platforms, domain teams frequently need to expand on them and add nuances that don’t need to apply to every single place these events and properties are tracked.
+
+The Avo tracking plan has tools to provide this flexibility, allowing teams to more granularly define their data based on their domain’s needs and reduce unnecessary impact across domains.
+
+### Event-specific property constraints
+
+For generic properties that are sent with multiple events across your product, the constraints of the property (such as allowed values or regex) are commonly different depending on which event or variant the property is being sent with.
+Example: If a social media app is introducing a “Stories” feature. To track users commenting on stories, only the "Comment Added" event will need to include the allowed value "Story" for the "Item Type" property.
+
+If this allowed value is introduced to the property without specifically defining which event(s) it should apply to, this will generate a change to all events and event variants using this property in Avo – meaning all stakeholders of those events and variants will be marked as impacted by the branch changes. 
+
+To avoid this, you can simply specify the new value as only applying to the event where you need it. Same applies when modifying the regex constraints, instead of modifying the regex on all events and variants that have the property, you apply event or variant specific regex rules. 
+
+[Learn how to set event specific property constraints](/data-design/avo-tracking-plan/properties#event-specific-and-source-specific-allowed-values)
+
+### Event variants
+
+For events that are used in multiple places and scenarios across a product, some of these scenarios may call for the event to be sent with certain properties or property values that don’t apply to every instance of the event.
+
+Example:
+
+An “add_to_cart” event may be used by both the Checkout and Search teams. The Checkout team owns the event and relies on certain properties like “cart_product_origin” that must be consistent across all products.
+
+The Search team needs a specific variation of this event for when it’s triggered on their Search Results page. In this scenario, this event needs to be sent with the property “search_term” and the [pinned value](/data-design/guides/pinned-properties) for “cart_product_origin” should be “Search Result Page”.
+
+Event Variants provide a way to document variations of an event to account for different scenarios. Event variants inherit its definition from a base event, but you can add overrides on top of them.
+
+That way, you can define variant-specific properties, property presence and value rules, without needing to roll out those changes to every instance of this event across your organization.
+
+[Learn how to create Event Variants](/data-design/avo-tracking-plan/event-variants#using-event-variants)
+
+## Aligning on cross-domain changes
+
+In cases where a cross-domain change is required, the visibility of the impacted domains allows you to understand who you will need to loop in to align on the suggested changes, where these changes will need to be implemented across your organization and by who.
+
+From the impacted stakeholders indicator, you see a preview of the members of the domain. We recommend adding a representative from the domain as branch collaborators and @-mentioning them in context of the changes that apply to them. This lets you keep track of who needs to be aware of the changes and see whether they have acknowledged them.
+
+![Changes impacting domains that you're not a part of](/images/domains/impacted-stakeholders-popup.png)
