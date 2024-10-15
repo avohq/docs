@@ -2,7 +2,7 @@ import PageLink from '../../components/PageLink';
 
 # Managing Domains
 
-Domains give you a clear overview of areas of responsibility and ownership within your schema, by mapping out which domains are stakeholders of each event in your tracking plan and which users belong to those domains.. 
+Domains give you a clear overview of areas of responsibility and ownership within your schema, by mapping out which domains are stakeholders of each event and event variant in your tracking plan and which users belong to those domains.
 
 Defining domains in Avo is a key step toward more organized, scalable data management, especially in larger workspaces with multiple teams. It enables your entire organization to operate within a single namespace, sharing data structures and working towards more consolidated tracking, while ensuring that the entities of your organization can operate comfortably without stepping on each-others’ toes.
 
@@ -14,12 +14,12 @@ Domains have different data needs and they need to be able to influence what dat
 
 ![Schematics of tracking plan in Avo broken down into a few example domains](/images/domains/domains.png)
 
-By documenting domains as stakeholders on the events in your tracking plan, anyone navigating your tracking plan is able to understand who is relying on which events and who to loop in when changes are made or if an issue comes up with an event.
+By documenting domains as stakeholders on the events and event Variants in your tracking plan, anyone navigating your tracking plan is able to understand who is relying on which events and variants and who to loop in when changes are made or if an issue comes up.
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
   title="Stakeholder domains"
-  description="Why and how to assign domains as stakeholders on events"
+  description="Why and how to assign domains as stakeholders on events and event variants"
   href="/data-design/avo-tracking-plan/stakeholder-domains"
 />
 
@@ -35,7 +35,7 @@ In the view for each domain you will see:
 The users in your workspace that have been assigned to the domain. One workspace member can be a part of one or multiple domain teams.
 
 1. **The domain events:**
-The events where this domain has been added as a stakeholder, indicating that the domain depends on and/or is responsible for those events. 
+The events and event variants where this domain has been added as a stakeholder, indicating that the domain depends on and/or is responsible for those events and variants. 
 
 ### Creating a Domain
 
@@ -45,14 +45,14 @@ To create a new domain, click on Create Domain and give it a name.
 
 Under the “Team” section, click “Manage” which will open a modal where you can search for members in your workspace and add them to the domain.
 
-### Assigning stakeholdership of events
+### Assigning stakeholdership of events and event variants
 
 From this view you can assign stakeholdership of multiple events in your tracking plan to the domain
 
 1. Click “+ Add” 
-1. Select the events from your tracking plan where you assign the domain as a stakeholder.
+1. Select the events and variants from your tracking plan where you assign the domain as a stakeholder.
         You can filter events by category or tag to make it easier to find relevant events. 
-1. Click “Add” to finish adding the events you have selected to your domain
+1. Click “Add” to finish adding the selected items to your domain
 
 ![Screenshot of a modal to add events to a domain](/images/domains/add-events-to-domain.png)
 
