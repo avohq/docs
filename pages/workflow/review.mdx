@@ -7,11 +7,9 @@ import { Callout } from 'nextra/components';
 
 # Review suggestions in Avo
 
-## Ask for a review
-
 _Role: Product, Data, Engineering. See more below_
 
-Once you have drafted changes to your tracking plan we recommend asking your teammates to review your suggested changes. To do this, click "View changes" in the branch header to navigate to the review screen.
+Once you have drafted changes to your tracking plan we recommend asking your teammates and any [impacted stakeholders](data-design/guides/managing-changes-impacting-multiple-stakeholders) to review your suggested changes. To do this, click "View changes" in the branch header to navigate to the review screen.
 
 **Who should be asked for a review?**
 We typically see three types of reviewers:
@@ -19,6 +17,8 @@ We typically see three types of reviewers:
 - **Product team:** Someone who is responsible for the related feature or user flow that verifies that the metrics mapped out on the branch suffice for their data needs
 - **Data team:** Someone who validates that the changes made are according to the data standard of your company
 - **Engineering team:** The folks who will implement the suggested changes. If the changes made affect multiple sources (e.g. iOS, Android, Web, backend) we recommend to get reviews from the teams working on each source
+
+Additionally, if your changes impact [stakeholder domains](data-design/avo-tracking-plan/stakeholder-domains) in your organization that you are not a member of, we recommend pulling someone from the respective domain in to review the changes. See our guide on [managing changes impacting multiple stakeholders](data-design/guides/managing-changes-impacting-multiple-stakeholders).
 
 **How to ask for a review?**
 The first step is to mark the branch as “Ready for review”. This is done at the bottom of the review screen as seen on the screenshot below.
