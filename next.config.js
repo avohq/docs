@@ -635,7 +635,7 @@ const redirects = [
   },
   {
     source: '/data-design/documenting-downstream-dependancies',
-    destination: '/data-design/guides/documenting-downstream-dependancies',
+    destination: '/data-design/guides/documenting-downstream-dependencies',
     permanent: true,
   },
   {
