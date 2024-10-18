@@ -840,6 +840,11 @@ const redirects = [
     permanent: true,
   },
   {
+    source: '/publishing/amplitude-data',
+    destination: '/publishing/publishing/amplitude-data',
+    permanent: true,
+  },
+  {
     source: '/publishing/mixpanel-lexicon',
     destination: '/publishing/publishing/mixpanel-lexicon',
     permanent: true,
