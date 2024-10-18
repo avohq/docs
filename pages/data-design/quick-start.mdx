@@ -41,7 +41,7 @@ Head to our [onboarding flow](https://avo.app/onboarding) and setup a new worksp
 
 ## Step 3: Create a new branch
 
-When you are making changes to your tracking plan in Avo, we always recommend creating a [branch](/docs/data-design/branches) first – no matter how small your change might be. That allows you to make suggestions in isolation from the source of truth on your main branch and get feedback from your team.
+When you are making changes to your tracking plan in Avo, we always recommend creating a [branch](/data-design/branches) first – no matter how small your change might be. That allows you to make suggestions in isolation from the source of truth on your main branch and get feedback from your team.
 
 Open a new branch by clicking the icon next to "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
 
@@ -63,7 +63,7 @@ Open a new branch by clicking the icon next to "main" in the left sidebar. Then 
 
 ## Step 4: Make changes to your tracking plan
 
-When you've created the branch, navigate to the _Events_ tab in the tracking plan to start making changes to your tracking plan on the branch. Create a new [event](/docs/data-design/avo-tracking-plan/events) by clicking the _+ Add Event_ button.
+When you've created the branch, navigate to the _Events_ tab in the tracking plan to start making changes to your tracking plan on the branch. Create a new [event](/data-design/avo-tracking-plan/events) by clicking the _+ Add Event_ button.
 
 <br />
 <center>
@@ -72,16 +72,14 @@ When you've created the branch, navigate to the _Events_ tab in the tracking pla
     muted
     autoPlay
     controls
-    src={
-      '/docs/images/data-design/quickstart/create-event.mp4'
-    }
+    src="/docs/images/data-design/quickstart/create-event.mp4"
     alt="Creating an event"
     width="100%"
   />
 </center>
 <br />
 
-In the event details, complete the definition of your event by filling in each section of the event details. Check out our [data design deep dive guide](/data-design/start-data-design) for a step by step guide for defining an event. Below is an example of an event with a [description](/docs/data-design/best-practices/defining-descriptive-events-and-properties#events-1), [triggers](/docs/data-design/guides/event-triggers), [sources](/docs/data-design/define-sources-and-destinations) and a [property](/docs/data-design/avo-tracking-plan/properties).
+In the event details, complete the definition of your event by filling in each section of the event details. Check out our [data design deep dive guide](/data-design/start-data-design) for a step by step guide for defining an event. Below is an example of an event with a [description](/data-design/best-practices/defining-descriptive-events-and-properties#events-1), [triggers](/data-design/guides/event-triggers), [sources](/data-design/define-sources-and-destinations) and a [property](/data-design/avo-tracking-plan/properties).
 
 <br />
 <center>
@@ -90,16 +88,14 @@ In the event details, complete the definition of your event by filling in each s
     muted
     autoPlay
     controls
-    src={
-      '/docs/images/data-design/quickstart/review-event-definition.mp4'
-    }
+    src="/docs/images/data-design/quickstart/review-event-definition.mp4"
     alt="Event details"
     width="100%"
   />
 </center>
 <br />
 
-New and modified events are highlighted in the [workbench](/docs/data-design/avo-tracking-plan/workbench) at the top of your tracking plan events view, so you can easily access and have overview of your new and modified events.
+New and modified events are highlighted in the [workbench](/data-design/avo-tracking-plan/workbench) at the top of your tracking plan events view, so you can easily access and have overview of your new and modified events.
 
 ## Step 5: Invite a colleague and ask them for a review
 
@@ -113,14 +109,14 @@ Now we're ready to share our suggestions with our team, and ask them for input. 
     autoPlay
     controls
     width="100%"
-    src={'/docs/images/data-design/quickstart/invite-member.mp4'}
+    src="/docs/images/data-design/quickstart/invite-member.mp4"
     alt="Reviewing a branch and adding a collaborator"
   />
 </center>
 
 When your colleague has joined the workspace they have access to the tracking plan, can create their own branches (editors and admins) and you can request their feedback  (comment only, editors and admins) by adding them as a collaborator on your branch.
 
-To review the changes on your branch, click the _View changes_ button in the workspace sidebar. There are two review modes, one for tracking plan changes and another for [code changes](/docs/data-design/branches/code-changes). 
+To review the changes on your branch, click the _View changes_ button in the workspace sidebar. There are two review modes, one for tracking plan changes and another for [code changes](/data-design/branches/code-changes). 
 
 ### Tracking plan changes
 The tracking plan changes represent the changes that are made to the data structures in your tracking plan. There you and collaborators can comment on each item and discuss them. To add a collaborator to your branch, click _Edit Collaborators_ in the top right corner of the view changes screen and select the workspace member you want to add. Branch collaborators will be notified on any discussions on the branch and when the branch status changes.
@@ -133,13 +129,13 @@ The tracking plan changes represent the changes that are made to the data struct
     autoPlay
     controls
     width="100%"
-    src={'/docs/images/data-design/quickstart/review-and-invite.mp4'}
+    src="/docs/images/data-design/quickstart/review-and-invite.mp4"
     alt="Reviewing a tracking plan changes on a branch and adding a collaborator"
   />
 </center>
 
 ### Code changes
-The [code changes screen](/docs/data-design/branches/code-changes) represents the code changes that are required to implement the tracking plan changes in code. Code snippets are available for all events, whether they are to be implemented with manual implementation or the [Avo codegen]. A collaborator can review the code changes, comment on them and then approve the branch or request changes. Learn more about branch approvals in our [approval workflow guide](/docs/data-design/branches/approval-workflows).
+The [code changes screen](/data-design/branches/code-changes) represents the code changes that are required to implement the tracking plan changes in code. Code snippets are available for all events, whether they are to be implemented with manual implementation or the [Avo codegen]. A collaborator can review the code changes, comment on them and then approve the branch or request changes. Learn more about branch approvals in our [approval workflow guide](/data-design/branches/approval-workflows).
 
 <br />
 <center>
@@ -149,32 +145,32 @@ The [code changes screen](/docs/data-design/branches/code-changes) represents th
     autoPlay
     controls
     width="100%"
-    src={'/docs/images/data-design/quickstart/code-review-and-approve.mp4'}
+    src="/docs/images/data-design/quickstart/code-review-and-approve.mp4"
     alt="Reviewing a tracking plan changes on a branch and adding a collaborator"
   />
 </center>
 
 ## What's next?
 
-Now you know how to open a branch in Avo, suggest changes and ask for review from your team. The next step is for a developer to implement the changes in code using [Avo codegen](/docs/implementation/avo-codegen-overview) or [pseudocode snippets](/docs/data-design/branches/code-changes#non-codegen-snippets). To get even better idea of how to maintain your tracking plan in Avo, check out the [deep dive guide on data design in Avo](/data-design/start-data-design).
+Now you know how to open a branch in Avo, suggest changes and ask for review from your team. The next step is for a developer to implement the changes in code using [Avo codegen](/implementation/avo-codegen-overview) or [pseudocode snippets](/data-design/branches/code-changes#non-codegen-snippets). To get even better idea of how to maintain your tracking plan in Avo, check out the [deep dive guide on data design in Avo](/data-design/start-data-design).
 
 <TwoCol>
   <PageLink
-    image={'/docs/images/svg/dev.svg'}
+    image="/docs/images/svg/dev.svg"
     title="Avo Codegen"
     description="An overview of the Avo codegen, how it works and it's benefits"
-    href={'/implementation/avo-codegen-overview'}
+    href="/implementation/avo-codegen-overview"
   />
   <PageLink
-    image={'/docs/images/svg/dev.svg'}
+    image="/docs/images/svg/dev.svg"
     title="Pseudocode Snippets"
     description="An overview of the generated pseudocode snippets to implement without Codegen."
-    href={'/data-design/branches/code-changes#non-codegen-snippets'}
+    href="/data-design/branches/code-changes#non-codegen-snippets"
   />
   <PageLink
-    image={'/docs/images/svg/analyticsmanager.svg'}
+    image="/docs/images/svg/analyticsmanager.svg"
     title="Data Design Deep Dive"
     description="Step by step guide on how to design data in Avo."
-    href={'/data-design/start-data-design'}
+    href="/data-design/start-data-design"
   />
 </TwoCol>

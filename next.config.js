@@ -635,7 +635,7 @@ const redirects = [
   },
   {
     source: '/data-design/documenting-downstream-dependancies',
-    destination: '/data-design/guides/documenting-downstream-dependancies',
+    destination: '/data-design/guides/documenting-downstream-dependencies',
     permanent: true,
   },
   {
@@ -836,6 +836,11 @@ const redirects = [
   },
   {
     source: '/publishing/publishing/amplitude-govern',
+    destination: '/publishing/publishing/amplitude-data',
+    permanent: true,
+  },
+  {
+    source: '/publishing/amplitude-data',
     destination: '/publishing/publishing/amplitude-data',
     permanent: true,
   },
