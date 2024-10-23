@@ -7,7 +7,7 @@
     "dev": "DEV=true next dev",
     "build": "next build",
     "start": "next start",
-    "spellcheck": "yarn cspell --no-progress --show-suggestions --show-context 'pages/**/*.mdx' --locale en-us",
+    "spellcheck": "npx cspell --no-progress --show-suggestions --show-context 'pages/**/*.mdx' --locale en-us",
     "lint": "next lint",
     "prepare": "husky"
   },
