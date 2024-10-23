@@ -1,4 +1,4 @@
-{
+export default {
   "index": "Overview",
   "events": "Events",
   "properties": "Properties",
@@ -9,16 +9,4 @@
   "workbench": "Workbench",
   "event-variants": "Event variants",
   "advanced-data-design-features": "Advanced data design features",
-  "exporting": {
-    "display": "hidden"
-  },
-  "importing": {
-    "display": "hidden"
-  },
-  "publishing": {
-    "display": "hidden"
-  },
-  "webhook-signing": {
-    "display": "hidden"
-  }
-}
+};

@@ -1,4 +1,4 @@
-{
+export default {
   "index": "Getting Started",
   "workflow": "Avo Workflow",
   "audit": "Tracking Plan Audit",
@@ -13,4 +13,4 @@
   "legacy-migrating-to-avo": {
     "display": "hidden"
   }
-}
+};
