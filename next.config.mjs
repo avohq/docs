@@ -1,3 +1,5 @@
+import nextra from 'nextra';
+
 const nextConfig = {
   reactStrictMode: true,
   basePath: '/docs',
@@ -6,12 +8,12 @@ const nextConfig = {
   },
 };
 
-const withNextra = require('nextra')({
+const withNextra = nextra({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.tsx',
 });
 
-module.exports = withNextra(nextConfig);
+export default withNextra(nextConfig);
 
 const redirects = [
   {
@@ -1091,7 +1093,8 @@ const redirects = [
   },
   {
     source: '/data-design/define-sources-and-destinations',
-    destination: '/data-design/avo-tracking-plan/define-sources-and-destinations',
+    destination:
+      '/data-design/avo-tracking-plan/define-sources-and-destinations',
     permanent: true,
   },
 ];

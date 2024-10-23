@@ -1,4 +1,4 @@
-{
+export default {
   "import": "Importing",
   "publishing": "Publishing",
   "exporting": "Exporting",
@@ -6,4 +6,4 @@
   "integrations": {
     "display": "hidden"
   }
-}
+};

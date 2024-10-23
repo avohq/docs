@@ -1,4 +1,4 @@
-{
+export default {
   "start-using-inspector": "Quickstart: Get started with Inspector",
   "inspector-installation-overview": "Inspector Installation Overview",
   "configuring-inspector-sources": "Configuring Sources",
@@ -24,4 +24,4 @@
     "title": "Inspector SDKs",
     "href": "https://www.avo.app/docs/reference/avo-inspector-sdks/overview"
   }
-}
+};

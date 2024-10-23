@@ -28,9 +28,6 @@ const Logo: FunctionComponent<LogoProps> = ({ width }) => {
 const config: DocsThemeConfig = {
   logo: <Logo width={80} />,
   logoLink: 'https://www.avo.app/',
-  useNextSeoProps: () => ({
-    titleTemplate: '%s - Avo Docs',
-  }),
   project: {
     link: 'https://github.com/avohq',
   },
@@ -48,6 +45,7 @@ const config: DocsThemeConfig = {
 
     return (
       <>
+        <title>{title ? `${title} - Avo Docs` : 'Avo Docs'}</title>
         <link
           rel="icon"
           type="image/png"
@@ -68,7 +66,7 @@ const config: DocsThemeConfig = {
     );
   },
   footer: {
-    text: (
+    content: (
       <Link href="/help/troubleshooting">
         <div style={{ display: 'flex', gap: '8px' }}>
           <Image
@@ -85,7 +83,9 @@ const config: DocsThemeConfig = {
   sidebar: {
     defaultMenuCollapseLevel: 1,
   },
-  primaryHue: 319,
+  color: {
+    hue: 319,
+  },
   navbar: {
     extraContent: <SignIn />,
   },

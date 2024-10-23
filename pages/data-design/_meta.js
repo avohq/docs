@@ -1,4 +1,4 @@
-{
+export default {
   "index": "What is a tracking plan?",
   "quick-start": "Quickstart: Tracking plan in Avo",
   "start-data-design": "Deep dive: Data design in Avo",
@@ -8,5 +8,7 @@
   "best-practices": "Best Practices",
   "guides": "Guides",
   "global-requirements": "Global Requirements",
-  "analytics": { "display": "hidden" }
-}
+  "analytics": {
+    "display": "hidden"
+  }
+};
