@@ -4,14 +4,21 @@ import { Callout } from 'nextra/components'
 
 *Learn about the events in your tracking plan*
 
-An event represents something that a user does or that happens in response to their actions. For example "Signup Attempted" is an action that the user did, while "Credit Card Validated" is something that happened to the user.
+An event represents a user action (for example: "Signup Started") or something that happens in response to a user action (for example "Credit Card Validated).
+
+In Avo, your events live under the Events section of the Tracking plan and can be organized into categories.
+
+## Creating events
+
+New events can be created from the Events section by clicking the "New Event" button at the top of the view, or by hitting "C" on your keyboard and selecting "Event" from the command pallette. They can also be created in context from a [Metric](/data-design/avo-tracking-plan/metrics) or a [Property](/data-design/avo-tracking-plan/metrics).
 
 [Tracking Plan Guide: How to Pick Your Events and Properties](https://www.avo.app/blog/tracking-plan-guide-how-to-pick-your-events-and-properties)
 
+<Callout type="info" emoji="💡">When creating a new event you will receive guidance on how to name the event in a way that adheres to the [naming convention: How to Pick Your Events and Properties](/audit/advanced-event-naming-rules) defined for your workspace.</Callout>
 
-## Event Definition
+## Defining events
 
-An event is defined in the Events section of the Tracking plan and can be organized into categories. The definition of an event includes:
+In your tracking plan, an event definition will include:
 
 - A descriptive [_Event Name_](/data-design/naming-conventions#2-what-does-naming-convention-refer-to)
 - A [_Description_](/data-design/defining-descriptive-events-and-properties#events-1) with information about the event beyond what the name includes (optional but highly recommended)
@@ -20,9 +27,19 @@ An event is defined in the Events section of the Tracking plan and can be organi
 - [_Sources_](/data-design/define-sources-and-destinations#sources-where-the-data-comes-from) that the event should be sent from
 - [_Actions_](#actions) associated with the event, including properties
 - [_Metrics_](/data-design/avo-tracking-plan/metrics) related to the event (optional)
+- [Stakeholders](/data-design/avo-tracking-plan/stakeholder-domains) in your organization that rely on the event
 - [_Categories_](/data-design/organizing-metrics-and-events#categories) that the event is a part of (optional)
 - _Tags_ associated with the event
 - [_Name Mapping_](/data-design/name-mapping) that the event name is mapped to when sending to specific destinations
+
+You can define events in several ways, depending on the scope of your changes and level of detail you need:
+
+- **Inline Table Editing**: Properties, categories and tags can be edited directly in the table by clicking on individual cells.
+
+- **Batch Editing**: Select multiple events to apply bulk updates to shared attributes like sources, properties, and stakeholders.
+
+- **Event Details Panel**: Click into an event to access and define all aspects of the event.
+
 
 ## Sources
 
