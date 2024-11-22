@@ -21,9 +21,11 @@ Codegen corresponding to the events with Identify action will require a userId p
 
 ### Anonymous users
 
-Server side Codegen does not have a way to maintain user identity.
-That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Codegen.
-An optional `anonymousUserId` parameter is available on demand in all server languages, run `avo pull` with the `--forceFeatures ServerTrackingWithDeviceId` flag if you don't see it in your generated code. You can [contact us](/help/troubleshooting) to have it enabled by default.
+Server side Codegen does not have a way to maintain user identity. That's why if you want to associate events with particular users before they identify, you need to pass the `anonymousUserId` string parameter to your Codegen. For Avo workspaces created after July 2023 an optional `anonymousUserId` parameter is available on demand in all server languages. For older workspaces, you can run `avo pull` with the `--forceFeatures ServerTrackingWithDeviceId` flag if you don't see it in your generated code and you can [contact us](/help/troubleshooting) to have it enabled by default.
+
+Server-side Codegen does not inherently maintain user identity. To associate events with specific users before they identify, you must pass the anonymousUserId string parameter to your Codegen function, which is available in all recent Avo workspaces in all supported server languages.
+
+For workspaces created before July 2023, you can enable this feature by running avo pull with the --forceFeatures ServerTrackingWithDeviceId flag if it is not already included in your generated code. Alternatively, you can contact us to have this feature enabled by default.
 
 ### Identified users
 
