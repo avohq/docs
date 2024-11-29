@@ -6,9 +6,9 @@ _Increase the quality of your tracking plan with protected main branch and branc
 
 <Callout type="info" emoji="💡">Approval workflows are available on the team and enterprise plans. See [plans and pricing](https://www.avo.app/pricing).</Callout>
 
-Building a tracking plan is a team sport. Getting feedback from your team on the changes you're making to the tracking plan helps with building alignment and keeping the plan consistent. Approval workflows are a powerful tool for the peer-review process. Typical workflow looks something like this:
+Building a tracking plan is a team sport. Getting feedback from your team on the changes you're making to the tracking plan helps with building alignment and keeping the plan consistent. Approval workflows are a powerful tool for the peer-review process. The typical workflow looks something like this:
 
-1. Product manager creates a branch and updates the tracking plan
+1. Product manager creates a branch and suggests changes to the tracking plan
 2. Product manager requests a review from a data person and a developer
 3. Data person and developer review the branch and provide feedback
 4. Reviewers might request changes to the branch
@@ -22,7 +22,7 @@ Building a tracking plan is a team sport. Getting feedback from your team on the
 
 ## Branch status
 
-Branch status makes it transparent at which step the peer-review process is and when it is changed, notifications are sent out to all branch collaborators so everyone is up to date on what the status is.
+Branch status makes it transparent at which step the peer-review process is and when it is changed, notifications are sent out to assigned reviewers and all other branch collaborators.
 
 The branch status is always visible in the left sidebar and in the [branch overview](/data-design/branches#branches-overview), accessible by clicking the Avo logo in the top left corner:
 
@@ -35,12 +35,12 @@ The branch status is changed on the [tracking plan changes page](/workflow/revie
 
 The available branch statuses in Avo are:
 
-- **Open**: Indicates that the branch is in draft state and is currently being worked on. The main call to action when the branch status is _Open_ is _Ready for review_
-- **Ready for review**: Indicates that a review has been requested. Make sure to at-mention the people you want a review from or add them as branch collaborators before you change the status to ensure they are notified. The main call to action when the branch status is _Ready for review_ is _Approve_
-- **Request changes**: Indicates that a reviewer has requested changes to the branch before it can be approved. The main call to action when the branch status is _Request changes_ state is _Ready for review_
-- **Approved**: Indicates that the suggestions in this branch have been approved and are ready to be implemented. The main call to action when the branch status is _Approved_ is _Merge branch_
-- **Merged**: Indicates that the branch has been merged to the main tracking plan and that the branch has now served its purpose. A merged branch has no call to action
-- **Closed**: Indicates that the branch has been closed and the changes are not intended to be merged into the main tracking plan. A closed branch has no call to action 
+- **Draft**: The branch is currently being worked on. 
+- **Ready for review**: The changes are ready for review from one or more of your team members. Once a branch has been marked as ready for review, make sure to assign a reviewer. 
+- **Changes requested**: A reviewer has requested changes to the branch before it can be approved. 
+- **Approved**: The changes on the branch have been approved and are ready to be implemented. 
+- **Merged**: The branch has now served its purpose and been merged to the main tracking plan.
+- **Closed**: The branch has been closed and the changes are not intended to be merged into the main tracking plan. 
 
 ## Configuring approval workflows
 
@@ -57,7 +57,7 @@ Approval workflows can be configured in three ways:
 To make sure no one accidentally makes changes directly on the main branch and to encourage peer reviews of branches, you can opt in to protecting the main branch. That means:
 
 - Only admins can make changes directly on the main branch
-- Only admins can merge branches that haven't been approved by a branch collaborator (editor or admin)
+- Only admins can merge branches that haven't been approved by a reviewer (editor or admin)
 
 Enabling protected main branch is a prerequisite for using require admin approval and require multiple approvals.
 
@@ -84,5 +84,3 @@ You can configure how many approvals are required to merge a branch. By default,
 To change the number of required approvals, click the settings wheel in your workspace, in Workspace settings go into the Permissions tab and change the "Number of required approvals". Note that "Protected main branch" must be enabled to enable "Require admin approval".
 
 Requiring multiple approvals can be used in combination with required admin approvals. In that case, the number of required approvals is the number of admins that need to approve the changes before the branch can be merged.
-
-![Multiple approvals required](/images/num-required-approvals.png)
