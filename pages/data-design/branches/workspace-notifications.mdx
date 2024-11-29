@@ -1,14 +1,37 @@
-# Workspace Notifications
+# Notifications
 
-Configure notifications to be sent to a Slack channel
+Keep track of branches in progress and improve visibility into your workspace activity by setting up Slack notifications.
 
-## Enable Slack notifications in your Avo Workspace
+## Types of notifications delivered to Slack
+
+- Branches:
+  - Branch created
+  - Ready for review
+  - Reviewer requested
+  - Approved
+  - Changes requested
+  - Merged
+  - Closed
+  - Example:
+    - Solvi approved the onboarding-funnel branch 🎉
+- Comments:
+  - New comment added
+  - Examples:
+    - Solvi commented on the Account Created event on the onboarding-funnel branch: _“Should we include the role property?”
+    - Stefania commented on the authentication config property on the main branch: “Should we have auto login as a property value here when we auto login the customer from the landing page?”
+- Collaborators:
+  - Collaborator added
+  - Collaborator removed
+  - Example:
+    - Stefania added Solvi as a collaborator on the onboarding-funnel branch
+
+## Enabling Slack notifications
 
 1. Open **Workspace Settings** ⚙️ > **Slack Integration**
    <img
-     src="/docs/images/workspace/integrations/workspace-settings.png"
+     src="/docs/images/workspace/integrations/set-up-slack.png"
      width="350px"
-     alt="Workspace settings"
+     alt="Set up slack"
    />
 2. Select **Connect to Slack**
 3. Follow the instructions in the popup from Slack, where you pick the channel you want to receive the notifications in. A confirmation message will be sent to the channel once connected.
@@ -20,26 +43,3 @@ Configure notifications to be sent to a Slack channel
    />
 
 4. Save and enjoy!
-
-## Types of notifications delivered to Slack
-
-- Branches:
-  - Branch created
-  - Ready for review
-  - Reviewer requested
-  - Approved
-  - Request changes
-  - Merged
-  - Closed
-  - Example:
-    - Solvi approved the `onboarding-funnel` branch 🎉
-- Comments:
-  - New comment added
-  - Examples:
-    - Solvi commented on the `Account Created` event on the `onboarding-funnel` branch: \_“Should we include the `role` property?”
-    - Stefania commented on the `authentication config` property on the `main` branch: _“Should we have `auto login` as a property value here when we auto login the customer from the landing page?”_
-- Collaborators:
-  - Collaborator added
-  - Collaborator removed
-  - Example:
-    - Stefania added Solvi as a collaborator on the `onboarding-funnel` branch
