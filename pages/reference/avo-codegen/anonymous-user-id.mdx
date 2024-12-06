@@ -24,8 +24,8 @@ The codegen will automatically add two parameters to every Avo function in serve
 
 ### Anonymous users
 
-Anonymous id is an id to associate with non identified users, e.g. your device id. 
-In Avo functions generated for events that do not have `Identify` action, both `anonymous_id_` and `user_id` are optional, so you can provide one. 
+An "anonymous id" is used to associate events with non identified users, e.g. your device id. 
+In Avo functions generated for events that do not have `Identify` action, both `anonymous_id` and `user_id` are optional, so you can provide either one. 
 For non identified users provide the value of the `anonymous_id_` and set `user_is_` to null.
 
 > Workspaces created before July 2023 might not get `anonymous_id_` parameters in the generated Avo functions, run `avo pull` with the `--forceFeatures ServerTrackingWithDeviceId` flag to include the parameter. You can [contact us](/help/troubleshooting) to have it enabled by default.
