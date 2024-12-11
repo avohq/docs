@@ -14,7 +14,7 @@ _Import your tracking plan from various sources to get started quickly_
 
 ## What To Import
 
-You can import your [event schemas](#importing-event-schemas), [user properties](#import-user-properties), [group properties](#import-group-properties), and [name mapping](#import-name-mapping).
+You can import your [event schemas](#import-tracking-plan), [user properties](#import-user-properties), [group properties](#import-group-properties), and [name mapping](#import-name-mapping).
 
 ### Import Tracking Plan
 
@@ -29,7 +29,7 @@ quickly.
   group properties, and name mapping.
 </Callout>
 
-See [supported formats for importing event schemas, aka tracking plans](/publishing/importing#tracking-plan-import-formats).
+See [supported formats for importing event schemas, aka tracking plans](/publishing/import/importing#supported-formats).
 
 ![Screenshot of the Avo Importer](/images/workspace/importing/avo-importer.png)
 
@@ -143,36 +143,36 @@ You can learn more about common Tracking Plan spreadsheet formats [on our blog.]
 
 #### Required columns
 
-| Column Name                  | Description                                                       | Example value                              |
-| :--------------------------- | :---------------------------------------------------------------- | :----------------------------------------- |
-| Event Name                   | The name of your event                                            | App Opened                                 |
-| Event Description            | The description of your event                                     | Sent when the user opens the app           |
-| Event Category               | The category your event belongs to, if any                        | App Lifecycle                              |
-| Sources                      | The name of the sources this event should be sent from            | iOS, Android, Web                          |
-| Property Name                | The name of a property that should be sent                        | Device Type                                |
-| Property Description         | The description of the property                                   | The type of client user is currently using |
-| Property Value Type          | The type of the property                                          | string                                     |
-| Is Property Required?        | True if the property should always be sent with your event        | true                                       |
-| Is Property Array?           | True if property should be array of values                        | false                                      |
-| Property Enumeration Options | Finite list of all values allowed for the property, if applicable | iOS, Android, Web, Desktop, Fire           |
+| Column Name                  | Description                                                       | Allowed Values                        | Example Value                              |
+| :--------------------------- | :---------------------------------------------------------------- | :------------------------------------ | :----------------------------------------- |
+| Event Name                   | The name of your event                                            | Any string                            | App Opened                                 |
+| Event Description            | The description of your event                                     | Any string                            | Sent when the user opens the app           |
+| Event Category               | The category your event belongs to, if any                        | Any string                            | App Lifecycle                              |
+| Sources                      | The name of the sources this event should be sent from            | Comma separated strings               | iOS, Android, Web                          |
+| Property Name                | The name of a property that should be sent                        | Any string                            | Device Type                                |
+| Property Description         | The description of the property                                   | Any string                            | The type of client user is currently using |
+| Property Value Type          | The type of the property                                          | string, int, float, bool, object, any | string                                     |
+| Is Property Required?        | True if the property should always be sent with your event        | true, false                           | true                                       |
+| Is Property Array?           | True if property should be array of values                        | true, false                           | false                                      |
+| Property Enumeration Options | Finite list of all values allowed for the property, if applicable | Comma separated strings               | iOS, Android, Web, Desktop, Fire           |
 
 #### Optional columns for property bundles
 
 You can create and attach [event property bundles](/data-design/avo-tracking-plan/properties#event-property-bundles) to events by including the columns below in your import. [View example sheet with property bundles](https://docs.google.com/spreadsheets/d/1P1zzG8dcsuS7h94jNMvBAExTSdKsikEMS5MKzUWSE-U/edit#gid=0)
 
-| Column Name                 | Description                                                                                                                                           | Example value                     |
-| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------- |
-| Property Bundle Name        | The name of the property bundle you'd like to import, defined at the top of your file, followed by the properties you'd like to include in the bundle | A/B Testing Properties            |
-| Property Bundle Description | The description of the property bundle                                                                                                                | Required on all A/B tested events |
-| Event Property Bundle Name  | The name of the property bundle you'd like to attach to an event you're importing                                                                     | A/B Testing Properties            |
+| Column Name                 | Description                                                                                                                                           | Allowed Values | Example Value                     |
+| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :------------- | :-------------------------------- |
+| Property Bundle Name        | The name of the property bundle you'd like to import, defined at the top of your file, followed by the properties you'd like to include in the bundle | Any string     | A/B Testing Properties            |
+| Property Bundle Description | The description of the property bundle                                                                                                                | Any string     | Required on all A/B tested events |
+| Event Property Bundle Name  | The name of the property bundle you'd like to attach to an event you're importing                                                                     | Any string     | A/B Testing Properties            |
 
 #### Other optional columns
 
-| Column Name   | Description                                                           | Example value                                  |
-| :------------ | :-------------------------------------------------------------------- | :--------------------------------------------- |
-| Property Type | The type of the property as it is sent to your downstream destination | Event property, User property, System property |
-| Event Tags    | The tags attached to your event (separate multiple tags with ';')     | Owner:Growth                                   |
-| Pinned Value  | The pinned value of the property on this event                        | iOS                                            |
+| Column Name   | Description                                                           | Allowed Values      | Example Value |
+| :------------ | :-------------------------------------------------------------------- | :------------------ | :------------ |
+| Property Type | The type of the property as it is sent to your downstream destination | Event, User, System | Event         |
+| Event Tags    | The tags attached to your event (separate multiple tags with ';')     | Any string          | Owner:Growth  |
+| Pinned Value  | The pinned value of the property on this event                        | Any string          | iOS           |
 
 ### Amplitude Taxonomy Template
 
@@ -182,16 +182,16 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 
 #### Required columns
 
-| Column Name                 | Description                                                                 | Example value                              |
-| :-------------------------- | :-------------------------------------------------------------------------- | :----------------------------------------- |
-| Event Name                  | The name of your event                                                      | App Opened                                 |
-| Trigger + Event Description | The description of your event and when it should be sent                    | Sent when the user opens the app           |
-| Event Category              | The category your event belongs to, if any                                  | App Lifecycle                              |
-| Platform                    | The name of the platforms this event should be sent from                    | iOS, Android, Web                          |
-| Property Name               | The name of a property that should be sent with your event                  | Device Type                                |
-| Property Description        | The description of the property                                             | The type of client user is currently using |
-| Property Type               | Control whether the event should be sent as Event property or User property | Event                                      |
-| Sample Values               | List of all values allowed for the property, if applicable                  | iOS, Android, Web, Desktop, Fire           |
+| Column Name                 | Description                                                                 | Allowed Values                | Example Value                              |
+| :-------------------------- | :-------------------------------------------------------------------------- | :---------------------------- | :----------------------------------------- |
+| Event Name                  | The name of your event                                                      | Any string                    | App Opened                                 |
+| Trigger + Event Description | The description of your event and when it should be sent                    | Any string                    | Sent when the user opens the app           |
+| Event Category              | The category your event belongs to, if any                                  | Any string                    | App Lifecycle                              |
+| Platform                    | The name of the platforms this event should be sent from                    | Comma separated strings       | iOS, Android, Web                          |
+| Property Name               | The name of a property that should be sent with your event                  | Any string                    | Device Type                                |
+| Property Description        | The description of the property                                             | Any string                    | The type of client user is currently using |
+| Property Type               | Control whether the event should be sent as Event property or User property | Event property, User property | Event                                      |
+| Sample Values               | List of all values allowed for the property, if applicable                  | Comma separated strings       | iOS, Android, Web, Desktop, Fire           |
 
 ### Mixpanel Tracking Plan Template
 
@@ -201,15 +201,15 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 
 #### Required columns
 
-| Column Name         | Description                                                | Example value                    |
-| :------------------ | :--------------------------------------------------------- | :------------------------------- |
-| Event Name          | The name of your event                                     | App Opened                       |
-| Event Definition    | The definition of your event and when it should be sent    | Sent when the user opens the app |
-| Platform            | The name of the platforms this event should be sent from   | iOS, Android, Web                |
-| Property Name       | The name of a property that should be sent with your event | Device Type                      |
-| Property Definition | The description of the property                            | The client type                  |
-| Data Type           | The type of the property                                   | string                           |
-| Sample Values       | List of all values allowed for the property, if applicable | iOS, Android, Web, Desktop, Fire |
+| Column Name         | Description                                                | Allowed Values                        | Example Value                    |
+| :------------------ | :--------------------------------------------------------- | :------------------------------------ | :------------------------------- |
+| Event Name          | The name of your event                                     | Any string                            | App Opened                       |
+| Event Definition    | The definition of your event and when it should be sent    | Any string                            | Sent when the user opens the app |
+| Platform            | The name of the platforms this event should be sent from   | Comma separated strings               | iOS, Android, Web                |
+| Property Name       | The name of a property that should be sent with your event | Any string                            | Device Type                      |
+| Property Definition | The description of the property                            | Any string                            | The client type                  |
+| Data Type           | The type of the property                                   | string, int, float, bool, object, any | string                           |
+| Sample Values       | List of all values allowed for the property, if applicable | Comma separated strings               | iOS, Android, Web, Desktop, Fire |
 
 ### Properties Import Format
 
@@ -223,15 +223,15 @@ CSV format for importing event, user and/or system properties.
 
 #### Required columns
 
-| Column Name             | Description                                                                                                 | Example value                    | Allowed values                |
-| :---------------------- | :---------------------------------------------------------------------------------------------------------- | :------------------------------- | :---------------------------- |
-| Property Type           | Control whether the property should be sent as **Event** property, **User** property or **System** property | User                             | Event, User, System           |
-| Property Name           | The name of the property                                                                                    | Device Type                      |
-| Property Description    | The description of the property                                                                             | The client type                  |
-| Property Value Type     | The type of the property                                                                                    | string                           | string, int, float, bool, any |
-| Property Value Is List  | True if property should be array/list of values                                                             | false                            | true, false                   |
-| Property Required       | True if the property should always be sent with your event, false if sometimes sent                         | true                             | true, false                   |
-| Property Allowed Values | Finite list of all values allowed for the property, if applicable                                           | iOS, Android, Web, Desktop, Fire |
+| Column Name             | Description                                                                                                 | Allowed values                | Example Value                    |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------- | :---------------------------- | :------------------------------- |
+| Property Type           | Control whether the property should be sent as **Event** property, **User** property or **System** property | Event, User, System           | User                             |
+| Property Name           | The name of the property                                                                                    | Any string                    | Device Type                      |
+| Property Description    | The description of the property                                                                             | Any string                    | The client type                  |
+| Property Value Type     | The type of the property                                                                                    | string, int, float, bool, any | string                           |
+| Property Value Is List  | True if property should be array/list of values                                                             | true, false                   | false                            |
+| Property Required       | True if the property should always be sent with your event, false if sometimes sent                         | true, false                   | true                             |
+| Property Allowed Values | Finite list of all values allowed for the property, if applicable                                           | Any string                    | iOS, Android, Web, Desktop, Fire |
 
 ### Group Property Import Format
 
@@ -245,20 +245,20 @@ CSV format for importing.
 
 #### Required columns
 
-| Column Name                  | Description                                                                   | Example value                                                                                        |
-| :--------------------------- | :---------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------- |
-| Group Type                   | The group type (e.g. "Workspace" if you have a Workspace group)               | Workspace                                                                                            |
-| Property Name                | The name of the property as you want it sent to the analytics destination     | Member Count                                                                                         |
-| Property Description         | The description of the property                                               | The number of members of a workspace                                                                 |
-| Property Value Type          | The type of the property                                                      | int (see [supported types](/data-design/avo-tracking-plan/properties#property-types-and-constraints) |
-| )                            |
-| Is Property Array?           | "Y" or "N" for whether this property is an array of property values           | "Y"                                                                                                  |
-| Sent with Events             | "/" separated list of events with which this group property should be updated | Invite Accepted / Member Removed                                                                     |
-| Property Enumeration options | Finite list of all values allowed for the property, if applicable             | Email, Phone Number, SSO                                                                             |
+| Column Name                  | Description                                                                   | Allowed Values                        | Example Value                        |
+| :--------------------------- | :---------------------------------------------------------------------------- | :------------------------------------ | :----------------------------------- |
+| Group Type                   | The group type (e.g. "Workspace" if you have a Workspace group)               | Any string                            | Workspace                            |
+| Property Name                | The name of the property as you want it sent to the analytics destination     | Any string                            | Member Count                         |
+| Property Description         | The description of the property                                               | Any string                            | The number of members of a workspace |
+| Property Value Type          | The type of the property                                                      | string, int, float, bool, object, any | int                                  |
+| Is Property Array?           | "Y" or "N" for whether this property is an array of property values           | true, false                           | true                                 |
+| Sent with Events             | "/" separated list of events with which this group property should be updated | Any string separated by "/"           | Invite Accepted / Member Removed     |
+| Property Enumeration options | Finite list of all values allowed for the property, if applicable             | Comma separated strings               | Email, Phone Number, SSO             |
 
 ## Import Methods
 
 You can select from two import methods when importing your tracking plan:
+
 - **Add only**: This is the default import method. The importer will only append new items from the imported file to your tracking plan. No destructive changes will be made to existing items in your tracking plan.
 - **Add and update**: This import method will append new items from the imported file to your tracking plan and update existing items with the same name to match the imported file. Note that this import will not remove any items from your tracking plan.
 
@@ -267,7 +267,6 @@ You can select from two import methods when importing your tracking plan:
 </Callout>
 
 ![Screenshot of the Avo Importer](/images/workspace/importing/import-method.png)
-
 
 ## Troubleshooting
 
