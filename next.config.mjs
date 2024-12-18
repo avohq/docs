@@ -1048,6 +1048,11 @@ const redirects = [
     permanent: true,
   },
   {
+    source: '/avo-intelligence/smart-search',
+    destination: '/reference/avo-intelligence',
+    permanent: true,
+  },
+  {
     source: '/data-design/documenting-downstream-dependancies',
     destination: '/data-design/documenting-downstream-dependencies',
     permanent: true,
