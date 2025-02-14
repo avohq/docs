@@ -102,6 +102,14 @@ name mappings for event and property names.
 
 4. Review your events and properties and finish the import 🎉
 
+### Importing from Segment Protocols
+
+1. Download your Tracking Plan from Segment Protocols: [How to download a tracking plan in Segment Protocols](https://segment.com/docs/protocols/tracking-plan/create/#download-a-tracking-plan)
+
+2. Open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+3. Review your events and properties and finish the import 🎉
+
 ### Importing from a Google Sheet
 
 Avo supports importing various tracking plan formats. See [supported formats for importing tracking plans](/publishing/importing#tracking-plan-import-formats).
@@ -211,6 +219,23 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 | Data Type           | The type of the property                                   | string, int, float, bool, object, any | string                           |
 | Sample Values       | List of all values allowed for the property, if applicable | Comma separated strings               | iOS, Android, Web, Desktop, Fire |
 
+### Segment Protocols Tracking Plan CSV
+
+Format for importing tracking plans from Segment Protocols. For how to download a tracking plan in Segment Protocols, see [here](https://segment.com/docs/protocols/tracking-plan/create/#download-a-tracking-plan).
+
+#### Required columns
+
+| Column Name        | Description                                                       | Allowed Values                                                          | Example Value                    |
+| :----------------- | :---------------------------------------------------------------- | :---------------------------------------------------------------------- | :------------------------------- |
+| Version            | The version of the tracking plan                                  | Optional integer                                                        | 1                                |
+| Event Type         | The type of the event                                             | Track, Identify                                                         | Track                            |
+| Event Name         | The name of your event                                            | Any string                                                              | App Opened                       |
+| Property Name      | The name of a property that should be sent with your event        | Any string                                                              | Device Type                      |
+| Description        | The description of the event or property                          | Any string                                                              | Sent when the user opens the app |
+| Labels             | Labels in Protocols imported as tags in Avo                       | Any string                                                              | Owner:Growth                     |
+| Property Data Type | The type of the property                                          | string, int, float, bool, object, any (combined with ,null if optional) | string                           |
+| Enum Values        | Finite list of all values allowed for the property, if applicable | Comma separated strings                                                 | iOS, Android, Web, Desktop       |
+
 ### Properties Import Format
 
 CSV format for importing event, user and/or system properties.
@@ -263,7 +288,8 @@ You can select from two import methods when importing your tracking plan:
 - **Add and update**: This import method will append new items from the imported file to your tracking plan and update existing items with the same name to match the imported file. Note that this import will not remove any items from your tracking plan.
 
 <Callout type="info" emoji="💡">
-  The **Add and Update** import method is currently in a close beta. Please reach out to us if you'd like to try it out.
+  The **Add and Update** import method is currently in a close beta. Please
+  reach out to us if you'd like to try it out.
 </Callout>
 
 ![Screenshot of the Avo Importer](/images/workspace/importing/import-method.png)
