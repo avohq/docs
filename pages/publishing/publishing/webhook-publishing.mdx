@@ -73,6 +73,7 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | triggers    | array(\{id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event                                                             |
 | sources     | array(\{id, name, implementWithCodegen, destinations}) | Details about all sources sending event                                                                  |
 | variantName | optional string                                        | If the event is generated from an event variant, this field is provided, contains the event variant name |
+| stakeholderDomains | optional array(\{ id, name }) | Key present if any event or variant has stakeholder domains. Array of all stakeholders attached to event or variant |
 
 
 <Callout type="info" emoji="💡">
