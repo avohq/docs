@@ -176,13 +176,14 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 
 #### Other optional columns
 
-| Column Name                                      | Description                                                           | Allowed Values      | Example Value |
-| :----------------------------------------------- | :-------------------------------------------------------------------- | :------------------ | :------------ |
-| Property Type                                    | The type of the property as it is sent to your downstream destination | Event, User, System | Event         |
-| Event Tags                                       | The tags attached to your event (separate multiple tags with ';')     | Any string          | Owner:Growth  |
-| Pinned Value                                     | The pinned value of the property on this event                        | Any string          | iOS           |
-| Event Name Mapping: \<insert destination name>    | The name of the event as it is sent to the destination                | Any string          | Conversion    |
-| Property Name Mapping: \<insert destination name> | The name of the property as it is sent to the destination             | Any string          | Revenue       |
+| Column Name                                       | Description                                                           | Allowed Values          | Example Value     |
+| :------------------------------------------------ | :-------------------------------------------------------------------- | :---------------------- | :---------------- |
+| Property Type                                     | The type of the property as it is sent to your downstream destination | Event, User, System     | Event             |
+| Event Tags                                        | The tags attached to your event (separate multiple tags with ';')     | Any string              | Owner:Growth      |
+| Pinned Value                                      | The pinned value of the property on this event                        | Any string              | iOS               |
+| Event Name Mapping: \<insert destination name>    | The name of the event as it is sent to the destination                | Any string              | Conversion        |
+| Property Name Mapping: \<insert destination name> | The name of the property as it is sent to the destination             | Any string              | Revenue           |
+| Stakeholder Domains                               | The domains that should be attached as stakeholders to the event      | Comma separated strings | Growth, Checkout Team |
 
 ### Amplitude Taxonomy Template
 
