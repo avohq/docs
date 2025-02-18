@@ -65,8 +65,8 @@ See [supported formats for importing group properties](/publishing/importing#gro
   functionality. Read more about [name mapping](/data-design/name-mapping) and
   its [use cases](/data-design/name-mapping#use-cases-for-name-mapping).
 </Callout>
-[Reach out](/help/troubleshooting#contact-us) if you want to apply a large set of
-name mappings for event and property names.
+
+You can import destination specific name mapping for new events and properties using the [Avo's ultimate tracking plan CSV from](/publishing/importing#avos-ultimate-tracking-plan-template).
 
 ## Where To Import From
 
@@ -176,11 +176,13 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 
 #### Other optional columns
 
-| Column Name   | Description                                                           | Allowed Values      | Example Value |
-| :------------ | :-------------------------------------------------------------------- | :------------------ | :------------ |
-| Property Type | The type of the property as it is sent to your downstream destination | Event, User, System | Event         |
-| Event Tags    | The tags attached to your event (separate multiple tags with ';')     | Any string          | Owner:Growth  |
-| Pinned Value  | The pinned value of the property on this event                        | Any string          | iOS           |
+| Column Name                                      | Description                                                           | Allowed Values      | Example Value |
+| :----------------------------------------------- | :-------------------------------------------------------------------- | :------------------ | :------------ |
+| Property Type                                    | The type of the property as it is sent to your downstream destination | Event, User, System | Event         |
+| Event Tags                                       | The tags attached to your event (separate multiple tags with ';')     | Any string          | Owner:Growth  |
+| Pinned Value                                     | The pinned value of the property on this event                        | Any string          | iOS           |
+| Event Name Mapping: \<insert destination name>    | The name of the event as it is sent to the destination                | Any string          | Conversion    |
+| Property Name Mapping: \<insert destination name> | The name of the property as it is sent to the destination             | Any string          | Revenue       |
 
 ### Amplitude Taxonomy Template
 
