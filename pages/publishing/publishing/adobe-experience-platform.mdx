@@ -8,11 +8,11 @@ import {Callout} from 'nextra/components'
 
 ## Introduction
 
-The integration to [Adobe Experience Platform XDM system](https://experienceleague.adobe.com/en/docs/experience-platform/xdm/home) allows you to publish your Avo Tracking Plan as XDM Schemas to Adobe Experience Platform in form of XDM schemas. You can set up the integration to automatically publish on every Avo branch merge or manually trigger a publish. 
+The integration to [Adobe Experience Platform XDM system](https://experienceleague.adobe.com/en/docs/experience-platform/xdm/home) allows you to publish your [Avo Tracking Plan](/publishing/publishing/overview) to Adobe Experience Platform in form of XDM schemas. You can set up the integration to automatically publish on every Avo branch merge or manually trigger a publish. 
 
 ## Configuring the Adobe Experience Platform integration
 
-To enable the direct integration with AEP, navigate to the Publishing Screen in your Avo workspace, click “Add Integration” and select “Adobe Experience Platform. 
+To enable the direct integration with AEP, navigate to the Publishing Screen in your Avo workspace, click “Add Integration” and select “Adobe Experience Platform. See details in our [setting up and configuring a publishing integration docs](publishing/publishing/overview#setting-up-and-configuring-a-publishing-integration)
 
 You will need to provide the following parameters from Adobe:
 
@@ -25,25 +25,27 @@ You will need to provide the following parameters from Adobe:
 
 ## Publishing to the Adobe Experience Platform
 
-To publish your Avo tracking plan to the Adobe Experience Platform, navigate to the AEP integration view in Avo and click the "Publish" button. Enable Auto Publishing to trigger an automatic publish whenever a branch has been merged.
+To publish your Avo tracking plan to the Adobe Experience Platform, navigate to the details of the AEP integration that you just created and click the "Publish" button. Enable Auto Publishing to trigger an automatic publish whenever a branch has been merged.
 
-You can also download an XDM file, which you can import into AEP. 
+![Avo Publishing Integration](/images/adobe-experience-platform-integration.png)
+
+You can also download an XDM file, which you can import into AEP.
 
 ### What Is Included In The Publish to Adobe Experience Platform?
 
-On publish, Avo will fetch your existing XDM schemas, compare them with your Tracking Plan and publish new and updated XDM schemas. By default Avo will publish all events on the branch that you are on, but you can configure the publish to be [filtered by Sources, Destinations and Tags](/publishing/publishing/overview#filtering-events-for-publishing).
+On publish, Avo will fetch all your existing XDM schemas and field groups from AEP, compare them with your Tracking Plan and publish new and updated XDM schemas. By default Avo will publish all events on the branch that you are on, but you can configure the publish to be [filtered by Sources, Destinations and Tags](/publishing/publishing/overview#filtering-events-for-publishing).
 
 > All entities published by Avo have `/avo/` in their ids, for example `https://ns.adobe.com/TENANT_ID/mixins/avo/my_properties`
 
 #### Events map to XDM Schemas
 
-The `Log Event` actions on Avo Events map to Adobe Experience Event schemas. 
+The `Log Event` action on Avo events map to Adobe Experience Event schemas. Below are the components of the AEP schema and how Avo populates it for a `Log Event` action:
 
 - **title**: Every included Avo Event with a `Log Event` action will create a XDM Experience Event schema with the same title as the event name. If [name mapping](/data-design/name-mapping) is applied to the event, the name defined by the name mapping is used here
-- **description**: This is the description as provided in Avo
+- **description**: The event description as provided in Avo
 - **allOf**: Includes the `https://ns.adobe.com/xdm/context/experienceevent` and a field group, containing all the properties, attached to the `Log Event` action in Avo. See `Properties map to XDM Field Groups` below
 
-The `Update User Properties` actions on Avo Events map to Adobe Profile schemas.
+The `Update User Properties` action on Avo events map to Adobe Profile schemas. Below are the components of the AEP schema and how Avo populates it for a `Update User Properties` action:
 
 - **title**: Every included Avo Event with a `Update User Properties` action will create a XDM Profile schema with title `{Avo Event Name} Record`. If [name mapping](/data-design/name-mapping) is applied to the event, the name defined by the name mapping is used here
 - **description**: The event description as provided in Avo
@@ -57,13 +59,13 @@ The `Update User Properties` actions on Avo Events map to Adobe Profile schemas.
 Experience Events:
 
 - **title**: All the properties of an included event with a `Log Event` action will create an XDM Field Group with title `{Avo Event Name} Properties`. If [name mapping](/data-design/name-mapping) is applied to the event, the name defined by the name mapping is used here
-- **definitions/property/properties/TENANT_ID/properties**: contains list of XDM properties created from the Avo event properties. `Type`, `title` with name mapping and `description` of each property is synced with Avo
+- **definitions/property/properties/TENANT_ID/properties**: contains list of XDM properties created from the Avo event properties, where `type` is the property type defined in Avo, `title` is the property name or name mapping defined in Avo and `description` is the property description provided in Avo
 - **meta:intendedToExtend**: set to `https://ns.adobe.com/xdm/context/experienceevent`
 
 Profile Records:
 
 - **title**: All the properties of an included event with a `Update User Properties` action will create an XDM Field Group with title `{Avo Event Name} User Properties`. If [name mapping](/data-design/name-mapping) is applied to the event, the name defined by the name mapping is used here
-- **definitions/property/properties/TENANT_ID/properties**: contains list of XDM properties created from the Avo event properties. `Type`, `title` with name mapping and `description` of each property is synced with Avo
+- **definitions/property/properties/TENANT_ID/properties**: contains list of XDM properties created from the Avo event properties, where `type` is the property type defined in Avo, `title` is the property name or name mapping defined in Avo and `description` is the property description provided in Avo
 - **meta:intendedToExtend**: set to `https://ns.adobe.com/xdm/context/profile`
 
 #### Handling changes
