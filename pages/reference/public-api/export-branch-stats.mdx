@@ -79,6 +79,60 @@ example:
 format=json
 ```
 
+#### example request
+
+```sh
+curl -X GET https://api.avo.app/workspaces/:workspaceId/branches/export/v1?branchStatuses=Approved,Closed&format=json
+```
+
+#### response
+
+```json
+{
+  "branches": {
+    "9I2PVpWpy": {
+      "branchId": "9I2PVpWpy",
+      "branchName": "branch0",
+      "branchCreator": "hi@avo.sh",
+      "creationDate": "2024-11-13T12:33:02.491Z",
+      "branchStatus": "Closed",
+      "collaborators": ["hi@avo.app"],
+      "lastPublishedDate": null,
+      "markedReadyForReviewDate": null,
+      "markedReadyForReviewUser": null,
+      "branchMergedDate": null,
+      "branchMergedUser": null
+    },
+    "MjXJOyCW0": {
+      "branchId": "MjXJOyCW0",
+      "branchName": "branch1",
+      "branchCreator": "hi@avo.app",
+      "creationDate": "2024-11-13T13:13:32.063Z",
+      "branchStatus": "Closed",
+      "collaborators": ["hi@avo.app"],
+      "lastPublishedDate": null,
+      "markedReadyForReviewDate": null,
+      "markedReadyForReviewUser": null,
+      "branchMergedDate": null,
+      "branchMergedUser": null
+    },
+    "O6ZTDuyrOU": {
+      "branchId": "O6ZTDuyrOU",
+      "branchName": "branch2",
+      "branchCreator": "hi@avo.app",
+      "creationDate": "2024-03-12T19:42:15.777Z",
+      "branchStatus": "Approved",
+      "collaborators": ["hi@avo.app"],
+      "lastPublishedDate": null,
+      "markedReadyForReviewDate": "2024-03-12T19:42:46.288Z",
+      "markedReadyForReviewUser": "hi@avo.app",
+      "branchMergedDate": null,
+      "branchMergedUser": null
+    }
+  }
+}
+```
+
 ### - Base64 encoding secret header
 
 The base64 encoded token expects `name:secret`
