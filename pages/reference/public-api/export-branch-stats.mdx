@@ -44,6 +44,95 @@ We currently soft-enforce 1/req/s rate limit per service account for this endpoi
 Locate your workspaceId in the URL
 `avo.app/schemas/:workspaceId`
 
+### - branchStatuses (optional)
+
+Comma separated list of branch statuses to include in the export, if the parameter is not provided, all branch statuses will be included.
+
+List of branch statuses:
+
+- Merged
+- Open
+- Closed
+- Draft
+- ReadyForReview
+- ChangesRequested
+- Approved
+
+example:
+
+```
+branchStatuses=Approved,ReadyForReview
+```
+
+### - format (optional)
+
+the format of the response, defaults to csv
+
+options:
+
+- csv
+- json
+
+example:
+
+```
+format=json
+```
+
+#### example request
+
+```sh
+curl -X GET https://api.avo.app/workspaces/:workspaceId/branches/export/v1?branchStatuses=Approved,Closed&format=json
+```
+
+#### response
+
+```json
+{
+  "branches": {
+    "9I2PVpWpy": {
+      "branchId": "9I2PVpWpy",
+      "branchName": "branch0",
+      "branchCreator": "hi@avo.sh",
+      "creationDate": "2024-11-13T12:33:02.491Z",
+      "branchStatus": "Closed",
+      "collaborators": ["hi@avo.app"],
+      "lastPublishedDate": null,
+      "markedReadyForReviewDate": null,
+      "markedReadyForReviewUser": null,
+      "branchMergedDate": null,
+      "branchMergedUser": null
+    },
+    "MjXJOyCW0": {
+      "branchId": "MjXJOyCW0",
+      "branchName": "branch1",
+      "branchCreator": "hi@avo.app",
+      "creationDate": "2024-11-13T13:13:32.063Z",
+      "branchStatus": "Closed",
+      "collaborators": ["hi@avo.app"],
+      "lastPublishedDate": null,
+      "markedReadyForReviewDate": null,
+      "markedReadyForReviewUser": null,
+      "branchMergedDate": null,
+      "branchMergedUser": null
+    },
+    "O6ZTDuyrOU": {
+      "branchId": "O6ZTDuyrOU",
+      "branchName": "branch2",
+      "branchCreator": "hi@avo.app",
+      "creationDate": "2024-03-12T19:42:15.777Z",
+      "branchStatus": "Approved",
+      "collaborators": ["hi@avo.app"],
+      "lastPublishedDate": null,
+      "markedReadyForReviewDate": "2024-03-12T19:42:46.288Z",
+      "markedReadyForReviewUser": "hi@avo.app",
+      "branchMergedDate": null,
+      "branchMergedUser": null
+    }
+  }
+}
+```
+
 ### - Base64 encoding secret header
 
 The base64 encoded token expects `name:secret`
