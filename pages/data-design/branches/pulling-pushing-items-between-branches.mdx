@@ -19,11 +19,12 @@ To access the tracking plan changes view, first you have to be on a branch and t
 
 ![Navigating to tracking plan changes](/images/pulling-pushing-items/navigating-to-tracking-plan-changes.png)
 
-There is an button in the top right corner of every tracking plan change that can be pushed to another branch.
+In the tacking plan changes view, each changed item is displayed individually. 
+For the items that can be pushed to another branch (currently events, properties and property groups), there is a button in the top right corner for pushing the item.
 
 ![Pressing push button](/images/pulling-pushing-items/press-push-button.png)
 
-When that button is pushed, you will get a modal that prompts you to pick a branch to push the changes to and review your selection.
+When that button is clicked, you will get a modal that prompts you to pick a branch to push the changes to and review your selection.
 You have to first pick a branch so that Avo can accurately display how the changes will be applied, as it might differ per branch if the item already exists on the destination branch.
 
 <center><img
@@ -33,8 +34,9 @@ You have to first pick a branch so that Avo can accurately display how the chang
 /></center>
 
 When the destination branch is selected, the actual diff for the destination branch is shown. The items shown can be expanded to show the details of what will be added to the destination branch.
-If the item you selected to push is an event or a property bundle, any related property changes are displayed below. See the [property changes related to event](#property-changes-related-to-event) section for details.
-Once you have reviewed your selection, you can press the Push to branch button and the changes will be applied to the destination branch.
+If the item you selected to push is an event or a property bundle, any related property changes are displayed below. Avo determines which changes are necessary to push to the destination branch leaving out changes that are unrelated to the selected event.
+See the [property changes related to event](#property-changes-related-to-event) section for details.
+Once you have reviewed your selection, you can click the Push to branch button and the changes will be applied to the destination branch.
 
 <center><img
   src="/docs/images/pulling-pushing-items/collapsed-diff-modal.png"
@@ -54,6 +56,7 @@ Soon it will be possible to search and get results from other branches. Those it
 
 When either the source or destination branch where items have been pushed or pulled are merged to main, you will be prompted to pull main on the branch where the items still remain.
 As the ID of the items are the same, the items exist on main and there is no need to keep them specifically on the other branch. 
+However, changes to these items between the branches will reconcile and the remaining diff will appear instead of the excluded item or changes.
 
 
 ## Property changes related to event
@@ -67,7 +70,7 @@ For events, it's possible to toggle whether the related properties and their cha
 - Any **existing properties** that were added to the selected item and are **not on the event** on the destination branch
     - When toggled off on events, any changes to the property will be excluded on the destination branch
 - Any **existing properties** on the selected item have been modified such that they are **different** on the destination branch
-    - When toggled off on events, any changes to the property will be excluded on the destination branch
+    - When toggled off on events, any changes to the property will be excluded on the destination branch, but the property will remain on the event.
 
 <center><img
   src="/docs/images/pulling-pushing-items/toggle-related-property-changes.png"
@@ -98,7 +101,7 @@ That is now possible by pushing items from the diff view to different branches.
 
 ### One team is ready to implement but not others
 
-Commonly, Avo branches need to be implemented by more than one team. Most of the time teams are not able to implement in parallel, so it can be helpful to break the branches down for each team.
+Commonly, Avo branches need to be implemented by more than one team. In many cases, teams are not able to implement in parallel, so it can be helpful to break the branches down for each team.
 
 Now this is possible for platform teams. If for example the iOS team is ready to implement first, then items with the iOS source can be pushed to another branch.
 On the destination branch, other sources can be removed from events and/or [property presence per source](../avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) can be adjusted.
@@ -107,7 +110,7 @@ Then the iOS team can implement for only the iOS source, merge the branch and th
 ### Reusing properties between open branches
 
 Sometimes implementation of the branch blocks it to be merged to main and then the items that have been created on the branch can not be used on other branches.
-Or sometimes to different people are designing data for separate features in parallel and end up creating duplicate events on separate branches. 
+Or sometimes different people are designing data for separate features in parallel and end up creating duplicate events on separate branches. 
 That happens because previously, Avo didn't surface items from other branches. But that is coming soon.
 
 Now however, if a branch is blocked for whatever reason, you can go to that branch and push the item you want to reuse to your branch.
