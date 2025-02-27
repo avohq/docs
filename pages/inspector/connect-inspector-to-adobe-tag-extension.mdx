@@ -1,0 +1,110 @@
+import { Callout } from 'nextra/components';
+
+# Avo Inspector Adobe Tag Extension
+
+## Overview
+
+The **Avo Inspector Adobe Tags Extension** allows you to monitor and validate your Adobe Client Data Layer by sending only data schemas (no personal data) to Avo Inspector. This helps ensure data consistency and catch schema violations in real time.
+
+<Callout type="info" emoji="💡">
+  Currently, we only support Web tag extensions for Adobe.
+</Callout>
+
+## Features
+
+- **Watches the Adobe Client Data Layer for changes**
+- **Filters events and properties based on configured prefixes**
+- **Automatically extracts & sends schema structures to Avo Inspector**
+- **Ensures tracking consistency without exposing user data**
+
+## Prerequisites
+
+- Adobe Client Data Layer Extension (Required)
+- [Avo Inspector API Key](https://www.avo.app/docs/data-design/avo-tracking-plan/define-sources-and-destinations#api-key)
+
+## Installation
+
+1. Go to **Adobe Experience Platform Tags**.
+2. Navigate to the **Extensions** catalog.
+3. Search for **"Avo Inspector"**.
+4. Click **Install** and follow the setup instructions.
+
+## Configuration
+
+### Extension Configuration
+
+These settings apply to the Avo Inspector extension globally across your Tag property.
+
+| Setting         | Description                                                                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **API Key**     | [Your Avo Inspector API Key for authentication.](https://www.avo.app/docs/data-design/avo-tracking-plan/define-sources-and-destinations#api-key) |
+| **Environment** | Defines the environment (dev, staging, prod).                                                                                                    |
+| **App Version** | The application version being tracked. (defaults to 1.0.0)                                                                                       |
+
+### Rule-Specific Configuration
+
+These settings apply to individual rules where the extension is used.
+
+| Setting                 | Description                                                                                     |
+| ----------------------- | ----------------------------------------------------------------------------------------------- |
+| **Event Name Prefixes** | Filters out events that start with specific prefixes.                                           |
+| **Property Prefixes**   | Filters out properties that start with specific prefixes. (only works for top level properties) |
+
+## Setting Up a Rule in Adobe Tags
+
+### Step 1: Configure the Event
+
+- Go to **Rules** → Create a **new rule**.
+- Click **Add Event** → Select Adobe Client Data Layer Extension.
+- Under eventType select "Data Pushed"
+- In the settings, select "Listen to: All Events" and "Time Scope: Future"
+- Click **Save**
+
+### Step 2: Configure the Action
+
+- Add an **Action** → Select **Avo Inspector** extension
+- Choose `on Adobe DataLayer Push` as the action type.
+- Configure the **Rule-Specific Configuration** (Event Name Prefixes & Property Prefixes).
+
+### Step 3: Save and Publish
+
+- Click **Save Rule**.
+- Publish your changes in Adobe Tags.
+- Once live, the extension will start **tracking schemas automatically**.
+
+## How It Works
+
+### Event & Property Filtering
+
+- The extension listens for changes in the Adobe Client Data Layer.
+- Events and properties are filtered based on prefix rules (configured in settings).
+- Unwanted prefixes are ignored, while only schema structures are processed.
+
+### Sending Schemas to Avo Inspector
+
+- Once an event passes the filter, the extension extracts its schema and sends it to Avo Inspector.
+- The schema is structured according to Avo's schema validation.
+- This helps identify tracking inconsistencies in real time.
+
+## Troubleshooting
+
+### No Schemas Being Sent?
+
+- Check if the Adobe Data Layer has events in the browser console.
+- Ensure event prefixes are not blocking schema extraction.
+
+### Getting Errors in Avo Inspector?
+
+- Validate the schema in Avo Inspector.
+- Check the API key and environment settings.
+- Look at network requests (`F12 → Network`) to see what's being sent.
+
+## Support
+
+For any questions, reach out to [Avo Support](https://www.avo.app) or check our [documentation](https://github.com/avohq/adobe-inspector#readme).
+
+## Next Steps
+
+- [Import events from Inspector](https://www.avo.app/docs/inspector/add-events-from-inspector)
+- [Review Issues](https://www.avo.app/docs/inspector/inspector-issues-view)
+- [Set up Alerts](https://www.avo.app/docs/inspector/inspector-slack-alerts)
