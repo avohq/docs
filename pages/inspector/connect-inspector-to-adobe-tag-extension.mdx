@@ -12,7 +12,7 @@ The **Avo Inspector Adobe Tags Extension** allows you to monitor and validate yo
 
 ## Features
 
-- **Watches the Adobe Client Data Layer for changes**
+- **Watches the Adobe/Google Data Layer for changes**
 - **Filters events and properties based on configured prefixes**
 - **Automatically extracts & sends schema structures to Avo Inspector**
 - **Ensures tracking consistency without exposing user data**
@@ -22,14 +22,14 @@ The **Avo Inspector Adobe Tags Extension** allows you to monitor and validate yo
 - Adobe Client Data Layer Extension (Required)
 - [Avo Inspector API Key](https://www.avo.app/docs/data-design/avo-tracking-plan/define-sources-and-destinations#api-key)
 
+![Get API key](/images/inspector/copy-inspector-api-key.png)
+
 ## Installation
 
 1. Go to **Adobe Experience Platform Tags**.
 2. Navigate to the **Extensions** catalog.
 3. Search for **"Avo Inspector"**.
 4. Click **Install** and follow the setup instructions.
-
-## Configuration
 
 ### Extension Configuration
 
@@ -40,6 +40,8 @@ These settings apply to the Avo Inspector extension globally across your Tag pro
 | **API Key**     | [Your Avo Inspector API Key for authentication.](https://www.avo.app/docs/data-design/avo-tracking-plan/define-sources-and-destinations#api-key) |
 | **Environment** | Defines the environment (dev, staging, prod).                                                                                                    |
 | **App Version** | The application version being tracked. (defaults to 1.0.0)                                                                                       |
+
+![Install extension](/images/inspector/adobe-tags/adobe-install-extension.png)
 
 ### Rule-Specific Configuration
 
@@ -52,19 +54,25 @@ These settings apply to individual rules where the extension is used.
 
 ## Setting Up a Rule in Adobe Tags
 
+![Create new rule](/images/inspector/adobe-tags/adobe-create-rule.png)
+
 ### Step 1: Configure the Event
 
 - Go to **Rules** → Create a **new rule**.
-- Click **Add Event** → Select Adobe Client Data Layer Extension.
+- Click **Add Event** → Select Adobe Client Data Layer Extension or google data layer extension.
 - Under eventType select "Data Pushed"
 - In the settings, select "Listen to: All Events" and "Time Scope: Future"
 - Click **Save**
+
+![Configure event](/images/inspector/adobe-tags/adobe-event-configuration.png)
 
 ### Step 2: Configure the Action
 
 - Add an **Action** → Select **Avo Inspector** extension
 - Choose `on Adobe DataLayer Push` as the action type.
 - Configure the **Rule-Specific Configuration** (Event Name Prefixes & Property Prefixes).
+
+![Configure Action](/images/inspector/adobe-tags/adobe-inspector-action.png)
 
 ### Step 3: Save and Publish
 
@@ -86,12 +94,22 @@ These settings apply to individual rules where the extension is used.
 - The schema is structured according to Avo's schema validation.
 - This helps identify tracking inconsistencies in real time.
 
+When events are being sent successfully, Avo Inspector events view will start to receive your events, whether you have them in the Avo Tracking plan or not.
+If you receive events that are not defined in your tracking plan, the Inspector will offer you to add them to the tracking plan with a single click.
+
+![Inspector Events](/images/inspector/add-event-from-events-view.png)
+
 ## Troubleshooting
 
 ### No Schemas Being Sent?
 
 - Check if the Adobe Data Layer has events in the browser console.
 - Ensure event prefixes are not blocking schema extraction.
+- If the Avo inspector tag Extension is set to "dev" environment, the extension will be logging to the console to help you debug.
+
+<Callout type="info" emoji="💡">
+  The Extension will do no logging if the environment is set to "prod".
+</Callout>
 
 ### Getting Errors in Avo Inspector?
 
