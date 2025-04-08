@@ -35,6 +35,18 @@ The simplest way to integrate GTM with inspector is to use the Avo Inspector tem
 
 Follow the Avo in-app instructions to set up the GTM Template.
 
+### Filters in the Avo Inspector Template
+
+Events can be filtered using the `eventPrefixesToExclude` and `eventsToInclude` fields.
+
+Both fields should be JSON arrays of strings.
+
+Any event whose name starts with one of the prefixes specified in `eventPrefixesToExclude` will be ignored and not reported to the Inspector — unless the full event name is explicitly included in the `eventsToInclude` array.
+
+We provide default values that you can customize as needed.
+
+The same logic applies to event properties, using the `propertyPrefixesToExclude` and `propertiesToInclude` fields.
+
 ## Other ways to integrate Inspector Client side GTM
 
 There are two extra options to install Inspector via Google Tag Manager. You can either import our GTM recipe to add observability to all data layer events, or use our Inspector function to add observability to individual events. If you choose to use the GTM recipe, the initialization code is already included in a tag, so for the Inspector API GTM variable you need to provide the source specific API key, which you can find in your Avo source Inspector setup. Another option is to initialize Inspector via creating your own HTML tag and using the HTML script you can find in the source Inspector setup.
