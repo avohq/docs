@@ -1,31 +1,20 @@
 import { Callout } from 'nextra/components';
 
-# Pulling and Pushing Items Between Branches (alpha)
+# Cross-branch Data Design
 
-You can add an item from one branch to another by pulling or pushing them. When that is done, it's the same item on both branches
-where the ID of the item remains the same, meaning that this will not result in direct merge conflicts. 
-- [**Pushing an item**](#pushing-items-to-another-branch): Adding an item from a branch that a user is currently on, to another branch. 
-- [**Pulling an item**](#pulling-items-from-another-branch): Adding an item to a branch that the user is currently on, from another branch.
-
-<Callout type="info">
-    Pushing and pulling are currently out in alpha. [Contact us](mailto:beta@avo.app)
- to get access.
-</Callout>
+Items (events, properties and property groups) can be reused between branches by pulling or pushing. In both cases, the item retains the same ID across branches, preventing direct merge conflicts.
+- [**Pushing an item**](#pushing-items-to-another-branch): Adds an item to another branch from the current branch.
+- [**Pulling an item**](#pulling-items-from-another-branch): Adds an item to the current branch from another branch.
 
 ## Pushing items to another branch
 
-Pushing events, properties and property bundles from the branch that a user is currently on, to another branch is possible from the Tracking plan changes view. 
-To access the tracking plan changes view, first you have to be on a branch and then you can click "View Changes" under the branch name.
+Events, sources, properties, and property bundles can be pushed from the current branch to another branch using the [Tracking Plan Changes view](/data-design/branches#review-branch-changes). 
 
-![Navigating to tracking plan changes](/images/pulling-pushing-items/navigating-to-tracking-plan-changes.png)
-
-In the tacking plan changes view, each changed item is displayed individually. 
-For the items that can be pushed to another branch (currently events, properties and property groups), there is a button in the top right corner for pushing the item.
+For items eligible for pushing (events, properties, and property groups), you can click a button in the top right corner to start the push process.
 
 ![Pressing push button](/images/pulling-pushing-items/press-push-button.png)
 
-When that button is clicked, you will get a modal that prompts you to pick a branch to push the changes to and review your selection.
-You have to first pick a branch so that Avo can accurately display how the changes will be applied, as it might differ per branch if the item already exists on the destination branch.
+You will be prompted to select a destination branch, in order to review how the changes will be applied – this may vary depending on the data structures already existing on the selected branch. 
 
 <center><img
   src="/docs/images/pulling-pushing-items/empty-push-modal.png"
@@ -33,35 +22,29 @@ You have to first pick a branch so that Avo can accurately display how the chang
   alt="Empty review modal"
 /></center>
 
-When the destination branch is selected, the actual diff for the destination branch is shown. The items shown can be expanded to show the details of what will be added to the destination branch.
-If the item you selected to push is an event or a property bundle, any related property changes are displayed below. Avo determines which changes are necessary to push to the destination branch leaving out changes that are unrelated to the selected event.
-See the [property changes related to event](#property-changes-related-to-event) section for details.
-Once you have reviewed your selection, you can click the Push to branch button and the changes will be applied to the destination branch.
-
-<center><img
-  src="/docs/images/pulling-pushing-items/collapsed-diff-modal.png"
-  width="60%"
-  alt="Empty review modal"
-/></center>
-
-Then you can navigate to your destination branch and use the item you pushed there.
-
-![Empty review modal](/images/pulling-pushing-items/destination-branch.png)
+After selecting a destination branch, changes can be [reviewed](#reviewing-changes-to-be-pushed-or-pulled), including which [related changes](#property-changes-related-to-event) to include in the push.
+Once pushed, the item becomes available for use on the destination branch.
 
 ## Pulling items from another branch
 
-Pulling events, properties and property bundles from another branch to a branch that a user is currently on is now possible when searching for or creating those items.
-In the alpha, pulling will be available in the following areas:
-- [When searching for items in context of another item details](#items-from-other-branches-surfaced-in-context–of–item-details) (for example adding a property to an event in event details)
-- [When creating new events or properties](#items-with-similar-names-surfaced-during-creation) (for example by clicking the "+ New Event" button in the events view)
-- [When searching for events, properties or property bundles in cmd+k or search bar](#items-from-other-branches-surfaced-in-global-search)
+Events, properties, and property bundles can be pulled into the current branch during item search or creation:
+- [Item details](#item-details): When searching for items in context of another item details (for example adding a property to an event in event details)
+- [Item creation](#item-creation): When creating new events or properties (for example by clicking the "+ New Event" button in the events view)
+- [Global search](#global-search) When searching for items in cmd+k or search bar
 
-### Items from other branches surfaced in context of item details 
+When an event from another branch is surfaced in any of the contexts listed above, selecting it either opens a preview of the item details where the it can be pulled or directly initiates the pulling process.
+After initiation the pulling process, a modal appears with a detailed overview of the changes that will be applied, including options to review and configure related changes.
+Once confirmed, the item is pulled into the current branch and becomes available for use.
 
-The in-context search now surfaces items from other branches, in addition to items from the current branch and main.
-So when you are adding a property to an event in event details, properties from other branches are surfaced. Same with adding events to metrics or properties and adding properties as filter to a metric.
+Below are more details about how items from other branches can be discovered:
 
-To do that, open the details view of the item you want to add to. In this example we're adding a property to an event.
+###  Item Details
+In-context searches now show items from other branches alongside those from the current branch and main.
+
+For example, while adding a property to an event, properties from other branches are surfaced.
+The same applies to events added to metrics or properties, and when adding a property as a filter in a metric.
+
+To do that, open the details view of the item. In this example a property is added to an event.
 
 <center><img
   src="/docs/images/pulling-pushing-items/event-details.png"
@@ -69,7 +52,7 @@ To do that, open the details view of the item you want to add to. In this exampl
   alt="Event details"
 /></center>
 
-Type in what you are looking for. Then Avo will surface properties from other branches, below the ones that are found on your branch.
+Type in what you are looking for. Avo will surface properties from other branches, below the ones that are found on the current branch.
 
 <center><img
   src="/docs/images/pulling-pushing-items/event-details-found-on-other-branches.png"
@@ -77,27 +60,12 @@ Type in what you are looking for. Then Avo will surface properties from other br
   alt="Searching for a property in event details"
 /></center>
 
-When you click a property that was found on another branch, you will be prompted to review and confirm the changes that would be applied to this branch.
-You can expand the item changes to review the details and then click confirm to pull the property to your branch and add it to your event.
-
-<center><img
-  src="/docs/images/pulling-pushing-items/event-details-review-pulled-changes.png"
-  width="60%"
-  alt="Review changes to pull into your branch."
-/></center>
-
-Then the property has been added to your event and is available for reuse on your branch.
-
-<center><img
-  src="/docs/images/pulling-pushing-items/changes-added-to-branch.png"
-  width="60%"
-  alt="Property added to branch."
-/></center>
-
-### Items with similar names surfaced during creation
+### Item Creation
 
 When creating new events, properties and property bundles, the creation modal now surfaces similar items from other branches, in addition to what's already on your branch.
 In this example we are creating a new event.
+
+Clicking an item name opens a view-only preview of the item from the source branch. From there, the item can be pulled into the current branch. 
 
 <center><img
   src="/docs/images/pulling-pushing-items/create-new-event-surface-similar.png"
@@ -105,12 +73,17 @@ In this example we are creating a new event.
   alt="Create new event."
 /></center>
 
-When you click the name of an event from another branch, you are prompted to review the changes that would be applied to the branch like shown above.
-Once you have review the changes, click confirm and the event will be pulled to your branch.
+Clicking an item name opens a view-only preview of the item from the source branch. From there, the item can be pulled into the current branch. 
 
-### Items from other branches surfaced in global search
+<center><img
+  src="/docs/images/pulling-pushing-items/viewing-a-property-from-another-branch.png"
+  width="60%"
+  alt="Viewing a property from another branch."
+/></center>
 
-When you search for tracking plan items in the global search, accessible in the side bar and via CMD+K, you now get results from other branches in addition to what's already on your branch.
+### Global Search
+
+When searching for tracking plan items in the global search, accessible in the side bar and via CMD+K, results from other branches are surfaced in addition to what's already on the current branch.
 In this example we're searching for a property.
 
 <center><img
@@ -119,8 +92,7 @@ In this example we're searching for a property.
   alt="Surfacing items from other branches in global search."
 /></center>
 
-When you click or hit enter when a property from another branch is highlighted, then the property is opened in view mode from the other branch.
-Click "Pull to branch" to to review changes before pulling the property and making it available to add to events in your branch.
+Selecting an item name opens a view-only preview of the item from the source branch. From there, the item can be pulled into the current branch.
 
 <center><img
   src="/docs/images/pulling-pushing-items/viewing-a-property-from-another-branch.png"
@@ -128,79 +100,87 @@ Click "Pull to branch" to to review changes before pulling the property and maki
   alt="Viewing a property from another branch."
 /></center>
 
-When you click "Pull to branch", you're prompted to review the changes the same way as described above.
+## Reviewing changes to be pushed or pulled
+
+The items shown can be expanded to show the details of what will be added to the destination branch.
+Avo determines which changes are necessary to push to the destination branch, leaving out changes that are unrelated to the selected item.
+If the selected item to push or pull is an event or a property bundle, any [related changes](#related-changes) are displayed below. 
+
+After reviewing, clicking the Push or Pull button applies the changes to the destination branch.
+
+<center><img
+  src="/docs/images/pulling-pushing-items/pull-push-review.png"
+  width="100%"
+  alt="Examples of how the review modal could look like"
+/></center>
+
+## Related changes
+
+When pushing an event or property bundle, related changes (e.g. sources, destinations, properties, property groups) are shown in the review modal.
+
+By default, all related items and their changes are included. These options are configurable:
+- New items not present on the destination branch: Can be included or excluded.
+- Existing items not attached to the item on the destination branch: Can be included with or without changes, or excluded.
+- Modified existing items: Can be included with or without changes.
+
+<center><img
+  src="/docs/images/pulling-pushing-items/include-exclude-options.png"
+  width="60%"
+  alt="Overview of the related changes options"
+/></center>
 
 ## Merging branches where items have been pushed or pulled
 
-When either the source or destination branch where items have been pushed or pulled are merged to main, you will be prompted to pull main on the branch where the items still remain.
-As the ID of the items are the same, the items exist on main and there is no need to keep them specifically on the other branch. 
-However, changes to these items between the branches will reconcile and the remaining diff will appear instead of the excluded item or changes.
-
-
-## Property changes related to event
-
-When an event or property bundle is selected to push to another branch, the review modal will show a list of properties related to the event or property bundle.
-By default, all related properties and their changes are kept on the event or property bundle.
-
-For events, it's possible to toggle whether the related properties and their changes are pushed too. The related property changes are the following:
-- Any **new properties** that were added to the selected item and **do not exist** on the destination branch
-    - When toggled off on events, the property will be excluded on the destination branch
-- Any **existing properties** that were added to the selected item and are **not on the event** on the destination branch
-    - When toggled off on events, any changes to the property will be excluded on the destination branch
-- Any **existing properties** on the selected item have been modified such that they are **different** on the destination branch
-    - When toggled off on events, any changes to the property will be excluded on the destination branch, but the property will remain on the event.
-
-<center><img
-  src="/docs/images/pulling-pushing-items/toggle-related-property-changes.png"
-  width="60%"
-  alt="Toggle related property changes"
-/></center>
+When either the source or destination branch is merged to main, the remaining branch is prompted to pull from main.
+Since item IDs remain the same across branches, after merge it exist on main and therefore it is removed from the other branch. 
+However, any differences from the item on main will remain on the branch that has yet to be merged.
 
 ## What can be pushed and pulled and from where?
 
-Pushing and pulling is currently available for the following items:
+Currently supported items:
 - Events
 - Properties
 - Property bundles
+- Sources (available when pushing)
 
-Pushing is available for new and updated items from the following views:
-- Tracking plan changes (button on each item that can be pushed)
+Pushing is available from:
+- Tracking plan changes (via button on each eligible item)
 
-Pulling is available for new items from the following areas:
-- In context search in item details
-  - Adding a property to an event in event details
-  - Adding an event to a property in property details
-  - Adding an event to a metric in metric details
-  - Adding a property as an event filter in metric details
-- Global search accessible via CMD+K and search input in the side bar
+Pulling is available from:
+- In-context search in item details
+  - Adding a property to an event
+  - Adding an event to a property
+  - Adding an event to a metric
+  - Adding a property as a metric filter
+- Global search (CMD+K and sidebar)
 - Item creation modal
-  - Creating a new event from the events view
-  - Creating a new property from the property view
-  - Creating a new property bundle from the property bundle view
+  - Creating a new event (events view)
+  - Creating a new property (properties view)
+  - Creating a new property bundle (property bundle view)
 
-## Pushing and pulling use cases
-
-Pushing and pulling has several use cases. Some examples are below.
+## Use Cases for Pushing and Pulling
 
 ### Breaking down a large branch
 
 It often happens when designing data, that a branch becomes quite big, containing a lot of event and property changes.
-Then it's helpful to be able to break that branch into more manageable chunks, both to make review and implementation easier.
+Then it's helpful to be able to split into smaller, manageable branches for easier review and implementation.
 
 That is now possible by pushing items from the diff view to different branches. 
 
-### One team is ready to implement but not others
+The original branch will retain everything that is pushed, so if the branch is to be split in two branches, it may be good to push to two separate branches.
+Then the original branch has an overview of all changes and the child branches are focused on their purpose. 
+
+### Staggered Team Implementation
 
 Commonly, Avo branches need to be implemented by more than one team. In many cases, teams are not able to implement in parallel, so it can be helpful to break the branches down for each team.
 
 Now this is possible for platform teams. If for example the iOS team is ready to implement first, then items with the iOS source can be pushed to another branch.
-On the destination branch, other sources can be removed from events and/or [property presence per source](../avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) can be adjusted.
-Then the iOS team can implement for only the iOS source, merge the branch and the changes will remain for the other sources on the original branch.
+When pushing, other sources can be excluded from events and/or [property presence per source](../avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) can be adjusted.
+Then the iOS team can implement for only the iOS source, merge the branch and the changes will remain for the other sources on the original branch. 
+When the next team is ready, their events can be pushed to another branch and so on.
 
 ### Reusing properties between open branches
 
 Sometimes implementation of the branch blocks it to be merged to main and then the items that have been created on the branch can not be used on other branches.
 Or sometimes different people are designing data for separate features in parallel and end up creating duplicate events on separate branches. 
-That happens because previously, Avo didn't surface items from other branches. But that is coming soon.
-
-Now however, if a branch is blocked for whatever reason, you can go to that branch and push the item you want to reuse to your branch.
+That happens because previously, Avo didn't surface items from other branches. But now items from other branches are surfaced in search and can be pulled to your branch.

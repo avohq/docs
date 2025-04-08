@@ -10,14 +10,15 @@ Avo provides a set of developer tools to make it faster and less error prone to 
 
 In this guide we’ll cover how to implement analytics events with and without using Avo’s developer tools.
 
-# Implementing without using Avo’s developer tools
+## Implementing without using Avo’s developer tools
 
 You can continue implementing your tracking code like you are used to using analytics SDKs from analytics platforms (like Mixpanel, PostHog or Amplitude), SDKs from CDPs (like RudderStack, Segment or mParticle), or using internal built SDKs or APIs.
 
 A typical implementation workflow looks like this:
 
-1. Use the branch _code changes_ screen as a task list for what events need to be changed to successfully implement the tracking plan changes
-2. Open a git branch to implement your analytics tracking changes on
+1. Use the [Branch Code Changes](/data-design/branches/code-changes) as a task list for what events need to be implemented or updated changed to align with your tracking plan changes.
+2. Open a git branch to implement your analytics tracking changes in your product's codebase.
+3. Implement the changes in your existing analytics tracking code, using the schema details provided by Avo as your reference.
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
@@ -26,7 +27,7 @@ A typical implementation workflow looks like this:
   href="/data-design/branches/code-changes"
 />
 
-# Implementing with Avo Codegen
+## Implementing with Avo Codegen
 
 Avo Codegen produces type safe analytics wrappers that are code generated based on your tracking plan. Designed to speed up the tracking code implementation, while also making it more reliable with type-safety.
 
