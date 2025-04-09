@@ -37,15 +37,19 @@ Follow the Avo in-app instructions to set up the GTM Template.
 
 ### Filters in the Avo Inspector Template
 
-Events can be filtered using the `eventPrefixesToExclude` and `eventsToInclude` fields.
+Events can be filtered using the `Event names to force include`, `Event names to ignore` and `Event prefixes to ignore` fields in the Tag Configuration.
 
-Both fields should be JSON arrays of strings.
+All fields should be JSON arrays of strings.
 
-Any event whose name starts with one of the prefixes specified in `eventPrefixesToExclude` will be ignored and not reported to the Inspector — unless the full event name is explicitly included in the `eventsToInclude` array.
+`Event names to force include` has the highest priority, if you add an event there, it will be reported.
+
+Then, if event name matches one of the values provided in `Event names to ignore`, or starts with any of the `Event prefixes to ignore`, it will be ignored and not reported to the Inspector.
 
 We provide default values that you can customize as needed.
 
-The same logic applies to event properties, using the `propertyPrefixesToExclude` and `propertiesToInclude` fields.
+The same logic applies to event properties, using the `Property names to force include`, `Property names to ignore` and `Property prefixes to ignore` fields.
+
+![Gtm Inspector setup example](/images/web-gtm-inspector-setup.png)
 
 ## Other ways to integrate Inspector Client side GTM
 
