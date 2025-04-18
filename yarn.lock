@@ -1025,14 +1025,15 @@
   dependencies:
     tslib "^2.4.1"
 
-"@segment/analytics-next@^1.78.1":
-  version "1.78.1"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-next/-/analytics-next-1.78.1.tgz#7f9181f95b8bccd7c1851f3c35e64dc8b8a6c8e2"
-  integrity sha512-jnM/nXPBeq5Y2IxDWA+P2Dlz5YzpEaPF/n0bTPjkDf+XuRAZyLAe/7iS8zwa6Q2hlweMfXhNcymCW1119/xiig==
+"@segment/analytics-next@^1.80.0":
+  version "1.80.0"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-next/-/analytics-next-1.80.0.tgz#d41eb5fbfef6665051f69bb4dca512f5ee6694f9"
+  integrity sha512-U/r60YVKee3GMspnteKmrLUgX7skSsL060Rc1WnBNa3rhaeLCFvU5Qc7zvYa8BBV6KjNtQZkP8wbQv6yyM5PAA==
   dependencies:
     "@lukeed/uuid" "^2.0.0"
     "@segment/analytics-core" "1.8.1"
     "@segment/analytics-generic-utils" "1.2.0"
+    "@segment/analytics-page-tools" "1.0.0"
     "@segment/analytics.js-video-plugins" "^0.2.1"
     "@segment/facade" "^3.4.9"
     dset "^3.1.4"
@@ -1040,6 +1041,13 @@
     node-fetch "^2.6.7"
     tslib "^2.4.1"
     unfetch "^4.1.0"
+
+"@segment/analytics-page-tools@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-page-tools/-/analytics-page-tools-1.0.0.tgz#f5fb9b8f0c1e80e821b0a77ca13ac53daf08a28a"
+  integrity sha512-o9OVB91qLB9qb0Bw1HfjmWm5AnrMNULRjx++4lBqLt8InKRX1urrRBparVlpj+yJA0sckN5ZcsfazRLuPgBYDQ==
+  dependencies:
+    tslib "^2.4.1"
 
 "@segment/analytics.js-video-plugins@^0.2.1":
   version "0.2.1"
