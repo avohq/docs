@@ -16,6 +16,8 @@ https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1
 
 Returns [a Json payload representation of your tracking plan](/publishing/publishing/overview#payload-format).
 
+> For larger tracking plans, add 'accept-encoding: gzip' header to your request to have the response Gzipped for faster data delivery.
+
 ### Authentication
 
 This endpoint requires an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
