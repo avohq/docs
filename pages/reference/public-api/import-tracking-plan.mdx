@@ -1,4 +1,4 @@
-# Import Tracking Plan
+sv# Import Tracking Plan
 
 _Import tracking plan using Avo API_
 
@@ -47,12 +47,10 @@ See more on [authorization](/public-api/authentication#authenticating-with-avo-a
 
 ## Request Body
 
-The request body should be a JSON object with a `csv` field containing the CSV content as a string.
+The request body should be the CSV content as a string. The request must include a `Content-Type: text/csv` header.
 
-```json
-{
-  "csv": "Your CSV content following the format described in the [importing documentation](/publishing/import/importing)"
-}
+```body
+Your CSV content following the format described in the [importing documentation](/publishing/import/importing)
 ```
 
 ## Response
@@ -89,12 +87,10 @@ On success, the API returns a JSON object with the import results:
 ### Request
 
 ```sh
-$ curl -H "authorization: Basic <Base64 encoded token>" \
-       -H "Content-Type: application/json" \
+$ curl -H "Authorization: Basic <Base64 encoded token>" \
+       -H "Content-Type: text/csv" \
        -X POST https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1 \
-       -d '{
-         "csv": "KPI,Event Category,Event Name,Event Description,Event Property Name,Property Description,Property Value Type,Is Property Required?,Is Property Array?,Property Enumeration Options,Platforms,Status,Code Snippet\n,,Imported Event I,Event sent when a user clicks the import button. ,,,,,,,\"iOS, Android, Web\",,"
-       }'
+       -d 'KPI,Event Category,Event Name,Event Description,Event Property Name,Property Description,Property Value Type,Is Property Required?,Is Property Array?,Property Enumeration Options,Platforms,Status,Code Snippet\n,,Imported Event I,Event sent when a user clicks the import button. ,,,,,,,\"iOS, Android, Web\",,'
 ```
 
 ### Response
