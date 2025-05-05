@@ -1,0 +1,114 @@
+# Import Tracking Plan
+
+_Import tracking plan using Avo API_
+
+The Import API allows you to import a tracking plan from a CSV file into a specific branch in your Avo workspace.
+
+## Endpoint
+
+```Url
+https://api.avo.app/workspaces/:workspaceId/branches/:branchId/import/v1
+```
+
+`:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`. `:branchId` is the ID of the branch you want to import into. If you open a branch in Avo you can find it in the URL after `/branches/`. For the main branch simply use `main`. Note that the branch id is not the same as the branch name.
+
+> **Important Restrictions:**
+>
+> - You cannot import directly to the main branch if the "Protected main branch" setting is enabled in your workspace
+> - You cannot import to a branch that is closed or merged
+
+### Authentication
+
+This endpoint requires an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
+
+### Rate Limit
+
+We currently soft-enforce 1/req/s rate limit per service account for this endpoint. Please reach out to us if you have a use case in mind that requires a higher rate limit.
+
+## Parameters
+
+### - workspaceId
+
+Locate your workspaceId in the URL
+`avo.app/schemas/:workspaceId`
+
+### - branchId
+
+Locate your branchId by switching onto the branch and checking the URL
+
+- `avo.app/schemas/:workspaceId/branches/:branchId`
+- For the main branch, use `main` as the ID (if "Protected main branch" is disabled)
+
+### - Base64 encoding secret header
+
+The base64 encoded token expects `name:secret`
+
+See more on [authorization](/public-api/authentication#authenticating-with-avo-api)
+
+## Request Body
+
+The request body should be a JSON object with a `csv` field containing the CSV content as a string.
+
+```json
+{
+  "csv": "Your CSV content following the format described in the [importing documentation](/publishing/import/importing)"
+}
+```
+
+## Response
+
+On success, the API returns a JSON object with the import results:
+
+```json
+{
+  "message": "Import completed",
+  "result": {
+    "newEvents": 5,
+    "updatedEvents": 2,
+    "newProperties": 10,
+    "updatedProperties": 3,
+    "newSources": 1,
+    "newStakeholderDomains": 2
+  }
+}
+```
+
+### Response Fields
+
+- `message`: A success message indicating the import completed
+- `result`: An object containing statistics about the import:
+  - `newEvents`: Number of new events created
+  - `updatedEvents`: Number of existing events that were updated
+  - `newProperties`: Number of new properties created
+  - `updatedProperties`: Number of existing properties that were updated
+  - `newSources`: Number of new sources created
+  - `newStakeholderDomains`: Number of new stakeholder domains created
+
+## Example Usage
+
+### Request
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" \
+       -H "Content-Type: application/json" \
+       -X POST https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1 \
+       -d '{
+         "csv": "KPI,Event Category,Event Name,Event Description,Event Property Name,Property Description,Property Value Type,Is Property Required?,Is Property Array?,Property Enumeration Options,Platforms,Status,Code Snippet\n,,Imported Event I,Event sent when a user clicks the import button. ,,,,,,,\"iOS, Android, Web\",,"
+       }'
+```
+
+### Response
+
+```json
+{
+  "message": "Import completed",
+  "result": {
+    "newEvents": 1,
+    "updatedEvents": 0,
+    "newProperties": 0,
+    "updatedProperties": 0,
+    "newSources": 0,
+    "newStakeholderDomains": 0
+  }
+}
+```
