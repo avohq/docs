@@ -1,14 +1,17 @@
 import PageLink from '../../../components/PageLink';
 
-# Stakeholder Domains
+# Stakeholders
 
-In Avo, you can assign one or multiple domains as stakeholders to events and event variants in your tracking plan. This is vital for large organizations sharing a schema registry, to better define areas of accountability and ownership. It makes it clear which schemas are relevant to each function or team within the organization and – more importantly – streamlines the workflow for when changes are suggested on shared data structures.
-
-## Domains
+In Avo, a group of people working within a certain function or area within your organization can be defined as a Stakeholder Team. 
+It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Central data, Marketing, Finance, etc.).
 
 ![Schematics of tracking plan in Avo broken down into a few example domains](/images/domains/domains.png)
 
-A domain refers to a certain function or area within your organization. It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Marketing, Sales, Finance, etc.).
+Events and event variants can be attached to one or more Stakeholder teams, meaning that those groups of people are a stakeholder events or variants.
+On top of being an event stakeholder, a single Stakeholder Team can be the owner of each event and event variant (alpha).
+
+This is vital for large organizations sharing a schema registry, to better define areas of accountability and ownership. 
+It makes it clear which schemas are relevant to each function or team within the organization and – more importantly – streamlines the workflow for when changes are suggested on shared data structures.
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
@@ -17,21 +20,43 @@ A domain refers to a certain function or area within your organization. It could
   href="/workspace-management/domains"
 />
 
-## Stakeholders
+## Stakeholder Teams
 
-A domain should be assigned as a stakeholder on an event if it depends on the event and/or is directly accountable for implementing it and ensuring it’s being sent correctly.
+A Stakeholder Team consists of Stakeholder Team Members and Stakeholder events.
 
-By having assigned stakeholder domains on events, it’s clear to anyone navigating your tracking plan who is relying on which events and who to loop in if an issue comes up with an event or when changes are suggested to shared data structures.
+### Stakeholder Team Members
+Are the the group of people that share the subject matter expertise the Stakeholder team is related to.
 
-When suggesting changes on a branch, you'll also see an [indicator of which stakeholders will be impacted](/data-design/guides/managing-changes-impacting-multiple-stakeholders), so you can avoid unwanted impact on other domains and/or loop the right people in to coordinate a cross-domain analytics change.
+Stakeholder team members roles and privileges (alpha):
+- **Lead** (role): Each stakeholder team is required to have a lead that is the primary contact for the stakeholder team and the ultimately responsible individual of the tracking plan items attached to the stakeholder team. This does not have to mirror the company org structure.
+- **Member** (role): Every stakeholder team member, aside from the lead is a member
+- **Can approve** (privilege): The stakeholder team members that are allowed to approve branches on behalf of the stakeholder team. 
 
-### Stakeholders in the tracking plan
+### Stakeholder Items
+Are the events and variants that are related to the subject matter expertise, and the stakeholder team depends on, owns or both.
 
-In the Events table in your tracking plan, you will see a column labeled “Stakeholders”. This column shows which domain each event is assigned to. You can filter your events table by stakeholders and share the filtered view with the domain team to give everyone a clearer overview of the events relevant to them.
+A stakeholder team is always a Stakeholder in events and variants that are attached to its stakeholder team.
+That way, it’s clear to anyone navigating your tracking plan who is relying on which events and who to loop in if an issue comes up with an event or when changes are suggested to shared data structures.
+
+When changes are made to an event that a stakeholder team is a stakeholder in, then the following happens:
+- An [indicator of which stakeholders will be impacted](/data-design/guides/managing-changes-impacting-multiple-stakeholders) by the suggested change is displayed, so you can avoid unwanted impact on other domains and/or add the stakeholders as reviewers to coordinate a cross-domain analytics change.
+- (Coming soon) A notification is sent to the stakeholder team slack channel that changes in a branch is impacting their team.
+
+In addition to being a stakeholder, a stakeholder team can also own event and variants (alpha)
+
+In addition to what happens when changes are made to an event that a stakeholder team is an stakeholder in, if they are an owner:
+- The stakeholder team is automatically added as a required reviewer of the branch. That means that the branch cannot be merged until every stakeholder team that is an impacted owner and therefore a required reviewer has approved the branch
+
+## Stakeholders in the tracking plan
+
+In the Events table in your tracking plan, you will see a column labeled “Stakeholders”.
+This column shows which stakeholder teams are a stakeholder in each event.
+You can filter your events table by stakeholders and share the filtered view with the domain team to give everyone a clearer overview of the events relevant to them.
 
 ![Avo events page with domain filters applied](/images/domains/events-domain-filter.png)
 
-In the details view for each event or event variant, you can see which domains are stakeholders in the item. To easily connect the dots between the stakeholder domain and the people behind it, click the domain name to see a preview of the domain members or navigate to the domain details view.
+In the details view for each event or event variant, you can see which domains are stakeholders in the item and which one owns it.
+To easily connect the dots between the stakeholder domain and the people behind it, click the domain name to see a preview of the domain members or navigate to the domain details view.
 
 ![Avo event details view with domain stakeholders](/images/domains/domains-on-event.png)
 
@@ -41,7 +66,7 @@ When a user in your workspace drafts changes on a branch in Avo, the “Impacted
 
 ![The Avo Branch Bar with impacted stakeholders](/images/domains/impacted-stakeholders-in-branch-bar.png)
 
-From there you can choose to [tweak the changes to reduce the scope](#minimizing-stakeholder-impact), or [loop in the relevant stakeholders](#aligning-on-cross-domain-changes).
+From there you can choose to [tweak the changes to reduce the scope](#minimizing-stakeholder-impact), or [add impacted stakeholder as reviewers](/workflow/review#how-to-request-a-review). Impacted owners will be automatically added as required reviewers on the enterprise plan.
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
@@ -64,7 +89,14 @@ From there you can choose to [tweak the changes to reduce the scope](#minimizing
 
 From the domain details view you can search all events and filter by category or tag to attach multiple events to the domain in one go. [See instructions](/workspace-management/domains).
 
-#### Who can assign domains as stakeholders
+#### Who can assign Stakeholder teams as stakeholders or owners
 
 - **Workspace admins:** Workspace admins can assign any domain as stakeholder
-- **Editors:** Editors can only assign domains they are members of as stakeholders
+- **Editors:** Can only assign Stakeholder teams they are members of as stakeholders
+- **Stakeholder team leads**: Can only assign Stakeholder teams they are a Lead in
+
+### Minimizing stakeholder impact
+You can minimize the stakeholder impact in the following ways:
+- Make an [event variant](/data-design/avo-tracking-plan/event-variants) for the version of the event that fits the needs of your team
+- Configure [property presence](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) by event and source
+- Configure [allowed property values](/data-design/avo-tracking-plan/properties#event-specific-and-source-specific-allowed-values) by event and source
