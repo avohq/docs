@@ -3,43 +3,43 @@ import PageLink from '../../../components/PageLink';
 
 # Managing changes impacting multiple stakeholders
 
-When a large organization is sharing a single tracking plan, it’s not unlikely that changes to the tracking plan will impact multiple [domains](/images/domains/impacted-stakeholders-in-branch-bar.png) within your organization. To prevent users from unknowingly making changes that may disrupt the events other teams rely on, Avo offers tools to surface this potential impact and mitigate it.
+When a large organization is sharing a single tracking plan, it’s not unlikely that changes to the tracking plan will impact multiple [stakeholder teams](/images/domains/impacted-stakeholders-in-branch-bar.png) within your organization. To prevent users from unknowingly making changes that may disrupt the events other teams rely on, Avo offers tools to surface this potential impact and mitigate it.
 
 <Callout type="info" emoji="💡">
-  A domain refers to a certain function or area within your organization. It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Marketing, Sales, Finance, etc.). [Learn more](/data-design/avo-tracking-plan/stakeholder-domains)
+  A stakeholder team refers to a certain function or area within your organization. It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Marketing, Sales, Finance, etc.). [Learn more](/data-design/avo-tracking-plan/stakeholder-domains)
 </Callout>
 
-In Avo you can assign domains as stakeholders on events and event variants in your tracking plan, to ensure that anyone making changes in Avo is aware of who those changes will impact. With this awareness, they can choose to [tweak the changes to reduce the scope](#minimizing-stakeholder-impact), or [loop in the relevant stakeholders](#aligning-on-cross-domain-changes).
+In Avo you can assign stakeholder teams as stakeholders on events and event variants in your tracking plan, to ensure that anyone making changes in Avo is aware of who those changes will impact. With this awareness, they can choose to [tweak the changes to reduce the scope](#minimizing-stakeholder-impact), or [loop in the relevant stakeholders](#aligning-on-cross-domain-changes).
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
-  title="Stakeholder domains"
-  description="How to assign domains as stakeholders to events and event variants"
+  title="Stakeholders"
+  description="How to assign events and event variants to stakeholder teams"
   href="/data-design/avo-tracking-plan/stakeholder-domains"
 />
 
 ## Impacted stakeholders 
 
-When a user in your workspace drafts changes on a branch in Avo, the “Impacted stakeholders” indicator in the branch header keeps track of how many stakeholder domains will be impacted by the suggested changes.
+When a user in your workspace drafts changes on a branch in Avo, the “Impacted stakeholders” indicator in the branch header keeps track of how many stakeholder teams will be impacted by the suggested changes.
 
 ![The Avo Branch Bar with impacted stakeholders](/images/domains/impacted-stakeholders-in-branch-bar.png)
 
 When you click the indicator it will expand to show the following:
-- Which domains are impacted by the changes on your branch. The domains you are not a member of will be surfaced at the top of the list and indicated with a pink dot. 
-- A preview of the members of each domain team – you can also click the domain name to see more details on the domain name and its members
-- For each domain a list of the events and event variants you have changed that they are marked as stakeholders of.
+- Which stakeholder teams are impacted by the changes on your branch. The stakeholder teams you are not a member of will be surfaced at the top of the list and indicated with a pink dot. 
+- A preview of the members of each stakeholder team – you can also click the stakeholder team name to see more details on the stakeholder team name and its members
+- For each stakeholder team a list of the events and event variants you have changed that they are marked as stakeholders of.
 
-![Schematics of tracking plan in Avo broken down into a few example domains](/images/domains/impacted-stakeholders.png)
+![Schematics of tracking plan in Avo broken down into a few example stakeholder teams](/images/domains/impacted-stakeholders.png)
 
 <Callout type="info" emoji="💡">
-  Note that the full Impacted Stakeholders functionality is only available on our [Enterprise Plan](http://avo.app/pricing).)
+  Note that the full Impacted Stakeholders functionality is only available on our [Enterprise Plan](http://avo.app/pricing).
 </Callout>
 
 ## Minimizing stakeholder impact
 
-While there are fundamental data structures that need to be consistent across multiple teams and platforms, domain teams frequently need to expand on them and add nuances that don’t need to apply to every single place these events and properties are tracked.
+While there are fundamental data structures that need to be consistent across multiple teams and platforms, stakeholder teams frequently need to expand on them and add nuances that don’t need to apply to every single place these events and properties are tracked.
 
-The Avo tracking plan has tools to provide this flexibility, allowing teams to more granularly define their data based on their domain’s needs and reduce unnecessary impact across domains.
+The Avo tracking plan has tools to provide this flexibility, allowing stakeholder teams to more granularly define their data based on their needs and reduce unnecessary impact across other stakeholder teams.
 
 ### Event-specific property constraints
 
@@ -68,10 +68,14 @@ That way, you can define variant-specific properties, property presence and valu
 
 [Learn how to create Event Variants](/data-design/avo-tracking-plan/event-variants#using-event-variants)
 
-## Aligning on cross-domain changes
+## Aligning on cross-stakeholder changes
 
-In cases where a cross-domain change is required, the visibility of the impacted domains allows you to understand who you will need to loop in to align on the suggested changes, where these changes will need to be implemented across your organization and by who.
+In cases where a cross-stakeholder change is required, the visibility of the impacted stakeholder teams allows you to understand who you will need to loop in to align on the suggested changes, where these changes will need to be implemented across your organization and by who.
+From the impacted stakeholders indicator, you see a preview of the members of the stakeholder team. 
 
-From the impacted stakeholders indicator, you see a preview of the members of the domain. We recommend adding a representative from the domain as branch collaborators and @-mentioning them in context of the changes that apply to them. This lets you keep track of who needs to be aware of the changes and see whether they have acknowledged them.
+On the Enterprise plan, impacted owners (alpha) are automatically added as required reviewers.
+Other stakeholder teams, including impacted owners on Team or Free plans, can also be added as reviewers manually.
 
-![Changes impacting domains that you're not a part of](/images/domains/impacted-stakeholders-popup.png)
+When a stakeholder team is assigned as a reviewer—either manually or automatically—a random team member with approval privileges will be assigned to review and approve on the team’s behalf.
+
+![Changes impacting stakeholders that you're not a part of](/images/domains/impacted-stakeholders-popup.png)

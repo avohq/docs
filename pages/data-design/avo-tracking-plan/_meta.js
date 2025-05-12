@@ -4,7 +4,7 @@ export default {
   "properties": "Properties",
   "metrics": "Metrics",
   "define-sources-and-destinations": "Sources",
-  "stakeholder-domains": "Stakeholder domains",
+  "stakeholder-domains": "Stakeholders",
   "implementation-status": "Implementation status",
   "workbench": "Workbench",
   "event-variants": "Event variants",
