@@ -1,5 +1,5 @@
 export default {
   "members": "Members and roles",
-  "domains": "Managing domains",
+  "domains": "Managing stakeholder",
   "authentication": "Authentication methods"
 };

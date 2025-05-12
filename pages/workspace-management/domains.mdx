@@ -1,45 +1,90 @@
 import PageLink from '../../components/PageLink';
 
-# Managing Domains
+# Managing Stakeholder Teams
 
-Domains give you a clear overview of areas of responsibility and ownership within your schema, by mapping out which domains are stakeholders of each event (including [event variants](/data-design/avo-tracking-plan/event-variants)) in your tracking plan and which users belong to those domains.
+Defining stakeholder teams in Avo is a key step toward more organized, scalable data management, especially in larger workspaces with multiple teams. 
+It enables your entire organization to operate within a single namespace, sharing data structures and working towards more consolidated tracking, while ensuring that the entities of your organization can operate comfortably without stepping on each-others’ toes.
 
-Defining domains in Avo is a key step toward more organized, scalable data management, especially in larger workspaces with multiple teams. It enables your entire organization to operate within a single namespace, sharing data structures and working towards more consolidated tracking, while ensuring that the entities of your organization can operate comfortably without stepping on each-others’ toes.
-
-## What is a domain?
-
-A domain refers to a certain function or area within your organization. It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Marketing, Sales, Finance, etc.). 
-
-Domains have different data needs and they need to be able to influence what data they get access to. But they have different access to the ability to generate the data they need. For instance: the finance team will need the product team to generate events related to the user experience so they can measure retention to predict financial outcomes. 
-
-![Schematics of tracking plan in Avo broken down into a few example domains](/images/domains/domains.png)
-
-By documenting domains as stakeholders on the events in your tracking plan, anyone is able to understand who is relying on which events and who to loop in when changes are made or if an issue comes up.
+By documenting stakeholders and owners on the events in your tracking plan, anyone is able to understand who is relying on which events and who to loop in when changes are made or if an issue comes up.
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
-  title="Stakeholder domains"
-  description="Why and how to assign domains as stakeholders on events"
+  title="Stakeholder teams"
+  description="What are stakeholder teams and how do they work"
   href="/data-design/avo-tracking-plan/stakeholder-domains"
 />
 
-## Viewing and managing Domains
+## Creating a Stakeholder team
 
-To see and manage your domains in Avo, navigate to your workspace settings and click to the tab labeled “Domains”. From there you can navigate to a view for each domain in your workspace
+To see and manage your stakeholder teams in Avo, navigate to your workspace settings and click to the tab labeled “Stakeholders”.
+From there you can navigate to a view each stakeholder team in your workspace
 
-![Domain settings](/images/domains/domain-details.png)
+![Screenshot of the stakeholder team section in the workspace settings modal where you can create a new stakeholder](/images/domains/creating-a-stakeholder-team.png)
 
-In the view for each domain you will see:
+Workspace admins can create new stakeholder teams by clicking on Create Stakeholder.
+Give the stakeholder team a name and assign a stakeholder lead.
+Click create, and then the stakeholder team has been created.
 
-1. **The domain team:**
-The users in your workspace that have been assigned to the domain. One workspace member can be a part of one or multiple domain teams.
+## Managing stakeholder teams
 
-1. **The domain events:**
-The events where this domain has been added as a stakeholder, indicating that the domain depends on and/or is responsible for those events.
+Once created, the stakeholder lead in addition to workspace admins can start setting up the stakeholder team.
+Stakeholder teams are managed in Stakeholder Team details accessible via the Stakeholders tab in workspace settings.
 
-Within Avo, this means that
-- The domain is visible as a stakeholder in the events table and events details view in the tracking plan.
-- When users are suggesting changes to events where the domain is a stakeholder, this will be surfaced in the branch header.
+### Adding stakeholder team members
+
+Under the “Team” section, click “Manage” which will open a modal where you can search for members in your workspace and add them to the stakeholder team.
+
+![Adding stakeholder team members](/images/domains/manage-members.png)
+
+### Adding stakeholder events
+
+Events can be added to stakeholder teams from the stakeholder details and event details.
+
+**Stakeholder details**
+1. Click “+ Add” in the stakeholder events section
+1. Select the events and variants from your tracking plan where you assign the stakeholder team as a stakeholder.
+        You can filter events by category or tag to make it easier to find relevant events. 
+1. Click “Add” to finish adding the selected items to your stakeholder team
+
+![Screenshot of a modal to add events to a stakeholder team](/images/domains/add-events-to-domain.png)
+
+**Event details**
+
+1. Go to the event or variant and scroll to the **Stakeholders** section in the event details.
+2. Click **Add Stakeholder**.
+3. Select the team you want to assign.
+
+### Setting event ownership
+
+Stakeholder teams can claim ownership of events attached to their team from the stakeholder details and event details.
+When there is already an owner, a workspace admin or someone from the owner team needs to first remove ownership, before another team can claim ownership.
+
+**Stakeholder details**
+
+In the stakeholder event list, click "Assign to this team" on the stakeholder event you wish to own.
+
+![Screenshot of a modal to add events to a stakeholder team](/images/domains/add-events-to-domain.png)
+
+**Event details**
+
+In the **Stakeholders** section, click the Stakeholder Name you'd like to own this event and click "Assign as owner".
+
+![Screenshot of a modal to add stakeholder team to an event](/images/domains/event-add-stakeholder-domain.png)
+
+### Who can create and manage stakeholder teams
+Workspace admins alone can create stakeholder teams and assign stakeholder leads. They can also manage any stakeholder team.
+Stakeholder leads can assign the "Can approve" privilege to stakeholder team members.
+Any stakeholder team member can add members and items to their own stakeholder team.
+
+|                                      | Stakeholder members | Stakeholder leads | Workspace admins |
+| ------------------------------------ | ------------------ | ----------------- | ---------------- |
+| Create stakeholder teams             |                    |                   | ✅                |
+| Assign stakeholder leads             |                    |                   | ✅                |
+| Add members to any stakeholder team  |                    |                   | ✅                |
+| Add items to any stakeholder team    |                    |                   | ✅                |
+| Assign "Can approve" privilege       |                    | ✅                 | ✅                |
+| Add members to own stakeholder teams | ✅                  | ✅                 | ✅                |
+| Add item to own stakeholder teams    | ✅                  | ✅                 | ✅                |
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
@@ -47,33 +92,3 @@ Within Avo, this means that
   description="Managing changes impacting multiple stakeholders"
   href="/data-design/guides/managing-changes-impacting-multiple-stakeholders"
 />
-
-
-### Creating a Domain
-
-To create a new domain, click on Create Domain and give it a name.
-
-![Screenshot of the domains section in the workspace settings modal where you can create a new domain](/images/domains/creating-a-domain.png)
-
-### Adding domain members
-
-Under the “Team” section, click “Manage” which will open a modal where you can search for members in your workspace and add them to the domain.
-
-### Assigning stakeholdership of events and event variants
-
-From this view you can assign stakeholdership of multiple events and event variants in your tracking plan to the domain
-
-1. Click “+ Add” 
-1. Select the events and variants from your tracking plan where you assign the domain as a stakeholder.
-        You can filter events by category or tag to make it easier to find relevant events. 
-1. Click “Add” to finish adding the selected items to your domain
-
-![Screenshot of a modal to add events to a domain](/images/domains/add-events-to-domain.png)
-
-You can also add the domain as a stakeholder [directly from your tracking plan](/data-design/avo-tracking-plan/stakeholder-domains).
-
-#### Who can create and manage domains?
-
-**Creating domains:** Workspace admins are able to create a new domain and add its first member(s).
-
-**Managing domains:** Once set up, members of the domain can add new members and mark the domain as a stakeholder on events in the tracking plan. Workspace admins can also manage all domains in the workspace.
