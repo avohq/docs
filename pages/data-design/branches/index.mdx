@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # Quickstart: Branches
 
 _Seamlessly work together on multiple tracking plan updates using branches_
@@ -10,7 +12,7 @@ We highly recommend always creating a branch first before making changes to the 
 
 ### Creating a branch
 
-To create a new branch, first make sure you are on the main branch. Click the branch name in the left side navigation bar and then click the “Create Branch” button.
+To create a new branch, first make sure you are on the main branch. Click the branch name in the left side navigation bar and then click the "Create Branch" button.
 
 ![Create branch](/images/data-design/quickstart/create-branch.png)
 
@@ -21,6 +23,10 @@ When you've suggested changes to your tracking, mark the branch as ready for rev
 ![Ready for review](/images/workflow/2.review/ready-for-review.png)
 
 We recommend you set up Slack notifications for added visibility into tracking plan changes your team is making. You will also receive daily reminders of branches pending review.
+
+<Callout type="info" emoji="🔒">
+When a branch is marked as **Ready for Review** (or later), it is locked for editing if your workspace has Protected main branch enabled. To make further changes, revert the branch to **Draft**—this will remove any existing approvals.
+</Callout>
 
 ### Review branch changes
 
@@ -36,7 +42,7 @@ Like in git, we recommend against creating big branches with a backlog of events
 
 ### Deleting a branch
 
-Open the branch you want to delete, click the triple-dot in the top right corner and click “delete branch”.
+Open the branch you want to delete, click the triple-dot in the top right corner and click "delete branch".
 
 ![Opening a branch](/images/delete-branch.png)
 
