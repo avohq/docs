@@ -241,6 +241,21 @@ If you have event tracking in web workers, we recommend to set up a listener in 
 
 This approach will allow you to use the shared batching and sessions across all web workers and the main thread.
 
+#### 5. Controlling the network timeout
+
+```js
+setNetworkTimeout(newNetworkTimeout: number): void;
+
+getNetworkTimeout(): number;
+```
+
+Enables manual control over the network timeout. The default network timeout is 2 seconds.
+
+> #### Parameters:
+>
+> - `number newNetworkTimeout` - sets network timeout in milliseconds.
+
+
 ## GTM and CDPs
 
 Find our guides to connect Inspector through the GTM or a CDP below:
