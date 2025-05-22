@@ -58,6 +58,8 @@ To make sure no one accidentally makes changes directly on the main branch and t
 
 - Only admins can make changes directly on the main branch
 - Only admins can merge branches that haven't been approved by a reviewer (editor or admin)
+- Branches marked as **Ready for Review**, **Changes Requested**, or **Approved** are locked and cannot be edited. To continue making changes, you must revert the branch back to **Draft** status, which will remove any existing approvals. Admins can bypass this lock if needed.
+
 
 Enabling protected main branch is a prerequisite for using require admin approval and require multiple approvals.
 
