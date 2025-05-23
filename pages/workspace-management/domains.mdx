@@ -30,6 +30,17 @@ Click create, and then the stakeholder team has been created.
 Once created, the stakeholder lead in addition to workspace admins can start setting up the stakeholder team.
 Stakeholder teams are managed in Stakeholder Team details accessible via the Stakeholders tab in workspace settings.
 
+### Stakeholder team settings
+
+During the alpha, all stakeholder teams behave the same, so there are no stakeholder specific settings yet.
+Currently, there is one setting available for workspaces on the enterprise plan in the General tab of Workspace Settings.
+There you can toggle on "Require reviews from owning stakeholders". 
+
+![The setting for requiring review for impacted owners](/images/domains/required-review-setting.png)
+
+That means that each stakeholder team that owns an event that is impacted by branch changes, will be automatically added as a required reviewer to the branch.
+The branch is not considered approved – and can not be merged – until a member with approval privileges from each impacted owner team has approved the branch.
+
 ### Adding stakeholder team members
 
 Under the “Team” section, click “Manage” which will open a modal where you can search for members in your workspace and add them to the stakeholder team.
