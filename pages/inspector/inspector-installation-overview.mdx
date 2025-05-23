@@ -4,7 +4,7 @@ import PageLink, { TwoCol } from '../../components/PageLink';
 
 There are a few ways to install Inspector to add observability to your events, depending on how you send your events from your product already as well as your preferences. Below is an overview of all the installation methods available.
 
-## Install Inspector in your CDP
+## Install Inspector through your CDP
 
 If you send your events through a CDP (Customer Data Platform) you can configure the CDP to route the event metadata to the Inspector by setting up an Avo Inspector destination.
 
@@ -37,6 +37,19 @@ Learn how to route event to Inspector from:
     href="/inspector/connect-inspector-to-posthog"
   />
 </TwoCol>
+
+## Install via Adobe Tags (Adobe Experience Platform)
+
+If you're using Adobe Tags (part of Adobe Experience Platform Data Collection), you can install the Avo Inspector using a tag configuration. This lets you include the Inspector snippet without modifying your website’s codebase directly. You'll create a rule within Adobe Tags that injects the Avo Inspector snippet. Once deployed, Inspector will automatically begin capturing events for validation.
+
+Step-by-step guide to [installing Inspector with Adobe Tags](/inspector/connect-inspector-to-adobe-tag-extension).
+
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector GTM Integration"
+    description="How to connect Inspector through Adobe Tag Extesion"
+    href="/inspector/connect-inspector-to-adobe-tag-extension"
+  />
 
 ## Install Inspector via GTM
 
