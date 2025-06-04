@@ -183,8 +183,10 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 | Event Variant Name                                | To import event variants, provide the event variant suffix here. When provided, all following properties will be imported as event variant properties. | Any string              | Mobile                |
 | Pinned Value                                      | The pinned value of the property on this event                                                                                                         | Any string              | iOS                   |
 | Event Name Mapping: \<insert destination name>    | The name of the event as it is sent to the destination                                                                                                 | Any string              | Conversion            |
-| Property Name Mapping: \<insert destination name> | The name of the property as it is sent to the destination                                                                                              | Any string              | Revenue               |
 | Stakeholder Domains                               | The domains that should be attached as stakeholders to the event                                                                                       | Comma separated strings | Growth, Checkout Team |
+| Property Name Mapping: \<insert destination name> | The name of the property as it is sent to the destination                                                                                              | Any string              | Revenue               |
+| Property Regex                                     | Regex validation for the property value                                                                                                             | Any regex              | \d+                   |
+| Property Regex Sample String                       | A sample string that matches the regex                                                                                                             | Any string              | 1234567890              |
 
 ### Amplitude Taxonomy Template
 
