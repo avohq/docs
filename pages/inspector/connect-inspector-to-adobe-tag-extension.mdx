@@ -6,7 +6,7 @@ import { Callout } from 'nextra/components';
 
 The **Avo Inspector Adobe Tags Extension** allows you to monitor and validate your Adobe data by sending only data schemas (no personal data) to **Avo Inspector**. This helps ensure data consistency and catch schema violations in real time.
 
-<Callout type="info" emoji="💡">
+<Callout type="info">
   Currently, we only support Web tag extensions for Adobe.
 </Callout>
 
@@ -22,7 +22,7 @@ The **Avo Inspector Adobe Tags Extension** allows you to monitor and validate yo
 
 - [Avo Inspector API Key](https://www.avo.app/docs/data-design/avo-tracking-plan/define-sources-and-destinations#api-key)
 - One of the following Adobe integrations:
-  - Adobe Client Data Layer Extension, OR
+  - Adobe Client Data Layer Extension
   - Adobe Experience Platform Web SDK with XDM schemas
 
 ![Get API key](/images/inspector/copy-inspector-api-key.png)
@@ -31,10 +31,21 @@ The **Avo Inspector Adobe Tags Extension** allows you to monitor and validate yo
 
 Select the integration method that matches your Adobe implementation:
 
+<Callout type="default">
+  [**Adobe Client Data Layer
+  Integration**](#adobe-client-data-layer-integration) - Use this if you're
+  working with traditional Adobe Client Data Layer
+</Callout>
+
+<Callout type="default">
+  [**XDM (Experience Data Model)
+  Integration**](#xdm-experience-data-model-integration) - Use this if you're
+  working with Adobe Experience Platform Web SDK and XDM schemas
+</Callout>
+
 ---
 
-<details>
-<summary><h2 style="display: inline; cursor: pointer;">Adobe Client Data Layer Integration</h2></summary>
+## Adobe Client Data Layer Integration
 
 ### Installation
 
@@ -121,7 +132,7 @@ If you receive events that are not defined in your tracking plan, the Inspector 
 - Ensure event prefixes are not blocking schema extraction.
 - If the **Avo inspector tag Extension** is set to `dev` environment, the extension will be logging to the console to help you debug.
 
-<Callout type="info" emoji="💡">
+<Callout type="info">
   The Extension will do no logging if the environment is set to `prod`.
 </Callout>
 
@@ -131,12 +142,9 @@ If you receive events that are not defined in your tracking plan, the Inspector 
 - Check the **API key** and **environment** settings.
 - Look at network requests (`F12 → Network`) to see what's being sent.
 
-</details>
-
 ---
 
-<details>
-<summary><h2 style="display: inline; cursor: pointer;">XDM (Experience Data Model) Integration</h2></summary>
+## XDM (Experience Data Model) Integration
 
 ### What is XDM Integration?
 
@@ -419,8 +427,6 @@ Look for these log messages in your browser console:
 #### 3. Check Network Requests
 
 Monitor network requests to `https://api.avo.app/inspector/v1/track` to see the data being sent to Avo Inspector.
-
-</details>
 
 ---
 
