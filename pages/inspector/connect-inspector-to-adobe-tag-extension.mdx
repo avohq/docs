@@ -251,7 +251,7 @@ Configure how XDM data should be processed and sent to Avo Inspector:
 - `search` - Search-related data
 - `identityMap` - Identity information
 
-#### 4️⃣ Save and Publish
+#### Save and Publish
 
 1. Click **Save Rule**
 2. **Publish your changes** in Adobe Tags
@@ -259,7 +259,7 @@ Configure how XDM data should be processed and sent to Avo Inspector:
 
 ### How XDM Processing Works
 
-#### 1️⃣ XDM Event Capture
+#### XDM Event Capture
 
 When an XDM event is triggered through the Adobe Web SDK, your beforeSend callback captures it:
 
@@ -294,7 +294,7 @@ The extension processes XDM data by:
 3. **Automatically promoting ALL tenant properties** to top-level
 4. **Converting to Avo Inspector format**
 
-#### 3️⃣ Processed Event Sent to Avo Inspector
+#### Processed Event Sent to Avo Inspector
 
 ```json
 {
@@ -321,7 +321,7 @@ The extension processes XDM data by:
 
 #### XDM Events Not Being Captured?
 
-✔️ **Check Web SDK beforeSend configuration** - ensure the custom event dispatch code is properly added:
+**Check Web SDK beforeSend configuration** - ensure the custom event dispatch code is properly added:
 
 ```javascript
 // This should be in your Web SDK beforeSend callback
@@ -334,9 +334,9 @@ if (content?.xdm) {
 }
 ```
 
-✔️ **Verify XDM rule is active** - check that your XDM rule is published and active in Adobe Tags.
+**Verify XDM rule is active** - check that your XDM rule is published and active in Adobe Tags.
 
-✔️ **Test XDM data structure** - ensure your XDM data has an `eventType` field:
+**Test XDM data structure** - ensure your XDM data has an `eventType` field:
 
 ```javascript
 // XDM data should include eventType
@@ -347,9 +347,9 @@ if (content?.xdm) {
 }
 ```
 
-✔️ **Check tenant ID configuration** - verify your tenant ID matches your XDM schema namespace.
+**Check tenant ID configuration** - verify your tenant ID matches your XDM schema namespace.
 
-✔️ **Look for console logs** - the extension logs XDM processing details when environment is set to `dev`:
+**Look for console logs** - the extension logs XDM processing details when environment is set to `dev`:
 
 ```
 "Dispatching to inspector listener" // From Web SDK beforeSend
@@ -361,11 +361,11 @@ if (content?.xdm) {
 
 #### XDM Fields Not Being Extracted?
 
-✔️ **Check field configuration** - ensure the XDM fields you want are listed in the action configuration.
+**Check field configuration** - ensure the XDM fields you want are listed in the action configuration.
 
-✔️ **Verify field names** - XDM field names are case-sensitive and must match exactly.
+**Verify field names** - XDM field names are case-sensitive and must match exactly.
 
-✔️ **Tenant properties missing?** - Remember that tenant properties are extracted automatically; they don't need to be in the XDM fields list.
+**Tenant properties missing?** - Remember that tenant properties are extracted automatically; they don't need to be in the XDM fields list.
 
 #### Common XDM Issues:
 
