@@ -86,19 +86,14 @@ At least one approval from an admin or editor is required before a branch can be
 
 At least one admin approval is required before a branch can be merged. Editor approvals alone won't be sufficient. This setting is primarily used by organizations with central data teams that want oversight over all tracking plan changes, even when individual product teams own specific events, variants and properties.
 
-**Recommended alternative**: Instead of requiring admin approval for all changes, create a stakeholder team for your central data team and make them a stakeholder in all events they want to review. Configure their stakeholder-specific settings to require their review for items they are stakeholders in. This approach provides:
+**Recommended alternative**: Instead of requiring admin approval for all changes, create a stakeholder team for your central data team and make them a stakeholder in items they want to review. Configure their [stakeholder-specific settings](/workspace-management/domains#stakeholder-team-settings) to require their review for impacted items. This provides the same oversight capability while preserving team ownership and offering more granular control.
 
-- **Same oversight capability** - Central data team can review all changes they care about
-- **Preserves ownership** - Product teams maintain ownership of their events
-- **Granular control** - Central data team can choose which events to be stakeholders in
-- **Better notifications** - Targeted notifications instead of reviewing every single change
-- **Flexible governance** - Easy to adjust review requirements without changing workspace settings
-
-**Example workflow**: 
-1. Product teams own events related to their features
-2. Central data team is added as a stakeholder to events they want oversight on
-3. Central data team's stakeholder settings require their approval for stakeholder items
-4. Both product team (as owner) and central data team (as stakeholder) become required reviewers
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Managing Stakeholder Teams"
+  description="Learn how to configure stakeholder team settings and approval workflows"
+  href="/workspace-management/domains"
+/>
 
 To enable this legacy configuration, click the settings wheel in your workspace, in Workspace settings go into the General tab and select "Admin" under "Who needs to approve?". Note that "Protected main branch" must be enabled first.
 
