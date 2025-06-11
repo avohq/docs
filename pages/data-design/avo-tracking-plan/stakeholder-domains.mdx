@@ -11,7 +11,7 @@ Each stakeholder team has different data needs and they need to be able to influ
 But they have different access to the ability to generate the data they need.
 For instance: the finance team will need the product team to generate events related to the user experience so they can measure retention to predict financial outcomes. 
 
-By documenting stakeholders and owners (alpha) on the events in your tracking plan, anyone is able to understand who is relying on which events and who to loop in when changes are made or if an issue comes up.
+By documenting stakeholders and owners on the events in your tracking plan, anyone is able to understand who is relying on which events and who to loop in when changes are made or if an issue comes up.
 
 This structure is especially valuable for large organizations managing a shared schema registry.  
 It clarifies which teams are responsible for which parts of the tracking plan—and, more importantly, streamlines workflows when changes are proposed to shared data structures.
@@ -33,7 +33,7 @@ A Stakeholder Team consists of:
 
 These are the individuals who share expertise in the area the team represents. One workspace member can be a part of one or multiple stakeholder teams.
 
-**Roles and privileges** (alpha):
+**Roles and privileges**:
 - **Lead**: Each Stakeholder Team must have a Lead that is its primary contact and the person ultimately responsible for the tracking plan items tied to the team. This role doesn't need to mirror your org chart.
 - **Member**: All other Stakeholder Team participants.
 - **Can approve**: Members who are allowed to approve branches on behalf of the team.
@@ -44,20 +44,24 @@ These are the individuals who share expertise in the area the team represents. O
 
 ### Stakeholder Items
 
-These are the events and variants relevant to the team’s area of ownership or dependency.
+These are the events and variants relevant to the team's area of ownership or dependency.
 
 If a team is assigned as a stakeholder:
-- It’s clear who relies on which events.
-- It’s easy to know who to contact when questions or issues arise.
+- It's clear who relies on which events.
+- It's easy to know who to contact when questions or issues arise.
 - Everyone can see who should review proposed changes to shared structures.
 
 When changes are made to an event that a stakeholder team is assigned to:
-- An [indicator shows which teams will be impacted](/data-design/guides/managing-changes-impacting-multiple-stakeholders), helping you avoid unwanted changes and loop in the right reviewers.
-- *(Coming soon)*: A Slack notification is sent to the team channel when a branch contains changes affecting them.
 
-If the team is also the **owner** (alpha), and the workspace is on the enterprise plan, the impacted owners are:
-- Automatically added as a **required reviewer** on the branch.  
-  → The branch can't be merged until all impacted owners have approved.
+**All plans:**
+- An [indicator shows how many teams will be impacted](/data-design/guides/managing-changes-impacting-multiple-stakeholders), helping you see that your changes impact other stakeholder teams
+
+**Team plan and above:**
+- An [overview of which specific teams will be impacted](/data-design/guides/managing-changes-impacting-multiple-stakeholders), helping you avoid unwanted changes and manually add impacted stakeholders as reviewers
+- Slack notifications can be sent to stakeholder team channels based on their [configured settings](/workspace-management/domains#stakeholder-team-settings) - see [workspace notifications](/data-design/branches/workspace-notifications) for setup details
+
+**Enterprise plan:**
+- Stakeholder teams can be automatically added as required reviewers based on their [configured settings](/workspace-management/domains#stakeholder-team-settings), meaning branches cannot be merged without their approval
 
 ![Stakeholder items](/images/domains/stakeholder-events.png)
 
@@ -65,12 +69,12 @@ If the team is also the **owner** (alpha), and the workspace is on the enterpris
 
 ## Stakeholders in the tracking plan
 
-In the Events table, you’ll see a **Stakeholders** column that shows which teams are stakeholders in each event.  
+In the Events table, you'll see a **Stakeholders** column that shows which teams are stakeholders in each event.  
 You can filter the table by stakeholder team and share the filtered view to help each team focus on events relevant to them.
 
 ![Avo events page with stakeholder filters applied](/images/domains/events-domain-filter.png)
 
-In each event’s detail view, you’ll see which teams are stakeholders and which one owns the item.  
+In each event's detail view, you'll see which teams are stakeholders and which one owns the item.  
 Clicking a team name opens a preview where it's possible to:
 - See stakeholder team members
 - Remove ownership if it's a stakeholder owned event

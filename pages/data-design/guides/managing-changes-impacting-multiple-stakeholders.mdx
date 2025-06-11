@@ -3,7 +3,7 @@ import PageLink from '../../../components/PageLink';
 
 # Managing changes impacting multiple stakeholders
 
-When a large organization is sharing a single tracking plan, it’s not unlikely that changes to the tracking plan will impact multiple [stakeholder teams](/images/domains/impacted-stakeholders-in-branch-bar.png) within your organization. To prevent users from unknowingly making changes that may disrupt the events other teams rely on, Avo offers tools to surface this potential impact and mitigate it.
+When a large organization is sharing a single tracking plan, it's not unlikely that changes to the tracking plan will impact multiple [stakeholder teams](/images/domains/impacted-stakeholders-in-branch-bar.png) within your organization. To prevent users from unknowingly making changes that may disrupt the events other teams rely on, Avo offers tools to surface this potential impact and mitigate it.
 
 <Callout type="info" emoji="💡">
   A stakeholder team refers to a certain function or area within your organization. It could be a product area (Search, Checkout, etc), an entire app for specific personas (Drivers, Riders, etc) or a business function independent of the product (Marketing, Sales, Finance, etc.). [Learn more](/data-design/avo-tracking-plan/stakeholder-domains)
@@ -20,7 +20,7 @@ In Avo you can assign stakeholder teams as stakeholders on events and event vari
 
 ## Impacted stakeholders 
 
-When a user in your workspace drafts changes on a branch in Avo, the “Impacted stakeholders” indicator in the branch header keeps track of how many stakeholder teams will be impacted by the suggested changes.
+When a user in your workspace drafts changes on a branch in Avo, the "Impacted stakeholders" indicator in the branch header keeps track of how many stakeholder teams will be impacted by the suggested changes.
 
 ![The Avo Branch Bar with impacted stakeholders](/images/domains/impacted-stakeholders-in-branch-bar.png)
 
@@ -37,14 +37,14 @@ When you click the indicator it will expand to show the following:
 
 ## Minimizing stakeholder impact
 
-While there are fundamental data structures that need to be consistent across multiple teams and platforms, stakeholder teams frequently need to expand on them and add nuances that don’t need to apply to every single place these events and properties are tracked.
+While there are fundamental data structures that need to be consistent across multiple teams and platforms, stakeholder teams frequently need to expand on them and add nuances that don't need to apply to every single place these events and properties are tracked.
 
 The Avo tracking plan has tools to provide this flexibility, allowing stakeholder teams to more granularly define their data based on their needs and reduce unnecessary impact across other stakeholder teams.
 
 ### Event-specific property constraints
 
 For generic properties that are sent with multiple events across your product, the constraints of the property (such as allowed values or regex) are commonly different depending on which event or variant the property is being sent with.
-Example: If a social media app is introducing a “Stories” feature. To track users commenting on stories, only the "Comment Added" event will need to include the allowed value "Story" for the "Item Type" property.
+Example: If a social media app is introducing a "Stories" feature. To track users commenting on stories, only the "Comment Added" event will need to include the allowed value "Story" for the "Item Type" property.
 
 If this allowed value is introduced to the property without specifically defining which event(s) it should apply to, this will generate a change to all events and event variants using this property in Avo – meaning all stakeholders of those events and variants will be marked as impacted by the branch changes. 
 
@@ -54,13 +54,13 @@ To avoid this, you can simply specify the new value as only applying to the even
 
 ### Event variants
 
-For events that are used in multiple places and scenarios across a product, some of these scenarios may call for the event to be sent with certain properties or property values that don’t apply to every instance of the event.
+For events that are used in multiple places and scenarios across a product, some of these scenarios may call for the event to be sent with certain properties or property values that don't apply to every instance of the event.
 
 Example:
 
-An “add_to_cart” event may be used by both the Checkout and Search teams. The Checkout team owns the event and relies on certain properties like “cart_product_origin” that must be consistent across all products.
+An "add_to_cart" event may be used by both the Checkout and Search teams. The Checkout team owns the event and relies on certain properties like "cart_product_origin" that must be consistent across all products.
 
-The Search team needs a specific variation of this event for when it’s triggered on their Search Results page. In this scenario, this event needs to be sent with the property “search_term” and the [pinned value](/data-design/guides/pinned-properties) for “cart_product_origin” should be “Search Result Page”.
+The Search team needs a specific variation of this event for when it's triggered on their Search Results page. In this scenario, this event needs to be sent with the property "search_term" and the [pinned value](/data-design/guides/pinned-properties) for "cart_product_origin" should be "Search Result Page".
 
 Event Variants provide a way to document variations of an event to account for different scenarios. Event variants inherit its definition from a base event, but you can add overrides on top of them.
 
@@ -71,11 +71,39 @@ That way, you can define variant-specific properties, property presence and valu
 ## Aligning on cross-stakeholder changes
 
 In cases where a cross-stakeholder change is required, the visibility of the impacted stakeholder teams allows you to understand who you will need to loop in to align on the suggested changes, where these changes will need to be implemented across your organization and by who.
-From the impacted stakeholders indicator, you see a preview of the members of the stakeholder team. 
+-From the impacted stakeholders indicator, you see a preview of the members of the stakeholder team. 
 
-On the Enterprise plan, impacted owners (alpha) are automatically added as required reviewers.
-Other stakeholder teams, including impacted owners on Team or Free plans, can also be added as reviewers manually.
+-On the Enterprise plan, impacted owners can be automatically added as required reviewers based on their [stakeholder settings](/workspace-management/domains#stakeholder-team-settings).
+-Other stakeholder teams, including impacted owners on the Team plan, can also be added as reviewers manually.
 
-When a stakeholder team is assigned as a reviewer—either manually or automatically—a random team member with approval privileges will be assigned to review and approve on the team’s behalf.
+### Automatic reviewer assignment
+
+Stakeholder teams can be automatically added as required reviewers when branches impact their stakeholder events. This happens through two different mechanisms:
+
+**Workspace-level requirement** (Enterprise plan):
+- When "Require approval from owning stakeholders" is enabled in workspace settings
+- All stakeholder teams that own events being modified are automatically added as required reviewers
+- Applies to all impacted owner teams regardless of their individual settings
+
+**Individual stakeholder settings**:
+- Each stakeholder team can configure how they want to be involved when impacted
+- Separate configurations for when they're owners vs stakeholders of impacted events
+- Teams can choose: automatic required reviewer assignment, Slack notifications only, or no automatic action
+
+When a stakeholder team is assigned as a reviewer—either manually or automatically—a random team member with approval privileges will be assigned to review and approve on the team's behalf.
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Managing Stakeholder Teams"
+  description="Learn how to configure stakeholder team approval settings"
+  href="/workspace-management/domains"
+/>
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Approval workflows"
+  description="Complete guide to stakeholder approval workflows"
+  href="/data-design/branches/approval-workflows"
+/>
 
 ![Changes impacting stakeholders that you're not a part of](/images/domains/impacted-stakeholders-popup.png)

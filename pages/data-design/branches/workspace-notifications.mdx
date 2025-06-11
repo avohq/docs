@@ -17,8 +17,8 @@ Keep track of branches in progress and improve visibility into your workspace ac
 - Comments:
   - New comment added
   - Examples:
-    - Solvi commented on the Account Created event on the onboarding-funnel branch: _“Should we include the role property?”
-    - Stefania commented on the authentication config property on the main branch: “Should we have auto login as a property value here when we auto login the customer from the landing page?”
+    - Solvi commented on the Account Created event on the onboarding-funnel branch: _"Should we include the role property?"
+    - Stefania commented on the authentication config property on the main branch: "Should we have auto login as a property value here when we auto login the customer from the landing page?"
 - Collaborators:
   - Collaborator added
   - Collaborator removed
@@ -43,3 +43,25 @@ Keep track of branches in progress and improve visibility into your workspace ac
    />
 
 4. Save and enjoy!
+
+## Stakeholder team notifications
+
+In addition to workspace-wide Slack notifications, individual stakeholder teams can receive targeted notifications when branches impact their stakeholder items.
+
+### Setting up stakeholder team notifications
+
+1. Navigate to **Workspace Settings** ⚙️ > **Stakeholders**
+2. Select the stakeholder team you want to configure
+3. In the **Slack notifications** section, connect a Slack channel to the team
+4. Configure notification preferences in the stakeholder team settings:
+   - **As impacted owner** - Notifications when the team owns events being modified
+   - **As impacted stakeholder** - Notifications when the team is a stakeholder in events being modified
+   - **As stakeholder reviewer** - Notifications when manually added as a reviewer
+
+### Team vs workspace notifications
+
+- **Workspace notifications** go to a single channel and cover all branch activity
+- **Stakeholder team notifications** go to team-specific channels and only notify about branches impacting that team's stakeholder events
+- Teams can receive notifications whether they're automatically added as required reviewers or choose notification-only involvement
+
+Learn more about configuring stakeholder team settings in [Managing Stakeholder Teams](/workspace-management/domains).
