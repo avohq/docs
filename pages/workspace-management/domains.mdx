@@ -39,6 +39,8 @@ Stakeholder teams can be configured with specific review and notification prefer
 
 In the General tab of Workspace Settings, there is a workspace-level setting available for workspaces on the enterprise plan: **"Require approval from owning stakeholders"**.
 
+![Workspace setting to require review from owning stakeholders](/images/workspace/settings/require-review-from-owning-stakeholders.png)
+
 When this setting is enabled:
 - Each stakeholder team that owns tracking plan items (events and event variants) impacted by branch changes will be automatically added as a required reviewer to the branch
 - The branch cannot be merged until a member with approval privileges from each impacted owner team has approved the branch
@@ -58,6 +60,8 @@ Options include:
 - **Automatically add as required reviewer** - The team will be automatically added as a required reviewer for the branch (only available when stakeholder is impacted)
 - **Notify in stakeholder Slack channel** - The team will receive Slack notifications without being required to approve
 - **Do nothing** - No automatic action is taken
+
+![Stakeholder specific settings](/images/domains/stakeholder-settings.png)
 
 To set up Slack notifications, connect a Slack channel to the stakeholder team through the "Slack notifications" section in stakeholder team settings.
 
@@ -96,40 +100,54 @@ Under the "Team" section, click "Manage" which will open a modal where you can s
 
 ![Adding stakeholder team members](/images/domains/manage-members.png)
 
-### Adding stakeholder events
+### Adding stakeholder items
 
-Events can be added to stakeholder teams from the stakeholder details and event details.
+Tracking plan items can be added to stakeholder teams from the stakeholder details and item details pages. 
 
 **Stakeholder details**
-1. Click "+ Add" in the stakeholder events section
-1. Select the events and variants from your tracking plan where you assign the stakeholder team as a stakeholder.
-        You can filter events by category or tag to make it easier to find relevant events. 
-1. Click "Add" to finish adding the selected items to your stakeholder team
+
+The stakeholder details page organizes items into two tabs:
+
+- **Events tab** - Shows events and event variants assigned to the stakeholder team
+- **Properties tab** - Shows individual properties assigned to the stakeholder team
+
+![Screenshot of a modal to add events to a stakeholder team](/images/domains/stakeholder-items.png)
+
+1. Navigate to the appropriate tab (Events or Properties) based on what you want to add
+2. Click "+ Add" in the stakeholder item header
+3. Select the items from your tracking plan where you want to assign the stakeholder team as a stakeholder:
+   - **Events tab**: Choose entire events (which includes all their variants and properties) or specific event variants
+   - **Properties tab**: Choose individual event, user, system or group properties
+   
+   You can filter events and event variants by category or tag and all items by name, to make it easier to find relevant items.
+4. Click "Add" to finish adding the selected items to your stakeholder team
 
 ![Screenshot of a modal to add events to a stakeholder team](/images/domains/add-events-to-domain.png)
 
-**Event details**
+**Item details**
 
-1. Go to the event or variant and scroll to the **Stakeholders** section in the event details.
+1. Go to the event, event variant, or property and scroll to the **Stakeholders** section in the item details.
 2. Click **Add Stakeholder**.
 3. Select the team you want to assign.
 
-### Setting event ownership
+### Setting item ownership
 
-Stakeholder teams can claim ownership of events attached to their team from the stakeholder details and event details.
+Stakeholder teams can claim ownership of tracking plan items attached to their team from the stakeholder details and item details pages.
+
 When there is already an owner, a workspace admin or someone from the owner team needs to first remove ownership, before another team can claim ownership.
 
 **Stakeholder details**
 
-In the stakeholder event list, click "Assign to this team" on the stakeholder event you wish to own.
+1. Navigate to the appropriate tab (Events or Properties) 
+2. In the stakeholder item list, click "Claim ownership" on the item you wish to own
 
-![Screenshot of a modal to add events to a stakeholder team](/images/domains/add-events-to-domain.png)
+![Screenshot of a modal to add events to a stakeholder team](/images/domains/claim-ownership.png)
 
-**Event details**
+**Item details**
 
-In the **Stakeholders** section, click the Stakeholder Name you'd like to own this event and click "Assign as owner".
+In the **Stakeholders** section, click the Stakeholder Name you'd like to own this item and click "Assign as owner".
 
-![Screenshot of a modal to add stakeholder team to an event](/images/domains/event-add-stakeholder-domain.png)
+![Screenshot of a modal to add stakeholder team to an event](/images/domains/item-detail-assign-as-owner.png)
 
 ### Who can create and manage stakeholder teams
 Workspace admins alone can create stakeholder teams and assign stakeholder leads. They can also manage any stakeholder team.

@@ -1,4 +1,5 @@
 import { Callout } from 'nextra/components';
+import PageLink from '../../../components/PageLink';
 
 # Approval workflows
 
@@ -9,7 +10,7 @@ _Increase the quality of your tracking plan with protected main branch and branc
 Building a tracking plan is a team sport. Getting feedback from your team on the changes you're making to the tracking plan helps with building alignment and keeping the plan consistent. Approval workflows are a powerful tool for the peer-review process. The typical workflow looks something like this:
 
 1. Product manager creates a branch and suggests changes to the tracking plan
-2. Product manager requests a review from a data person and a developer
+2. Product manager requests a review from a data person and a developer. This can happen automatically on the Enterprise plan ([learn more](/workspace-management/domains#stakeholder-team-settings))
 3. Data person and developer review the branch and provide feedback
 4. Reviewers might request changes to the branch
 5. Once everyone is aligned, the branch is approved
@@ -63,10 +64,11 @@ To make sure no one accidentally makes changes directly on the main branch and t
 - Only admins can merge branches that haven't been approved by a reviewer (editor or admin)
 - Branches marked as **Ready for Review**, **Changes Requested**, or **Approved** are locked and cannot be edited. To continue making changes, you must revert the branch back to **Draft** status, which will remove any existing approvals. Admins can bypass this lock if needed.
 
-
 Enabling protected main branch is a prerequisite for using the other approval workflow configurations.
 
 To enable this configuration, click the settings wheel in your workspace, in Workspace settings go into the General tab and check "Protected main branch".
+
+![Protected main branch setting](/images/workspace/settings/protected-main-branch.png)
 
 ### Who needs to approve
 
@@ -75,6 +77,8 @@ You can configure what level of user permission is required to approve branches 
 #### Admin or editor (default)
 
 At least one approval from an admin or editor is required before a branch can be merged. This is the most flexible option and works well for most teams.
+
+![Admins or editors need to approve setting checked](/images/workspace/settings/admins-or-editors-approve.png)
 
 #### Admin (legacy)
 
@@ -97,6 +101,9 @@ At least one admin approval is required before a branch can be merged. Editor ap
 
 To enable this legacy configuration, click the settings wheel in your workspace, in Workspace settings go into the General tab and select "Admin" under "Who needs to approve?". Note that "Protected main branch" must be enabled first.
 
+![Admins need to approve setting checked](/images/workspace/settings/admins-approve.png)
+
+
 ### Require approval from owning stakeholders
 
 <Callout type="info" emoji="💡">Stakeholder approval workflows are available on the enterprise plan only. See [plans and pricing](https://www.avo.app/pricing).</Callout>
@@ -111,6 +118,8 @@ When this workspace-level setting is enabled:
 
 To enable this configuration, click the settings wheel in your workspace, in Workspace settings go into the General tab and check "Require approval from owning stakeholders".
 
+![Require review from owning stakeholders checked](/images/workspace/settings/require-review-from-owning-stakeholders.png)
+
 #### Stakeholder-specific settings
 
 Individual stakeholder teams can also configure their own review and notification preferences, which apply when the workspace-level "Require approval from owning stakeholders" setting is disabled.
@@ -121,7 +130,7 @@ For each stakeholder team, you can configure separate settings for:
 - **As impacted stakeholder** - How the team is involved when they are stakeholders (but not owners) of events being modified
 
 Options include:
-- **Automatically add as required reviewer** - The team will be automatically added as a required reviewer for the branch
+- **Automatically add as required reviewer** - The team will be automatically added as a required reviewer for the branch (available on the Enterprise plan)
 - **Notify in stakeholder Slack channel** - The team will receive Slack notifications without being required to approve
 - **Do nothing** - No automatic action is taken
 
@@ -130,14 +139,6 @@ When the workspace-level "Require approval from owning stakeholders" setting is 
 </Callout>
 
 Learn more about configuring stakeholder teams and their approval settings in the [Managing Stakeholder Teams](/workspace-management/domains) documentation.
-
-## Settings hierarchy
-
-Understanding how approval settings interact is important for configuring your workflows effectively:
-
-1. **Workspace-level settings take precedence** - The "Require approval from owning stakeholders" workspace setting overrides individual stakeholder team configurations
-2. **Protected main branch is required** - Most approval workflow features require protected main branch to be enabled first
-3. **Multiple requirements combine** - If you have both admin-only approval and stakeholder approval enabled, branches need approval from both admins and relevant stakeholder teams
 
 ## What's next?
 
