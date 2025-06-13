@@ -71,16 +71,21 @@ That way, you can define variant-specific properties, property presence and valu
 ## Aligning on cross-stakeholder changes
 
 In cases where a cross-stakeholder change is required, the visibility of the impacted stakeholder teams allows you to understand who you will need to loop in to align on the suggested changes, where these changes will need to be implemented across your organization and by who.
--From the impacted stakeholders indicator, you see a preview of the members of the stakeholder team. 
+- From the impacted stakeholders indicator, you see a preview of the members of the stakeholder team. 
+- On the Enterprise plan, impacted owners can be automatically added as required reviewers based on their [stakeholder settings](/workspace-management/domains#stakeholder-team-settings).
+- Other stakeholder teams, including impacted owners on the Team plan, can also be added as reviewers manually.
 
--On the Enterprise plan, impacted owners can be automatically added as required reviewers based on their [stakeholder settings](/workspace-management/domains#stakeholder-team-settings).
--Other stakeholder teams, including impacted owners on the Team plan, can also be added as reviewers manually.
+![Changes impacting stakeholders that you're not a part of](/images/domains/impacted-stakeholders-popup.png)
 
-### Automatic reviewer assignment
+### Automatic reviewer assignment 
+
+<Callout type="info" emoji="💡">
+  Automatic reviewer assignment and required reviews from stakeholder teams is only available on the enterprise plan.
+</Callout>
 
 Stakeholder teams can be automatically added as required reviewers when branches impact their stakeholder events. This happens through two different mechanisms:
 
-**Workspace-level requirement** (Enterprise plan):
+**Workspace-level requirement**:
 - When "Require approval from owning stakeholders" is enabled in workspace settings
 - All stakeholder teams that own events being modified are automatically added as required reviewers
 - Applies to all impacted owner teams regardless of their individual settings
@@ -106,4 +111,4 @@ When a stakeholder team is assigned as a reviewer—either manually or automatic
   href="/data-design/branches/approval-workflows"
 />
 
-![Changes impacting stakeholders that you're not a part of](/images/domains/impacted-stakeholders-popup.png)
+
