@@ -9,7 +9,9 @@ import { Callout } from 'nextra/components';
 
 _Role: Product, Data, Engineering._
 
-Once you have drafted changes to your tracking plan we recommend requesting a review from your teammates and impacted stakeholders.
+Once you have drafted changes to your tracking plan we recommend requesting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders) to review your suggested changes. 
+To do this, click "View changes" in the branch header to navigate to the review screen.
+Stakeholder teams can be [configured to be automatically added as required reviewers](/workspace-management/domains#individual-stakeholder-team-settings) on the enterprise plan.
 
 ## Who should review?
 
@@ -27,18 +29,18 @@ We typically see three types of reviewers:
 />
 
 <Callout type="info">
-  Note that features for approval workflows and assigned reviews are only available on our paid plans. If you’re currently on the Free plan you can start a free trial today to try it out.
+  Note that features for approval workflows and assigned reviews are only available on our paid plans. If you're currently on the Free plan you can start a free trial today to try it out.
 </Callout>
 
 ## How to request a review
 
-Step 1. Navigate to the “View Changes” screen. Here you get an overview of all changes made on your branch. We recommend going over your changes and making sure they pass the branch audit before requesting a review. 
+Step 1. Navigate to the "View Changes" screen. Here you get an overview of all changes made on your branch. We recommend going over your changes and making sure they pass the branch audit before requesting a review. 
 
-Step 2. Mark the branch as “Ready for review”, by clicking the button at the top of your review screen or in the branch status section at the bottom of the screen.
+Step 2. Mark the branch as "Ready for review", by clicking the button at the top of your review screen or in the branch status section at the bottom of the screen.
 
 ![Ready for review](/images/workflow/2.review/ready-for-review.png)
 
-Step 3. Assign one or more reviewers. Click “Assign reviewer” and find the person or [stakeholder team](/data-design/avo-tracking-plan/stakeholder-domains) (alpha) you want to review your branch. The reviewer will receive an email to let them know, and if you have the Avo Slack integration set up for your workspace, they will be @ mentioned in a Slack notification.
+Step 3. Assign one or more reviewers. Click "Assign reviewer" and find the person or [stakeholder team](/data-design/avo-tracking-plan/stakeholder-domains) you want to review your branch. The reviewer will receive an email to let them know, and if you have the Avo Slack integration set up for your workspace, they will be @ mentioned in a Slack notification.
 
 ![Assign reviewer](/images/workflow/2.review/assign-reviewer.png)
 
@@ -73,12 +75,24 @@ The role of the reviewer(s) is to make sure that the changes
 
 - Fit your data needs
 - Match the data design standards and conventions of your organization
-- Don’t negatively impact other teams using the data you are changing
+- Don't negatively impact other teams using the data you are changing
 - Are feasible for implementation
 
-The "view changes" screen in Avo summarizes the changes that have been suggested on the branch.
+The "view changes" screen in Avo summarizes the changes that have been suggested on the branch. You can use the filtering options to focus on the most relevant changes for your review.
 
-###Commenting on changes
+### Filtering changes
+
+When reviewing branches that have undergone multiple rounds of changes, you can filter the changes view to focus only on recent modifications. This prevents reviewers from having to re-review changes they've already seen.
+
+Use the "Show changes since" dropdown to view changes since:
+
+- **Branch was created** (default) - All changes on the branch
+- **Your last review** - Only changes made since you last reviewed 
+- **Specific actions** - Changes since branch status updates, tracking plan updates and comments
+
+![View changes since](/images/workflow/2.review/view-changes-since.png)
+
+### Commenting on changes
 
 From the "view changes screen", you can comment on every item that has been introduced or changed on your branch, ask questions and suggest changes.
 
@@ -92,11 +106,11 @@ _Example: Adding comment to the overall branch_
 
 ### Approving the branch or requesting changes
 
-When you are done with the review, if your workspace has [approval workflows](/data-design/branches/approval-workflows) enabled, you can change the branch status to “Request changes” or “Approve”.
+When you are done with the review, if your workspace has [approval workflows](/data-design/branches/approval-workflows) enabled, you can change the branch status to "Request changes" or "Approve".
 
 ![Adding comment](/images/workflow/2.review/approve-branch.png)
 
-## What’s next?
+## What's next?
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
