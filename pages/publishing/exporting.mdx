@@ -14,6 +14,33 @@ To export your tracking plan Schema:
 
    ![](/images/workspace/export-modal.png)
 
+## Programmatic export with the Export API
+
+Use the **Export API** to programmatically export your tracking plan as JSON Schema from any branch. This is ideal for automation, CI/CD pipelines, or integrating with external tools.
+
+### Quick Start
+
+```sh
+curl -H "authorization: Basic <Base64 encoded token>" \
+  -X GET https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
+```
+
+### Key Features
+
+- **Export any branch**: Export from main or feature branches
+- **JSON Schema format**: Structured data perfect for automation
+- **Rate limited**: 1 request per second per service account
+- **Gzipped responses**: For faster data delivery on large tracking plans
+
+### Use Cases
+
+- **Automated documentation**: Generate documentation from your tracking plan
+- **Data pipeline integration**: Sync tracking plan changes with downstream systems
+- **Quality assurance**: Validate implementations against the latest schema
+- **Custom tooling**: Build internal tools that work with your tracking plan data
+
+**[View complete Export API documentation](/reference/public-api/export-tracking-plan)** for authentication, parameters, and response examples.
+
 ## Automated Webhook export
 
 [Publishing integrations](/publishing/publishing/overview) can be used for exporting your tracking plan, either one of, or a recurring
