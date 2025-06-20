@@ -10,11 +10,60 @@ In Avo, your events live under the Events section of the Tracking plan and can b
 
 ## Creating events
 
-New events can be created from the Events section by clicking the "New Event" button at the top of the view, or by hitting "C" on your keyboard and selecting "Event" from the command pallette. They can also be created in context from a [Metric](/data-design/avo-tracking-plan/metrics) or a [Property](/data-design/avo-tracking-plan/metrics).
+Avo provides several ways to create events efficiently, depending on your workflow needs.
 
-[Tracking Plan Guide: How to Pick Your Events and Properties](https://www.avo.app/blog/tracking-plan-guide-how-to-pick-your-events-and-properties)
+<Callout type="info" emoji="📚">
+**Getting Started Resources**
+- **What to track**: [Tracking Plan Guide: How to Pick Your Events and Properties](https://www.avo.app/blog/tracking-plan-guide-how-to-pick-your-events-and-properties)<br/>
+- **Step-by-step tutorial**: [Data design deep dive](/data-design/start-data-design) for creating events on branches
+</Callout>
 
-<Callout type="info" emoji="💡">When creating a new event you will receive guidance on how to name the event in a way that adheres to the [naming convention: How to Pick Your Events and Properties](/audit/advanced-event-naming-rules) defined for your workspace.</Callout>
+<Callout type="info" emoji="💡">When creating a new event you will receive guidance on how to name the event in a way that adheres to the [naming convention](/audit/advanced-event-naming-rules) defined for your workspace.</Callout>
+
+### Standard event creation methods
+
+- **Events view creation button**: Click the "New Event" button at the top of the Events view
+- **[Events Workbench](/data-design/avo-tracking-plan/events#workbench-quick-creation)**: Create events inline by hitting "Add new event" in the bottom line of the workbench
+- **Command palette**: Hit "C" on your keyboard and select "Event" from the command palette
+- **From metrics or properties**: Create events in context from [Metrics](/data-design/avo-tracking-plan/metrics) or [Properties](/data-design/avo-tracking-plan/metrics)
+
+### Fast event creation methods
+
+Fast creation methods are particularly useful when planning a new feature that requires multiple new events.
+
+For creating multiple events quickly, Avo offers two streamlined approaches:
+
+#### Batch creation with "Create more" toggle
+
+When creating an event from the event creation modal, enable the "Create more" toggle (or use `Ctrl+M`) to stay in the creation flow after saving your event. This allows you to:
+- Create multiple events in sequence
+- Maintain your workflow momentum when planning event structures, for example through [Metrics](/data-design/avo-tracking-plan/metrics) 
+
+#### Workbench quick creation
+
+From the workbench interface, you can create events inline:
+
+1. Click into the bottom row of the workbench where it says "Add new event"
+2. Enter your event name inline
+3. Hit Enter to create and immediately add another event
+4. Use Tab to navigate between inline creation fields
+
+### Adding context with bulk editing
+
+After creating multiple events using the fast creation methods, you can efficiently add context to all of them at once using **bulk editing**. Simply:
+
+1. Select multiple events in the events table (using checkboxes or Cmd/Ctrl+click)
+2. Use the bulk editing toolbar to add shared attributes like:
+   - **Sources**: Add the same sources to multiple events
+   - **Event Properties**: Attach common properties to multiple events
+   - **Tags**: Apply consistent tagging across events
+   - **Categories**: Organize events into the same category
+   - **Stakeholders**: Assign stakeholders to multiple events at once
+
+<Callout type="info" emoji="⚡">
+**Efficient Workflow Tip:**
+This two-step approach (fast creation → bulk editing) is particularly effective when planning new features or conducting analytics workshops where you first capture all the events you need, then systematically add the detailed context.
+</Callout>
 
 ## Defining events
 
@@ -22,7 +71,7 @@ In your tracking plan, an event definition will include:
 
 - A descriptive [_Event Name_](/data-design/naming-conventions#2-what-does-naming-convention-refer-to)
 - A [_Description_](/data-design/defining-descriptive-events-and-properties#events-1) with information about the event beyond what the name includes (optional but highly recommended)
- - [_Event Variants_](/data-design/avo-tracking-plan/event-variants) that include variations of the event for different scenarios (optional)
+- [_Event Variants_](/data-design/avo-tracking-plan/event-variants) that include variations of the event for different scenarios (optional)
 - [_Triggers_](/data-design/event-triggers) that describe both visually and in words all the user or system actions that trigger the event (optional but highly recommended)
 - [_Sources_](/data-design/define-sources-and-destinations#sources-where-the-data-comes-from) that the event should be sent from
 - [_Actions_](#actions) associated with the event, including properties
@@ -36,7 +85,7 @@ You can define events in several ways, depending on the scope of your changes an
 
 - **Inline Table Editing**: Properties, categories and tags can be edited directly in the table by clicking on individual cells.
 
-- **Batch Editing**: Select multiple events to apply bulk updates to shared attributes like sources, properties, and stakeholders.
+- **[Batch Editing](/data-design/avo-tracking-plan/events/adding-context-with-bulk-editing)**: Select multiple events to apply bulk updates to shared attributes like sources, properties, and stakeholders.
 
 - **Event Details Panel**: Click into an event to access and define all aspects of the event.
 
