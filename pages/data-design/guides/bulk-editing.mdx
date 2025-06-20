@@ -25,7 +25,7 @@ To start bulk editing:
 3. Once events are selected, the bulk editing toolbar will appear at the bottom of the screen
 4. Choose the attribute you want to modify from the toolbar options
 
-TODO image here
+![Bulk selecting events to edit](/images/best-practices/bulk-editing/selecting-for-bulk-editing.png)
 
 ### Available bulk editing actions
 
@@ -37,11 +37,55 @@ The bulk editing toolbar provides options to modify these shared attributes:
 - **Categories**: Add events to categories or remove them from categories
 - **Stakeholders**: Assign or remove stakeholder teams from multiple events
 
-TODO image here
+![Bulk editing actions](/images/best-practices/bulk-editing/bulk-editing-actions.png)
 
 ## Use cases for bulk editing
 
 Bulk editing is particularly valuable for several workflow scenarios. Here are common use cases with step-by-step guidance:
+
+### Planning new features with fast creation + bulk editing
+
+One of the most efficient workflows in Avo combines [fast event creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods) with bulk editing to rapidly plan and define new features.
+
+**Example scenario**: Your team is planning a new checkout flow that requires 8 new events. Rather than creating each event individually with full configuration, you can use a two-step approach.
+
+**Step 1: Fast creation to capture all event names**
+
+Use Avo's [fast creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods) to quickly capture all the events you need.
+
+**Step 2: Bulk editing to add context and configuration**
+
+Now select all your newly created events and use bulk editing to efficiently add:
+
+1. **Add shared sources**:
+   - Select all 8 checkout events
+   - Click "Source" in bulk editing toolbar → "Add Source"
+   - Add Web, iOS, and Android sources with "Implement with Codegen" enabled
+
+2. **Categorize events**:
+   - With events still selected
+   - Click "Category" → "Add to Category" 
+   - Add to "Checkout" or "E-commerce" category
+
+3. **Add stakeholders**:
+   - Click "Stakeholder" → assign to Checkout team and Product Analytics team
+
+4. **Apply consistent tagging**:
+   - Click "Tag" → add tags like "Tier 1 - Revenue" or "New Feature"
+
+5. **Add common properties** (if applicable):
+   - Click "Event Property" → add shared properties "Onboarding Step" or property bundles like "Onboarding properties"
+
+**Benefits of this workflow**:
+- **Speed**: Capture all event names in 2-3 minutes vs. 15-20 minutes creating each individually
+- **Focus**: Separate ideation (naming) from configuration (details)
+- **Consistency**: Bulk editing ensures all related events have identical setup
+- **Collaboration**: Great for workshop sessions where you brainstorm events first, then configure together
+
+<Callout type="info" emoji="⚡">
+**Workshop Tip**: This approach is particularly effective during [purpose meetings](/data-design/guides/documenting-purpose-meetings-in-avo) where stakeholders brainstorm events together. First capture all the event names everyone suggests, then systematically add the detailed context as a group.
+</Callout>
+
 
 ### Consolidating redundant categories
 
@@ -68,11 +112,7 @@ When you have multiple categories that serve the same purpose, you can efficient
    - Open the category and archive it
 7. **Repeat for other redundant categories** as needed
 
-TODO image here
-
 *This workflow ensures events are moved efficiently without losing their categorization, and prevents future use of inconsistent category names.*
-
-### Mapping out event names first and metadata second
 
 ### Updating event sources
 
@@ -138,27 +178,3 @@ Assigning stakeholders across related events helps establish clear data governan
 <Callout type="info" emoji="💡">
 **Workflow Tip**: Bulk editing pairs perfectly with Avo's [fast event creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods). Create multiple events quickly, then use bulk editing to add detailed context and configuration efficiently.
 </Callout>
-
-## Troubleshooting bulk editing
-
-### Common issues and solutions
-
-#### Selection not working as expected
-- **Issue**: Category selection includes unexpected events
-- **Solution**: Review category membership before bulk editing; some events may belong to multiple categories
-
-#### Bulk action partially failed  
-- **Issue**: Some events didn't receive the bulk change
-- **Solution**: Check individual event permissions and constraints that may prevent certain changes
-
-#### Changes affecting unintended events
-- **Issue**: Bulk edit affected more events than intended
-- **Solution**: Use branch previewing to review changes before merging; revert if needed
-
-### When not to use bulk editing
-
-While bulk editing is powerful, some scenarios require individual attention:
-
-- **Complex property constraints**: Events with unique validation rules may need individual configuration
-- **Custom name mapping**: Events with destination-specific naming requirements
-- **Stakeholder-sensitive changes**: Events owned by different teams may need individual review and approval 
