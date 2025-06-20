@@ -77,6 +77,7 @@ In your tracking plan, an event definition will include:
 - [_Actions_](#actions) associated with the event, including properties
 - [_Metrics_](/data-design/avo-tracking-plan/metrics) related to the event (optional)
 - [Stakeholders](/data-design/avo-tracking-plan/stakeholder-domains) in your organization that rely on the event
+- [Owner](/data-design/avo-tracking-plan/stakeholder-domains): which stakeholder team owns the event
 - [_Categories_](/data-design/organizing-metrics-and-events#categories) that the event is a part of (optional)
 - _Tags_ associated with the event
 - [_Name Mapping_](/data-design/name-mapping) that the event name is mapped to when sending to specific destinations
@@ -89,6 +90,42 @@ You can define events in several ways, depending on the scope of your changes an
 
 - **Event Details Panel**: Click into an event to access and define all aspects of the event.
 
+## Filtering and organizing events
+
+The Events table provides powerful filtering capabilities to help you find and focus on relevant events, especially in larger tracking plans.
+
+### Available filters
+
+- **Stakeholders**: Filter events by stakeholder teams that are assigned to them. This helps teams focus on events relevant to their domain.
+- **Owners**: Filter events by the stakeholder team that owns them. Useful for seeing events a specific team is responsible for maintaining.
+- **Categories**: Filter events by their assigned categories to see related events grouped together.
+- **Tags**: Filter events by tags to find events marked with specific labels.
+- **Sources**: Filter events by the sources they're configured to be sent from.
+- **Destinations**: Filter events by the destinations they're configured to be sent to.
+- **Property Bundles**: Filter events by the property bundles attached to them.
+- **Properties**: Filter events by specific properties they contain.
+- **Actions**: Filter events by the actions they're configured to perform (e.g., Log Event, Update User Properties, Log Revenue).
+
+### Using filters effectively
+
+**For team-focused workflows:**
+- Use the **Owners** filter to see only events your team owns and is responsible for
+- Use the **Stakeholders** filter to see events your team depends on but may not own
+- Combine stakeholder and owner filters to get a complete view of events relevant to your team
+
+**For feature-focused workflows:**
+- Use **Categories** to see all events related to a specific product area
+- Use **Tags** to filter for events related to specific features or initiatives
+- Use **Properties** to find events that include specific properties you're working with
+- Use **Property Bundles** to see events that use shared property collections
+
+**For implementation-focused workflows:**
+- Use **Actions** to find events that perform specific actions (e.g., all revenue events, all user identification events)
+- Use **Sources** to see events specific to a platform (web, mobile, etc.)
+- Use **Destinations** to see events being sent to specific analytics tools
+
+**Sharing filtered views:**
+After applying filters, you can share the filtered URL with colleagues so they see the same focused view of events.
 
 ## Sources
 

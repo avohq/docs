@@ -56,6 +56,34 @@ Click the Avo logo in the top left of your workspace to navigate to the branches
 
 ![Branches Overview](/images/branches-overview.png)
 
+#### Filtering branches
+
+The branches overview provides powerful filtering capabilities to help you focus on relevant branches, especially in workspaces with many active branches:
+
+**Available filters:**
+- **Branch Status**: Filter branches by their current status (Draft, Ready for Review, Approved, Changes Requested, etc.)
+- **Impacted Stakeholders**: Filter branches by stakeholder teams that are impacted by the branch changes
+- **Impacted Owners**: Filter branches by stakeholder teams that own events being modified on the branch
+
+**Using branch filters effectively:**
+
+**For status-based workflows:**
+- Use **Branch Status** filter to see branches at specific stages (e.g., all branches "Ready for Review" to see what needs attention)
+- Filter by "Draft" to see work in progress, or "Approved" to see branches ready for implementation
+- Combine with **Impacted Owners** to see status-specific branches affecting your team
+
+**For team-focused workflows:**
+- Use **Impacted Owners** filter to see branches that modify events your team owns and is responsible for
+- Use **Impacted Stakeholders** filter to see branches that affect events your team depends on
+- These filters help teams stay aware of changes that impact their domain without getting overwhelmed by unrelated branch activity
+
+**Combining filters for powerful workflows:**
+You can combine multiple filters to create highly targeted views. For example:
+- **Stakeholder team leads**: Filter by "Ready for Review" status AND your team as "Impacted Owners" to see all branches where your team's approval is needed. This helps identify branches your team might be blocking and ensures nothing gets stuck waiting for your review.
+
+**Sharing filtered views:**
+After applying filters, you can share the filtered URL with colleagues so they see the same focused view of branches.
+
 ## What's next?
 
 - [Approval workflows for branches](/data-design/branches/approval-workflows)
