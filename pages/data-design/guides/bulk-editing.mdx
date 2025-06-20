@@ -1,0 +1,164 @@
+---
+title: 'Bulk Editing and Use Cases'
+---
+
+import { Callout } from 'nextra/components';
+
+# Bulk Editing
+
+**Bulk editing** is a powerful workflow tool in Avo that allows you to efficiently update multiple events simultaneously. Instead of editing events one by one, you can select multiple events and apply changes to shared attributes across all of them at once.
+
+## How to use bulk editing
+
+Bulk editing can be accessed from the Events view and allows you to modify shared attributes across multiple events efficiently.
+
+### Accessing bulk editing
+
+To start bulk editing:
+
+1. Navigate to the Events view in your tracking plan
+2. Select the events you want to edit using one of these methods:
+   - **Individual selection**: Check the boxes next to specific events
+   - **Category selection**: Check the box next to a category name to select all events in that category
+   - **Multiple selection**: Use Cmd/Ctrl + click to select non-adjacent events
+
+3. Once events are selected, the bulk editing toolbar will appear at the bottom of the screen
+4. Choose the attribute you want to modify from the toolbar options
+
+TODO image here
+
+### Available bulk editing actions
+
+The bulk editing toolbar provides options to modify these shared attributes:
+
+- **Event Properties**: Add or remove properties from multiple events
+- **Sources**: Add or remove sources from multiple events  
+- **Tags**: Apply or remove tags across multiple events
+- **Categories**: Add events to categories or remove them from categories
+- **Stakeholders**: Assign or remove stakeholder teams from multiple events
+
+TODO image here
+
+## Use cases for bulk editing
+
+Bulk editing is particularly valuable for several workflow scenarios. Here are common use cases with step-by-step guidance:
+
+### Consolidating redundant categories
+
+When you have multiple categories that serve the same purpose, you can efficiently consolidate them:
+
+**Example scenario**: You have both "User Authentication" and "Login/Signup" categories that should be merged into a single "Authentication" category.
+
+**Steps to consolidate**:
+
+1. **Create a new branch** for your category management changes
+2. **Navigate to the Events view** and scroll to the redundant category section
+3. **Select all events in the redundant category** by checking the box next to the category name
+4. **Use bulk editing to add them to the source of truth category**:
+   - Click "Category" in the bulk editing toolbar
+   - Select "Add to Category" 
+   - Choose your target category (e.g., "Authentication")
+5. **Remove events from the redundant category**:
+   - With the same events still selected
+   - Click "Category" in the bulk editing toolbar
+   - Select "Remove from Category"
+   - Choose the redundant category to remove
+6. **Archive the redundant category**:
+   - Use Cmd+K to search for the redundant category
+   - Open the category and archive it
+7. **Repeat for other redundant categories** as needed
+
+TODO image here
+
+*This workflow ensures events are moved efficiently without losing their categorization, and prevents future use of inconsistent category names.*
+
+### Mapping out event names first and metadata second
+
+### Updating event sources
+
+**Example scenario**: You're launching a new mobile app and need to add the new iOS source to existing mobile-relevant events.
+
+**Steps**:
+
+1. **Filter events** that should be available on mobile
+2. **Select events** using categories like "Core User Actions" or "E-commerce"
+3. **Bulk add the new source**:
+   - Click "Source" in the bulk editing toolbar  
+   - Select "Add Source"
+   - Choose your new iOS source
+   - Configure "Implement with Codegen" as needed
+
+### Team stakeholder assignment
+
+Assigning stakeholders across related events helps establish clear data governance.
+
+**Example scenario**: The Growth team is becoming a stakeholder in all onboarding and acquisition events.
+
+**Steps**:
+
+1. **Select events** in onboarding and acquisition categories
+2. **Bulk assign stakeholder teams**:
+   - Click "Stakeholder" in the bulk editing toolbar
+   - Add the Growth team as stakeholders 
+   - Apply across all selected events
+
+### Removing deprecated properties
+
+**Example scenario**: A legacy property needs to be removed from multiple events after a product redesign.
+
+**Steps**:
+
+1. **Search for events** containing the deprecated property
+2. **Select all relevant events** from the search results
+3. **Bulk remove the property**:
+   - Click "Event Property" in the bulk editing toolbar
+   - Select "Remove Property" 
+   - Choose the deprecated property to remove
+
+## Best practices for bulk editing
+
+### Planning your changes
+
+- **Work on branches**: Always make bulk changes on a feature branch to review before merging
+- **Document your intent**: Use clear branch names and descriptions for bulk editing branches
+- **Review before applying**: Double-check your selection before executing bulk actions
+
+### Efficient selection strategies
+
+- **Use category selection**: Select entire categories when working with related events
+- **Combine filters**: Use the Events view filters to narrow down to relevant events before selecting
+- **Preview changes**: Review which events are selected before applying bulk actions
+
+### Managing complex changes
+
+- **Break down large changes**: For extensive reorganization, work in smaller, focused batches
+- **Coordinate with stakeholders**: Communicate bulk changes that affect events owned by other teams
+- **Test incrementally**: When changing event structure, test with a subset before applying to all events
+
+<Callout type="info" emoji="💡">
+**Workflow Tip**: Bulk editing pairs perfectly with Avo's [fast event creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods). Create multiple events quickly, then use bulk editing to add detailed context and configuration efficiently.
+</Callout>
+
+## Troubleshooting bulk editing
+
+### Common issues and solutions
+
+#### Selection not working as expected
+- **Issue**: Category selection includes unexpected events
+- **Solution**: Review category membership before bulk editing; some events may belong to multiple categories
+
+#### Bulk action partially failed  
+- **Issue**: Some events didn't receive the bulk change
+- **Solution**: Check individual event permissions and constraints that may prevent certain changes
+
+#### Changes affecting unintended events
+- **Issue**: Bulk edit affected more events than intended
+- **Solution**: Use branch previewing to review changes before merging; revert if needed
+
+### When not to use bulk editing
+
+While bulk editing is powerful, some scenarios require individual attention:
+
+- **Complex property constraints**: Events with unique validation rules may need individual configuration
+- **Custom name mapping**: Events with destination-specific naming requirements
+- **Stakeholder-sensitive changes**: Events owned by different teams may need individual review and approval 
