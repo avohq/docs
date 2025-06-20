@@ -55,6 +55,29 @@ Checks if all events in the tracking plan have a description.
 
 <Callout type="info" emoji="💡">**Best practice:** A well defined event description contains information such as when the event should be sent and why it's being tracked.</Callout>
 
+### All events have owners
+
+Checks if all events in the tracking plan have been assigned an owner from your [stakeholder teams](/data-design/avo-tracking-plan/stakeholder-domains). Event ownership helps establish clear responsibility for data structures and enables better governance workflows.
+
+<Callout type="info" emoji="💡">**Best practice:** Assigning owners to events clarifies who is responsible for each data structure, enables automatic reviewer assignment during branch reviews, and ensures accountability for data quality and changes.</Callout>
+
+#### How to resolve
+
+**Assign stakeholder team ownership** to events that don't have owners from either event details or stakeholder team details. 
+For detailed instructions on managing stakeholder ownership, see [Setting item ownership](/workspace-management/domains#setting-item-ownership).
+
+#### Branch vs. Tracking Plan behavior
+
+This audit rule behaves differently depending on the context:
+
+- **Branch Audit**: Only validates *new events* added on the branch. Events that existed before the branch was created are not checked, allowing teams to incrementally improve ownership without blocking work on existing events.
+
+- **Tracking Plan Audit**: Validates *all events* in the tracking plan, helping identify the complete scope of events that need owners assigned.
+
+**Note**: When this rule is enforced at the branch level (available on the enterprise plan), branches cannot be merged until all new events have owners assigned.
+
+[Learn more about stakeholder teams and ownership →](/data-design/avo-tracking-plan/stakeholder-domains)
+
 ## Property Rules
 
 ### No conflicting properties

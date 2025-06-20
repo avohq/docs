@@ -65,8 +65,6 @@ When changes are made to an event that a stakeholder team is assigned to:
 **Enterprise plan:**
 - Stakeholder teams can be automatically added as required reviewers based on their [configured settings](/workspace-management/domains#stakeholder-team-settings), meaning branches cannot be merged without their approval
 
-
-
 [Stakeholder items can be assigned to a Stakeholder team](/workspace-management/domains#adding-stakeholder-events) from the stakeholder details and event details.
 
 ## Stakeholders in the tracking plan
@@ -96,6 +94,19 @@ From there, you can:
 - [Add impacted teams as reviewers](/data-design/guides/managing-changes-impacting-multiple-stakeholders#aligning-on-cross-stakeholder-changes)
 
 On the Enterprise plan, impacted **owners** are automatically added as required reviewers.
+
+## Event Ownership and Data Governance
+
+Assigning owners to events is not just for documentation—it's actively used by Avo's governance systems:
+
+### Tracking plan audit
+- Avo's [tracking plan audit](/audit/rules#all-events-have-owners) can warn (Team plan) or enforce (Enterprise plan) that all events have owners 
+- Branch audits check that new events have owners before allowing merges
+- Helps ensure accountability is established before events go live
+
+### Automatic Review Assignment
+- Owners are automatically added as reviewers when their events are modified (Enterprise plan)
+- Ensures the responsible team is always involved in changes to their data structures
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
