@@ -99,21 +99,6 @@ A marketing tool requires the purchase event to be named "purchase", but your na
 
 ![Event name mapping for a destination](/images/best-practices/name-mapping/event-name-mapping-marketing.png)
 
-#### An event has different shapes based on scenarios
-
-Some companies have multiple platforms or products and have complex event shapes that vary depending on platform, product or context. In those cases it's useful to create multiple events in Avo for the different shapes, differentiate between the event names in Avo but send all of them as the same event name to your destinations.
-
-_Example:_
-A company has three different apps where it's possible to add things to cart. The shapes of the "Add to Cart" events varies a lot between the three apps as the same properties are not relevant for all of them. Therefore they have three "Add to Cart" events in Avo
-
-- Add to Cart – Food App
-- Add to Cart – Clothes App
-- Add to Cart – Jewelry App
-
-![Event name mapping for multiple event shapes](/images/best-practices/name-mapping/event-name-mapping-big-event.png)
-
-These events have some properties in common but some not at all. But the company wants to be able to analyze all the data together, to be able to compare the performance of the three.
-
 ### For Properties
 
 #### A single destination requires a specific property name
