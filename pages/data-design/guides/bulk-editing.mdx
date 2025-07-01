@@ -6,13 +6,19 @@ import { Callout } from 'nextra/components';
 
 # Bulk Editing
 
-**Bulk editing** is a powerful workflow tool in Avo that allows you to efficiently update multiple events simultaneously. Instead of editing events one by one, you can select multiple events and apply changes to shared attributes across all of them at once.
+**Bulk editing** is a powerful workflow tool in Avo that allows you to efficiently update multiple items simultaneously. Instead of editing items one by one, you can select multiple items and apply changes to shared attributes across all of them at once.
+
+Bulk editing is available in two main areas:
+- [**Events view**](#bulk-editing-in-events-view): Bulk edit events in your tracking plan
+- [**Inspector Issues view**](#bulk-editing-in-inspector-issues-view): Bulk manage inspector issues
 
 ## How to use bulk editing
 
+### Bulk editing in Events view
+
 Bulk editing can be accessed from the Events view and allows you to modify shared attributes across multiple events efficiently.
 
-### Accessing bulk editing
+#### Accessing bulk editing
 
 To start bulk editing:
 
@@ -27,7 +33,7 @@ To start bulk editing:
 
 ![Bulk selecting events to edit](/images/best-practices/bulk-editing/selecting-for-bulk-editing.png)
 
-### Available bulk editing actions
+#### Available bulk editing actions
 
 The bulk editing toolbar provides options to modify these shared attributes:
 
@@ -39,13 +45,43 @@ The bulk editing toolbar provides options to modify these shared attributes:
 
 ![Bulk editing actions](/images/best-practices/bulk-editing/bulk-editing-actions.png)
 
+### Bulk editing in Inspector Issues view
+
+Bulk editing is also available in the [Inspector Issues view](/inspector/inspector-issues-view) to help you efficiently manage multiple data quality issues at once.
+
+#### Accessing bulk editing in Inspector Issues
+
+To start bulk editing issues:
+
+1. Navigate to the Inspector Issues view
+2. Select the issues you want to manage using one of these methods:
+   - **Individual selection**: Check the boxes next to specific issues
+   - **Multiple selection**: Use Cmd/Ctrl + click to select non-adjacent issues
+
+3. Once issues are selected, the bulk action toolbar will appear at the bottom of the screen
+4. Choose the action you want to apply from the toolbar options
+
+#### Available bulk actions for Inspector Issues
+
+The bulk action toolbar provides options to:
+
+- **Ignore**: Mark multiple issues as ignored if you're not planning to fix them
+- **Resolve in...**: Mark multiple issues as resolved, specifying the version or time frame
+  - 1 hour from now
+  - 24 hours from now
+
+This is particularly useful when you have multiple related issues that need the same resolution status, such as after deploying a fix that resolves several data quality issues at once.
+
 ## Use cases for bulk editing
 
 Bulk editing is particularly valuable for several workflow scenarios. Here are common use cases with step-by-step guidance:
 
+**For tracking plan events**: See [Bulk editing in Events view](#bulk-editing-in-events-view)  
+**For Inspector Issues**: See [Bulk editing in Inspector Issues view](#bulk-editing-in-inspector-issues-view)
+
 ### Planning new features with fast creation + bulk editing
 
-One of the most efficient workflows in Avo combines [fast event creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods) with bulk editing to rapidly plan and define new features.
+One of the most efficient workflows in Avo combines [fast event creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods) with bulk editing to rapidly plan and define new features. See [Bulk editing in Events view](#bulk-editing-in-events-view) for setup instructions.
 
 **Example scenario**: Your team is planning a new checkout flow that requires 8 new events. Rather than creating each event individually with full configuration, you can use a two-step approach.
 
@@ -93,7 +129,7 @@ Now select all your newly created events and use bulk editing to efficiently add
 
 ### Consolidating redundant categories
 
-When you have multiple categories that serve the same purpose, you can efficiently consolidate them:
+When you have multiple categories that serve the same purpose, you can efficiently consolidate them using [Events view bulk editing](#bulk-editing-in-events-view):
 
 **Example scenario**: You have both "User Authentication" and "Login/Signup" categories that should be merged into a single "Authentication" category.
 
@@ -123,6 +159,8 @@ When you have multiple categories that serve the same purpose, you can efficient
 
 ### Updating event sources
 
+Use [Events view bulk editing](#bulk-editing-in-events-view) to efficiently update sources across multiple events.
+
 **Example scenario**: You're launching a new mobile app and need to add the new iOS source to existing mobile-relevant events.
 
 <details>
@@ -140,7 +178,7 @@ When you have multiple categories that serve the same purpose, you can efficient
 
 ### Team stakeholder assignment
 
-Assigning stakeholders across related events helps establish clear data governance.
+Use [Events view bulk editing](#bulk-editing-in-events-view) to assign stakeholders across related events and establish clear data governance.
 
 **Example scenario**: The Growth team is becoming a stakeholder in all onboarding and acquisition events.
 
@@ -157,6 +195,8 @@ Assigning stakeholders across related events helps establish clear data governan
 
 ### Removing deprecated properties
 
+Use [Events view bulk editing](#bulk-editing-in-events-view) to efficiently remove properties from multiple events.
+
 **Example scenario**: A legacy property needs to be removed from multiple events after a product redesign.
 
 <details>
@@ -168,6 +208,31 @@ Assigning stakeholders across related events helps establish clear data governan
    - Click "Event Property" in the bulk editing toolbar
    - Select "Remove Property" 
    - Choose the deprecated property to remove
+
+</details>
+
+### Managing Inspector Issues after deployment
+
+Bulk editing in the Inspector Issues view is particularly valuable after deploying fixes that resolve multiple data quality issues. See [Bulk editing in Inspector Issues view](#bulk-editing-in-inspector-issues-view) for setup instructions.
+
+**Example scenario**: Your team deployed a fix that resolved 15 property type issues across multiple events. Rather than manually resolving each issue individually, you can use bulk actions.
+
+<details>
+<summary><strong>Steps to bulk resolve Inspector Issues</strong></summary>
+
+1. **Navigate to Inspector Issues view** and filter to show the resolved issues
+2. **Select all related issues** by checking the boxes next to the issues that were fixed in your deployment
+3. **Use bulk actions to resolve**:
+   - Click "Resolve in..." in the bulk action toolbar
+   - Select the appropriate resolution criteria:
+     - Choose "in 1 hour" if the fix rolling out in the next hour
+     - Choose "in 24 hours" if the fix will rolling out in the next 24 hours
+4. **Verify resolution**: The issues will move to the "Resolved" section and will be marked as regressions if they reappear
+
+**Benefits of this workflow**:
+- **Efficiency**: Resolve 15+ issues in seconds vs. minutes of individual resolution
+- **Consistency**: Ensure all related issues have the same resolution status
+- **Tracking**: Maintain clear records of when and how issues were resolved
 
 </details>
 

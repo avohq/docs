@@ -45,6 +45,20 @@ Set the status of an issue to communicate its current status to your team. The s
 - **Ignore**: If you know you're not planning to fix an issue, you can set the status to ignore. This help you focus on those issues on which you want to act.
 - **Resolved**: If you have looked into the issue and fixed it, you can set the status to resolved. If the issue reappears, it will be marked as a regression. If you have alerts enabled for a saved view with a resolved issue, you will be notified when the issue reappears.
 
+#### Bulk status management
+
+You can efficiently manage the status of multiple issues at once using bulk actions:
+
+1. **Select multiple issues** by checking the boxes next to the issues you want to manage
+2. **Use the bulk action toolbar** that appears at the bottom of the screen
+3. **Choose your action**:
+   - **Ignore**: Mark multiple issues as ignored
+   - **Resolve in...**: Mark multiple issues as resolved, specifying when they should be considered resolved:
+     - 1 hour from now
+     - 24 hours from now
+
+This is particularly useful when you have multiple related issues that need the same resolution status, such as after deploying a fix that resolves several data quality issues at once. For detailed guidance on using bulk editing, see the [bulk editing guide](/data-design/guides/bulk-editing#bulk-editing-in-inspector-issues-view).
+
 ### Event info
 
 The event impacted by the issue, its volume and whether it is documented in your Avo tracking plan.
