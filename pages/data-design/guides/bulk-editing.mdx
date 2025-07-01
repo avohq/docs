@@ -49,6 +49,9 @@ One of the most efficient workflows in Avo combines [fast event creation methods
 
 **Example scenario**: Your team is planning a new checkout flow that requires 8 new events. Rather than creating each event individually with full configuration, you can use a two-step approach.
 
+<details>
+<summary><strong>Steps to plan new features with fast creation + bulk editing</strong></summary>
+
 **Step 1: Fast creation to capture all event names**
 
 Use Avo's [fast creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods) to quickly capture all the events you need.
@@ -86,6 +89,7 @@ Now select all your newly created events and use bulk editing to efficiently add
 **Workshop Tip**: This approach is particularly effective during [purpose meetings](/data-design/guides/documenting-purpose-meetings-in-avo) where stakeholders brainstorm events together. First capture all the event names everyone suggests, then systematically add the detailed context as a group.
 </Callout>
 
+</details>
 
 ### Consolidating redundant categories
 
@@ -93,7 +97,8 @@ When you have multiple categories that serve the same purpose, you can efficient
 
 **Example scenario**: You have both "User Authentication" and "Login/Signup" categories that should be merged into a single "Authentication" category.
 
-**Steps to consolidate**:
+<details>
+<summary><strong>Steps to consolidate</strong></summary>
 
 1. **Create a new branch** for your category management changes
 2. **Navigate to the Events view** and scroll to the redundant category section
@@ -114,11 +119,14 @@ When you have multiple categories that serve the same purpose, you can efficient
 
 *This workflow ensures events are moved efficiently without losing their categorization, and prevents future use of inconsistent category names.*
 
+</details>
+
 ### Updating event sources
 
 **Example scenario**: You're launching a new mobile app and need to add the new iOS source to existing mobile-relevant events.
 
-**Steps**:
+<details>
+<summary><strong>Steps to update event sources</strong></summary>
 
 1. **Filter events** that should be available on mobile
 2. **Select events** using categories like "Core User Actions" or "E-commerce"
@@ -128,13 +136,16 @@ When you have multiple categories that serve the same purpose, you can efficient
    - Choose your new iOS source
    - Configure "Implement with Codegen" as needed
 
+</details>
+
 ### Team stakeholder assignment
 
 Assigning stakeholders across related events helps establish clear data governance.
 
 **Example scenario**: The Growth team is becoming a stakeholder in all onboarding and acquisition events.
 
-**Steps**:
+<details>
+<summary><strong>Steps to assign stakeholders</strong></summary>
 
 1. **Select events** in onboarding and acquisition categories
 2. **Bulk assign stakeholder teams**:
@@ -142,11 +153,14 @@ Assigning stakeholders across related events helps establish clear data governan
    - Add the Growth team as stakeholders 
    - Apply across all selected events
 
+</details>
+
 ### Removing deprecated properties
 
 **Example scenario**: A legacy property needs to be removed from multiple events after a product redesign.
 
-**Steps**:
+<details>
+<summary><strong>Steps to remove deprecated properties</strong></summary>
 
 1. **Search for events** containing the deprecated property
 2. **Select all relevant events** from the search results
@@ -154,6 +168,8 @@ Assigning stakeholders across related events helps establish clear data governan
    - Click "Event Property" in the bulk editing toolbar
    - Select "Remove Property" 
    - Choose the deprecated property to remove
+
+</details>
 
 ## Best practices for bulk editing
 
