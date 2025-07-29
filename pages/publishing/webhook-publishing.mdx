@@ -68,15 +68,16 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ##### Event Model
 
-| Attribute   | Type                                                  | Description                                     |
-| :---------- | :---------------------------------------------------- | :---------------------------------------------- |
-| name        | string                                                | Event name                                      |
-| description | string                                                | Event description and the list of triggers      |
-| rules       | Rules                                                 | Event JSON rules                                |
-| tags        | array(string)                                         | Array of all tags attached to event             |
-| categories  | array(string)                                         | Array of category ids this event is attached to |
-| triggers    | array({id, description, sourceIds, link, imageUrl})   | Details about all triggers attached to event    |
-| sources     | array({id, name, implementWithCodegen, destinations}) | Details about all sources sending event         |
+| Attribute          | Type                                                  | Description                                                    |
+| :----------------- | :---------------------------------------------------- | :------------------------------------------------------------- |
+| name               | string                                                | Event name                                                     |
+| description        | string                                                | Event description and the list of triggers                     |
+| rules              | Rules                                                 | Event JSON rules                                               |
+| tags               | array(string)                                         | Array of all tags attached to event                           |
+| categories         | array(string)                                         | Array of category ids this event is attached to               |
+| triggers           | array({id, description, sourceIds, link, imageUrl})  | Details about all triggers attached to event                  |
+| sources            | array({id, name, implementWithCodegen, destinations}) | Details about all sources sending event                       |
+| stakeholderDomains | array(StakeholderDomain)                              | Array of stakeholder domains associated with this event       |
 
 ##### Rules Model
 
@@ -93,14 +94,26 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 
 ##### PropertyRule Model
 
-| Attribute    | Type                         | Description                                   |
-| :----------- | :--------------------------- | :-------------------------------------------- |
-| description  | string                       | Property description                          |
-| type         | string                       | Property type                                 |
-| nameMappings | array(NameMapping)           | Name mappings defined for given property      |
-| ?const       | Depends on the property type | Pinned property value                         |
-| ?enum        | array(string)                | Allowed enum values                           |
-| ?operations  | array(string)                | Array of property ops, e.g. "SnowplowContext" |
+| Attribute          | Type                         | Description                                                      |
+| :----------------- | :--------------------------- | :--------------------------------------------------------------- |
+| description        | string                       | Property description                                             |
+| type               | string                       | Property type                                                    |
+| tags               | array(string)                | Array of all tags attached to property                          |
+| stakeholderDomains | array(StakeholderDomain)     | Array of stakeholder domains associated with this property      |
+| nameMappings       | array(NameMapping)           | Name mappings defined for given property                        |
+| ?const             | Depends on the property type | Pinned property value                                            |
+| ?enum              | array(string)                | Allowed enum values                                              |
+| ?pattern           | string                       | Regex pattern for string validation                             |
+| ?examples          | array(string)                | Example values that match the validation pattern                |
+| ?operations        | array(string)                | Array of property ops, e.g. "SnowplowContext"                   |
+
+##### StakeholderDomain Model
+
+| Attribute | Type    | Description                                                       |
+| :-------- | :------ | :---------------------------------------------------------------- |
+| id        | string  | Unique identifier of the stakeholder domain                      |
+| name      | string  | Display name of the stakeholder domain                           |
+| isOwner   | boolean | Whether this domain is designated as the owner of the entity     |
 
 ##### NameMapping Model
 
