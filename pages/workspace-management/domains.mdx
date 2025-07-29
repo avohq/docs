@@ -1,0 +1,184 @@
+import PageLink from '../../components/PageLink';
+import { Callout } from 'nextra/components';
+
+# Managing Stakeholder Teams
+
+Defining stakeholder teams in Avo is a key step toward more organized, scalable data management, especially in larger workspaces with multiple teams. 
+It enables your entire organization to operate within a single namespace, sharing data structures and working towards more consolidated tracking, while ensuring that the entities of your organization can operate comfortably without stepping on each-others' toes.
+
+By documenting stakeholders and owners on the events in your tracking plan, anyone is able to understand who is relying on which events and who to loop in when changes are made or if an issue comes up.
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Stakeholder teams"
+  description="What are stakeholder teams and how do they work"
+  href="/data-design/avo-tracking-plan/stakeholder-domains"
+/>
+
+## Creating a Stakeholder team
+
+To see and manage your stakeholder teams in Avo, navigate to your workspace settings and click to the tab labeled "Stakeholders".
+From there you can navigate to a view each stakeholder team in your workspace
+
+![Screenshot of the stakeholder team section in the workspace settings modal where you can create a new stakeholder](/images/domains/creating-a-stakeholder-team.png)
+
+Workspace admins can create new stakeholder teams by clicking on Create Stakeholder.
+Give the stakeholder team a name and assign a stakeholder lead.
+Click create, and then the stakeholder team has been created.
+
+## Managing stakeholder teams
+
+Once created, the stakeholder lead in addition to workspace admins can start setting up the stakeholder team.
+Stakeholder teams are managed in Stakeholder Team details accessible via the Stakeholders tab in workspace settings.
+
+### Stakeholder team settings
+
+Stakeholder teams can be configured with specific review and notification preferences that determine how they are involved when branches contain changes that impact them. These settings control whether teams are automatically added as reviewers and how they receive notifications.
+
+#### Workspace-level stakeholder settings
+
+In the General tab of Workspace Settings, there is a workspace-level setting available for workspaces on the enterprise plan: **"Require approval from owning stakeholders"**.
+
+![Workspace setting to require review from owning stakeholders](/images/workspace/settings/require-review-from-owning-stakeholders.png)
+
+When this setting is enabled:
+- Each stakeholder team that owns tracking plan items (events and event variants) impacted by branch changes will be automatically added as a required reviewer to the branch
+- The branch cannot be merged until a member with approval privileges from each impacted owner team has approved the branch
+- Individual stakeholder team "As impacted owner" settings are overridden and locked
+
+When this setting is disabled, individual stakeholder teams can configure their own review and notification preferences.
+
+#### Individual stakeholder team settings
+
+When the workspace-level "Require approval from owning stakeholders" setting is disabled, each stakeholder team can configure separate settings for three different scenarios:
+
+- **As impacted owner** - How the team is involved when they own events being modified
+- **As impacted stakeholder** - How the team is involved when they are stakeholders (but not owners) of events being modified
+- **As stakeholder reviewer** - How the team receives notifications when manually added as a branch reviewer (not automatically impacted)
+
+Options include:
+- **Automatically add as required reviewer** - The team will be automatically added as a required reviewer for the branch (only available when stakeholder is impacted)
+- **Notify in stakeholder Slack channel** - The team will receive Slack notifications without being required to approve
+- **Do nothing** - No automatic action is taken
+
+![Stakeholder specific settings](/images/domains/stakeholder-settings.png)
+
+To set up Slack notifications, connect a Slack channel to the stakeholder team through the "Slack notifications" section in stakeholder team settings.
+
+<Callout type="info" emoji="💡">
+When the workspace-level "Require approval from owning stakeholders" setting is enabled, the "As impacted owner" setting is locked and displays a notice that the setting is controlled at the workspace level. The "As impacted stakeholder" and "As stakeholder reviewer" settings can still be configured individually.
+</Callout>
+
+#### Settings hierarchy
+
+Understanding how stakeholder settings interact:
+
+1. **Workspace settings take precedence** - The workspace-level "Require approval from owning stakeholders" setting overrides all individual stakeholder team configurations
+2. **Separate owner vs stakeholder configuration** - Teams can have different behaviors when they own events vs when they are just stakeholders
+3. **Slack integration required for notifications** - Notification options only work when Slack is properly connected to the stakeholder team
+
+#### Configuration examples
+
+**Central data team oversight:**
+- As impacted stakeholder: "Automatically add as required reviewer" 
+- As impacted owner: "Automatically add as required reviewer"
+- Result: Central data team reviews all changes to events they care about, whether they own them or not
+
+**Product team ownership:**
+- As impacted owner: "Automatically add as required reviewer"
+- As impacted stakeholder: "Notify in stakeholder Slack channel"
+- Result: Product team must approve changes to their owned events, but just gets notified about other events they're stakeholders in
+
+**Documentation-only stakeholder:**
+- As impacted owner: "Automatically add as required reviewer" 
+- As impacted stakeholder: "Do nothing"
+- Result: Team only gets involved when they own events, stakeholder relationships are for documentation only
+
+### Adding stakeholder team members
+
+Under the "Team" section, click "Manage" which will open a modal where you can search for members in your workspace and add them to the stakeholder team.
+
+![Adding stakeholder team members](/images/domains/manage-members.png)
+
+### Adding stakeholder items
+
+Tracking plan items can be added to stakeholder teams from the stakeholder details and item details pages. 
+
+**Stakeholder details**
+
+The stakeholder details page organizes items into two tabs:
+
+- **Events tab** - Shows events and event variants assigned to the stakeholder team
+- **Properties tab** - Shows individual properties assigned to the stakeholder team
+
+![Screenshot of a modal to add events to a stakeholder team](/images/domains/stakeholder-items.png)
+
+1. Navigate to the appropriate tab (Events or Properties) based on what you want to add
+2. Click "+ Add" in the stakeholder item header
+3. Select the items from your tracking plan where you want to assign the stakeholder team as a stakeholder:
+   - **Events tab**: Choose entire events (which includes all their variants and properties) or specific event variants
+   - **Properties tab**: Choose individual event, user, system or group properties
+   
+   You can filter events and event variants by category or tag and all items by name, to make it easier to find relevant items.
+4. Click "Add" to finish adding the selected items to your stakeholder team
+
+![Screenshot of a modal to add events to a stakeholder team](/images/domains/add-events-to-domain.png)
+
+**Item details**
+
+1. Go to the event, event variant, or property and scroll to the **Stakeholders** section in the item details.
+2. Click **Add Stakeholder**.
+3. Select the team you want to assign.
+
+### Setting item ownership
+
+Stakeholder teams can claim ownership of tracking plan items attached to their team from the stakeholder details and item details pages.
+
+When there is already an owner, a workspace admin or someone from the owner team needs to first remove ownership, before another team can claim ownership.
+
+**Stakeholder details**
+
+1. Navigate to the appropriate tab (Events or Properties) 
+2. In the stakeholder item list, click "Claim ownership" on the item you wish to own
+
+![Screenshot of a modal to add events to a stakeholder team](/images/domains/claim-ownership.png)
+
+**Item details**
+
+In the **Stakeholders** section, click the Stakeholder Name you'd like to own this item and click "Assign as owner".
+
+![Screenshot of a modal to add stakeholder team to an event](/images/domains/item-detail-assign-as-owner.png)
+
+<Callout type="info" emoji="⚖️">
+**Governance Integration**: Event ownership integrates with Avo's [audit system](/audit/rules#all-events-have-owners). You can configure audit rules to require owners for all events (Enterprise plan), helping ensure accountability before events are implemented. This is especially useful for maintaining data governance standards as your tracking plan grows.
+</Callout>
+
+### Who can create and manage stakeholder teams
+Workspace admins alone can create stakeholder teams and assign stakeholder leads. They can also manage any stakeholder team.
+Stakeholder leads can assign the "Can approve" privilege to stakeholder team members.
+Any stakeholder team member can add members and items to their own stakeholder team.
+
+|                                      | Stakeholder members | Stakeholder leads | Workspace admins |
+| ------------------------------------ | ------------------ | ----------------- | ---------------- |
+| Create stakeholder teams             |                    |                   | ✅                |
+| Assign stakeholder leads             |                    |                   | ✅                |
+| Add members to any stakeholder team  |                    |                   | ✅                |
+| Add items to any stakeholder team    |                    |                   | ✅                |
+| Assign "Can approve" privilege       |                    | ✅                 | ✅                |
+| Add members to own stakeholder teams | ✅                  | ✅                 | ✅                |
+| Add item to own stakeholder teams    | ✅                  | ✅                 | ✅                |
+
+## Filtering by stakeholders and owners
+
+Once you've set up stakeholder teams and assigned ownership, you can use Avo's filtering capabilities to focus on relevant items:
+
+- **[Events filtering](/data-design/avo-tracking-plan/events#filtering-and-organizing-events)**: Filter events by stakeholders and owners to see events relevant to specific teams
+- **[Branch filtering](/data-design/branches#filtering-branches)**: Filter branches by impacted stakeholders and owners to see branches affecting specific teams
+
+These filtering capabilities help teams focus on events and branches relevant to their domain, making it easier to manage responsibilities in large workspaces.
+
+## What's next?
+
+- [Approval workflows](/data-design/branches/approval-workflows) - Learn how stakeholder settings integrate with branch approval workflows
+- [Stakeholder teams overview](/data-design/avo-tracking-plan/stakeholder-domains) - Understanding stakeholder teams and how they work
+- [Impacted Stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders) - Managing changes impacting multiple stakeholders

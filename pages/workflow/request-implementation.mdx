@@ -1,51 +1,31 @@
 ---
-layout: 'guide'
 title: '3. Request implementation'
-abstract: ''
 ---
 
-import Link from '../../components/Link';
-import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
-import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
-import DevIcon from '../../images/svg/dev.svg';
+import PageLink from '../../components/PageLink';
 
-import { FunctionComponent } from 'react';
+# Request Implementation
 
-The branch code changes screen displays all the changes needed to implement the branch, grouped by source. You can find it by when you're on a branch by pressing *View Changes* in the sidebar and then the *Code Changes* tab. In addition to developers being able to review suggested changes, they can also view event and property details. The code changes are visualized in a configurable diff view.
+The branch code changes screen displays all the changes needed to implement the branch, grouped by source. You can find it by when you're on a branch by pressing _View Changes_ in the sidebar and then the _Code Changes_ tab. In addition to developers being able to review suggested changes, they can also view event and property details. The code changes are visualized in a configurable diff view.
 
-<img
-  src={require('../../images/code-changes/code-changes.png')}
-  width="100%"
-  alt="Overview of code changes"
-/>
+![Overview of code changes](/images/code-changes/code-changes.png)
 
 You can copy a link to the branch review screen or even create a shared view available to anyone with the link to pass them to developers for implementation in your collaboration tool of choice (e.g. Jira or Slack). If you want to focus the discussion you can link to a specific event on a specific source. Take a look at this [example shared branch code changes](https://www.avo.app/s/TZ0YwKaQ9).
 
-<img
-  src={require('../../images/code-changes/code-changes-shared.png')}
-  width="306px"
-  alt="Branch code changes share popup"
-/>
+![Branch code changes share popup](/images/code-changes/code-changes-shared.png)
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="Branch Code Changes"
-    description="Using the branch code changes screen for a simple and accurate implementation"
-    callToAction={new CallToAction('/workspace/code-changes')}
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Branch Code Changes"
+  description="Using the branch code changes screen for a simple and accurate implementation"
+  href="/data-design/branches/code-changes"
+/>
 
 ## What’s next?
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="4. Implement analytics events"
-    description="Learn how to implement analytics event"
-    callToAction={
-      new CallToAction('/workflow/implement')
-    }
-  />
-</div>
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="4. Implement analytics events"
+  description="Learn how to implement analytics event"
+  href="/workflow/implement"
+/>

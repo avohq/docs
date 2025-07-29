@@ -1,16 +1,17 @@
----
-layout: 'guide'
-title: 'Avo Codegen overview'
----
+import { Callout } from 'nextra/components';
 
-import Link from '../../components/Link';
+# Avo Codegen overview
 
 ## What is Codegen
 
-Codegen produces type safe code for implementing analytics. 
+Codegen produces type safe code for implementing analytics.
 
-- The "data designer" specifies the event structure in the <Link passHref href="/workspace"><a>Avo Tracking Plan</a></Link>, and which platforms should send the event
+- The "data designer" specifies the event structure in the [Avo Tracking Plan](/data-design/avo-tracking-plan), and which platforms should send the event
 - then the developer who implements analytics can use Codegen to implement the analytics calls per each analytics event
+
+<Callout type="info" emoji="💡">
+Editors and admins can pull generated code on all plans: free, team and enterprise. Additionally, viewers can pull generated code on the team and enterprise plans. Learn more [here](/data-design/collaboration/members#codegen-access-for-non-editors).
+</Callout>
 
 ## Why use Codegen
 
@@ -26,10 +27,10 @@ Codegen is our way of increasing the robustness of the analytics implementation 
 
 Adopting Codegen is not required to get value from Avo - many companies have their own ways to achieve robust analytics implementation and prefer to stick to them rather than adopting a new approach.
 
-Avo is designed to be efficient and powerful without the Codegen, providing advanced tracking plan management and observability with Inspector. 
+Avo is designed to be efficient and powerful without the Codegen, providing advanced tracking plan management and observability with Inspector.
 The decision to use Codegen is usually in the hands of the engineering team on each platform. If you prefer to use a different approach for implementing your tracking code Avo can still help you by providing a platform to collaborate and align on the tracking specs, and by providing clear specs for the suggested tracking changes.
 
-Learn more in the <Link passHref href="/implementation/start-using-avo-codegen"><a>Codegen setup docs</a></Link>.
+Learn more in the [Codegen setup docs](/implementation/start-using-avo-codegen).
 
 ## How does Codegen work
 
@@ -37,16 +38,19 @@ Codegen works with any analytics tool, whether it's any of the common event logg
 
 When designing the tracking plan you configure the list of data destinations for each source. In the generated code each destination is represented as its own Destination Interface in the initAvo method. This is how Codegen routes data, locally in your client (without the data ever going through Avo's servers), to the correct destination based on the source/destination connections you've defined in the Avo dashboard.
 
-In the Avo Tracking Plan you can configure which analytics <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
+In the Avo Tracking Plan you can configure which analytics [actions](/data-design/avo-tracking-plan/events#actions) should be included in Codegen (for example you might want to update user properties or log revenue along with logging an event), and Codegen will handle calling all the relevant Destination Interface methods. All you have to do is call the generated function in your code base and pass in type safe key-value pairs, and the Codegen will take care of the rest.
 
-Learn more in the <Link passHref href="/implementation/avo-codegen-tech-deep-dive"><a>Codegen tech deep dive docs</a></Link>.
+Learn more in the [Codegen tech deep dive docs](/implementation/avo-codegen-tech-deep-dive).
 
 ## Does my event data flow through Avo servers?
 
 No. None of your events ever go through Avo servers. They go directly from your devices (whether that's a front-end client or a server) to the data destination.
 
-> 💡 This sometimes called "device mode". With CDPs, you can choose between [_Cloud-mode_ or _Device-mode_](https://segment.com/docs/guides/intro-impl/#connection-modes):
->
-> - In _Cloud-mode_, your events go through the CDP servers. Your devices send the events to the CDP cloud (aka the CDP Servers) and the CDP cloud sends them to the analytics destinations.
-> - In _Device-mode_ the events go directly from your devices (whether it's a front end client or a server) to the analytics destination.
->   In this regard, Avo works like _Device-mode_.
+<Callout type="info" emoji="💡">
+This sometimes called **device mode**. With CDPs, you can choose between [_Cloud-mode_ or _Device-mode_](https://segment.com/docs/guides/intro-impl/#connection-modes):
+
+- In _Cloud-mode_, your events go through the CDP servers. Your devices send the events to the CDP cloud (aka the CDP Servers) and the CDP cloud sends them to the analytics destinations.
+- In _Device-mode_ the events go directly from your devices (whether it's a front end client or a server) to the analytics destination.
+
+In this regard, Avo works like _Device-mode_.
+</Callout>

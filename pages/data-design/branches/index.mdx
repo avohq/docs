@@ -1,0 +1,94 @@
+import { Callout } from 'nextra/components'
+
+# Quickstart: Branches
+
+_Seamlessly work together on multiple tracking plan updates using branches_
+
+### What are branches?
+
+In Avo you can collaborate in real time on defining, expanding and implementing your tracking plan. But you might want to try out some changes or make sure that a change is implemented before you change your tracking plan source of truth. To capture this work in progress you can use branches.
+
+We highly recommend always creating a branch first before making changes to the tracking plan, no matter how small the changes are – in particular if the changes made require implementation. If changes are made directly on the main branch, then you risk someone else creating a branch that include your incomplete changes, which will very likely lead to conflicts in the future.
+
+### Creating a branch
+
+To create a new branch, first make sure you are on the main branch. Click the branch name in the left side navigation bar and then click the "Create Branch" button.
+
+![Create branch](/images/data-design/quickstart/create-branch.png)
+
+### Request branch review
+
+When you've suggested changes to your tracking, mark the branch as ready for review, and assign an editor or admin to review the changes.
+
+![Ready for review](/images/workflow/2.review/ready-for-review.png)
+
+We recommend you set up Slack notifications for added visibility into tracking plan changes your team is making. You will also receive daily reminders of branches pending review.
+
+<Callout type="info" emoji="🔒">
+When a branch is marked as **Ready for Review** (or later), it is locked for editing if your workspace has Protected main branch enabled. To make further changes, revert the branch to **Draft**—this will remove any existing approvals.
+</Callout>
+
+### Review branch changes
+
+To compare the changes drafted on a branch to the source of truth on the main branch, click the "View changes" button located next to your branch name at the top of the screen. On the "View changes" screen, you can see which events or properties were added, deleted or updated.
+
+![View changes](/images/data-design/quickstart/navigate-view-changes.png)
+
+You can also filter the changes using the "Show changes since" dropdown to focus on recent modifications—for example, viewing only changes made since your last review rather than all changes since the branch was created.
+
+![View changes](/images/workflow/2.review/view-changes-since.png)
+
+### How should branches be structured?
+
+We recommend setting up branches that have isolated changes that can be opened, implemented and merged within a few days. Typically there's a one to one mapping between Avo branches and git branches.
+
+Like in git, we recommend against creating big branches with a backlog of events and properties to be implemented. We'd rather recommend splitting them in to manageable chunks that will be implemented together in a single git branch.
+
+### Deleting a branch
+
+Open the branch you want to delete, click the triple-dot in the top right corner and click "delete branch".
+
+![Opening a branch](/images/delete-branch.png)
+
+### Branches Overview
+
+Click the Avo logo in the top left of your workspace to navigate to the branches overview. There you will find info about all your open branches like it's creator, the created date, the branch status, reviewers, collaborators and more. The branch overview helps you make sure no tracking plan changes are left behind and that you don't miss out on progress that's happening in your workspace.
+
+![Branches Overview](/images/branches-overview.png)
+
+#### Filtering branches
+
+The branches overview provides powerful filtering capabilities to help you focus on relevant branches, especially in workspaces with many active branches:
+
+**Available filters:**
+- **Branch Status**: Filter branches by their current status (Draft, Ready for Review, Approved, Changes Requested, etc.)
+- **Impacted Stakeholders**: Filter branches by stakeholder teams that are impacted by the branch changes
+- **Impacted Owners**: Filter branches by stakeholder teams that own events being modified on the branch
+
+**Using branch filters effectively:**
+
+**For status-based workflows:**
+- Use **Branch Status** filter to see branches at specific stages (e.g., all branches "Ready for Review" to see what needs attention)
+- Filter by "Draft" to see work in progress, or "Approved" to see branches ready for implementation
+- Combine with **Impacted Owners** to see status-specific branches affecting your team
+
+**For team-focused workflows:**
+- Use **Impacted Owners** filter to see branches that modify events your team owns and is responsible for
+- Use **Impacted Stakeholders** filter to see branches that affect events your team depends on
+- These filters help teams stay aware of changes that impact their domain without getting overwhelmed by unrelated branch activity
+
+**Combining filters for powerful workflows:**
+You can combine multiple filters to create highly targeted views. For example:
+- **Stakeholder team leads**: Filter by "Ready for Review" status AND your team as "Impacted Owners" to see all branches where your team's approval is needed. This helps identify branches your team might be blocking and ensures nothing gets stuck waiting for your review.
+
+**Sharing filtered views:**
+After applying filters, you can share the filtered URL with colleagues so they see the same focused view of branches.
+
+## What's next?
+
+- [Approval workflows for branches](/data-design/branches/approval-workflows)
+- [Workbench](/data-design/avo-tracking-plan/workbench)
+- [Share implementation instructions for a branch](/data-design/branches/code-changes)
+- [Using Avo in parallel workflows for large development teams](/implementation/avo-and-git)
+- [How to manage branches with multiple sources](/data-design/multiple-sources-on-avo-branches)
+- [Designing data in Avo](/data-design/start-data-design)

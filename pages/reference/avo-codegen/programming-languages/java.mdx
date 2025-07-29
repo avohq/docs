@@ -1,0 +1,291 @@
+# Avo Codegen in Java
+
+### Platforms
+
+Avo can code generate Avo Codegen in Java targeted at the following platforms
+
+- Android
+- Server
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Java file you must be a member of an Avo workspace with a Java source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
+
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
+```
+
+Learn more about [the CLI here](/implementation/cli).
+
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Initialize Avo by calling the `initAvo` method before tracking
+
+```java
+Avo.initAvo(Avo.AvoEnv.DEV/*, other parameters depending on your tracking plan setup*/);
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/java#initAvo).
+
+#### Step 3. Call Avo Codegen to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Codegen" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Codegen" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+![Event 'Signup Start' defined in Avo with referral string property and implement with Codegen check](/images/signup-start-ui.png)
+
+You'll be able to call it like this from the generated code
+
+```java
+Avo.signupStart("direct")
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace and the [Avo Inspector](/implementation/avo-inspector-sdk-reference) to verify that your implementation is correct. If you don't want to use Avo Inspector you can use the [standalone visual debugger](https://github.com/avohq/android-analytics-debugger) in your client applications.
+
+### Reference
+
+#### initAvo
+
+```java
+public static void initAvo(AvoEnv env,
+    // Other parameters may not be present, depending on your tracking plan
+    Integer systemProperty0, Boolean systemProperty1,
+    ICustomDestination mixpanelDestination,
+    ICustomDestination segmentDestination,
+    ICustomDestination otherDestination,
+    boolean strict = true, boolean noop = false,
+    application: Application, context: Context
+    );
+```
+
+There is also an init method that accepts an instance of Avo Inspector, use it if you have Avo Inspector set up in your project, so Avo Codegen will automatically report invocations to Avo Inspector.
+
+```java
+public static void initAvoWithInspector(AvoEnv env,
+    Object avoInspector,
+    // Other parameters may not be present, depending on your tracking plan
+    // Same parameters, as in `initAvo`
+    Integer systemProperty0, Boolean systemProperty1,
+    ICustomDestination mixpanelDestination,
+    ICustomDestination segmentDestination,
+    ICustomDestination otherDestination,
+    boolean strict = true, boolean noop = false,
+    application: Application, context: Context,
+
+    );
+```
+
+Initializes Avo, needs to be called before the event specific methods.
+This method will call the `Make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
+
+##### Arguments
+
+`AvoEnv env`: Can be set to dev, prod and staging.
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
+
+`ICustomDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each callback in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
+
+```java
+public interface ICustomDestination {
+        default void make(AvoEnv env) {};
+        default void make(AvoEnv env, String apiKey) {
+          throw new RuntimeException("Make with apiKey is not implemented");
+        };
+        void logEvent(String eventName, Map<String, Object> eventProperties);
+        void setUserProperties(String userId, Map<String, Object> userProperties);
+        void identify(String userId);
+        void unidentify();
+        void logPage(String pageName, Map<String, Object> eventProperties);
+        void revenue(double revenue, Map<String, Object> eventProperties);
+}
+```
+
+If you are using server Java each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](/help/troubleshooting).
+
+`boolean strict = true`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging environments. Note that the strict flag is ignored in production.
+
+`boolean noop = false`: bool, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+
+`Object avoInspector`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
+
+#### Destination interface example
+
+Android:
+
+```java
+// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+public class Destination implements ICustomDestination {
+    private MixpanelAPI mixpanel;
+
+    // Make method is optional, you can skip it if you've already initialized your Analytics SDK
+    public void make(Avo.AvoEnv env, String apiKey) {
+        mixpanel = MixpanelAPI.getInstance(context.getApplicationContext(), projectToken);
+    }
+
+    public void logEvent(String eventName, Map<String, Object> eventProperties) {
+        mixpanel.track(eventName, eventProperties);
+    }
+
+    public void setUserProperties(String userId, Map<String, Object> userProperties) {
+        mixpanel.getPeople().set(userProperties);
+    }
+
+    public void identify(String userId) {
+        mixpanel.identify(userId);
+    }
+
+    public void unidentify() {
+        mixpanel.reset();
+    }
+
+    public void logPage(String pageName, Map<String, Object> eventProperties) {
+        // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+        eventProperties.add("Page", pageName);
+        mixpanel.track("Page Viewed", eventProperties);
+    }
+
+    public void revenue(double amount, Map<String, Object> eventProperties) {
+        mixpanel.getPeople().trackCharge(amount, eventProperties);
+    }
+}
+```
+
+Server:
+
+```java
+// Example: Destination interface for the Segment SDK. Replace the Segment implementation with your own tracking SDK methods
+public class Destination implements ICustomDestination {
+    private Analytics analytics = null;
+
+    // Make method is optional, you can skip it if you've already initialized your Analytics SDK
+    public void make(AvoEnv env, String apiKey) {
+        analytics = Analytics.builder(apiKey).build();
+    }
+
+    public void logEvent(String userId, String eventName, Map<String, Object> eventProperties) {
+        TrackMessage.Builder builder = TrackMessage.builder(eventName);
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        analytics.enqueue(builder.properties(eventProperties));
+    }
+
+    public void setUserProperties(String userId, Map<String, Object> userProperties) {
+        IdentifyMessage.Builder builder = IdentifyMessage.builder();
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        analytics.enqueue(builder.traits(userProperties));
+    }
+
+    public void logPage(String userId, String pageName, Map<String, Object> eventProperties) {
+        ScreenMessage.Builder builder = PageMessage.builder(pageName);
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        analytics.enqueue(builder.properties(eventProperties));
+    }
+
+    public void revenue(String userId, double amount, Map<String, Object> eventProperties) {
+        // Note: In this example the Segment SDK does not provide a native method for revenue tracking, so we send an event instead. Other SDKs may have a dedicated revenue tracking method.
+        TrackMessage.Builder builder = TrackMessage.builder("Purchase Completed");
+        if (userId != null) {
+            builder = builder.userId(userId);
+        }
+        eventProperties.put("revenue", amount)
+        analytics.enqueue(builder.properties(eventProperties));
+    }
+}
+```
+
+Read more about the destination interface [here](/implementation/destinations).
+
+###### Additional arguments
+
+`Application application` and `Context context` are required by some analytics destinations.
+
+#### setSystemProperties
+
+```java
+public static void setSystemProperties(Integer systemProperty0, Boolean systemProperty1, ...)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool or list.
+
+#### Event tracking functions
+
+```java
+public static void [yourEventName](int eventProperty0, Double eventProperty1, ..., Boolean userProperty0, List<Int> userProperty1, ..., String userId_)
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty: type defined in the Avo tracking plan, can be string, int, long, float, bool, list`:
+Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to track here.
+
+`userProperty: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool, list`:
+Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to update here.
+
+`userId_: String`: used to connect event to specific user.
+Android: Automatically added if the event has the `Identify User` action
+Server: Automatically added to all events, you have to either provide it or the `anonymousId_`
+
+###### Additional arguments
+
+`anonymousId_`: string, automatically added in Server code, used to track anonymous users
+
+### Destinations
+
+You can send your data using the Avo generated JavaScript code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- RudderStack
+- Freshpaint
+- PostHog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

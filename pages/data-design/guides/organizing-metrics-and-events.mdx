@@ -1,0 +1,30 @@
+# Organizing metrics and events
+
+Avo provides a easy-to-use user interface to define and maintain an overview for
+your tracking plan (a.k.a. taxonomy, data plan, event schema). Below you can
+learn more about best practices regarding categories, metrics and naming conventions
+for events and properties.
+
+## Categories
+
+Categories are a way to create an organized structure for events and metrics. It is useful to create
+categories for important features and/or important flows in the product. Categories vary between products but typical generic categories are for example `Onboarding`, `Payment` and `Profile`.
+
+A category allows for an optional description where it can be useful to document for example the problem, solution and goals related to the category. New metrics and events can be defined in the category modal or existing ones added to it. Below is an example category for Onboarding:
+
+![Example category](/images/category_example.png)
+
+## Metrics
+
+Metrics help you decide what to track and keep everyone informed why
+the defined events should be tracked. When deciding what to track for a product or individual features, Avo recommends starting by defining the metrics and design the events and properties accordingly:
+
+1. Define a category for the feature if it doesn't already exist
+2. Define the metrics needed to measure the success of the feature
+3. Associate the events needed to visualize the metrics in your analytics tool, to the metrics
+4. Define new events and properties as needed
+
+New events and properties can be created in the metric view or existing ones added.
+
+After going through that thought process, it should be clearer which events and
+properties need to be implemented to track the success of a feature.

@@ -1,0 +1,179 @@
+import { FunctionComponent } from 'react';
+import Zoom from 'react-medium-image-zoom';
+import Image from 'next/image';
+import 'react-medium-image-zoom/dist/styles.css';
+
+import PageLink, { TwoCol } from '../components/PageLink';
+
+# Get Started With Avo
+
+There are a few ways to get started in Avo, all depending on your immediate needs:
+- [**Find (and fix) your data quality issues**](#find-and-fix-your-data-quality-issues): For teams that are struggling with data quality, install Inspector and get a view of all your data quality issues in one place
+- [**Try the Avo workflow**](#try-the-avo-workflow-for-your-next-analytics-release): For teams that want a solid workflow for their next analytics release, create a branch in Avo and define new events and properties
+- [**Audit your tracking plan**](#audit-your-tracking-plan): For teams that want a single source of truth for their tracking plan and review their event and property definitions, import your existing tracking plan into Avo or manually create one
+
+You can do these steps in any order or in parallel, and skip those you
+don’t think apply to you.
+
+## Find (and fix) your data quality issues
+
+The first step to better analytics governance is knowing what’s wrong with your data today. Avo Inspector gives you an overview of your current state of tracking
+and highlights issues and discrepancies in your live event tracking. Avo then provides you with the tools to systematically get to better data, one resolved issue at a time. 
+
+<br />
+<Zoom>
+  <Image
+    src="/docs/images/inspector/inspector-issues-overview.png"
+    width={3776}
+    height={2263}
+    alt="Inspector issues overview"
+  />
+</Zoom>
+
+Install Inspector to get started. Set up Inspector via your CDP (Customer Data Platform) or GTM  (Google Tag Manager) and start working on your data quality right away. If you don't have a CDP or GTM, install via a custom SDK.
+
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Get Started With Inspector"
+  description="Install Inspector to get overview of your current state of tracking"
+  href={'/data-design/start-using-inspector'}
+/>
+
+## Try the Avo workflow for your next analytics release
+
+If you have an analytics release coming up in the next few days, we
+highly recommend you try out the Avo Workflow for that release.
+
+The Avo workflow covers all the steps required to plan, review,
+request implementation, implement, validate and publish your analytics
+release.
+
+<br />
+<Zoom>
+  <Image
+    src="/docs/images/avo-workflow.png"
+    width={3776}
+    height={2263}
+    alt="The Avo Workflow: Plan, review, implement, validate and publish your tracking changes"
+  />
+</Zoom>
+
+Create a workspace in Avo and open your first branch to start defining the event structures for your next release.
+
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="The Avo Workflow"
+  description="Plan, review, implement and validate every analytics release"
+  href={'/workflow/overview'}
+/>
+
+## Audit your tracking plan
+
+Getting your tracking plan into Avo gives you an instant audit of your event structures. There are three ways to get your tracking plan into Avo:
+- [Import from Amplitude, Mixpanel or Google Sheets](/publishing/importing)
+- [Import events from Inspector](/inspector/add-events-from-inspector)
+- [Build your tracking plan from scratch](/data-design/start-data-design)
+
+When your tracking plan, or a subset of it is in Avo, you will immediately receive an audit on your tracking plan. The audit surfaces issues like duplicate event and property names and inconsistencies in your naming convention.
+
+<TwoCol>
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Get your tracking plan into Avo"
+    description="All the ways to get your existing tracking plan into Avo"
+    href="/audit/get-tracking-plan-into-avo"
+  />
+
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Audit your tracking plan"
+    description="How to get an audit for your tracking plan."
+    href="/audit/quickstart"
+  />
+</TwoCol>
+
+---
+
+## Guides and best practices
+
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo 101 For Developers"
+    description="Codegen, Inspector and Debuggers—What’s the difference?"
+    href={'/implementation/devs-101'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Designing Data In Avo"
+    description="How to define metrics, events and properties step by step"
+    href={'/data-design/start-data-design'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Multi-Product Workspaces"
+    description="How to organize a tracking plan for multiple products"
+    href={'/data-design/organizing-multi-product-workspaces'}
+  />
+</TwoCol>
+
+## Browse by product
+
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Tracking Plan Management"
+    description="Collaborate with your team on tracking plan changes"
+    href={'/data-design/quick-start'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Tracking Plan Audit"
+    description="Verify that all tracking plan changes follow your tracking plan rules"
+    href={'/audit/overview'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Avo Inspector"
+    description="Get overview of your current state of tracking"
+    href={'/data-design/start-using-inspector'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Publishing"
+    description="Keep your downstream schema registries in sync with the Avo"
+    href={'/publishing/publishing/overview'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Codegen"
+    description="Faster, more reliable implementation with type-safe tracking functions"
+    href={'/implementation/avo-codegen-overview'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Debuggers"
+    description="Observe events and properties as you trigger them in your app"
+    href={'/implementation/start-using-visual-debugger'}
+  />
+</TwoCol>
+
+## Developer Reference
+
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Codegen"
+    href={'/implementation/destinations'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Inspector"
+    href={'/implementation/avo-inspector-sdk-reference'}
+  />
+  <PageLink
+    image={'/docs/images/svg/dev.svg'}
+    title="Avo Debuggers"
+    href={'/implementation/start-using-visual-debugger'}
+  />
+</TwoCol>

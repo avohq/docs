@@ -1,0 +1,328 @@
+import { Callout } from 'nextra/components';
+
+# Import a CSV of Your Existing Tracking Plan
+
+_Import your tracking plan from various sources to get started quickly_
+
+<Callout type="info" emoji="💡">
+  **Import existing tracking specs into Avo to get started quickly**. We know
+  that tracking plans come in all shapes and sizes. If you don't see your format
+  below you can try converting your existing spreadsheet to one of our supported
+  formats or [reach out](/help/troubleshooting#contact-us) and we'll support
+  you.
+</Callout>
+
+## What To Import
+
+You can import your [event schemas](#import-tracking-plan), [user properties](#import-user-properties), [group properties](#import-group-properties), and [name mapping](#import-name-mapping).
+
+### Import Tracking Plan
+
+Import your existing event schemas, aka tracking plan, to get started
+quickly.
+
+<Callout type="info" emoji="💡">
+  When importing events that already exist in Avo, the importer will only import
+  new properties, categories and tags for the event. The importer will never
+  archive or delete existing events or properties, or remove properties,
+  categories or tags from existing events. You can also import user properties,
+  group properties, and name mapping.
+</Callout>
+
+See [supported formats for importing event schemas, aka tracking plans](/publishing/import/importing#supported-formats).
+
+![Screenshot of the Avo Importer](/images/workspace/importing/avo-importer.png)
+
+### Import User Properties
+
+<Callout type="info" emoji="💡">
+  **User properties** are helpful to segment behaviors by current state of
+  users, as opposed to the state at the time of an event trigger. Read about
+  [user property use cases and how they
+  work](/data-design/avo-tracking-plan/properties#user-properties).
+</Callout>
+
+See [supported formats for importing user properties](/publishing/importing#user-property-import-format).
+
+### Import Group Properties
+
+<Callout type="info" emoji="💡">
+  **Group analytics** are important for b2b companies and can be useful in many
+  other cases. Read about [group analytics use cases and how it
+  works](/data-design/best-practices/groups).
+</Callout>
+
+See [supported formats for importing group properties](/publishing/importing#group-property-import-format).
+
+### Import Name Mapping
+
+<Callout type="info" emoji="💡">
+  **Different names to different destinations:** You might need to send events
+  and properties with different names to different destinations if: **_a/ You
+  have legacy event structures in specific analytics tools_**, which you can't
+  change now because you need to data continuity in these tools. **_b/ Analytics
+  destinations require specific event or property names_** for some
+  functionality. Read more about [name mapping](/data-design/name-mapping) and
+  its [use cases](/data-design/name-mapping#use-cases-for-name-mapping).
+</Callout>
+
+You can import destination specific name mapping for new events and properties using the [Avo's ultimate tracking plan CSV from](/publishing/importing#avos-ultimate-tracking-plan-template).
+
+## Where To Import From
+
+### Importing from Amplitude
+
+1. Export your Tracking Plan from Amplitude. Open up Amplitude Data and then click the download arrow:
+
+![Screenshot of Amplitude Data](/images/workspace/importing/govern-download.png)
+
+2. In the popup, select "Schema of all events and their properties" or "Schema of all user properties" and click download:
+
+![Screenshot of the download modal on Amplitude Data](/images/workspace/importing/govern-download-select-schema.png)
+
+3. Finally open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+![Screenshot of the Avo Importer selecting files](/images/workspace/importing/importer-select.png)
+
+4. Review your events and properties and finish the import 🎉
+
+### Importing from Mixpanel
+
+1. Open up Mixpanel Lexicon (in the top right corner of your Mixpanel workspace click Data Management > Lexicon) and then click the export button:
+
+![Screenshot of Mixpanel Lexicon](/images/workspace/importing/lexicon-download.png)
+
+2. In the popup, select "Events & Properties" and Send CSV. Also check "User Profile Properties" if you want to include user properties:
+
+![Screenshot of the download modal on Amplitude Data](/images/workspace/importing/lexicon-download-popup.png)
+
+3. Within few minutes you should receive an email from Mixpanel with a CSV export. Open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+![Screenshot of the Avo Importer selecting files](/images/workspace/importing/importer-select.png)
+
+4. Review your events and properties and finish the import 🎉
+
+### Importing from Segment Protocols
+
+1. Download your Tracking Plan from Segment Protocols: [How to download a tracking plan in Segment Protocols](https://segment.com/docs/protocols/tracking-plan/create/#download-a-tracking-plan)
+
+2. Open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+3. Review your events and properties and finish the import 🎉
+
+### Importing from a Google Sheet
+
+Avo supports importing various tracking plan formats. See [supported formats for importing tracking plans](/publishing/importing#tracking-plan-import-formats).
+
+#### How to import from a Google Sheet
+
+1. Open the sheet containing your Events and Event Properties. Click File > Download > Comma-separated values (.csv)
+
+![Screenshot of the Download CSV button in Google Sheets](/images/workspace/importing/spreadsheet-download.png)
+
+2. Open the Importer from your Avo workspace and drag the downloaded .csv file to the drop zone or click it and select the file:
+
+![Screenshot of the Avo Importer selecting files](/images/workspace/importing/importer-select.png)
+
+4. Review your events and finish the import 🎉
+
+## Supported Formats
+
+Following are the spreadsheet formats the Avo Importer currently supports.
+
+We know that tracking plan spreadsheets come in all shapes and sizes. If you don't see your format
+below you can try converting your existing spreadsheet to one of these formats,
+by renaming columns etc, or you can [reach out to us](/help/troubleshooting#contact-us) and
+we'll get the importing done for you.
+
+**Note:**
+
+- The order of the columns in your sheet does not matter
+- There must be a header row in your sheet with the exact column names as described for one of the format below
+- Any additional columns are ignored
+
+You can learn more about common Tracking Plan spreadsheet formats [on our blog.](https://www.avo.app/blog/9-free-tracking-plan-templates-from-mixpanel-amplitude-segment-and-more)
+
+### Avo's Ultimate Tracking Plan Template
+
+![Screenshot of the Avo ultimate tracking plan spreadsheet template](/images/workspace/importing/avo-spreadsheet.png)
+
+[View example sheet](https://docs.google.com/spreadsheets/d/1MpoYMby6sTR9X9qavmUtpFmGIxr79I4f_kdv6OobvYQ)
+
+#### Required columns
+
+| Column Name                  | Description                                                       | Allowed Values                        | Example Value                              |
+| :--------------------------- | :---------------------------------------------------------------- | :------------------------------------ | :----------------------------------------- |
+| Event Name                   | The name of your event                                            | Any string                            | App Opened                                 |
+| Event Description            | The description of your event                                     | Any string                            | Sent when the user opens the app           |
+| Event Category               | The category your event belongs to, if any                        | Any string                            | App Lifecycle                              |
+| Sources                      | The name of the sources this event should be sent from            | Comma separated strings               | iOS, Android, Web                          |
+| Property Name                | The name of a property that should be sent                        | Any string                            | Device Type                                |
+| Property Description         | The description of the property                                   | Any string                            | The type of client user is currently using |
+| Property Value Type          | The type of the property                                          | string, int, float, bool, object, any | string                                     |
+| Is Property Required?        | True if the property should always be sent with your event        | true, false                           | true                                       |
+| Is Property Array?           | True if property should be array of values                        | true, false                           | false                                      |
+| Property Enumeration Options | Finite list of all values allowed for the property, if applicable | Comma separated strings               | iOS, Android, Web, Desktop, Fire           |
+
+#### Optional columns for property bundles
+
+You can create and attach [event property bundles](/data-design/avo-tracking-plan/properties#event-property-bundles) to events by including the columns below in your import. [View example sheet with property bundles](https://docs.google.com/spreadsheets/d/1P1zzG8dcsuS7h94jNMvBAExTSdKsikEMS5MKzUWSE-U/edit#gid=0)
+
+| Column Name                 | Description                                                                                                                                           | Allowed Values | Example Value                     |
+| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :------------- | :-------------------------------- |
+| Property Bundle Name        | The name of the property bundle you'd like to import, defined at the top of your file, followed by the properties you'd like to include in the bundle | Any string     | A/B Testing Properties            |
+| Property Bundle Description | The description of the property bundle                                                                                                                | Any string     | Required on all A/B tested events |
+| Event Property Bundle Name  | The name of the property bundle you'd like to attach to an event you're importing                                                                     | Any string     | A/B Testing Properties            |
+
+#### Other optional columns
+
+| Column Name                                       | Description                                                                                                                                            | Allowed Values          | Example Value         |
+| :------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :-------------------- |
+| Property Type                                     | The type of the property as it is sent to your downstream destination                                                                                  | Event, User, System     | Event                 |
+| Event Tags                                        | The tags attached to your event (separate multiple tags with ';')                                                                                      | Any string              | Owner:Growth          |
+| Event Variant Name                                | To import event variants, provide the event variant suffix here. When provided, all following properties will be imported as event variant properties. | Any string              | Mobile                |
+| Pinned Value                                      | The pinned value of the property on this event                                                                                                         | Any string              | iOS                   |
+| Event Name Mapping: \<insert destination name>    | The name of the event as it is sent to the destination                                                                                                 | Any string              | Conversion            |
+| Stakeholder Domains                               | The domains that should be attached as stakeholders to the event                                                                                       | Comma separated strings | Growth, Checkout Team |
+| Property Name Mapping: \<insert destination name> | The name of the property as it is sent to the destination                                                                                              | Any string              | Revenue               |
+| Property Regex                                     | Regex validation for the property value                                                                                                             | Any regex              | \d+                   |
+| Property Regex Sample String                       | A sample string that matches the regex                                                                                                             | Any string              | 1234567890              |
+
+### Amplitude Taxonomy Template
+
+![Screenshot of the Amplitude taxonomy spreadsheet template](/images/workspace/importing/amplitude-spreadsheet.png)
+
+[View example sheet](https://docs.google.com/spreadsheets/d/1-6rXRomzq05YDQ9A6QG9A2i-jez72amPw-Johhd-heQ/edit#gid=771066228)
+
+#### Required columns
+
+| Column Name                 | Description                                                                 | Allowed Values                | Example Value                              |
+| :-------------------------- | :-------------------------------------------------------------------------- | :---------------------------- | :----------------------------------------- |
+| Event Name                  | The name of your event                                                      | Any string                    | App Opened                                 |
+| Trigger + Event Description | The description of your event and when it should be sent                    | Any string                    | Sent when the user opens the app           |
+| Event Category              | The category your event belongs to, if any                                  | Any string                    | App Lifecycle                              |
+| Platform                    | The name of the platforms this event should be sent from                    | Comma separated strings       | iOS, Android, Web                          |
+| Property Name               | The name of a property that should be sent with your event                  | Any string                    | Device Type                                |
+| Property Description        | The description of the property                                             | Any string                    | The type of client user is currently using |
+| Property Type               | Control whether the event should be sent as Event property or User property | Event property, User property | Event                                      |
+| Sample Values               | List of all values allowed for the property, if applicable                  | Comma separated strings       | iOS, Android, Web, Desktop, Fire           |
+
+### Mixpanel Tracking Plan Template
+
+![Screenshot of the Mixpanel tracking plan spreadsheet template](/images/workspace/importing/mixpanel-spreadsheet.png)
+
+[View example sheet](https://mixpanel.app.box.com/s/1xou3n8z6a14igg3hiiuxs7ur15cii4y)
+
+#### Required columns
+
+| Column Name         | Description                                                | Allowed Values                        | Example Value                    |
+| :------------------ | :--------------------------------------------------------- | :------------------------------------ | :------------------------------- |
+| Event Name          | The name of your event                                     | Any string                            | App Opened                       |
+| Event Definition    | The definition of your event and when it should be sent    | Any string                            | Sent when the user opens the app |
+| Platform            | The name of the platforms this event should be sent from   | Comma separated strings               | iOS, Android, Web                |
+| Property Name       | The name of a property that should be sent with your event | Any string                            | Device Type                      |
+| Property Definition | The description of the property                            | Any string                            | The client type                  |
+| Data Type           | The type of the property                                   | string, int, float, bool, object, any | string                           |
+| Sample Values       | List of all values allowed for the property, if applicable | Comma separated strings               | iOS, Android, Web, Desktop, Fire |
+
+### Segment Protocols Tracking Plan CSV
+
+Format for importing tracking plans from Segment Protocols. For how to download a tracking plan in Segment Protocols, see [here](https://segment.com/docs/protocols/tracking-plan/create/#download-a-tracking-plan).
+
+#### Required columns
+
+| Column Name        | Description                                                       | Allowed Values                                                          | Example Value                    |
+| :----------------- | :---------------------------------------------------------------- | :---------------------------------------------------------------------- | :------------------------------- |
+| Version            | The version of the tracking plan                                  | Optional integer                                                        | 1                                |
+| Event Type         | The type of the event                                             | Track, Identify                                                         | Track                            |
+| Event Name         | The name of your event                                            | Any string                                                              | App Opened                       |
+| Property Name      | The name of a property that should be sent with your event        | Any string                                                              | Device Type                      |
+| Description        | The description of the event or property                          | Any string                                                              | Sent when the user opens the app |
+| Labels             | Labels in Protocols imported as tags in Avo                       | Any string                                                              | Owner:Growth                     |
+| Property Data Type | The type of the property                                          | string, int, float, bool, object, any (combined with ,null if optional) | string                           |
+| Enum Values        | Finite list of all values allowed for the property, if applicable | Comma separated strings                                                 | iOS, Android, Web, Desktop       |
+
+### Properties Import Format
+
+CSV format for importing event, user and/or system properties.
+
+**Note:**
+
+- The order of the columns in your sheet do not matter
+- There must be a header row in your sheet with the exact column names as described for one of the format below
+- Any additional columns are ignored
+
+#### Required columns
+
+| Column Name             | Description                                                                                                 | Allowed values                | Example Value                    |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------- | :---------------------------- | :------------------------------- |
+| Property Type           | Control whether the property should be sent as **Event** property, **User** property or **System** property | Event, User, System           | User                             |
+| Property Name           | The name of the property                                                                                    | Any string                    | Device Type                      |
+| Property Description    | The description of the property                                                                             | Any string                    | The client type                  |
+| Property Value Type     | The type of the property                                                                                    | string, int, float, bool, any | string                           |
+| Property Value Is List  | True if property should be array/list of values                                                             | true, false                   | false                            |
+| Property Required       | True if the property should always be sent with your event, false if sometimes sent                         | true, false                   | true                             |
+| Property Allowed Values | Finite list of all values allowed for the property, if applicable                                           | Any string                    | iOS, Android, Web, Desktop, Fire |
+
+### Group Property Import Format
+
+CSV format for importing.
+
+**Note:**
+
+- The order of the columns in your sheet does not matter
+- There must be a header row in your sheet with the exact column names as described for one of the format below
+- Any additional columns are ignored
+
+#### Required columns
+
+| Column Name                  | Description                                                                   | Allowed Values                        | Example Value                        |
+| :--------------------------- | :---------------------------------------------------------------------------- | :------------------------------------ | :----------------------------------- |
+| Group Type                   | The group type (e.g. "Workspace" if you have a Workspace group)               | Any string                            | Workspace                            |
+| Property Name                | The name of the property as you want it sent to the analytics destination     | Any string                            | Member Count                         |
+| Property Description         | The description of the property                                               | Any string                            | The number of members of a workspace |
+| Property Value Type          | The type of the property                                                      | string, int, float, bool, object, any | int                                  |
+| Is Property Array?           | "Y" or "N" for whether this property is an array of property values           | true, false                           | true                                 |
+| Sent with Events             | "/" separated list of events with which this group property should be updated | Any string separated by "/"           | Invite Accepted / Member Removed     |
+| Property Enumeration options | Finite list of all values allowed for the property, if applicable             | Comma separated strings               | Email, Phone Number, SSO             |
+
+## Import Methods
+
+You can select from two import methods when importing your tracking plan:
+
+- **Add only**: This is the default import method. The importer will only append new items from the imported file to your tracking plan. No destructive changes will be made to existing items in your tracking plan.
+- **Add and update**: This import method will append new items from the imported file to your tracking plan and update existing items with the same name to match the imported file. Note that this import will not remove any items from your tracking plan.
+
+<Callout type="info" emoji="💡">
+  The **Add and Update** import method is currently in a close beta. Please
+  reach out to us if you'd like to try it out.
+</Callout>
+
+![Screenshot of the Avo Importer](/images/workspace/importing/import-method.png)
+
+## Troubleshooting
+
+### How do I prevent importing duplicates of my properties?
+
+The importer attempts to merge properties from imported events using the following criteria:
+
+- The property name matches
+- The property type matches
+- The description matches
+
+If these three criteria are not fulfilled, the importer doesn't merge the properties. The reason we
+decided to include the description in this criteria is that a property that shares a name and a type,
+can still have a totally different meaning based on the description, and documenting that
+difference clearly in the tracking plan is critical to ensure everyone share the same understanding
+of what the property should contain in different context.
+
+In the case where you have aligned your names and types, but the description is different, you can:
+
+- **If the properties should be merged and you are in a position to reset your tracking plan**: Unify the description in your import file, [reset the tracking plan](/data-design/guides/reset-tracking-plan)
+  , and re-run the import. This will result in the properties being merged on import.
+- **If the properties should be merged**: Use the ["Replace property with..." feature](/data-design/avo-tracking-plan/properties#replacing-a-property) in the context menu of the property modal
+- **If the properties should not be merged**: Provide unique name and descriptions to better differentiate between these properties in the tracking plan
+
+## What's Next?
+
+Now you have a tracking plan in Avo and it's time to learn [how to manage it](/data-design/start-data-design).

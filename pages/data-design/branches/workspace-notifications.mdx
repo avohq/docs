@@ -1,0 +1,186 @@
+# Branch Notifications
+
+Keep track of branches in progress and prevent them to get stuck in the review process by setting up Slack notifications. Avo offers two types of branch notifications:
+
+- **Workspace notifications** - Broad notifications about all branch activity sent to a single workspace channel
+- **Stakeholder team notifications** - Targeted notifications sent to team-specific channels when branches impact their stakeholder items
+
+Both notification types include real-time notifications for branch activity and review reminders for branches awaiting review.
+
+## Workspace Notifications
+
+Workspace notifications provide visibility into all branch activity across your workspace and are sent to a single Slack channel. Users who need to take action (such as reviewers) are @-mentioned in the notifications.
+
+Workspace notifications include:
+- **Real-time notifications** - Immediate alerts when branch events occur
+- **Review reminders** - Periodic reminders for branches marked as "Ready for review" to prevent them from getting stuck
+
+### Types of real-time workspace notifications
+
+- **Branch status updates** - Status changes for all branches in the workspace
+  - Branch created
+  - Ready for review 
+  - Approved
+  - Changes requested
+  - Merged
+  - Closed
+  - Reverted to draft
+  - Example: *Solvi approved the onboarding-funnel branch 🎉*
+
+- **Comments:** – All comments made in the workspace, with Slack @-mentions for the member mentioned in the Avo comment
+  - New comment added
+  - Examples:
+    - *Solvi commented on the Account Created event on the onboarding-funnel branch: "@Stefania should we include the role property?"*
+    - *Stefania commented on the authentication config property on the main branch: "@Solvi should we have auto login as a property value here when we auto login the customer from the landing page?"*
+
+- **Member involvement changes:** - All branch member involvement changes, with @-mentions for member being added or removed
+  - Branch reviewer added
+  - Branch reviewer removed
+  - Collaborator added
+  - Collaborator removed
+  - Example: *Stefania added @solvi as a collaborator on the onboarding-funnel branch*
+
+### Review reminders
+
+For branches marked as "Ready for review", Avo sends periodic reminder notifications to ensure they don't get stuck in the review process. These reminders:
+
+- Are sent once a day to the workspace channel with @-mentions for the assigned reviewers for each branch
+- Include a summary of how long the branch has been waiting for review
+- Help maintain momentum in the approval workflow
+
+![Workspace review reminders](/images/notifications/review-reminders.png)
+
+### Setting up and configuring workspace notifications
+
+#### Setting up workspace notifications
+
+1. Open **Workspace Settings** ⚙️ > **Slack Integration**
+   <img
+     src="/docs/images/workspace/integrations/set-up-slack.png"
+     width="350px"
+     alt="Set up slack"
+   />
+2. Select **Connect to Slack**
+3. Follow the instructions in the popup from Slack, where you pick the channel you want to receive the notifications in. A confirmation message will be sent to the channel once connected.
+
+   <img
+     src="/docs/images/workspace/integrations/workspace-notifications.png"
+     width="350px"
+     alt="Workspace notifications"
+   />
+
+4. Save and enjoy!
+
+#### Configuring review reminders
+
+Review reminders can be configured in your workspace Slack integration settings:
+
+1. Navigate to **Workspace Settings** ⚙️ > **Slack Integration**
+2. Ensure your workspace is connected to Slack
+3. Toggle on **Scheduled branch reminders**
+4. Configure your reminder schedule:
+   - **Frequency**: Choose daily reminders or weekdays only
+   - **Time**: Set the specific time for reminders (e.g., 9:00 AM)
+   - **Timezone**: Select your team's timezone (e.g., Atlantic/Reykjavik)
+
+The reminders will be sent at your configured time and include all branches that are currently pending review, helping ensure nothing gets overlooked.
+
+## Stakeholder Team Notifications
+
+Stakeholder team notifications are targeted alerts sent to team-specific Slack channels when branches contain changes that impact their stakeholder items (events, event variants, and properties) based on each [stakeholder team settings](/workspace-management/domains#stakeholder-team-settings). Team members who need to take action are @-mentioned in the notifications.
+
+### How stakeholder notifications work
+
+Stakeholder team notifications include:
+- **[Real-time notifications](#types-of-real-time-stakeholder-notifications)** - Immediate alerts when branches impact the team's stakeholder items
+- **[Review reminders](#review-reminders-for-stakeholder-teams-coming-soon)** - Periodic reminders for branches awaiting review from the stakeholder team
+- **[Issue notifications](/inspector/inspector-slack-alerts)** – Alerts on issues impacting events a stakeholder team owns or is a stakeholder in (see use cases in the [Inspector Alerts for Slack Page](/inspector/inspector-slack-alerts#inspector-alerts-for-slack-use-cases))
+
+Stakeholder notifications are triggered based on the relationship between the stakeholder team and the items being modified and the [stakeholder team settings](/workspace-management/domains#stakeholder-team-settings):
+
+- **As impacted owner** - Notifications when the team owns items being modified in a branch 
+- **As impacted stakeholder** - Notifications when the team is assigned as a stakeholder to items being modified
+- **As stakeholder reviewer** - Notifications when the team is manually added as a branch reviewer 
+
+The notifications are sent to the team's designated Slack channel and only include information about branches that impact their specific stakeholder items.
+
+
+### Types of real-time stakeholder notifications
+
+Unlike workspace notifications that cover all branch activity, stakeholder notifications are triggered for branches that impact the team's stakeholder items:
+
+- **Branch status updates** - Status changes for branches that impact the team's stakeholder items
+  - Branch created
+  - Ready for review 
+  - Approved
+  - Changes requested
+  - Merged
+  - Closed
+  - Reverted to draft
+  - Example: *The branch onboarding-funnel has been marked as approved. Stakeholder team Onboarding is an impacted owner of 3 events and 1 property.*
+
+- **Comments:** – Comments made on branches that impact the team's stakeholder items, with Slack @-mentions for the member mentioned in the Avo comment
+  - New comment added
+  - Examples:
+    - Solvi mentioned a stakeholder team member on the branch onboarding-funnel: "@Stefania should we include the role property?"
+
+- **Member involvement changes:** - The stakeholder team is added or removed as a reviewer on a branch, with @-mentions for team members who need to review
+  - Branch reviewer added
+  - Branch reviewer removed
+  - Collaborator added
+  - Collaborator removed
+  - Example: *Stefania asked @Solvi to review the branch onboarding-funnel. Stakeholder team Onboarding is an impacted stakeholder of 3 events and 1 property.*
+
+### Review reminders for stakeholder teams (coming soon)
+
+For branches that impact a stakeholder team's items and are awaiting their review, Avo sends periodic reminder notifications to team-specific channels based on the stakeholder notification settings. These reminders:
+
+- Are sent once a day to the stakeholder team channel with @-mentions for the assigned reviewers for each branch
+- Focus only on branches that impact the team's stakeholder items
+- Include context about which specific items impact the stakeholder team
+- Help ensure stakeholder teams don't miss reviews for changes affecting their stakeholder team
+- Are configured according to each stakeholder team's individual settings
+
+### Setting up and configuring stakeholder team notifications
+
+#### Setting up stakeholder team notifications
+
+1. Navigate to **Workspace Settings** ⚙️ > **Stakeholders**
+2. Select the stakeholder team you want to configure
+3. In the **Slack notifications** section, connect a Slack channel to the team
+4. Configure notification preferences in the stakeholder team settings for each scenario:
+   - **As impacted owner** - Choose notification preferences when the team owns items being modified
+   - **As impacted stakeholder** - Choose notification preferences when the team is a stakeholder in items being modified  
+   - **As stakeholder reviewer** - Choose notification preferences when manually added as a reviewer
+
+Available options include:
+- **Automatically add as required reviewer** - Team is added as required reviewer and receives notifications (Enterprise plan)
+- **Notify in stakeholder Slack channel** - Team receives notifications without being required to approve
+- **Do nothing** - No automatic action or notifications
+
+#### Configuring stakeholder team review reminders
+
+Review reminders for stakeholder teams are configured as part of each team's individual stakeholder settings, not at the workspace level:
+
+1. Navigate to **Workspace Settings** ⚙️ > **Stakeholders**
+2. Select the stakeholder team you want to configure
+3. Configure the team's notification preferences for each scenario:
+   - **As impacted owner** - When the team owns items being modified
+   - **As impacted stakeholder** - When the team is a stakeholder in items being modified
+   - **As stakeholder reviewer** - When manually added as a branch reviewer
+
+Teams that choose "Automatically add as required reviewer" or "Notify in stakeholder Slack channel" will receive review reminders according to their configured preferences.
+
+Learn more about stakeholder team settings in [Managing Stakeholder Teams](/workspace-management/domains#stakeholder-team-settings).
+
+### When to use each type
+
+- **Use workspace notifications** for general visibility into all branch activity across your workspace, with real-time alerts and review reminders ensuring actionable items don't get missed
+- **Use stakeholder team notifications** for targeted alerts when specific teams need to be aware of changes impacting their domain, with focused review reminders for team members who need to review or approve
+- **Use both together** for comprehensive notification coverage - workspace notifications for general awareness and stakeholder notifications for targeted team involvement, both with real-time alerts and smart review reminders to keep branches moving through the approval process
+
+## What's next?
+
+- [Managing Stakeholder Teams](/workspace-management/domains) - Learn how to configure stakeholder team settings and notification preferences
+- [Approval Workflows](/data-design/branches/approval-workflows) - Understand how stakeholder teams can be automatically added as required reviewers
+- [Stakeholders](/data-design/avo-tracking-plan/stakeholder-domains) - Learn about assigning stakeholder teams to tracking plan items

@@ -1,0 +1,71 @@
+# Exporting
+
+_Export your entire or partial tracking plan_
+
+## Manual export in the Avo dashboard
+
+To export your tracking plan Schema:
+
+1. Head to the Sidebar wheel > **Export**
+
+   ![](/images/workspace/wheel-export.png)
+
+2. Select **Export JSON** or **Export CSV** to download your schema. If these formats don't contain all the data you need, you can reach out to us and we can enable alternative exporting options for your workspace.
+
+   ![](/images/workspace/export-modal.png)
+
+## Programmatic export with the Export API
+
+Use the **Export API** to programmatically export your tracking plan as JSON Schema from any branch. This is ideal for automation, CI/CD pipelines, or integrating with external tools.
+
+### Quick Start
+
+```sh
+curl -H "authorization: Basic <Base64 encoded token>" \
+  -X GET https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
+```
+
+### Key Features
+
+- **Export any branch**: Export from main or feature branches
+- **JSON Schema format**: Structured data perfect for automation
+- **Rate limited**: 1 request per second per service account
+- **Gzipped responses**: For faster data delivery on large tracking plans
+
+### Use Cases
+
+- **Automated documentation**: Generate documentation from your tracking plan
+- **Data pipeline integration**: Sync tracking plan changes with downstream systems
+- **Quality assurance**: Validate implementations against the latest schema
+- **Custom tooling**: Build internal tools that work with your tracking plan data
+
+**[View complete Export API documentation](/reference/public-api/export-tracking-plan)** for authentication, parameters, and response examples.
+
+## Automated Webhook export
+
+[Publishing integrations](/publishing/publishing/overview) can be used for exporting your tracking plan, either one of, or a recurring
+publishing export using auto-publishing.
+
+To export your tracking plan on a JSON Schema format:
+
+1. Head to Tracking Plan > **Publish** in the sidebar of your Avo workspace
+2. Create a Webhook integration
+3. In the "Payload preview" section click "Click to view payload preview". When the preview has loaded you can either copy or download the JSON file. You can find more details on the format of the JSON in the [Publishing docs](/publishing/publishing/overview#tracking-plan-model).
+
+![](/images/workspace/webhook-export.png)
+
+You can customize which events to export by using the events filter in the webhook configuration. Events can be filtered by Sources, Destinations and Tags.
+
+## Pull JSON Schema via the CLI
+
+You can 'avo pull' a JSON Schema representation of your tracking plan via the Avo CLI by configuring a JSON source in the Avo UI, and attach that source to the events you want to be included in the JSON Schema. Here's how:
+
+1. Reach out to us to enable the JSON source type for your workspace
+2. Create a new Source (in the Sources tab) and set the Source 'Development Platform' to JSON Schema
+3. Attach the JSON Schema source to the events you'd like to be included. Note that this can be done in bulk on the Source settings page
+4. Pick programming language in the "Avo Codegen Setup" tab
+5. Run 'avo pull' in your CLI to pull the JSON Schema
+
+## What's next?
+
+If you find yourself regularly exporting, you might want to [configure Auto-Publishing](/publishing/publishing/overview) for your tracking plan to consistently stay up to date with a downstream tool such as your analytics platform, your production time validation solution, your SQL table management, etc.

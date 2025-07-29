@@ -1,0 +1,25 @@
+# Configuring Inspector Sources
+
+_How to connect Inspector to your data stream._
+
+The first step to start using Inspector, is installing it on your sources. Inspector shares sources with the workspace sources and they are all set up in the Sources tab. You can find the source setup in Inspector [Issues view](/inspector/inspector-issues-view) and the [Events view](/inspector/inspector-events-view) by clicking "+ Add Source" or navigate to the "Sources" tab directly.
+
+![Opening a branch](/images/workspace/nav-inspector-sources-highlighted.png)
+
+The Sources tab shows a list of all sources that have already been created and the status of Inspector setup. Once Inspector has been successfully installed, the set up status will be updated accordingly.
+
+If the source you want to set up isn't already in the list of source, you can create a new one by clicking "Add Source". Check out our Connections Setup docs to learn more about [setting up and configuring sources](/data-design/define-sources-and-destinations#sources)
+
+Each Inspector source has 3 states:
+
+1. Receiving events - this source already received at least one event from the client SDK.
+
+![Inspector receiving events](/images/workspace/connection-setup/inspector-receiving-events.png)
+
+2. Inspector available - the source is available for Inspection, but have not received any events yet. Click the source and find Inspector Setup section of the source details to see the implementations details and the API key for this source.
+
+![Inspector listening](/images/workspace/connection-setup/inspector-listening.png)
+
+3. Inspector Not available - this source is not supported, there is no client SDK yet. Please [contact us](/help/troubleshooting) to learn current status and planned release date.
+
+![Inspector not available](/images/workspace/connection-setup/inspector-not-available.png)

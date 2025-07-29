@@ -1,0 +1,78 @@
+import { Callout } from 'nextra/components';
+
+# Authentication
+
+_Authentication for Avo API_
+
+Avo API uses `Basic authentication` to authenticate requests with Avo service accounts.
+
+## Authenticating with Avo API
+
+Avo API accepts service account token as an authentication method.
+
+Authenticate with the API:
+
+1. Create Service Account
+
+   Start by [creating a Service Account](/public-api/authentication#creating-service-accounts) and store the secret somewhere secure.
+
+2. Authorization Header
+
+   The Avo API expects the authorization header to be set with BASIC auth.
+
+   - Base64 encoded `name:secret` from the service account.
+
+   ```json
+   ("authorization": "Basic <Base64 encoded token>")
+   ```
+
+3. Send a request with the header
+
+   ```sh
+   curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.app/workspaces/<WorkspaceId>/branches/<BranchId>/export/v1
+   ```
+
+   <Callout type="info" emoji="💡">You can find the `<WorkspaceId>` and `<BranchId>` in the URL of your Avo workspace: `https://www.avo.app/schemas/<WorkspaceId>/branches/<BranchId>/`</Callout>
+
+## Creating Service Accounts
+
+1. Navigate to your [Service Account Workspace Settings](https://www.avo.app/schemas/default?settings=service-accounts) or open the settings cogwheel in the Avo sidebar, select `Workspace Settings` and then open the `Service Accounts` tab.
+
+   ![](/images/public-api/service-accounts.png)
+
+2. Enter a descriptive name for where you'll be using this service account and press the `Generate Secret` button.
+
+   <Callout type="info" emoji="💡">
+     Only workspace members with Admin access can create service accounts.
+   </Callout>
+
+3. Once Avo has generated and securely stored your secret, you get one chance to view it. Copy the secret key and save it securely in your internal systems.
+
+   <Callout type="info" emoji="💡">
+     Avo postfixes the name with `_sa_[randomId]` so make sure to copy the final
+     name
+   </Callout>
+
+   ![](/images/public-api/create-service-account.png)
+
+   <Callout type="info" emoji="💡">
+     You will never see the secret key again, so make sure to copy it.
+   </Callout>
+
+## Deleting a Service Account
+
+If for some reason you need to delete your service account, you can do so from the service account management page.
+
+1. Navigate to your [Service Account Workspace Settings](https://www.avo.app/schemas/default?settings=service-accounts) or open the settings cogwheel in the Avo sidebar, select `Workspace Settings` and then open the `Service Accounts` tab.
+
+2. Press the context menu to the right of the service account you want to remove and select `Delete Service Account`.
+
+3. Press `Delete` again in the confirm window that pops up.
+
+   <Callout type="info" emoji="💡">
+     This action cannot be undone. Once deleted, there is no way to recover the
+     service account again. As soon as a service account has been deleted it
+     will stop working immediately.
+   </Callout>
+
+   ![](/images/public-api/delete-service-account.png)

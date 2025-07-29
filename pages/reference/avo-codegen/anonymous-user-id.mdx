@@ -1,0 +1,49 @@
+# Handling anonymous and identified users in the client and on the server
+
+## User identity in the client side Codegen
+
+### Anonymous users
+
+When working with anonymous users, analytics SDKs automatically assign anonymous user ids on a per-client level.
+When a user is identified the anonymous events are associated with the identified user.
+You don't need to do additional actions for this logic to work on the client side, so you are not required to provide `anonymousUserId` anywhere.
+
+### Identified users
+
+Client side Analytics SDKs can store the information about the currently logged in user.
+It makes possible to identify user once and then send all subsequent tracking calls on behalf of the identified user.
+
+To make an Avo function identify a user you add the Identify action to the corresponding Avo event in your tracking plan. [Learn more about the Identify action](/data-design/avo-tracking-plan/events#identify-user).
+
+Codegen corresponding to the events with Identify action will require a userId parameter automatically.
+
+## User identity in the server side Codegen
+
+Server side Codegen does not inherently maintain user identity, so it requires to specify the identifying id value for each event.
+The codegen will automatically add two parameters to every Avo function in server side environments: `anonymous_id_` and `user_id`.
+
+### Anonymous users
+
+An "anonymous id" is used to associate events with non identified users, e.g. your device id. 
+In Avo functions generated for events that do not have `Identify` action, both `anonymous_id` and `user_id` are optional, so you can provide either one. 
+For non identified users provide the value of the `anonymous_id_` and set `user_is_` to null.
+
+> Workspaces created before July 2023 might not get `anonymous_id_` parameters in the generated Avo functions, run `avo pull` with the `--forceFeatures ServerTrackingWithDeviceId` flag to include the parameter. You can [contact us](/help/troubleshooting) to have it enabled by default.
+
+### Identified users
+
+User id is the id of an identified user.
+In Avo functions generated for events that do not have `Identify` action, both `anonymous_id_` and `user_id` are optional, so you can provide one. 
+For identified users provide the value of the `user_id_` and set `anonymous_id_` to null.
+Alternatively, some SDKs allow you to keep the `anonymous_id_` and use both when calling the SDK, like (Mixpanel)[https://docs.mixpanel.com/docs/tracking-methods/id-management/identifying-users-simplified#server-side-identity-management]
+
+> Though both `anonymousUserId` and `userId` are optional make sure to provide at least one of them to be able to identify the user.
+
+### Identify action in server side codegen
+
+If you add an `Identify` action to an event in Avo, the generated code with create an Avo function that requires both `anonymous_id_` and `user_id`.
+It should happen at the moment when the user gets identified and the `anonymous_id_` should be associated with the `user_id_`.
+Some SDKS require you to perform the identification manually, other do it automatically. An example of the manual case is (Mixpanel's old approach)[https://developer.mixpanel.com/reference/identity-create-alias] to user identification
+
+> Server side codegen uses the `logEvent` callback in this case. `logEvent` will provide non-null values for both `anonymous_id_` and `user_id`.
+> Make sure to include `Log Event` and `Identify` action on the server side events.

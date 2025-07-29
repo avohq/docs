@@ -1,0 +1,121 @@
+# Create Branch
+
+_Create a new branch using Avo API_
+
+The Create Branch API allows you to programmatically create new branches in your Avo workspace.
+
+## Endpoint
+
+```Url
+POST https://api.avo.app/workspaces/:workspaceId/branches/v1
+```
+
+`:workspaceId` is the ID of your workspace. You'll find it in the URL of your avo tab after `/schemas/`.
+
+### Authentication
+
+This endpoint requires an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
+
+### Rate Limit
+
+We currently soft-enforce 1/req/s rate limit per service account for this endpoint. Please reach out to us if you have a use case in mind that requires a higher rate limit.
+
+## Parameters
+
+### - workspaceId
+
+Locate your workspaceId in the URL
+`avo.app/schemas/:workspaceId`
+
+### - Base64 encoding secret header
+
+The base64 encoded token expects `name:secret`
+
+See more on [authorization](/public-api/authentication#authenticating-with-avo-api)
+
+## Request Body
+
+The request body must be a JSON object with the following field:
+
+```json
+{
+  "name": "my-new-branch"
+}
+```
+
+### Branch Name Rules
+
+- The branch name must be in kebab case (lowercase letters, numbers, and hyphens only)
+- The branch name cannot match any currently open branch in the workspace
+- Valid examples: `feature-123`, `bugfix-456`, `release-1-0-0`
+- Invalid examples: `Feature Branch`, `bugfix_456`, `release@1.0.0`
+
+## Response
+
+On success, the API will return a 201 Created status code with the newly created branch details:
+
+```json
+{
+  "branchId": "abc123def",
+  "branchName": "my-new-branch",
+  "branchUrl": "https://avo.app/schemas/abcd/branches/1234"
+}
+```
+
+## Error Responses
+
+### 400 Bad Request
+
+Returned when:
+- The branch name is invalid (contains invalid characters)
+- The branch name is empty
+- The request body is malformed
+
+```json
+{
+  "error": 'Invalid branch name, try "suggestedName" instead'
+}
+```
+
+### 409 Conflict
+
+Returned when:
+- A branch with the same name already exists in the workspace
+
+```json
+{
+  "error": "Branch with this name already exists"
+}
+```
+
+### 401 Unauthorized
+
+Returned when:
+- The authorization header is missing or invalid
+
+```json
+{
+  "error": "Unauthorized"
+}
+```
+
+## Example Usage
+
+### Request
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" \
+       -H "Content-Type: application/json" \
+       -X POST https://api.avo.app/workspaces/:workspaceId/branches/v1 \
+       -d '{"name": "my-new-branch"}'
+```
+
+### Response
+
+```json
+{
+  "branchId": "abc123def",
+  "branchName": "my-new-branch",
+  "branchUrl": "https://avo.app/schemas/abcd/branches/abc123def"
+}
+``` 

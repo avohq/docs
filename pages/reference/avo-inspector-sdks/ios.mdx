@@ -1,0 +1,352 @@
+# Avo Inspector iOS SDK
+
+## Quick Start Guide
+
+Quick start guides are available in the GitHub repos:
+
+[Swift Package Manager guide](https://github.com/avohq/ios-avo-inspector-spm)
+
+[CocoaPods guide](https://github.com/avohq/ios-avo-inspector)
+
+## Installation
+
+AvoInspector is available through CocoaPods and Swift Package manager.
+
+To install it through CocoaPods, add the following line to your Podfile:
+
+```ruby
+pod 'AvoInspector'
+```
+
+The latest version can be found in [GitHub releases](https://github.com/avohq/ios-avo-inspector/releases) tab.
+
+To install with SPM, search for `https://github.com/avohq/ios-avo-inspector-spm` in Xcode.
+
+## Import
+
+```swift
+import AvoInspector
+```
+
+```objectivec
+#import <AvoInspector/AvoInspector.h>
+```
+
+## Initialization
+
+Obtain the API key in Inspector tab in your [Avo.app](https://www.avo.app/welcome) workspace.
+
+You will need to create an instance of `AvoInspector` with the constructor.
+
+```swift
+init(apiKey: String?, env: AvoInspectorEnv)
+```
+
+```objectivec
+-(instancetype) initWithApiKey: (NSString *) apiKey env: (AvoInspectorEnv) env;
+```
+
+> #### Parameters:
+>
+> - `String apiKey` - the API key you get in Inspector tab of your Avo workspace
+> - `AvoInspectorEnv env` - current environment: development, staging or production
+
+## Sending event schemas to Avo Inspector
+
+This is the core of the **Avo Inspector SDK**.
+
+Call \***\*one of the methods\*\*** in this section every time an event is tracked.
+
+### Option 1
+
+```swift
+func trackSchema(fromEvent eventName: String?, eventParams params: [String : Any?]?) -> [String : AvoEventSchemaType]?
+```
+
+```objectivec
+-(NSDictionary<NSString *, AvoEventSchemaType *> *) trackSchemaFromEvent:(NSString *) eventName eventParams:(NSDictionary<NSString *, id> *) params;
+```
+
+> #### Parameters:
+>
+> - `eventName: String` - event name, sometimes referred as event type.
+> - `eventProperties: NSDictionary<NSString *, id> *` - event properties, which will be converted to event schema on the device and the event schema will be sent to **Avo**. Resulting keys will be the same and resulting values will be original value's types converted to schema types.
+>
+> ##### Example format:
+>
+> ```swift
+> let eventProperties: [String : Any] = [
+>    "userId": 1337,
+>    "emailAddress": "jane.doe@avo.app",
+>    "key": "value"
+> ]
+> ```
+>
+> ```objectivec
+> NSDictionary<NSString *, id> *eventProperties = @{
+> @"userId": @1337,
+> @"emailAddress": @"jane.doe@avo.app",
+> @"key": @"value"
+> };
+> ```
+
+> #### Return Type:
+>
+> - `NSDictionary<NSString *, AvoEventSchemaType *> *` containing event schema, so you can verify that conversion was correct.
+>
+> ##### Example format:
+>
+> ```swift
+> let eventSchema: [String : AvoEventSchemaType] = [
+>     "userId": AvoInt(),
+>     "emailAddress": AvoString(),
+>     "key": AvoString()
+> ]
+> ```
+>
+> ```objectivec
+> NSDictionary<NSString _, AvoEventSchemaType _> \*eventSchema = @{
+> @"userId": [AvoInt new],
+> @"emailAddress": [AvoString new],
+> @"key": [AvoString new]
+> };
+> ```
+
+### Option 2
+
+```swift
+func trackSchema(eventName: String, eventSchema: NSDictionary<String, AvoEventSchemaType>)
+```
+
+```objectivec
+-(void) trackSchema:(NSString *) eventName eventSchema:(NSDictionary<NSString *, AvoEventSchemaType *> *) schema;
+```
+
+This method allows you to process the event schema before sending it.
+It's handy to extract the schema from your event properties with `extractSchema(eventProperties: NSDictionary<String, Any>)` (see below), process it and then provide it to this method.
+
+> #### Parameters:
+>
+> - `eventName: String` - event name, sometimes referred as event type.
+> - `eventSchema: NSDictionary<String *, AvoEventSchemaType *> *` - actual event schema that will be sent to **Avo**. Keys are event properties names and values are event properties types.
+>
+> ##### Example format:
+>
+> ```swift
+> let eventSchema: [String : AvoEventSchemaType] = [
+>    "userId": AvoInt(),
+>    "emailAddress": AvoString(),
+>    "key": AvoString()
+> ]
+> ```
+>
+> ```objectivec
+> NSDictionary<String _, AvoEventSchemaType _> \*eventSchema = @{
+> @"userId": [AvoInt new],
+> @"emailAddress": [AvoString new],
+> @"key": [AvoString new]
+> };
+> ```
+
+See [this](/inspector/sdk#standalone-usage) for details about event schema structure and schema types.
+
+## Other methods
+
+### 1. Extract schema from event properties
+
+```swift
+func extractSchema(eventProperties: NSDictionary<String, Any>) -> NSDictionary<String, AvoEventSchemaType>
+```
+
+```objectivec
+-(NSDictionary<NSString _, AvoEventSchemaType _> _) extractSchema:(NSDictionary<NSString _, id> \*) eventParams;
+```
+
+This is the method used by `trackSchemaFromEvent` internally. It extracts the event schema in form of an `NSDictionary` from an event properties NSDictionary.
+
+> #### Parameters:
+>
+> - `eventProperties: NSDictionary` - event properties object. Keys are event properties names and values are event properties values.
+>
+> #### Return Type:
+>
+> - `NSDictionary<NSString *, AvoEventSchemaType *> *` containing event schema of the given event properties. Keys are event properties names and values are event properties types.
+>   Example format:
+>
+> ```swift
+> let eventSchema: [String : AvoEventSchemaType] = [
+>    "userId": AvoInt(),
+>    "emailAddress": AvoString(),
+>    "key": AvoString()
+>
+> ]
+> ```
+>
+> ```objectivec
+> NSDictionary<NSString _, AvoEventSchemaType _> \*eventSchema = @{
+> @"userId": [AvoInt new],
+> @"emailAddress": [AvoString new],
+> @"key": [AvoString new]
+> };
+> ```
+
+### 2. Print logs
+
+```swift
+func enableLogging(enable: Bool)
+```
+
+```objectivec
++(void) enableLogging:(BOOL) enable;
+```
+
+This is a class method.
+`enableLogging` controls printing of tracked event schemas and other helpful information. Enabled by default in development environments.
+
+> #### Parameters:
+>
+> - `enable: Bool` - sets whether **Avo Inspector SDK** will print logs.
+
+### 3. Control batching size
+
+```swift
+func setBatchSize(newBatchSize: Int32)
+```
+
+```objectivec
++(void) setBatchSize:(int) newBatchSize;
+```
+
+This is a class method.
+Enables manual control over events batching. Default batch size in production is 30, i.e. the library attempts to send event schemas to the server when it has 30 or more schemas.
+In development batching is disabled by default.
+
+> #### Parameters:
+>
+> - `newBatchSize: Int32` - sets batch size.
+
+### 4. Control batching interval
+
+```swift
+func setBatchFlushSeconds(newBatchFlushSeconds: Int32)
+```
+
+```objectivec
++(void) setBatchFlushSeconds: (int) newBatchFlushSeconds;
+```
+
+This is a class method.
+Enables manual control over events batching. Default production batch flush interval is 30 seconds, i.e. the library attempts to send event schemas to the server when 30 or more seconds pass, given there are unsent schemas.
+
+> #### Parameters:
+>
+> - `newBatchFlushSeconds: Int32` - sets batch flush time in seconds.
+
+## Migrating from v1 to v2 of CocoaPods distribution
+
+Before the release 2.0.0 the CocoaPods Inspector SDK bundled the [Mobile Debugger](/reference/avo-debuggers/mobile#open-source-repositories-and-platform-specific-integration-docs). Starting from release 2.0.0 the Mobile Debugger is available as a standalone library. This approach will allow you to get greater control over your app dependencies, not including the Mobile Debugger into the production build. The Mobile Debugger is designed to be used in development and staging builds only.
+
+After including the [Mobile debugger](https://cocoapods.org/pods/IosAnalyticsDebugger) into your project the Visual Inspector methods from versions prior to 2.0.0 map to the Mobile debugger methods in the following way:
+
+```swift
+inspector.show(avoVisualInspectorType)
+```
+
+```objectivec
+[inspector showVisualInspector: avoVisualInspectorType];
+```
+
+becomes
+
+```swift
+debugger.showBubble()
+```
+
+```objectivec
+[debugger showBubbleDebugger];
+```
+
+and
+
+```swift
+func hideVisualInspector()
+```
+
+```objectivec
+- (void) hideVisualInspector;
+```
+
+becomes
+
+```swift
+debugger.hide()
+```
+
+```objectivec
+[debugger hideDebugger];
+
+```
+
+To see the events you send to Inspector in the Mobile Debugger add the following code next to the Inspector call.
+
+Given you have the following code to report to Inspector
+
+```swift
+avoInspector.trackSchema(fromEvent: myEventName, eventParams: myEventProps)
+```
+
+add the following code to see the same event in the Mobile Debugger
+
+```swift
+var debuggerProps: [DebuggerProp] = []
+let debuggerErrors: [Any] = []
+for (key, value) in myEventProps {
+    debuggerProps.append(DebuggerProp(id: key, name: key, value: String(describing: value)))
+}
+debugger.publishEvent(myEventName, withTimestamp: NSNumber(value: NSDate().timeIntervalSince1970),
+    withProperties: debuggerProps, withErrors: debuggerErrors)
+```
+
+Learn more about the debugger setup and initialization [here](https://github.com/avohq/ios-analytics-debugger).
+
+##  Using the Mobile Debugger
+
+When using the Inspector SDK we recommend to also add the [Avo Mobile Debugger](/mobile-debuggers) to your development builds to verify tracking implementation.
+
+To use the Visual Inspector with Swift Package Manager, include https://github.com/avohq/ios-analytics-debugger-spm
+
+To use the Mobile Debugger with CocoaPods, include https://cocoapods.org/pods/IosAnalyticsDebugger
+
+## Auto inspection with Segment SDK
+
+Here is a code snippet you can use to easily integrate with **Segment**.
+After registering this middleware every events sent to **Segment** will be automatically analyzed by **Avo**, i.e. you don't need to call `trackSchemaFromEvent` or `trackSchema` methods.
+
+```swift
+let config = SEGAnalyticsConfiguration(writeKey: "YOUR_WRITEKEY_HERE")
+let avoMiddleware = SEGBlockMiddleware { (context, next) in
+  if let trackPayload = context.payload as? SEGTrackPayload {
+    avoInspector.trackSchema(fromEvent: trackPayload.event, eventParams: Dictionary(uniqueKeysWithValues:
+        trackPayload.properties?.map { key, value in (key.description, value) } ?? []))
+  }
+  next(context)
+}
+config.middlewares = [ avoMiddleware ]
+SEGAnalytics.setup(with: config)
+```
+
+```objectivec
+SEGAnalyticsConfiguration * config = [SEGAnalyticsConfiguration configurationWithWriteKey: @"YOUR_WRITEKEY_HERE"];
+SEGBlockMiddleware * avoMiddleware = [[SEGBlockMiddleware alloc] initWithBlock:^(SEGContext * _Nonnull context, SEGMiddlewareNext  _Nonnull next) {
+  SEGPayload * payload = [context payload];
+  if ([payload isKindOfClass:[SEGTrackPayload class]]) {
+    SEGTrackPayload * trackPayload = (SEGTrackPayload *) payload;
+    [avoInspector trackSchemaFromEvent:[trackPayload event] eventParams:[trackPayload properties]];
+  }
+  next(context);
+}];
+config.middlewares = @[avoMiddleware];
+[SEGAnalytics setupWithConfiguration:config];
+```
+
+See [Segment iOS middleware docs](https://segment.com/docs/connections/sources/catalog/libraries/mobile/ios/#middlewares) for more information.

@@ -1,10 +1,8 @@
----
-layout: 'guide'
-title: 'Analytics tools'
-abstract: 'Learn aboout the analytics tools avo supports'
----
+import { Callout } from 'nextra/components'
 
-import Link from '../../components/Link';
+# C# Analytics tools
+
+_Learn about the analytics tools avo supports_
 
 ## Analytics tools and Avo
 
@@ -19,7 +17,7 @@ all your tools are streaming out consistent data.
 Below are short descriptions of each supported tool, with instructions on how to
 connect with Avo.
 
-### Amplitude {#avo-amplitude}
+### Amplitude
 
 [Amplitude](https://amplitude.com/) is a product analytics platform and is
 useful for analyzing behavior across web, mobile and server.
@@ -45,7 +43,7 @@ project](https://amplitude.zendesk.com/hc/en-us/articles/207108137-Introduction-
 in Amplitude.
 
 Further documentation for Amplitude can be found [on their
-helpdesk](https://amplitude.zendesk.com/hc/en-us/categories/200409887-Getting-Started)
+help desk](https://amplitude.zendesk.com/hc/en-us/categories/200409887-Getting-Started)
 
 ### AppsFlyer
 
@@ -115,7 +113,7 @@ Analytics in your code. Then you can initialize Avo and are ready to go.
 ### FullStory
 
 [FullStory](https://www.fullstory.com/) is a session replay tool useful for
-deep analysis of user behavior. FullStory also accepts [custom events](https://help.fullstory.com/develop-js/363565-fs-event-api-sending-custom-event-data-into-fullstory) to enhance the session data.
+deep analysis of user behavior. FullStory also accepts [custom events](https://help.fullstory.com/hc/en-us/articles/360020623274) to enhance the session data.
 
 To connect your FullStory project to Avo you need to find the Org ID:
 
@@ -131,7 +129,7 @@ _In Avo_:
 3. Paste the corresponding key into the development or production field
 
 Further documentation about FullStory can be found in their
-[helpdesk](https://help.fullstory.com/)
+[help desk](https://help.fullstory.com/)
 
 ### Intercom
 
@@ -159,7 +157,7 @@ to keep the development data separate from production data.
 Further documentation for Intercom can be found in their [Help
 Center](https://www.intercom.com/help)
 
-### Mixpanel {#avo-mixpanel}
+### Mixpanel
 
 [Mixpanel](https://mixpanel.com/) is a product analytics platform and is useful
 for analyzing behavior across web, mobile and server.
@@ -191,8 +189,7 @@ Further documentation for Mixpanel can be found [in their Help Center](https://h
 [Segment](https://segment.com/) is infrastructure for customer data, useful
 for connecting multiple marketing and analytics platforms to your application.
 
-> To connect you Segment project to Avo need to find your [Segment write
-> key](https://segment.com/docs/guides/setup/how-do-i-find-my-write-key/).
+<Callout type="info"> To connect you Segment project to Avo need to find your [Segment write key](https://segment.com/docs/guides/setup/how-do-i-find-my-write-key/).</Callout>
 
 _In Segment_:
 
@@ -213,7 +210,7 @@ environment](https://segment.com/docs/guides/account-management/i-want-to-set-up
 in Segment.
 
 Further documentation for Segment can be found in their
-[Helpdesk](https://segment.com/docs/)
+[help desk](https://segment.com/docs/)
 
 ### Custom Destinations
 
@@ -224,7 +221,7 @@ example:
 - When sending data to analytics platforms through an API (not using their SDK)
 - When using a combination of a programming language and analytics destination not yet directly supported by Avo
 
-Please <Link passHref href="/help/troubleshooting"><a>contact us</a></Link> if you are unsure of what is
+Please [contact us](/help/troubleshooting) if you are unsure of what is
 the best solution for you or if there are any analytics destinations you'd like to see supported in Avo.
 
 To get started using a custom destination you do the following:
@@ -234,4 +231,4 @@ To get started using a custom destination you do the following:
 3. Initialize Avo with a custom destination
 4. Fill in the empty methods for sending the data to your analytics destination
 
-For detailed instructions on how to set up a custom destination, please see our <Link passHref href="/implementation/destinations"><a>destinations docs</a></Link>.
+For detailed instructions on how to set up a custom destination, please see our [destinations docs](/implementation/destinations).

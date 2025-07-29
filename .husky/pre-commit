@@ -1,4 +1,1 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-yarn spellcheck && yarn lint && yarn lint-mdx
+yarn spellcheck && yarn lint

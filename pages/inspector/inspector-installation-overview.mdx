@@ -1,0 +1,110 @@
+import PageLink, { TwoCol } from '../../components/PageLink';
+
+# How to send metadata to the Inspector
+
+There are a few ways to install Inspector to add observability to your events, depending on how you send your events from your product already as well as your preferences. Below is an overview of all the installation methods available.
+
+## Install Inspector through your CDP
+
+If you send your events through a CDP (Customer Data Platform) you can configure the CDP to route the event metadata to the Inspector by setting up an Avo Inspector destination.
+
+The main benefit of this solution is that it does not require work from a developer and can be done without changing your application code and releasing a new version. All setup is done on the CDP's side.
+
+Learn how to route event to Inspector from:
+
+- [Segment](/inspector/connect-inspector-to-segment)
+- [RudderStack](/inspector/connect-inspector-to-rudderstack)
+- [PostHog](/inspector/connect-inspector-to-posthog)
+- Contact us if you want to use another [CDP](/help/troubleshooting)
+
+<TwoCol>
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector Segment Integration"
+    description="How to connect Inspector to Segment"
+    href="/inspector/connect-inspector-to-segment"
+  />
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector RudderStack Integration"
+    description="How to connect Inspector to RudderStack"
+    href="/inspector/connect-inspector-to-rudderstack"
+  />
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector PostHog Integration"
+    description="How to connect Inspector to PostHog"
+    href="/inspector/connect-inspector-to-posthog"
+  />
+</TwoCol>
+
+## Install via Adobe Tags (Adobe Experience Platform)
+
+If you're using Adobe Tags (part of Adobe Experience Platform Data Collection), you can install the Avo Inspector using a tag configuration. This lets you include the Inspector snippet without modifying your website’s codebase directly. You'll create a rule within Adobe Tags that injects the Avo Inspector snippet. Once deployed, Inspector will automatically begin capturing events for validation.
+
+Step-by-step guide to [installing Inspector with Adobe Tags](/inspector/connect-inspector-to-adobe-tag-extension).
+
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector GTM Integration"
+    description="How to connect Inspector through Adobe Tag Extension"
+    href="/inspector/connect-inspector-to-adobe-tag-extension"
+  />
+
+## Install Inspector via GTM
+
+If you send events through GTM (Google Tag Manager) you can observe both client and server side events with one of our GTM integrations. On the client side you can either use our [importable GTM recipe](/inspector/connect-inspector-to-gtm#importable-gtm-recipe) or the [Inspector Get Schema Function](/inspector/connect-inspector-to-gtm#inspector-get-schema-function). On the server side (beta) you can either [Import the Avo Inspector GTM template](/inspector/connect-inspector-to-gtm#import-avo-inspector-gtm-tag-template) or [create Avo Inspector GTM tag](/inspector/connect-inspector-to-gtm#create-avo-inspector-gtm-tag).
+
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector GTM Integration"
+    description="How to connect Inspector to Google Tag Manager"
+    href="/inspector/connect-inspector-to-gtm"
+  />
+
+## Install Inspector SDK
+
+If you’re not using one of the supported CDPs you can send events data with an SDK. It will require one time setup and a new app release and takes 10-30 minutes, depending on the developer’s experience. We recommend asking a developer that is familiar with the existing event tracking setup to help with this setup.
+
+Learn how to set up SDKs for in our [Inspector SDK overview](/reference/avo-inspector-sdks/overview). Supported platforms are currently:
+
+- [iOS](/implementation/inspector/sdk/ios)
+- [Android](/implementation/inspector/sdk/android)
+- [Web](/implementation/inspector/sdk/web)
+- [React Native](/implementation/inspector/sdk/react-native)
+- [Node.js](/implementation/inspector/sdk/node)
+- [Flutter](/implementation/inspector/sdk/dart)
+- [Java](/implementation/inspector/sdk/java)
+- [Go](/implementation/inspector/sdk/go)
+
+Not seeing your platform in the list?
+
+[Contact us](/help/troubleshooting) if you want to send data from another platform.
+
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector SDK Overview"
+    description="How to Install the Avo Inspector SDK on your application"
+    href="/reference/avo-inspector-sdks/overview"
+  />
+
+## Install Inspector with an HTML tag
+
+You can add Inspector to a web page with an HTML tag. This option works for the users of the Google Tag Manager and other tag managers.
+
+Find the tag snippet and instructions to send data [here](/implementation/inspector/sdk/web#installation-option-2-html-tag).
+
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Inspector HTML Tag"
+    description="How set up a HTML tag in your tag manager"
+    href="/reference/avo-inspector-sdks/web#installation-option-2-html-tag"
+  />
+
+
+## Does Inspector receive PII data?
+
+No. Inspector does not receive any PII data. Inspector only takes schema metadata, containing event names, property names, and types of properties.
+
+Learn more technical details about the [Avo Inspector here](/implementation/avo-inspector-overview).
+

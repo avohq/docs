@@ -1,0 +1,183 @@
+# Avo Codegen in Ruby
+
+### Platforms
+
+Avo can code generate Avo Codegen in Ruby for your server side tracking.
+
+### Quickstart
+
+Avo Codegen usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated Ruby file you must be a member of an Avo workspace with a Ruby source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
+
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
+```
+
+Learn more about [the CLI here](/implementation/cli).
+
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file and initialize it by calling the `init_avo` method before tracking
+
+```ruby
+require './avo.rb'
+
+Avo.init_avo(options: { env: :dev }, ...) # other parameters depend on your tracking plan setup
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/python#init_avo).
+
+#### Step 3. Call Avo Codegen to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Codegen" checkbox, gets a function in the generated code, named according to the event name, in snake_case.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Codegen" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+![Event 'Signup Start' defined in Avo with referral string property and implement with Codegen check](/images/signup-start-ui.png)
+
+You'll be able to call it like this from the generated code
+
+```ruby
+Avo.signup_start(referral: 'direct')
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `set_system_properties` function.
+
+#### Step 4. Verify the implementation
+
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
+
+### Reference
+
+#### init_avo
+
+```ruby
+def self.init_avo(options:, [system_properties:], [mixpanel_destination:], [segment_destination:], [other_destination:], [logger: nil])
+```
+
+Initializes Avo, needs to be called before the tracking methods.
+This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
+
+##### Arguments
+
+`options (Hash)`: a hash with :env symbol (:prod, :dev), :verbose (true, false)
+
+`system_properties (Hash)`: a Hash containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this hash should be the same as system properties, in snake_case, and you should provide corresponding types, can be string, int, long, float, bool and list.
+
+`[destination (object)]`: each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
+
+#### Destination interface example
+
+```ruby
+# Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+class CustomDestination
+  # This method is optional, you can skip it if you've already initialized your Analytics SDK
+  def make(env:, api_key:)
+    @tracker = Mixpanel::Tracker.new(api_key)
+  end
+
+  def track_event(user_id:, event_name:, event_properties:)
+    @tracker.track(user_id, event_name, event_properties)
+  end
+
+  def log_page(user_id:, page_name:, event_properties:)
+    # Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+    event_properties["Page Name"] = page_name
+    @tracker.track(user_id, "Page Viewed", event_properties)
+  end
+
+  def revenue(user_id:, amount:, event_properties:)
+    @tracker.people.track_charge(user_id, amount, event_properties)
+  end
+
+  def set_user_properties(user_id:, user_properties:)
+    @tracker.people.set(user_id, user_properties)
+  end
+end
+
+```
+
+To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](/help/troubleshooting).
+
+Read more about the destination interface [here](/implementation/destinations).
+
+#### set_system_properties
+
+```ruby
+def self.set_system_properties(system_props)
+```
+
+A method to update system properties.
+
+##### Arguments
+
+`system_props (Hash)`: a Hash containing the system properties that should be sent with every event.
+When you define system properties in your Avo workspace you set name and type - the keys in this dictionary should be the same as system properties, in snake_case, and you should provide corresponding types.
+
+#### Event tracking functions
+
+```ruby
+def self.[your_event_name]([event_property_0:], [event_property_1:], ..., [user_property_0:], [user_property_1:], ..., [user_Id:], [anonymous_id:] })
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in snake_case. The arguments of the function depend on how it's defined in your tracking plan.
+
+##### Arguments
+
+`event_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. The argument key is snake_case version of the property name defined in the Avo UI.
+This is an event property that should be tracked with given event. Pass the value of the property to track here.
+
+`user_property`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array and any. The argument key is snake_case version of the property name defined in the Avo UI.
+This is a user property that should be updated with given event. Pass the value of the property to update here.
+
+`user_id`: string
+added to all events, used to connect event to specific user, you have to either provide it or the `anonymous_id`
+
+`anonymous_id`: string, this argument is automatically added, used to track anonymous users
+
+### Destinations
+
+You can send your data using the Avo generated JavaScript code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- RudderStack
+- Freshpaint
+- PostHog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

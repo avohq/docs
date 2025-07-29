@@ -1,0 +1,239 @@
+# Destinations in Avo Codegen
+
+Destination Interface is a set of callback methods that you implement to route data from Avo to particular analytics destination in your client. Avo triggers specific methods when you call the functions from Codegen to send events, update user properties, identify users, etc.
+It provides the data ready to be sent to any analytics destination.
+
+You can use the destination interface with any analytics platform, please [contact](/help/troubleshooting) if you are unsure of what is
+the best solution for you.
+
+To get started using a destination interface you do the following:
+
+1. Create a [Destination](/data-design/define-sources-and-destinations#destinations-1Destination) in the Connections tab
+2. Set the Destination Mode to Destination Interface in the [Codegen Setup](/data-design/define-sources-and-destinations#avo-codegen-setup) tab in your Source
+3. Pull the updated code by doing `avo pull [--branch my-branch] [SourceName]` in the Avo CLI
+4. Initialize Avo with a custom destination ([view example for JavaScript](/implementation/reference/javascript#destination-interface-example))
+5. Fill in the empty callback methods for sending the data to your analytics destination
+
+## Destination Interface overview
+
+We will be referencing _[Codegen](/implementation/avo-codegen-overview)_, _[events](/data-design/avo-tracking-plan/events)_, _[actions](/data-design/avo-tracking-plan/events#actions)_ and other Avo concepts in this document. Please read [the Tracking Plan doc](/avo-tracking-plan) to get familiar with Avo concepts.
+
+With a destination interface you'll get access to callback methods for all the Avo actions. The Avo generated code triggers the callbacks when corresponding [Codegen](/implementation/avo-codegen-overview) are called.
+
+> Available event actions in Avo
+>
+> The callback methods mirror the Avo Actions you set up for given Avo Event in your tracking plan in your workspace.
+> Learn how to attach actions to events in [the Tracking Plan section](/data-design/avo-tracking-plan/events#actions).
+
+### Destination Interface callback methods
+
+- `make`: Triggered during Avo initialization.
+  Here you will usually initialize an analytics SDK with the provided apiKey parameter. You can adjust the initialization based on the `env` parameter.
+
+  > 💡 Note that if you have already initialized your destination you can leave this callback method empty or leave it out of the interface.
+
+  ```pseudocode
+  make(env, apiKey) {
+    // Initialize your destination, if you haven't already
+    analytics.init(apiKey)
+  }
+  ```
+
+- `logEvent`: All your analytics events are managed in the Tracking Plan in Avo. Each event gets a generated Avo function. Avo events can have a [Log Event action](/data-design/avo-tracking-plan/events#log-event) attached. This callback is invoked when an Avo function with Log Event action is called.
+  Here you perform the actual event tracking, calling the track/log methods of your analytics destination. Event name and event properties are provided as parameters.
+
+  ```pseudocode
+  logEvent(eventName, eventProperties) {
+    // Log event in your destination
+    analytics.track(eventName, eventProperties)
+  }
+  ```
+
+- `identify`: If you call an Avo Function for an event with the [Identify User action](/data-design/avo-tracking-plan/events#identify-user) in the Tracking Plan, this callback will be invoked. When calling an Avo Function that includes the Identify User action you'll need to provide a user ID.
+  The main use cases are signup and login.
+  Here you would pass the user ID to the analytics SDK for it to create a new user or attach a session to an existing user.
+
+  ```pseudocode
+  identify(userId) {
+    // Identify user in your destination, if your destination supports it
+    analytics.identify(userId)
+  }
+  ```
+
+- `unidentify`: If you call an Avo Function for an event with the [Unidentify User action](/data-design/avo-tracking-plan/events#unidentify-user) in the Tracking Plan, this callback will be invoked.
+  Here you would call a destination SDK method to detach subsequent actions from the currently identified user.
+
+  ```pseudocode
+  unidentify() {
+    // Unidentify user in your destination, if your destination supports it
+    analytics.identify(null)
+  }
+  ```
+
+- `revenue`: If you call an Avo Function for an event with the [Log Revenue action](/data-design/avo-tracking-plan/events#log-revenue) in the Tracking Plan, this callback will be invoked.
+  Here you would log the revenue to your analytics destination, many of them have a special method to log revenue.
+
+  > 💡 Note that if your destination does not support revenue tracking, you can leave this callback empty.
+
+  ```pseudocode
+  revenue(amount, properties) {
+    // Log revenue in your destination, if your destination supports it
+    analytics.revenue(properties.productId, properties.quantity, amount)
+  }
+  ```
+
+- `page`: If you call an Avo Function for an event with the [Log Page View](/data-design/avo-tracking-plan/events#log-page-view) action in the Tracking Plan, this callback will be invoked.
+  Here you would report navigation to your analytics destination.
+
+  > 💡 Note that if your destination does not support page/screen tracking, you can leave this callback empty.
+
+  ```pseudocode
+  logPage(pageName, eventProperties) {
+    // Log page/screen view in your destination, if your destination supports it
+    analytics.page(pageName, eventProperties)
+  }
+  ```
+
+- `setUserProperties`: If you call an Avo Function for an event with the [Update User Properties action](/data-design/avo-tracking-plan/events#update-user-properties) in the Tracking Plan, this callback will be invoked.
+  Here you would attach user properties to the currently identified user in your analytics platform.
+
+  > 💡 Note that if your destination does not support user properties / traits tracking, you can leave this callback empty.
+
+  ```pseudocode
+  setUserProperties(userId, userProperties) {
+    // Update/set user properties in your destination, if your destination supports it
+    analytics.setUserProperties(userId, userProperties)
+  }
+  ```
+
+- `setGroupProperties`: You can update various group properties along with events in the Tracking Plan. If you call an Avo Function for an event with the [Update Groups action](/data-design/avo-tracking-plan/events#update-groups) in the Tracking Plan, this callback is invoked.
+  Here you would update the properties for specified groups.
+
+  > 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.
+
+  ```pseudocode
+  setGroupProperties(groupType, groupId, groupProperties) {
+    // Update/set group/account properties in your destination, if your destination supports it
+    analytics.get_group(groupType, groupId).set(groupProperties)
+  }
+  ```
+
+- `addCurrentUserToGroup`: You can add groups and group properties to an event and set the event to associate the currently identified user with the provided groups.
+  Can optionally update group properties along the way.
+
+  > 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.
+
+  ```pseudocode
+  addCurrentUserToGroup(groupType, groupId, groupProperties) {
+    // Add user to group/account in your destination, if your destination supports it
+    analytics.group(groupType, { name: groupId, ...groupProperties, });
+  }
+  ```
+
+- `logEventWithGroups`: this call is same as the `logEvent` call described above, except it also associates this particular event with a group.
+
+  > 💡 Note that if your destination does not support groups / accounts property tracking, you can leave this callback empty.
+
+  ```pseudocode
+  logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds) {
+    // Log event with groups/accounts in your destination, if your destination supports it
+    analytics.track_with_groups(eventName, eventProperties, { groupType: groupId, });
+  }
+  ```
+
+### Programming language specific implementation instructions
+
+Below are instructions on how to initialize Avo with a destination interface for
+each of the supported languages:
+
+- Web
+  - [JavaScript](/implementation/reference/javascript#destination-interface-example)
+  - [TypeScript](/implementation/reference/typescript#destination-interface-example)
+  - [Rescript](/implementation/reference/rescript#destination-interface-example)
+  - [ReasonML](/implementation/reference/reasonml#destination-interface-example)
+- Mobile
+  - iOS
+    - [ Objective-C](/implementation/reference/objc#destination-interface-example)
+    - [Swift](/implementation/reference/swift#destination-interface-example)
+  - Android
+    - [Java](/implementation/reference/java#destination-interface-example)
+    - [Kotlin](/implementation/reference/kotlin#destination-interface-example)
+  - React Native
+    - [JavaScript](/implementation/reference/javascript#destination-interface-example)
+    - [TypeScript](/implementation/reference/typescript#destination-interface-example)
+    - [ReScript](/implementation/reference/rescript#destination-interface-example)
+    - [ReasonML](/implementation/reference/reasonml#destination-interface-example)
+- Backend
+  - Node.js
+    - [JavaScript](/implementation/reference/javascript#destination-interface-example")
+    - [TypeScript](/implementation/reference/typescript#destination-interface-example)
+    - [ReScript](/implementation/reference/rescript#destination-interface-example)
+    - [ReasonML](/implementation/reference/reasonml#destination-interface-example)
+  - [Java](/implementation/reference/java#destination-interface-example)
+  - [PHP](/implementation/reference/php#destination-interface-example)
+  - [Python](/implementation/reference/python#destination-interface-example)
+  - [Ruby](/implementation/reference/ruby#destination-interface-example)
+  - [C#](/implementation/reference/csharp#destination-interface-example)
+- Game Engines
+  - [C#](/implementation/reference/csharp#destination-interface-example)
+
+## Snowplow destination interface
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+The main idea stays the same though, when you initialize the Avo analytics wrapper generated for you, you pass an object with callbacks that will be called by Avo after all the validations are done.
+
+The callback object has the following interface:
+
+```pseudocode
+func make(env: AvoEnv)
+
+func trackSelfDescribingEvent(schema: String, data: Dictionary,
+        contexts: List<Pair<schema: String, data: Dictionary>>)
+
+func trackPageView(title: String)
+
+func identify(userId: String)
+
+func unidentify()
+```
+
+> **Snowplow context** is an object of properties (a set of property names and values) in addition to the Snowplow schema name. In code we represent the Snowplow context as a combination of two fields: string `schema`, that is pinned in the Avo UI and you don't need to provide it in the code when calling the Avo Function, and the `data`, which is an object. You provide the values for that object's fields when calling the Avo function.
+
+In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are available below.
+
+1. `make` - here you would initialize your Snowplow SDK, you can also skip this callback if you already have the Snowplow SDK initialized, the parameter will be one of `AvoEnv.Dev`, `AvoEnv.Prod`, `AvoEnv.Staging`
+
+2. `trackSelfDescribingEvent` - this callback provides you all the data needed to track a self describing event
+
+3. `trackPageView` - this callback is for tracking page views, with the page title as parameter, there is a corresponding method in the Snowplow SDK
+
+4. `identify` - this callback is to assign an id of the current user, which is the call's parameter, in Snowplow it's done by assigning the user id in the Subject config
+
+5. `unidentify` - this callback is for removing current user's identification
+
+### Implementation instructions
+
+- [Kotlin](/implementation/reference/kotlin#snowplow-interface)
+- [Swift](/implementation/reference/swift#snowplow-interface)
+- [JavaScript](/implementation/reference/javascript#snowplow-interface)
+- [TypeScript](/implementation/reference/typescript#snowplow-interface)
+
+## Avo Managed destination (legacy)
+
+When using some language + destination combinations you can pick Avo managed destination approach.
+
+If you choose Avo to manage your destination, you'll still have to include the destination SDK in your application, but the initialization of the library and all event actions: `Log Event`, `Update User Properties`, `Identify User`, `Unidentify User`, `Log Revenue`, `Log Page View`, `Update Groups`, will be handled by the [Codegen in the Avo generated code](/implementation/avo-codegen-overview).
+
+- Avo will initialize the analytics SDK with the API key you provided in the Avo UI corresponding to the specified environment when you initialize Avo
+- **Log Event**: Avo will call the track method of the analytics SDK (e.g. `track(eventName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Event` action is called and will include the event and system properties in the call.
+- **Log event with Group**: Avo will associate the track method with the specified group if the event is associated with a group in the `Log Event` action.
+- **Update User Properties**: Avo will call the user properties method of the analytics SDK (e.g. `identify(userId, userProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Update User Properties` action is called and will include the user properties in the call.
+- **Identify User**: Avo will call the identify method of the analytics SDK (e.g. `identify(userId)` in the Segment SDK) when an Avo Function corresponding to an event with `Identify User` action is called.
+- **Unidentify User**: Avo will call the unidentify method of the analytics SDK (e.g. `identify(null)` in the Segment SDK) when an Avo Function corresponding to an event with `Unidentify User` action is called.
+- **Log Revenue**: Avo will call the revenue method of the analytics SDK (e.g. `track("revenue", {"revenue": amount})` in the Segment SDK) when an Avo Function corresponding to an event with `Log Revenue` action is called.
+- **Log Page View**: Avo will call the page method of the analytics SDK (e.g. `page(pageName, eventProperties)` in the Segment SDK) when an Avo Function corresponding to an event with `Log Page View` action is called and will include the event and system properties in the call.
+- **Associate user with Group**: Avo will associate current user with the specified group when an Avo event with the 'Update Groups' action is triggered.
+- **Update Groups Properties**: Avo will update specified group metadata when an Avo event with the 'Update Groups' action is triggered.
+
+> Learn more about Avo actions and how to attach them to events in [the Tracking Plan section](/data-design/avo-tracking-plan/events#actions).

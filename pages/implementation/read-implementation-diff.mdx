@@ -1,22 +1,11 @@
----
-layout: 'guide'
-title: 'How to read the implementation diff'
----
-
-import Link from '../../components/Link';
+# How to read the implementation diff
 
 First thing you need to know is that tracking design happens on branches in Avo. When a new feature is built, the tracking plan manager opens a branch in Avo and plans all the new tracking there.
 This allows us to show you the diff - what should be implemented for a specific feature.
 
 To see the diff press the "View changes" panel in the sidebar.
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/implementation-diff-panel-options.png')}
-    alt="Opening a branch"
-  />
-</center>
+![Opening a branch](/images/implementation-diff-panel-options.png)
 
 ### Sources
 
@@ -36,73 +25,75 @@ Each event in the instructions has a list of the properties attached to it. Prop
 
 ### Destinations
 
-Each event in the instructions has a list of the destinations it should be sent to. Destinations can have three states: New, Removed or Existing. If the event, or any of its properties, has a per-destination <Link href="/data-design/name-mapping" passHref>name mapping</Link> applied, they will be listed in this section.
+Each event in the instructions has a list of the destinations it should be sent to. Destinations can have three states: New, Removed or Existing. If the event, or any of its properties, has a per-destination [name mapping](/data-design/name-mapping) applied, they will be listed in this section.
 
 ### An example
 
-># Source: Web
+> # Source: Web
 >
->## Event properties updated on all events
+> ## Event properties updated on all events
 >
->- property named "Optional List System Property"
->  - **Description**: -  
->  - **Value type**: optional list of string 
+> - property named "Optional List System Property"
+> - **Description**: -
+> - **Value type**: optional list of string
 >
->## New Events:
+> ## New Events:
 >
->### Event "Add Seat Prompt Interaction" ([View full event in Avo])
+> ### Event "Add Seat Prompt Interaction" ([View full event in Avo])
 >
->##### This event should be implemented with Avo generated code. [See implement instructions here]
+> ##### This event should be implemented with Avo generated code. [See implement instructions here]
 >
->Description: Event sent when a user interacts with an add seat prompt  
+> Description: Event sent when a user interacts with an add seat prompt
 >
->Some event properties are configured to be sent with all events. Make sure to include those on this event. Learn more about the properties sent with all events above.
->There are changes in some event properties that are sent with all events. Learn more about the properties sent with all events above.
+> Some event properties are configured to be sent with all events. Make sure to include those on this event. Learn more about the properties sent with all events above.
+> There are changes in some event properties that are sent with all events. Learn more about the properties sent with all events above.
 >
->#### New properties on this event
+> #### New properties on this event
 >
->Event properties:
->- Add Seat Prompt Interaction, also this property has destination specific names, see in the Destinations section below
->  - **Description**: -  
->  - **Value type**: string matches Proceed, Dismiss
+> Event properties:
 >
->User properties:
->- User interactions
->  - **Description**: -  
->  - **Value type**: int
+> - Add Seat Prompt Interaction, also this property has destination specific names, see in the Destinations section below
+> - **Description**: -
+> - **Value type**: string matches Proceed, Dismiss
 >
->#### New destinations on this event
+> User properties:
 >
->- segment
->- mixpanel
->- fullstory
+> - User interactions
+> - **Description**: -
+> - **Value type**: int
+>
+> #### New destinations on this event
+>
+> - segment
+> - mixpanel
+> - fullstory
 >   - Send the "Add Seat Prompt Interaction" property as "add_spi"
->- amplitude
+> - amplitude
 >
+> # Source: iOS
 >
-># Source: iOS
+> ## New Events:
 >
->## New Events:
+> ### Event "Add Seat Prompt Interaction", also this event has destination specific names, see in the Destinations section below ([View full event in Avo])
 >
->### Event "Add Seat Prompt Interaction", also this event has destination specific names, see in the Destinations section below ([View full event in Avo])
+> ##### This event should be implemented with Avo generated code. [See implement instructions here]
 >
->##### This event should be implemented with Avo generated code. [See implement instructions here] 
+> Description: Event sent when a user interacts with an add seat prompt
 >
->Description: Event sent when a user interacts with an add seat prompt  
+> #### New properties on this event
 >
->#### New properties on this event
+> Event properties:
 >
->Event properties:
->- Add Seat Prompt Interaction
->  - **Description**: -  
->  - **Value type**: string matches Proceed, Dismiss
+> - Add Seat Prompt Interaction
+> - **Description**: -
+> - **Value type**: string matches Proceed, Dismiss
 >
->#### New destinations on this event
+> #### New destinations on this event
 >
->- segment
->  - Send the event as "seat_prompt_interact", NEW!
->- mixpanel
+> - segment
+> - Send the event as "seat_prompt_interact", NEW!
+> - mixpanel
 
 ## What's next?
 
-Next feature we recommend to explore is setting up <Link passHref href="/implementation/avo-tracking-plan-webhook"><a>the webhook</a></Link> that's triggered when a branch is merged. 
+Next feature we recommend to explore is setting up [the webhook](/implementation/avo-tracking-plan-webhook) that's triggered when a branch is merged.

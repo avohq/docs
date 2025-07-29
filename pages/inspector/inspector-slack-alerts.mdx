@@ -1,0 +1,163 @@
+import { Callout } from 'nextra/components';
+
+# Inspector Alerts for Slack
+
+_How to start receiving Slack alerts for your Inspector issues_
+
+Connect Inspector to your Slack to receive alerts when new issues appear in your production environments or when an issue marked as resolved regresses.
+
+## Prerequisites
+
+Before setting up Inspector alerts for Slack, ensure you have:
+- An admin access to your Slack workspace, permission to install apps or have someone that has these permissions to help you
+- An Avo workspace with Inspector enabled
+- A saved view for the filtered view you want to get alerted on
+
+## Quick Start
+
+To connect, find the _Set up alerts_ button in a [specific saved view](/inspector/inspector-slack-alerts#inside-a-specific-saved-view) or the [saved view overview](/inspector/inspector-slack-alerts#in-saved-views-overview).
+
+![Connect to Slack in the Issues view](/images/workspace/nav-inspector-slack-highlighted.png)
+
+
+## Detailed Setup Guide
+
+### Custom Inspector alerts
+
+Custom Inspector alerts for saved views enables you to define parameters for issues that you do want to monitor closely, and set up Slack alerts for only those issues.
+
+#### Connecting alerts to a saved view
+
+If you haven't already created a saved view, start by [filtering all issues](/inspector/inspector-issues-view#sorting-and-filtering) and [saving the view](/inspector/inspector-issues-view#saving-a-filtered-view).
+
+##### Inside a specific saved view
+
+Once you have a saved view, click the "Set up Alerts" button to initialize the connection.
+
+<div className="image-container">
+![Saved view with the Set up Alerts button highlighted](/images/inspector/alerts-setup-alerts-highlighted.png)
+</div>
+
+That triggers a modal to be opened, where you can choose to connect to Slack or give us feedback on how you would like your alerts delivered.
+
+<div className="image-container">
+![Modal with Slack alerts information and connect button](/images/inspector/alerts-connect-to-slack-modal.png)
+</div>
+
+Then you get the native Slack modal where you can select a Slack workspace and channel that you want to connect. Once you have made your selection, you can hit allow to finish setting up alerts.
+
+<div className="image-container-small">
+![Slack workspace and channel selection modal with Allow button](/images/inspector/alerts-slack-channel-selection-modal.png)
+</div>
+
+Now we have completed setting up alerts for our "Onboarding events" saved view, as indicated in the screenshot below.
+
+![Successfully connected alerts confirmation for saved view](/images/inspector/alerts-successfully-connected-to-saved-view.png)
+
+##### In saved views overview
+
+For your existing saved views, you can connect alerts in the Saved Views overview accessible from the navigation on the left.
+
+![Saved views overview with Slack alerts and Set up Alerts buttons highlighted](/images/inspector/alerts-saved-views-overview-with-alerts-highlighted.png)
+
+## Inspector Alerts Use Cases
+
+### Issues impacting events your stakeholder team owns
+
+Ensure your stakeholder teams get notified about issues affecting the events they own and are responsible for. This creates clear ownership and accountability for tracking quality within your organization.
+
+You can get alerted on issues impacting events that your [stakeholder team](/data-design/avo-tracking-plan/stakeholder-domains) owns by selecting "Owner" in the [issues view filter](/inspector/inspector-find-issues#sorting-and-filtering) and checking the name of your stakeholder team.
+
+![Inspector alerts filtered by stakeholder team ownership](/images/inspector/owner-inspector-notifications.png)
+
+We recommend setting this up for every stakeholder team, as it provides:
+- Clear ownership and accountability for event quality
+- Targeted notifications that reach the right people
+- Faster resolution times when issues are domain-specific
+- Better alignment between teams and their tracking responsibilities
+- Reduced noise by filtering out irrelevant issues
+
+
+<Callout type="info" emoji="💡">
+  Connect stakeholder team alerts to the same channels used for [stakeholder branch notifications](/data-design/branches/workspace-notifications#stakeholder-team-notifications) to maintain consistent communication patterns.
+</Callout>
+
+This approach works equally well for issues impacting events where your stakeholder team is listed as a stakeholder, ensuring comprehensive coverage of your team's tracking interests.
+
+### Issues in the latest version
+
+Stay on top of new issues that appear in your latest app releases by setting up alerts for issues detected in your most recent version. This is particularly valuable for catching regressions or new problems introduced in recent deployments.
+
+You can get alerted on issues appearing in your latest app version by selecting "Version" in the [issues view filter](/inspector/inspector-find-issues#sorting-and-filtering) and choosing your latest version number.
+
+![Inspector alerts filtered by latest app version](/images/inspector/version-inspector-notifications.png)
+
+We recommend setting this up for your main production monitoring, as it helps you:
+- Quickly identify new issues introduced in recent releases
+- Monitor the health of your latest deployment
+- Catch regressions before they impact too many users
+- Maintain awareness of version-specific problems
+
+This is especially useful for development and QA teams who need immediate visibility into issues affecting the current production version. You can connect this saved view to your main development or operations Slack channel to ensure the right people are notified about new issues as they emerge.
+
+### Issues impacting critical events
+
+Monitor your most important tracking events by setting up alerts for issues affecting critical business events like purchases, sign-ups, or key user actions.
+
+You can create alerts for critical events by using the [events filter](/inspector/inspector-find-issues#sorting-and-filtering) in the issues view and selecting the specific events that are most important to your business.
+
+![Inspector alerts filtered by specific critical events](/images/inspector/event-name-inspector-notifications.png)
+
+We recommend this approach for:
+- Revenue-critical events (purchases, subscriptions, conversions)
+- Key user journey events (sign-ups, onboarding completion)
+- High-volume events that indicate platform health
+- Events tied to business KPIs and metrics
+
+Connect these alerts to channels monitored by business stakeholders, product managers, or revenue teams who need immediate visibility into issues affecting critical business metrics.
+
+## Managing Your Alerts
+
+### Modifying Alert Settings
+
+You can modify your alert settings by accessing the saved view and clicking the Slack connection button to adjust configurations or change the connected channel.
+
+### Disconnecting Alerts
+
+Alerts can be disconnected both in the Saved Views overview and inside an individual saved view, by clicking the Slack connection button.
+
+![Saved views overview with disconnect Slack alerts option](/images/inspector/alerts-disconnect-from-saved-views-overview.png)
+
+You'll get a modal for you to confirm disconnecting the alerts, and the button will be replaced with the "Set up Alerts" button.
+
+![Inspector Integration disconnect confirmation](/images/workspace/inspector/inspector-slack-integration.png)
+
+### Best Practices for Alert Management
+
+<Callout type="warning" emoji="⚠️">
+  Setting up too many broad alerts can lead to alert fatigue. Start with critical events and expand gradually based on team feedback.
+</Callout>
+
+- **Regular Review**: Periodically assess alert effectiveness and adjust filters
+- **Team Coordination**: Align alert channels with existing team communication patterns  
+- **Gradual Expansion**: Start with high-priority alerts before adding comprehensive coverage
+- **Channel Organization**: Use different channels for different types of issues (critical vs. informational)
+
+## Troubleshooting
+
+**Alerts not appearing in Slack**
+- Check that the Avo app has permission to post in your selected channel
+- Verify the Slack integration is still active in your workspace settings
+- Ensure the connected channel still exists and you have access
+
+**Too many notifications**
+- Consider creating more specific saved views to reduce noise
+- Review your filter criteria to ensure they match your actual monitoring needs
+- Set up different channels for different severity levels
+
+**Missing alerts**
+- Verify your saved view filters are working as expected in the Inspector interface
+- Check that issues matching your criteria are actually occurring
+- Confirm the Slack integration hasn't been disconnected
+
+

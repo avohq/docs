@@ -1,0 +1,83 @@
+import { Callout } from 'nextra/components';
+
+# Members
+
+Expand your Avo team and manage your members access by opening the workspace settings modal from the settings wheel located next to your workspace name:
+
+![Accessing workspace settings](/images/workspace/members/accessMembers.png)
+
+## Roles
+
+Admins can assign roles when inviting new users as well as for existing users, excluding yourself.
+
+Role overview:
+
+|                                        | [Billing](/data-design/collaboration/members#billing-only) | [Viewer](/data-design/collaboration/members#viewer) | [Editor](/data-design/collaboration/members#editor) | [Admin](/data-design/collaboration/members#admin) |
+|----------------------------------------|---------|--------|--------|-------|
+| View tracking plan                     |         | ✅      | ✅      | ✅     |
+| Pull generated code using the Avo CLI  |         | ✅*     | ✅      | ✅     |
+| Comment                                |         | ✅      | ✅      | ✅     |
+| Create branches and edit tracking plan |         |        | ✅      | ✅     |
+| Change branch status                   |         |        | ✅      | ✅     |
+| Edit tracking plan rules               |         |        | ✅      | ✅     |
+| View members                           |         |        | ✅      | ✅     |
+| View workspace settings                |         |        | ✅      | ✅     |
+| View service accounts                  |         |        | ✅      | ✅     |
+| Manage and invite members              |         |        |        | ✅     |
+| Manage workspace settings              |         |        |        | ✅     |
+| Manage stakeholder teams               |         |        |        | ✅     |
+| Manage service accounts                |         |        |        | ✅     |
+| View and manage billing                | ✅       |        |        | ✅     |
+
+<Callout type="info" emoji="💡">
+\* Viewers can pull code using the CLI on the team and enterprise plans. On the free plan, only editors can pull code. [See details below](/data-design/collaboration/members#codegen-access-for-non-editors).
+</Callout>
+
+### Admin
+
+Members with the _Admin_ role can change your workspace name, publish integrations, edit other members roles, invite new members and manage service accounts. Admins can access the Audit Log, Billing page and all workspace settings. If the _protected main branch_ config is active, Admins can override merging a branch without approval.
+
+### Editor
+
+Members with the _Editor_ role can:
+
+- Make changes to your workspace like adding events and properties, changing property values and opening new branches.
+- Pull code generated Avo Codegen using the Avo CLI.
+- View other members but can not change their roles or add new ones.
+- View service accounts but can not delete them or add new ones.
+- Edit the [tracking plan audit rules](/audit/rules).
+- _Not_ change your workspace name.
+
+On the Team and Enterprise plans you can limit editor edits to just branches, requiring peer approval before the changes are merged to main:
+
+![The protected main branch toggle](/images/workspace/members/protectedMainBranch.png)
+
+### Viewer
+
+Members with the _Viewer_ role can access your workspace and comment, but cannot make any modifications and can not access workspace settings including the members and settings modal, audit log or billing page. On the team and enterprise plans, viewers have have access to pull Avo Codegen with the Avo CLI (not on free). Assign the _Viewer_ role to a member when you want to allow them to view your tracking plan but don't want them to be able to make changes. All new plans can add an unlimited amount of _Viewer_ users.
+
+
+### Billing Only
+
+Members with a _Billing Only_ role can only access the Billing page of the workspace. They can update payment methods and sign up for new subscriptions. Billing users are free of charge.
+
+### Codegen access for non-Editors
+
+Editors and Admins have codegen access on all plans: free, team and enterprise. Additionally, View members have codegen access on the team and enterprise plans, charged per monthly active non-Editor pulling code. Learn more about [codegen and its benefits](/implementation/avo-codegen-overview).
+
+Codegen access is not a role that you can be assigned to members on invite.
+
+### Legacy Roles
+
+#### View Only (Legacy)
+
+Members with the _View Only_ role can access your workspace but cannot make any modifications and can not access workspace settings including the members and settings modal, audit log or billing page. Additionally, _View Only_ users don't have access to pull Avo Codegen with the Avo CLI. Assign the _View Only_ role to a member when you want to allow them to view your tracking plan but don't want them to be able to make changes. All new plans can add an unlimited amount of _View Only_ users.
+
+#### Comment Only (Legacy)
+
+Members with a _Comment Only_ role have the same limitations as the _View Only_ role but can comment on events, properties, branches and more. The _Comment Only_ role is available on plans with extended collaboration, [see more](https://www.avo.app/pricing).
+
+
+## What's next?
+
+Now when you when you have your team in Avo it's time to [learn how to collaborate](/data-design/start-collaborating).

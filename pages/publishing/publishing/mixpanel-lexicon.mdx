@@ -1,0 +1,47 @@
+# Mixpanel Lexicon
+
+*Publishing your tracking plan to Mixpanel Lexicon*
+
+![Mixpanel](/images/publishing_lexicon.svg)
+
+## Introduction
+
+The integration to [Mixpanel Lexicon](https://mixpanel.com/data-governance/) allows for your Tracking Plan to be published into Mixpanel Lexicon whenever a branch is merged in your workspace or with a push of a button.
+
+## Configure the Lexicon integration
+
+To enable the direct integration with Mixpanel Lexicon, you need to configure it with the following parameters from Mixpanel.
+
+- **Mixpanel Project Id**: Found in the URL when viewing your project in Mixpanel: `https://mixpanel.com/report/<Mixpanel Project Id>/...`
+- **Mixpanel Service Account Username**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference/authentication#service-accounts)
+- **Mixpanel Service Account Secret**: [See Mixpanel's documentation for creating a Service Account](https://developer.mixpanel.com/reference/authentication#service-accounts)
+- **EU Data Residency**: Turn this on if you opted to store your data in the EU when you created your Mixpanel project [See Mixpanel's documentation on data residency in EU](https://help.mixpanel.com/hc/en-us/articles/360039135652-Data-Residency-in-EU)
+- **Publish categories as tags**: Mixpanel doesn't have a notion of event categories but enabling this toggle allows you to publish an events categories as tags to Mixpanel. The categories will have `Category: ` prepended to them, for example: `Category: Authentication`.
+
+## Publishing to Lexicon
+
+To publish your Avo tracking plan to Lexicon, click the "Publish to Lexicon" button in the integration interface, or enable Auto Publishing to publish the events included in the publishing integration whenever a branch has been merged.
+
+On publish, Avo will merge your Avo tracking plan with any existing events in Lexicon. Any changes made to an event in Lexicon between Avo publish will be overridden on next Avo publish.
+
+Avo will not impact any events that are only defined in Lexicon, or events that have not been added to the Lexicon integration in Avo.
+
+### What Is Included In The Publish to Lexicon?
+
+Here's how the Avo Tracking Plan is mapped to Lexicon:
+
+- Events
+  - Event name
+  - Event description
+  - Required property names
+  - If the event has additional properties
+  - Event properties
+    - Property name
+    - Property description
+    - Property type
+    - Metadata
+  - Tags
+ - User Properties
+   - Property name
+   - Property description
+   - Property type

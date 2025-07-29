@@ -1,0 +1,13 @@
+# Why Avo Codegen requires explicit `null` values when "Sometimes Sent" property is not sent
+
+With the Avo Codegen our goal is to provide developers with a type safe analytics implementation and make the compiler catch as many analytics implementation bugs as possible.
+
+One of the ways we do it is with the required values for the `Sometimes Sent` parameters.
+
+The fact that we require an explicit `null` value to be passed for every `Sometimes Sent` property when it's not sent allows the compiler to catch very common implementation related data bugs.
+
+Imagine we don't require passing `null` explicitly. Now if the tracking plan changes and a property presence goes from `Never Sent` to `Sometimes Sent`, which is a very common scenario, compiler has no way to distinguish between the two cases and will allow you go ahead instead of helping you do the migration. In this situation it's very easy to miss a code path where a value should be provided.
+
+On the other hand when we require `null` values for `Sometimes Sent` properties when they are not provided the compiler is able to guide you through the migration from `Never Sent` and back.
+
+Another example is when a `Sometimes Sent` property is added to an event. In this case the compiler will guide the developer through every event call to consider where the property should be sent.

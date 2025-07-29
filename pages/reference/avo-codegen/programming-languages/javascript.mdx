@@ -1,0 +1,428 @@
+# Avo Codegen in JavaScript
+
+### Platforms
+
+Avo can code generate Avo Codegen in JavaScript targeted at the following platforms
+
+- Web
+- React Native
+- Node.js
+
+### Quickstart
+
+Avo Codegen usage consists of 4 steps.
+
+[//]: # (TODO For future: Here we can add link to the "Type safe code & unit tests" docs section when that's ready, something like:)
+[//]: # 'TODO Learn more about how Avo Codegen can help decrease time spent on implementing analytics and increase data reliability in this guide.'
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated JavaScript file you must be a member of an Avo workspace with a JavaScript source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
+
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
+```
+
+Learn more about [the CLI here](/implementation/cli).
+
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Import Avo from the generated file and initialize it by calling the `initAvo` method before tracking
+
+```javascript
+import Avo from './Avo';
+
+Avo.initAvo(
+  { env: 'dev' },
+  /*, other parameters depending on your tracking plan setup*/
+);
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/javascript#initavo).
+
+#### Step 3. Call Avo Codegen to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Codegen" checkbox, gets a function in the generated code, named according to the event name, in camelCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Codegen" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+![Event 'Signup Start' defined in Avo with referral string property and implement with Codegen check](/images/signup-start-ui.png)
+
+You'll be able to call it like this from the generated code
+
+```javascript
+Avo.signupStart({ referral: 'direct' });
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace and the [visual debuggers](/explore-tracking-plan/start-using-visual-debuggers) to verify that your implementation is correct.
+
+### Reference
+
+#### initAvo
+
+```javascript
+Avo.initAvo(
+  options,
+  ?systemProperties,
+  ?destinationOptions,
+  ?destinationInterfaceOne,
+  ?destinationInterfaceTwo,
+  ?...destinationInterface,
+);
+```
+
+This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
+
+##### Arguments
+
+`options`: `{env, [noop], [strict], [avoLogger], [inspector], [mobileDebugger]}`
+
+- `env`: string, one of 'dev', 'prod' or 'staging'.
+- `[noop = false]`: bool defaulting to false, if true, Avo won't make any network calls (no tracking) in development and staging environments. Note that the noop flag is ignored in production.
+- `[strict = true]`: bool defaulting to true, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+- `[avoLogger]`: optional custom implementation of the logger. Can be used to disable logs. [Find the code snippet here](/implementation/custom-loggers#javascript).
+- `[inspector]`: optional Avo Inspector instance. If you use Avo Inspector pass it here to make Avo Codegen automatically report the invocations to Avo Inspector.
+- `[mobileDebugger]`: React Native specific and optional Avo Debugger instance. Pass it to make Avo Codegen automatically show the functions calls and all the errors in the visual debugger. Check [React Native mobile debugger repo](https://github.com/avohq/react-native-analytics-debugger) to learn more about it.
+
+`systemProperties`: an object where each field represents a system property in your tracking plan.
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types, can be string, int, long, float, bool, array, object and any.
+
+`destination`: object, each destination you are sending events to gets a separate parameter in the init function with callbacks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
+
+```javascript
+{
+  [make]: function (env, apiKey), // This method is optional, you can skip it if you've already initialized your Analytics SDK
+  logEvent: function (eventName, eventProperties),
+  setUserProperties: function (userId, userProperties),
+  identify: function (userId), // Not present in Node
+  unidentify: function (), // Not present in Node
+  [revenue]: function(amount, eventProperties),
+  [page]: function(pageName, eventProperties),
+
+  // The following methods are used for group analytics and are not required. Learn more about group analytics here: /docs/data-design/groups
+  [setGroupProperties]: function(groupType, groupId, groupProperties),
+  [addCurrentUserToGroup]: function(groupType, groupId, groupProperties),
+  [logEventWithGroups]: function(eventName, eventProperties, groupTypesToGroupIds)
+};
+```
+
+In Node each callback is asynchronous and gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To get the `anonymousId` parameter in your workspace [reach out to us](/help/troubleshooting).
+
+`destinationOptions`: send an empty object if you are using the destination interface. If you are using legacy managed destinations here you can pass initialization parameters. `{[segmentDestinationName], [anotherSegmentDestinationName], [amplitudeDestinationName], [mixpanelDestinationName]}`. Keys of this objects are the camelCase versions of your destinations in the Avo UI.
+
+- `mixpanelDestinationName`: optional object, if you use Mixpanel destination managed by Avo, this object will be passed to `mixpanel.init(apiKey, options)` as the second parameter, `options`
+- `amplitudeDestinationName`: optional object, if you use Amplitude destination managed by Avo, this object will be passed to `amplitude.init(apiKey, null, options)` as the third parameter, `options`
+- `segmentDestinationName`: optional object, if you use Segment destination managed by Avo, this object will be passed to `analytics.load(apiKey, options)` as the second parameter, `options`
+
+#### Destination interface example
+
+```javascript
+// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+const mixpanelDestinationInterface = {
+  make: function (env, apiKey) {
+    // This call is optional, you may as well initialize the SDK somewhere else before using Avo Codegen.
+    mixpanel.init(apiKey);
+  },
+  logEvent: function (eventName, eventProperties) {
+    mixpanel.track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    mixpanel.people.set(userProperties);
+  },
+  identify: function (userId) {
+    mixpanel.identify(userId);
+  },
+  unidentify: function () {
+    mixpanel.reset();
+  },
+  revenue: function (amount, eventProperties) {
+    mixpanel.people.track_charge(amount, eventProperties);
+  },
+  logPage: function (pageName, eventProperties) {
+    // Note: In this example the Mixpanel SDK does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+    mixpanel.track(
+      'Page Viewed',
+      eventProperties.assign({ pageName: pageName }),
+    );
+  },
+  // The following methods are used for group analytics and are not required. Learn more about group analytics here: /docs/data-design/groups
+  setGroupProperties(groupType, groupId, groupProperties) {
+    // Mixpanel example
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  addCurrentUserToGroup: function (groupType, groupId, groupProperties) {
+    // Segment example
+    analytics.group(groupType, {
+      name: groupId,
+      ...groupProperties,
+    });
+    // Mixpanel example
+    mixpanel.set_group(groupType, groupId);
+    mixpanel.get_group(groupType, groupId).set(groupProperties);
+    // Amplitude example
+    amplitude.getInstance().setGroup(groupType, groupId);
+    var identify = new amplitude.Identify().set(groupProperties);
+    amplitude.groupIdentify(groupType, groupId, identify);
+  },
+  logEventWithGroups: function (
+    eventName,
+    eventProperties,
+    groupTypesToGroupIds,
+  ) {
+    // Mixpanel example
+    mixpanel.track_with_groups(
+      eventName,
+      eventProperties,
+      groupTypesToGroupIds,
+    );
+    // Amplitude example
+    amplitude
+      .getInstance()
+      .logEventWithGroups(eventName, eventProperties, groupTypesToGroupIds);
+  },
+};
+```
+
+##### Web Google Analytics 4 example
+
+Make sure you have the `gtag.js` tag added as described in the `Add the global site tag directly to your web pages` section [here](https://support.google.com/analytics/answer/9304153?hl=en#zippy=add-your-tag-using-google-tag-manager%2Cadd-the-global-site-tag-directly-to-your-web-pages).
+
+```javascript
+import Avo from './Avo';
+
+// An object representing your Google Analytics destination that you pass into initAvo():
+var googleAnalyticsDestinationInterface = {
+  logEvent: function (eventName, eventProperties) {
+    gtag('event', eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    // Todo: Pass user properties to Google Analytics
+  },
+  identify: function (userId) {
+    // Todo: Identify user in Google Analytics
+  },
+  unidentify: function () {
+    // Todo: Unidentify currently identified user in Google Analytics
+  },
+  revenue: function (amount, eventProperties) {
+    gtag('event', 'purchase', { ...eventProperties, amount });
+  },
+  logPage: function (screenName, eventProperties) {
+    gtag('event', 'screen_view', {
+      ...eventProperties,
+      screen_name: screenName,
+    });
+  },
+};
+```
+
+Then, when initializing Avo you'll provide the destination interface as your GA4 destination.
+
+```javascript
+Avo.initAvo(
+  { env: 'dev' },
+  /*other parameters depending on your tracking plan setup*/,
+  googleAnalyticsDestinationInterface
+);
+```
+
+##### React Native Mixpanel example
+
+Here is a more specific example of how you can use a destination interface in JavaScript on React Native to integrate with your Mixpanel SDK. In this example we're using the official [mixpanel-react-native](https://github.com/mixpanel/mixpanel-react-native) SDK.
+
+```javascript
+import { Mixpanel } from 'mixpanel-react-native';
+import Avo from './Avo';
+
+// An object representing your Mixpanel destination
+// that you pass into initAvo():
+
+var mixpanelDestinationInterface = {
+  make: function (env, apiKey) {
+    Mixpanel.init(apiKey);
+  },
+  logEvent: function (eventName, eventProperties) {
+    mixpanel.track(eventName, eventProperties);
+  },
+  setUserProperties: function (userId, userProperties) {
+    mixpanel.identify(userId);
+    Object.keys(userProperties).forEach((key) =>
+      mixpanel.getPeople().set(key, userProperties[key]),
+    );
+  },
+  identify: function (userId) {
+    mixpanel.identify(userId);
+  },
+  unidentify: function () {
+    mixpanel.reset();
+  },
+  revenue: function (amount, eventProperties) {
+    mixpanel.getPeople().trackCharge(amount, eventProperties);
+  },
+  logPage: function (pageName, eventProperties) {
+    // Note: Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+    mixpanel.track(
+      'Page Viewed',
+      eventProperties.assign({ pageName: pageName }),
+    );
+  },
+};
+```
+
+Read more about the destination interface [here](/implementation/destinations).
+
+#### setAvoLogger
+
+```javascript
+Avo.setAvoLogger(avoLogger);
+```
+
+This method allows you to provide custom implementation of the logger used by Avo Codegen, same as the `avoLogger` parameter in the `initAvo` call.
+Can for example be used to disable logs or change which logging method is used.
+
+##### Arguments
+
+`avoLogger`: custom implementation of the logger. [Find the code snippet here](/implementation/custom-loggers#javascript).
+
+#### setSystemProperties
+
+```javascript
+Avo.setSystemProperties(systemProperties);
+```
+
+A method to update system properties. If you provide undefined values here corresponding properties won't be updated
+
+##### Arguments
+
+`systemProperties`: an object where each field represents a system property in your tracking plan.
+When you define system properties in your Avo workspace you set name and type - the fields of this object are named the same as system properties, in camelCase, and you should provide corresponding types.
+
+#### Event tracking functions
+
+```javascript
+Avo.yourEventName(properties: { [eventProperty0], [eventProperty1], ..., [userProperty0], [userProperty1], ..., [groupType0GroupId], [groupType1GroupId], ..., [groupProperty0], [groupProperty1], ..., [userId_], [anonymousId_], [segmentContext_] })
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in camelCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every event property attached to the event in the Avo UI gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
+Pass the value of the property to track here.
+
+`userProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every user property attached to the event in the Avo UI gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
+Pass the value of the property to update here.
+
+`groupTypeGroupId`: string, if this event has group type attached in the UI, you'll provide the group id here.
+The argument key is camelCase version of the group type defined in the Avo UI with the "GroupId" suffix.
+E.g. if the event has "company" group type, the property will be celled "companyGroupId" and you would provide the company name.
+
+`groupProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool, array, object and any.
+Every group property attached to the event in the Avo UI with the "Group Update" action gets a corresponding argument.
+The argument key is camelCase version of the property name defined in the Avo UI.
+Pass the value of the property to update here.
+
+`userId_`: string, used to connect event to specific user
+Web and React Native: Added if the event has the `Identify User` action
+Node.js: added to all events, you have to either provide it or the `anonymousId_`
+
+###### Additional arguments
+
+`anonymousId_`: string, Node.js only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
+
+`segmentContext_`: object, Node.js only, passed down to Segment as the Segment context, e.g. `segment.track({..., context: context})`
+
+### Snowplow interface
+
+Snowplow SDK's tracking interface is a little different from the common event tracking libraries and working with Snowplow through Avo is slightly different too.
+
+If you add a Snowplow destination to a JavaScript source you'll need to provide the following object as
+
+```javascript
+options[snowplowDestination];
+```
+
+You'll implement it like this:
+
+```javascript
+const snowplowDestination = {
+  make: function (env) {
+    // Your custom Snowplow initialization, that includes the `newTracker` call
+    newTracker('sp1', '{{collector_url}}', { appId: 'my-app-id', plugins: [] });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracker-setup/
+  },
+  trackSelfDescribingEvent: (schema, data, contexts) => {
+    trackSelfDescribingEvent({
+      event: {
+        schema: schema,
+        data: data,
+      },
+      context: contexts,
+    });
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/
+  },
+  trackPageView: (title) => {
+    trackPageView(title);
+    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/#page-views
+  },
+  identify: (userId) => {
+    setUserId(userId);
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.setuserid.md
+  },
+  unidentify: () => {
+    clearUserData();
+    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.clearuserdata.md
+  },
+};
+```
+
+### Destinations
+
+You can send your data using the Avo generated JavaScript code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- RudderStack
+- Freshpaint
+- PostHog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

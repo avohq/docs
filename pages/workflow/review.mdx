@@ -1,148 +1,120 @@
 ---
-layout: 'guide'
-title: '2. Review suggestions in Avo'
-abstract: ''
+title: '2. Review changes'
 ---
 
-import Link from '../../components/Link';
-import styles from '../index.module.scss';
-import PageLink, { CallToAction } from '../../components/PageLink';
-import AnalyticsManagerIcon from '../../images/svg/analyticsmanager.svg';
-import DevIcon from '../../images/svg/dev.svg';
+import PageLink from '../../components/PageLink';
+import { Callout } from 'nextra/components';
 
-import { FunctionComponent } from 'react';
+# Review changes
 
-## Ask for a review
+_Role: Product, Data, Engineering._
 
-_Role: Product, Data, Engineering. See more below _
+Once you have drafted changes to your tracking plan we recommend requesting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders) to review your suggested changes. 
+To do this, click "View changes" in the branch header to navigate to the review screen.
+Stakeholder teams can be [configured to be automatically added as required reviewers](/workspace-management/domains#individual-stakeholder-team-settings) on the enterprise plan.
 
-Once you have drafted changes to your tracking plan we recommend asking your teammates to review your suggested changes.
+## Who should review?
 
-**Who should be asked for a review?**
 We typically see three types of reviewers:
 
-- **Product team:** Someone who is responsible for the related feature or user flow that verifies that the metrics mapped out on the branch suffice for their data needs
+- **Product team:** Someone who is responsible for the related feature or user flow who verifies the metrics mapped out on the branch meet their data needs
 - **Data team:** Someone who validates that the changes made are according to the data standard of your company
 - **Engineering team:** The folks who will implement the suggested changes. If the changes made affect multiple sources (e.g. iOS, Android, Web, backend) we recommend to get reviews from the teams working on each source
 
-**How to ask for a review?**
-The first step is to mark the branch as “Ready for review”. This is done at the bottom of the review screen as seen on the screenshot below.
-
-<center>
-  <img
-    width="60%"
-    src={require('../../images/workflow/2.review/ready-for-review.png')}
-    alt="even definition"
-  />
-</center>
-
-_Example: Changes ready for review_
-
-> Note that detailed branch statuses like “Draft”, “Ready for Review”, “Request changes” and “Approved” are only available on our paid plans. If you’re currently on the Free plan you can start a free trial today to try it out.
-
-There are couple ways to share a review request:
-
-- Add the reviewers as [branch collaborators](https://www.avo.app/blog/introducing-branch-collaborators): Go to the branch review screen of your branch and add your reviewers as collaborators. A collaborator will receive an email when added to your branch, when discussions are started, when the branch status is updated and when the branch is merged or closed.
-
-  <video
-    controls
-    loop
-    muted
-    width="100%"
-    autoPlay
-    src={require('../../images/workflow/2.review/add-collaborators.mp4')}
-    alt="Add Collaborators"
-  />
-
-  _Example: Add reviewer as branch collaborators_
-
-- Share a direct link to the branch with the reviewers: Go to the branch review screen and copy the browser URL.
-
-> 💡 Follow the same process for requesting branch reviews on Avo as you would for other types of internal requests. For example if your team mostly works in Asana or Jira, create an Asana task or Jira ticket with a link to the branch review screen.
-
-We also recommend you set up the Slack workflow integration for your Avo workspace. The Slack workflow integration will post all branch updates and comments to a Slack channel of your choice.
-
-<div className={styles.row}>
-  <PageLink
-    image={DevIcon}
-    title="Slack notifications"
-    description="Learn how to enable Slack notifications in your Avo Workspace"
-    callToAction={
-      new CallToAction('/workspace/integrations#slack')
-    }
-  />
-</div>
-
-Additionally, with approval workflows you can configure how many approvals are required, and who can approve, before the branch can be merged.
-
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="Approval workflows"
-    description="Increase the quality of your tracking plan with protected main branch and branch approvals"
-    callToAction={
-      new CallToAction('/workspace/approval-workflows')
-    }
-  />
-</div>
-
-## Submit a review
-
-The role of the reviewer(s) is to make sure that the suggested changes fit your data needs, are according to the existing standards and naming conventions, and are feasible for implementation.
-
-The branch review screen in Avo summarizes the changes that have been suggested on the branch.
-
-On the review screen, you can comment on every item that has been introduced or changed on your branch, ask questions and suggest changes.
-
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/2.review/add-comments.png')}
-    alt="Adding comment"
-  />
-</center>
-
-_Example: Adding comment to the changes_
-
-To see more details about the items being changed you can click into each item on the review screen. You can add comments directly to each item. All comments made on the branch will show up on the review screen.
-
-<video
-  controls
-  loop
-  muted
-  width="100%"
-  autoPlay
-  src={require('../../images/workflow/2.review/commenting-in-an-item.mp4')}
-  alt="Commenting on a item"
+> For changes impacting multiple stakeholders within your organization, you may also want to pull them in to review and align on the changes. See: <PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Impacted Stakeholders"
+  description="Managing changes impacting multiple stakeholders"
+  href="/data-design/guides/managing-changes-impacting-multiple-stakeholders"
 />
 
-_Example: Adding comment directly to an item_
+<Callout type="info">
+  Note that features for approval workflows and assigned reviews are only available on our paid plans. If you're currently on the Free plan you can start a free trial today to try it out.
+</Callout>
 
-You can add a comment at the bottom of the review to discuss the overall branch, give thumbs up for approval, or request changes.
+## How to request a review
 
-<center>
-  <img
-    width="100%"
-    src={require('../../images/workflow/2.review/comment-whole-branch.png')}
-    alt="Adding comment"
-  />
-</center>
+Step 1. Navigate to the "View Changes" screen. Here you get an overview of all changes made on your branch. We recommend going over your changes and making sure they pass the branch audit before requesting a review. 
+
+Step 2. Mark the branch as "Ready for review", by clicking the button at the top of your review screen or in the branch status section at the bottom of the screen.
+
+![Ready for review](/images/workflow/2.review/ready-for-review.png)
+
+Step 3. Assign one or more reviewers. Click "Assign reviewer" and find the person or [stakeholder team](/data-design/avo-tracking-plan/stakeholder-domains) you want to review your branch. The reviewer will receive an email to let them know, and if you have the Avo Slack integration set up for your workspace, they will be @ mentioned in a Slack notification.
+
+![Assign reviewer](/images/workflow/2.review/assign-reviewer.png)
+
+<Callout type="info" emoji="💡">
+  Follow the same process for requesting branch reviews on Avo as you would for
+  other types of internal requests. For example if your team mostly works in
+  Asana or Jira, create an Asana task or Jira ticket with a link to the branch
+  review screen.
+</Callout>
+
+We highly recommend you set up Slack notifications for your Avo workspace, to get all branch updates and comments sent to a Slack channel of your choice. You will also receive daily reminders of branches pending review.
+
+<PageLink
+  image="/docs/images/svg/dev.svg"
+  title="Slack notifications"
+  description="Learn how to enable Slack notifications in your Avo Workspace"
+  href="/data-design/branches/workspace-notifications"
+/>
+
+Additionally, with approval workflows you can configure how many approvals are required, and which level of user permission is needed to approve before the branch can be merged.
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Approval workflows"
+  description="Increase the quality of your tracking plan with protected main branch and branch approvals"
+  href="/data-design/branches/approval-workflows"
+/>
+
+## Submitting a review
+
+The role of the reviewer(s) is to make sure that the changes
+
+- Fit your data needs
+- Match the data design standards and conventions of your organization
+- Don't negatively impact other teams using the data you are changing
+- Are feasible for implementation
+
+The "view changes" screen in Avo summarizes the changes that have been suggested on the branch. You can use the filtering options to focus on the most relevant changes for your review.
+
+### Filtering changes
+
+When reviewing branches that have undergone multiple rounds of changes, you can filter the changes view to focus only on recent modifications. This prevents reviewers from having to re-review changes they've already seen.
+
+Use the "Show changes since" dropdown to view changes since:
+
+- **Branch was created** (default) - All changes on the branch
+- **Your last review** - Only changes made since you last reviewed 
+- **Specific actions** - Changes since branch status updates, tracking plan updates and comments
+
+![View changes since](/images/workflow/2.review/view-changes-since.png)
+
+### Commenting on changes
+
+From the "view changes screen", you can comment on every item that has been introduced or changed on your branch, ask questions and suggest changes.
+
+You can click into each item on the review screen to see more details about the items being changed. Comments made in the item details view will be represented on the review screen.
+
+You can add a comment at the bottom of the review to discuss the overall branch or request changes.
+
+![Adding comment](/images/workflow/2.review/branch-comment.png)
 
 _Example: Adding comment to the overall branch_
 
-When you are done with the review, if your workspace has <Link passHref href="/workspace/approval-workflows"><a>approval workflows</a></Link> enabled, you can change the branch status to “Request changes” or “Approve”.
+### Approving the branch or requesting changes
 
-## What’s next?
+When you are done with the review, if your workspace has [approval workflows](/data-design/branches/approval-workflows) enabled, you can change the branch status to "Request changes" or "Approve".
 
-<div className={styles.row}>
-  <PageLink
-    image={AnalyticsManagerIcon}
-    title="3. Request implementation"
-    description="Learn how to request implementation"
-    callToAction={
-      new CallToAction(
-        '/workflow/request-implementation',
-      )
-    }
-  />
-</div>
+![Adding comment](/images/workflow/2.review/approve-branch.png)
+
+## What's next?
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="3. Request implementation"
+  description="Learn how to request implementation"
+  href="/workflow/request-implementation"
+/>

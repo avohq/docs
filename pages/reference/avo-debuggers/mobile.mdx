@@ -1,0 +1,57 @@
+# Set up Avo Mobile Visual Debugger in code
+
+Mobile debuggers are distributed as standalone open source libraries.
+
+Each Avo function will automatically show events in the debugger with timestamp and all the properties.
+
+If Avo detects errors the visual debugger will highlight those.
+
+> Debuggers are disabled in the [noop](/implementation/avo-and-unit-tests) mode
+
+### Setting up the mobile debuggers
+
+> If you have already initialized development build of the Inspector SDK on Android, no further action is required to include the Visual Debugger. See `showVisualInspector` and `hideVisualInspector` methods of Inspector SDKs to start using the Visual Debugger.
+
+The following pseudocode would give you the idea, head to [platform docs](#platform-docs) for specific integration instructions.
+
+1. Create the debugger
+
+```javascript
+val debugger = Debugger()
+```
+
+2. Pass debugger when you initialize Avo, so Avo can show all tracked events
+
+```javascript
+Avo.initAvo(AvoEnv.DEV, ..., debugger)
+```
+
+3. Show the debugger
+
+```javascript
+debugger.showDebugger(this, DebuggerMode.bar)
+```
+
+4. Post your own events
+
+```javascript
+debugger.post(
+    timestamp,
+    "EventName",
+    errors: [{propertyId:"id0", message:"error in property 'event prop' with id 'id0'"}],
+    eventProperties: [{id:"id0", name:"event prop", value:"val"}],
+    userProperties: [{id:"id1", name:"user prop", value:"val"}]
+);
+```
+
+## Open source repositories and platform specific integration docs
+
+We store the source code, platform docs and example apps in the corresponding GitHub repositories.
+
+- [Android](https://github.com/avohq/android-analytics-debugger)
+- iOS
+
+  - [CocoaPods](https://github.com/avohq/ios-analytics-debugger)
+  - [Swift Package Manager](https://github.com/avohq/ios-analytics-debugger-spm)
+
+- [React Native](https://github.com/avohq/react-native-analytics-debugger)

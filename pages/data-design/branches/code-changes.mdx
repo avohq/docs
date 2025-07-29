@@ -1,0 +1,104 @@
+import { Callout } from 'nextra/components';
+
+# Review Code Changes
+
+The code changes screen helps your team quickly and accurately implement tracking plan changes on a branch. You can find it by navigating to a branch, selecting _View changes_ in the sidebar and then clicking the _Code changes_ tab. You can even share it with someone outside your Avo workspace using the public sharing feature.
+
+![Overview of code changes](/images/code-changes/code-changes.png)
+
+On the code changes screen you see all events that are affected by your tracking plan changes, grouped by source. The event code snippet highlights exactly what has changed in the implementation of the event on the branch and makes it fast and easy for developers to understand what changes they need to make to successfully implement the branch. Your workspace members can comment directly on the events to address any uncertainties about the changes.
+
+## Sharing
+
+You can copy a link to the branch code changes using the link (🔗) icon. It will include the current source, allowing you to tailor the link for each source that has to be implemented. If you want to focus on the implementation of a specific event, you can copy a link directly to each individual event as well.
+
+## Public sharing
+
+If you are sharing implementation instructions with someone outside your workspace you can create a public link. This comes in handy if you are creating tracking implementation tasks in your task management tool and don't know if whoever will be looking at the task is already a member in your Avo workspace. If the user opening the link is authenticated in Avo, they will be redirected to an authenticated view.
+
+Only workspace Admins and Editors can generate a public link but once generated, anyone in the workspace can copy the link to share. Deleting a public link will permanently invalidate all existing links and generating a new one will be behind a new, unique share ID.
+
+![Share code changes](/images/code-changes/code-changes-share.png)
+
+The public view looks and functions similarly to the one in the workspace, but there are some key differences:
+
+- it's restricted to only show the code changes view.
+- It doesn't show any metrics changes or other business context
+- it doesn't reveal any information about your workspace; the workspace name is hidden as well as comments and contributors
+
+To maintain as much security and privacy as we can given the public access, we've gone to great lengths to expose nothing but the information necessary to display the code changes. All tracking plan calculations happen on the server side and we only send the browser the exact strings needed to display the page.
+
+For a preview, take a look at this [example public view](https://www.avo.app/s/TZ0YwKaQ9).
+
+![Public code changes](/images/code-changes/code-changes-public.png)
+
+![Code changes shared](/images/code-changes/code-changes-shared.png)
+
+To maintain as much security and privacy as we can given the public access, we've gone to great lengths to expose nothing but the information necessary to display the code changes. All tracking plan calculations happen on the server side and we only send the browser the exact strings needed to display the page. Deleting a public link will permanently invalidate all existing links as generating a new one will be behind a new, unique share ID.
+
+## Filtering View
+
+While Reviewing, you can filter the events to help you focus on your context.
+There are 2 filters
+
+- By source
+- By event implementation type (Codegen/Non-Codegen)
+
+![Source filter](/images/code-changes/source-filter.png)
+
+![Implementation filter](/images/code-changes/implementation-filter.png)
+
+## Code Snippets
+
+You can select how you want the code snippets changes displayed.
+There are 3 options to select from to view the changes:
+
+- Unified
+- Split
+- No diff
+
+To show an example, we have an event called REACTION_REMOVED where we modified two properties.
+
+- app_id: We changed the property type from `string` to `int`
+- bot_id: We changed the property presence from `required` to `sometimes sent`
+
+#### Unified
+
+When viewing the events unified, the diff between main branch and your branch will be shown in the code snippet inline.
+
+![code snippet unified diff](/images/code-changes/unified-snippet.png)
+
+#### Split
+
+When viewing the events with split view, it will show the main state on the left hand side, while your current branch changes on the right hand side, with highlights on which properties were modified
+
+![code snippet split diff](/images/code-changes/split-snippet.png)
+
+#### No diff
+
+When viewing the events with `No diff` view. The code snippet will display only the branch current changes.
+
+![code snippet no diff](/images/code-changes/nodiff-snippet.png)
+
+## Codegen snippets
+
+When reviewing sources that are using the Avo Codegen, the snippet will generate the function call to the Avo generated function created. The code snippet will be in the source's selected programming language and can be copy and pasted directly into code.
+
+![Codegen code snippet](/images/code-changes/codegen-snippet.png)
+
+## Non-Codegen snippets
+
+Events that are not implemented with codegen will also show code snippets.
+These code snippets will be in Pseudocode to be used as a guide helper for the developer to implement the code.
+The Pseudocodegen will attempt to display all the complexity that can be in implementing the event such as:
+
+- Name mapping (overall and per destination)
+- Multiple Destinations
+- Property presence
+
+<Callout type="info">
+  Pseudocodegen sets the property types as values for the properties to help the
+  developer make sure to implement it correctly.
+</Callout>
+
+![PseudoCode code snippet](/images/code-changes/pseudo-snippet.png)

@@ -1,0 +1,124 @@
+import PageLink from '../../../components/PageLink';
+
+# Stakeholders
+
+In Avo, a **Stakeholder Team** is a group of people working within a specific function or area of your organization.  
+It could be a product area (Search, Checkout), an entire app team (Drivers, Riders), or a business function that operates independently of the product (Central Data, Marketing, Finance).
+
+![Schematics of tracking plan in Avo broken down into a few example teams](/images/domains/domains.png)
+
+Each stakeholder team has different data needs and they need to be able to influence what data they get access to.
+But they have different access to the ability to generate the data they need.
+For instance: the finance team will need the product team to generate events related to the user experience so they can measure retention to predict financial outcomes. 
+
+By documenting stakeholders and owners on the events in your tracking plan, anyone is able to understand who is relying on which events and who to loop in when changes are made or if an issue comes up.
+
+This structure is especially valuable for large organizations managing a shared schema registry.  
+It clarifies which teams are responsible for which parts of the tracking plan—and, more importantly, streamlines workflows when changes are proposed to shared data structures.
+
+## Stakeholder Teams
+
+A Stakeholder Team consists of:
+- **Team Members** — individuals with subject matter expertise
+- **Stakeholder Items** — the events and variants the team depends on, owns, or both
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Managing Stakeholder Teams"
+  description="How to set up and manage stakeholder teams"
+  href="/workspace-management/domains"
+/>
+
+### Stakeholder Team Members
+
+These are the individuals who share expertise in the area the team represents. One workspace member can be a part of one or multiple stakeholder teams.
+
+**Roles and privileges**:
+- **Lead**: Each Stakeholder Team must have a Lead that is its primary contact and the person ultimately responsible for the tracking plan items tied to the team. This role doesn't need to mirror your org chart.
+- **Member**: All other Stakeholder Team participants.
+- **Can approve**: Members who are allowed to approve branches on behalf of the team.
+
+![Stakeholder team members](/images/domains/stakeholder-team-members.png)
+
+[Stakeholder members can be added to a Stakeholder team](/workspace-management/domains#adding-stakeholder-team-members) from the stakeholder details.
+
+### Stakeholder Items
+
+These are the events, event variants and properties relevant to the team's area of ownership or dependency.
+
+![Stakeholder items](/images/domains/stakeholder-items.png)
+
+If a team is assigned as a stakeholder:
+- It's clear who relies on which events, variants and properties.
+- It's easy to know who to contact when questions or issues arise.
+- Everyone can see who should review proposed changes to shared structures.
+
+When changes are made to an event that a stakeholder team is assigned to:
+
+**All plans:**
+- An [indicator shows how many teams will be impacted](/data-design/guides/managing-changes-impacting-multiple-stakeholders), helping you see that your changes impact other stakeholder teams
+
+**Team plan and above:**
+- An [overview of which specific teams will be impacted](/data-design/guides/managing-changes-impacting-multiple-stakeholders), helping you avoid unwanted changes and manually add impacted stakeholders as reviewers
+- Slack notifications can be sent to stakeholder team channels based on their [configured settings](/workspace-management/domains#stakeholder-team-settings) - see [workspace notifications](/data-design/branches/workspace-notifications) for setup details
+
+**Enterprise plan:**
+- Stakeholder teams can be automatically added as required reviewers based on their [configured settings](/workspace-management/domains#stakeholder-team-settings), meaning branches cannot be merged without their approval
+
+[Stakeholder items can be assigned to a Stakeholder team](/workspace-management/domains#adding-stakeholder-events) from the stakeholder details and event details.
+
+## Stakeholders in the tracking plan
+
+In the Events table, you'll see **Stakeholders** and **Owner** columns that show which teams are stakeholders in each event and which team owns it.
+
+### Filtering by stakeholders and owners
+
+You can filter the events table by both stakeholder teams and owners to create focused views:
+
+- **Stakeholders filter**: Shows events where the selected teams are stakeholders (depend on the events)
+- **Owners filter**: Shows events owned by the selected teams (responsible for maintaining the events)
+
+For complete details on all available filtering options and how to use them effectively, see [Filtering and organizing events](/data-design/avo-tracking-plan/events#filtering-and-organizing-events).
+
+![Avo events page with stakeholder filters applied](/images/domains/events-domain-filter.png)
+
+In each event's detail view, you'll see which teams are stakeholders and which one owns the item.  
+Clicking a team name opens a preview where it's possible to:
+- See stakeholder team members
+- Remove ownership if it's a stakeholder owned event
+- Remove from stakeholder team
+- Navigate to the team details page.
+
+![Avo event details view with stakeholder teams](/images/domains/event-detail-stakeholder-preview.png)
+
+### Stakeholders in the branched workflow
+
+When a user creates a branch in Avo, the **Impacted Stakeholders** indicator in the branch header shows how many stakeholder teams are affected by the proposed changes.
+
+![The Avo Branch Bar with impacted stakeholders](/images/domains/impacted-stakeholders-in-branch-bar.png)
+
+From there, you can:
+- [Tweak the changes to reduce scope](/data-design/guides/managing-changes-impacting-multiple-stakeholders#minimizing-stakeholder-impact)
+- [Add impacted teams as reviewers](/data-design/guides/managing-changes-impacting-multiple-stakeholders#aligning-on-cross-stakeholder-changes)
+
+On the Enterprise plan, impacted **owners** are automatically added as required reviewers.
+
+## Event Ownership and Data Governance
+
+Assigning owners to events is not just for documentation—it's actively used by Avo's governance systems:
+
+### Tracking plan audit
+- Avo's [tracking plan audit](/audit/rules#all-events-have-owners) can warn (Team plan) or enforce (Enterprise plan) that all events have owners 
+- Branch audits check that new events have owners before allowing merges
+- Helps ensure accountability is established before events go live
+
+### Automatic Review Assignment
+- Owners are automatically added as reviewers when their events are modified (Enterprise plan)
+- Ensures the responsible team is always involved in changes to their data structures
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Impacted Stakeholders"
+  description="Managing changes impacting multiple teams"
+  href="/data-design/guides/managing-changes-impacting-multiple-stakeholders"
+/>

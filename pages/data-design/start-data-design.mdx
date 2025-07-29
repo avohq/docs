@@ -1,9 +1,7 @@
----
-layout: 'guide'
-title: 'Data design in Avo'
----
+import PageLink, { TwoCol } from '../../components/PageLink';
+import { Callout } from 'nextra/components';
 
-import Link from '../../components/Link';
+# Data design in Avo
 
 ### Who is this guide useful for?
 
@@ -18,13 +16,13 @@ import Link from '../../components/Link';
 
 ## Defining a metric
 
-To help decide what events and properties are needed to measure the success of your feature, it is useful to start by defining a metric in Avo. The added benefit of documenting metrics in context of your events is knowing what metrics are effected by changing this event. Read more in our <Link passHref href="/data-design/documenting-downstream-dependancies"><a>documenting downstream dependencies guide</a></Link>.
+We always recommend starting with the why in data design. That means thinking about your research questions, goals and metrics before your start defining your event structures. Metrics are directly tied to events in Avo and are visible in the event details. Read more about metrics, why they are useful and learn about purpose meetings in our [Metrics page](/data-design/avo-tracking-plan/metrics).
 
 ### Step 1 – Open a branch in Avo
 
 If you are making changes to your tracking plan in Avo, we always recommend creating a branch first – no matter how small your change might be. That allows you to make suggestions in isolation from the source of truth on your main branch and get feedback from your peers.
 
-Open a new branch by clicking the three line icon beside where it says "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
+Open a new branch by clicking the icon to the right of "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
 
 <video
   controls
@@ -32,15 +30,17 @@ Open a new branch by clicking the three line icon beside where it says "main" in
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/opening-a-branch.mp4')}
-  alt="Opening a branch"
+  src={'/docs/images/data-design/deep-dive/create-branch-deep-dive.mp4'}
+  alt="Creating a branch"
 />
 
-_Example: Opening a branch in Avo_
+_Example: Creating a branch in Avo_
 
-### Step 2 – Navigate to the metrics tab
+Now you should see the name of your branch instead of "main".
 
-Navigate to the metrics tab by clicking "Tracking Plan" and then "Metrics", which lives under the Tracking Plan.
+### Step 2 – Navigate to the metrics view
+
+Navigate to the metrics screen by clicking "Metrics" in the "Tracking Plan" section of the left sidebar.
 
 <video
   controls
@@ -48,7 +48,7 @@ Navigate to the metrics tab by clicking "Tracking Plan" and then "Metrics", whic
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/navigate-to-metrics.mp4')}
+  src={'/docs/images/data-design/deep-dive/navigate-to-metrics.mp4'}
   alt="Navigating to metrics"
 />
 
@@ -56,7 +56,7 @@ _Example: Navigating to metrics._
 
 ### Step 3 – Create a new metric
 
-Create a metric by clicking the "+ Add Metric" button. Give it a name and a description to elaborate on what the metric means.
+Create a [metric](/data-design/avo-tracking-plan/metrics) by clicking the "+ Add Metric" button in the top left corner. Give it a name and a description to elaborate on what the metric means.
 
 <video
   controls
@@ -64,7 +64,7 @@ Create a metric by clicking the "+ Add Metric" button. Give it a name and a desc
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/create-metric.mp4')}
+  src={'/docs/images/data-design/deep-dive/create-metric.mp4'}
   alt="Create a metric"
 />
 
@@ -72,7 +72,7 @@ _Example: Creating a metric._
 
 ### Step 4 – Add your metric to a category
 
-We recommend <Link passHref href="/data-design/organizing-metrics-and-events"><a>organizing your metrics and events</a></Link> by using categories. Add your metric to a category by clicking "+ Add to Category" below the description input. If a relevant category doesn't already exist, first create a new one by clicking "+ Add Category" next to the "+ Add Metric" button, and then add your metric to the category.
+We recommend [organizing your metrics and events](/data-design/organizing-metrics-and-events) by using categories. Add your [metric](/data-design/avo-tracking-plan/metrics) to a category by clicking "+ Add to Category" below the description input. If a relevant category doesn't already exist you can create it there and add the metric to it.
 
 <video
   controls
@@ -80,7 +80,7 @@ We recommend <Link passHref href="/data-design/organizing-metrics-and-events"><a
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/add-metric-to-category.mp4')}
+  src={'/docs/images/data-design/deep-dive/add-metric-to-category.mp4'}
   alt="Add metric to category"
 />
 
@@ -88,12 +88,7 @@ _Example: Adding metric to a category._
 
 ### Step 5 – Select metric type
 
-The metric type determines how you will construct your metric in your analytics platform or raw database. Different metric types have different capabilities:
-
-- **Funnel**: a series of events describing a user journey. Can filter on a property in each event
-- **Segmentation**: typically used for analyzing a single event by filtering on or grouping by some properties. Can use multiple events and filter and group by properties on each of them.
-- **Retention**: a born event followed by a return event. Used to analyze how well users retain in your product by defining a born cohort and analyzing how many of those that were born return to do an action some days, weeks or months later. Can use 2 events and filter by a property on each of them.
-- **Proportion**: event A divided by event B, used to measure how many user perform an action as a proportion of some baseline. Can use 2 events and filter by a property on each of them.
+The metric type determines how you will construct your metric in your analytics platform or raw database. The available metrics types in Avo are _Funnel_, _Segmentation_, _Retention_ and _Proportion_. Read about their unique capabilities in our [Metrics page](/data-design/avo-tracking-plan/metrics).
 
 <video
   controls
@@ -101,7 +96,7 @@ The metric type determines how you will construct your metric in your analytics 
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/selecting-metric-type.mp4')}
+  src={'/docs/images/data-design/deep-dive/select-metric-type.mp4'}
   alt="Selecting metric type"
 />
 
@@ -109,7 +104,7 @@ _Example: Selecting a metric type._
 
 ### Step 6 – Add events
 
-The final step of configuring your metric is to add existing or new events to your metric. This will help whoever wants to dig into your data to know exactly how this metric is defined and how they can structure it in your analytics platform.
+The final step of configuring your metric is to add existing or new events to your metric. This will make the metric visible in the event details of the events added, and help whoever wants to dig into your data to know exactly how this metric is defined and how they can structure it in your analytics platform.
 
 #### Adding existing events to a metric
 
@@ -121,7 +116,7 @@ To add your existing events to a metric, you can simply click "Add Event..." and
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/add-existing-events-to-metric.mp4')}
+  src={'/docs/images/data-design/deep-dive/add-existing-events-to-metric.mp4'}
   alt="Adding an existing event to a metric"
 />
 
@@ -129,9 +124,9 @@ _Example: Adding an existing event to a metric._
 
 #### Adding new events to a metric
 
-If the user action that you want represented in your metric is not already defined in an event, you can create one from the metrics view.
+If the user action that you want represented in your metric is not already defined as an event, you can create one from the metrics view.
 
-In the metrics view, click "Add Event..." and start typing the name of the event you want to create. Instead of selecting an existing event from the drop down, hit enter and create a new one. The name editor will pop up and you can edit the spelling or casing using the naming assistant. Once you have created your event, you can configure it (see Configuring your event below) or continue adding events to your metric and configure later.
+In the metrics details, click "Add Event..." and start typing the name of the event you want to create. If Avo doesn't find an event with a matching name, you will be able to create one. The name of your new event will be automatically audited by Avo (see [Audit rules and configurations](/audit/rules)). Once you have created your event you can add more to the metric, or click it to configure it (see [Configuring your event](/data-design/start-data-design#step-4-configure-your-event) below).
 
 <video
   controls
@@ -139,7 +134,7 @@ In the metrics view, click "Add Event..." and start typing the name of the event
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/new-event-from-metric.mp4')}
+  src={'/docs/images/data-design/deep-dive/create-event-in-a-metric.mp4'}
   alt="Adding a new event to a metric"
 />
 
@@ -147,11 +142,13 @@ _Example: Adding a new event to a metric._
 
 ## Defining and configuring events
 
+[Events](/data-design/avo-tracking-plan/events) are the core of event based product analytics. They are sent to your analytics platform when a user performs actions in your product. The technical structure of an event is in form of an event name and properties that further describe the user action. In addition, Avo allows you to describe events with descriptions, screenshots, variants and more. See step by step definition and configuration of an example event below.
+
 ### Step 1 – Open a branch in Avo
 
 If you are making changes to your tracking plan in Avo, we always recommend creating a branch first – no matter how small your change might be. That allows you to make suggestions in isolation from the source of truth on your main branch and get feedback from your peers.
 
-Open a new branch by clicking the three line icon beside where it says "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
+Open a new branch by clicking the icon "main" in the left sidebar. Then you are prompted to open an existing branch or creating a new one.
 
 <video
   controls
@@ -159,15 +156,15 @@ Open a new branch by clicking the three line icon beside where it says "main" in
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/opening-a-branch.mp4')}
-  alt="Opening a branch"
+  src={'/docs/images/data-design/deep-dive/create-branch-deep-dive.mp4'}
+  alt="Creating a branch"
 />
 
-_Example: Opening a branch in Avo_
+_Example: Creating a branch in Avo_
 
-### Step 2 – Navigate to the events tab
+### Step 2 – Navigate to the events view
 
-Navigate to the events tab by clicking "Tracking Plan" and then "Events", which lives under the Tracking Plan.
+If you are not in the Events view already, click "Events" under tracking plan in the sidebar on the left.
 
 <video
   controls
@@ -175,15 +172,22 @@ Navigate to the events tab by clicking "Tracking Plan" and then "Events", which 
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/navigate-to-events.mp4')}
+  src={'/docs/images/data-design/deep-dive/navigate-to-events.mp4'}
   alt="Navigating to events"
 />
 
-_Example: Navigating to metrics._
+_Example: Navigating to events._
 
 ### Step 3 – Create a new event
 
-Create a new event by clicking the "+ Add Event" button in the top left corner. Give it a name and try to follow the naming convention in your tracking plan. The Avo naming assistant will help you follow the casing used in your workspace.
+Create a new event by clicking the "+ Add Event" button in the top left corner. Give it a name and try to follow the naming convention in your tracking plan. Avo will automatically audit the name (see [Audit rules and configurations](/audit/rules)) and help you follow the casing used in your workspace.
+
+<Callout type="info" emoji="⚡">
+**Creating multiple events efficiently**<br/>
+If you need to create several events, consider using Avo's [fast creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods):
+- Toggle "Create more" in the event modal to stay in the creation flow
+- Inline create from the workbench for rapid event name entry
+</Callout>
 
 <video
   controls
@@ -191,7 +195,7 @@ Create a new event by clicking the "+ Add Event" button in the top left corner. 
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/create-event.mp4')}
+  src={'/docs/images/data-design/deep-dive/create-new-event.mp4'}
   alt="Creating a new event"
 />
 _Example: Creating a new event._
@@ -200,19 +204,81 @@ _Example: Creating a new event._
 
 #### Add a description
 
-We always recommend adding a descriptive description to every event, that describes when the event should be sent. That will help prevent discrepancies between platforms and code paths. Read more in our <Link passHref href="/data-design/defining-descriptive-events-and-properties"><a>defining descriptive events and properties guide</a></Link>.
+We always recommend adding a descriptive description to every event, that describes when the event should be sent. That will help prevent discrepancies between products, platforms and code paths. Read more in our
+[defining descriptive events and properties guide](/data-design/defining-descriptive-events-and-properties).
 
 #### Add a source (required)
 
-Add a <Link passHref href="/workspace/connections#a-namesourcesa-sources-where-the-data-comes-from"><a>source</a></Link> to your event to define where it should be sent from and in which programming language the tracking code will be generated in. If you have an established workspace you probably have the sources you need already set up and can select them from the drop down that appears when you click "+ Add Source". If not, you might need to set up and configure your sources and destinations in the <Link passHref href="/workspace/connections"><a>Sources tab</a></Link>.
+Add a
+[source](/data-design/define-sources-and-destinations) to your event to define where it should be sent from and in which programming language the implemented in. If you have an established workspace you probably have the sources you need already set up and can select them from the drop down that appears when you click "+ Add Source". If not, you might need to set up and configure your sources and destinations in the
+[Sources view](/data-design/define-sources-and-destinations).
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/event-description-and-source.mp4'}
+  alt="Adding a description and sources to an event"
+/>
+
+_Example: Adding a description and sources to an event._
 
 #### Add actions and properties
 
-All events in Avo have the <Link passHref href="/workspace/tracking-plan/events#a-namelog-eventa-log-event"><a>"Log Event" action</a></Link> by default, which means that a user action is logged as an event to the analytics platform. This is the most common use case and the one that we are focusing on in this guide. With the "Log Event" action you can add event properties, which allows you to attach detailed information about the action the user performed. See how to create, add and configure event properties in the section below.
+All events in Avo have the
+["Log Event" action](/data-design/avo-tracking-plan/events#log-event) by default, which means that a user action is logged as an event to the analytics platform. This is the most common use case and the one that we are focusing on in this guide. With the "Log Event" action you can add [event properties](/data-design/avo-tracking-plan/properties#event-properties), which allows you to attach detailed information about the action the user performed. See how to [create and configure event properties](/data-design/start-data-design#defining-and-configuring-event-properties) in the section below.
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/add-existing-property-to-event.mp4'}
+  alt="Adding existing properties to an event"
+/>
+
+
+#### Add variants
+
+[Event variants](/data-design/avo-tracking-plan/event-variants) allow you to customize your events based on scenarios. Their main advantages are:
+- enhancing the precision of the tracking plan
+- narrowing the scope of tracking changes
+- simplifying the implementation of Codegen
+
+In the example below, a variant of the `Purchase Completed` is created. It's a customized view of the event for when boosters are purchased. Only them, the `Booster ID` property is relevant and therefore it's required when `Product Category` is `Boosters` but not attached to the event otherwise. See more example in our [Event variant docs](/data-design/avo-tracking-plan/event-variants).
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/create-event-variant.mp4'}
+  alt="Creating an event variant"
+/>
+
+#### Add event triggers (screenshots)
+
+[Event triggers](/data-design/guides/event-triggers) allow you to attach screenshots from your product to visually describe where events are triggered from. Triggers can be associated with a specific source if the location of the trigger looks different between sources. They can also be source independent if it is not specific to a certain source.
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/add-trigger-to-event.mp4'}
+  alt="Adding a trigger to an event"
+/>
+
 
 #### Add a category
 
-We recommend <Link passHref href="/data-design/organizing-metrics-and-events"><a>organizing your metrics and events</a></Link> by using categories. Add your event to a category by clicking "+ Add to Category" below the Actions section in the event. If a relevant category doesn't already exist, first create a new one by clicking "+ Add Category" next to the "+ Add Event" button, and then add your metric to the category.
+We recommend
+[organizing your metrics and events](/data-design/organizing-metrics-and-events) by using categories. Categories often represent product areas or journeys. Add your event to a category by clicking "+ Add to Category" below the Actions section in the event. If a relevant category doesn't already exist you can create it there and add the event to it.
 
 #### Add a tag
 
@@ -224,19 +290,23 @@ Tags can be used to organize and your events further than with categories. For e
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/configuring-an-event.mp4')}
-  alt="Configuring an event"
+  src={'/docs/images/data-design/deep-dive/tags-and-categories.mp4'}
+  alt="Adding tags and categories"
 />
 
-_Example: Configuring an event._
+_Example: Adding tags and categories to an event._
 
 ## Defining and configuring event properties
 
-In this guide we're focusing on <Link passHref href="/workspace/tracking-plan/properties#a-nameevent-propertiesa-event-properties"><a>event properties</a></Link> on events with the Log Event action, as that is the most common use case for beginners. There are a few more <Link passHref href="/workspace/tracking-plan/events#a-nameactionsa-actions"><a>actions</a></Link> available as well as two other kinds of properties (<Link passHref href="/workspace/tracking-plan/properties#a-nameuser-propertiesa-user-properties"><a>user properties</a></Link> and <Link passHref href="/workspace/tracking-plan/properties#a-namesystem-propertiesa-system-properties"><a>system properties</a></Link>).
+In this guide we're focusing on
+[event properties](/data-design/avo-tracking-plan/properties#event-properties) on events with the Log Event action, as that is the most common use case for beginners. There are a few more
+[actions](/data-design/avo-tracking-plan/events#actions) available as well as two other kinds of properties (
+[user properties](/data-design/avo-tracking-plan/properties#properties) and
+[system properties](/data-design/avo-tracking-plan/properties#system-properties)).
 
 ### Step 1 – Create a new event property
 
-To create a new event property and add it to an event, first open the event you want to add it to. Then click "+ Add Event Property" under the "Log Event" section of the actions and type the name of the property that you want to create. Then click "Create New Property" and review and confirm the name of the property in the naming editor that pops up. As with event names, the naming assistant will help you follow the casing in your workspace and prevent duplicate property names. Now you have created a new event property and added it to your event.
+You can create new properties from the event details or the properties view. In this example we will create a new event property and add it to an event from the event details. First open the event you want to add it to, then click "+ Add Event Property" under the "Log Event" section of the actions and type the name of the property that you want to create. If there is no property with the same or similar name, Avo will offer you to create a new one while automatically auditing it's name according to your workspace's standards. Hit enter or click create and you have created your property.
 
 <video
   controls
@@ -244,39 +314,48 @@ To create a new event property and add it to an event, first open the event you 
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/add-new-property-to-event.mp4')}
-  alt="Creating a new event property for an event"
+  src={'/docs/images/data-design/deep-dive/create-new-properties.mp4'}
+  alt="Creating new event properties from event details"
 />
 
-_Example: Creating a new event property for an event._
+_Example: Creating new event properties from event details._
 
 ### Step 2 – Configure a property
 
 #### Add a description
 
-As with event, we highly recommend adding descriptions to all properties. That helps the ones that implement to know exactly what variable in their code they should assign to that property.
+As with events, we highly recommend adding descriptions to all properties. That creates a common understanding between the data designer and those that use the data or implement it. It's especially important to make sure the implementation is consistent across products, platforms, events and code paths as the description helps the ones that implement to know exactly what variable in their code they should assign to that property.
 
 #### Select the data type
 
-Change the data type of your property to match the one you need by clicking on where it says "String" below the description input. Then you will be able to pick from the following types:
+Change the [data type of your property](/data-design/avo-tracking-plan/properties#property-types-and-constraints) to match the one you need by clicking on where it says "String" below the description input. Then you will be able to pick from the following types:
 
-- string: only all string values are allowed
-- int: only whole number values are allowed
-- float: only floating point values are allowed
-- boolean: only `true` or `false` values are allowed
-- <Link passHref href="/data-design/object-properties"><a>object</a></Link> (available upon request): only dictionary or nested object structures are allowed, learn more about objects in Avo <Link passHref href="/data-design/object-properties"><a>here</a></Link>
-- any (available upon request): any data type is allowed and not type validation will occur
+- **string**: only string values are allowed
+- **int**: only whole number values are allowed
+- **float**: only floating point values are allowed
+- **boolean**: only `true` or `false` values are allowed
+- **[object](/data-design/object-properties)**: only dictionary or nested object structures are allowed (learn more in our
+  [object docs](/data-design/object-properties))
+- **any** (available upon request): any data type is allowed and not type validation will occur
 
-#### Decide if it's optional or required
+All of the above data types can be used with the list checkmark. That means that the property will become a list/array of the data type. For example, if the property value type `string` is selected and `list` checked, then the property is a list of strings: ["pants", "socks", "hats"]
 
-All properties are required by default and we recommend trying to keep them required in as many cases a possible. That means that the Avo developer tools will throw and error if the property is not assigned a value in development, which reduces the risk of missing data significantly. You can however set a property to be optional by checking the "Optional" check box beside the data type, if it's not always relevant to send a value for that property.
+#### Select the property presence
+
+The [property presence](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) defines whether the property is required, optional or not allowed. In Avo it is described with `Always sent` which means the property is required, `Sometimes sent` which means it's optional and `Never sent` which means is not allowed. Presence can be configured per event and per source.
+
+All properties are required by default and we recommend trying to keep them required in as many cases as possible. That means that the Avo developer tools will throw an error if the property is not assigned a value in development, which reduces the risk of missing data significantly. It the property is only applicable in some cases, we recommend using [event variants](/data-design/avo-tracking-plan/event-variants) to define each case. It's also possible to use `Sometimes sent`, but that means that the validation will not be as rigorous.
 
 #### Add rules
 
 Properties don't have any rules by default, but we recommend setting rules that match the limitation of the possible values for every property.
 
-- String rules: you can pick exactly which string values are allowed for your property. We recommend doing so for all string properties that have a limited number of allowed values.
-- Int and Float rules: Numerical properties can have rules that limit the value to a range between a minimum and maximum value. We recommend to set a min and max where relevant, for example to prevent negative values for count properties.
+- **String rules**: you can pick exactly which string values are allowed for your property. We recommend doing so for all string properties that have a limited number of allowed values. String rules can be configured per source and event.
+- **Int and Float rules**: Numerical properties can have rules that limit the value to a range between a minimum and maximum value. We recommend to set a min and max where relevant, for example to prevent negative values for count properties.
+
+#### Example property configurations
+
+Below is an example of a pretty simple numerical property definition:
 
 <video
   controls
@@ -284,11 +363,13 @@ Properties don't have any rules by default, but we recommend setting rules that 
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/configuring-an-event-property.mp4')}
+  src={'/docs/images/data-design/deep-dive/configure-property.mp4'}
   alt="Configuring a new property"
 />
 
-_Example: Configuring a new property._
+_Example: Configuring a new numerical property._
+
+Below is an example of a string property with presence depending on source and string rules varied per source.
 
 ### Step 3 – Add existing event property to an event
 
@@ -302,12 +383,52 @@ To add an existing event property to your event, click "+ Add Event Property" un
   muted
   width="100%"
   autoPlay
-  src={require('../../images/best-practices/getting-started-to-design-data/add-existing-property-to-event.mp4')}
-  alt="Adding an existing property to an event"
+  src={'/docs/images/data-design/deep-dive/add-existing-property-to-event.mp4'}
+  alt="Adding existing properties to an event"
 />
 
 _Example: Adding an existing property to an event._
 
+### Step 4 - Create and add property bundle to an event
+
+[Event property bundles](/data-design/avo-tracking-plan/properties#event-property-bundles) is a way to bundle related properties that are often added to events together to make it faster and more consistent to add those properties to events. 
+
+In the example below we create the Product property bundle with all the product properties that should go together on events, preventing us from sometimes forgetting the `Product Price` property for example. Property bundles are created in the "Properties" page and added to events the same way as event properties, by clicking "+ Add event property" under the "Log Event" action.
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/data-design/deep-dive/create-and-add-property-bundle.mp4'}
+  alt="Adding existing properties to an event"
+/>
+
+_Example: Creating and adding a property bundle to an event._
+
 ## What's next?
 
-Now you know how to define and maintain your metrics and events in Avo and it's time to learn <Link passHref href="/data-design/define-sources-and-destinations"><a>how to manage sources and destinations</a></Link>.
+Now that you know how to define and maintain your metrics and events in Avo, it's time to learn how to [review branch changes](/workflow/review) and [request implementation](/workflow/request-implementation). If you haven't set up your sources and destinations yet, now is a good time to learn how [sources and destinations](/data-design/define-sources-and-destinations) are defined.
+
+<TwoCol>
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Review branch changes"
+    description="How the review workflow in Avo works"
+    href={'/workflow/review'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Requesting implementation"
+    description="How to request implementation in Avo."
+    href={'/workflow/request-implementation'}
+  />
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Sources and destinations"
+    description="How to set up your sources and destinations in Avo."
+    href="/data-design/define-sources-and-destinations"
+  />
+</TwoCol>
+

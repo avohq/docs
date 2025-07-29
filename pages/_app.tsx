@@ -1,22 +1,14 @@
 import { FunctionComponent, useEffect } from 'react';
 import { AnalyticsBrowser } from '@segment/analytics-next';
 import { AppProps } from 'next/app';
-import { MDXProvider } from '@mdx-js/react';
+import { useRouter } from 'next/router';
+import Script from 'next/script';
 import mixpanel from 'mixpanel-browser';
-import * as amplitude from '@amplitude/analytics-browser';
+import * as Inspector from "ssr-web-avo-inspector";
 
 import Avo, { AvoEnv, CustomDestination } from '../Avo';
 
-import '../styles/global.css';
-
-import Layout from '../components/Layout';
-import MDComponents from '../styles/MDComponents';
 import useAvoPath from '../util/useAvoPath';
-import Head from 'next/head';
-
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-config.autoAddCss = false;
 
 const getAvoEnv = () => {
   switch (process.env.NEXT_PUBLIC_AVO_ENV) {
@@ -27,6 +19,18 @@ const getAvoEnv = () => {
     case 'development':
     default:
       return AvoEnv.Dev;
+  }
+};
+
+const getAvoInspectorEnv = () => {
+  switch (process.env.NEXT_PUBLIC_AVO_ENV) {
+    case 'production':
+      return Inspector.AvoInspectorEnv.Prod;
+    case 'staging':
+      return Inspector.AvoInspectorEnv.Staging;
+    case 'development':
+    default:
+      return Inspector.AvoInspectorEnv.Dev;
   }
 };
 
@@ -98,71 +102,20 @@ const mixpanelDestinationInterface: CustomDestination = {
   // Mixpanel does not support revenue tracking out of the box.
 };
 
-const amplitudeDestinationInterface: CustomDestination = {
-  make: (_env, apiKey) => amplitude.init(apiKey),
-
-  identify: (userId) => amplitude.setUserId(userId),
-
-  logEvent: (eventName, eventProperties) =>
-    amplitude.track(eventName, eventProperties),
-
-  setUserProperties: (_userId, userProperties) => {
-    const identify = new amplitude.Identify();
-    Object.entries(userProperties).forEach(([key, value]) =>
-      identify.set(key, value),
-    );
-    amplitude.identify(identify);
-  },
-
-  unidentify: () => amplitude.reset(),
-
-  revenue: (amount, eventProperties) => {
-    const event = new amplitude.Revenue().setPrice(amount);
-    if (eventProperties.quantity) {
-      event.setQuantity(eventProperties.quantity);
-    }
-
-    if (eventProperties.productId) {
-      event.setProductId(eventProperties.productId);
-    }
-
-    if (eventProperties.revenueType) {
-      event.setRevenueType(eventProperties.revenueType);
-    }
-
-    if (Object.keys(eventProperties).length > 0) {
-      event.setEventProperties(eventProperties);
-    }
-    amplitude.revenue(event);
-  },
-
-  // Amplitude supports some group features on the Growth and Enterprise plans
-  setGroupProperties: (groupTypeName, groupId, groupProperties) => {
-    const group = new amplitude.Identify();
-    Object.entries(groupProperties).forEach(([key, value]) =>
-      group.set(key, value),
-    );
-    amplitude.groupIdentify(groupTypeName, groupId, group);
-  },
-
-  addCurrentUserToGroup: (groupTypeName, groupId) =>
-    amplitude.setGroup(groupTypeName, groupId),
-
-  logEventWithGroups: (eventName, eventProperties, groupTypeNamesToGroupIds) =>
-    amplitude.track({
-      event_type: eventName,
-      event_properties: eventProperties,
-      groups: groupTypeNamesToGroupIds,
-    }),
-};
-
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   Avo.initAvo(
-    { env: getAvoEnv() },
+    {
+      env: getAvoEnv(), inspector: new Inspector.AvoInspector({
+        apiKey: "mT3lTbBrUn6bYCxICbcz",
+        env: getAvoInspectorEnv(),
+        version: "1.0.0",
+        appName: "Avo Docs",
+        suffix: "main"
+      })
+    },
     { client: 'Docs', version: '2.0' },
     {},
     segmentDestinationInterface,
-    amplitudeDestinationInterface,
     mixpanelDestinationInterface,
   );
 
@@ -178,47 +131,49 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
     return () => {
       window.removeEventListener('copy', onCopy);
     };
-  }, []);
+  }, [path]);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    Avo.docsPageViewed({
+      userId_: 'not-used',
+      path: path,
+      referrer: document.referrer,
+      utmCampaign: router.query.utm_campaign as string | undefined,
+      utmContent: router.query.utm_content as string | undefined,
+      utmMedium: router.query.utm_medium as string | undefined,
+      utmSource: router.query.utm_source as string | undefined,
+      utmTerm: router.query.utm_term as string | undefined,
+    });
+  }, [path]); // eslint-disable-line
 
   return (
-    <MDXProvider components={MDComponents}>
-      <Layout>
-        <Head>
-          <meta name="theme-color" content="#000000" />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="96x96"
-            href={require('../images/favicon.png')}
-          />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html:
-                "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T2GMTSM');",
-            }}
-          />
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{
-              __html:
-                'var _iub = _iub || []; _iub.csConfiguration = {"lang":"en","siteId":1197126,"countryDetection":true,"enableCcpa":true,"cookiePolicyId":91875699, "banner":{ "slideDown":false,"position":"float-bottom-right","textColor":"#333","backgroundColor":"#ffffff", "height": "150px !important", "overflow": "auto !important", "width": "200px !important" }};',
-            }}
-          />
-          <script
-            type="text/javascript"
-            src="//cdn.iubenda.com/cs/iubenda_cs.js"
-            async
-          />
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css"
-          />
-        </Head>
-        <Component {...pageProps} />
-      </Layout>
-    </MDXProvider>
+    <>
+      <Script src="//cdn.iubenda.com/cs/iubenda_cs.js" async />
+      <Script
+        id="gtm-script"
+        type="text/javascript"
+        dangerouslySetInnerHTML={{
+          __html:
+            "(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T2GMTSM');",
+        }}
+      />
+      <Script
+        id="iubenda-script"
+        type="text/javascript"
+        dangerouslySetInnerHTML={{
+          __html:
+            'var _iub = _iub || []; _iub.csConfiguration = {"lang":"en","siteId":1197126,"countryDetection":true,"enableCcpa":true,"cookiePolicyId":91875699, "banner":{ "slideDown":false,"position":"float-bottom-right","textColor":"#333","backgroundColor":"#ffffff", "height": "150px !important", "overflow": "auto !important", "width": "200px !important" }};',
+        }}
+      />
+      <Component {...pageProps} />
+      <style jsx>{`
+        :global(.nextra-content img) {
+          border-radius: 4px;
+        }
+      `}</style>
+    </>
   );
 };
 

@@ -1,60 +1,37 @@
-import { FunctionComponent } from 'react';
+import React from 'react';
 
 import styles from './PageLink.module.scss';
-import Icon from './Icon';
-import Link from '../components/Link';
-
-export class CallToAction {
-  constructor(readonly path: string) {}
-}
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface Props {
   title: string;
   description?: string;
   image?: string;
-  callToAction?: CallToAction;
+  href: string;
 }
 
-const PageLink: FunctionComponent<Props> = ({
-  title,
-  description,
-  image,
-  callToAction,
-}) => {
-  const returnDiv = (
-    <div className={styles.root}>
+const PageLink: React.FC<Props> = ({ title, description, image, href }) => {
+  return (
+    <Link scroll={true} href={href} className={styles.root}>
       {image && (
         <div className={styles.image}>
-          <img src={image} />
+          <Image src={image} alt="" width={80} height={80} />
         </div>
       )}
       <div className={styles.text}>
         <div className={styles.title}>{title}</div>
         <div className={styles.description}>{description}</div>
-        {callToAction && (
-          <div className={styles.callToAction}>
-            <span style={{ textDecoration: 'none', color: 'grey' }}>
-              {'Read '}
-            </span>
-            <Icon name="chevron-right" relativeSize="sm" color="inherit" />
-          </div>
-        )}
+        <div className={styles.callToAction}>Read</div>
       </div>
-    </div>
+    </Link>
   );
+};
 
-  if (callToAction) {
-    // Link content wrapped in an anchor to make cmd+click to open in a new tab work
-    return (
-      <Link scroll={true} href={callToAction ? callToAction.path : ''} passHref>
-        <a rel="noreferrer" style={{ textDecoration: 'none' }}>
-          {returnDiv}
-        </a>
-      </Link>
-    );
-  } else {
-    return returnDiv;
-  }
+export const TwoCol: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return <div className={styles.twoCol}>{children}</div>;
 };
 
 export default PageLink;

@@ -1,0 +1,318 @@
+# Avo Codegen in C#
+
+### Platforms
+
+Avo can code generate Avo Codegen in C# targeted at the following platforms
+
+- .NET Server
+- Unity
+
+#### Step 1. Include the Avo file
+
+##### Pull the generated code with the Avo CLI
+
+To get the Avo generated C# file you must be a member of an Avo workspace with a C# source. Ask for an invite from a colleague or create a [new workspace](https://www.avo.app/onboarding)
+
+```bash npm2yarn
+npm install -g avo
+avo login
+avo pull --branch my-branch-name
+```
+
+Learn more about [the CLI here](/implementation/cli).
+
+You can also [download the file manually](/explore-tracking-plan/download-or-copy-avo-file-manually) from your Avo workspace.
+
+#### Step 2. Initialize Avo
+
+Initialize Avo by creating an object using constructor from the generated Avo file
+
+```csharp
+using Avo;
+
+Avo.Avo avo = new Avo.Avo(Avo.AvoEnv.Dev/*, other parameters depending on your tracking plan setup*/);
+```
+
+The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/csharp#constructor).
+
+#### Step 3. Call Avo Codegen to track your product usage
+
+Every event in your tracking plan, marked with the "Implement with Codegen" checkbox, gets a function in the generated code, named according to the event name, in PascalCase.
+
+[//]: # 'TODO Future: Add link here to the "Implement with Codegen" doc in "Tracking Plan Management"'
+
+For example, if you have a "Signup Start" event defined like this in Avo:
+
+!["Event 'Signup Start' defined in Avo with referral string property and implement with Codegen check](/images/signup-start-ui.png)
+
+You'll be able to call it like this from the generated code
+
+```csharp
+avo.SignupStart(referral = "direct")
+```
+
+> Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
+> You can update the system properties with `setSystemProperties` function.
+
+#### Step 4. Verify the implementation
+
+Use the [Implementation status](/data-design/avo-tracking-plan/implementation-status) in your Avo workspace to verify that your implementation is correct.
+
+### Reference
+
+#### Constructor
+
+```csharp
+public Avo(AvoEnv env,
+    // Other parameters may not be present, depending on your tracking plan
+    int systemProperty0, bool systemProperty1,
+    IDestination mixpanelDestination,
+    IDestination segmentDestination,
+    IDestination otherDestination,
+    bool strict = true
+)
+```
+
+Creates the Avo object that will be used to track.
+This method will call the `Make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
+
+##### Arguments
+
+`AvoEnv env`: Can be set to dev, prod and staging.
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool and list.
+
+`IDestination destination`: object, each destination you are sending events to gets a separate parameter in the init function with hooks that the Avo generated code will trigger, unless you are using the legacy Avo managed destinations. Each method in the destination interface is directly mapped to the Actions attached to each event in Avo. [Learn more about event Actions in this doc](/data-design/avo-tracking-plan/events#actions).
+
+```csharp
+interface IDestination {
+    void Make(AvoEnv env, string apiKey); // This method is optional in C# 8+, you can skip it if you've already initialized your Analytics SDK
+
+    Task LogEvent(string eventName, IDictionary<string, object> eventProperties);
+
+    Task SetUserProperties(string userId, IDictionary<string, object> userProperties);
+
+    Task LogPage(string userId, string pageName, IDictionary<string, object> eventProperties);
+
+    Task Revenue(string userId, double amount, IDictionary<string, object> eventProperties);
+
+    // The following methods are used for group analytics  and are not required. Learn, more about group analytics here: /docs/data-design/groups
+    Task AddCurrentUserToGroup(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
+
+    Task SetGroupProperties(string anonymousId, string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {return Task.CompletedTask;}
+
+    Task LogEventWithGroups(string anonymousId, string userId, string eventName, IDictionary<string, object> eventProperties, IDictionary<string, object> groupTypesToGroupIds) {return Task.CompletedTask;}
+
+    // Unity specific methods
+    void Identify(string userId);
+
+    void Unidentify();
+}
+```
+
+If you are using `.NET` source each callback gets an additional first parameter - `userId` and, optionally, a `anonymousId` parameter. To add the optional `anonymousId` parameter to the callbacks in your workspace [reach out to us](/help/troubleshooting).
+
+`strict: Boolean`: bool, if true, Avo will throw an exception when it detects a tracking problem in development or staging. Note that the strict flag is ignored in production.
+
+#### Destination interface example
+
+```csharp
+// Example: Destination interface for the Mixpanel SDK. Replace the Mixpanel implementation with your own tracking SDK methods
+public class CustomDestination : IDestination{
+
+    // Make method is optional, you can skip it if you've already initialized your Analytics SDK
+    public void Make(AvoEnv env, string apiKey) {
+        _client = new MixpanelClient(apiKey);
+    }
+    public async Task LogEvent(string userId, string eventName, IDictionary<string, object> eventProperties) {
+        return await _client!.TrackAsync(eventName, userId, eventProperties);
+    }
+    public async Task SetUserProperties(string userId, IDictionary<string, object> userProperties) {
+        return await _client!.PeopleSetAsync(userId, userProperties);
+    }
+
+    public async Task LogPage(string userId, string pageName, IDictionary<string, object> eventProperties) {
+        // Note: In this example Mixpanel does not provide a native method for page or screen tracking, so we send an event instead. Other SDKs may have a dedicated page tracking method.
+        eventProperties["pageName"] = pageName;
+        return await _client!.TrackAsync("Page Visited", userId, eventProperties);
+    }
+
+    public async Task Revenue(string userId, double amount, IDictionary<string, object> eventProperties) {
+        eventProperties["amount"] = amount;
+        return await _client!.TrackAsync("Purchase Completed", userId, eventProperties);
+    }
+
+    // The following methods are used for group analytics and are not required. Learn, more about group analytics here: /docs/data-design/groups
+    public async Task AddCurrentUserToGroup(string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
+        // Conceptual code, Mixpanel C# library does not support group analytics yet
+        await _client!.SetGroup(groupType, groupId);
+        return await _client!.GetGroup(groupType, groupId).Set(groupProperties);
+    }
+
+    Task SetGroupProperties(string userId, string groupType, string groupId, IDictionary<string, object> groupProperties) {
+        return await _client!.GetGroup(groupType, groupId).Set(groupProperties);
+    }
+
+    Task LogEventWithGroups(string userId, string eventName, IDictionary<string, object> eventProperties, IDictionary<string, object> groupTypesToGroupIds) {
+        return await _client!.TrackWithGroups(eventName, eventProperties, groupTypesToGroupIds);;
+    }
+}
+```
+
+In `Unity` all the method are synchronous `void` type and there are 2 additional methods:
+
+```csharp
+    // Initialize before use in the Unity UI https://developer.mixpanel.com/docs/unity-quickstart#2-initialize-mixpanel
+
+    public void LogEvent(string eventName, IDictionary<string, object> eventProperties){
+        var props = new Value();
+        foreach (string key in eventProperties.Keys)
+        {
+            object value = eventProperties[key];
+            if (value is string)
+            {
+                props[key] = value as string;
+            }
+            else if (value is int)
+            {
+                props[key] = value as int?;
+            }
+            else if (value is double)
+            {
+                props[key] = value as double?;
+            }
+            else if (value is bool)
+            {
+                props[key] = value as bool?;
+            }
+        }
+
+        Mixpanel.Track(eventName, props);
+    }
+
+    public void LogPage(string pageName, IDictionary<string, object> eventProperties){
+        // Note: In this example Mixpanel does not provide a native method for page or screen tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
+    }
+
+    public void Revenue(double amount, IDictionary<string, object> eventProperties){
+        // Note: In this example Mixpanel does not provide a native method for revenue tracking, you can send a custom event like in the LogEvent() method here instead. Other SDKs may have a dedicated page tracking method.
+    }
+
+    public void SetUserProperties(string userId, IDictionary<string, object> userProperties){
+        foreach (string key in userProperties.Keys)
+        {
+            object value = userProperties[key];
+
+            if (value is string)
+            {
+                Mixpanel.People.Set(key, value as string);
+            }
+            else if (value is int)
+            {
+                Mixpanel.People.Set(key, value as int?);
+            }
+            else if (value is double)
+            {
+                Mixpanel.People.Set(key, value as double?);
+            }
+            else if (value is bool)
+            {
+                Mixpanel.People.Set(key, value as bool?);
+            }
+        }
+    }
+
+    public void Identify(string userId){
+        Mixpanel.Identify(userId);
+    }
+
+    public void Unidentify(){
+        Mixpanel.Reset();
+    }
+```
+
+Read more about the destination interface [here](/implementation/destinations).
+
+#### setAvoLogger
+
+```csharp
+public static ILogger __LOGGER__ = null;
+```
+
+This field allows you to provide a custom implementation of the logger used by Avo Codegen.
+Can for example be used to disable logs or change which logging method is used.
+
+##### Arguments
+
+`Microsoft.Extensions.Logging.ILogger __LOGGER__`: custom implementation of the logger.
+
+#### setSystemProperties
+
+```csharp
+ public void SetSystemProperties(int systemProperty0, bool systemProperty1, ...)
+```
+
+A method to update system properties after initialization.
+
+##### Arguments
+
+`systemProperties`: a number of parameters equal to the number of system properties defined in your Avo workspace.
+The parameters are named the same as system properties, in camelCase, and require corresponding types: string, int, long, float, bool and list.
+
+#### Event tracking functions
+
+```csharp
+public void [YourEventName](int eventProperty0, double? eventProperty1, ..., bool? userProperty0, IList<int> userProperty1, ..., string userId_, string anonymousId_)
+```
+
+Every event you define in your tracking plan in Avo gets a function named after the event in PascalCase. The arguments of the function depend on how it's defined in your tracking plan
+
+##### Arguments
+
+`eventProperty`: type defined in the Avo tracking plan, can be string, int, long, float, bool and list.
+Every event property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to track here.
+
+`userProperty`: type defined in the Avo tracking plan as a user property, can be string, int, long, float, bool and list.
+Every user property attached to the event in the Avo UI gets a corresponding argument. The argument key is camelCase version of the property name.
+Pass the value of the property to update here.
+
+`userId_: String`: used to connect event to specific user.
+Unity: Added if the event has the `Identify User` action
+.NET: added to all events, you have to either provide it or the `anonymousId_`
+
+###### Additional arguments
+
+`anonymousId_`: string, .NET only, this argument is automatically added if corresponding setting is enabled, used to track anonymous users
+
+### Destinations
+
+You can send your data using the Avo generated C# code to any data destination that accepts custom events, including:
+
+- Amplitude
+- FacebookAnalytics
+- FullStory
+- Mixpanel
+- Mixpanel
+- Permutive
+- Segment
+- Snowplow
+- ZendeskConnect
+- Adobe Analytics
+- Apptelemetry
+- RudderStack
+- Freshpaint
+- PostHog
+- Google Analytics 4 / Firebase Analytics
+- Heap
+- Keen
+- Kissmetrics
+- LaunchDarkly Events
+- Pendo
+- Fivetran
+- AppsFlyer
+- Braze
+- Intercom
+- A home made SDK
+- Internal API

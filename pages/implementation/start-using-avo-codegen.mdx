@@ -1,15 +1,16 @@
----
-layout: 'guide'
-title: 'How to set up and use Codegen'
----
+import { Callout } from 'nextra/components';
 
-import Link from '../../components/Link';
+# How to set up and use Codegen
 
 Integrating Avo with your app or website can begin as soon as you create an Avo account, and requires three steps:
 
 1. [Configure Connections in your Avo workspace](#1-configure-your-avo-workspace)
 2. [Install the Avo CLI](#install-the-avo-cli)
 3. [Initialize Avo and send your first event](#3-initialize-avo-and-send-an-event)
+
+<Callout type="info" emoji="💡">
+Editors and admins can pull generated code on all plans: free, team and enterprise. Additionally, viewers can pull generated code on the team and enterprise plans. Learn more [here](/data-design/collaboration/members#codegen-access-for-non-editors).
+</Callout>
 
 ### 1. Configure your Avo workspace
 
@@ -24,18 +25,9 @@ In [your Avo workspace](https://avo.app/welcome) head to the Sources tab in the 
 
 If a source doesn't already exist for your app or website, click "Add Source" to create a new Source. Give it a name and define what development platform and programming language you'll be using. This configuration is used to tailor Codegen to your stack.
 
-<img
-  src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/source-config.png')}
-  alt="Source configuration"
-/>
-<center>
-  <i>
-    A source configuration for MyApp.com, which is a Web app written in
-    TypeScript
-  </i>
-</center>
+![Source configuration](/images/best-practices/avo-functions-alongside-existing-tracking/source-config.png)
 
-<br />
+_A source configuration for MyApp.com, which is a Web app written in TypeScript_
 
 #### Configure destinations
 
@@ -68,34 +60,21 @@ Note that the _Production API Key_ and _Development API Key_ are not required fo
 
 If you use multiple analytics tools, you should repeat this process and create a destination for every analytics tool.
 
-<img
-  src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/destination-config.png')}
-  alt="Destination configuration"
-/>
-<center>
-  <i>
-    A Destination for My Analytics SDK, which is a destination used on MyApp.com
-  </i>
-</center>
+![Destination configuration](/images/best-practices/avo-functions-alongside-existing-tracking/destination-config.png)
 
-<br />
-<br />
+_A Destination for My Analytics SDK, which is a destination used on MyApp.com_
 
 **All set!**
 
 Here we've configured a Source, sending to a Custom Destination called My Analytics SDK:
 
-<img
-  src={require('../../images/best-practices/avo-functions-alongside-existing-tracking/connections.png')}
-  alt="Connections configuration"
-/>
-<center>
-  <i>Our Source and Destination</i>
-</center>
+![Connections configuration](/images/best-practices/avo-functions-alongside-existing-tracking/connections.png)
+
+_Our Source and Destination_
 
 #### Configure events
 
-Head to the Tracking Plan tab. If no events exist in your tracking plan yet you can either [import your existing tracking plan](https://www.avo.app/docs/workspace/tracking-plan/importing) or [define events in the Tracking Plan](https://www.avo.app/docs/data-design/start-data-design#defining-and-configuring-events). Make sure to attach the source you'll be implementing to all events you want to implement. Learn more about [attaching sources to events here](https://www.avo.app/docs/workspace/tracking-plan/events#sources).
+Head to the Tracking Plan tab. If no events exist in your tracking plan yet you can either [import your existing tracking plan](/publishing/importing) or [define events in the Tracking Plan](/data-design/start-data-design#defining-and-configuring-events). Make sure to attach the source you'll be implementing to all events you want to implement. Learn more about [attaching sources to events here](/data-design/avo-tracking-plan/events#sources).
 
 ### 2. Install Avo to your project
 
@@ -110,22 +89,14 @@ Head to the Tracking Plan tab. If no events exist in your tracking plan yet you 
 
 Install the **Avo CLI** locally in your project (recommended), using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
 
-```bash
+```sh npm2yarn
 npm install --save-dev avo
-```
-
-```bash
-yarn add --dev avo
 ```
 
 or globally on your system, using [NPM](https://www.npmjs.com/get-npm) or [Yarn](https://classic.yarnpkg.com/en/docs/install):
 
-```bash
+```sh npm2yarn
 npm install -g avo
-```
-
-```bash
-yarn global add -E avo
 ```
 
 #### Link your project to Avo
@@ -197,7 +168,7 @@ let myAnalyticsSDKBridge = {
   },
   setUserProperties: (userId, userProperties) => {
     /*
-      You can add User Properties to events in the Trackin Plan in Avo. When an Avo Function with attached user properties
+      You can add User Properties to events in the Tracking Plan in Avo. When an Avo Function with attached user properties
       is called, this callback is triggered. Here you would attach user properties to the currently identified user in your
       analytics platform.
 
@@ -206,7 +177,7 @@ let myAnalyticsSDKBridge = {
   },
   identify: (userId) => {
     /*
-      You can add the Identify User action to events in the Trackin Plan in Avo. When calling an Avo Function that includes
+      You can add the Identify User action to events in the Tracking Plan in Avo. When calling an Avo Function that includes
       the Identify User action you'll need to provide a user ID. Calling an Avo Function that has the Identify User action
       will trigger this callback. The main use cases are signup and login. Here you would pass the user ID to the analytics
       SDK for it to create a new user or attach a session to an existing user.
@@ -216,7 +187,7 @@ let myAnalyticsSDKBridge = {
   },
   unidentify: () => {
     /*
-      You can add the Unidentify User action to events in the Trackin Plan in Avo When calling an Avo Function that includes
+      You can add the Unidentify User action to events in the Tracking Plan in Avo When calling an Avo Function that includes
       the Unidentify User action this callback will be triggered. Here you would call an analytics SDK method to detach subsequent
       actions from the currently identified user.
 
@@ -234,11 +205,11 @@ Avo.initAvo({ env: Avo.AvoEnv.Dev }, {}, myAnalyticsSDKBridge);
 
 <br />
 
-Detailed instructions on how to initialize Avo with Custom Destinations for all other programming languages and platforms supported by Avo <Link passHref href="/implementation/destinations"><a>can be found here</a></Link>.
+Detailed instructions on how to initialize Avo with Custom Destinations for all other programming languages and platforms supported by Avo [can be found here](/implementation/destinations).
 
 #### Send an event
 
-Now we're ready to start implementing reliably analytics tracking with Codegen. Every Event defined in our <Link passHref href="/workspace/tracking-plan"><a>Tracking Plan on avo.app</a></Link> has it's own function in Codegen file.
+Now we're ready to start implementing reliably analytics tracking with Codegen. Every Event defined in our [Tracking Plan on avo.app](/data-design/avo-tracking-plan) has it's own function in Codegen file.
 
 Let's say we have defined the "App Opened" event in our Tracking Plan in Avo, with two Event Properties, "Client" and "Screen Name". Here's how we would send the event using Codegen:
 
@@ -249,5 +220,3 @@ Avo.appOpened({ client: 'Web', screenName: 'Home Screen' });
 > On some server platforms Codegen functions are async, e.g. on Node.js they return a Promise and on C# you can await on the functions
 
 When the Avo Function is called Avo will run validation on the event properties, making sure they fit the spec defined in the Tracking Plan in Avo. Note that this validation is only run in development mode. If you are using a Custom destination Avo passes the event name and properties to the logEvent function in the Custom Destination interface defined above, otherwise it will pass the event directly to the analytics tool defined in your destination.
-
-You can find tailor made documentation for your Codegen, based on your Tracking Plan, in the <Link passHref href="/workspace/implement#a-nameimplement-actionsa-implement-events"><a>Codegen tab</a></Link> in [your Avo workspace](https://www.avo.app/welcome).

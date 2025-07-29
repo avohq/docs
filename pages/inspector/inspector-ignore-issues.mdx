@@ -1,0 +1,38 @@
+import { Callout } from 'nextra/components';
+
+# Temporarily ignore Inspector issues
+
+When you merge an Avo branch with changes, sometimes you get Inspector issues and alerts from older release versions. This feature lets you ignore those alerts until your new changes go live.
+
+If your branch contains changes that could cause irrelevant issues and alerts from older release version, you can proactively ignore those issues before merging the branch.
+
+Once the branch has been approved, a configure dialog wil appear under the "Merge branch" button on the branch review screen.
+
+<div style={{ paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Image shows a panel below the branch merge button, highlighting there are
+  changes on this branch that could cause irrelevant issues and alerts in
+  Inspector](/images/inspector/inspector-branch-merge-ignore.png)
+</div>
+
+### How to configure
+
+<Callout type="info" emoji="💡">
+  Note that the option to configure Inspector ignore on the branch review screen
+  only appears when 1/ your branch contains changes that could cause irrelevant
+  issues from older release versions, and 2/ your branch has been approved.
+</Callout>
+
+1. After your branch has been approved, press the "Configure" button at the bottom of your branch review
+2. For each source, pick how you want to ignore:
+   - Ignore until version
+     - **Latest version on branch merge**: _Inspector will validate the changes introduced on this branch in the latest release version after merge_
+     - **Next version on branch merge**: _Inspector will validate the changes introduced on this branch in the next release version after merge_
+   - Ignore until time
+     - **One hour after branch merge**: _Inspector will start validating the changes introduced on this branch 1 hour after merge_
+     - **24 hours after branch merge**: _Inspector will start validating the changes introduced on this branch 24 hours after merge_
+   - **Don't ignore** (this is the default)
+
+<div style={{ maxWidth: '400px', paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Image shows a modal where you can configure issue ignoring for each
+  source](/images/inspector/inspector-branch-merge-ignore-configure.png)
+</div>

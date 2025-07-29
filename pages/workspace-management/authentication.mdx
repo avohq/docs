@@ -1,0 +1,52 @@
+import { Callout } from 'nextra/components';
+
+# Authentication Methods
+
+You can configure your workspace with three different authentication methods:
+
+- [Email/Password + Google Login](#emailpassword--google-login)
+- [Google SSO](#google-sso)
+- [SAML SSO](#saml-sso)
+
+You can configure the authentication method in the workspace settings modal. Note that for setting up SSO you will need to reach out to us for configuration details.
+
+![Authentication methods in workspace settings](/images/workspace/authentication-methods.png)
+
+### Email/Password + Google Login
+
+The default authentication method for all workspaces. This method allows users to log in with an email and password or a Google account.
+
+### Google SSO
+
+Allows anyone with your company domain Google account to log in to your workspace. You can set the default role for users logging in with this method (View Only, Comment Only, Editors or Admins).
+
+### SAML SSO
+
+SAML SSO is a standard for authenticating users with a SAML service provider. This method allows you to set up SAML SSO for your Avo workspace, and connect it to your own SAML service provider. Example of SAML service providers are Okta, Active Directory, JumpCloud and Google.
+
+To enable SAML SSO for your Avo workspace, [reach out](/help/troubleshooting) to us.
+
+<Callout type="info">
+  Currently Avo supports service provider–initiated sign-on, e. g. when the
+  users type their SSO email on Avo and then they are redirected to the
+  company's SSO page. Avo currently does not support IdP-initiated sign-on.
+</Callout>
+
+#### SAML SSO Configuration
+
+Create a new SAML SSO app in your SAML service provider. We will ask you for the following details from the SAML service provider:
+
+- Entity ID
+- SSO URL
+- Certificate
+
+Add the following details to the Avo SAML configuration in your service provider:
+
+- Authorization callback URL (ACS URL): `https://www.avo.app/__/auth/handler`
+- Entity ID: `avo.app`
+
+To learn more, here are resources from common SAML providers on how to configure a SAML SSO app:
+
+- Okta: [Add an Okta SAML application](https://help.okta.com/oag/en-us/Content/Topics/Access-Gateway/add-app-saml-pass-thru-add-okta.htm)
+- Google: [Set up your own custom SAML application](https://support.google.com/a/answer/6087519?hl=en)
+- Active Directory: [Add an enterprise application](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/add-application-portal)
