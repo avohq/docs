@@ -227,23 +227,19 @@ const tracker = newTracker({
 });
 
 class AnalyticsService {
-  trackEvent(schema, data) {
+  trackEvent(event, context) {
     // Extract event name from schema URI
-    const eventName = schema.split('/')[1] || schema;
+    const eventName = event.schema.split('/')[1] || event.schema;
 
     // Send to Avo Inspector
-    inspector.trackSchemaFromEvent(eventName, data);
+    inspector.trackSchemaFromEvent(eventName, event.data);
 
     // Send to Snowplow
-    tracker.trackSelfDescribingEvent({
-      schema: schema,
-      data: data
-    });
+    tracker.trackSelfDescribingEvent(event, context);
   }
 }
 
 // Usage throughout your app
-const analyticsService = new AnalyticsService();
 analyticsService.trackEvent(
   'iglu:com.example/button_clicked/jsonschema/1-0-0',
   { button_name: 'sign_up', page: 'homepage' }
