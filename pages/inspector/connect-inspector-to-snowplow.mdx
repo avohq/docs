@@ -55,10 +55,10 @@ If you have an analytics wrapper or service that centralizes your tracking calls
 
 ```javascript
 import { trackSelfDescribingEvent } from '@snowplow/browser-tracker';
-import * as Inspector from 'avo-inspector';
+import * as Inspector from "avo-inspector";
 
 // Initialize Avo Inspector with your API key
-const inspector = new Inspector({
+const inspector = new Inspector.AvoInspector({
   apiKey: 'YOUR_API_KEY',
   env: 'dev', // Use "staging" or "prod" for other environments
   version: '1.2.3', // Your app version
@@ -109,9 +109,9 @@ If your codebase has tracking calls scattered throughout (multiple places callin
 
 ```javascript
 import { trackSelfDescribingEvent } from '@snowplow/browser-tracker';
-import AvoInspector from 'avo-inspector';
+import * as Inspector from "avo-inspector";
 
-const inspector = new AvoInspector({
+const inspector = new Inspector.AvoInspector({
   apiKey: 'YOUR_API_KEY',
   env: 'dev',
   version: '1.2.3', // Your app version
@@ -256,7 +256,7 @@ plugin.afterTrack {
     params[ctx.schema] = ctx.data
   }
 
-  avoInspector.trackSchemaFromEvent(eventName, eventProperties)
+  avoInspector.trackSchemaFromEvent(eventName, params)
 }
 
 val tracker = Snowplow.createTracker(
