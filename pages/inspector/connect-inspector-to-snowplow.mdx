@@ -42,6 +42,7 @@ Before integrating with Snowplow, you'll need to install the Avo Inspector SDK f
 - Web (JavaScript/TypeScript): [Web Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/web)
 - iOS (Swift): [iOS Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/ios)
 - Android (Kotlin/Java): [Android Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/android)
+- React Native: [React Native Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/react-native)
 
 ### Step 3. Integrate Avo Inspector with your Snowplow implementation
 
@@ -202,6 +203,51 @@ val event = SelfDescribing(
     mapOf("button_name" to "sign_up", "page" to "homepage")
 )
 analyticsService.trackEvent(event)
+```
+
+**React Native**
+
+React Native uses the same approach as web since the [Snowplow React Native tracker](https://docs.snowplow.io/docs/sources/trackers/react-native-tracker/) is implemented in JavaScript/TypeScript. The [Avo Inspector React Native SDK](https://www.avo.app/docs/reference/avo-inspector-sdks/react-native) provides the same API as the web version.
+
+```javascript
+import { newTracker } from '@snowplow/react-native-tracker';
+import * as Inspector from 'avo-inspector';
+
+// Initialize Avo Inspector
+const inspector = new Inspector.AvoInspector({
+  apiKey: 'YOUR_API_KEY',
+  env: 'dev',
+  version: '1.2.3',
+});
+
+// Initialize Snowplow tracker
+const tracker = newTracker({
+  namespace: 'appTracker',
+  endpoint: 'https://YOUR_COLLECTOR',
+});
+
+class AnalyticsService {
+  trackEvent(schema, data) {
+    // Extract event name from schema URI
+    const eventName = schema.split('/')[1] || schema;
+
+    // Send to Avo Inspector
+    inspector.trackSchemaFromEvent(eventName, data);
+
+    // Send to Snowplow
+    tracker.trackSelfDescribingEvent({
+      schema: schema,
+      data: data
+    });
+  }
+}
+
+// Usage throughout your app
+const analyticsService = new AnalyticsService();
+analyticsService.trackEvent(
+  'iglu:com.example/button_clicked/jsonschema/1-0-0',
+  { button_name: 'sign_up', page: 'homepage' }
+);
 ```
 
 <Callout type="info" emoji="ℹ️">
