@@ -20,6 +20,7 @@ export default {
   "connect-inspector-to-segment": "Inspector Segment integration",
   "connect-inspector-to-rudderstack": "Inspector RudderStack integration",
   "connect-inspector-to-posthog": "Inspector PostHog integration",
+  "connect-inspector-to-snowplow": "Inspector Snowplow SDK integration",
   "inspector-sdk-overview": {
     "title": "Inspector SDKs",
     "href": "https://www.avo.app/docs/reference/avo-inspector-sdks/overview"
