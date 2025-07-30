@@ -86,9 +86,9 @@ The `eventType` of events that are generated from variants is `variant`, while r
 
 | Attribute   | Type                                                   | Description                                                                                              |
 |:------------|:-------------------------------------------------------|:---------------------------------------------------------------------------------------------------------|
-| id          | string                                                 | Stakeholder team id                                                                                      |
-| name        | string                                                 | Stakeholder team name                                                                                    |
-| isOwner     | bool                                                   | Flag that indicates that the stakeholder team owns the event or event variant                                      |
+| id          | string                                                 | Stakeholder team id                                                                                    |
+| name        | string                                                 | Stakeholder team name                                                                                  |
+| isOwner     | bool                                                   | Flag that indicates that the stakeholder team owns the event, event variant, or property              |
 
 ##### Rules Model
 
@@ -109,6 +109,8 @@ The `eventType` of events that are generated from variants is `variant`, while r
 |:-------------|:-----------------------------|:----------------------------------------------|
 | description  | string                       | Property description                          |
 | type         | string                       | Property type                                 |
+| tags         | array(string)                | Array of all tags attached to property        |
+| stakeholderDomains | array(StakeholderDomain) | Array of stakeholder domains associated with this property |
 | nameMappings | array(NameMapping)           | Name mappings defined for given property      |
 | ?const       | Depends on the property type | Pinned property value                         |
 | ?enum        | array(string)                | Allowed enum values                           |
