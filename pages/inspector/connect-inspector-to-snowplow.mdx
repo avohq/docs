@@ -1,0 +1,326 @@
+import { Callout } from 'nextra/components';
+
+# Send data from Snowplow to Avo Inspector
+
+If you are using Snowplow SDKs to track events in your application, you can connect Avo Inspector to monitor and validate your tracking implementation. This integration requires adding a small amount of code to your existing Snowplow setup.
+
+After connecting Inspector to your Snowplow implementation, all your Snowplow self describing events will be automatically analyzed by Avo Inspector. You'll be able to monitor the quality of your tracking implementation and catch schema issues before they impact your data pipeline.
+
+<Callout type="info" emoji="💡">
+  Inspector only receives your event schema, no actual data will be sent to Avo.
+</Callout>
+
+<Callout type="info" emoji="ℹ️">
+  Remember that production data takes up to 2 hours to appear in Inspector
+  dashboard, while development data is available without any delay.
+</Callout>
+
+## Guide to connect Snowplow and Avo Inspector
+
+### Step 1. Set up your Avo source
+
+An Avo Source is the first thing you need to connect your Snowplow data to Avo Inspector.
+
+Open `Sources` in the Avo sidebar or `Manage Sources` in Inspector tab
+
+<div style={{ paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Navigation to Inspector sources screen in
+  Avo](/images/workspace/nav-inspector-sources-highlighted.png)
+</div>
+
+If you already have the source, open it in the dashboard. If you don't have the source corresponding to your app, [add a new one](/inspector/configuring-inspector-sources).
+
+In the source details, go to "Inspector Setup" and there you'll see options to integrate Inspector. Copy the API key, you will need to use it in your Snowplow integration.
+
+![Copy Inspector API key](/images/inspector/copy-inspector-api-key.png)
+
+
+### Step 2. Install and initialize the Avo Inspector SDK
+
+Before integrating with Snowplow, you'll need to install the Avo Inspector SDK for your platform:
+
+- Web (JavaScript/TypeScript): [Web Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/web)
+- iOS (Swift): [iOS Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/ios)
+- Android (Kotlin/Java): [Android Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/android)
+- React Native: [React Native Inspector SDK documentation](https://www.avo.app/docs/reference/avo-inspector-sdks/react-native)
+
+### Step 3. Integrate Avo Inspector with your Snowplow implementation
+
+The best integration approach depends on how your tracking implementation is organized. We'll cover both scenarios to help you choose the right method.
+
+#### Web Integration
+
+**Recommended: Add Inspector to your analytics wrapper**
+
+If you have an analytics wrapper or service that centralizes your tracking calls (where `trackSelfDescribingEvent` is only called from one place), this is the cleanest integration approach. Simply add Avo Inspector to your existing wrapper function.
+
+```javascript
+import { trackSelfDescribingEvent } from '@snowplow/browser-tracker';
+import * as Inspector from "avo-inspector";
+
+// Initialize Avo Inspector with your API key
+const inspector = new Inspector.AvoInspector({
+  apiKey: 'YOUR_API_KEY',
+  env: 'dev', // Use "staging" or "prod" for other environments
+  version: '1.2.3', // Your app version
+});
+
+function trackEvent(event, context) {
+  // Extract event name from schema URI 
+  // (e.g., "iglu:com.example/button_clicked/jsonschema/1-0-0" -> "button_clicked")
+  // This is a common approach, but it may need to be adjusted based on how you structure your
+  // Snowplow schemas and how you've organized your events in your Avo tracking plan.
+  // Ensure the extracted event name matches the event names defined in Avo.
+  const eventName = event.schema.split('/')[1] || event.schema;
+
+  // If you have context objects (e.g., Snowplow contexts) you've documented as
+  // event properties in Avo, here you'd want to add them to the eventProperties object.
+  // For example, if you have a userContext object with the schema "iglu:com.example/user/jsonschema/1-0-0",
+  // you'd want to add the user to the eventProperties object.
+  // eventProperties['user'] = userContext.data;
+  const eventProperties = event.data;
+
+  // Send to Avo Inspector
+  inspector.trackSchemaFromEvent(eventName, eventProperties);
+
+  // Send to Snowplow
+  trackSelfDescribingEvent({ event, context });
+}
+
+// Usage throughout your app
+trackEvent(
+  {
+    schema: 'iglu:com.example/button_clicked/jsonschema/1-0-0',
+    data: {
+      button_name: 'sign_up',
+      page: 'homepage',
+    },
+  },
+  [],
+);
+```
+
+**Alternative: Create a wrapper function for decentralized tracking**
+
+If your codebase has tracking calls scattered throughout (multiple places calling `trackSelfDescribingEvent` directly), create a wrapper function that you can use instead.
+
+<Callout type="warning" emoji="⚠️">
+  This approach requires you to replace all existing `trackSelfDescribingEvent` calls with your wrapper function throughout your codebase.
+</Callout>
+
+```javascript
+import { trackSelfDescribingEvent } from '@snowplow/browser-tracker';
+import * as Inspector from "avo-inspector";
+
+const inspector = new Inspector.AvoInspector({
+  apiKey: 'YOUR_API_KEY',
+  env: 'dev',
+  version: '1.2.3', // Your app version
+});
+
+// Create a wrapper function to intercept all tracking calls
+function trackingWrapper(args) {
+  // Extract event name from schema URI
+  const eventName = args.event.schema.split('/')[1] || args.event.schema;
+  const eventProperties = args.event.data;
+
+  // Send to Avo Inspector
+  inspector.trackSchemaFromEvent(eventName, eventProperties);
+  
+  // Send to Snowplow
+  return trackSelfDescribingEvent(args);
+}
+
+// Use trackingWrapper instead of trackSelfDescribingEvent throughout your app
+trackingWrapper({
+  event: {
+    schema: 'iglu:com.example/button_clicked/jsonschema/1-0-0',
+    data: { button_name: 'sign_up', page: 'homepage' }
+  },
+  context: []
+});
+```
+
+#### Mobile Integration
+
+**Recommended: Add Inspector to your analytics wrapper**
+
+Most mobile apps have an analytics service or wrapper class that centralizes tracking calls. If you're calling Snowplow's tracking methods from a single location, add Avo Inspector there.
+
+**iOS (Swift)**
+
+```swift
+class AnalyticsService {
+    func trackEvent(event: SelfDescribing, context: [Context]) {
+        // Extract event name from schema URI
+        let eventName = event.schema.components(separatedBy: "/").count > 1 ? event.schema.components(separatedBy: "/")[1] : event.schema
+
+        // If you have context objects (e.g., Snowplow contexts) you've documented as
+        // event properties in Avo, here you'd want to add them to the eventParams object.
+        // For example, if you have a userContext object with the schema "iglu:com.example/user/jsonschema/1-0-0",
+        // you'd want to add the user to the eventParams object.
+        // eventParams["user"] = userContext.data
+        var eventParams = event.data
+
+        // Send to Avo Inspector
+        avoInspector.trackSchema(fromEvent: eventName, eventParams: eventParams)
+
+        // Send to Snowplow
+        let event = SelfDescribing(schema: schema, payload: data)
+        tracker.track(event)
+    }
+}
+
+// Usage throughout your app
+let event = SelfDescribing(
+    schema: "iglu:com.example/button_clicked/jsonschema/1-0-0", 
+    payload: ["button_name": "sign_up", "page": "homepage"]
+)
+analyticsService.trackEvent(event: event, context: [])
+```
+
+**Android (Kotlin)**
+
+```kotlin
+class AnalyticsService {
+    fun trackEvent(event: SelfDescribing, context: List<Context>) {
+        // Extract event name from schema URI
+        val eventName = event.schema.split("/").getOrElse(1) { event.schema }
+        val eventProperties = event.data
+
+        // Send to Avo Inspector
+        avoInspector.trackSchemaFromEvent(eventName, eventProperties)
+
+        // Send to Snowplow
+        val event = SelfDescribing(schema, data)
+        tracker.track(event)
+    }
+}
+
+// Usage throughout your app
+val event = SelfDescribing(
+    "iglu:com.example/button_clicked/jsonschema/1-0-0",
+    mapOf("button_name" to "sign_up", "page" to "homepage")
+)
+analyticsService.trackEvent(event)
+```
+
+**React Native**
+
+React Native uses the same approach as web since the [Snowplow React Native tracker](https://docs.snowplow.io/docs/sources/trackers/react-native-tracker/) is implemented in JavaScript/TypeScript. The [Avo Inspector React Native SDK](https://www.avo.app/docs/reference/avo-inspector-sdks/react-native) provides the same API as the web version.
+
+```javascript
+import { newTracker } from '@snowplow/react-native-tracker';
+import * as Inspector from 'avo-inspector';
+
+// Initialize Avo Inspector
+const inspector = new Inspector.AvoInspector({
+  apiKey: 'YOUR_API_KEY',
+  env: 'dev',
+  version: '1.2.3',
+});
+
+// Initialize Snowplow tracker
+const tracker = newTracker({
+  namespace: 'appTracker',
+  endpoint: 'https://YOUR_COLLECTOR',
+});
+
+class AnalyticsService {
+  trackEvent(event, context) {
+    // Extract event name from schema URI
+    const eventName = event.schema.split('/')[1] || event.schema;
+
+    // Send to Avo Inspector
+    inspector.trackSchemaFromEvent(eventName, event.data);
+
+    // Send to Snowplow
+    tracker.trackSelfDescribingEvent(event, context);
+  }
+}
+
+// Usage throughout your app
+analyticsService.trackEvent(
+  'iglu:com.example/button_clicked/jsonschema/1-0-0',
+  { button_name: 'sign_up', page: 'homepage' }
+);
+```
+
+<Callout type="info" emoji="ℹ️">
+  **Event name extraction**: The above examples extract the event name by
+  splitting the Snowplow schema URI on `/` and taking the second part. This
+  approach may need to be adjusted based on how you structure your Snowplow
+  schemas and how you've organized your events in your Avo tracking plan. Ensure
+  the extracted event name matches the event names defined in Avo.
+</Callout>
+
+
+**Alternative: Use SDK plugins for decentralized tracking**
+
+If your mobile app has tracking calls scattered throughout the codebase, use Snowplow's plugin system to automatically capture all events. Snowplow mobile SDKs (v5+) provide a plugin architecture with several extension points, including an `afterTrack` callback that executes after an event has been processed but before it's sent to the collector.
+
+The `afterTrack` callback is perfect for Avo Inspector integration because it provides access to the complete event object, including all context entities, without interfering with your existing tracking implementation. Learn more about [Snowplow tracker plugins](https://docs.snowplow.io/docs/sources/trackers/mobile-trackers/plugins/).
+
+**iOS Plugin Approach**
+
+```swift
+let plugin = PluginConfiguration(identifier: "avoInspectorPlugin")
+
+plugin.afterTrack { event in
+  // Extract event name from schema URI
+  let eventName = event.schema.components(separatedBy: "/").count > 1 ? 
+    event.schema.components(separatedBy: "/")[1] : event.schema
+  
+  // Send to Avo Inspector
+  avoInspector.trackSchemaFromEvent(eventName: eventName, eventParams: event.payload)
+}
+
+let tracker = Snowplow.createTracker(
+  namespace: "namespace",
+  network: networkConfig,
+  configurations: [plugin]
+)
+```
+
+**Android Plugin Approach**
+
+```kotlin
+val plugin = PluginConfiguration("myPlugin")
+
+plugin.afterTrack {
+  // Extract event name from schema URI
+  val eventName = it.schema.split("/").getOrElse(1) { it.schema }
+  val params = mutableMapOf<String, Any?>()
+
+  // Combine main event payload with context entities
+  params.putAll(it.payload)
+  it.entities.forEach { ctx ->
+    params[ctx.schema] = ctx.data
+  }
+
+  avoInspector.trackSchemaFromEvent(eventName, params)
+}
+
+val tracker = Snowplow.createTracker(
+  applicationContext,
+  "namespace",
+  networkConfig,
+  plugin
+)
+```
+
+### Step 4. Test your integration
+
+After implementing the integration, test that events are being sent to Avo Inspector by triggering some events in your application.
+
+Navigate to Avo, pick `Inspector` in the sidebar and pick Development environment
+
+![Environment picker in Inspector](/images/guide-segment-to-inspector/inspector-development-env.png)
+
+You'll see your Snowplow events in the dashboard under the source you configured. This means that your Snowplow integration is working!
+
+## Next Steps
+
+- [Import events from Inspector](https://www.avo.app/docs/inspector/add-events-from-inspector)
+- [Review Issues](https://www.avo.app/docs/inspector/inspector-issues-view)
+- [Set up Alerts](https://www.avo.app/docs/inspector/inspector-slack-alerts)

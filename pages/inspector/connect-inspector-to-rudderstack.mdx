@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Send data from RudderStack to Avo Inspector
 
 ## Use Avo Inspector as a RudderStack destination
@@ -15,7 +17,13 @@ Unlike RudderStack, Avo sources contain environments in them, so you will only n
 
 After connecting a Transformation to corresponding RudderStack source the event schemas of all events seen in RudderStack will automatically be sent to Avo Inspector and you'll be able to monitor the quality of your tracking implementation without any changes in your code!
 
-> Remember that production data takes up to 2 hours to appear in Inspector dashboard, while development data is available without any delay
+<Callout type="info" emoji="💡">
+  Inspector only receives your event schema, no actual data will be sent to Avo.
+</Callout>
+
+<Callout type="info" emoji="ℹ️">
+  Remember that production data takes up to 2 hours to appear in Inspector dashboard, while development data is available without any delay.
+</Callout>
 
 ## Guide to connect RudderStack and Avo Inspector
 
@@ -62,7 +70,7 @@ Save it by pressing `Save` button under the code editor.
 
 #### Step 3. Test your development RudderStack Transformation (Optional)
 
-> You can test the production RudderStack Transformation in the same way, but keep in mind that the production data shows with a ~2 hours delay in Inspector dashboard, while development data is shown without delay
+You can test the production RudderStack Transformation in the same way, but keep in mind that the production data shows with a ~2 hours delay in Inspector dashboard, while development data is shown without delay.
 
 If you pick the Track event in the Events code editor in the bottom of the page and then press "Run Test" button, the event will be sent to Avo Inspector
 
