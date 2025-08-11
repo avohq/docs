@@ -1,34 +1,41 @@
 import { Callout } from 'nextra/components'
 
-# Branch changes
+# Branch review screen
 
-Use the Branch changes view to prepare, review, and implement analytics updates in one place. It brings together context for reviewers, a clear diff of your tracking plan, and copy‑ready implementation instructions.
+Use the Branch review screen to prepare, review, and implement analytics updates in one place. It brings together context for reviewers, a clear diff of your tracking plan, and copy‑ready implementation instructions.
 
 - Align stakeholders on why the changes exist and what they enable
 - Review and approve the exact tracking plan changes with powerful filters
-- Hand developers precise code diffs and snippets per source
+- Hand developers precise code diffs and snippets per event per source
 
 <Callout type="info" emoji="💡">
-  Branch changes is composed of three tabs: <strong>Branch context</strong>, <strong>Tracking plan changes</strong>, and <strong>Code changes</strong>.
+  Branch review screen is composed of three tabs: <strong>Branch context</strong>, <strong>Tracking plan changes</strong>, and <strong>Code changes</strong>.
 </Callout>
 
 ## The three tabs
 
 ### Branch context
-- Add a description of the change and its related product update; link design docs or tickets
-- Rename the branch when needed
-- See collaborators and impacted stakeholders
-- Use this to set expectations before reviewers dive into the diffs
+Use Branch context to align reviewers on the purpose and scope of the branch before they dive into the changes.
+
+- Add a branch description including a concise description of the product updates the branch is related to and the tracking plan changes described in the branch
+- Add links to product specs, designs, tickets or other relevant resources so reviewers have all context to review
+- Rename the branch as scope evolves to keep branch lists clear without breaking links
 
 ### Tracking plan changes
-- A structured diff of events, properties, metrics, and related items
-- Filter with “Show changes since” to focus reviews on what’s new
-- Comment and resolve feedback on each changed item
+Use Tracking plan changes to review and approve the exact modifications to your tracking plan and to manage the review workflow.
+
+- See a structured diff of metrics, events, properties, and related items vs. main; focus on what’s new since your last review using “Show changes since”
+- Comment on changed items to ask questions, record decisions, and resolve feedback
+- Add or remove reviewers and change the branch status (Draft, Ready for review, Changes requested, Approved) to keep work moving
+
+In the Events view, the [Workbench](/data-design/avo-tracking-plan/workbench) highlights added or updated events, giving you an at-a-glance view of changes useful for self review while making changes to the tracking plan."
 
 ### Code changes
-- Implementation view grouped by source with configurable diffs
-- Copyable, language‑appropriate code snippets for both Codegen and non‑Codegen
-- Share links internally or create a public share for external collaborators
+Use Code changes to translate tracking plan diffs into precise implementation instructions for developers.
+
+- Scan impacted events grouped by source with configurable diffs to understand exactly what to change in code
+- Copy language‑appropriate snippets for both Codegen and non‑Codegen to speed up implementation and reduce errors
+- Share links internally or create a public share to collaborate with people outside your workspace
 
 ## Rename the branch
 Open your branch, click <em>View changes</em>, go to <em>Branch context</em>, edit the branch name, and save.
