@@ -70,6 +70,9 @@ Learn more: [Metrics](/data-design/avo-tracking-plan/metrics)
 There are many ways to organize a tracking plan, and the best approach depends on the size and complexity of your organization and the products you are tracking. Below are two common approaches for very different organizations.
 
 ### Multi‑workspace enterprise
+
+For organizations with several products and multiple teams, a central data team often defines shared data structures while individual product teams extend them locally. This pattern emphasizes consistency where it matters most (user identity, revenue, core lifecycle events) and flexibility where products diverge (feature‑specific events and properties). It also streamlines reviews and publishing, so shared structures evolve safely across many codebases.
+
 - Global workspace for central definitions and local workspaces for products
 - Stakeholders map to analysts serving more than one development team, where each analyst leads a stakeholder team
 - Categories map to product areas, sometimes representing development teams
@@ -78,6 +81,9 @@ There are many ways to organize a tracking plan, and the best approach depends o
 - Metrics defined centrally for shared outcomes (e.g., retention, conversion); local workspaces add product‑specific metrics
 
 ### Growth‑stage startup
+
+For fast‑moving teams shipping from a single or few related product, a single workspace minimizes overhead and keeps planning simple. A central data person or small data team can coordinate standards by acting as a Stakeholder Team (owner/reviewer) rather than setting up a separate global workspace—preserving simplicity while still enabling ownership, review workflows, and focused filtering.
+
 - Single workspace
 - Stakeholders map to development teams, where an analyst or a PM leads stakeholder teams
 - Categories map to product areas
