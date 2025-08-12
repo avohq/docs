@@ -6,6 +6,10 @@ _Learn about the properties in your tracking plan_
 
 Properties are also known as traits, attributes, metadata, etc. They are information that is attached to events, users or groups that describe the state of the user or the product at the time of the event. Avo allows you to define event, group, user and system properties - each category described below.
 
+<Callout type="info" emoji="🧭">
+Looking for ways to organize properties and reuse them across events? See [Organizing your tracking plan](/data-design/guides/organizing-metrics-and-events)—especially [tags](/data-design/guides/organizing-metrics-and-events#tags), [categories](/data-design/guides/organizing-metrics-and-events#categories), [property bundles](/data-design/guides/organizing-metrics-and-events#property-bundles), and how these relate to [metrics](/data-design/guides/organizing-metrics-and-events#metrics).
+</Callout>
+
 ## Property Definition
 
 A property is defined in the event details within the relevant [actions](/data-design/avo-tracking-plan/events#actions) or in the properties view.
@@ -18,6 +22,7 @@ A property is defined in the event details within the relevant [actions](/data-d
 - The [presence](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) of the property on each event – whether it's required or optional (required)
 - The [constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined for the property values (optional but highly recommended)
 - The [name mappings](/data-design/name-mapping) the property name is mapped to when sending to specific destinations (optional)
+- The [tags](/data-design/guides/organizing-metrics-and-events#tags) the property is associated with (optional)
 
 ## Event properties
 
@@ -130,6 +135,8 @@ System properties are set in the Avo.initAvo() function. They can be updated wit
 ## Event property bundles
 
 Event property bundles are a way to bundle two or more related event properties to quickly and consistently add them to all related events. You can create event property bundles from the [event property bundles screen in your Avo workspace](https://www.avo.app/schemas/default/properties/bundles).
+
+For a broader overview of how bundles fit into organizing your tracking plan, see [property bundles](/data-design/guides/organizing-metrics-and-events#property-bundles).
 
 An e-commerce website might want to attach all product properties to cart and checkout events.
 An example event property bundle could be "Product" containing the following properties:
