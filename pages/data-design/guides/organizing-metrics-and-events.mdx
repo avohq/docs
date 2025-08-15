@@ -2,91 +2,152 @@
 
 Avo provides multiple, complementary ways to organize a tracking plan at any scale. Use them together to keep data consistent, navigable, and accountable:
 
-- Global and Local Workspaces: centralized governance with local flexibility
-- Stakeholders: organize by ownership and dependencies across teams
-- Categories: visual grouping across events, variants, properties, and metrics; items can belong to multiple categories and categories are shared across items
-- Tags: flexible labels on events, variants, and properties; items can have multiple tags and tags are shared across items
-- Property bundles: reusable sets of properties you can attach to many events and variants for speed and consistency
-- Metrics: analysis structure that brings together events, variants, and properties
+- [Workspaces](#workspaces): centralized tracking plan and release workflow
+- [Stakeholder teams](#stakeholder-teams-domains-teams): ownership and dependencies across teams
+- [Sources](#sources): scope and tailor data per codebase
+- [Destinations](#destinations): document and configure downstream tools
+- [Categories](#categories): visual grouping across items
+- [Tags](#tags): flexible labels for governance and workflow
+- [Property bundles](#property-bundles): reusable sets of properties
+- [Metrics](#metrics): outcomes that tie everything together
 
 Below we cover each, then how they work together, and practical examples.
 
-## Multi-workspace organizations
+## Workspaces
 
-Most organizations are best served by a single workspace for their tracking plan—even if they have more than one product. Some organizations, however, have multiple products that are largely unrelated and share only a small subset of events and properties. In that case, it can be best to keep a single workspace for shared events and properties and create local workspaces for products that are not related to the shared definitions.
+A workspace in Avo houses the tracking plan for a product or organization, where all data structures share the same namespace - events and properties are re‑used across the product(s) the workspace applies to. A [workspace](/workflow/overview) is also where the end to end Avo workflow happens: define goals and metrics, design events and properties, request implementation, validate, and publish. With [Inspector](/inspector/start-using-inspector) connected, the workspace surfaces discrepancies between your plan and live tracking so you can keep the plan accurate over time.
 
-Global workspaces let a central team define core events and properties that should be shared across multiple local workspaces. Local workspaces adopt these global requirements and can extend them to the needs of their product within the constraints of the global definitions. Local workspaces can create variants of global events and add their own events that describe their product in a unique way. This model provides consistency across products while preserving local flexibility.
+Most organizations are best served by a single workspace for their tracking plan - even if they have more than one product. Some organizations, however, have multiple products that are largely unrelated and share only a small subset of events and properties. In that case, it can be best to keep a single workspace for shared events and properties and create local workspaces for products that are not related to the shared definitions.
+
+### Global workspaces
+
+Global workspaces let a central team define core events and properties to share across multiple local workspaces. Local workspaces adopt those definitions and can extend them within the global constraints. They may create event variants and add local events where needed. This model delivers cross product consistency while preserving product level flexibility.
 
 Learn more: [Global Requirements](/data-design/global-requirements)
 
-## Stakeholder teams
+## Stakeholder teams (Domains/teams)
 
-Stakeholder teams represent functions or product areas in your organization. Assigning teams as owners or stakeholders on events and variants makes accountability explicit, routes reviews to the right people, and surfaces cross‑team impact. Create stakeholder teams, assign them to items as owners or stakeholders, and use filters in Branches, Events, and Properties tables to focus by team.
+Stakeholder teams represent functions or product areas and map tracking plan items to the people responsible for or dependent on them (for example, checkout or search, a central governance group, a platform like iOS, or a data consumer such as experiments or marketing). They clarify accountability and make cross team impact visible.
+
+Tips and usage:
+- When creating new events and properties, set your team as a stakeholder (and owner if applicable)
+- When editing existing events and properties, review the impact on other stakeholders and minimize scope where possible
+- When a branch is ready, add impacted stakeholders as reviewers
+
+Example in practice: Organizations with multiple product verticals often create a team per vertical so analysts own day to day analytics in their area. Core events leveraged across the org can list the governance team as a stakeholder so they are pulled into reviews.
 
 Learn more: [Stakeholders](/data-design/avo-tracking-plan/stakeholder-domains)
 
+## Sources
+
+Sources represent your codebases (Web, iOS, Android, Backend). They document which events should be sent from which codebase and allow tailoring event/property shapes per source.
+
+Tips and usage:
+- Keep track of which events are sent from each codebase and filter the tracking plan by source
+- Define events and properties per source and set source specific shapes (not all properties are sent from all platforms)
+- Document triggers per source and provide per source implementation diffs to developers
+- Monitor discrepancies between plan and live tracking per source; scope Inspector filters and alerts by source
+- When defining new events, set the source(s) they should be sent from; review and code changes screens are segmented by source
+
+Learn more: [Sources](/data-design/avo-tracking-plan/define-sources-and-destinations)
+
+## Destinations
+
+Destinations are downstream tools in your data stack (analytics tools, CDPs, etc.). Use them to document where events are sent and from which sources; destinations can also be configured per event when needed.
+
+Tips and usage:
+- Typically set up when adding a new source or when introducing a new destination to your stack
+- Configure per event destination behavior where applicable
+
+Learn more: [Destinations](/data-design/avo-tracking-plan/define-sources-and-destinations#destinations-1)
+
 ## Categories
 
-Categories provide intuitive, visual groupings across Events, Variants, Properties, and Metrics, making navigation and planning easier. Items can belong to multiple shared categories, and these categories can be published to destinations that support them (for example, Mixpanel and Amplitude) so your analytics tools mirror the same grouping. Use categories to group events, properties, and metrics for an intuitive overview of your tracking plan and to filter views by product area, journey, or feature set.
+Categories group and organize your tracking plan across the Events and Metrics views. Each category has a details view that shows its description and the full list of items in the category (metrics, events, variants, and properties).
+
+Tips and usage:
+- The default Events table view is organized by category
+- You can filter the Metric, Event, Property and Inspector issue views by category, and also when adding items to a stakeholder team or deciding which events to publish
+- Teams often mirror product areas as categories to get focused, relevant views
+- Items can belong to multiple categories
+- Categories can be published to supported destinations (for example, Mixpanel and Amplitude) so your analytics tools mirror the same grouping
 
 ## Tags
 
-Tags are lightweight labels for workflows and governance across Events, Variants, and Properties. Items can have multiple tags and tags are shared across items. Use tags to encode policies and processes—common patterns include PII, priority (P0/P1/P2), and lifecycle (deprecated or a scheduled deprecation date). You can filter tables by tags to focus your view.
+Tags are lightweight labels for workflows and governance across Events, Variants, and Properties. Items can have multiple tags and tags are shared across items. Use tags to encode policies and processes.
+
+Tips and usage:
+- Document item priority (P0, P1, P2)
+- Mark items for deprecation or review
+- Track missing/outdated screenshots or documentation
+- Encode operational ownership (e.g., implementation owner) until teams are formalized
+- Filter event, property and Inspector issue views by tags
 
 ## Property bundles
 
 Property bundles let you package commonly used event properties into reusable sets you can attach to many events at once. They speed up data design, reduce mistakes, and keep shared definitions consistent across your tracking plan.
 
+Tips and usage:
+- Create bundles for recurring groups like Product, Cart, Game, etc.
+- Attach a bundle to multiple events to apply all included properties at once
+- Use bundles to standardize naming, types, and constraints across similar events
+
 Learn more: [Event property bundles](/data-design/avo-tracking-plan/properties#event-property-bundles)
 
 ## Metrics
 
-Metrics define desired outcomes and connect the events, variants, and properties used to analyze them. Starting from metrics aligns data collection with business impact: define the metric, associate the events/variants/properties required to measure it, and create any missing pieces directly from the metric view. Categories and tags help navigate large sets of metrics.
+Metrics define desired outcomes and link the events, variants, and properties used to analyze them.
+
+Tips and usage:
+- Start with outcomes: define the metric first, then list what is needed to measure it
+- Associate events, variants, and properties to each metric and create missing items from the metric view
+- Use categories and tags on metrics to aid discovery and navigation in large plans
 
 Learn more: [Metrics](/data-design/avo-tracking-plan/metrics)
 
 ## How these work together
 
-- Global workspaces define shared, governed structures; local workspaces extend and implement
-- Stakeholders own and depend on items within workspaces, enabling impact visibility and routed reviews
-- Categories provide visual grouping across items and are published to supported destinations
-- Tags add flexible labeling for additional context and filtering options
-- Property bundles standardize commonly used properties and accelerate consistent event design
-- Metrics connect the pieces to business outcomes
+The table below summarizes each organizer, what it’s for, which items it applies to, and whether it’s published downstream.
 
 | Organizer | Primary purpose | Metrics | Events | Variants | Properties | Published downstream |
 | --- | --- | --- | --- | --- | --- | --- |
-| Global/Local Workspaces | Central governance with local flexibility | ❌ | ✅ | ✅ | ✅ | ✅ |
-| Stakeholders | Ownership & dependencies | ❌ | ✅ | ✅ | ✅ | ✅ (Webhook) |
+| Workspaces | Central governance with local flexibility | ❌ | ✅ | ✅ | ✅ | ✅ |
+| Stakeholder teams | Ownership & dependencies | ❌ | ✅ | ✅ | ✅ | ✅ (Webhook) |
+| Sources | Scope data per codebase; per source design and observability | ❌ | ✅ | ✅ | ✅ | ❌ |
+| Destinations | Document and configure downstream tooling | ❌ | ✅ | ✅ | ✅ | ✅ (per destination) |
 | Categories | Visual grouping & navigation | ✅ | ✅ | ✅ | ✅ | ✅ (Webhook, Mixpanel*, Amplitude) |
 | Tags | Flexible labeling & workflows | ❌ | ✅ | ✅ | ✅ | ✅ (Webhook, Mixpanel, Segment Protocols) |
 | Property bundles | Reusable sets of properties for consistency | ❌ | ✅ | ✅ | ✅ | ❌ |
-| Metrics | Analysis structure tying items together | - | ✅ | ✅ | ✅ | ✅ (Webhook) |
+| Metrics | Analysis structure tying items together | ✅ | ✅ | ✅ | ✅ | ✅ (Webhook) |
 
-* Mixpanel Lexicon publishing can be set to receive category in Avo as tags in Mixpanel as Mixpanel doesn't support categories.
+* Mixpanel Lexicon publishing can be set to receive category in Avo as tags in Mixpanel as Mixpanel does not support categories.
 
 ## Practical examples
 
 There are many ways to organize a tracking plan, and the best approach depends on the size and complexity of your organization and the products you are tracking. Below are two common approaches for very different organizations.
 
-### Multi‑workspace enterprise
+### Multi workspace enterprise
 
-For organizations with several products and multiple teams, a central data team often defines shared data structures while individual product teams extend them locally. This pattern emphasizes consistency where it matters most (user identity, revenue, core lifecycle events) and flexibility where products diverge (feature‑specific events and properties). It also streamlines reviews and publishing, so shared structures evolve safely across many codebases.
+For organizations with several products and multiple teams, a central data team often defines shared data structures while individual product teams extend them locally. This pattern emphasizes consistency where it matters most (user identity, revenue, core lifecycle events) and flexibility where products diverge (feature specific events and properties). It also streamlines reviews and publishing, so shared structures evolve safely across many codebases.
 
 - Global workspace for central definitions and local workspaces for products
 - Stakeholders map to analysts serving more than one development team, where each analyst leads a stakeholder team
+- Sources define platform scope and per source shape (e.g., mobile vs web properties)
+- Destinations document where data goes and how per event configs differ
 - Categories map to product areas, sometimes representing development teams
-- Tags used to mark properties as PII, and to label events, properties, and variants for priority and items in the process of being deprecated
-- Property bundles used to standardize common property sets across many events and products, both in the global workspace and in the local workspaces
-- Metrics defined centrally for shared outcomes (e.g., retention, conversion); local workspaces add product‑specific metrics
+- Tags highlight governance and workflow status (PII, priority, deprecation)
+- Property bundles standardize common property sets across many events and products
+- Metrics defined centrally for shared outcomes (e.g., retention, conversion); local workspaces add product specific metrics
 
-### Growth‑stage startup
+### Growth stage startup
 
-For fast‑moving teams shipping from a single or few related product, a single workspace minimizes overhead and keeps planning simple. A central data person or small data team can coordinate standards by acting as a Stakeholder Team (owner/reviewer) rather than setting up a separate global workspace—preserving simplicity while still enabling ownership, review workflows, and focused filtering.
+For fast moving teams shipping from a single or few related product, a single workspace minimizes overhead and keeps planning simple. A central data person or small data team can coordinate standards by acting as a Stakeholder Team (owner/reviewer) rather than setting up a separate global workspace, preserving simplicity while still enabling ownership, review workflows, and focused filtering.
 
 - Single workspace
 - Stakeholders map to development teams, where an analyst or a PM leads stakeholder teams
+- Sources clarify platform scope and enable per source presence/constraints
+- Destinations capture where events are sent without over engineering
 - Categories map to product areas
-- Tags used to mark properties as PII, and to label events, properties, and variants for priority and items in the process of being deprecated
-- Property bundles used to group properties together and speed up data design
-- Metrics drive planning: define key outcomes first, then associate events/variants/properties to build the metrics
+- Tags encode PII, priority, and lifecycle workflows
+- Property bundles group recurring properties and speed up design
+- Metrics drive planning: define key outcomes first, then associate events/variants/properties
