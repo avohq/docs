@@ -18,13 +18,37 @@ Importing from Inspector is a fast, convenient way to build your tracking plan i
 ## What can be imported
 
 - Events: New events observed by Inspector that aren’t yet documented in your tracking plan
-- Properties: Both simple (non‑nested) properties and nested payloads as <a href="/data-design/object-properties">object properties</a>
+- Properties: Properties of all value types, including [object properties](/data-design/object-properties). 
 
 ## Where to import from and how
 
-You can import from two places in Inspector. Both support importing events and properties.
+You can import from both the Events view and the Issues view in Inspector. You can either import all missing events, including their properties, or a single event or property at a time.
 
-### From the Events view
+### Bulk importing events and their properties
+
+Both the events and issues views support bulk importing events and their properties. There is a button in the header of each view that says "Add (X) events to tracking plan". Clicking this button will open a modal with a list of events or properties to import.
+
+#### Events view
+
+Here's the location of the button in the Events view:
+
+<div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Add events from Inspector events image](/images/inspector/add-events-from-inspector-events.png)
+</div>
+
+#### Issues view
+
+Here's the location of the button in the Issues view:
+
+<div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Add events from Inspector issues image](/images/inspector/add-missing-events.png)
+</div>
+
+### Importing a single event or property
+
+A single event or property can be imported from the Events view or the Issues view.
+
+#### Events view
 
 In the Events view, the red tracking plan icon marks events and properties seen in your product but not documented in Avo. Click the event or property to open the issue details and click the "Add" button to import the item to the tracking plan. 
 
@@ -32,17 +56,7 @@ In the Events view, the red tracking plan icon marks events and properties seen 
   ![Add events from Inspector events image](/images/inspector/add-events-from-inspector-events.png)
 </div>
 
-### From the Issues view
-
-#### Import all missing events
-
-The Issues View surfaces all events that Inspector observes but have not been added to the tracking plan. To import and review those events, click “Add (X) events to tracking plan” to review them in bulk. As with the Events view, you can include both new events and their properties, defining types and mapping nested payloads to <a href="/data-design/object-properties">object properties</a> as part of the import.
-
-<div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
-  ![Add events from Inspector issues image](/images/inspector/add-missing-events.png)
-</div>
-
-#### Import from a single issue
+### Issues view
 
 Open an “Event unexpected by tracking plan” issue and click “Add to Tracking Plan” to import that event (and its properties) directly. Likewise, for a “Property unexpected by tracking plan” issue, click “Add to Tracking Plan” to add the property to your tracking plan and attach it to relevant events/sources.
 
@@ -70,7 +84,7 @@ From here you can:
   ![Import review flow image](/images/inspector/import-from-inspector-flow.png)
 </div>
 
-## Resolving conflicts
+### Resolving conflicts
 
 Avo automatically resolves or surfaces conflicts so your tracking plan stays consistent:
 
@@ -87,12 +101,8 @@ Avo may also ask you to review potential duplicates:
 - Similar event in import
 - Similar event seen by Inspector
 
-## Completing the import
+### Completing the import
 
-You can import directly to the main branch or create a new branch.
-
-<Callout type="info" emoji="💡">
-  Unless you are starting from scratch, we recommend creating a new branch for imports so changes can be reviewed.
-</Callout>
+Even though you can import directly to the main branch, we always recommend creating a new branch for imports so changes can be peer reviewed.
 
 Click “Import” to finish.
