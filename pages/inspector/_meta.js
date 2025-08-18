@@ -11,7 +11,7 @@ export default {
   "inspector-fix-issues": "Fix Issues",
   "inspector-ignore-issues": "Ignore Issues",
   "inspector-slack-alerts": "Alerts for Slack",
-  "add-events-from-inspector": "Add Events from Inspector",
+  "add-events-from-inspector": "Import tracking plan from Inspector",
   "inspector-events-view": "Events View",
   "--": {
     "type": "separator"
