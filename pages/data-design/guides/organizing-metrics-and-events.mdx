@@ -34,7 +34,7 @@ Tips and usage:
 - When editing existing events and properties, review the impact on other stakeholders and minimize scope where possible
 - When a branch is ready, add impacted stakeholders as reviewers
 
-Example in practice: Organizations with multiple product verticals often create a team per vertical so analysts own day to day analytics in their area. Core events leveraged across the org can list the governance team as a stakeholder so they are pulled into reviews.
+Example in practice: Organizations with multiple product verticals often create a stakeholder team per vertical so analysts own day to day analytics in their area and the teams are pulled into review when data they depend on is being modified. Core events leveraged across the org can list the governance team as a stakeholder so they are pulled into reviews.
 
 Learn more: [Stakeholders](/data-design/avo-tracking-plan/stakeholder-domains)
 
@@ -78,7 +78,8 @@ Tags are lightweight labels for workflows and governance across Events, Variants
 
 Tips and usage:
 - Document item priority (P0, P1, P2)
-- Mark items for deprecation or review
+- Label PII sensitive events and properties
+- Mark items for deprecation or lifetime
 - Track missing/outdated screenshots or documentation
 - Encode operational ownership (e.g., implementation owner) until teams are formalized
 - Filter event, property and Inspector issue views by tags
@@ -120,7 +121,7 @@ The table below summarizes each organizer, what it’s for, which items it appli
 | Property bundles | Reusable sets of properties for consistency | ❌ | ✅ | ✅ | ✅ | ❌ |
 | Metrics | Analysis structure tying items together | ✅ | ✅ | ✅ | ✅ | ✅ (Webhook) |
 
-* Mixpanel Lexicon publishing can be set to receive category in Avo as tags in Mixpanel as Mixpanel does not support categories.
+_\* Mixpanel Lexicon publishing can be set to receive category in Avo as tags in Mixpanel as Mixpanel does not support categories._
 
 ## Practical examples
 
