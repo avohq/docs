@@ -1,89 +1,108 @@
 import { Callout } from 'nextra/components';
 
-# Import events from Inspector
+# Import tracking plan from Inspector
 
-Inspector compares ingested events and properties against the tracking plan and detects if any are missing. You can import missing events either in bulk or one by one.
+Inspector compares ingested events and properties against your Avo tracking plan and highlights anything that’s missing. You can use those insights to quickly bootstrap or refine your tracking plan directly from live data.
+
+Importing from Inspector is a fast, convenient way to build your tracking plan in Avo based on what’s already being sent by your product. It’s especially useful if:
+
+- You don't yet have a tracking plan, or your current plan is unreliable
+- You prefer not to import from other sources (e.g., Mixpanel, Amplitude, spreadsheets)
+- You want to curate what gets added and incrementally build a high‑quality plan over time
 
 <Callout type="info" emoji="💡">
-  If you have not yet installed Inspector, check out the [Inspector installation overview](/inspector/inspector-installation-overview).
+  If you haven’t installed Inspector yet, start with the
+  [Inspector installation overview](/inspector/inspector-installation-overview).
 </Callout>
 
-## Import events from Inspector events
+## What can be imported
 
-In the Inspector Events view, the red tracking plan icon will indicate those events seen in your tracking that are not documented in your Avo Tracking Plan. Click the “Add (X) events to tracking plan button” to review them in one go and select which events to import. You can also add them one by one by clicking the “Add” button next to each event.
-If there are no events unexpected by the tracking plan, this button will be greyed out.
+- Events: New events observed by Inspector that aren’t yet documented in your tracking plan
+- Properties: Properties of all value types, including [object properties](/data-design/object-properties). 
+
+## Where to import from and how
+
+You can import from both the Events view and the Issues view in Inspector. You can either import multiple missing events at once, including their properties, or a single event or property at a time.
+
+### Bulk importing events and their properties
+
+Both the events and issues views support bulk importing events and their properties. There is a button in the header of each view that says "Add (X) events to tracking plan". Clicking this button will open a modal with a list of events or properties to import.
+
+#### Events view
+
+Here's the location of the button in the Events view:
 
 <div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
-  ![Add events from Inspector events
-  image](/images/inspector/add-events-from-inspector-events.png)
+  ![Add events from Inspector events image](/images/inspector/add-events-from-inspector-events.png)
 </div>
 
-## Import events from Inspector issues
+#### Issues view
 
-You can also import events from Inspector Issues. If there are events unexpected by the tracking plan, you can click the “Add (X) events to tracking plan button” at the top left of the issues table.
-If there are no events unexpected by the tracking plan, this button will be greyed out.
+Here's the location of the button in the Issues view:
 
-<div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
-  ![Add events from Inspector issues
-  image](/images/inspector/add-missing-events.png)
+<div style={{paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Add events from Inspector issues image](/images/inspector/add-missing-events.png)
 </div>
 
-### Import from a single issue
+### Importing a single event or property
 
-You can also add individual events by selecting an “Event unexpected by tracking plan” issue and clicking “Add to Tracking Plan”.
+A single event or property can be imported from the Events view or the Issues view.
+
+#### Events view
+
+In the Events view, the red tracking plan icon marks events and properties seen in your product but not documented in Avo. Click the event or property to open the issue details and click the "Add" button to import the item to the tracking plan. 
 
 <div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
-  ![Add single event from issue
-  image](/images/inspector/add-single-event-from-issue.png)
+  ![Add events from Inspector events image](/images/inspector/add-events-from-inspector-events.png)
+</div>
+
+#### Issues view
+
+Open an “Event unexpected by tracking plan” issue and click “Add to Tracking Plan” to import that event (and its properties) directly. Likewise, for a “Property unexpected by tracking plan” issue, click “Add to Tracking Plan” to add the property to your tracking plan and attach it to relevant events/sources.
+
+<div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
+  ![Add single event from issue image](/images/inspector/add-single-event-from-issue.png)
 </div>
 
 ## Reviewing your import
 
-Once you click the button, a "Review import data" view will open with an overview of all unexpected events and the sources on which they were seen. You can expand each event to review its properties.
+Clicking any of the import buttons opens a "Review import data" view with an overview of the unexpected events and the sources where they were seen. Expand each event to review observed properties.
 
 From here you can:
 
-- Select which events to include in your import
-- Select the sources to include for each event
-- Select the properties to include for each event
-- Adjust property types and whether it should be required or optional
+- Choose which events to include
+- Choose which sources to include per event
+- Choose which properties to include per event (create new ones as needed)
+- Create or map <a href="/data-design/object-properties">object properties</a> when nested structures are detected
+- Adjust property types and configure required/optional presence per event and per source
 
-<Callout type="info" emoji="💡">
-  When importing, properties already documented in the tracking plan will be
-  reused on the event and additional properties will be added.
+<Callout type="info" emoji="🔁">
+  Existing properties in your tracking plan are reused; only missing properties are created.
 </Callout>
 
 <div style={{ maxWidth: 600, paddingTop: '1.5rem', margin: 'auto' }}>
-  ![Add single event from issue
-  image](/images/inspector/import-from-inspector-flow.png)
+  ![Import review flow image](/images/inspector/import-from-inspector-flow.png)
 </div>
 
-## Resolving conflicts
+### Resolving conflicts
 
-To make sure that your tracking plan is consistent and free of duplicates, Avo will automatically resolve and/or advise you of conflicts in your import.
+Avo automatically resolves or surfaces conflicts so your tracking plan stays consistent:
 
-Avo will auto-resolve conflicts when:
-
-- Property type does not match tracking plan: If a property is already documented in the tracking plan, it will be re-used on the event. Avo will let you know whether Inspector saw the property with a different value type than documented in the tracking plan.
-- Property type inconsistent: New properties that were seen with two or more value types will default to the most common property type. For example, if the property was seen in 70% of cases as “string” and 30% of cases as an “integer” value, the property will be imported as “string”.
+- Property already exists with a different type: The existing property is reused; you’ll be notified if Inspector observed a different value type
+- Property observed with multiple types: Defaults to the most common observed type (e.g., 70% string vs. 30% integer → string)
 
 <Callout type="info" emoji="💡">
-  After importing properties with value type conflicts to your tracking plan,
-  Inspector will flag those issues in your data moving forward.
+  After import, Inspector will continue to flag any ongoing data issues so you can keep improving quality over time.
 </Callout>
 
-Avo will ask you to review the following conflicts:
+Avo may also ask you to review potential duplicates:
 
 - Similar event in tracking plan
 - Similar event in import
 - Similar event seen by Inspector
 
-## Completing the import
+### Completing the import
 
-Once you have made your selections, you can either make your import directly to the main branch of your tracking plan or create a new branch for the import.
+Even though you can import directly to the main branch, we always recommend creating a new branch for imports so changes can be peer reviewed.
 
-<Callout type="info" emoji="💡">
-  Unless you're building your tracking plan from scratch, we recommend creating
-  a new branch for importing events.
-</Callout>
-To finish the import, click the "Import" button.
+Click “Import” to finish.
