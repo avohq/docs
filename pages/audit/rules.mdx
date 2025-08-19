@@ -78,6 +78,14 @@ This audit rule behaves differently depending on the context:
 
 [Learn more about stakeholder teams and ownership →](/data-design/avo-tracking-plan/stakeholder-domains)
 
+### All events have at least one category
+
+Checks for events that do not belong to any category when the rule is enabled. Categories make large tracking plans navigable, support filtering, and can be published to certain destinations. Requiring categories helps keep your plan organized and discoverable.
+
+#### How to resolve
+
+Add the event to one or more relevant categories. Learn more about [Categories](/data-design/guides/organizing-metrics-and-events#categories).
+
 ## Property Rules
 
 ### No conflicting properties
@@ -136,6 +144,14 @@ Checks if all properties in the tracking plan have a description.
 Add descriptions to all properties to increase the quality of your tracking plan.
 
 <Callout type="info" emoji="💡">**Best practice:** A well defined property description contains detailed description of what the property is describing, and how it's value should be fetched.</Callout>
+
+### All properties have at least one category
+
+Checks for properties that do not belong to any category when the rule is enabled. You can filter by categories in the properties view and they make the tracking plan more navigable.
+
+#### How to resolve
+
+Add the property to one or more relevant categories. Learn more about [Categories](/data-design/guides/organizing-metrics-and-events#categories).
 
 \* These rules can only fail after importing an existing tracking plan to Avo. When editing your Tracking Plan in Avo, Avo prevents you from introducing conflicting events and properties.
 
