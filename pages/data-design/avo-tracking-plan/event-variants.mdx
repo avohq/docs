@@ -75,6 +75,7 @@ The event variant actions reflect the actions on the base event. An event varian
 - **Add properties**: Click the _+ Add Property to Variant_ button and select the property you want to add
 - **Set property presence**: Click the presence label in the variant details view to toggle between `always sent`, `sometimes sent` and `never sent` for this variant
 - **Pin a property value**: In the triple-dot menu, choose _Pin Property Value on Variant_ to pin a property value or override an existing pin
+- **Rename variant**: Click the variant name to rename the variant
 
 Below the actions you can find the code snippet to track that event variant, with all the overrides applied. If you're using Codegen, you'll get a tailored Codegen function for this variant else you'll see a pseudocode snippet with the base event name.
 
@@ -93,6 +94,33 @@ Finally you can press the triple-dot icon in the header to copy a short-link to 
 ### Implementing event variants
 
 Each event variant gets their own Codegen function, exactly the same way as an event. This allows developers to easily implement the with exactly the properties that apply to that scenario. In practice this means fewer empty optional properties. Furthermore if you make changes to the event variant, those changes will only impact the implementation of that scenario rather than all the event instances and can greatly reduce the work needed to implement tracking plan changes. 
+
+### Renaming an event variant
+
+You can rename a variant directly from its details. Open the variant, click the variant name to rename it, and continue working — no need to recreate the variant or shuffle properties.
+
+![Screenshot of variant renaming a variant](/images/event-variants/rename-variants.png)
+
+### Finding and using variants across Avo
+
+Variants live under the base event and are nested under it in the event details view. You can discover and use variants in the following ways:
+
+#### Global search
+
+Use global search or cmd+k to search for variants alongside events and properties. You both access a list of all variants to search within and you can simply start typing and get results for variants along with other tracking plan items.
+
+![Screenshot of variant results in cmd+k](/images/event-variants/event-variant-search.png)
+
+If you have [Avo Intelligence: Smart Search](/reference/avo-intelligence) on, you also get fuzzy results, not only exact matches.
+
+#### Property details
+
+In property details, the presence table shows variants as well as their base event. You can view variants, add the property to a variant, adjust its presence and pin property values there. 
+
+![Screenshot of the presence table in property details](/images/event-variants/event-variants-property-details.png)
+
+#### Metrics
+Add variants to metrics just like events; when searching to add steps or filters, variants appear with their base event context.
 
 ### Event variants on branches
 
