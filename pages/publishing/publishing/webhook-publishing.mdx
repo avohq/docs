@@ -133,22 +133,33 @@ The `eventType` of events that are generated from variants is `variant`, while r
 
 ##### Metric Model
 
-| Attribute   | Type                  | Description                                                |
-|:------------|:----------------------|:-----------------------------------------------------------|
-| id          | string                | Metric id                                                  |
-| name        | string                | Metric name                                                |
-| description | string                | Metric description                                         |
-| categories  | array(string)         | Category ids where this metric is included                 |
-| type        | string                | One of Proportion / EventSegmentation / Funnel / Retention |
-| items       | array of Nested Event | Event descriptions                                         |
+| Attribute   | Type                         | Description                                                |
+|:------------|:-----------------------------|:-----------------------------------------------------------|
+| id          | string                       | Metric id                                                  |
+| name        | string                       | Metric name                                                |
+| description | string                       | Metric description                                         |
+| categories  | array(string)                | Category ids where this metric is included                 |
+| type        | string                       | One of Proportion / EventSegmentation / Funnel / Retention |
+| items       | array of Nested Metric items | Event descriptions                                         |
 
-##### Nested Event Model
+##### Nested Metric Items
+
+###### Nested Event Model
 
 | Attribute | Type                 | Description                                          |
 |:----------|:---------------------|:-----------------------------------------------------|
 | eventId   | string               | Event id                                             |
 | where     | array(whereFilter)   | Array of where filters                               |
 | groupBy   | array(groupByFilter) | array of objects containing property ids to group by |
+
+###### Nested Event Variant Model
+
+| Attribute          | Type                 | Description                                          |
+|:-------------------|:---------------------|:-----------------------------------------------------|
+| variantIdentifier  | object               | Object of Base Event id and Variant id                                             |
+| where              | array(whereFilter)   | Array of where filters                               |
+| groupBy            | array(groupByFilter) | array of objects containing property ids to group by |
+
 
 ##### groupByFilter
 
