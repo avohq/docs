@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 # Avo Intelligence
 
-Avo Intelligence enhances your workspace with powerful AI-driven features, like **Smart Search**, to make working with your Tracking Plan faster and more intuitive. By enabling Avo Intelligence, you unlock current and future AI-powered tools, starting with **Smart Search**.
+Avo Intelligence enhances your workspace with powerful AI-driven features, like **Smart Search**, to make working with your Tracking Plan faster and more intuitive. By enabling Avo Intelligence, you unlock current features like **Smart Search**. As we roll out more functionality, we’ll notify you in advance if we start sharing other types of data with AI models, or if we begin using AI providers other than OpenAI.
 
 ## Smart Search
 
@@ -25,7 +25,7 @@ Avo Intelligence enhances your workspace with powerful AI-driven features, like 
 
 ## Enabling Avo Intelligence
 
-Enable Avo Intelligence to unlock Smart Search and all AI-powered features moving forward. This allows Avo to share your Tracking Plan data (e.g., event names, property names, descriptions, and metrics) with OpenAI models.
+Enable Avo Intelligence to unlock current AI-powered features like Smart Search. This allows Avo to share your Tracking Plan data (e.g., event names, property names, descriptions, and metrics) with OpenAI models.
 
 ![](/images/avo-intelligence/smart-search-settings.png)
 
@@ -38,13 +38,36 @@ Enable Avo Intelligence to unlock Smart Search and all AI-powered features movin
   back and enjoy improved search 🔍
 </Callout>
 
-## Privacy and Data Use
+## Privacy & Data Use
 
-Avo only shares necessary schema items to power features like Smart Search. Your data is not used to power search in other Avo workspaces, nor used for training or improving external models.
+We designed Avo Intelligence to be helpful and safe. Here’s what’s shared, what isn’t, and how it’s used.
+
+### What’s shared
+
+- **Events**: names, synonyms, descriptions
+- **Properties**: names, synonyms, descriptions, bundle names
+- **Metrics & categories**: metric names, metric descriptions, category names
+
+### Not shared
+
+- Customer event data
+- Analytics data
+- PII
+
+### How it’s used
+
+- Schema metadata is turned into embeddings via OpenAI’s text embedding models.
+- Embeddings are stored securely in a vector database.
+- Used only to power search suggestions in the same Avo workspace.
+- Never used to train external models or shared across customers.
+
+<Callout type="info" emoji="🔒">
+  Reviewing for security or procurement? See the **Avo Intelligence – Security & Data Use Overview** in our [security portal](https://security.avo.app).
+</Callout>
 
 ## Coming soon
 
-By enabling Avo Intelligence, you'll automatically unlock future AI-powered features as they become available. For example:
+By enabling Avo Intelligence, you unlock current features. As we roll out more functionality, we’ll notify you in advance if we start sharing other types of data with AI models. For example:
 
 - Improved discovery of existing items when creating events, properties, and metrics
 - Surfacing common patterns in your tracking plan to speed up fleshing out events
