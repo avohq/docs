@@ -1103,4 +1103,10 @@ const redirects = [
       '/data-design/avo-tracking-plan/define-sources-and-destinations',
     permanent: true,
   },
+  {
+    source: '/data-design/guides/organizing-multi-product-workspaces',
+    destination:
+      '/data-design/guides/organizing-metrics-and-events',
+    permanent: true,
+  }
 ];
