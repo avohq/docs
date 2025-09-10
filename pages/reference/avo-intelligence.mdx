@@ -42,28 +42,50 @@ Enable Avo Intelligence to unlock current AI-powered features like Smart Search.
 
 We designed Avo Intelligence to be helpful and safe. Here’s what’s shared, what isn’t, and how it’s used.
 
-### What’s shared
+<Callout type="info" emoji="🔒">
+  Reviewing for security or procurement? See the **Avo Intelligence – Security & Data Use Overview** in our [security portal](https://security.avo.app).
+</Callout>
+
+### Smart Search
+
+#### What’s shared
 
 - **Events**: names, synonyms, descriptions
 - **Properties**: names, synonyms, descriptions, bundle names
 - **Metrics & categories**: metric names, metric descriptions, category names
 
-### Not shared
+#### Not shared
 
 - Customer event data
 - Analytics data
 - PII
 
-### How it’s used
+#### How it’s used
 
 - Schema metadata is turned into embeddings via OpenAI’s text embedding models.
 - Embeddings are stored securely in a vector database.
 - Used only to power search suggestions in the same Avo workspace.
 - Never used to train external models or shared across customers.
 
-<Callout type="info" emoji="🔒">
-  Reviewing for security or procurement? See the **Avo Intelligence – Security & Data Use Overview** in our [security portal](https://security.avo.app).
-</Callout>
+### Journeys (alpha)
+
+#### What’s shared
+
+- **Product images**: screenshots you add to a journey. Only images you explicitly opt in for AI trigger generation are sent to the AI provider.
+- **Triggers**: trigger names and descriptions, whether written by you or AI‑generated for a journey. Only triggers you explicitly opt in for AI trigger generation are sent to the AI provider.
+- **Events**: names, synonyms, descriptions
+- **Event variants**: names, synonyms, descriptions
+
+#### Not shared
+
+- Customer event data
+- Analytics data
+- PII
+
+#### How it’s used
+- Product images are analyzed by AI to propose triggers and concise interaction descriptions for each step.
+- Triggers are matched to existing events and variants in your tracking plan using Smart Search to suggest connections.
+- Used only within your Avo workspace to power Journeys; never used to train external models or shared across customers.
 
 ## Coming soon
 
