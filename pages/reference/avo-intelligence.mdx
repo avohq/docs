@@ -48,6 +48,13 @@ We designed Avo Intelligence to be helpful and safe. Here’s what’s shared, w
 
 ### Smart Search
 
+#### How it’s used
+
+- Schema metadata is turned into embeddings via OpenAI’s text embedding models.
+- Embeddings are stored securely in a vector database.
+- Used only to power search suggestions in the same Avo workspace.
+- Never used to train external models or shared across customers.
+
 #### What’s shared
 
 - **Events**: names, synonyms, descriptions
@@ -60,13 +67,6 @@ We designed Avo Intelligence to be helpful and safe. Here’s what’s shared, w
 - Analytics data
 - PII
 
-#### How it’s used
-
-- Schema metadata is turned into embeddings via OpenAI’s text embedding models.
-- Embeddings are stored securely in a vector database.
-- Used only to power search suggestions in the same Avo workspace.
-- Never used to train external models or shared across customers.
-
 ### Journeys (alpha)
 
 Journeys lets you design analytics visually: build flows from product screenshots, add triggers for each step, and connect them to events and variants in your tracking plan. If you opt in to Avo Intelligence for Journeys, Journeys can generate triggers from images and suggest matching events/variants, speeding up data design and reducing manual lookup.
@@ -76,23 +76,29 @@ Journeys lets you design analytics visually: build flows from product screenshot
   via the chat bubble in the app for early access.
 </Callout>
 
+#### How it’s used
+- Product images are analyzed by AI to propose triggers and concise interaction descriptions for each step.
+- Triggers are matched to existing events and variants in your tracking plan using Smart Search to suggest connections.
+- Used only within your Avo workspace to power Journeys; never used to train external models or shared across customers.
+
 #### What’s shared
 
 - **Product images**: product images or screenshots you add to a journey. Only images you explicitly opt in to process with AI (to generate triggers) are sent to the AI provider.
 - **Triggers**: names and descriptions you add or that AI generates for a journey. Only triggers you explicitly opt in to process with AI are sent to the AI provider.
+- **Metrics**: names, descriptions
 - **Events**: names, synonyms, descriptions
 - **Event variants**: names, descriptions
+- **Property bundles**: names, synonyms, descriptions
+- **Properties**: names, synonyms, descriptions
+- **Property rules**: allowed values for string properties
+- **Categories**: names, descriptions
+- **Tags**: names
 
 #### Not shared
 
 - Customer event data
 - Analytics data
 - PII
-
-#### How it’s used
-- Product images are analyzed by AI to propose triggers and concise interaction descriptions for each step.
-- Triggers are matched to existing events and variants in your tracking plan using Smart Search to suggest connections.
-- Used only within your Avo workspace to power Journeys; never used to train external models or shared across customers.
 
 ## Coming soon
 
