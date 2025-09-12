@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 # Avo Intelligence
 
-Avo Intelligence enhances your workspace with powerful AI-driven features, like **Smart Search**, to make working with your Tracking Plan faster and more intuitive. By enabling Avo Intelligence, you unlock current features like **Smart Search**. As we roll out more functionality, we’ll notify you in advance if we start sharing other types of data with AI models, or if we begin using AI providers other than OpenAI.
+Avo Intelligence enhances your workspace with powerful AI-driven features, like [Smart Search](#smart-search) and soon [Journeys (alpha)](#journeys-alpha), to make working with your Tracking Plan faster and more intuitive. By enabling Avo Intelligence, you unlock current features like **Smart Search**. As we roll out more functionality, we’ll notify you in advance if we start sharing other types of data with AI models, or if we begin using AI providers other than OpenAI.
 
 ## Smart Search
 
@@ -42,28 +42,63 @@ Enable Avo Intelligence to unlock current AI-powered features like Smart Search.
 
 We designed Avo Intelligence to be helpful and safe. Here’s what’s shared, what isn’t, and how it’s used.
 
-### What’s shared
+<Callout type="info" emoji="🔒">
+  Reviewing for security or procurement? See the **Avo Intelligence – Security & Data Use Overview** in our [security portal](https://security.avo.app).
+</Callout>
 
-- **Events**: names, synonyms, descriptions
-- **Properties**: names, synonyms, descriptions, bundle names
-- **Metrics & categories**: metric names, metric descriptions, category names
+### Smart Search
 
-### Not shared
-
-- Customer event data
-- Analytics data
-- PII
-
-### How it’s used
+#### How it’s used
 
 - Schema metadata is turned into embeddings via OpenAI’s text embedding models.
 - Embeddings are stored securely in a vector database.
 - Used only to power search suggestions in the same Avo workspace.
 - Never used to train external models or shared across customers.
 
-<Callout type="info" emoji="🔒">
-  Reviewing for security or procurement? See the **Avo Intelligence – Security & Data Use Overview** in our [security portal](https://security.avo.app).
+#### What’s shared
+
+- **Events**: names, synonyms, descriptions
+- **Properties**: names, synonyms, descriptions, bundle names
+- **Metrics & categories**: metric names, metric descriptions, category names
+
+#### Not shared
+
+- Customer event data
+- Analytics data
+- PII
+
+### Journeys (alpha)
+
+Journeys lets you design analytics visually: build flows from product screenshots, add triggers for each step, and connect them to events and variants in your tracking plan. If you opt in to Avo Intelligence for Journeys, Journeys can generate triggers from images and suggest matching events/variants, speeding up data design and reducing manual lookup.
+
+<Callout type="info" emoji="🚀">
+  Interested in trying Journeys? It’s in alpha now. Reach out at support@avo.app or
+  via the chat bubble in the app for early access.
 </Callout>
+
+#### How it’s used
+- Product images are analyzed by AI to propose triggers and concise interaction descriptions for each step.
+- Triggers are matched to existing events and variants in your tracking plan using Smart Search to suggest connections.
+- Used only within your Avo workspace to power Journeys; never used to train external models or shared across customers.
+
+#### What’s shared
+
+- **Product images**: product images or screenshots you add to a journey. Only images you explicitly opt in to process with AI (to generate triggers) are sent to the AI provider.
+- **Triggers**: names and descriptions you add or that AI generates for a journey. Only triggers you explicitly opt in to process with AI are sent to the AI provider.
+- **Metrics**: names, descriptions
+- **Events**: names, synonyms, descriptions
+- **Event variants**: names, descriptions
+- **Property bundles**: names, synonyms, descriptions
+- **Properties**: names, synonyms, descriptions
+- **Property rules**: allowed values for string properties
+- **Categories**: names, descriptions
+- **Tags**: names
+
+#### Not shared
+
+- Customer event data
+- Analytics data
+- PII
 
 ## Coming soon
 
