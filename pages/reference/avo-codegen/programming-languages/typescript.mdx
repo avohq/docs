@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Avo Codegen in TypeScript
 
 ### Platforms
@@ -64,6 +66,81 @@ Avo.signupStart({ referral: 'direct' });
 
 > Notice, that you are not passing the System property with the call. System properties are defined on the init step and then automatically included with all events.
 > You can update the system properties with `setSystemProperties` function.
+
+##### Web + TypeScript: Generate one file per event
+
+For Web sources using TypeScript you can enable a source setting that generates one file per event to improve tree‑shaking and reduce bundle size.
+
+- Availability: Web + TypeScript only
+- Default: Off
+- Where to enable: Source → Avo Codegen Setup → "Generate one file per event"
+
+
+When enabled, the generated output is split into one file per event. You still initialize Avo from `Avo.ts`; event functions are imported from `AvoEvents`.
+
+###### Folder structure
+
+```text
+Before
+└─ Avo.ts               # everything in one file
+
+After
+├─ Avo.ts               # initAvo, validations, shared/runtime code
+└─ AvoEvents/
+   ├─ index.ts
+   ├─ types.ts
+   ├─ AppOpened.ts
+   └─ ...               # one file per event
+```
+
+###### Migration steps
+1) Turn on the setting for your Web + TypeScript source and re‑generate (`avo pull`).
+2) Keep initializing Avo from `Avo.ts`.
+3) Update event call sites to import from `AvoEvents`.
+
+###### Before
+
+```typescript
+import Avo from './Avo';
+
+Avo.emailUpdate({ /* props */ });
+```
+
+###### After
+
+```typescript
+import Avo from './Avo';
+import { emailUpdate } from './AvoEvents';
+
+Avo.initAvo(/* ... */);
+emailUpdate({ /* props */ });
+```
+
+###### Reference details
+
+- `AvoEvents/index.ts` re‑exports the per‑event default exports as named exports:
+
+```typescript
+export { default as signupStart } from './signupStart';
+export { default as passwordUpdate } from './passwordUpdate';
+export { default as signupComplete } from './signupComplete';
+export { default as msgReceived } from './msgReceived';
+export { default as emailUpdate } from './emailUpdate';
+```
+
+- `AvoEvents/types.ts` exposes shared types used by the per‑event modules:
+
+```typescript
+export interface AvoEventsModuleMap {
+  signupStart: typeof import('./signupStart').default;
+  passwordUpdate: typeof import('./passwordUpdate').default;
+  signupComplete: typeof import('./signupComplete').default;
+  msgReceived: typeof import('./msgReceived').default;
+  emailUpdate: typeof import('./emailUpdate').default;
+}
+export type EventName = keyof AvoEventsModuleMap;
+export type EventFn<T extends EventName = EventName> = AvoEventsModuleMap[T];
+```
 
 #### Step 4. Verify the implementation
 
