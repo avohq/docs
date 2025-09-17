@@ -20,7 +20,7 @@ The Tracking Plan will be delivered with a `POST` request containing the Trackin
 
 ## Payload Format
 
-Currently there are three different payload formats you can choose from for the webhook: **Snowplow Schemas**, **Avo Json**, and **Json Schema** (default).
+Currently there are four different payload formats you can choose from for the webhook: **Snowplow Schemas**, **Avo Json**, **NDJSON**, and **Json Schema** (default).
 
 > 💡 To see a preview of the exact Webhook payload in your Avo workspace choose `Publishing` in the sidebar, then pick your Webhook from the menu and expand the `Payload preview` section
 
@@ -225,3 +225,64 @@ The `eventType` of events that are generated from variants is `variant`, while r
 | globalWorkspaceIds | array(string) | List of all global workspaces in Organization                            |
 | localWorkspaceIds  | array(string) | List of all local workspaces in Organization                             |
 | workspaceType      | string        | Describes the type of the workspace being published, "local" or "global" |
+
+### NDJSON
+
+Newline-delimited JSON representation of your tracking plan. The top-level payload is a small JSON envelope containing two string fields, where each string is NDJSON: one JSON object per line.
+
+#### Envelope
+
+| Attribute  | Type                          | Description                                                                 |
+|:-----------|:------------------------------|:----------------------------------------------------------------------------|
+| events     | string (NDJSON)               | NDJSON where each line is an Events row described below                     |
+| properties | string (NDJSON)               | NDJSON where each line is an Event Properties row described below           |
+| context    | \{ publishInfo: PublishInfo } | Optional. Metadata about the webhook call                                   |
+
+#### Events NDJSON line schema
+
+| Attribute           | Type                                   | Description                                                                 |
+|:--------------------|:---------------------------------------|:----------------------------------------------------------------------------|
+| event_id            | string                                 | Event id                                                                    |
+| event_name          | string                                 | Event name                                                                  |
+| event_type          | enum: ["event", "variant"]           | Whether this row represents a base event or a variant                       |
+| variant_name        | string or null                         | Variant name when `event_type` is `variant`, otherwise null                 |
+| description         | string or null                         | Event description, or null if empty                                         |
+| global_description  | null                                   | Reserved for future use                                                     |
+| tags                | array(string)                          | Tags attached to the event                                                  |
+| categories          | array(string)                          | Category names the event belongs to                                         |
+| actions             | array(string)                          | Actions inferred from event types (camelCase)                               |
+| stakeholder_domains | array(StakeholderDomain)        | Stakeholder domains for the event (see model below)                         |
+| sources             | array(Source)                          | Included sources for the event                                              |
+| name_mapping        | array(NameMapping)                     | Event-level name mappings per destination                                   |
+| rules               | Rules                                 | Per-property details for this event (see below)            |
+
+- **Source**: \{ `id`: string, `name`: string, `implement_with_codegen`: bool, `destinations`: array(string) \}
+- **NameMapping**: \{ `name`: string, `destination_id`: string \} (`destination_id` can be `"all"`)
+- **StakeholderDomain**: \{ `id`: string, `name`: string, `is_owner`: bool \}
+- **Rules**: \{ `properties`: array(Property), `user_properties`: array(Property), `group_properties`: array(Property) \}
+- **Property**: \{ `property_id`: string, `property_name`: string, `name_mapping`: array(NameMapping), `required`: bool \}
+
+
+#### Properties NDJSON line schema
+
+Each line describes a property scoped to an event, user, or group.
+
+| Attribute           | Type                            | Description                                                                |
+|:--------------------|:--------------------------------|:---------------------------------------------------------------------------|
+| event_id            | string                          | Event id                                                                   |
+| event_name          | string                          | Event name                                                                 |
+| property_id         | string                          | Property id                                                                |
+| property_name       | string                          | Property name                                                              |
+| property_scope      | enum: ["event", "user", "group"] | Whether the property is event, user or a group property                                           |
+| required            | bool                            | Whether the property is required for this event (considering included sources) |
+| description         | string or null                  | Property description, or null if empty                                     |
+| tags                | array(string)                   | Tags attached to the property                                              |
+| name_mapping        | array(NameMapping)              | Property-level name mappings per destination for this event                |
+| group_type_id       | string or null                  | Group type id if `property_scope` is `group`, otherwise null               |
+| is_system_property  | bool                            | Whether the property is a system property                                  |
+| type                | string or null                  | Base JSON Schema type (e.g. `integer`, `number`, `string`, `boolean`, `object`), or `array` if the property is a list; null if not applicable |
+| enum                | array(string) or null           | Allowed values if the property is an enum for this event                   |
+| minimum             | number or null                  | Minimum numeric value if defined                                           |
+| maximum             | number or null                  | Maximum numeric value if defined                                           |
+| regex               | string or null                  | Regex constraint (event override preferred; falls back to property rule)   |
+| stakeholder_domains | array(StakeholderDomain) | Stakeholder domains for this property                                      |
