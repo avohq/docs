@@ -1,0 +1,181 @@
+import { Callout } from 'nextra/components';
+
+# Avo as a Solutions Design Document (SDD)
+
+This guide shows how to express an Adobe Analytics [Solution Design Document (SDD)](https://experienceleague.adobe.com/en/docs/analytics/implementation/prepare/solution-design), also known as [Solution Design Reference (SDR)](https://experienceleague.adobe.com/en/docs/analytics/implementation/prepare/solution-design), in Avo so it stays accurate, governed, and implementation-ready.
+
+## What’s a solutions design document
+
+A [Solution Design Document (SDD)](https://experienceleague.adobe.com/en/docs/analytics/implementation/prepare/solution-design), connects business requirements with technical tracking by defining what to measure, how to capture it, and how the data should appear in reporting.
+
+An effective SDD includes:
+
+- **Business requirements**: translating questions and goals into measurable KPIs
+- **Metrics and events**: specifying the interactions to track
+- **Dimensions and variables**: designing the data layer and mapping to Adobe variables (eVars and props) and rules for population
+- **Governance and ownership**: ensuring clear responsibility for accuracy and maintenance
+
+Without a well-structured SDD, implementations become inconsistent with duplicate data and misaligned with business objectives.
+
+## Why use Avo as your SDD
+
+Most SDDs live in static spreadsheets or documents that quickly become outdated. Using Avo transforms this into a collaborative, governed, single source of truth that is directly tied to implementation.
+
+| Requirements | Avo SDD | Static SDD |
+| ----- | ----- | ----- |
+| **Single source of truth** | Centralized system for Adobe variable mappings and data structure design. Everyone works from one plan. | Scattered spreadsheets and files lead to inconsistency and confusion. |
+| **Business-to-technical bridge** | Maps product flows and KPIs to Adobe Analytics metrics and dimensions, keeping purpose-first design in context. | Serves only as documentation; often drifts from reality. |
+| **Governance and ownership** | Roles, permissions, and stakeholder teams enforce ownership for workflows and individual metrics/dimensions. | Ownership of the document only; variables are unmanaged. |
+| **Change management** | Source-controlled schema with parallel updates, diffs, audits, and migration support. | Separate copies make changes hard to track; outdated versions cause errors. |
+| **Quality enforcement** | Real-time validation and production alerts prevent typos, duplicates, and broken data. | Errors discovered after implementation lead to long periods of bad data. |
+| **Implementation efficiency** | Detailed implementation instructions with code snippets and automatic implementation status. | Developers rely on unclear docs and manual status tracking. |
+| **Scalability across teams** | Metric reuse across products and dimensions reuse across events support multi-brand/app setups. | Duplication and inconsistency across brands or platforms. |
+
+The key “aha” for Adobe Analytics users: Avo defines your data layer once and maps it forward, ensuring consistency from business requirements through to Adobe reporting.
+
+## Business requirements = journeys and metrics in Avo
+
+Start with why. Define research questions, goals, and KPIs before creating data structures. Many teams begin by visualizing the user journey for a product update and identifying which actions matter most. Avo provides functionality to design and test journeys (available in alpha for early adopters).
+
+Once the journey is clear, define the KPIs you expect the update to influence. In Adobe Analytics, metrics are usually single events that increase when triggered. In Avo, metrics describe how one or more events combine to measure success and how dimensions refine that measurement.
+
+Avo currently supports four [metric types](/data-design/avo-tracking-plan/metrics):
+
+- **Funnel**: A series of events describing funnel steps, with optional property filters
+- **Segmentation**: Analysis of single or multiple events, grouped or filtered by properties
+- **Retention**: A “born” event followed by a “return” event, measuring how many users return after a first action
+- **Proportion**: Comparison of two events, such as Event A divided by Event B
+
+Metrics appear in the Metrics tab, as well as within event and variant details. This makes it clear why each event exists: it directly supports a goal.
+
+## Metric building blocks in Adobe Analytics = Events in Avo
+
+Most Adobe Analytics implementations rely on a data layer. Page and Custom Link events typically pull values from this layer to populate their variables. These are the building blocks of metrics that are analyzed in the Adobe analytics interface.
+
+In Avo, both the data layer push and the Adobe Analytics event are defined as events. This allows you to document not only what is being tracked, but also how it is triggered. Events in Avo can contain multiple actions, so a single user, system, or navigation interaction can push values into the data layer and fire an Adobe Analytics event at the same time.
+
+| Adobe Analytics term | AppMeasurement code call | Web SDK (alloy) code call | Avo term | Avo Action | Purpose |
+| ----- | ----- | ----- | ----- | ----- | ----- |
+| **Data Layer Push** | `adobeDatalayer`<br/>`.push()` | `adobeDatalayer`<br/>`.push()` or `sendEvent` | Event | Push to Data Layer | Populates the data layer with variables. |
+| **Page Event** | `s.t()` | `sendEvent` with `{"eventType": "web.webpagedetails`<br/>`.pageViews"}` | Event | Log Page View | Tracks page loads, increments page view counts, and populates page-related dimensions. |
+| **Custom Link** | `s.tl()` | `sendEvent` with `{"eventType": "commerce.action"}` | Event | Log Event | Tracks events that appear as metrics in Adobe reports, such as purchases, sign-ups, or downloads. |
+
+*or a more specific action string your team standardizes for your Adobe Analytics implementation
+
+### Setting up Adobe Analytics tracking calls as events in Avo
+
+To create a new event in Avo for your Adobe Analytics tracking call:
+
+1. Create a new branch in Avo
+2. Go to the Events view and click “+ New Event”
+3. Add a clear name and description for the event
+4. Select the sources where the event should be sent (for example Web, iOS, Android, or backend)
+5. Configure the actions:
+   - Keep **Log Event** for conversion events
+   - Add **Push to Data Layer** if values should be made available downstream
+   - Add **Log Page View** for page load tracking
+   - Remove the Log Event action if the event should not trigger it
+6. Fill in other [event details](/data-design/avo-tracking-plan/events#defining-events) and [assign ownership](/workspace-management/domains#setting-item-ownership) to [organize your tracking plan](/data-design/guides/organizing-metrics-and-events) and ensure accountability.
+
+## Variables = Properties in Avo
+
+In Avo, properties are defined once as attributes of events, independent of any specific tool. Adobe Analytics separates these into data layer variables (raw values made available by the product or application) and analytics variables (dimensions in reports such as props, eVars, merchandising eVars, and list variables). In Avo, all of these begin as event properties and are mapped to the correct Adobe variable type at implementation time, depending on the tracking call.
+
+| Adobe Analytics term | AppMeasurement tracking call | Web SDK (alloy) Tracking call | Avo term | Description |
+| ----- | ----- | ----- | ----- | ----- |
+| **Data layer variables** | `adobeDatalayer`<br/>`.push()` | `adobeDatalayer`<br/>`.push()` or `sendEvent` with `{ "data": dataObject }` | Event property | Raw values made available by the product or application, often via a web or app data layer. In Avo these are defined as properties at design time, ensuring consistent naming and definitions across teams. |
+| **Traffic variables (props)** | `s.t()` or `s.tl()` | `sendEvent` with `{ "data": dataObject }` | Event property | Hit-based dimensions tied only to the event where they are set. Typically used on page events. |
+| **Conversion variables (eVars)** | `s.t()` or `s.tl()` | `sendEvent` with `{ "data": dataObject }` | Event property | Persistent dimensions that carry forward and tie to later conversion events. |
+| **Merchandising eVars** | `s.t()` or `s.tl()` | `sendEvent` with `{ "data": dataObject }` | Event property | Specialized eVars for product attribution, used to tie product metadata to commerce events. |
+| **List variables (listVars)** | `s.t()` or `s.tl()` | `sendEvent` with `{ "data": dataObject }` | Event property | Variables that allow multiple values to be stored in a single hit. |
+
+### Setting Adobe Analytics variables up as properties in Avo
+
+To create and/or add properties to events in Avo for Adobe Analytics:
+
+1. Create a new branch in Avo
+2. Open the event where you want to add a property
+3. Click Add Event Property on the action where you want to add the property
+   - For data layer variables, add to the “Push to Data Layer” action
+   - For page variables (props), add to the “Log Page View” action
+   - For conversion variables (eVars), add to the “Log Event” action
+4. Search for an existing property to reuse or click “+ New Property” to create a new one
+5. Name the property with a clear, human-readable name and give it a description. Use “Campaign ID” rather than “eVar10” so the plan is understandable by both technical and non-technical users
+6. Configure variable mappings
+   - If you manage mappings directly in Avo, use [name mapping](/data-design/guides/name-mapping) to assign the property to the correct eVar or prop while keeping the semantic name in your tracking plan
+   - If mappings are handled in Adobe Launch, Tealium, or another tool, skip mapping in Avo but document the assigned eVar or prop number in the property description for clarity
+7. Set [property value type](/data-design/avo-tracking-plan/properties#property-types-and-constraints), [property constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) and [presence rules](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional)
+8. Fill in other [property details](/data-design/avo-tracking-plan/properties#property-definition)
+
+#### Mapping to eVars and props in Avo
+
+If you implement eVars and props directly using [variable overrides](https://experienceleague.adobe.com/en/docs/analytics/implementation/js/overrides) and do not map them elsewhere, you can manage the mapping in Avo with [name mapping](/data-design/guides/name-mapping). You define how the property should be implemented in the s.t() or s.tl() call while keeping its human-readable name in the tracking plan.
+
+Using Avo for mapping has three main advantages:
+
+- **Single source of truth mapping**: Define the name mapping once, and it applies to every event where that property is used
+- **Mappings overview**: The Properties view shows semantic property names alongside their mapped eVars and props
+- **Search by mapped names**: Find properties by their semantic name or mapped Adobe references (eVar/prop)
+
+#### Best practices for setting up properties in Avo
+
+- Use human-readable names so properties are understandable to both developers and Adobe Analytics users
+- Reuse existing properties rather than creating duplicates
+- Apply constraints and presence rules to enforce correct usage
+- Assign ownership and stakeholders for accountability
+- Organize with categories and filters to keep large tracking plans discoverable
+
+## Implementation in Avo: validation and automatic implementation status
+
+There are [two ways to implement events in Avo](/workflow/implement): by using your existing methods or by using [Avo Codegen](/implementation/avo-codegen-overview).
+
+Regardless of approach, developers get:
+
+- A [code changes view](/data-design/branches/code-changes) listing all events affected by tracking plan updates, with platform-specific snippets
+- Automatic [implementation status](/data-design/avo-tracking-plan/implementation-status) showing which events have been implemented and whether they match the design
+- [Validation tools](/workflow/validate) that help developers and QA confirm implementation is according to design
+
+### Avo Codegen
+
+**Codegen** produces type-safe code for implementing analytics. The data designer defines the event structure in the Avo Tracking Plan and specifies which platforms should send the event. Developers then implement the corresponding analytics calls using Codegen.
+
+## Governance and ownership in Avo = branched workflows and required reviews
+
+Avo helps teams ship reliable analytics at scale by structuring how changes are proposed, reviewed, owned, and discovered. Branched and approval workflows control updates, stakeholder teams define ownership and accountability, organization tools keep large plans tidy, and dedicated views and search make everything easy to find.
+
+### **Branched and Approval Workflows**
+
+As your tracking evolves, the [Avo workflow](https://www.avo.app/docs/workflow/overview) supports iteration through a [branched](https://www.avo.app/docs/data-design/branches), collaborative process. Multiple product updates can be designed and reviewed in parallel without creating conflicts.
+
+To maintain quality, Avo also includes **[approval workflows](https://www.avo.app/docs/data-design/branches/approval-workflows)**. These require the right stakeholders to review and sign off before changes can be merged into the main tracking plan. This prevents unintended updates, enforces consistency, and creates a transparent audit trail of who approved what and when. For Adobe Analytics teams, this ensures that every new event, property, or variable mapping is properly vetted before going live.
+
+### Enforced ownership
+
+In line with Adobe Analytics SDD best practices, Avo enables **clear ownership** of both the SDD and individual items. Admins own the SDD and its workflows. Ownership and stakeholders for events and properties are managed via [stakeholder teams](https://www.avo.app/docs/data-design/avo-tracking-plan/stakeholder-domains).
+
+When combined with approval workflows, ownership becomes enforceable. Teams responsible for specific metrics or dimensions can be configured as [automatic required reviewers](https://www.avo.app/docs/data-design/guides/managing-changes-impacting-multiple-stakeholders#automatic-reviewer-assignment), guaranteeing that nothing changes in the tracking plan without their input. Notifications keep stakeholders informed whenever their items are impacted, ensuring transparency and accountability.
+
+### **Organizing your tracking plan**
+
+KPIs (metrics in Avo), metrics (events in Avo) and dimensions (properties in Avo) can be [organized with categories, tags, stakeholder teams and more](https://www.avo.app/docs/data-design/guides/organizing-metrics-and-events). This structure makes large tracking plans easier to manage, prevents duplication, and allows stakeholders to focus only on the areas relevant to them.
+
+### **Discoverability**
+
+**Events view**  
+The events view provides a complete overview of all events in your tracking plan. You can see which actions are assigned to each event and filter the list by any dimension. For example, you might choose to view only the conversion events that the authentication team is responsible for.
+
+**Properties view**  
+The properties view gives you insight into all event properties, including their mappings to eVars and props. You can filter by category, owner, or other attributes, and organize properties to make them easier to manage at scale.
+
+**Search**  
+Avo’s search makes finding items simple. You can search by semantic property names, similar names, or mapped Adobe Analytics references such as eVar20. This allows both analysts and developers to quickly locate the right variables, regardless of whether they think in terms of business context or Adobe variable names.
+
+Together, these views make large and complex tracking plans easy to navigate, audit, and maintain.
+
+## Next up
+
+- [Get your tracking plan into Avo](/publishing/import/get-tracking-plan-into-avo)
+- [The Avo workflow](/workflow/overview)
+- [Observability with Inspector](/inspector/start-using-inspector)
+
+
