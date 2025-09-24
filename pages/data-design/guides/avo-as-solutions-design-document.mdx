@@ -107,6 +107,16 @@ To create and/or add properties to events in Avo for Adobe Analytics:
 7. Set [property value type](/data-design/avo-tracking-plan/properties#property-types-and-constraints), [property constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) and [presence rules](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional)
 8. Fill in other [property details](/data-design/avo-tracking-plan/properties#property-definition)
 
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/guide-avo-as-an-sdd/add-property.mp4'}
+  alt="Adding property to an event"
+/>
+
 #### Mapping to eVars and props in Avo
 
 If you implement eVars and props directly using [variable overrides](https://experienceleague.adobe.com/en/docs/analytics/implementation/js/overrides) and do not map them elsewhere, you can manage the mapping in Avo with [name mapping](/data-design/guides/name-mapping). You define how the property should be implemented in the s.t() or s.tl() call while keeping its human-readable name in the tracking plan.
@@ -131,19 +141,34 @@ There are [two ways to implement events in Avo](/workflow/implement): by using y
 
 Regardless of approach, developers get:
 
-- A [code changes view](/data-design/branches/code-changes) listing all events affected by tracking plan updates, with platform-specific snippets
-- Automatic [implementation status](/data-design/avo-tracking-plan/implementation-status) showing which events have been implemented and whether they match the design
-- [Validation tools](/workflow/validate) that help developers and QA confirm implementation is according to design
+- A [code changes view](/data-design/branches/code-changes) listing all Avo events affected by tracking plan updates, organized by source. For each Avo event, it provides a code snippet that clearly highlights the required changes.
+- Automatic [implementation status](/data-design/avo-tracking-plan/implementation-status) showing which Avo events have been implemented and whether they were implemented according to design
+- [Validation tools](/workflow/validate) that help both developers to validate their own implementation and QA teams or analysts to confirm that the implementation is according to design
+
+### Existing implementation methods
+Avo generates pseudocode snippets for events that are not implemented with Avo Codegen. These snippets show an example of how the event should be written in code.
+
+For events where eVars and props are mapped directly in Avo, the snippet demonstrates the implementation with those mappings applied:
+
+![Example of a pseudocode snippet for an event with eVars and props mapped directly in Avo](/images/guide-avo-as-an-sdd/pseudo-snippet-evars.png)
+
+For events where eVars and props are mapped outside of Avo, the snippet shows the structure without those mappings:
+
+![Example of a pseudocode snippet for an event with eVars and props mapped outside of Avo](/images/guide-avo-as-an-sdd/pseudo-snippet-human.png)
 
 ### Avo Codegen
 
-**Codegen** produces type-safe code for implementing analytics. The data designer defines the event structure in the Avo Tracking Plan and specifies which platforms should send the event. Developers then implement the corresponding analytics calls using Codegen.
+Codegen produces type-safe code for implementing analytics. The data designer defines the event structure in the Avo Tracking Plan and specifies which platforms should send the event. Developers then use Codegen to implement the corresponding analytics calls for each event.
+
+Avo Codegen generates the same code regardless of whether variable mapping is handled in Avo or in an external tool. For example, the output in TypeScript looks like this:
+
+![Example of Avo Codegen output in TypeScript](/images/guide-avo-as-an-sdd/codegen-snippet.png)
 
 ## Governance and ownership in Avo = branched workflows and required reviews
 
 Avo helps teams ship reliable analytics at scale by structuring how changes are proposed, reviewed, owned, and discovered. Branched and approval workflows control updates, stakeholder teams define ownership and accountability, organization tools keep large plans tidy, and dedicated views and search make everything easy to find.
 
-### **Branched and Approval Workflows**
+### Branched and approval workflows
 
 As your tracking evolves, the [Avo workflow](https://www.avo.app/docs/workflow/overview) supports iteration through a [branched](https://www.avo.app/docs/data-design/branches), collaborative process. Multiple product updates can be designed and reviewed in parallel without creating conflicts.
 
@@ -155,20 +180,34 @@ In line with Adobe Analytics SDD best practices, Avo enables **clear ownership**
 
 When combined with approval workflows, ownership becomes enforceable. Teams responsible for specific metrics or dimensions can be configured as [automatic required reviewers](https://www.avo.app/docs/data-design/guides/managing-changes-impacting-multiple-stakeholders#automatic-reviewer-assignment), guaranteeing that nothing changes in the tracking plan without their input. Notifications keep stakeholders informed whenever their items are impacted, ensuring transparency and accountability.
 
-### **Organizing your tracking plan**
+### Organizing your tracking plan
 
 KPIs (metrics in Avo), metrics (events in Avo) and dimensions (properties in Avo) can be [organized with categories, tags, stakeholder teams and more](https://www.avo.app/docs/data-design/guides/organizing-metrics-and-events). This structure makes large tracking plans easier to manage, prevents duplication, and allows stakeholders to focus only on the areas relevant to them.
 
-### **Discoverability**
+### Discoverability
 
 **Events view**  
 The events view provides a complete overview of all events in your tracking plan. You can see which actions are assigned to each event and filter the list by any dimension. For example, you might choose to view only the conversion events that the authentication team is responsible for.
 
+![Events view](/images/guide-avo-as-an-sdd/events-view.png)
+
 **Properties view**  
 The properties view gives you insight into all event properties, including their mappings to eVars and props. You can filter by category, owner, or other attributes, and organize properties to make them easier to manage at scale.
 
+![Properties view](/images/guide-avo-as-an-sdd/property-name-mapping-overview.png)
+
 **Search**  
 Avo’s search makes finding items simple. You can search by semantic property names, similar names, or mapped Adobe Analytics references such as eVar20. This allows both analysts and developers to quickly locate the right variables, regardless of whether they think in terms of business context or Adobe variable names.
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/guide-avo-as-an-sdd/search.mp4'}
+  alt="Searching for mapped properties in Avo"
+/>
 
 Together, these views make large and complex tracking plans easy to navigate, audit, and maintain.
 
