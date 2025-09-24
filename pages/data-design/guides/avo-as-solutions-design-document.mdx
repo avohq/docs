@@ -2,11 +2,11 @@ import { Callout } from 'nextra/components';
 
 # Avo as a Solutions Design Document (SDD)
 
-This guide shows how to express an Adobe Analytics Solution Design Document (SDD) in Avo so it stays accurate, governed, and implementation-ready.
+This guide shows how to express an Adobe Analytics [Solution Design Document (SDD)](https://experienceleague.adobe.com/en/docs/analytics/implementation/prepare/solution-design), also known as [Solution Design Reference (SDR)](https://experienceleague.adobe.com/en/docs/analytics/implementation/prepare/solution-design), in Avo so it stays accurate, governed, and implementation-ready.
 
 ## What’s a solutions design document
 
-A [Solution Design Document](https://experienceleague.adobe.com/en/docs/analytics/implementation/prepare/solution-design) (SDD), also known as Solution Design Requirements (SDR), connects business requirements with technical tracking by defining what to measure, how to capture it, and how the data should appear in reporting.
+A [Solution Design Document (SDD)](https://experienceleague.adobe.com/en/docs/analytics/implementation/prepare/solution-design), connects business requirements with technical tracking by defining what to measure, how to capture it, and how the data should appear in reporting.
 
 An effective SDD includes:
 
@@ -75,12 +75,7 @@ To create a new event in Avo for your Adobe Analytics tracking call:
    - Add **Push to Data Layer** if values should be made available downstream
    - Add **Log Page View** for page load tracking
    - Remove the Log Event action if the event should not trigger it
-6. Fill in other [event details](/data-design/avo-tracking-plan/events#defining-events)
-
-### Best practices for setting up events in Avo
-
-- Fill in all event details so definitions are clear for both developers and Adobe Analytics users
-- [Organize your tracking plan](/data-design/guides/organizing-metrics-and-events) and [assign ownership](/workspace-management/domains#setting-item-ownership) so navigation and accountability are clear
+6. Fill in other [event details](/data-design/avo-tracking-plan/events#defining-events) and [assign ownership](/workspace-management/domains#setting-item-ownership) to [organize your tracking plan](/data-design/guides/organizing-metrics-and-events) and ensure accountability.
 
 ## Variables = Properties in Avo
 
@@ -146,6 +141,8 @@ Regardless of approach, developers get:
 
 ## Governance and ownership in Avo = branched workflows and required reviews
 
+Avo helps teams ship reliable analytics at scale by structuring how changes are proposed, reviewed, owned, and discovered. Branched and approval workflows control updates, stakeholder teams define ownership and accountability, organization tools keep large plans tidy, and dedicated views and search make everything easy to find.
+
 ### **Branched and Approval Workflows**
 
 As your tracking evolves, the [Avo workflow](https://www.avo.app/docs/workflow/overview) supports iteration through a [branched](https://www.avo.app/docs/data-design/branches), collaborative process. Multiple product updates can be designed and reviewed in parallel without creating conflicts.
@@ -154,7 +151,7 @@ To maintain quality, Avo also includes **[approval workflows](https://www.avo.ap
 
 ### Enforced ownership
 
-In line with Adobe Analytics SDD best practices, Avo enables you to assign **clear ownership** of workflows and tracking standards. Ownership and stakeholders can be set directly on each event or property through  [stakeholder teams](https://www.avo.app/docs/data-design/avo-tracking-plan/stakeholder-domains).
+In line with Adobe Analytics SDD best practices, Avo enables **clear ownership** of both the SDD and individual items. Admins own the SDD and its workflows. Ownership and stakeholders for events and properties are managed via [stakeholder teams](https://www.avo.app/docs/data-design/avo-tracking-plan/stakeholder-domains).
 
 When combined with approval workflows, ownership becomes enforceable. Teams responsible for specific metrics or dimensions can be configured as [automatic required reviewers](https://www.avo.app/docs/data-design/guides/managing-changes-impacting-multiple-stakeholders#automatic-reviewer-assignment), guaranteeing that nothing changes in the tracking plan without their input. Notifications keep stakeholders informed whenever their items are impacted, ensuring transparency and accountability.
 
