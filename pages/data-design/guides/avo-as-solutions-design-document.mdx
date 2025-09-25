@@ -56,9 +56,9 @@ In Avo, both the data layer push and the Adobe Analytics event are defined as ev
 
 | Adobe Analytics term | AppMeasurement code call | Web SDK (alloy) code call | Avo term | Avo Action | Purpose |
 | ----- | ----- | ----- | ----- | ----- | ----- |
-| **Data Layer Push** | `adobeDatalayer`<br/>`.push()` | `adobeDatalayer`<br/>`.push()` or `sendEvent` | Event | Push to Data Layer | Populates the data layer with variables. |
-| **Page Event** | `s.t()` | `sendEvent` with `{"eventType": "web.webpagedetails`<br/>`.pageViews"}` | Event | Log Page View | Tracks page loads, increments page view counts, and populates page-related dimensions. |
-| **Custom Link** | `s.tl()` | `sendEvent` with `{"eventType": "commerce.action"}` | Event | Log Event | Tracks events that appear as metrics in Adobe reports, such as purchases, sign-ups, or downloads. |
+| **Data Layer Push** | `adobeDatalayer`<br/>`.push()` | `adobeDatalayer`<br/>`.push()` or `sendEvent` | Event | [Push to Data Layer](/data-design/avo-tracking-plan/events#push-to-data-layer-coming-soon) | Populates the data layer with variables. |
+| **Page Event** | `s.t()` | `sendEvent` with `{"eventType": "web.webpagedetails`<br/>`.pageViews"}` | Event | [Log Page View](/data-design/avo-tracking-plan/events#log-page-view) | Tracks page loads, increments page view counts, and populates page-related dimensions. |
+| **Custom Link** | `s.tl()` | `sendEvent` with `{"eventType": "commerce.action"}` | Event | [Log Event](/data-design/avo-tracking-plan/events#log-event) | Tracks events that appear as metrics in Adobe reports, such as purchases, sign-ups, or downloads. |
 
 *or a more specific action string your team standardizes for your Adobe Analytics implementation
 

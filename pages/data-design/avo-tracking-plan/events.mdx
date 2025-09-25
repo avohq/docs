@@ -183,6 +183,7 @@ Below is a list of possible actions, followed by a more detailed overview of eac
 7. [Update Groups](#update-groups): associates users with
    groups and/or updates group properties. Adding users to groups will link them
    in all subsequent calls.
+8. [Push to Data Layer](#push-to-data-layer) *(coming soon)*: pushes data to the data layer when this event is sent.
 
 #### Log Event
 
@@ -350,3 +351,10 @@ property](https://segment.com/docs/spec/page/) with the prefix "Segment: ".
 - Segment: Page Name
 
 Calls either page or screen (depending on your apps platform) with the Page Name property and then call track. If you want to only log a page view, not an event, you can remove the Log Event action from the event.
+
+#### Push to Data Layer (coming soon)
+
+Add the Push to Data Layer action to push data to the data layer when this event is sent.
+
+While it's not yet supported, you can use the "Update User Properties" action to signify that the event is pushing data to the data layer.
+
