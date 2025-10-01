@@ -1,0 +1,125 @@
+import { Callout } from 'nextra/components'
+
+# Journeys (alpha)
+
+Use Journeys to visually design analytics for a product update by composing a flow from product images or screenshots that represent each step of your experience. Add triggers for each step and connect them to events and variants in your tracking plan. If you opt in to Avo Intelligence for Journeys, AI can generate triggers from images and suggest matching existing events/variants to speed up data design.
+
+<Callout type="info" emoji="🚀">
+  Journeys is in alpha. Interested in early access? Reach out at support@avo.app or via the chat bubble in the app.
+</Callout>
+
+## Journey building blocks
+
+Journeys are composed of the following building blocks:
+
+- Journey name: A short name for the journey, generally something human readable and descriptive for the journey, like "Checkout flow"
+- Journey description: More detailed description of the journey and its purpose, with optional links to designs, product requirements or other relevant resources.
+- Journey step: a single step in a journey that is either visualized with an image or described in text (for server-side tracking, for example).
+- Event trigger: represents the navigation, system, or user action on a journey step that triggers the event to be sent.
+- Connections: a connection between a journey step and an event trigger
+
+### Journey name and description
+
+The journey name is used to identify the journey in the Journeys view and in the journey details page. The journey description is used to provide additional context about the journey and link to relevant resources. You can edit the journey name and description in the journey details page.
+
+### Journey step
+
+A journey step is a single step in a user journey that is either visualized with an image or described in text (for server-side tracking, for example).
+
+A journey step is composed of:
+- Journey step name: A name for the journey step, generally something human readable and descriptive for the image, like "Product Details"
+- Journey step description: An optional description for the journey step, with context about the image and possibly links to designs or the page it represents
+- An optional image: A screenshot from the product or exported designs of the screen or component that the journey step represents
+
+To add a journey step, you can:
+- click the "Add Journey Step" button in the journey builder 
+- drag and drop one or more images into the journey builder
+
+To add an image to a journey step, you can drag and drop an image into the journey step or click the placeholder image in the journey step and select an image from your computer.
+
+### Event trigger
+
+An event trigger represents the navigation, system, or user action on a journey step that triggers the event to be sent. Triggers are connected to events and/or variants in your tracking plan. One step can have one or more triggers.
+
+An event trigger in a journey shows:
+- Event trigger name: Generally something human readable and descriptive for the related action, referring to the image from the journey step, like "Clicked Add to Cart"
+- Event trigger description: A description of the action, referring to the image from the journey step, like "User clicked the add to cart button on the product details page to add a product to their cart"
+- Event/variant: The event or variant that is triggered by the action described by the trigger
+- Property condition: an optional condition for each event or variant connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
+
+An event trigger can also be connected to a source to specify which sources the trigger applies to. See more in [event triggers and use cases](/data-design/guides/event-triggers).
+
+To add an event trigger to a journey, you can:
+- Click the "Add Trigger" button in the journey builder
+- For the first trigger on each journey step, a placeholder trigger is shown, where you can choose to generate a trigger with AI or add one manually when the step is selected
+- For the first and subsequent triggers on a journey step, you can use the AI menu above the step to generate triggers with an optional custom prompt
+
+### Connections
+
+Connections link a journey step to an event trigger. Add connections by clicking the node on either side of the journey step and dragging it to a node on either side of the trigger.
+
+When a journey step and a trigger are connected, the trigger is associated with the event or variant linked to the journey step. The trigger will be attached to the event in the event details, including the image from the journey step and the trigger name, description, and property conditions from the trigger.
+
+The following connections are possible:
+- A connection from a journey step to a trigger means that the image from the journey step will be added to the trigger details
+- A connection from a trigger to a journey step is purely visual and does not connect the trigger to the event or variant connected to the journey step
+
+## Creating and editing journeys
+
+Journeys can be created and edited in the Journeys view, accessed by navigating to Journeys in the left sidebar.
+
+### Creating a journey
+
+To create a journey, click the "Create Journey" button in the Journeys view. This opens the journey builder—a canvas with controls at the top. Add nodes for journey steps and triggers, then connect them. Each node has a name and description field and has a context menu with AI options to help you build and add details to the journey.
+
+There are many possible ways to build journeys and there is no one-size-fits-all solution. But the following workflow is common and recommended:
+
+1. Add a name and description for the journey
+2. Add a journey steps to the canvas by dragging and dropping images into the canvas ( you can also click the "Add Journey Step" button in the journey builder controls).
+3. Order the images into the desired order visualizing the user journey.
+4. Fill in the details for each journey step, one-by-one:
+  - Add a name and description for the journey step
+  - If you are going to add an image and didn't drag-and-drop directly into the canvas, add one by clicking the placeholder image in the journey step or drag-and-drop an image from your computer
+  - Use the placeholder trigger to either generate a trigger with AI or manually
+5. Fill in the details for each trigger, one-by-one:
+  - Add a name and description for the trigger
+  - Connect the trigger to the event or variant connected to the journey step, either using the AI menu or manually using "Connect event/variant" button on the trigger
+  - Add a property condition for each event or variant connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
+
+All edits are saved automatically as you make them. Once you are done, we recommend getting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders). The Journeys view is also a great place to review and use as a guideline for implementation.
+
+### Editing a journey
+
+To edit a journey, you can select a journey in the journeys overview and that opens the journey builder with that journey.
+
+There you can edit all the details of the journey, including the name and description, the journey steps and triggers, and the connections between them.
+
+All edits are saved automatically as you make them. Once you are done, we recommend getting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders). There is a "View changes" button in the journey builder that opens a tracking plan changes slide-over that shows the changes you made to the journey. The journey visualizes the current state of the journey after the changes made.
+
+### Deleting a journey
+
+To delete a journey, you can click the triple-dot for the journey in the journeys overview and click the "Delete" button.
+
+### Reviewing a journey
+
+When reviewing tracking plan changes made in a new or updated journey, we recommend using the journey builder as a visual guide. The journey builder shows the current state of the journey after the changes and includes a "View changes" button that opens a slide-over with the changes you made. That way, you can both review the journey in its current state and walk through the changes step by step.
+
+### Using journeys as guidelines for implementation
+
+When implementing tracking plan changes made in a new or updated journey, use the journey builder as a visual guide. It shows the screens in the context of the events, variants, and property conditions. This makes it easy to understand the exact shape of the events that are applicable for each screen and each trigger on the screen.
+
+## Approaches to building journeys
+
+There are many possible ways to build journeys and there is no one-size-fits-all solution. Below are some common journey structures for inspiration.
+
+### Journey steps connected with triggers below each step
+
+In this approach, journey steps are connected with each other to visualize the user journey. Triggers are then connected below each step shown as metadata outside of the flow itself.
+
+### Triggers used between journey steps to define branched journeys
+
+In this approach, triggers are used between journey steps to define branched journeys. This is useful when there are multiple paths a user can take in the journey and you want to visualize and communicate all scenarios. Here, only the connections that go from a journey step to a trigger indicate that the image applies to the trigger. Connections that go from a trigger to a journey step are purely visual and do not connect the trigger to the event or variant associated with the journey step.
+
+### Triggers connected internally between journey steps
+
+In this approach, triggers are connected internally between journey steps to define the order of actions that happen in a step. This is useful when there are multiple actions within a step and you want to visualize and communicate their sequence. For example, to communicate that a user lands on the page, then selects from options before confirming the selection.
