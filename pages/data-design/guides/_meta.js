@@ -1,4 +1,5 @@
 export default {
+  "agentic-data-design": "Agentic data design",
   "archive-and-restore": "Archive and Restore",
   "avo-as-solutions-design-document": "Avo as a Solutions Design Document (SDD)",
   "bulk-editing": "Bulk Editing and Use Cases",
