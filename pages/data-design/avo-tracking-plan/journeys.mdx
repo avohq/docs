@@ -9,15 +9,17 @@ The journey builder and AI functionality transform tracking plan creation from a
 This workflow results in faster turnaround times, better data quality and reduced governance overhead, while the AI-powered event discovery helps solve the chronic problem of duplicate events and improper event usage across large tracking plans with hundreds of existing events.
 
 <Callout type="info" emoji="🚀">
-  Journeys is in alpha. Interested in early access? Reach out at support@avo.app or via the chat bubble in the app.
+  Journeys is in beta. Interested in early access? Reach out at support@avo.app or via the chat bubble in the app.
 </Callout>
 
 ## Journeys overview
 
 An overview of all journeys in your workspace is accessible from the Journeys tab in the left sidebar. There you will find a list of all journeys available on the [branch](/data-design/guides/branching-and-merging) you are currently on.
 
+![Journeys overview](/images/journeys/journeys-overview.png)
+
 From there you can:
-- Create a new journey by clicking the "Create Journey" button in the Journeys view
+- Create a new journey by clicking the "+ new Journey" button in the Journeys view
 - Access an existing journey to edit, review, or use as a guideline for implementation by clicking the journey in the Journeys list
 - Archive a journey by clicking the triple-dot for the journey and clicking "Archive"
 - Copy the link to a journey by clicking the triple-dot for the journey and clicking "Copy link"
@@ -178,6 +180,16 @@ There are many possible ways to build journeys and there is no one-size-fits-all
     - Add a [name](/data-design/avo-tracking-plan/journeys#event-trigger-name) and [description](/data-design/avo-tracking-plan/journeys#event-trigger-description) for the trigger
     - [Connect](/data-design/avo-tracking-plan/journeys#connections) the trigger to the [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) connected to the journey step, either using the [AI menu](/data-design/avo-tracking-plan/agentic-data-design#connect-events-and-variants) or manually using "Connect event/variant" button on the trigger
     - Add a [property condition](/data-design/avo-tracking-plan/journeys#event-trigger-property-condition) for each event or variant connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/journeys/journey-creation.mp4'}
+  alt="Creating a journey"
+/>
 
 All edits are saved automatically as you make them. Once you are done, we recommend getting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders). The Journeys view is also a great place to review and use as a guideline for implementation.
 
