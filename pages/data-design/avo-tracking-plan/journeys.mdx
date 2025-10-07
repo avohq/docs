@@ -38,13 +38,19 @@ Journeys are composed of the following building blocks:
 
 The journey name is used to identify the journey in the Journeys view and in the journey details page. The journey name is usually a short, human‑readable description like "Checkout flow." You can edit the journey name in the journey details page.
 
+![Journey name](/images/journeys/journey-name.png)
+
 ### Journey description
 
 The journey description provides additional context about the journey and its purpose, with optional links to designs, product requirements, or other relevant resources. You can edit the journey name and description in the journey details page.
 
+![Journey description](/images/journeys/journey-description.png)
+
 ### Journey steps
 
 A journey step is a single step in a user journey that is either visualized with an image or described in text (for server-side tracking, for example).
+
+![Journey steps](/images/journeys/journey-steps.png)
 
 #### Journey step building blocks
 
@@ -67,6 +73,8 @@ For a full walkthrough of building journeys on the canvas, see [Creating a journ
 
 Journey triggers represent the navigation, system, or user action on a journey step that triggers the event to be sent. One journey step can be connected to one or more triggers and one trigger can have one or more journey steps connected to it. Triggers are connected to events and/or variants in your tracking plan. 
 
+![Journey triggers](/images/journeys/property-conditions.png)
+
 Journey triggers are the same as [event triggers](/data-design/guides/event-triggers) except they also connect to journeys, not only events and variants. Journey triggers can have more than one image attached to a single trigger, while event triggers attach to a single image. See more in [Triggers and use cases](/data-design/guides/event-triggers).
 
 #### Journey trigger building blocks
@@ -87,11 +95,15 @@ To add a journey trigger to a journey, you can:
 - For the first trigger on each journey step, a placeholder trigger is shown, where you can choose to generate a trigger with AI or add one manually when the step is selected
 - For the first and subsequent triggers on a journey step, you can use the AI menu above the step to generate triggers with an optional custom prompt. 
 
+![Journey triggers](/images/journeys/journey-triggers.png)
+
 For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey). Learn more about pricing for AI actions in [Agentic data design](/data-design/avo-tracking-plan/agentic-data-design).
 
 ### Journey trigger property conditions
 
 A journey trigger property condition is an optional condition for each [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario.
+
+![Journey trigger property conditions](/images/journeys/property-conditions.png)
 
 #### Property condition building blocks
 
@@ -148,6 +160,8 @@ For a full walkthrough of building journeys on the canvas, see [Creating a journ
 ### Connections
 
 Connections link a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [journey trigger](/data-design/avo-tracking-plan/journeys#journey-triggers). Add connections by clicking the node on either side of the journey step and dragging it to a node on either side of the trigger.
+
+![Connections](/images/journeys/journey-connections.png)
 
 When a journey step and a trigger are connected, the trigger is associated with the event or variant linked to the journey step. The trigger will be attached to the event in the event details, including the image from the journey step and the trigger name, description, and property conditions from the trigger.
 
