@@ -124,14 +124,14 @@ For each event or variant in a trigger, you can add properties to define the pro
 
 Available operators for string and boolean properties are:
 - **is**: The property value should be equal to the value(s) specified
-  - If *(not set)* is selected and the property is optional, then the property continues being optional. If it should have a value, then it's one of the specified ones.
-  - If *(not set)* is deselected, then the property is required and must have a value.
+  - If *(not set)* is selected and the property is [sometimes sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional), then the property continues being sometimes sent. If it should have a value, then it's one of the specified ones.
+  - If *(not set)* is deselected, then the property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) and must have a value.
 - **is not**: The property value should not be equal to the value(s) specified
-  - If *(not set)* is selected and the property is optional, then the property continues being optional. If it should have a value, then it's not one of the specified ones.
-  - If *(not set)* is deselected, then the property is required and must have a value.
+  - If *(not set)* is selected and the property is [sometimes sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional), then the property continues being sometimes sent. If it should have a value, then it's not one of the specified ones.
+  - If *(not set)* is deselected, then the property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) and must have a value.
 
 Available operators for all property types are:
-- **is set**: The property is required on the event or variant and must have a value. This is the only operator available for properties set as always sent for the event or variant.
+- **is set**: The property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) on the event or variant and must have a value. This is the only operator available for properties set as always sent for the event or variant.
 - **is not set**: The property is not allowed on the event or variant and should not have a value
 
 ##### Property condition values
@@ -167,9 +167,9 @@ When a journey step and a trigger are connected, the trigger is associated with 
 
 The following connections are possible:
 - A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) means that the image from the journey step will be added to the trigger details
-- A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) is purely visual and does not connect the trigger to the event or variant connected to the journey step
-- A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to another trigger means that the trigger will be attached to the journey step the first trigger in the connection chain is attached to
-- A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to another journey step is purely visual and does not connect the journey step to the event or variant connected to the journey step
+- A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) is purely visual and does not connect the trigger to the event or variant connected to the journey step. Helpful to describe what user action will lead to the next journey step.
+- A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to another trigger means that the first trigger will be attached to the connected journey step and the following triggers will have no image attached to them.
+- A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to another journey step is purely visual and does not connect the journey step to the event or variant connected to the journey step. Helpful to visualize how a user flows thought the journey and to get [relevant triggers](/data-design/avo-tracking-planguides/agentic-data-design#generate-journey-triggers) for each journey step based on the next step in the journey.
 
 Connections help the AI to generate relevant triggers for each journey step based on the subsequent journey step(s). See more about generating triggers with AI and cost in the [Agentic data design](/data-design/avo-tracking-plan/agentic-data-design) documentation.
 
