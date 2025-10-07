@@ -83,10 +83,10 @@ A journey trigger is composed of the following:
 - Journey trigger name: Generally something human readable and descriptive for the related action, referring to the image from the journey step, like "Clicked Add to Cart"
 - Journey trigger description: A description of the action, referring to the image from the journey step, like "User clicked the add to cart button on the product details page to add a product to their cart"
 - Journey trigger image: An optional image from the [connected](/data-design/avo-tracking-plan/journeys#connections) [journey step(s)](/data-design/avo-tracking-plan/journeys#journey-step) that represent the action, like a screenshot of the screen where the button was clicked
-- Event/variant: The [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) that is triggered by the action described by the trigger
-- [Property condition](/data-design/avo-tracking-plan/journeys#event-trigger-property-condition): an optional condition for each event or variant connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
+- Event: The [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) that is triggered by the action described by the trigger
+- [Property condition](/data-design/avo-tracking-plan/journeys#event-trigger-property-condition): an optional condition for each event connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
 
-The journey trigger is automatically added to the event or variant details, with the image from the journey step.
+The journey trigger is automatically added to the event details, with the image from the journey step.
 
 #### Adding journey triggers
 
@@ -116,8 +116,8 @@ A property condition is composed of the following details:
 ##### Properties in property conditions
 
 For each event or variant in a trigger, you can add properties to define the property condition. When you click "Add property condition" in the journey trigger details you get a list of the following options:
-- **Existing properties on the event or variant**: That means you pick a property from the list of properties that have already been added to the event or variant to highlight and add a condition for it
-- **Existing properties not yet added to the event or variant**: That means you pick a property from the list of properties in the tracking plan that have not yet been added to the event or variant and add it to the event or variant
+- **Existing properties on the event**: That means you pick a property from the list of properties that have already been added to the event or variant to highlight and add a condition for it
+- **Existing properties not yet added to the event**: That means you pick a property from the list of properties in the tracking plan that have not yet been added to the event or variant and add it to the event or variant
 - **New properties**: That means you can create a new property to both the tracking plan and the event or variant
 
 ##### Property condition operators
@@ -131,8 +131,8 @@ Available operators for string and boolean properties are:
   - If *(not set)* is deselected, then the property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) and must have a value.
 
 Available operators for all property types are:
-- **is set**: The property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) on the event or variant and must have a value. This is the only operator available for properties set as always sent for the event or variant.
-- **is not set**: The property is not allowed on the event or variant and should not have a value
+- **is set**: The property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) on the event and must have a value.
+- **is not set**: The property is not allowed on the event and should not have a value. Only available for [sometimes sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) properties.
 
 ##### Property condition values
 
