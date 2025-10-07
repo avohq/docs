@@ -1,5 +1,6 @@
 export default {
   "index": "Overview",
+  "journeys": "Journeys",
   "events": "Events",
   "properties": "Properties",
   "metrics": "Metrics",
@@ -8,5 +9,5 @@ export default {
   "implementation-status": "Implementation status",
   "workbench": "Workbench",
   "event-variants": "Event variants",
-  "advanced-data-design-features": "Advanced data design features",
+  "advanced-data-design-features": "Advanced data design features"
 };

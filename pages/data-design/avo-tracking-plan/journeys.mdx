@@ -1,0 +1,247 @@
+import { Callout } from 'nextra/components'
+
+# Journeys (beta)
+
+Use Journeys to visually design analytics for a product update by composing a flow from product images or screenshots that represent each step of your experience. Add triggers for each step and connect them to events and variants in your tracking plan. If you opt in to [Avo Intelligence](/reference/avo-intelligence) for Journeys, AI can generate triggers from images and suggest matching existing events/variants to speed up data design.
+
+The journey builder and [AI functionality](/data-design/avo-tracking-plan/agentic-data-design) transform tracking plan creation from a bottle-necked, documentation-heavy process to a visual, self-service workflow that delivers significant time and quality improvements. By replacing scattered Google Docs and manual Figma annotations with a single visual source of truth, product teams can independently create tracking requirements while data teams shift focus to validation and quality monitoring. 
+
+This workflow results in faster turnaround times, better data quality and reduced governance overhead, while the AI-powered event discovery helps solve the chronic problem of duplicate events and improper event usage across large tracking plans with hundreds of existing events.
+
+<Callout type="info" emoji="🚀">
+  Journeys is in beta. Interested in early access? Reach out at support@avo.app or via the chat bubble in the app.
+</Callout>
+
+## Journeys overview
+
+An overview of all journeys in your workspace is accessible from the Journeys tab in the left sidebar. There you will find a list of all journeys available on the [branch](/data-design/guides/branching-and-merging) you are currently on.
+
+![Journeys overview](/images/journeys/journeys-overview.png)
+
+From there you can:
+- Create a new journey by clicking the "+ new Journey" button in the Journeys view
+- Access an existing journey to edit, review, or use as a guideline for implementation by clicking the journey in the Journeys list
+- Archive a journey by clicking the triple-dot for the journey and clicking "Archive"
+- Copy the link to a journey by clicking the triple-dot for the journey and clicking "Copy link"
+
+## Journey building blocks
+
+Journeys are composed of the following building blocks:
+
+- [Journey name](#journey-name): a short, human‑readable name used to identify the journey in the Journeys view and in the journey details page
+- [Journey description](#journey-description): a more detailed description of the journey and its purpose, with optional links to designs, product requirements or other relevant resources
+- [Journey steps](#journey-steps): a step in the user journey visualized with an image or described in text (useful for server‑side tracking)
+- [Journey triggers](#journey-triggers): the navigation, system, or user action that should trigger an event
+- [Connections](#connections): links between steps and triggers that drive how triggers attach to events
+
+### Journey name
+
+The journey name is used to identify the journey in the Journeys view and in the journey details page. The journey name is usually a short, human‑readable description like "Checkout flow." You can edit the journey name in the journey details page.
+
+![Journey name](/images/journeys/journey-name.png)
+
+### Journey description
+
+The journey description provides additional context about the journey and its purpose, with optional links to designs, product requirements, or other relevant resources. You can edit the journey name and description in the journey details page.
+
+![Journey description](/images/journeys/journey-description.png)
+
+### Journey steps
+
+A journey step is a single step in a user journey that is either visualized with an image or described in text (for server-side tracking, for example).
+
+![Journey steps](/images/journeys/journey-steps.png)
+
+#### Journey step building blocks
+
+A journey step is composed of the following details:
+- Journey step name: A name for the journey step, generally something human readable and descriptive for the image, like "Product Details"
+- Journey step description: An optional description for the journey step, with context about the image and possibly links to designs or the page it represents
+- An optional image: A screenshot from the product or exported designs of the screen or component that the journey step represents
+
+#### Adding journey steps
+
+To add a journey step, you can:
+- Click the "Add Journey Step" button in the journey builder 
+- Drag and drop one or more images into the journey builder
+
+To add an image to a journey step, you can drag and drop an image into the journey step or click the placeholder image in the journey step and select an image from your computer.
+
+For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey).
+
+### Journey triggers
+
+Journey triggers represent the navigation, system, or user action on a journey step that triggers the event to be sent. One journey step can be connected to one or more triggers and one trigger can have one or more journey steps connected to it. Triggers are connected to events in your tracking plan. 
+
+![Journey triggers](/images/journeys/property-conditions.png)
+
+Journey triggers are the same as [event triggers](/data-design/guides/event-triggers) except they also connect to journeys, not only events and variants. Journey triggers can have more than one image attached to a single trigger, while event triggers attach to a single image. See more in [Triggers and use cases](/data-design/guides/event-triggers).
+
+#### Journey trigger building blocks
+
+A journey trigger is composed of the following:
+- Journey trigger name: Generally something human readable and descriptive for the related action, referring to the image from the journey step, like "Clicked Add to Cart"
+- Journey trigger description: A description of the action, referring to the image from the journey step, like "User clicked the add to cart button on the product details page to add a product to their cart"
+- Journey trigger image: An optional image from the [connected](/data-design/avo-tracking-plan/journeys#connections) [journey step(s)](/data-design/avo-tracking-plan/journeys#journey-step) that represent the action, like a screenshot of the screen where the button was clicked
+- Event: The [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) that is triggered by the action described by the trigger
+- [Property condition](/data-design/avo-tracking-plan/journeys#event-trigger-property-condition): an optional condition for each event connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
+
+The journey trigger is automatically added to the event details, with the image from the journey step.
+
+#### Adding journey triggers
+
+To add a journey trigger to a journey, you can:
+- Click the "Add Trigger" button in the journey builder
+- For the first trigger on each journey step, a placeholder trigger is shown, where you can choose to generate a trigger with AI or add one manually when the step is selected
+- For the first and subsequent triggers on a journey step, you can use the AI menu above the step to generate triggers with an optional custom prompt. 
+
+![Journey triggers](/images/journeys/journey-triggers.png)
+
+For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey). Learn more about pricing for AI actions in [Agentic data design](/data-design/avo-tracking-plan/agentic-data-design).
+
+### Journey trigger property conditions
+
+A journey trigger property condition is an optional condition for each [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario.
+
+![Journey trigger property conditions](/images/journeys/property-conditions.png)
+
+#### Property condition building blocks
+
+A property condition is composed of the following details:
+- [Property](/data-design/avo-tracking-plan/journeys#properties-in-property-conditions): The property that the condition is for
+- [Operator](/data-design/avo-tracking-plan/journeys#property-conditions-operators): The operator defining the condition that the property should meet
+- [Value](/data-design/avo-tracking-plan/journeys#property-conditions-values): The value that the property should meet in this trigger for this journey step
+- [Property condition note](/data-design/avo-tracking-plan/journeys#property-conditions-notes): An optional note for the property condition, with context about the property and the condition
+
+##### Properties in property conditions
+
+For each event or variant in a trigger, you can add properties to define the property condition. When you click "Add property condition" in the journey trigger details you get a list of the following options:
+- **Existing properties on the event**: That means you pick a property from the list of properties that have already been added to the event or variant to highlight and add a condition for it
+- **Existing properties not yet added to the event**: That means you pick a property from the list of properties in the tracking plan that have not yet been added to the event or variant and add it to the event or variant
+- **New properties**: That means you can create a new property to both the tracking plan and the event or variant
+
+##### Property condition operators
+
+Available operators for string and boolean properties are:
+- **is**: The property value should be equal to the value(s) specified
+  - If *(not set)* is selected and the property is [sometimes sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional), then the property continues being sometimes sent. If it should have a value, then it's one of the specified ones.
+  - If *(not set)* is deselected, then the property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) and must have a value.
+- **is not**: The property value should not be equal to the value(s) specified
+  - If *(not set)* is selected and the property is [sometimes sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional), then the property continues being sometimes sent. If it should have a value, then it's not one of the specified ones.
+  - If *(not set)* is deselected, then the property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) and must have a value.
+
+Available operators for all property types are:
+- **is set**: The property is [always sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) on the event and must have a value.
+- **is not set**: The property is not allowed on the event and should not have a value. Only available for [sometimes sent](/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) properties.
+
+##### Property condition values
+
+You can specify a value for the property condition for string and boolean properties when using the "is" or "is not" operators. When there are allowed values defined for the property, you can pick one of the current allowed values or create a new allowed value. If a new value is created, it will be added to the property as an allowed value.
+
+When there are no allowed values defined for the string property, you can enter a custom value. If a new value is entered, it will only be used for the property condition and not added to the property as an allowed value.
+
+##### Property condition notes
+
+Click the three dots next to the property name to add an optional note for the property condition. You can for example add an example value, a pattern the value should match or document a variable the condition should reference.
+
+This is useful to provide additional context for tracking plan viewers and implementers about the property and the condition.
+
+#### Adding property conditions
+
+To add a property condition to a journey trigger:
+1. Click the "Add Property Condition" button in the journey trigger node in the journey builder or journey trigger details. 
+2. Select the [property](/data-design/avo-tracking-plan/journeys#details-about-properties) you want to add a condition for
+3. Select the [operator](/data-design/avo-tracking-plan/journeys#details-about-operators) you want to use for the condition
+4. If applicable, enter the value you want to use for the condition
+5. Add an optional note for the property condition
+
+For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey).
+
+### Connections
+
+Connections link a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [journey trigger](/data-design/avo-tracking-plan/journeys#journey-triggers). Add connections by clicking the node on either side of the journey step and dragging it to a node on either side of the trigger.
+
+![Connections](/images/journeys/journey-connections.png)
+
+When a journey step and a trigger are connected, the trigger is associated with the event or variant linked to the journey step. The trigger will be attached to the event in the event details, including the image from the journey step and the trigger name, description, and property conditions from the trigger.
+
+The following connections are possible:
+- A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) means that the image from the journey step will be added to the trigger details
+- A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) is purely visual and does not connect the trigger to the event or variant connected to the journey step. Helpful to describe what user action will lead to the next journey step.
+- A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to another trigger means that the first trigger will be attached to the connected journey step and the following triggers will have no image attached to them.
+- A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to another journey step is purely visual and does not connect the journey step to the event or variant connected to the journey step. Helpful to visualize how a user flows thought the journey and to get [relevant triggers](/data-design/avo-tracking-planguides/agentic-data-design#generate-journey-triggers) for each journey step based on the next step in the journey.
+
+Connections help the AI to generate relevant triggers for each journey step based on the subsequent journey step(s). See more about generating triggers with AI and cost in the [Agentic data design](/data-design/avo-tracking-plan/agentic-data-design) documentation.
+
+## Creating and editing journeys
+
+Journeys can be created and edited in the [Journeys view](https://www.avo.app/schemas/default/journeys), accessed by navigating to Journeys in the left sidebar.
+
+### Creating a journey
+
+To create a journey, click the "Create Journey" button in the Journeys view. This opens the journey builder—a canvas with controls at the top. Add nodes for journey steps and triggers, then connect them. Each node has a name and description field and has a context menu with AI options to help you build and add details to the journey.
+
+There are many possible ways to build journeys and there is no one-size-fits-all solution. But the following workflow is common and recommended:
+
+1. Add a [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description) for the journey
+1. Add [journey steps](/data-design/avo-tracking-plan/journeys#journey-step) to the canvas by dragging and dropping images into it ( you can also click the "Add Journey Step" button in the journey builder controls).
+1. Order the images into the desired order visualizing the user journey and [connect](/data-design/avo-tracking-plan/journeys#connections) them to each other for the AI to [generate relevant triggers](/data-design/avo-tracking-plan/agentic-data-design#generate-triggers) for each step
+1. Fill in the details for each [journey step](/data-design/avo-tracking-plan/journeys#journey-step), one-by-one:
+    - Add a [name](/data-design/avo-tracking-plan/journeys#journey-step-name) and [description](/data-design/avo-tracking-plan/journeys#journey-step-description) for the journey step
+    - If you are going to add an image and didn't drag-and-drop directly into the canvas, add one by clicking the placeholder image in the journey step or drag-and-drop an image from your computer
+    - Use the placeholder [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to either [generate a trigger with AI](/data-design/avo-tracking-plan/agentic-data-design#generate-triggers) or create one manually
+5. Fill in the details for each trigger, one-by-one:
+    - Add a [name](/data-design/avo-tracking-plan/journeys#event-trigger-name) and [description](/data-design/avo-tracking-plan/journeys#event-trigger-description) for the trigger
+    - [Connect](/data-design/avo-tracking-plan/journeys#connections) the trigger to the [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) connected to the journey step, either using the [AI menu](/data-design/avo-tracking-plan/agentic-data-design#connect-events-and-variants) or manually using "Connect event/variant" button on the trigger
+    - Add a [property condition](/data-design/avo-tracking-plan/journeys#event-trigger-property-condition) for each event or variant connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/journeys/journey-creation.mp4'}
+  alt="Creating a journey"
+/>
+
+All edits are saved automatically as you make them. Once you are done, we recommend getting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders). The Journeys view is also a great place to review and use as a guideline for implementation.
+
+### Editing a journey
+
+To edit a journey, you can select a journey in the [journeys overview](/data-design/avo-tracking-plan/journeys#journeys-overview) and that opens the journey builder with that journey.
+
+There you can edit all the details of the journey, including the [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description), the [journey steps](/data-design/avo-tracking-plan/journeys#journey-step) and [triggers](/data-design/avo-tracking-plan/journeys#event-triggers), and the [connections](/data-design/avo-tracking-plan/journeys#connections) between them.
+
+All edits are saved automatically as you make them. Once you are done, we recommend getting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders). There is a "View changes" button in the journey builder that opens a tracking plan changes slide-over that shows the changes you made to the journey. The journey visualizes the current state of the journey after the changes made.
+
+### Deleting a journey
+
+To delete a journey, you can click the triple-dot for the journey in the journeys overview and click the "Delete" button.
+
+### Reviewing a journey
+
+When reviewing tracking plan changes made in a new or updated journey, we recommend using the journey builder as a visual guide. The journey builder shows the current state of the journey after the changes and the [tracking plan changes screen](/data-design/branches/branch-changes) show the changes made to the journey. We recommend first reviewing the journey in the journey builder and then reviewing the changes in the tracking plan changes screen to have the whole context when reviewing the changes.
+
+### Using journeys as guidelines for implementation
+
+When implementing tracking plan changes made in a new or updated journey, use the journey builder as a visual guide. It shows the screens in the context of the events, variants, and property conditions. This makes it easy to understand the exact shape of the events that are applicable for each screen and each trigger on the screen.
+
+## Approaches to building journeys
+
+There are many possible ways to build journeys and there is no one-size-fits-all solution. Below are some common journey structures for inspiration.
+
+### Journey steps connected with triggers below each step
+
+In this approach, [journey steps](/data-design/avo-tracking-plan/journeys#journey-step) are connected with each other to visualize the user journey. [Triggers](/data-design/avo-tracking-plan/journeys#event-triggers) are then connected below each step shown as metadata outside of the flow itself.
+
+### Triggers used between journey steps to define branched journeys
+
+In this approach, [triggers](/data-design/avo-tracking-plan/journeys#event-triggers) are used between [journey steps](/data-design/avo-tracking-plan/journeys#journey-step) to define branched journeys. 
+This is useful when there are multiple paths a user can take in the journey and you want to visualize and communicate all scenarios. 
+Here, only the [connections](/data-design/avo-tracking-plan/journeys#connections) that go from a journey step to a trigger indicate that the image applies to the trigger. 
+Connections that go from a trigger to a journey step are purely visual and do not connect the trigger to the [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) associated with the journey step.
+
+### Triggers connected internally between journey steps
+
+In this approach, [triggers](/data-design/avo-tracking-plan/journeys#event-triggers) are connected internally between [journey steps](/data-design/avo-tracking-plan/journeys#journey-step) to define the order of actions that happen in a step. This is useful when there are multiple actions within a step and you want to visualize and communicate their sequence. For example, to communicate that a user lands on the page, then selects from options before confirming the selection.

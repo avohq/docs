@@ -1,18 +1,61 @@
 ---
-title: 'Event Triggers and Use Cases'
+title: 'Triggers and Use Cases'
 ---
 
 import { Callout } from 'nextra/components';
 
-# Event Triggers and Use Cases
+# Triggers and Use Cases
 
-**Event Triggers** are a way to communicate to your team exactly the user actions or moments that trigger an event to be sent – in a visual and written way.
+Triggers communicate, visually and in writing, the exact user, system or navigation actions that trigger an [event](/data-design/avo-tracking-plan/events) or [variant](/data-design/avo-tracking-plan/event-variants) to be sent. In Avo there are two types of triggers:
+
+- **Event triggers**: Event triggers are defined in event/variant details and are connected to a single image.
+- **Journey triggers**: - Journey triggers are defined in the Journey builder and are connected to one or more journey steps that may contain an image.
+
+| | Journey triggers | Event triggers |
+| ----- | ----- | ----- |
+| Definition | Journey builder | Event/variant details |
+| Image location | In journey steps | Directly on the trigger |
+| Image count | Multiple images | Single image |
+| Property conditions | Highlight values for the trigger | Not supported yet |
+| Source specificity | Not supported yet | Can be limited to specific sources |
 
 <Callout type="info" emoji="💡">
-  Note that Event Triggers are available on the Team and Enterprise plans.
+  Note that both Event triggers are available on the Team and Enterprise plans. Journey triggers are available within a single journey on the free plan.
 </Callout>
 
-## How to use event triggers
+## Journey triggers
+
+### How to use journey triggers
+
+Journey triggers live in the Journey builder and represent the navigation, system, or user action on a journey step that should cause tracking. They connect to existing events or variants (or help you create new ones), and they can:
+
+- Have a [name](/data-design/avo-tracking-plan/journeys#event-trigger-name) and [description](/data-design/avo-tracking-plan/journeys#event-trigger-description) describing the action that the trigger represents
+- Include one or more screenshots from connected [journey steps](/data-design/avo-tracking-plan/journeys#journey-step)
+- Include [property conditions](/data-design/avo-tracking-plan/journeys#event-trigger-property-condition) to highlight which values should be sent for a particular scenario
+- Be connected to an [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants)
+
+You’ll typically add journey triggers while composing a flow of screenshots for a product update. If you opt in to Avo Intelligence for Journeys, you can also generate journey triggers with AI and have AI suggest matching events/variants from your tracking plan.
+
+See details about how to define journey triggers in the Journeys documentation: [/data-design/avo-tracking-plan/journeys](/data-design/avo-tracking-plan/journeys#journey-triggers).
+
+### Use cases for journey triggers
+
+- Visual coverage for reviews: ensure every key interaction in a journey step maps to an event or variant
+- Prevent duplicate events: connect a trigger to an existing event/variant rather than creating a new one, with AI suggestions to help discovery
+- Communicate property expectations: use property conditions to call out required values (e.g., “Payment Method is set”) for each scenario
+- Onboard faster: the journey provides a single visual source of truth linking screenshots → triggers → events/variants → property conditions
+
+Common patterns when laying out journeys:
+
+- Journey steps connected with triggers below each step: steps visualize navigation while triggers live underneath as metadata
+- Triggers used between steps to define branches: model multiple paths; only connections from a step to a trigger attach the screenshot to the trigger
+- Triggers connected inside a step to show sequence: clarify the order of sub-actions within a single screen before moving on
+
+For a deeper overview of building journeys, see the Journeys documentation: [/data-design/avo-tracking-plan/journeys](/data-design/avo-tracking-plan/journeys).
+
+## Event triggers
+
+### How to use event triggers
 
 Event triggers can be found in the event details view under "Triggered when", between the description and sources.
 
@@ -33,41 +76,42 @@ To add a trigger to your event:
   width="100%"
   autoPlay
   src={'/docs/images/best-practices/triggers/add-trigger.mp4'}
-  alt="Adding name mapping to an event"
+  alt="Adding a trigger to an event"
 />
 
-## Use cases for Event Triggers
+### Use cases for event triggers
 
 You can use Event Triggers to communicate very clearly from where the event should be sent and at what moment. Below are examples of different ways of using event triggers to communicate that with your team.
 
-### Multiple platforms have different visuals for the event
+#### Multiple platforms have different visuals for the event
 
 When you have an application on web and mobile, they often have different triggers for the events. In that case it's very convenient to be able to communicate visually when the event is sent on mobile on one hand and on web on the other hand.
 
 ![Multiple visuals for different platforms](/images/best-practices/triggers/different-visuals-for-platforms.png)
 
-### Multiple locations in your application to perform a user action
+#### Multiple locations in your application to perform a user action
 
 When you have multiple locations in your application where a user can perform an action (for example with multiple buttons to sign up) then it's good practice to include all scenarios such that the developers implementing don't forget to add the event to a specific call site in their code.
 
 ![Multiple triggers for multiple call sites](/images/best-practices/triggers/multiple-call-sites.png)
 
-### Fat events
+#### Deep events
 
-When you have fat events (events that include multiple related user actions, distinguished by a property), it's good practice to communicate all scenarios by using multiple triggers.
+When you have deep events (events that include multiple related user actions, distinguished by a property), it's good practice to communicate all scenarios by using multiple triggers.
 
 For example if you have an event for all interactions to a billing modal, you can add triggers for every single interaction.
 
 ![Multiple triggers for user actions within an event](/images/best-practices/triggers/fat-events.png)
 
-### Adding a call site for an event
+#### Adding a call site for an event
 
 Triggers facilitate a very nice way to communicate to a developer when they need to add a new call site to an event. For example when a new button for the user action is added or a new option in a setting screen is added. Then the new trigger for the event is displayed in the review screen, implementation instructions and Avo Codegen.
 
 ![Multiple triggers for user actions within an event](/images/best-practices/triggers/diff-view.png)
 
-### One trigger for all scenarios
+#### One trigger for all scenarios
 
 Whenever there is simply one location that a user can perform an action or when a single screenshot is sufficient to describe when an event is sent, it can be useful to simply add one trigger and have it "source independent".
 
 ![Single trigger for an event](/images/best-practices/triggers/single-trigger.png)
+
