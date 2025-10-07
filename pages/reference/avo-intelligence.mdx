@@ -5,32 +5,15 @@ import Image from 'next/image';
 
 Avo Intelligence enhances your workspace with powerful AI-driven features, like [Smart Search](#smart-search) and soon [Journeys (alpha)](#journeys-alpha), to make working with your Tracking Plan faster and more intuitive. By enabling Avo Intelligence, you unlock current features like **Smart Search**. As we roll out more functionality, we’ll notify you in advance if we start sharing other types of data with AI models, or if we begin using AI providers other than OpenAI.
 
-## Smart Search
-
-**Smart Search** makes discovering items in your tracking plan a breeze. It goes beyond exact matches to provide smarter, AI-powered suggestions. Search for terms like _"completed"_ and get results such as _"Order Placed"_ or _"Task Finished"_.
-
-- **Quickly navigate large schemas.** A lifesaver for new team members or anyone working with extensive Tracking Plans.
-- **Avoid duplicates.** Spot existing events and properties before creating new ones.
-
-![](/images/avo-intelligence/smart-search-avo-app.png)
-
-### What's included in Smart Search
-
-- Events
-- Variants
-- Properties
-- Property bundles
-- Categories
-- Metrics
-
 ## Enabling Avo Intelligence
 
 Enable Avo Intelligence to unlock current AI-powered features like Smart Search. This allows Avo to share your Tracking Plan data (e.g., event names, property names, descriptions, and metrics) with OpenAI models.
 
-![](/images/avo-intelligence/smart-search-settings.png)
+![](/images/avo-intelligence/avo-intellegence.png)
 
 1. Go to your workspace **Settings** and navigate to the **"General"** tab.
 2. Toggle the **"Avo Intelligence"** switch to enable Avo Intelligence.
+3. Both smart search and journeys are enabled by default after enabling Avo Intelligence.
 
 <Callout type="info" emoji="💡">
   Note: After first enabling smart search, it can take up to 5 minutes to index
@@ -47,6 +30,22 @@ We designed Avo Intelligence to be helpful and safe. Here’s what’s shared, w
 </Callout>
 
 ### Smart Search
+
+**Smart Search** makes discovering items in your tracking plan a breeze. It goes beyond exact matches to provide smarter, AI-powered suggestions. Search for terms like _"completed"_ and get results such as _"Order Placed"_ or _"Task Finished"_.
+
+- **Quickly navigate large schemas.** A lifesaver for new team members or anyone working with extensive Tracking Plans.
+- **Avoid duplicates.** Spot existing events and properties before creating new ones.
+
+![](/images/avo-intelligence/smart-search-avo-app.png)
+
+#### What's included in Smart Search
+
+- Events
+- Variants
+- Properties
+- Property bundles
+- Categories
+- Metrics
 
 #### How it’s used
 
@@ -67,12 +66,14 @@ We designed Avo Intelligence to be helpful and safe. Here’s what’s shared, w
 - Analytics data
 - PII
 
-### Journeys (alpha)
+### Journeys (beta)
 
-Journeys lets you design analytics visually: build flows from product screenshots, add triggers for each step, and connect them to events and variants in your tracking plan. If you opt in to Avo Intelligence for Journeys, Journeys can generate triggers from images and suggest matching events/variants, speeding up data design and reducing manual lookup.
+[Journeys](/data-design/avo-tracking-plan/journeys) lets you design analytics visually: build flows from product screenshots, add triggers for each step, and connect them to events and variants in your tracking plan. If you opt in to Avo Intelligence for Journeys, you enable [agentic data design](/data-design/avo-tracking-plan/agentic-data-design) and can generate triggers from images and suggest matching events/variants, speeding up data design and reducing manual lookup.
+
+![](/images/journeys/journey-triggers.png)
 
 <Callout type="info" emoji="🚀">
-  Interested in trying Journeys? It’s in alpha now. Reach out at support@avo.app or
+  Interested in trying Journeys? It’s in beta now. Reach out at support@avo.app or
   via the chat bubble in the app for early access.
 </Callout>
 
