@@ -69,6 +69,29 @@ To set up Slack notifications, connect a Slack channel to the stakeholder team t
 When the workspace-level "Require approval from owning stakeholders" setting is enabled, the "As impacted owner" setting is locked and displays a notice that the setting is controlled at the workspace level. The "As impacted stakeholder" and "As stakeholder reviewer" settings can still be configured individually.
 </Callout>
 
+#### Defining what changes impact a stakeholder
+
+In addition to the review and notification settings above, you can control **when** a stakeholder team is considered impacted by changes using the **"Only impacted by breaking changes"** setting.
+
+When this setting is enabled, the stakeholder team will only be considered impacted when breaking changes are made to their tracking plan items. This means:
+- The team will not receive notifications for non-breaking changes
+- The team will not be automatically added as a reviewer for non-breaking changes (if that setting is enabled)
+- Only breaking changes will trigger impact detection and the associated review/notification workflows
+
+![Setting to only consider breaking changes as impacting a stakeholder](/images/workspace/settings/only-impacted-changes.avif)
+
+**What is a breaking change?**
+
+A breaking change is any modification that would require developers to update their implementation code. For example, renaming an event, changing a property type, or removing allowed values would all be considered breaking since they require code changes.
+
+In contrast, non-breaking changes are safe, additive modifications that don't affect existing implementations - such as adding optional properties, adding new allowed values, or updating documentation.
+
+This setting is particularly useful for stakeholder teams that want to stay informed about major changes requiring code updates, but don't need to be involved in minor documentation updates or safe additive changes.
+
+<Callout type="info" emoji="💡">
+This setting only affects when a stakeholder is considered impacted. All changes, breaking and non-breaking, are still tracked and documented in the tracking plan.
+</Callout>
+
 #### Settings hierarchy
 
 Understanding how stakeholder settings interact:
