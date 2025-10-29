@@ -11,6 +11,7 @@ export default {
   "multiple-sources-on-avo-branches": "Multiple sources on Avo branches",
   "name-mapping": "Name Mapping and Use Cases",
   "object-properties": "Object Properties",
+  "organizing-event-hierarchy": "Defining event hierarchy",
   "organizing-metrics-and-events": "Organizing tracking plans",
   "organizing-multi-product-workspaces": { "display": "hidden" },
   "pinned-properties": "Pinned Properties",
