@@ -13,13 +13,13 @@ import { Callout } from 'nextra/components';
 
 The hardest part in the whole analytics release process is usually to decide what events and properties you need, to be able to measure the success of the product change. There are many paths to a decision, but no matter which one you take, we recommend doing it as early as possible in the development process.
 
-We always recommend starting by formulating the metrics you hope to move with your change. Our favorite way to do this is what we like to call a [Purpose Meetings](https://www.avo.app/blog/tracking-the-right-product-metrics). The outcomes of that meeting are:
+We always recommend starting by formulating the metrics you hope to move with your change. Our favorite way to do this is what we like to call a [Purpose Meeting](https://www.avo.app/blog/tracking-the-right-product-metrics), centered around the user journey for your feature. The outcomes of that meeting are:
 
 1. Goals – what does success look like?
 2. Metrics – how will we measure how successful we are?
-3. Data – what analytics events do we need for our success metrics?
+3. Journey – what are the most important user actions and steps in this journey?
 
-The result of the purpose meeting is usually a draft of events that someone takes forward to the next step.
+The result of the purpose meeting is usually a draft of the user journey with key actions identified that someone takes forward to the next step.
 
 ## 1.2 Create a branch in Avo
 
@@ -54,40 +54,57 @@ To create a new branch, first make sure you are on the main branch. You can see 
 
 _Example: Creating a branch_
 
-## 1.3 Define metrics, events and properties
+## 1.3 Design the journey in the journey builder
 
 *Role: Product or Data*
 
+Once you have an idea of what to track, you start designing the journey visually on your branch in Avo using the [journey builder](/data-design/avo-tracking-plan/journeys). The journey builder transforms tracking plan creation from a documentation-heavy process to a visual, self-service workflow using product screenshots or designs to represent each step of your experience.
+
 <Callout type="info">
-  The results of the purpose meeting can all be documented in Avo in context
-  with your metrics and event definitions. Learn more in our [guide to use
-  Categories and Metrics to document Purpose
-  Meetings.](/data-design/documenting-purpose-meetings-in-avo)
+  You can also document the goals and metrics from your purpose meeting in Avo. Learn more in our [guide to use Categories and Metrics to document Purpose Meetings](/data-design/documenting-purpose-meetings-in-avo).
 </Callout>
 
-Once you have an idea of what to track, you start defining the event structures on your branch in Avo. 
+### Creating a journey
 
-For a comprehensive step-by-step walkthrough, see our [data design deep dive guide](/data-design/start-data-design). For detailed documentation on each component:
+The recommended workflow for creating a tracking plan is to create a journey in the journey builder, which will help you define the events and properties you need to track.
 
-- **[Branches](/data-design/branches)** - Learn about branch workflows and collaboration
+To create a journey, navigate to the Journeys tab in the left sidebar and click "Create Journey". This opens the journey builder—a canvas where you'll compose your user journey.
+
+Here's the recommended workflow:
+
+1. **Add a name and description** for the journey that captures the feature or flow you're tracking
+2. **Add journey steps** by dragging and dropping screenshots or designs directly into the canvas. Order them to visualize the user journey and connect them to help AI generate relevant triggers
+3. **Connect triggers to journey steps** - Use [AI-powered suggestions](/data-design/guides/agentic-data-design#generate-journey-triggers) to analyze your screenshots and propose trigger names and descriptions for each user action or define the triggers manually by dragging them into the grid from the toolbar.
+4. **Connect triggers to events** - Link each trigger to existing events in your tracking plan or create new ones. AI can [suggest existing events and variants](/data-design/guides/agentic-data-design#reuse-events-and-variants) to help prevent duplicates
+5. **Add property conditions** - Define which properties are important for each trigger and specify any required values for that scenario
+
+<video
+  controls
+  loop
+  muted
+  width="100%"
+  autoPlay
+  src={'/docs/images/journeys/journey-creation.mp4'}
+  alt="Creating a journey"
+/>
+
+_Example: Creating a journey in the journey builder_
+
+### Tips for journey design
+
+- **Reuse existing events** - Check for existing events that match your triggers using AI suggestions or the command palette (cmd+k on Mac, ctrl+k on Windows)
+- **Connect journey steps** - Link steps together so AI can generate more contextually relevant triggers based on the flow
+- **Add descriptions** - Document trigger details to keep transparency between those who design, implement and consume the data
+- **Use property conditions** - Highlight important properties and their expected values for each scenario to make implementation clearer
+
+For a comprehensive walkthrough of all journey builder features, see the [Journeys documentation](/data-design/avo-tracking-plan/journeys). For detailed documentation on tracking plan components:
+
+- **[Branches](/data-design/branches)** - A branch of the tracking plan that allows you to update it in isolation from the main branch.
+- **[Journeys](/data-design/avo-tracking-plan/journeys)** - The recommended place to draft tracking plan updates, in context of the user journey.
 - **[Metrics](/data-design/avo-tracking-plan/metrics)** - Define measurable goals and KPIs 
-- **[Events](/data-design/avo-tracking-plan/events)** - Create and configure user action tracking
-- **[Event Variants](/data-design/avo-tracking-plan/event-variants)** - Handle conditional event scenarios
-- **[Properties](/data-design/avo-tracking-plan/properties)** - Add detailed context to events and users
-
-There are a few things to keep in mind when doing so:
-
-- Check for existing events that you can use or expand with additional properties
-- Check for existing properties that you can use instead of defining new ones. You can search for existing events, properties, and variants using the command pallette (cmd+k on Mac, ctrl+k on Windows) or browse all your properties on the Properties screen in the Tracking Plan.
-- Follow the naming convention used in your workspace. The Avo [issue reporter](/audit/rules) and [naming assistant](/data-design/naming-conventions#3-how-does-avo-help-with-naming-consistencies) will help you do so.
-- Add descriptions to your events and properties to keep transparency and clarity between those who design, implement and consume the data
-- Try to apply [property rules](/audit/rules#property-rules) on your properties if possible. This is especially useful when you have a string property that has a finite number of possible values.
-
-When defining multiple events during your planning phase, consider using Avo's [fast event creation methods](/data-design/avo-tracking-plan/events#fast-event-creation-methods) such as the "Create more" toggle and workbench quick inline creation to streamline your workflow.
-
-![Event definition](/images/workflow/1.plan/event.png)
-
-_Example: Event definition_
+- **[Events](/data-design/avo-tracking-plan/events)** - The data structure that captures the user actions and system events.
+- **[Event Variants](/data-design/avo-tracking-plan/event-variants)** - A way to define variations of events to handle conditional event scenarios
+- **[Properties](/data-design/avo-tracking-plan/properties)** - The metadata that describes the actions, systems and users involved in the events.
 
 ## What’s next?
 
