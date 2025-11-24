@@ -13,6 +13,7 @@ export default {
   "inspector-slack-alerts": "Alerts for Slack",
   "add-events-from-inspector": "Import tracking plan from Inspector",
   "inspector-events-view": "Events View",
+  "inspector-debugger": "Debugger",
   "--": {
     "type": "separator"
   },

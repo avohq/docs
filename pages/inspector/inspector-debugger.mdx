@@ -1,0 +1,100 @@
+import { Callout } from 'nextra/components'
+
+# Inspector Debugger
+
+The Inspector Debugger is a real-time event stream viewer that lets you validate your tracking implementation as you develop, without waiting for events to flow through your analytics pipeline. See events as they happen, inspect their properties, and catch issues before they reach production.
+
+<Callout type="info" emoji="💡">
+  If you haven't installed Inspector yet, check out the [Inspector installation overview](/inspector/inspector-installation-overview).
+</Callout>
+
+## When to use the Inspector Debugger
+
+Inspector debugger is one of three views in Inspector. The other two are the [Events view](/inspector/inspector-events-view) and the [Issues view](/inspector/inspector-issues-view).
+
+## What is the Inspector Debugger?
+
+The Inspector Debugger is a live event stream view within Avo Inspector that displays events as they're sent from your application. It provides:
+
+### Real-time event stream
+
+See all events flowing through Inspector in real-time, organized chronologically with:
+- **Event name** - The name of each event as it was sent
+- **Validation status** - Whether the event is valid according to the tracking plan on the branch that you are currently on or not
+- **Time** - Exact timestamp when the event was sent by the application
+- **Environment** - The environment the event was sent from (currently Development and Staging are supported)
+- **Source** - Which platform or application sent the event (e.g., Desktop, iOS, Android, Web)
+- **Session ID** - A unique identifier for each user session, color-coded for easy visual tracking
+
+![Inspector Debugger event stream](/images/inspector/debugger/inspector-debugger-events.png)
+
+### Event details and validation
+
+Click any event to see:
+- **Complete property list** - All properties sent with the event, including their types
+- **Tracking plan validation** - Details on the validation status, with immediate feedback on [issue types](/inspector/issue-types-in-inspector) like unexpected properties, type mismatches, or missing required properties
+- **Event metadata** - Source, version, session information, and timestamps
+- **Link to tracking plan** - Quick access to view the event definition in your tracking plan
+
+![Inspector Debugger event details](/images/inspector/debugger/inspector-debugger-event-details.png)
+
+<Callout type="info">
+  The Inspector Debugger validates events against your tracking plan in real-time and highlights [issue types](/inspector/issue-types-in-inspector) for the branch that you are currently on. 
+</Callout>
+
+## How to use the Inspector Debugger
+
+### Accessing the debugger
+
+1. Navigate to **Inspector** in the left sidebar of your Avo workspace and click on **Debugger** in the Inspector submenu
+2. The debugger will show live events from all sources by default if you are an admin, editor or a viewer that has already activated an Implementer seat.
+
+If you are not an admin, editor or a viewer that has already activated an Implementer seat, you will see a message telling you what you need to do to get access:
+- **If you're a viewer and Implementer seats are pre-purchased** - You'll be prompted to activate an Implementer seat to start debugging
+- **If you're a viewer and Implementer seats can be added** - You'll be prompted to activate an Implementer seat to start debugging (this will add to your monthly active Implementer seats count)
+- **If you're a viewer and no Implementer seats are available** - You'll see a message prompting you to speak to an admin to get access to Implementer slots
+- **If your workspace is on an older pricing plan** - You'll see a message prompting you to reach out to an admin to renew or upgrade your plan
+
+### Filtering events
+
+Use the filters at the top of the debugger to focus your view:
+
+- **Environment filter** - Filter by development or staging environments
+- **Source filter** - Show events from specific platforms (iOS, Android, Web, etc.)
+- **Session filter** - View events from a specific user session
+- **Search** - Search for specific event names
+
+Use the filters to find your session while debugging:
+1. Filter down on the environment and source that you are triggering events from
+2. Look at which session ID is sending events that matches the ones that you are sending from your application, at what time
+
+### Controlling the event stream
+
+The debugger provides controls for managing the live stream:
+
+- **Pause** - Pause the event stream to inspect events without new ones appearing. Useful when you need to review a specific event in detail.
+- **Resume** - Resume the live stream to continue receiving events
+- **Reset** - Clear all events from the current view to start fresh. Useful when you are finding your session or want to start fresh.
+
+## Troubleshooting
+
+### Not seeing events in the debugger
+
+If events aren't appearing in the debugger:
+
+1. **Verify Inspector is installed** - Check that you've [installed Inspector](/inspector/inspector-installation-overview) for your platform
+2. **Check your filters** - Make sure environment, source and event name filters aren't excluding your events
+3. **Check your API key** - Verify you're using the correct Avo API key in your Inspector configuration
+
+### Events appear but have many issues
+
+If you're seeing unexpected validation issues on events you might be on the wrong branch.
+
+1. **Check your branch** - Verify you're on the correct branch that you are expecting to see events from. Switch branches in the top of the left sidebar of your Avo workspace.
+2. **Check your tracking plan** - Verify your tracking plan definitions match the event shapes that you are seeing in the debugger
+
+## What's next?
+
+- Learn about the [Issues view](/inspector/inspector-issues-view) to review and manage tracking plan violations
+- Learn about [finding and fixing issues](/inspector/inspector-find-issues) in Inspector
+- Learn about [issue types](/inspector/issue-types-in-inspector) in Inspector
