@@ -10,7 +10,7 @@ The Inspector Debugger is a real-time event stream viewer that lets you validate
 
 ## When to use the Inspector Debugger
 
-Inspector debugger is one of three views in Inspector. The other two are the [Events view](/inspector/inspector-events-view) and the [Issues view](/inspector/inspector-issues-view).
+Inspector debugger is one of three views in Inspector. The other two are the the [Issues view](/inspector/inspector-issues-view) and the [Events view](/inspector/inspector-events-view).
 
 The Inspector debugger is particularly useful when you need to:
 
@@ -30,7 +30,7 @@ See all events flowing through Inspector in real-time, organized chronologically
 - **Time** - Exact timestamp when the event was sent by the application
 - **Environment** - The environment the event was sent from (currently Development and Staging are supported)
 - **Source** - Which platform or application sent the event (e.g., Desktop, iOS, Android, Web)
-- **Session ID** - A unique identifier for each user session, color-coded for easy visual tracking
+- **Stream ID** - A unique identifier for each user stream session, color-coded for easy visual tracking
 
 ![Inspector Debugger event stream](/images/inspector/debugger/inspector-debugger-events.png)
 
@@ -39,7 +39,7 @@ See all events flowing through Inspector in real-time, organized chronologically
 Click any event to see:
 - **Complete property list** - All properties sent with the event, including their types
 - **Tracking plan validation** - Details on the validation status, with immediate feedback on [issue types](/inspector/issue-types-in-inspector) like unexpected properties, type mismatches, or missing required properties
-- **Event metadata** - Source, version, session information, and timestamps
+- **Event metadata** - Source, version, stream session information, and timestamps
 - **Link to tracking plan** - Quick access to view the event definition in your tracking plan
 
 ![Inspector Debugger event details](/images/inspector/debugger/inspector-debugger-event-details.png)
@@ -67,12 +67,12 @@ Use the filters at the top of the debugger to focus your view:
 
 - **Environment filter** - Filter by development or staging environments
 - **Source filter** - Show events from specific platforms (iOS, Android, Web, etc.)
-- **Session filter** - View events from a specific user session
+- **Stream session filter** - View events from a specific user stream session
 - **Search** - Search for specific event names
 
-Use the filters to find your session while debugging:
+Use the filters to find your stream session while debugging:
 1. Filter down on the environment and source that you are triggering events from
-2. Look at which session ID is sending events that matches the ones that you are sending from your application, at what time
+2. Look at which stream stream ID is sending events that matches the ones that you are sending from your application, at what time
 
 ### Controlling the event stream
 
@@ -80,7 +80,7 @@ The debugger provides controls for managing the live stream:
 
 - **Pause** - Pause the event stream to inspect events without new ones appearing. Useful when you need to review a specific event in detail.
 - **Resume** - Resume the live stream to continue receiving events
-- **Reset** - Clear all events from the current view to start fresh. Useful when you are finding your session or want to start fresh.
+- **Reset** - Clear all events from the current view to start fresh. Useful when you are finding your stream session or want to start fresh.
 
 ## Troubleshooting
 
