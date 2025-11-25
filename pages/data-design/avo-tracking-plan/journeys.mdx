@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components'
 
 Use Journeys to visually design analytics for a product update by composing a flow from product images or screenshots that represent each step of your experience. Add triggers for each step and connect them to events and variants in your tracking plan. If you opt in to [Avo Intelligence](/reference/avo-intelligence) for Journeys, AI can generate triggers from images and suggest matching existing events/variants to speed up data design.
 
-The journey builder and [AI functionality](/data-design/avo-tracking-plan/agentic-data-design) transform tracking plan creation from a bottle-necked, documentation-heavy process to a visual, self-service workflow that delivers significant time and quality improvements. By replacing scattered Google Docs and manual Figma annotations with a single visual source of truth, product teams can independently create tracking requirements while data teams shift focus to validation and quality monitoring. 
+The journey builder and [AI functionality](/data-design/guides/agentic-data-design) transform tracking plan creation from a bottle-necked, documentation-heavy process to a visual, self-service workflow that delivers significant time and quality improvements. By replacing scattered Google Docs and manual Figma annotations with a single visual source of truth, product teams can independently create tracking requirements while data teams shift focus to validation and quality monitoring. 
 
 This workflow results in faster turnaround times, better data quality and reduced governance overhead, while the AI-powered event discovery helps solve the chronic problem of duplicate events and improper event usage across large tracking plans with hundreds of existing events.
 
@@ -97,7 +97,7 @@ To add a journey trigger to a journey, you can:
 
 ![Journey triggers](/images/journeys/journey-triggers.png)
 
-For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey). Learn more about pricing for AI actions in [Agentic data design](/data-design/avo-tracking-plan/agentic-data-design).
+For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey). Learn more about pricing for AI actions in [Agentic data design](/data-design/guides/agentic-data-design).
 
 ### Journey trigger property conditions
 
@@ -169,9 +169,9 @@ The following connections are possible:
 - A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) means that the image from the journey step will be added to the trigger details
 - A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) is purely visual and does not connect the trigger to the event or variant connected to the journey step. Helpful to describe what user action will lead to the next journey step.
 - A connection from a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to another trigger means that the first trigger will be attached to the connected journey step and the following triggers will have no image attached to them.
-- A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to another journey step is purely visual and does not connect the journey step to the event or variant connected to the journey step. Helpful to visualize how a user flows thought the journey and to get [relevant triggers](/data-design/avo-tracking-planguides/agentic-data-design#generate-journey-triggers) for each journey step based on the next step in the journey.
+- A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to another journey step is purely visual and does not connect the journey step to the event or variant connected to the journey step. Helpful to visualize how a user flows thought the journey and to get [relevant triggers](/data-design/guides/agentic-data-design#generate-journey-triggers) for each journey step based on the next step in the journey.
 
-Connections help the AI to generate relevant triggers for each journey step based on the subsequent journey step(s). See more about generating triggers with AI and cost in the [Agentic data design](/data-design/avo-tracking-plan/agentic-data-design) documentation.
+Connections help the AI to generate relevant triggers for each journey step based on the subsequent journey step(s). See more about generating triggers with AI and cost in the [Agentic data design](/data-design/guides/agentic-data-design) documentation.
 
 ## Creating and editing journeys
 
@@ -185,14 +185,14 @@ There are many possible ways to build journeys and there is no one-size-fits-all
 
 1. Add a [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description) for the journey
 1. Add [journey steps](/data-design/avo-tracking-plan/journeys#journey-step) to the canvas by dragging and dropping images into it ( you can also click the "Add Journey Step" button in the journey builder controls).
-1. Order the images into the desired order visualizing the user journey and [connect](/data-design/avo-tracking-plan/journeys#connections) them to each other for the AI to [generate relevant triggers](/data-design/avo-tracking-plan/agentic-data-design#generate-triggers) for each step
+1. Order the images into the desired order visualizing the user journey and [connect](/data-design/avo-tracking-plan/journeys#connections) them to each other for the AI to [generate relevant triggers](/data-design/guides/agentic-data-design#generate-triggers) for each step
 1. Fill in the details for each [journey step](/data-design/avo-tracking-plan/journeys#journey-step), one-by-one:
     - Add a [name](/data-design/avo-tracking-plan/journeys#journey-step-name) and [description](/data-design/avo-tracking-plan/journeys#journey-step-description) for the journey step
     - If you are going to add an image and didn't drag-and-drop directly into the canvas, add one by clicking the placeholder image in the journey step or drag-and-drop an image from your computer
-    - Use the placeholder [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to either [generate a trigger with AI](/data-design/avo-tracking-plan/agentic-data-design#generate-triggers) or create one manually
+    - Use the placeholder [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to either [generate a trigger with AI](/data-design/guides/agentic-data-design#generate-triggers) or create one manually
 5. Fill in the details for each trigger, one-by-one:
     - Add a [name](/data-design/avo-tracking-plan/journeys#event-trigger-name) and [description](/data-design/avo-tracking-plan/journeys#event-trigger-description) for the trigger
-    - [Connect](/data-design/avo-tracking-plan/journeys#connections) the trigger to the [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) connected to the journey step, either using the [AI menu](/data-design/avo-tracking-plan/agentic-data-design#connect-events-and-variants) or manually using "Connect event/variant" button on the trigger
+    - [Connect](/data-design/avo-tracking-plan/journeys#connections) the trigger to the [event](/data-design/avo-tracking-plan/events) or [event variant](/data-design/avo-tracking-plan/event-variants) connected to the journey step, either using the [AI menu](/data-design/guides/agentic-data-design#connect-events-and-variants) or manually using "Connect event/variant" button on the trigger
     - Add a [property condition](/data-design/avo-tracking-plan/journeys#event-trigger-property-condition) for each event or variant connected to the trigger, highlighting the properties that are important or have specific values that should be sent in that scenario
 
 <video

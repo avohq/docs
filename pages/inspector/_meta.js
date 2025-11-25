@@ -6,13 +6,14 @@ export default {
     "type": "separator"
   },
   "inspector-issues-view": "Issues View",
+  "inspector-events-view": "Events View",
+  "inspector-debugger": "Debugger View",
   "issue-types-in-inspector": "Issue Types",
   "inspector-find-issues": "Find Issues",
   "inspector-fix-issues": "Fix Issues",
   "inspector-ignore-issues": "Ignore Issues",
   "inspector-slack-alerts": "Alerts for Slack",
   "add-events-from-inspector": "Import tracking plan from Inspector",
-  "inspector-events-view": "Events View",
   "--": {
     "type": "separator"
   },
