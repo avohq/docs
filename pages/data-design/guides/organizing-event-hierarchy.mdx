@@ -166,14 +166,13 @@ Organizations with several products and a central data governance team often use
 
 - **Global workspace** defines core events like "User Signed Up", "Order Completed", "Subscription Started"
 - **Local workspaces** inherit those events and add product-specific events
-- **Name mapping** splits up complex generic events into multiple specific events
 - **Variants** handle product-specific scenarios—for example, "Order Completed - Subscription" vs "Order Completed - One-Time Purchase"
 - **Journey triggers** document flows and communicate implementation requirements to development teams
 - **Property conditions** in journeys specify which properties apply for each checkout path and which property values are expected in each journey step
 
 ### Web tracking that has very few generic events
 
-Teams that use for example Adobe Analytics and have one event for clicking a button and another one for loading a page can use a combination of name mapping and variants to split up the event into multiple specific events that are easier to
+Teams that use for example Adobe Analytics and have one event for clicking a button and another one for loading a page can use a combination of name mapping and variants to split up the event into multiple specific events that are easier to understand and maintain.
 
 - **Name mapping** split both the button clicked and page loaded events high level events into more specific events that usually don't get updated in the same way at the same time
 - **Variants** create variants for the name mapped events to split up the event definition even further and potentially are sometimes updated in the same way at the same time
