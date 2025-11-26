@@ -18,11 +18,11 @@ Avo’s validation functionalities are built on top of two product offerings, [A
   the schemas.
 </Callout>
 
-# Validate implementation with Avo Inspector
+## Validate implementation with Avo Inspector
 
-For every source that has Inspector installed, you can validate if the implementation is according to the tracking plan using Inspector dashboard and/or Inspector implementation in your tracking plan.
+For every source that has Inspector installed, you can validate if the implementation is according to the tracking plan using the [Inspector Debugger](/inspector/inspector-debugger) for real-time validation during development and in staging and/or Inspector implementation status in your tracking plan. In addition you can use the [Inspector Issues view](/inspector/inspector-issues-view) for production monitoring, to review and manage tracking plan violations in your production data for the past 24 hours.
 
-If you don’t have Inspector installed yet, you can learn more about how to get started with Inspector here:
+If you don't have Inspector installed yet, you can learn more about how to get started with Inspector here:
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
@@ -31,24 +31,32 @@ If you don’t have Inspector installed yet, you can learn more about how to get
   href={'/data-design/start-using-inspector'}
 />
 
-### Validate with Inspector dashboard
+### Validate with Inspector Debugger
 
-Inspector dashboard compares your tracking calls to the Tracking Plan on your current branch. If Inspector finds any discrepancies between the tracking calls and the Tracking Plan, an issue is shown on the dashboard.
+The [Inspector Debugger](/inspector/inspector-debugger) is the recommended way to validate your tracking implementation during development and staging. It provides a real-time event stream that shows events as they're sent from your application, with immediate validation against your tracking plan on the current branch.
 
-Here’s how you can validate tracking implementation for a particular branch using Inspector dashboard:
+Here's how you can validate tracking implementation using the Inspector Debugger:
 
-1. Head to the [Inspector dashboard](https://www.avo.app/schemas/default/inspector) in your workspace and switch to the branch you’d like to verify implementation for.
-2. In Inspector dashboard header, pick the environment you’d like to validate (Development, Staging, or Production). When validating tracking changes that haven’t been released to production yet, you pick development or staging.
+1. Head to the [Inspector Debugger](https://www.avo.app/schemas/default/inspector/debugger) in your workspace and switch to the branch you'd like to verify implementation for.
+2. Filter by the environment you're testing in (Development or Staging) and the source you're triggering events from. Coming soon: Filtering down to your specific stream session too.
+3. Trigger events in your application and watch them appear in real-time in the debugger.
+4. Click on any event to see the complete property list and validation status. The debugger will highlight any [issues](/inspector/issue-types-in-inspector) such as unexpected properties, type mismatches, or missing required properties.
+5. If you've created a [journey](/data-design/avo-tracking-plan/journeys), use it as a visual guide to verify that events are being triggered at the correct points and order in the user flow and that the properties are being sent according to the journey trigger property conditions.
 
-![Validate on inspector dashboard](/images/workflow/5.validate/dev-stag-production.png)
+![Inspector Debugger event details](/images/inspector/debugger/inspector-debugger-event-details.png)
 
-_Example: Inspector dashboard_
+_Example: Inspector Debugger showing event details and validation status_
 
-3. In Inspector dashboard you can see the health of all events that were sent from the selected environment during the select time period, and whether they fit the tracking plan or not. If any discrepancies were found, you can click into the event to learn more about the issue. Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or process any PII data about the customers of Avo’s customers.
+<Callout type="info">
+  Worth repeating here: Avo never receives or processes any of your actual analytics events, only the schemas. In other words, Avo never receives or processes any PII data about the customers of Avo's customers.
+</Callout>
 
-![Validate on inspector dashboard](/images/workflow/5.validate/validate-dashboard-issue.png)
-
-_Example: Discrepancies in the event tracking_
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Inspector Debugger"
+  description="Learn more about using the Inspector Debugger for real-time validation"
+  href="/inspector/inspector-debugger"
+/>
 
 ### Validate with Inspector implementation status
 
@@ -65,7 +73,7 @@ Learn more about how to read Inspector implementation status:
   href="/data-design/avo-tracking-plan/implementation-status#inspector-implementation-status"
 />
 
-# Validate implementation with Avo Codegen
+## Validate implementation with Avo Codegen
 
 For all tracking implemented with Codegen, you can validate if the implementation is according to the tracking plan using four methods, each with its own purpose.
 

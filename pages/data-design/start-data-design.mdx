@@ -14,6 +14,27 @@ import { Callout } from 'nextra/components';
 - The basic concepts in Avo and event design
 - What to look out for when designing data
 
+## Two approaches to data design
+
+There are two main approaches to designing your tracking in Avo:
+
+### Visual design with Journeys (recommended)
+
+[Journeys](/data-design/avo-tracking-plan/journeys) let you visually design analytics by composing a flow from product screenshots that represent each step of your user experience. This approach is ideal when:
+- Designing tracking for a new feature or user flow
+- Collaborating with product teams who benefit from seeing tracking in visual context
+- You want to use [AI-powered suggestions](/data-design/guides/agentic-data-design) to generate triggers and connect to existing events
+
+With journeys, you drag and drop screenshots, add triggers for user actions, and connect them to events—all in a visual canvas. Learn more in our [Journeys documentation](/data-design/avo-tracking-plan/journeys).
+
+### Direct event and metric creation
+
+The traditional approach covered in this guide involves creating metrics, events, and properties directly in their respective views. This is useful when:
+- Defining metrics independently of a specific feature
+- Making small updates to your tracking plan like adding a new allowed value to a string property
+
+Both approaches result in the same tracking plan structures—journeys simply provide a visual layer for designing and reviewing tracking in context.
+
 ## Defining a metric
 
 We always recommend starting with the why in data design. That means thinking about your research questions, goals and metrics before your start defining your event structures. Metrics are directly tied to events in Avo and are visible in the event details. Read more about metrics, why they are useful and learn about purpose meetings in our [Metrics page](/data-design/avo-tracking-plan/metrics).
@@ -264,6 +285,10 @@ In the example below, a variant of the `Purchase Completed` is created. It's a c
 
 [Event triggers](/data-design/guides/event-triggers) allow you to attach screenshots from your product to visually describe where events are triggered from. Triggers can be associated with a specific source if the location of the trigger looks different between sources. They can also be source independent if it is not specific to a certain source.
 
+<Callout type="info" emoji="💡">
+  If you're designing tracking for a complete user flow, consider using [Journeys](/data-design/avo-tracking-plan/journeys) instead. Journeys let you create triggers in the context of connected screenshots, making it easier to visualize the entire flow and use AI to generate triggers automatically.
+</Callout>
+
 <video
   controls
   loop
@@ -412,6 +437,12 @@ _Example: Creating and adding a property bundle to an event._
 Now that you know how to define and maintain your metrics and events in Avo, it's time to learn how to [review branch changes](/workflow/review) and [request implementation](/workflow/request-implementation). If you haven't set up your sources and destinations yet, now is a good time to learn how [sources and destinations](/data-design/define-sources-and-destinations) are defined.
 
 <TwoCol>
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Journeys"
+    description="Visually design analytics with product screenshots"
+    href={'/data-design/avo-tracking-plan/journeys'}
+  />
   <PageLink
     image={'/docs/images/svg/analyticsmanager.svg'}
     title="Review branch changes"

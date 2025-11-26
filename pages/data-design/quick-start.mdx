@@ -63,7 +63,27 @@ Open a new branch by clicking the icon next to "main" in the left sidebar. Then 
 
 ## Step 4: Make changes to your tracking plan
 
-When you've created the branch, navigate to the _Events_ tab in the tracking plan to start making changes to your tracking plan on the branch. Create a new [event](/data-design/avo-tracking-plan/events) by clicking the _+ Add Event_ button.
+When you've created the branch, you have two approaches to design your tracking:
+
+### Option A: Design with Journeys (recommended)
+
+[Journeys](/data-design/avo-tracking-plan/journeys) let you visually design analytics by composing a flow from product screenshots that represent each step of your user experience. This approach is particularly helpful for:
+- Collaborating with product teams who can review tracking in context
+- Understanding where events should be triggered in the user flow
+- Using [AI-powered suggestions](/data-design/guides/agentic-data-design) to generate triggers and connect to existing events
+
+To create a journey, navigate to the _Journeys_ tab in the left sidebar and click _+ New Journey_. Drag and drop screenshots of your product, add triggers for each user action, and connect them to events in your tracking plan.
+
+<PageLink
+  image={'/docs/images/svg/analyticsmanager.svg'}
+  title="Journeys"
+  description="Learn how to visually design analytics with Journeys"
+  href="/data-design/avo-tracking-plan/journeys"
+/>
+
+### Option B: Create events directly
+
+Alternatively, navigate to the _Events_ tab in the tracking plan to create events directly. Click the _+ Add Event_ button to create a new [event](/data-design/avo-tracking-plan/events).
 
 <br />
 <center>
@@ -162,6 +182,12 @@ The [code changes screen](/data-design/branches/code-changes) represents the cod
 Now you know how to open a branch in Avo, suggest changes and ask for review from your team. The next step is for a developer to implement the changes in code using [Avo codegen](/implementation/avo-codegen-overview) or [pseudocode snippets](/data-design/branches/code-changes#non-codegen-snippets). To get even better idea of how to maintain your tracking plan in Avo, check out the [deep dive guide on data design in Avo](/data-design/start-data-design).
 
 <TwoCol>
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Journeys"
+    description="Learn how to visually design analytics with product screenshots"
+    href="/data-design/avo-tracking-plan/journeys"
+  />
   <PageLink
     image="/docs/images/svg/dev.svg"
     title="Avo Codegen"
