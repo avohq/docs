@@ -6,19 +6,30 @@ import PageLink from '../../components/PageLink';
 
 # Implement analytics events
 
-Avo provides a set of developer tools to make it faster and less error prone to implement tracking code. [Avo Codegen](/implementation/devs-101#avo-codegen-type-safe-analytics-wrappers), our type safe analytics wrappers, are one of those tools. Using Avo’s developer tools is optional, but something we highly recommend.
+Avo provides a set of developer tools to make it faster and less error prone to implement tracking code. [Avo Codegen](/implementation/devs-101#avo-codegen-type-safe-analytics-wrappers), our type safe analytics wrappers, are one of those tools. Using Avo's developer tools is optional, but something we highly recommend.
 
-In this guide we’ll cover how to implement analytics events with and without using Avo’s developer tools.
+In this guide we'll cover how to implement analytics events with and without using Avo's developer tools.
 
-## Implementing without using Avo’s developer tools
+## Using journeys as implementation guides
+
+If a [journey](/data-design/avo-tracking-plan/journeys) was created during the planning phase, use the journey builder together with the [Branch Code Changes](/data-design/branches/code-changes) screen as a visual guide during implementation. The journey builder shows the screens in context with the events, triggers, and property conditions, making it easy to understand exactly which events need to be triggered on each screen and what properties should be sent.
+
+This visual context is particularly helpful when:
+- Understanding where in the user flow each event should be triggered
+- Seeing which properties and values are expected for each trigger
+- Coordinating implementation across multiple screens or components
+
+The journey builder  with the [Branch Code Changes](/data-design/branches/code-changes) screen provides a visual context for the implementation, making it easy to understand exactly which events need to be triggered on each screen and what properties should be sent.
+
+## Implementing without using Avo's developer tools
 
 You can continue implementing your tracking code like you are used to using analytics SDKs from analytics platforms (like Mixpanel, PostHog or Amplitude), SDKs from CDPs (like RudderStack, Segment or mParticle), or using internal built SDKs or APIs.
 
 A typical implementation workflow looks like this:
 
-1. Use the [Branch Code Changes](/data-design/branches/code-changes) as a task list for what events need to be implemented or updated changed to align with your tracking plan changes.
-2. Open a git branch to implement your analytics tracking changes in your product's codebase.
-3. Implement the changes in your existing analytics tracking code, using the schema details provided by Avo as your reference.
+1. **Review the changes** - Open the [journey](/data-design/avo-tracking-plan/journeys) in the journey builder and the [Branch Code Changes](/data-design/branches/code-changes) screen side-by-side to review the code changes required to implement the journey.
+2. **Open a git branch** - Create a branch or use an existing branch with the product update that you are working on in your product's codebase to implement your analytics tracking changes.
+4. **Implement the changes** - Use the code snippets from code changes screen as a task list and template for implementation and the journey as visual context for where each event belongs in the user flow.
 
 <PageLink
   image="/docs/images/svg/analyticsmanager.svg"
@@ -42,9 +53,10 @@ Learn more about Avo’s developer tools in Avo 101 for developers:
 
 For teams that are using Avo Codegen to implement their tracking code, the typical implementation workflow looks like this:
 
-1. Open a git branch to implement your analytics tracking changes on.
-2. Use the [Avo CLI](/implementation/cli) to pull the updated code from the branch you are implementing. You can find the Avo CLI command for each source in the top right corner of the branch review screen under “Branch Implementation”. From there you can also access documentation for all the events that need to be implemented
-3. Use the functions provided Avo Codegen to implement your events in your source code. [Codegen tab in your workspace](https://www.avo.app/schemas/fwtXqAc0fCLy7b7oGW40/implement/fs/WUFObVFR4PVbZGtT1hQ5) provides documentation and code snippets for each event
+1. **Review the changes** - Open the [journey](/data-design/avo-tracking-plan/journeys) in the journey builder and the [Branch Code Changes](/data-design/branches/code-changes) screen side-by-side to review the code changes required to implement the journey.
+2. **Open a git branch** - Create a branch or use an existing branch with the product update that you are working on in your product's codebase to implement your analytics tracking changes.
+3. **Pull the updated Codegen** - Use the [Avo CLI](/implementation/cli) to pull the updated code from the Avo branch you are implementing. You can find the Avo CLI command for each source in the top right corner of the branch review screen under "Branch Implementation".
+4. **Implement the changes** - Use the type-safe functions provided by Avo Codegen to implement your events in your source code, using the code changes screen as a task list and the journey as visual context for where each event belongs in the user flow. The [Codegen tab in your workspace](https://www.avo.app/schemas/default/implement/) provides documentation and code snippets for each event.
 
 If Avo Codegen haven’t been set up in your project yet, learn how to set them up in our Avo Codegen quickstart guide:
 
