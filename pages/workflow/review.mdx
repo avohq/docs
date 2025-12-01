@@ -9,19 +9,23 @@ import { Callout } from 'nextra/components';
 
 _Role: Product, Data, Engineering._
 
-Once you have drafted changes to your tracking plan we recommend adding a description of the changes and related product updates before requesting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders). 
-To do this, click "View changes" in the branch header to navigate to the review screen.
-Stakeholder teams can be [configured to be automatically added as required reviewers](/workspace-management/domains#individual-stakeholder-team-settings) on the enterprise plan.
+Once you have drafted changes to your tracking plan we recommend adding a description of the changes and related product updates before requesting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders).  Stakeholder teams can be [configured to be automatically added as required reviewers](/workspace-management/domains#individual-stakeholder-team-settings) on the enterprise plan.
+
+If you've created a [journey](/data-design/avo-tracking-plan/journeys) as part of your planning process, the journey builder serves as a helpful visual guide during review, showing the screens, triggers, and events in context before diving into the detailed tracking plan changes.
+
+The journey builder currently only shows the current state of the journey, after changes. To see the actual data structure changes, navigate to the review screen by clicking "View changes" in the branch header.
 
 ## Who should review?
 
 We typically see three types of reviewers:
 
-- **Product team:** Someone who is responsible for the related feature or user flow who verifies the metrics mapped out on the branch meet their data needs
-- **Data team:** Someone who validates that the changes made are according to the data standard of your company
-- **Engineering team:** The folks who will implement the suggested changes. If the changes made affect multiple sources (e.g. iOS, Android, Web, backend) we recommend to get reviews from the teams working on each source
+- **Product team:** Someone who is responsible for the related feature and the user flow defined in a [journey](/data-design/avo-tracking-plan/journeys). They typically review and confirm the journey steps and related triggers and the metrics that the product update is expected to impact.
+- **Data team:** Someone who reviews the data structures connected to the [journey triggers](/data-design/avo-tracking-plan/journeys#journey-triggers) and validates that the changes made are according to the data standard of your company
+- **Engineering team:** The developers who will implement the suggested changes typically review the journey and the [code changes](/data-design/branches/branch-changes) associated with the journey triggers.
 
-> For changes impacting multiple stakeholders within your organization, you may also want to pull them in to review and align on the changes. See: <PageLink
+For changes impacting multiple stakeholders within your organization, you may also want to pull them in to review and align on the changes:
+
+<PageLink
   image="/docs/images/svg/analyticsmanager.svg"
   title="Impacted Stakeholders"
   description="Managing changes impacting multiple stakeholders"
@@ -69,6 +73,19 @@ Additionally, with approval workflows you can configure how many approvals are r
   href="/data-design/branches/approval-workflows"
 />
 
+## Reviewing journeys
+
+If the branch includes a new or updated [journey](/data-design/avo-tracking-plan/journeys), we recommend using the journey builder as a visual guide when reviewing the changes. The journey builder shows the current state of the journey after the changes and provides helpful context for understanding the tracking requirements.
+
+### How to review a journey
+
+1. **Open the journey** - Navigate to the Journeys tab in the left sidebar and select the journey associated with the branch
+2. **Review the journey visually** - Look at the journey steps, triggers, and connections to understand the user flow and tracking requirements in context
+3. **Review the tracking plan changes** - Navigate to the "View changes" screen to see the detailed changes made to events, properties, and variants. We recommend having the journey open in one window and the tracking plan or code changes in another to see the diff in context of the journey.
+4. **Provide feedback** - Comment on specific changes in the tracking plan or code changes view, to suggest changes or ask questions.
+
+By reviewing the journey first, you get the full context of the user flow before diving into the detailed tracking plan changes. This makes it easier to understand why certain events or properties are needed and how they fit into the overall feature.
+
 ## Submitting a review
 
 The role of the reviewer(s) is to make sure that the changes
@@ -78,7 +95,11 @@ The role of the reviewer(s) is to make sure that the changes
 - Don't negatively impact other teams using the data you are changing
 - Are feasible for implementation
 
-The Tracking plan changes tab summarizes the changes that have been suggested on the branch. You can use the filtering options to focus on the most relevant changes for your review.
+The Tracking plan changes tab summarizes the changes that have been suggested on the branch. You can use the filtering options to focus on the most relevant changes for your review. If a journey was created, use it as a visual reference to understand the context of the changes.
+
+<Callout type="info" emoji="💡">
+  Coming soon: Dev mode for journey builder. This will allow you to see the actual data structure changes in the journey builder in the form of code snippets.
+</Callout>
 
 ### Filtering changes
 

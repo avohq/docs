@@ -1,0 +1,249 @@
+# Defining Event Hierarchies
+
+Avo provides multiple, complementary approaches to structure and organize events across different levels of granularity. These tools help you balance consistency with flexibility, maintain clarity as your tracking plan scales, and reduce implementation overhead. 
+
+The following approaches are available, in order of highest to lowest granularity:
+
+- [Global and local workspaces](#global-and-local-workspaces): cross-product consistency with local flexibility
+- [Name mapping](#name-mapping): break down general events into specific tracking plan definitions
+- [Event variants](#event-variants): define context-specific shapes while inheriting from a base event, with the ability to add, remove, or configure variant-specific properties
+- [Source-specific presence and allowed values](#source-specific-presence-and-allowed-values): manage platform differences within a single event, both presence and allowed values can be configured per source
+- [Journey triggers with property conditions](#journey-triggers-with-property-conditions): specify event shapes in journey context, with the ability to define property conditions for the trigger
+
+Below we cover each approach, then how they work together, and practical examples.  
+
+## Global and local workspaces
+
+Global workspaces let a central team define core events that are shared across multiple local workspaces. Local workspaces adopt those global event definitions and can extend them with local properties, triggers, and metadata. When a global event is updated, those changes cascade to all local workspaces that use it, ensuring consistency across products.
+
+This model delivers cross-product consistency for foundational events (like user lifecycle, purchases, and core features) while preserving product-level flexibility. Local workspaces can create their own product-specific events alongside the global ones.
+
+Tips and usage:
+- Define global events and properties in the Global Requirements workspace and select which local workspaces to push them to
+- Local workspaces can extend the global events and properties with local variants, properties, triggers, sources, and descriptions
+- When a global event is updated, those changes cascade to all local workspaces that use it, ensuring consistency across products
+- Local workspaces can create their own product-specific events alongside the global ones, independently of the global event definitions
+
+Example in practice: An enterprise with multiple products defines a global "Order Completed" event in the Global Requirements workspace. The local workspaces extend the global event with local variants, properties, triggers, sources, and descriptions:
+- Product A extends the global event with a local variant "Order Completed - Product A"
+- Product B adds a local description and local properties specific to their product
+- Product C adds local triggers and sources specific to their product
+
+Learn more: [Global Requirements](/data-design/global-requirements)
+
+## Name mapping
+
+Name mapping lets you define multiple, specific event or property definitions in your tracking plan that are sent with the same name to your analytics destinations. This is particularly useful when a single, general event name in your analytics tool actually represents several distinct concepts that deserve separate tracking plan definitions.
+
+By breaking down a general event into multiple specific events in Avo, you can:
+- Document different descriptions, constraints, and property requirements for each use case
+- Make data design clearer and more maintainable with descriptive names
+- Maintain backward compatibility by sending all specific events with the same general name downstream
+
+Tips and usage:
+- Identify events or properties with broad, context-dependent meanings in your analytics tools
+- Create separate, descriptively named events in Avo for each distinct scenario
+- Add name mapping to each specific event to send them all with the same general name to destinations
+- Define different property requirements, descriptions, and constraints per specific event
+- Use this when you need granular tracking plan documentation but must preserve existing downstream event names
+
+Example in practice: A team has a generic "Button Clicked" event in their analytics tool that means different things depending on context: clicking a CTA, a navigation button, or a form submission. They create three separate events in Avo:
+- "CTA Button Clicked" with properties like `cta_text`, `cta_position`, `destination_url`
+- "Navigation Button Clicked" with properties like `button_label`, `source_screen`, `destination_screen`
+- "Form Submit Button Clicked" with properties like `form_name`, `form_type`, `field_count`
+
+Each event has name mapping configured to send as "Button Clicked" to all destinations, maintaining historical continuity while improving tracking plan clarity. And each of these events could even have their own variants and be used in journeys with different property conditions.
+
+Learn more: [Name Mapping](/data-design/guides/name-mapping)
+
+## Event variants
+
+Event variants allow you to create context-specific versions of an event that inherit properties from a base event while adding, modifying, or constraining properties for specific scenarios. This approach keeps your tracking plan precise and makes implementation changes surgical rather than widespread.
+
+Each variant inherits all properties from its base event and can:
+- Add variant-specific properties
+- Change property presence (from sometimes sent to always sent, or never sent)
+- Pin specific property values expected in that variant
+- Define variant-specific triggers and descriptions
+- Narrow down sources the variant is sent from
+
+When you change the base event (for example, adding a property), that change propagates to all variants. When you change only a variant, the change is isolated to that context, minimizing implementation scope.
+
+Tips and usage:
+- Identify events used in multiple scenarios with different property requirements
+- Create a base event with common properties that apply across all scenarios
+- Add variants for each distinct context with scenario-specific properties and constraints
+- Use variants to generate tailored Codegen functions that match each implementation point
+- Leverage property presence controls and pinned values to make variant requirements explicit
+- Review variant changes in isolation—only the affected scenario requires implementation updates
+
+Example in practice: A "Song Played" event has a base definition with common properties like  `song_id`, `song_name`, and `duration`. In addition there is a property specifying the origin of the song play, either a playlist, a search, or a radio station. The team creates variants:
+- "Song Played - Playlist" has `song_origin` set to "playlist" and   adds `playlist_id` and `playlist_name` as always sent
+- "Song Played - Search" has `song_origin` set to "search" and adds `search_query` as always sent
+- "Song Played - Radio" has `song_origin` set to "radio" and adds `station_id` as always sent
+
+When the team later adds a `playback_quality` property to the base event, it automatically appears on all variants. When they add `playlist_position` only to the Playlist variant, that change impacts only the playlist implementation context.
+
+Learn more: [Event Variants](/data-design/avo-tracking-plan/event-variants)
+
+## Source-specific presence and allowed values
+
+When events differ only by platform or codebase (source), you can manage those differences within a single event definition rather than creating variants or separate events. Source-specific presence lets you control whether a property is required, optional, or excluded per source. Source-specific allowed values let you define different valid values per platform.
+
+This approach keeps your event definitions consolidated while accommodating platform differences like:
+- Mobile-only or web-only properties
+- Platform-specific property names or formats (e.g., "screen_name" on mobile, "page_url" on web)
+- Different allowed values per platform (e.g., OS-specific feature flags)
+
+Tips and usage:
+- Use source-specific presence when a property only makes sense on certain platforms
+- Set "always sent" on mobile but "never sent" on web for mobile-specific properties like `device_model`
+- Define different allowed values per source when platforms have different constraints or features
+- Avoid creating variants solely for platform differences, use source-specific presence and allowed values instead
+- Use this when the event logic is the same but property availability or values differ by platform
+
+Example in practice: A "Screen Viewed" event is sent from Web, iOS, and Android. The base event has common properties like `screen_name` and `timestamp`. The team uses source-specific settings:
+- `page_url` property: always sent on Web, never sent on iOS and Android
+- `device_model` property: always sent on iOS and Android, never sent on Web  
+- `screen_orientation` property: allowed values are "portrait" and "landscape" on mobile, never sent on Web
+- `platform_version` property: allowed values differ per source (e.g., iOS versions vs Android versions vs browser versions)
+
+This keeps all "Screen Viewed" tracking in a single event definition while clearly documenting platform-specific requirements. Developers see exactly which properties apply to their platform, and changes to shared properties automatically apply across all sources.
+
+Learn more: [Sources](/data-design/avo-tracking-plan/define-sources-and-destinations)
+
+## Journey triggers with property conditions
+
+Journey triggers represent user, navigation, or system actions in the context of a specific user journey. When combined with property conditions, they let you specify the exact shape an event should have in that journey context, including which properties must be present and what values they should hold.
+
+Property conditions on journey triggers:
+- Highlight required properties for a scenario using "is set"
+- Specify allowed values this screen should have using "is" or "is not" operators
+- Exclude properties in certain contexts using "is not set"
+- Add notes to document dynamic values or patterns
+
+This approach provides visual, scenario-specific event specifications without creating separate events or variants. It's particularly useful for:
+- Documenting how the same event differs across journeys and journey steps
+- Communicating expected property values to developers in context
+- Onboarding team members with visual, step-by-step event requirements
+
+Example in practice: A checkout journey has multiple paths. The "Checkout Completed" event is used throughout, but property requirements differ:
+- Path 1 (credit card payment): trigger has property conditions requiring `payment_method` is "credit_card", `card_type` is set, and `installments` is not set
+- Path 2 (buy now pay later): trigger has property conditions requiring `payment_method` is "bnpl", `bnpl_provider` is set, and `installment_count` is set
+- Path 3 (gift card): trigger has property conditions requiring `payment_method` is "gift_card", `gift_card_balance` is set, and `installments` is not set
+
+Each trigger shows the same event but highlights the relevant properties for that specific journey path.
+
+Learn more: [Journeys](/data-design/avo-tracking-plan/journeys), [Triggers and Use Cases](/data-design/guides/event-triggers)
+
+## How these work together
+
+The table below summarizes each approach, what it's for, key characteristics, and when to use it.
+
+| Approach | Primary purpose | Changes base event | Creates separate implementation | Published as separate events | Best for |
+| --- | --- | --- | --- | --- | --- |
+| Global/local workspaces | Cross-product consistency with local extension | ✅ (global changes cascade) | ❌ (extends existing) | ✅ (as single event per workspace) | Multi-product organizations needing shared foundational events |
+| Name mapping | Break down general events into specific definitions | ❌ (separate events) | ✅ (separate events in code) | ❌ (all map to same downstream name) | Maintaining clarity in tracking plan while preserving downstream naming |
+| Event variants | Context-specific event shapes inheriting from base | ✅ (base changes apply to variants) | ✅ (variant-specific functions) | ⚠️ (published as union) | Events with distinct property requirements per scenario |
+| Source-specific presence & allowed values | Platform-specific property requirements | ❌ (single event definition) | ✅ (per-source implementation) | ✅ (as single event) | Events that differ only by platform or codebase |
+| Journey triggers + property conditions | Visual, scenario-specific event documentation | ❌ (documentation layer) | ❌ (same event, contextual docs) | ❌ (documentation only) | Visual communication of event requirements across user flows |
+
+These approaches can be combined:
+- A global event can have variants both in global and local workspaces
+- Events that have been split into multiple specific events using name mapping can have variants to break down the event definition even further
+- Variants can have source-specific presence and allowed values, both for the base event and for the variant
+- All events and variants, both global and local, can be used in journeys and have different journey triggers with property conditions
+- Property conditions in journeys can reference properties with source-specific settings
+- Source-specific presence can be combined with journey triggers to document platform-specific flows
+
+## Practical examples
+
+The best approach depends on your organizational structure, product complexity, and how your events differ across contexts. Below are common patterns.
+
+### Enterprise with multiple subsidiaries
+
+Organizations with several products and/or subsidiaries and a central data governance team often use global workspaces for consistency and variants for subsidiary-specific scenarios.
+
+- **Global workspace** defines core events like "User Signed Up", "Order Completed", "Subscription Started"
+- **Local workspaces** inherit those events and add subsidiary-specific events
+- **Variants** handle subsidiary-specific scenarios—for example, "Order Completed - Subscription" vs "Order Completed - One-Time Purchase"
+- **Journey triggers** document flows and communicate implementation requirements to development teams
+- **Property conditions** in journeys specify which properties apply for each checkout path and which property values are expected in each journey step
+
+### Web tracking that has very few generic events
+
+Teams that use for example Adobe Analytics and have one event for clicking a button and another one for loading a page can use a combination of name mapping and variants to split up the event into multiple specific events that are easier to understand and maintain.
+
+- **Name mapping** split both the button clicked and page loaded events high level events into more specific events that usually don't get updated in the same way at the same time
+- **Variants** create variants for the name mapped events to split up the event definition even further and potentially are sometimes updated in the same way at the same time
+- **Source-specific properties** configure the source-specific presence and allowed values for both name mapped events and their variants to only send the properties that are relevant for the source
+- **Journey triggers** document flows and communicate implementation requirements to development teams
+- **Property conditions** in triggers for the name mapped events and their variants to specify which properties are expected in each journey step
+
+### Event with multiple in-product scenarios
+
+Teams with events triggered that differ by how the user interacts with the product can use variants to split up the event definition according to the different scenarios.
+
+- **Base event**: "Flight Searched" with common properties `passenger_count`, `outbound_date`, `outbound_departure_airport`, `outbound_arrival_airport` and `flight_type`
+- **Variants**:
+  - "Flight Searched - One-Way" has `flight type` pinned to "one-way"
+  - "Flight Searched - Round Trip" adds `return_date`, `return_departure_airport`, `return_arrival_airport` and `flight type` pinned to "round trip"
+- **Source-specific properties** configure the source-specific presence and allowed values for both variants to only send the properties that are relevant for the source
+- **Journey triggers** document flows and communicate implementation requirements to development teams
+- **Property conditions** in triggers for the variants to specify which properties are expected in each journey step
+
+### Cross-platform event with source differences
+
+Teams with events that work the same way across platforms but have platform-specific properties use source-specific presence and allowed values.
+
+- **Event**: "Video Playback Started" sent from Web, iOS, Android, and Smart TV
+- **Common properties**: `video_id`, `video_title`, `playback_position` (always sent on all sources)
+- **Source-specific presence**:
+  - `browser_type`: always sent on Web, never sent on mobile and TV
+  - `app_version`: always sent on iOS, Android, and Smart TV, never sent on web
+  - `platform`: the allowed values are different per source, for example "Web" on web, "iOS" on iOS and "Android" on Android
+
+**Benefits**: single event definition, clear per-platform requirements and implementation instructions with only relevant properties per source, changes to common properties apply everywhere
+
+### Visualizing event requirements across journeys
+
+Product teams designing new features use journeys to map out event requirements before implementation.
+
+- **Journey steps** show each screen in the onboarding flow with screenshots
+- **Journey triggers** represent actions like "Clicked Continue", "Selected Plan", "Entered Payment Info" with connected events like "Onboarding Step Completed" or variants like "Onboarding Step Completed - Payment"
+- **Property conditions** specify requirements per trigger: `plan_type` is "premium" vs "free", `payment_method` is set, `trial_eligible` is true
+
+**Benefits**: visual documentation for reviews, clear implementation specifications per screen, reduced ambiguity about property values
+
+## Choosing the right approach
+
+Use this decision framework to select the appropriate approach:
+
+**Choose global workspaces** when:
+- You have multiple products sharing foundational events
+- Central governance must cascade changes across products
+- Local products need flexibility to extend global events
+
+**Choose name mapping** when:
+- Your analytics tools have broad, overloaded event names
+- You need granular tracking plan definitions without breaking downstream integrations
+- Different scenarios share an event name but have distinct meanings and property requirements
+
+**Choose variants** when:
+- The same event is used in multiple scenarios with different property requirements
+- You want base event changes to cascade while keeping variant changes isolated
+- You use Codegen and want tailored functions per scenario
+- Making trivial changes should not force widespread implementation updates
+
+**Choose source-specific presence and allowed values** when:
+- Events differ only by platform or codebase (Web, iOS, Android, Backend)
+- Property requirements vary by source but the event logic remains the same
+- You want to avoid creating variants solely for platform differences
+- Different platforms have different technical constraints or capabilities
+
+**Choose journey triggers with property conditions** when:
+- You want visual documentation of event requirements in user flows
+- Different journey paths use the same event with different property expectations
+- You need to communicate scenario-specific requirements to developers
+- Onboarding new team members or reviewing feature specifications
+

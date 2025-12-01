@@ -3,6 +3,7 @@ export default {
   "archive-and-restore": "Archive and Restore",
   "avo-as-solutions-design-document": "Avo as a Solutions Design Document (SDD)",
   "bulk-editing": "Bulk Editing and Use Cases",
+  "organizing-event-hierarchy": "Defining event hierarchy",
   "documenting-downstream-dependencies": "Documenting Downstream Dependencies",
   "documenting-purpose-meetings-in-avo": "Documenting Purpose Meetings in Avo",
   "event-triggers": "Event Triggers and Use Cases",

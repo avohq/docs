@@ -1,16 +1,12 @@
 import { Callout } from 'nextra/components'
 
-# Journeys (beta)
+# Journeys
 
 Use Journeys to visually design analytics for a product update by composing a flow from product images or screenshots that represent each step of your experience. Add triggers for each step and connect them to events and variants in your tracking plan. If you opt in to [Avo Intelligence](/reference/avo-intelligence) for Journeys, AI can generate triggers from images and suggest matching existing events/variants to speed up data design.
 
 The journey builder and [AI functionality](/data-design/guides/agentic-data-design) transform tracking plan creation from a bottle-necked, documentation-heavy process to a visual, self-service workflow that delivers significant time and quality improvements. By replacing scattered Google Docs and manual Figma annotations with a single visual source of truth, product teams can independently create tracking requirements while data teams shift focus to validation and quality monitoring. 
 
 This workflow results in faster turnaround times, better data quality and reduced governance overhead, while the AI-powered event discovery helps solve the chronic problem of duplicate events and improper event usage across large tracking plans with hundreds of existing events.
-
-<Callout type="info" emoji="🚀">
-  Journeys is in beta. Interested in early access? Reach out at support@avo.app or via the chat bubble in the app.
-</Callout>
 
 ## Journeys overview
 
@@ -214,6 +210,21 @@ To edit a journey, you can select a journey in the [journeys overview](/data-des
 There you can edit all the details of the journey, including the [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description), the [journey steps](/data-design/avo-tracking-plan/journeys#journey-step) and [triggers](/data-design/avo-tracking-plan/journeys#event-triggers), and the [connections](/data-design/avo-tracking-plan/journeys#connections) between them.
 
 All edits are saved automatically as you make them. Once you are done, we recommend getting a review from your teammates and any [impacted stakeholders](/data-design/guides/managing-changes-impacting-multiple-stakeholders). There is a "View changes" button in the journey builder that opens a tracking plan changes slide-over that shows the changes you made to the journey. The journey visualizes the current state of the journey after the changes made.
+
+### Keyboard actions
+
+The journey builder supports keyboard shortcuts to speed up your workflow:
+
+| Action | Mac | Windows |
+| ------ | --- | ------- |
+| Copy selected step(s) or trigger(s) | ⌘ + C | Ctrl + C |
+| Paste step(s) or trigger(s) | ⌘ + V | Ctrl + V |
+| Undo | ⌘ + Z | Ctrl + Z |
+| Redo | ⌘ + Shift + Z | Ctrl + Shift + Z |
+
+**Copy and paste** works for both journey steps and triggers. Select one or more items on the canvas, copy them, and paste to duplicate them. This is useful when you need to create similar steps or triggers across your journey.
+
+**Undo and redo** let you quickly reverse or reapply changes as you build your journey, making it easy to experiment with different layouts and configurations. Undo is available for adding, moving and removing nodes (journey steps and triggers) and connections between them.
 
 ### Deleting a journey
 
