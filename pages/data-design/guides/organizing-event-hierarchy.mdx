@@ -160,13 +160,13 @@ These approaches can be combined:
 
 The best approach depends on your organizational structure, product complexity, and how your events differ across contexts. Below are common patterns.
 
-### Enterprise with multiple products
+### Enterprise with multiple subsidiaries
 
-Organizations with several products and a central data governance team often use global workspaces for consistency and variants for product-specific scenarios.
+Organizations with several products and/or subsidiaries and a central data governance team often use global workspaces for consistency and variants for subsidiary-specific scenarios.
 
 - **Global workspace** defines core events like "User Signed Up", "Order Completed", "Subscription Started"
-- **Local workspaces** inherit those events and add product-specific events
-- **Variants** handle product-specific scenarios—for example, "Order Completed - Subscription" vs "Order Completed - One-Time Purchase"
+- **Local workspaces** inherit those events and add subsidiary-specific events
+- **Variants** handle subsidiary-specific scenarios—for example, "Order Completed - Subscription" vs "Order Completed - One-Time Purchase"
 - **Journey triggers** document flows and communicate implementation requirements to development teams
 - **Property conditions** in journeys specify which properties apply for each checkout path and which property values are expected in each journey step
 
