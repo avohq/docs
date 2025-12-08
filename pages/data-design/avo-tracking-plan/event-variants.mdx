@@ -73,9 +73,14 @@ The event variant actions reflect the actions on the base event. An event varian
 - **Add variant specific triggers**: Click the _+ New Trigger_ button
 - **Edit sources**: Click the _Edit on variant_ button next to the _Sources_ label to narrow down sources this event variant is sent from
 - **Add properties**: Click the _+ Add Property to Variant_ button and select the property you want to add
+- **Add or remove property bundles**: Property bundles can be added or removed from variants, just like individual properties
 - **Set property presence**: Click the presence label in the variant details view to toggle between `always sent`, `sometimes sent` and `never sent` for this variant
 - **Pin a property value**: In the triple-dot menu, choose _Pin Property Value on Variant_ to pin a property value or override an existing pin
 - **Rename variant**: Click the variant name to rename the variant
+
+The variant overview in Event Details clearly shows all overrides at a glance, making it easy to understand what's different about each variant.
+
+![Screenshot of variant overview showing overrides](/images/event-variants/variants-in-event-details.png)
 
 Below the actions you can find the code snippet to track that event variant, with all the overrides applied. If you're using Codegen, you'll get a tailored Codegen function for this variant else you'll see a pseudocode snippet with the base event name.
 
@@ -103,7 +108,13 @@ You can rename a variant directly from its details. Open the variant, click the 
 
 ### Finding and using variants across Avo
 
-Variants live under the base event and are nested under it in the event details view. You can discover and use variants in the following ways:
+Variants live under the base event and are nested under it in the event overview and event details views. You can discover and use variants in the following ways:
+
+#### Events view
+
+Variants now appear directly in the Events view, next to their base events. You can filter by event label, base event, variant, global events, or unlabeled items to quickly find what you're looking for.
+
+![Screenshot of variants appearing in the Events view](/images/event-variants/variants-in-event-overview.png)
 
 #### Global search
 
@@ -112,6 +123,10 @@ Use global search or cmd+k to search for variants alongside events and propertie
 ![Screenshot of variant results in cmd+k](/images/event-variants/event-variant-search.png)
 
 If you have [Avo Intelligence: Smart Search](/reference/avo-intelligence) on, you also get fuzzy results, not only exact matches.
+
+Events and variants are also searchable by pinned values. For example, if a variant of the event `Signup Completed` pins `authentication_status` to "Logged In" a quick search will find it instantly.
+
+![Screenshot of searching by pinned values](/images/event-variants/pinned-values-in-search.png)
 
 #### Property details
 
