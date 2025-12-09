@@ -36,6 +36,10 @@ See all events flowing through Inspector in real-time, organized chronologically
 
 ### Event details and validation
 
+<Callout type="info">
+  Property value validation is currently only available for the Inspector Web SDK and Segment integration. Other platforms coming soon. Reach out to support if you need property value validation for other platforms. 
+</Callout>
+
 Click any event to see:
 - **Complete property list** - All properties sent with the event, including their types and values (if property value validation is enabled)
 - **Tracking plan validation** - Details on the validation status, with immediate feedback on [issue types](/inspector/issue-types-in-inspector) like unexpected properties, type mismatches, or missing required properties
@@ -96,7 +100,7 @@ Property values are encrypted end-to-end for privacy and security:
 - **Public/private key encryption** - You generate a key pair using the Avo CLI. Avo uses the public key to encrypt values, and only you can decrypt them with your private key
 - **Avo cannot decrypt your data** - The public key can only be used for encryption, not decryption
 
-![Inspector Debugger with encrypted values](/images/inspector/debugger/inspector-debugger-encrypted.png)
+![Inspector Debugger with encrypted values](/images/inspector/debugger/inspector-debugger-event-details.png)
 
 #### Setting up property value validation
 
@@ -115,7 +119,7 @@ When viewing events in the debugger, property values will show as "Encrypted val
 3. Optionally check "Remember for future sessions" to store the key in your browser (the key is never sent to Avo)
 4. Click **Decrypt** to reveal the actual property values
 
-![Decrypt property values dialog](/images/inspector/debugger/inspector-debugger-decrypt-dialog.png)
+![Decrypt property values dialog](/images/inspector/debugger/inspector-debugger-decrypt-flow.png)
 
 Once decrypted, you can see the actual values sent with each event and identify issues like incorrect data or unexpected values.
 
