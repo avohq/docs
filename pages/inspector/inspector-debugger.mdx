@@ -37,7 +37,7 @@ See all events flowing through Inspector in real-time, organized chronologically
 ### Event details and validation
 
 Click any event to see:
-- **Complete property list** - All properties sent with the event, including their types
+- **Complete property list** - All properties sent with the event, including their types and values (if property value validation is enabled)
 - **Tracking plan validation** - Details on the validation status, with immediate feedback on [issue types](/inspector/issue-types-in-inspector) like unexpected properties, type mismatches, or missing required properties
 - **Event metadata** - Source, version, stream session information, and timestamps
 - **Link to tracking plan** - Quick access to view the event definition in your tracking plan
@@ -81,6 +81,49 @@ The debugger provides controls for managing the live stream:
 - **Pause** - Pause the event stream to inspect events without new ones appearing. Useful when you need to review a specific event in detail.
 - **Resume** - Resume the live stream to continue receiving events
 - **Reset** - Clear all events from the current view to start fresh. Useful when you are finding your stream session or want to start fresh.
+
+### Decrypting property values
+
+The Inspector Debugger supports property value validation, allowing you to see the actual values being sent with your events and verify they match your expected data. This is useful for catching [property value issues](/inspector/issue-types-in-inspector#property-value-issues) where values that don't match the [property constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined in Avo, such as allowed values and regex patterns for string properties, min and max values for numerical properties, and required or unexpected keys in object properties.
+
+Property values are encrypted end-to-end for privacy and security. You can always see if there is an issue related to the value but to see the actual values you need to decrypted them using your private key.
+
+#### How encryption works
+
+Property values are encrypted end-to-end for privacy and security:
+
+- **Avo never stores actual values** - Only encrypted values are stored on Avo's servers
+- **Public/private key encryption** - You generate a key pair using the Avo CLI. Avo uses the public key to encrypt values, and only you can decrypt them with your private key
+- **Avo cannot decrypt your data** - The public key can only be used for encryption, not decryption
+
+![Inspector Debugger with encrypted values](/images/inspector/debugger/inspector-debugger-encrypted.png)
+
+#### Setting up property value validation
+
+To enable property value validation:
+
+1. **Generate encryption keys** - Use the Avo CLI to generate a public/private key pair when setting up value validation in the Inspector SDK
+2. **Store your private key securely** - Keep your private key in a secure location like 1Password or another secrets manager. You'll need this key to decrypt values in the debugger
+3. **Configure the SDK** - Follow the [Inspector SDK setup guide](/inspector/sdk/avo-inspector-sdk-setup) to configure value validation with your public key
+
+#### Decrypting values in the debugger
+
+When viewing events in the debugger, property values will show as "Encrypted value" by default. You will always be able to see if there is an issue related to the value, but to view the actual values:
+
+1. Click the **Encrypted** button in the debugger header
+2. Enter your 64-character hex private key in the dialog
+3. Optionally check "Remember for future sessions" to store the key in your browser (the key is never sent to Avo)
+4. Click **Decrypt** to reveal the actual property values
+
+![Decrypt property values dialog](/images/inspector/debugger/inspector-debugger-decrypt-dialog.png)
+
+Once decrypted, you can see the actual values sent with each event and identify issues like incorrect data or unexpected values.
+
+![Inspector Debugger with decrypted values](/images/inspector/debugger/inspector-debugger-decrypted.png)
+
+<Callout type="info">
+  Your private key is only stored in your browser's local storage and is never sent to Avo's servers. Decryption happens entirely on your machine.
+</Callout>
 
 ## Troubleshooting
 
