@@ -250,6 +250,20 @@ Developer mode opens a sidebar with a list of all triggers for each journey step
 
 Use Developer mode together with the [Branch Code Changes](/data-design/branches/code-changes) screen for a complete implementation workflow. For more details on the implementation process, see [Implement analytics events](/workflow/implement).
 
+#### How code snippets reflect property conditions
+
+The code snippets in Developer mode are customized based on the [property conditions](/data-design/avo-tracking-plan/journeys#journey-trigger-property-conditions) defined for each trigger. Property conditions are represented in the comment for each property in the generated code:
+
+- **Property condition notes**: Any notes added to a property condition are appended to the end of the property's comment
+- **Narrowed allowed values**: If a property condition specifies a subset of allowed values from the full list defined on the property, the code snippet only shows the values defined in the property condition
+- **Condition-specific values**: If a property condition defines an allowed value but the property itself has no allowed values defined, that value is shown in the comment for context but is not added to the property definition
+- **Optional properties set to "is set"**: The property is required in this context, even if it's optional on the event definition and the comment will state that the property should be set
+- **Optional properties set to "is not set"**: The property should not be set in this context and the comment will state that the property should not be set
+
+![Developer mode code snippets](/images/journeys/journeys-property-conditions-code-snippets.png)
+
+This ensures that developers see exactly what's expected for each specific trigger scenario, rather than the full event definition.
+
 ## Approaches to building journeys
 
 There are many possible ways to build journeys and there is no one-size-fits-all solution. Below are some common journey structures for inspiration.
