@@ -53,6 +53,14 @@ No. Inspector does not receive any PII data. Inspector only takes schema metadat
 
 Learn more technical details about the [Avo Inspector here](/implementation/avo-inspector-overview).
 
+### Property value validation
+
+In addition to schema validation, Inspector can also validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, regex patterns, and min/max ranges.
+
+Property values are encrypted end-to-end—Avo only stores encrypted values and cannot decrypt them. You can decrypt values locally in the [Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values) using your private key.
+
+Property value validation is currently available for the [Web SDK](/reference/avo-inspector-sdks/web#property-value-validation) and [Segment integration](/inspector/connect-inspector-to-segment). Other platforms coming soon.
+
 ## Learning about Inspector issues and events
 
 After [setting up your sources](/inspector/configuring-inspector-sources) to send data to the Inspector with the direct CDP integrations or [Avo Inspector SDKs](/implementation/avo-inspector-sdk-reference) you will see the data appearing in the the Inspector tab.

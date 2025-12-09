@@ -77,6 +77,30 @@ If you are unsure of whether this applies to your source, or if you don’t know
 
 ![Destination Settings](/images/guide-segment-to-inspector/avo-destination-settings.png)
 
+##### Property Value Validation (Optional)
+
+Property value validation allows you to validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, regex patterns, and min/max ranges. This helps you catch issues like incorrect enum values or out-of-range numbers.
+
+To enable property value validation:
+
+1. **Generate encryption keys** - Run the following command in the Avo CLI to generate a public/private key pair:
+
+```bash
+avo inspector generate-keys
+```
+
+This will output a public key and a private key. 
+
+2. **Store your private key securely** - Save your private key in a secure location like 1Password or another secrets manager. You'll need this to decrypt values in the [Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values). Never share or expose your private key.
+
+3. **Add the public key to the destination settings** - Copy the public key and paste it into the "Public Key" field in the Segment destination settings.
+
+<Callout type="info" emoji="🔒">
+  Property values are encrypted end-to-end. Avo only stores encrypted values and cannot decrypt them. Only you can decrypt the values using your private key in the Inspector Debugger.
+</Callout>
+
+Learn more about [decrypting property values in the Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values) and the [property value issue types](/inspector/issue-types-in-inspector#property-value-issues) that can be detected.
+
 ### Step 3. Monitor Avo
 
 After you have enabled your destination in Segment, you can visit [Inspector Events](https://www.avo.app/schemas/fwtXqAc0fCLy7b7oGW40/inspector/events) and monitor the events coming into the inspector.
