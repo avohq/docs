@@ -230,13 +230,25 @@ The journey builder supports keyboard shortcuts to speed up your workflow:
 
 To delete a journey, you can click the triple-dot for the journey in the journeys overview and click the "Delete" button.
 
-### Reviewing a journey
+## Reviewing and implementing journeys
+
+### Reviewing journeys
 
 When reviewing tracking plan changes made in a new or updated journey, we recommend using the journey builder as a visual guide. The journey builder shows the current state of the journey after the changes and the [tracking plan changes screen](/data-design/branches/branch-changes) show the changes made to the journey. We recommend first reviewing the journey in the journey builder and then reviewing the changes in the tracking plan changes screen to have the whole context when reviewing the changes.
 
-### Using journeys as guidelines for implementation
+### Implementing journeys
 
-When implementing tracking plan changes made in a new or updated journey, use the journey builder as a visual guide. It shows the screens in the context of the events, variants, and property conditions. This makes it easy to understand the exact shape of the events that are applicable for each screen and each trigger on the screen.
+The best way to implement journeys is to use Developer mode. Developer mode can be accessed through the toolbar in the journey builder and provides everything developers need to implement tracking directly from the journey context.
+
+Developer mode opens a sidebar with a list of all triggers for each journey step in the journey. Every trigger includes auto-generated code snippets and prompts for coding agents, tailored to the property conditions defined for that scenario. Developers get:
+
+- **Context from the design**: Annotated images connected to the triggers with events that show exactly which event should be triggered and where
+- **Code snippets based on property conditions**: Clear indication of which properties must be sent and which are optional, plus allowed values and notes about the property or the value
+- **Implementation prompts**: Language-specific prompts for coding agents to help implement the tracking plan changes, for either Codegen or existing implementation methods
+
+![Developer mode in the journey builder](/images/journeys/journeys-developer-mode.png)
+
+Use Developer mode together with the [Branch Code Changes](/data-design/branches/code-changes) screen for a complete implementation workflow. For more details on the implementation process, see [Implement analytics events](/workflow/implement).
 
 ## Approaches to building journeys
 
