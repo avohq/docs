@@ -140,7 +140,9 @@ When publishing via the webhook each event variant is represented by a standalon
 
 ### Event variants and Inspector 
 
-We’ve engineered Inspector to be able to detect issues on events, even if they include complex and mutually exclusive variants. We do that by validating each incoming event structure against each event variant and if it doesn’t match the base event or any of its variants, we create an issue on the base event. This means that even if you start using event variants you will not have to make any changes on how you send your events to Inspector. 
+We’ve engineered Inspector to be able to detect issues on events, even if they include complex and mutually exclusive variants. We do that by validating each incoming event structure against each event variant and if it doesn’t match the base event or any of its variants, we create an issue on the base event. This means that even if you start using event variants you will not have to make any changes on how you send your events to Inspector.
+
+When debugging events in real-time, the [Inspector Debugger](/inspector/inspector-debugger#matching-events-and-variants) automatically picks the most likely variant to validate against. You can also manually select a different variant from the dropdown to see how your event validates against other variants.
 
 <Callout emoji="⚠️">The Inspector Events view has not been updated to include event variants so you might see unexpected warnings there. For events with variants we’re showing a disclaimer to help you identify when an event warning might be a false-positive.</Callout>
 

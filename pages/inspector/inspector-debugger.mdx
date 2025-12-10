@@ -52,6 +52,31 @@ Click any event to see:
   The Inspector Debugger validates events against your tracking plan in real-time and highlights [issue types](/inspector/issue-types-in-inspector) for the branch that you are currently on. 
 </Callout>
 
+### Matching events and variants
+
+In some cases, an incoming event could match multiple events or [variants](/data-design/avo-tracking-plan/event-variants) in your tracking plan. This happens when:
+
+- **Your tracking plan uses [event variants](/data-design/avo-tracking-plan/event-variants)** - Multiple variants of the same event exist with different property requirements
+- **Your tracking plan uses event [name mapping](/data-design/guides/name-mapping)** - Different events in the tracking plan are mapped to the same event name
+
+When multiple matches are possible, Avo [automatically picks the most likely event, name-mapped event, or variant](/inspector/inspector-debugger#how-avo-picks-the-most-likely-match) from the tracking plan to validate against. However, you can manually select a different match from the **Validating as** dropdown to validate against another event or variant from your tracking plan.
+
+In this example, an event named `MSG_SENT` has two possible matches in the tracking plan. The dropdown shows the direct matches, and you can select a different variant to see how the event validates against it.
+
+![Inspector Debugger variant picker](/images/inspector/debugger/debugger-variant-picker.png)
+
+This is useful for verifying that events are being sent with the correct properties for specific variants or mapped events.
+
+#### How Avo picks the most likely match
+
+When an event matches multiple variants in the tracking plan, Avo selects the best match using a tiered scoring system. Variants are compared in priority order, only moving to the next tier if there's a tie:
+
+1. **Value validation failures** - Count how many properties have values that don't match what this variant expected. Fewer failures = better match.
+2. **Missing expected properties** - Count properties the tracking plan expects but the event doesn't have. Fewer missing = better match.
+3. **Unexpected properties** - Count properties the event has that aren't defined in the tracking plan for this variant. Fewer unexpected = better match.
+4. **Type mismatches** - Count properties where the type is wrong (e.g., sent string but expected number). Fewer mismatches = better match.
+5. **Specific vs default (tiebreaker)** - If all else is equal, prefer the specific variant over the default event.
+
 ## How to use the Inspector Debugger
 
 ### Accessing the debugger
@@ -165,6 +190,7 @@ If you're seeing unexpected validation issues on events you might be on the wron
 
 1. **Check your branch** - Verify you're on the correct branch that you are expecting to see events from. Switch branches in the top of the left sidebar of your Avo workspace.
 2. **Check your tracking plan** - Verify your tracking plan definitions match the event shapes that you are seeing in the debugger
+3. **Check the matched variant** - If you're using [event variants](/data-design/avo-tracking-plan/event-variants) or [name mapping](/data-design/guides/name-mapping), verify that the debugger [matched the correct variant](/inspector/inspector-debugger#matching-events-and-variants). You can select a different variant from the "Validating as" dropdown to see how your event validates against other options.
 
 ## What's next?
 
