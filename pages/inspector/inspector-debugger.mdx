@@ -37,7 +37,7 @@ See all events flowing through Inspector in real-time, organized chronologically
 ### Event details and validation
 
 <Callout type="info">
-  Property value validation is currently only available for the Inspector Web SDK and Segment integration. Support on other platforms coming soon. Reach out to support if you need property value validation for other platforms. 
+  Property value validation is currently only available for [supported SDKs and integrations](#supported-sdks-and-integrations). Support on other platforms coming soon.
 </Callout>
 
 Click any event to see:
@@ -104,11 +104,31 @@ Property values are encrypted end-to-end for privacy and security:
 
 #### Setting up property value validation
 
-To enable property value validation:
+Property value validation is automatically enabled when using a supported SDK or integration version. You will always see validation issues (such as values not matching allowed values or regex patterns), but the actual property values will appear as encrypted. To see the actual values that are causing issues, you need to generate and configure encryption keys.
 
-1. **Generate encryption keys** - Use the Avo CLI to generate a public/private key pair when setting up value validation in the Inspector SDK
-2. **Store your private key securely** - Keep your private key in a secure location like like a password manager. You'll need this key to decrypt values in the Inspector Debugger dashboard
-3. **Configure the SDK** - Follow the [Inspector SDK setup guide](/inspector/sdk/avo-inspector-sdk-setup) to configure value validation with your public key
+##### Supported SDKs and integrations
+
+Property value validation is currently supported on:
+- [Inspector Web SDK](/reference/avo-inspector-sdks/web) (v1.5.0+)
+- [Segment integration](/inspector/connect-inspector-to-segment)
+
+Support for other platforms is coming soon. Reach out to support if you need property value validation for other platforms.
+
+##### For existing Inspector installations
+
+If you already have Inspector set up and want to enable property value validation:
+
+1. **Enable value validation in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
+2. **Update to a supported SDK or integration** - Update to the latest version of a [supported SDK or integration](#supported-sdks-and-integrations) that includes property value validation
+3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair using the Avo CLI and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
+
+##### For new Inspector installations
+
+If you're setting up Inspector for the first time:
+
+1. **Enable property value validation in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
+2. **Install the SDK or connect an integration** - Follow the [Inspector installation overview](/inspector/inspector-installation-overview) to set up Inspector. Property value validation is included by default in the latest versions of [supported SDKs and integrations](#supported-sdks-and-integrations).
+3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair using the Avo CLI and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
 
 #### Decrypting values in the debugger
 
@@ -116,7 +136,7 @@ When viewing events in the Inspector Debugger, property values will show as "Enc
 
 1. Click the **Encrypted** button in the debugger header
 2. Enter your 64-character hex private key in the dialog
-3. Optionally check "Remember for future sessions" to store the key in your browser (the key is never sent to Avo)
+3. Optionally save the key using a password manager with a browser extension (if it's not already saved) or your browser's built-in password manager to avoid having to enter it every time
 4. Click **Decrypt** to reveal the actual property values
 
 ![Decrypt property values dialog](/images/inspector/debugger/inspector-debugger-decrypt-flow.png)
