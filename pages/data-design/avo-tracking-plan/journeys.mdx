@@ -155,11 +155,15 @@ For a full walkthrough of building journeys on the canvas, see [Creating a journ
 
 ### Connections
 
-Connections link a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [journey trigger](/data-design/avo-tracking-plan/journeys#journey-triggers). Add connections by clicking the node on either side of the journey step and dragging it to a node on either side of the trigger.
+Connections link a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [journey trigger](/data-design/avo-tracking-plan/journeys#journey-triggers). There are two ways to connect journey steps and triggers:
+
+1. **From journey step edge to trigger edge**: Click the handle on either side of the journey step and drag it to a handle on either side of the trigger. This connects the entire journey step image to the trigger.
+
+2. **From image annotation to trigger edge**: Add an [annotation](/data-design/avo-tracking-plan/journeys#image-annotations) to a specific area of the journey step image, then connect the annotation handle to a trigger. This is useful when you want to highlight exactly where in the image the action occurs.
 
 ![Connections](/images/journeys/journey-connections.png)
 
-When a journey step and a trigger are connected, the trigger is associated with the event or variant linked to the journey step. The trigger will be attached to the event in the event details, including the image from the journey step and the trigger name, description, and property conditions from the trigger.
+When a journey step and a trigger are connected (either directly or via an annotation), the trigger is associated with the event or variant linked to the journey step. The trigger will be attached to the event in the event details, including the image from the journey step and the trigger name, description, and property conditions from the trigger.
 
 The following connections are possible:
 - A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to a [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) means that the image from the journey step will be added to the trigger details
@@ -168,6 +172,43 @@ The following connections are possible:
 - A connection from a [journey step](/data-design/avo-tracking-plan/journeys#journey-step) to another journey step is purely visual and does not connect the journey step to the event or variant connected to the journey step. Helpful to visualize how a user flows thought the journey and to get [relevant triggers](/data-design/guides/agentic-data-design#generate-journey-triggers) for each journey step based on the next step in the journey.
 
 Connections help the AI to generate relevant triggers for each journey step based on the subsequent journey step(s). See more about generating triggers with AI and cost in the [Agentic data design](/data-design/guides/agentic-data-design) documentation.
+
+### Image annotations
+
+Image annotations allow you to mark specific areas within a journey step image and connect those annotations directly to triggers. This is useful when you want to precisely indicate where in the UI an action occurs.
+
+#### Activating trigger mode
+
+To annotate images, activate trigger mode by pressing `t` on your keyboard. When trigger mode is active:
+
+- **Hovering over an image**: A crosshair cursor appears, allowing you to create annotations
+- **Over the journey builder grid**: You can drop a trigger node directly onto the canvas
+
+![Trigger mode](/images/journeys/acitvate-trigger-mode.png)
+
+#### Creating annotations
+
+There are two types of annotations you can create:
+
+- **Dot annotation (click)**: Click on the image to create a dot annotation. The dot can be connected from its right side. This is useful when annotating small elements like buttons or icons.
+
+- **Rectangle annotation (click and drag)**: Click and drag on the image to create a rectangle annotation. The rectangle can be connected from any side. This is useful when annotating larger areas like carousels, swimlanes, or content sections.
+
+![Creating annotations](/images/journeys/annotate-image.png)
+
+#### Nested annotations
+
+You can add annotations within other annotations. For example, if you have a swimlane that can be swiped, you can create a rectangle annotation around the entire swimlane and then add dot annotations for individual cards inside the swimlane. This allows you to represent both the container-level interaction (swiping the swimlane) and the item-level interactions (tapping individual cards).
+
+#### Creating triggers from annotations
+
+There are two ways to create triggers from annotations:
+
+1. **Drag from annotation handle**: Drag from an annotation handle and release over the journey builder grid to drop a new trigger node. The trigger will automatically be connected to the annotation.
+
+2. **Connect to an existing trigger**: Click any handle on the annotation and drag it to the handle on any side of an existing trigger. 
+ 
+![Creating triggers from annotations](/images/journeys/drop-trigger.png)
 
 ## Creating and editing journeys
 
@@ -185,6 +226,7 @@ There are many possible ways to build journeys and there is no one-size-fits-all
 1. Fill in the details for each [journey step](/data-design/avo-tracking-plan/journeys#journey-step), one-by-one:
     - Add a [name](/data-design/avo-tracking-plan/journeys#journey-step-name) and [description](/data-design/avo-tracking-plan/journeys#journey-step-description) for the journey step
     - If you are going to add an image and didn't drag-and-drop directly into the canvas, add one by clicking the placeholder image in the journey step or drag-and-drop an image from your computer
+    - Add [annotations](/data-design/avo-tracking-plan/journeys#image-annotations) to the image to highlight specific areas of the image that are important to track
     - Use the placeholder [trigger](/data-design/avo-tracking-plan/journeys#event-triggers) to either [generate a trigger with AI](/data-design/guides/agentic-data-design#generate-triggers) or create one manually
 5. Fill in the details for each trigger, one-by-one:
     - Add a [name](/data-design/avo-tracking-plan/journeys#event-trigger-name) and [description](/data-design/avo-tracking-plan/journeys#event-trigger-description) for the trigger
@@ -217,10 +259,16 @@ The journey builder supports keyboard shortcuts to speed up your workflow:
 
 | Action | Mac | Windows |
 | ------ | --- | ------- |
+| Activate step mode | S | S |
+| Activate trigger mode | T | T |
 | Copy selected step(s) or trigger(s) | ⌘ + C | Ctrl + C |
 | Paste step(s) or trigger(s) | ⌘ + V | Ctrl + V |
 | Undo | ⌘ + Z | Ctrl + Z |
 | Redo | ⌘ + Shift + Z | Ctrl + Shift + Z |
+
+**Step mode** activates step mode. When active, a ghost step node is shown with your cursor and you can click anywhere on the grid to drop it. To exit step mode, press `esc`
+
+**Trigger mode** activates annotation capabilities. When active, hover over an image to see a crosshair cursor for creating [annotations](/data-design/avo-tracking-plan/journeys#image-annotations), or hover over the canvas to drop trigger nodes. Press `esc` to exit trigger mode.
 
 **Copy and paste** works for both journey steps and triggers, one at a time. Select a journey step or trigger node on the canvas, copy it, move your cursor to the desired location and paste to duplicate. This is useful when you need to create similar steps or triggers across your journey. 
 
