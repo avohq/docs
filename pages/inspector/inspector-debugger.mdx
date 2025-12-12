@@ -127,6 +127,12 @@ Property values are encrypted end-to-end for privacy and security:
 
 ![Inspector Debugger with encrypted values](/images/inspector/debugger/inspector-debugger-event-details.png)
 
+To generate a public/private key pair, you can run the following command in your terminal:
+
+```bash
+node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
+```
+
 #### Setting up property value validation
 
 Property value validation is automatically enabled when using a supported SDK or integration version. You will always see validation issues (such as values not matching allowed values or regex patterns), but the actual property values will appear as encrypted. To see the actual values that are causing issues, you need to generate and configure encryption keys.
