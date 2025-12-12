@@ -33,6 +33,7 @@ constructor(options: {
     version: string;
     appName?: string;
     suffix?: string;
+    publicKey?: string;
 });
 ```
 
@@ -45,6 +46,49 @@ All the following methods are available in the **AvoInspector** class.
 > - `appVersion` - your application version. A lot of Inspector features rely on versioning and you need to provide a comparable string here to get value from them. We recommend using semantic versioning or integers that are incremented in every release.
 > - `appName` - your application name. Optional; Provide it to make it easier to distinguish between data from different apps.
 > - `suffix` - optional. If you are using more than 1 instance of Avo Inspector in the same project provide a unique string here.
+> - `publicKey` - optional. Your 64-character hex public key for [property value validation](#property-value-validation). Generate keys using `avo inspector generate-keys`.
+
+#### Property value validation
+
+You can enable property value validation to validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, regex patterns, and min/max ranges.
+
+To enable property value validation:
+
+1. **Enable property value validation in settings** - Go to workspace settings in your Avo workspace and enable [property value validation](/inspector/inspector-debugger#setting-up-property-value-validation).
+
+To be able to [decrypt the property values](/inspector/inspector-debugger#decrypting-property-values) in the Inspector Debugger, you need to generate a public/private key pair:
+
+**Step 1: Generate encryption keys**
+
+Run the following command in the Avo CLI to generate a public/private key pair:
+
+```bash
+node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
+```
+
+This will output:
+- **Public key** - Used by Avo to encrypt property values
+- **Private key** - Used by you to decrypt values in the Inspector Debugger
+
+**Step 2: Store your private key securely**
+
+Save your private key in a secure location like a password manager. You'll need this to [decrypt values in the Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values). Never share or expose your private key to a third party.
+
+**Step 3: Add the public key to the Inspector initialization**
+
+Pass the public key in the constructor options:
+
+```ts
+const inspector = new Inspector.AvoInspector({
+  apiKey: 'YOUR-API-KEY',
+  env: 'dev',
+  version: '1.0.0',
+  appName: 'My App',
+  publicKey: 'YOUR-64-CHARACTER-HEX-PUBLIC-KEY',
+});
+```
+
+Once enabled, property values will be encrypted and sent to Avo for validation. You can view the encrypted values and any [property value issues](/inspector/issue-types-in-inspector#property-value-issues) in the [Inspector Debugger](/inspector/inspector-debugger), and decrypt them locally using your private key.
 
 ### Installation option 2: HTML Tag
 
@@ -92,12 +136,15 @@ Make sure to update `__API_KEY__`, `__ENV__`, `__VERSION__` and `__APP_NAME__` b
   inspector.__ENV__ = 'dev'; // or "prod"
   inspector.__VERSION__ = 'YOUR-APP-VERSION';
   // inspector.__APP_NAME__ = "YOUR-APP-NAME"; // Optional
+  // inspector.__PUBLIC_KEY__ = "YOUR-64-CHARACTER-HEX-PUBLIC-KEY"; // Optional, for property value validation
 
   inspector.load();
 </script>
 ```
 
 > When Setting Up GTM, you can use the inspect tool in your browser to see if your GTM tag is firing the track call correctly.
+
+To enable [property value validation](#property-value-validation) with the HTML tag, uncomment the `__PUBLIC_KEY__` line and add your public key. See the [property value validation section](#property-value-validation) above for instructions on generating keys.
 
 
 ## 2. Send event schemas to Avo Inspector

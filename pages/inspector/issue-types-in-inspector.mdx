@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Issue Types in Avo Inspector
 
 - [Event unexpected by tracking plan](#event-unexpected-by-tracking-plan)
@@ -6,6 +8,9 @@
 - [Property type inconsistent](#property-type-inconsistent)
 - [Property unexpected on event](#property-unexpected-on-event)
 - [Required property sometimes missing from event](#required-property-sometimes-missing-from-event)
+- [Property value does not match constraints](#property-value-does-not-match-constraints)
+
+## Event and property structure issues
 
 ### Event unexpected by tracking plan
 
@@ -42,6 +47,52 @@ _**Example:** Property unexpected on event by tracking plan_
 Detects properties that are required in the tracking plan but sometimes missing
 
 _**Example:** Property set as *always sent* on "App Opened" in tracking plan but missing on event_
+
+## Property value issues
+
+Property value issues are detected when you have [property value validation](/inspector/inspector-debugger#decrypting-property-values) enabled and are available in the [Inspector Debugger](/inspector/inspector-debugger). Property values are sent encrypted to Avo and can be decrypted locally in the [Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values).
+
+<Callout type="info">
+  Property value issues are currently only available for the Inspector Web SDK and Segment integration. Support on other platforms coming soon. Reach out to support if you need property value validation for other platforms. 
+</Callout>
+
+### Property value does not match constraints
+
+Detects property values that don't match the [property constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined in your tracking plan.
+
+#### String properties
+
+- **Property value does not match regex** - The string value doesn't match the regex pattern defined in the tracking plan
+
+  _**Example:** Property email has value "invalid-email" but expected to match regex pattern `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`_
+
+- **Property value does not match allowed values** - The string value is not in the list of allowed values defined in the tracking plan
+
+  _**Example:** Property role has value "NPC" but expected one of: "Admin", "User", "Guest"_
+
+#### Numerical properties
+
+- **Property value lower than defined min** - The numerical value is below the minimum value defined in the tracking plan
+
+  _**Example:** Property age has value -5 but minimum allowed value is 0_
+
+- **Property value higher than defined max** - The numerical value exceeds the maximum value defined in the tracking plan
+
+  _**Example:** Property rating has value 15 but maximum allowed value is 10_
+
+#### Object properties
+
+- **Required key sometimes missing from object property** - A required key in an object property is sometimes missing
+
+  _**Example:** Object property address is missing required key "country"_
+
+- **Object key unexpected on object property** - An unexpected key is present in an object property
+
+  _**Example:** Object property address has unexpected key "planet"_
+
+- **Object property value does not match constraints** - Values within object properties are also validated against the same string, numerical, and object constraints as above
+
+  _**Example:** Object property address has key "zip_code" with value "ABC" but expected to match regex pattern `^\d{5}$`_
 
 ## Upcoming Issue Types in Avo Inspector
 
