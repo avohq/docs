@@ -111,39 +111,18 @@ The debugger provides controls for managing the live stream:
 - **Resume** - Resume the live stream to continue receiving events
 - **Reset** - Clear all events from the current view to start fresh. Useful when you are finding your stream session or want to start fresh.
 
-### Decrypting property values
+### Property value validation
 
 The Inspector Debugger supports property value validation, allowing you to see the actual values being sent with your events and verify they match your expected data. This is useful for catching [property value issues](/inspector/issue-types-in-inspector#property-value-issues) where values that don't match the [property constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined in Avo, such as allowed values and regex patterns for string properties, min and max values for numerical properties, and required or unexpected keys in object properties.
 
-Property values are encrypted end-to-end for privacy and security. You can always see if there is an issue related to the value but to see the actual values you need to decrypt them using your private key.
+Property values are encrypted end-to-end for privacy and security. You can always see if there is an issue related to the value but to see the actual values you need to [decrypt them using your private key](#decrypting-values-in-the-debugger).
 
-#### How encryption works
-
-Property values are encrypted end-to-end for privacy and security:
-
-- **Avo never stores actual values** - Only encrypted values are stored on Avo's servers
-- **Public/private key encryption** - You generate a key pair using the Avo CLI. Avo uses the public key to encrypt values, and only you can decrypt them with your private key
-- **Avo cannot decrypt your data** - The public key can only be used for encryption, not decryption
-
-![Inspector Debugger with encrypted values](/images/inspector/debugger/inspector-debugger-event-details.png)
-
-To generate a public/private key pair, you can run the following command in your terminal:
-
-```bash
-node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
-```
 
 #### Setting up property value validation
 
 Property value validation is enabled when the Property value validation setting is enabled in your workspace setting and you are using a supported SDK or integration version. You will always see validation issues (such as values not matching allowed values or regex patterns), but the actual property values will appear as encrypted. To see the actual values that are causing issues, you need to generate and configure encryption keys.
 
-##### Supported SDKs and integrations
-
-Property value validation is currently supported on:
-- [Inspector Web SDK](/reference/avo-inspector-sdks/web) (v1.5.0+)
-- [Segment integration](/inspector/connect-inspector-to-segment)
-
-Support for other platforms is coming soon. Reach out to support if you need property value validation for other platforms.
+![Inspector settings with property value validation enabled](/images/inspector/debugger/value-validation-setting.png)
 
 ##### For existing Inspector installations
 
@@ -160,6 +139,22 @@ If you're setting up Inspector for the first time:
 1. **Enable property value validation in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
 2. **Install the SDK or connect an integration** - Follow the [Inspector installation overview](/inspector/inspector-installation-overview) to set up Inspector. Property value validation is included by default in the latest versions of [supported SDKs and integrations](#supported-sdks-and-integrations).
 3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair using the Avo CLI and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
+
+#### How encryption works
+
+Property values are only sent to Avo if you provide a public encryption key to encrypt the values:
+
+- **Avo never stores actual values** - Only encrypted values are stored on Avo's servers
+- **Public/private key encryption** - You generate a key pair using the Avo CLI. Avo uses the public key to encrypt values, and only you can decrypt them with your private key
+- **Avo cannot decrypt your data** - The public key can only be used for encryption, not decryption
+
+![Inspector Debugger with encrypted values](/images/inspector/debugger/inspector-debugger-event-details.png)
+
+To generate a public/private key pair, you can run the following command in your terminal:
+
+```bash
+node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
+```
 
 #### Decrypting values in the debugger
 
@@ -179,6 +174,14 @@ Once decrypted, you can see the actual values sent with each event and identify 
 <Callout type="info">
   Your private key is only stored locally in the application during your session and is never sent to Avo's servers. Decryption happens entirely on your machine.
 </Callout>
+
+##### Supported SDKs and integrations
+
+Property value validation is currently supported on:
+- [Inspector Web SDK](/reference/avo-inspector-sdks/web) (v1.5.0+)
+- [Segment integration](/inspector/connect-inspector-to-segment)
+
+Support for other platforms is coming soon. Reach out to support if you need property value validation for other platforms.
 
 ## Troubleshooting
 
