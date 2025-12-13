@@ -1,0 +1,497 @@
+import PageLink from '../../components/PageLink';
+import { Callout } from 'nextra/components';
+
+# Audit Log
+
+The Audit Log provides a comprehensive, chronological record of all changes made to your tracking plan. This is useful when you need to understand the evolution of your data governance, troubleshoot unexpected changes, or maintain compliance with audit requirements.
+
+## Understanding the Audit Log
+
+The Audit Log is a workspace-level feature that automatically captures and displays every modification made to your tracking plan's schema. Each entry records who made a change, what they changed, and when the change occurred. This creates an immutable history of your tracking plan's development, allowing you to trace the lineage of any event, property, or configuration in your workspace.
+
+We provide the Audit Log as part of our commitment to data governance and transparency. Every action that modifies your tracking plan—from creating a new event to updating a property definition to changing destination configurations—is recorded automatically without requiring any setup or configuration.
+
+<Callout type="info" emoji="💡">
+The Audit Log tracks changes to your tracking plan schema, not the actual analytics events flowing through your implementation. For monitoring live event data, see [Inspector](/inspector/start-using-inspector).
+</Callout>
+
+### Why the Audit Log matters
+
+The Audit Log serves several critical functions for teams managing tracking plans:
+
+#### Compliance and governance
+For teams in regulated industries or those with strict data governance requirements, the Audit Log provides the audit trail necessary to demonstrate who authorized and implemented changes to your data collection practices. This is particularly valuable for organizations that need to comply with GDPR, CCPA, SOC 2, or internal compliance frameworks.
+
+#### Change tracking and accountability
+As your tracking plan evolves with your product, the Audit Log helps you understand why decisions were made. When a team member questions why an event was modified or a property removed, you can trace the change back to the specific person and time, providing context for historical decisions.
+
+#### Debugging and troubleshooting
+When something unexpected happens in your analytics—a metric suddenly changes, events stop firing, or data looks different—the Audit Log helps you identify what changed and when. This dramatically reduces the time spent investigating issues by providing a clear timeline of modifications.
+
+#### Knowledge continuity
+As team members join, leave, or change roles, the Audit Log preserves institutional knowledge about your tracking plan's evolution. New team members can understand the history and rationale behind current implementations.
+
+## Accessing the Audit Log
+
+*Role: Admin, Compliance (Audit Log access is typically managed by administrators)*
+
+The Audit Log is available to workspace members based on their role permissions. To access it:
+
+1. Navigate to your workspace in Avo
+2. Click on the **Settings** menu in the workspace navigation
+3. Select **Audit Log** from the settings options
+
+Once you're in the Audit Log view, you'll see a chronological list of all changes made to your tracking plan, with the most recent changes appearing at the top.
+
+### Who can access the Audit Log
+
+Different workspace roles have varying levels of access to the Audit Log:
+
+| Role | Can View Audit Log | Can Export Audit Log | Can Filter by User |
+|------|-------------------|---------------------|-------------------|
+| **Admin** | ✓ Full access | ✓ Yes | ✓ All users |
+| **Member** | ✓ Full access | ✓ Yes | ✓ All users |
+| **Viewer** | ✓ Limited access | ✗ No | ✓ Own changes only |
+| **Guest** | ✗ No access | ✗ No | ✗ No |
+
+<Callout type="info" emoji="💡">
+Your workspace's specific permission settings may further customize these access levels. Contact your workspace administrator if you need access to the Audit Log.
+</Callout>
+
+## Understanding audit log entries
+
+The Audit Log displays each change as a discrete entry with several key pieces of information:
+
+| Column | Description | Example |
+|--------|-------------|---------|
+| **Timestamp** | The exact date and time the change was made | `2025-03-15 14:23:47 UTC` |
+| **User** | The workspace member who made the change | `sarah@company.com` |
+| **Action** | The type of modification performed | `Updated`, `Created`, `Deleted`, `Merged` |
+| **Target** | What was changed | `Event: Purchase Completed` |
+| **Details** | Specific information about the change | `Changed property 'revenue' from optional to required` |
+
+This structured format allows you to quickly scan for relevant changes or drill into specific entries for more detail.
+
+### Sample audit log entries
+
+Here's what a typical sequence of audit log entries looks like:
+
+| Timestamp | User | Action | Target | Details |
+|-----------|------|--------|--------|---------|
+| 2025-03-15 14:23:47 | sarah@company.com | **Merged** | Branch: add-checkout-events | Merged branch to main (8 events, 3 properties) |
+| 2025-03-15 14:18:32 | sarah@company.com | **Approved** | Branch: add-checkout-events | Approved changes for merge |
+| 2025-03-15 11:05:19 | david@company.com | **Updated** | Property: payment_method | Changed type from `string` to `enum` with values: [credit_card, paypal, apple_pay] |
+| 2025-03-15 10:42:03 | david@company.com | **Created** | Event: Checkout Started | Added to category "E-commerce" with 5 properties |
+| 2025-03-14 16:54:11 | emma@company.com | **Published** | Source: iOS App (Production) | Published [Codegen](/implementation/avo-codegen-overview) updates to production |
+| 2025-03-14 15:31:28 | emma@company.com | **Deleted** | Property: legacy_user_id | Removed unused property from 3 events |
+
+### Understanding the Details field
+
+The **Details** column contains action-specific information that helps you understand exactly what changed:
+
+#### For property updates
+- Property type changes: `Changed type from 'string' to 'int'`
+- Constraint modifications: `Added validation: must be >= 0`
+- Requirement changes: `Changed from optional to required`
+- Description updates: `Updated description to clarify measurement units`
+
+#### For event updates
+- Name changes: `Renamed from 'Button Click' to 'CTA Clicked'`
+- Category assignments: `Added to category 'Engagement'`
+- Property additions: `Added property 'button_location'`
+- Trigger associations: `Connected to journey step 'Homepage > CTA'`
+
+#### For branch operations
+- Merge details: `Merged 12 events, 8 properties, 2 destinations`
+- Conflict resolutions: `Resolved 3 conflicts during merge`
+- Review activity: `Review requested from @data-team`
+
+#### For source and destination changes
+- Configuration updates: `Updated SDK version from 2.1.0 to 2.3.0`
+- Connection changes: `Connected destination: Amplitude`
+- Publishing activity: `Published to 3 sources via [Codegen](/implementation/avo-codegen-overview)`
+
+## What the Audit Log captures
+
+The Audit Log records a comprehensive range of activities across your tracking plan:
+
+### Tracking plan modifications
+
+- **Events** - Creating new events, updating event definitions, changing event names, archiving or deleting events
+- **Properties** - Adding properties, modifying property types or constraints, updating property descriptions, marking properties as required or optional
+- **Property bundles** - Creating bundles, adding or removing properties from bundles, modifying bundle settings
+- **Categories and tags** - Creating organization structures, assigning events to categories, updating taxonomy
+
+### Branch and workflow operations
+
+- **Branch management** - Creating [branches](/data-design/branches), merging branches to main, closing branches without merging
+- **Review processes** - Requesting reviews, approving changes, providing feedback on branches
+- **Publishing** - Publishing tracking plan changes to destinations via [Codegen](/implementation/avo-codegen-overview)
+
+### Configuration changes
+
+- **Sources** - Adding new sources (apps, websites, servers), modifying source configurations, updating development settings
+- **Destinations** - Connecting analytics tools, updating destination mappings, changing SDK configurations
+- **Workspace settings** - Modifying workspace-level configurations, updating team settings, changing permissions
+
+### Collaboration activities
+
+- **Team management** - Adding workspace members, removing users, updating roles and permissions
+- **Comments and discussions** - Activity related to collaborative decision-making on events and properties
+
+<Callout type="info" emoji="⚡">
+**What's not in the Audit Log**<br/>
+The Audit Log focuses on tracking plan schema changes. It does not capture routine activities like viewing pages, running searches, or reading documentation. This keeps the log focused on meaningful changes that affect your data governance.
+</Callout>
+
+## Finding specific changes
+
+*Role: Admin, Data, Product (This workflow is commonly used by data analysts and product managers investigating issues)*
+
+The Audit Log provides multiple filtering approaches to help you locate relevant information efficiently. Your approach depends on what you know about the change you're looking for.
+
+### When you know WHEN something changed
+
+Use time-based filtering to focus on a specific period:
+
+1. Click the **Date range** filter at the top of the Audit Log
+2. Select a predefined range (Last 7 days, Last 30 days, Last 90 days) or choose custom dates
+3. Click **Apply** to filter the results
+
+This is useful when you notice an issue started at a specific time and want to see all changes that might have caused it.
+
+<Callout type="info" emoji="💡">
+When investigating an issue, start with a broad time range and then narrow down based on what you find. If you're troubleshooting a problem that appeared last week, begin by looking at all changes from the past two weeks, then filter to specific actions or targets as you identify patterns.
+</Callout>
+
+### When you know WHO made a change
+
+Use user filtering to see changes by a specific team member:
+
+1. Click the **User** filter dropdown
+2. Select one or more team members from the list
+3. The Audit Log will show only changes made by the selected users
+
+This is useful when reviewing changes made during onboarding, tracking contributions from specific team members, or following up on changes you discussed with a colleague.
+
+### When you know WHAT changed
+
+Use action and target filtering to focus on specific types of changes:
+
+#### Filtering by action type
+
+1. Click the **Action** filter dropdown
+2. Select the type of change you're looking for:
+   - **Created** - New events, properties, or configurations
+   - **Updated** - Modifications to existing items
+   - **Deleted** - Removed items
+   - **Merged** - Branch merges to main
+   - **Published** - Codegen publications to sources
+3. Click **Apply** to filter results
+
+#### Filtering by target type
+
+1. Click the **Target** filter dropdown
+2. Select what kind of item was changed:
+   - **Events** - Changes to event definitions
+   - **Properties** - Changes to property definitions
+   - **Branches** - Branch operations
+   - **Sources** - Source configuration changes
+   - **Destinations** - Destination changes
+   - **Settings** - Workspace settings modifications
+3. Click **Apply** to filter results
+
+#### Searching for specific items
+
+1. Use the **Search** field at the top of the Audit Log
+2. Enter the name of an event, property, or other item
+3. The log will filter to show only changes related to that item
+
+For example, searching for "Purchase Completed" will show all changes to that event across all time.
+
+<Callout type="info" emoji="⚡">
+**Efficient Workflow Tip**<br/>
+Combine multiple filters to narrow down results quickly. For example, filter by date range + action type "Deleted" to see everything that was removed in a specific period. Or combine user + target type "Properties" to see all property changes by a specific team member.
+</Callout>
+
+### Reading audit log entries
+
+Each audit log entry tells a story about a change. When reviewing entries, pay attention to:
+
+- **The context of the change** - Was this part of a [branch](/data-design/branches) that was merged? Was it a quick fix or part of a larger initiative?
+- **Related changes** - Multiple entries close together in time often represent coordinated changes as part of a feature launch or tracking plan update
+- **The branch history** - Changes made on branches show you the review and approval process before they reached your main tracking plan
+
+## Common workflows
+
+### Compliance audits
+
+*Role: Compliance, Admin (This workflow is typically led by compliance officers or administrators)*
+
+When undergoing compliance audits or preparing for certifications, the Audit Log provides the evidence auditors need to verify your data governance practices.
+
+A typical compliance workflow looks like this:
+
+1. **Receive audit request** - Auditor asks for evidence of data governance controls
+2. **Identify relevant timeframe** - Determine the audit period (e.g., last 12 months)
+3. **Filter for sensitive changes** - Focus on changes to PII properties, data retention settings, or user consent mechanisms
+4. **Export audit evidence** - Download filtered results as documentation
+5. **Provide context** - Include branch review history and approval workflows
+
+#### Step-by-step: Responding to an audit request
+
+**Example scenario**: Your organization is preparing for a SOC 2 audit. The auditor asks, "Who authorized the addition of the user email property to your tracking, and when was it added?"
+
+1. Navigate to the Audit Log in your workspace settings
+2. Use the **Search** field to search for "email"
+3. Filter by **Action** = "Created" to show only new additions
+4. Locate the property creation entry in the results
+5. Click on the entry to see full details including:
+   - Exact timestamp of creation
+   - User who created the property
+   - Branch where it was created
+   - Review and approval history
+6. Filter by **Action** = "Merged" and search for the branch name to see when it was merged to main
+7. Export the filtered results (see [Exporting audit data](#exporting-audit-data) below)
+8. Document the complete approval chain from creation through review to production
+
+<Callout type="info" emoji="💡">
+For ongoing compliance requirements, we recommend scheduling regular Audit Log reviews (monthly or quarterly) to maintain awareness of data governance changes before audit requests arrive.
+</Callout>
+
+### Investigating data discrepancies
+
+*Role: Data, Product, Developer (This workflow is commonly used when troubleshooting analytics issues)*
+
+When you notice unexpected changes in your analytics data, the Audit Log helps you identify whether tracking plan modifications might be the cause.
+
+A typical investigation workflow looks like this:
+
+1. **Identify the anomaly** - Notice unusual data patterns in your analytics tool
+2. **Establish timeline** - Determine when the anomaly first appeared
+3. **Search for related changes** - Filter Audit Log for changes before the anomaly
+4. **Identify potential causes** - Focus on changes to relevant events or properties
+5. **Verify impact** - Check if changes correlate with data patterns
+6. **Take corrective action** - Revert changes or update implementation as needed
+
+#### Step-by-step: Investigating a metrics drop
+
+**Example scenario**: Your weekly metrics report shows that a key conversion event dropped by 30% last Thursday. You need to determine if a tracking plan change caused the issue.
+
+1. Navigate to the Audit Log
+2. Set **Date range** filter to start Wednesday (one day before the drop) and end today
+3. Click the **Search** field and enter the event name (e.g., "Purchase Completed")
+4. Review all changes to this event in the timeframe
+5. Look for these common culprits:
+   - Property constraint changes (e.g., changed from optional to required)
+   - Property type changes (e.g., string to int) that might cause validation failures
+   - Condition or filter changes that narrow when the event fires
+6. Click on suspicious entries to view full details in the **Details** column
+7. Cross-reference the change timestamp with your metrics drop:
+   - If a property was changed to "required" on Wednesday, and the drop happened Thursday, implementations may be failing validation
+   - If property types changed, implementations may be sending incompatible data formats
+8. Check [Inspector](/inspector/start-using-inspector) to see if validation errors increased after the change
+9. Identify the user who made the change and discuss the impact
+10. Take action:
+    - Revert the change if it was unintentional
+    - Update implementations if the change was intentional but implementations need adjustment
+    - Adjust validation rules if they're too strict
+
+<Callout type="info" emoji="⚡">
+**Efficient Workflow Tip**<br/>
+When investigating metrics changes, always look at the 2-3 days before the issue appeared. Changes often take time to propagate through implementations and affect downstream metrics, so the tracking plan change may have occurred before the metrics impact became visible.
+</Callout>
+
+### Understanding tracking plan evolution
+
+*Role: Data, Product (This workflow is useful for onboarding new team members or strategic planning)*
+
+As your product grows and changes, the Audit Log helps new team members understand why the tracking plan is structured the way it is.
+
+A typical onboarding workflow looks like this:
+
+1. **Start with current state** - Review the current tracking plan structure
+2. **Identify organizational patterns** - Note category structures, naming conventions, property bundles
+3. **Trace historical context** - Use Audit Log to understand when and why these patterns emerged
+4. **Connect to product evolution** - Map tracking plan changes to product launches and feature updates
+5. **Document learnings** - Capture insights for future decision-making
+
+#### Step-by-step: Onboarding a new data analyst
+
+**Example scenario**: A new data analyst joins your team and asks why certain events are grouped into specific categories.
+
+1. Navigate to the Audit Log
+2. Filter by **Target** = "Categories" to see category management history
+3. Sort by oldest first to see the initial category structure
+4. Review **Action** = "Created" entries to see when each category was established
+5. Filter by **Action** = "Updated" to see how categories evolved over time
+6. For specific events, use the **Search** field to find when they were added to categories
+7. Look at the user who created categories and the timeframe to connect decisions to product context
+8. Export a timeline of category evolution to share with the new team member
+
+### Resolving team questions
+
+*Role: All roles (This workflow applies to any team member with questions about changes)*
+
+When team members have questions about changes, the Audit Log provides definitive answers about what changed and who changed it.
+
+A typical resolution workflow looks like this:
+
+1. **Question arises** - Team member notices something changed
+2. **Search Audit Log** - Look for changes to the relevant item
+3. **Identify the change** - Find the specific modification entry
+4. **Review context** - Check if it was part of a branch or standalone change
+5. **Contact responsible party** - Reach out to the person who made the change for clarification
+6. **Document resolution** - Update relevant documentation or training materials
+
+#### Step-by-step: Finding why a property disappeared
+
+**Example scenario**: A product manager notices that a property they added to an event last week is no longer there.
+
+1. Navigate to the Audit Log
+2. Use the **Search** field to search for the property name
+3. Filter by **Date range** = "Last 30 days" to see recent changes
+4. Look for entries showing this property:
+   - **Created** entry showing when it was originally added
+   - **Deleted** or **Updated** entry showing when it was removed or modified
+5. Review the **Details** column to understand what happened:
+   - If deleted: See who deleted it and when
+   - If merged into a bundle: See the bundle it was added to
+   - If renamed: See the new name
+6. Click on the entry to see if it was part of a larger branch merge
+7. If part of a branch merge, filter by that branch name to see the full scope of changes
+8. Contact the user who made the change to understand the rationale
+9. Determine next steps:
+   - If the change was intentional, update your understanding
+   - If it was an error, restore the property
+   - If merged into a bundle, start using the bundle reference
+
+## Exporting audit data
+
+*Role: Admin, Compliance (Export functionality is typically used for compliance documentation and reporting)*
+
+The Audit Log allows you to export filtered results for external documentation, compliance reporting, or further analysis.
+
+### How to export audit data
+
+1. Apply any desired filters (date range, user, action type, target type)
+2. Click the **Export** button at the top right of the Audit Log
+3. Choose your export format:
+   - **CSV** - For spreadsheet analysis in Excel or Google Sheets
+   - **JSON** - For programmatic processing or integration with other tools
+4. The export will download with all currently visible entries
+
+### CSV export format
+
+The CSV export includes all columns from the Audit Log view:
+
+```csv
+Timestamp,User,Action,Target,Details
+2025-03-15 14:23:47,sarah@company.com,Merged,Branch: add-checkout-events,"Merged branch to main (8 events, 3 properties)"
+2025-03-15 14:18:32,sarah@company.com,Approved,Branch: add-checkout-events,Approved changes for merge
+2025-03-15 11:05:19,david@company.com,Updated,Property: payment_method,"Changed type from 'string' to 'enum' with values: [credit_card, paypal, apple_pay]"
+```
+
+This format is ideal for:
+- Creating compliance reports in spreadsheet software
+- Generating charts and visualizations of tracking plan activity
+- Sharing change summaries with stakeholders who don't have Avo access
+
+### JSON export format
+
+The JSON export provides structured data with full entry details:
+
+```json
+[
+  {
+    "timestamp": "2025-03-15T14:23:47Z",
+    "user": {
+      "email": "sarah@company.com",
+      "name": "Sarah Johnson",
+      "id": "usr_abc123"
+    },
+    "action": "merged",
+    "target": {
+      "type": "branch",
+      "name": "add-checkout-events",
+      "id": "brn_xyz789"
+    },
+    "details": {
+      "events_added": 8,
+      "properties_added": 3,
+      "conflicts_resolved": 0
+    }
+  }
+]
+```
+
+This format is ideal for:
+- Integrating with compliance management systems
+- Building custom audit dashboards
+- Automating compliance reporting workflows
+- Analyzing patterns programmatically
+
+<Callout type="info" emoji="💡">
+Exports respect all active filters, so you can create focused reports for specific time periods, users, or types of changes. We recommend using descriptive file names like `audit-log-Q1-2025-property-changes.csv` to keep your exports organized.
+</Callout>
+
+## Best practices for using the Audit Log
+
+### Regular reviews
+
+We recommend periodically reviewing the Audit Log to stay informed about tracking plan changes, even if you're not investigating a specific issue. This helps you:
+
+- Stay aware of tracking plan evolution across your organization
+- Identify patterns in how your team uses the tracking plan
+- Catch unintended changes before they cause downstream issues
+- Maintain visibility into compliance-related modifications
+
+A typical review cadence:
+- **Weekly** - Quick scan of recent changes for active projects
+- **Monthly** - Comprehensive review of all tracking plan modifications
+- **Quarterly** - Deep analysis of trends and patterns for strategic planning
+
+### Investigating issues systematically
+
+When using the Audit Log to troubleshoot problems:
+
+1. **Start with the timeline** - Identify when the issue first appeared
+2. **Look backwards** - Review all changes made in the period before the issue emerged
+3. **Identify relevant changes** - Focus on modifications to events, properties, or configurations related to the problem
+4. **Trace the impact** - Understand how the change propagated through your tracking implementation
+5. **Cross-reference with Inspector** - Check if [Inspector](/inspector/start-using-inspector) shows related data quality issues
+
+### Combining with other Avo tools
+
+The Audit Log works best when used alongside Avo's other features:
+
+- **Use with Inspector** - When [Inspector](/inspector/start-using-inspector) shows data quality issues, check the Audit Log to see if tracking plan changes might be the cause
+- **Reference during code reviews** - When reviewing [generated code](/implementation/avo-codegen-overview) changes, consult the Audit Log to understand the tracking plan modifications that triggered the update
+- **Connect to branch history** - When evaluating a [branch](/data-design/branches) for merge, review its Audit Log entries to understand the full scope of changes
+- **Link to publishing** - Before publishing changes via [Codegen](/implementation/avo-codegen-overview), review recent Audit Log entries to ensure all changes are intentional
+
+<Callout type="info" emoji="🤝">
+The Audit Log complements your team's communication practices. While it provides the "what" and "when" of changes, team discussions and documentation should capture the "why." Consider adding context in branch descriptions and pull requests to help future readers understand the rationale behind changes.
+</Callout>
+
+## Audit Log retention
+
+We maintain your complete Audit Log history for the lifetime of your workspace. All entries remain accessible regardless of how long ago the change occurred, ensuring you have a permanent record of your tracking plan's evolution.
+
+This permanent retention supports long-term compliance requirements and allows you to trace the lineage of any element in your tracking plan back to its origin.
+
+## What's next?
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Workspace Settings"
+  description="Learn about other workspace-level settings and administrative features"
+  href={'/workspace-management/workspace-settings'}
+/>
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Inspector"
+  description="Monitor live event data and validate your tracking implementation"
+  href={'/inspector/start-using-inspector'}
+/>
