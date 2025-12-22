@@ -975,7 +975,7 @@ _avo_invoke = function _avo_invoke(env: AvoEnv, eventId: string, hash: string, m
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          "ac": "eeTSNDcfKC9e1WPc4r3N",
+          "ac": "i2gCWRbP6adOn8NGTvEW",
           "br": "i4zEsOhO6sGOGcLexRuUX",
           "en": env,
           "ev": eventId,
@@ -1002,7 +1002,7 @@ _avo_invoke_meta = function _avo_invoke_meta(env: AvoEnv, type: string, messages
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          "ac": "eeTSNDcfKC9e1WPc4r3N",
+          "ac": "i2gCWRbP6adOn8NGTvEW",
           "br": "i4zEsOhO6sGOGcLexRuUX",
           "en": env,
           "ty": type,
