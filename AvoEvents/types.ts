@@ -6,7 +6,6 @@
 // @ts-nocheck
 export interface AvoEventsModuleMap {
   signUpStarted: typeof import('./signUpStarted').default;
-  branchPromptInteraction: typeof import('./branchPromptInteraction').default;
   contentCopied: typeof import('./contentCopied').default;
   docsPageViewed: typeof import('./docsPageViewed').default;
   docsPageErrored: typeof import('./docsPageErrored').default;
