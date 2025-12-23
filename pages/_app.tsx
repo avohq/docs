@@ -7,7 +7,8 @@ import mixpanel from 'mixpanel-browser';
 import * as Inspector from "ssr-web-avo-inspector";
 
 import Avo, { AvoEnv, CustomDestination } from '../Avo';
-
+import { contentCopied } from '../AvoEvents/contentCopied';
+import { docsPageViewed } from '../AvoEvents/docsPageViewed';
 import useAvoPath from '../util/useAvoPath';
 
 const getAvoEnv = () => {
@@ -124,7 +125,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   useEffect(() => {
     const onCopy = () => {
       const content = window.getSelection()?.toString();
-      Avo.contentCopied({ path, content });
+      contentCopied({ path, content });
     };
 
     window.addEventListener('copy', onCopy);
@@ -136,7 +137,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter();
 
   useEffect(() => {
-    Avo.docsPageViewed({
+    docsPageViewed({
       userId_: 'not-used',
       path: path,
       referrer: document.referrer,

@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import Avo from '../Avo';
 import useAvoPath from '../util/useAvoPath';
+import { signUpStarted } from '../AvoEvents';
 
 const SignIn: FunctionComponent = () => {
   const path = useAvoPath();
@@ -11,7 +12,7 @@ const SignIn: FunctionComponent = () => {
         className="signUp"
         href="https://www.avo.app/onboarding"
         onClick={() =>
-          Avo.signUpStarted({
+          signUpStarted({
             siteSection: Avo.SiteSection.HEADER,
             emailInput: undefined,
             path: path,
