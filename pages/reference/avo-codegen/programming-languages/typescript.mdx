@@ -423,9 +423,10 @@ You'll implement it like this:
 ```typescript
 const snowplowDestination = {
   make: function (env: string) {
+    // Optional: You can initialize Snowplow here or leave empty if initialized elsewhere.
     // Your custom Snowplow initialization, that includes the `newTracker` call
-    newTracker('sp1', '{{collector_url}}', { appId: 'my-app-id', plugins: [] });
-    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracker-setup/
+    // newTracker('sp1', '{{collector_url}}', { appId: 'my-app-id', plugins: [] });
+    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/
   },
   trackSelfDescribingEvent: (
     schema: string,
@@ -439,19 +440,19 @@ const snowplowDestination = {
       },
       context: contexts,
     });
-    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/
+    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
   },
   trackPageView: (title: string): void => {
     trackPageView(title);
-    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/#page-views
+    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
   },
   identify: (userId: string): void => {
     setUserId(userId);
-    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.setuserid.md
+    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
   },
   unidentify: (): void => {
     clearUserData();
-    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.clearuserdata.md
+    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
   },
 };
 ```
