@@ -207,7 +207,7 @@ analyticsService.trackEvent(event)
 
 **React Native**
 
-React Native uses the same approach as web since the [Snowplow React Native tracker](https://docs.snowplow.io/docs/sources/trackers/react-native-tracker/) is implemented in JavaScript/TypeScript. The [Avo Inspector React Native SDK](https://www.avo.app/docs/reference/avo-inspector-sdks/react-native) provides the same API as the web version.
+React Native uses the same approach as web since the [Snowplow React Native tracker](https://docs.snowplow.io/docs/sources/react-native-tracker/) is implemented in JavaScript/TypeScript. The [Avo Inspector React Native SDK](https://www.avo.app/docs/reference/avo-inspector-sdks/react-native) provides the same API as the web version.
 
 ```javascript
 import { newTracker } from '@snowplow/react-native-tracker';
@@ -259,7 +259,7 @@ analyticsService.trackEvent(
 
 If your mobile app has tracking calls scattered throughout the codebase, use Snowplow's plugin system to automatically capture all events. Snowplow mobile SDKs (v5+) provide a plugin architecture with several extension points, including an `afterTrack` callback that executes after an event has been processed but before it's sent to the collector.
 
-The `afterTrack` callback is perfect for Avo Inspector integration because it provides access to the complete event object, including all context entities, without interfering with your existing tracking implementation. Learn more about [Snowplow tracker plugins](https://docs.snowplow.io/docs/sources/trackers/mobile-trackers/plugins/).
+The `afterTrack` callback is perfect for Avo Inspector integration because it provides access to the complete event object, including all context entities, without interfering with your existing tracking implementation. Learn more about [Snowplow tracker plugins](https://docs.snowplow.io/docs/sources/mobile-trackers/plugins/).
 
 **iOS Plugin Approach**
 

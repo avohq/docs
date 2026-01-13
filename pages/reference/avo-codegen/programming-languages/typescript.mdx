@@ -426,7 +426,7 @@ const snowplowDestination = {
     // Optional: You can initialize Snowplow here or leave empty if initialized elsewhere.
     // Your custom Snowplow initialization, that includes the `newTracker` call
     // newTracker('sp1', '{{collector_url}}', { appId: 'my-app-id', plugins: [] });
-    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/
   },
   trackSelfDescribingEvent: (
     schema: string,
@@ -440,19 +440,19 @@ const snowplowDestination = {
       },
       context: contexts,
     });
-    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
   trackPageView: (title: string): void => {
     trackPageView(title);
-    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
   identify: (userId: string): void => {
     setUserId(userId);
-    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
   unidentify: (): void => {
     clearUserData();
-    // Learn more: https://docs.snowplow.io/docs/sources/trackers/web-trackers/tracking-events/
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
 };
 ```

@@ -232,7 +232,7 @@ val avo = AvoImpl(...,
             // Optional: You can initialize Snowplow here or leave empty if initialized elsewhere.
             // Your custom Snowplow initialization, that includes the `createTracker` call
             // Snowplow.createTracker(this@MainActivity, "appTracker", "COLLECTOR_URL", HttpMethod.POST)
-            // Learn more: https://docs.snowplow.io/docs/sources/trackers/mobile-trackers/installation-and-set-up/android-tracker/
+            // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=android
         }
 
         override fun trackSelfDescribingEvent(schema: String, data: Map<String, *>, contexts: List<Map<String, Any>>) {
@@ -250,22 +250,22 @@ val avo = AvoImpl(...,
             }
 
             Snowplow.getDefaultTracker()?.track(event)
-            // Learn more: https://docs.snowplow.io/docs/sources/trackers/mobile-trackers/installation-and-set-up/android-tracker/tracking-events/
+            // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=android
         }
 
         override fun trackPageView(title: String) {
             Snowplow.getDefaultTracker()?.track(ScreenView(title))
-            // Learn more: https://docs.snowplow.io/docs/sources/trackers/mobile-trackers/installation-and-set-up/android-tracker/tracking-events/
+            // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=android
         }
 
         override fun identify(userId: String) {
             Snowplow.getDefaultTracker()?.subject?.userId = userId
-            // Learn more: https://docs.snowplow.io/docs/sources/trackers/mobile-trackers/installation-and-set-up/android-tracker/
+            // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=android
         }
 
         override fun unidentify() {
             Snowplow.getDefaultTracker()?.subject?.userId = null
-            // Learn more: https://docs.snowplow.io/docs/sources/trackers/mobile-trackers/installation-and-set-up/android-tracker/
+            // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=android
         }
     })
 ```
