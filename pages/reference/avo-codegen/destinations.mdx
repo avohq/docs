@@ -202,7 +202,7 @@ func unidentify()
 
 In each callback you would do a specific action, that maps directly to the Snowplow SDK. Code snippets for various programming languages are available below.
 
-1. `make` - here you would initialize your Snowplow SDK, you can also skip this callback if you already have the Snowplow SDK initialized, the parameter will be one of `AvoEnv.Dev`, `AvoEnv.Prod`, `AvoEnv.Staging`
+1. `make` - here you would initialize your Snowplow SDK. You can skip this callback (leave empty) if you already have the Snowplow SDK initialized, the parameter will be one of `AvoEnv.Dev`, `AvoEnv.Prod`, `AvoEnv.Staging`
 
 2. `trackSelfDescribingEvent` - this callback provides you all the data needed to track a self describing event
 

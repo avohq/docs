@@ -234,9 +234,10 @@ You'll implement it like this:
 ```swift
 extension SnowplowDestination: AvoSnowplowDestination {
     func make(env: AvoEnv) {
+        // Optional: You can initialize Snowplow here or leave empty if initialized elsewhere.
         // Your custom Snowplow initialization, that includes the `createTracker` call
-        Snowplow.createTracker(namespace: "appTracker", endpoint: "COLLECTOR_URL", method: .post)
-        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/quick-start-guide/#iOS_Tracker
+        // Snowplow.createTracker(namespace: "appTracker", endpoint: "COLLECTOR_URL", method: .post)
+        // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=ios
     }
 
     func trackSelfDescribingEvent(schema: String, data: [String: Any], contexts: [[String: Any]]) {
@@ -249,22 +250,22 @@ extension SnowplowDestination: AvoSnowplowDestination {
         }
 
         Snowplow.getDefaultTracker().track(event)
-        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/tracking-events/#Self_Describing
+        // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=ios
     }
 
     func trackPageView(name: String) {
         Snowplow.getDefaultTracker().track(ScreenView(name: name))
-        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/installation-and-set-up/ios-tracker/#setting-up
+        // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=ios
     }
 
     func identify(userId: String) {
         Snowplow.getDefaultTracker().subject.setUserId(userId)
-        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=ios
     }
 
     func unidentify() {
-        Snowplow.getDefaultTracker().subject.setUserId(null)
-        // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/mobile-trackers/mobile-trackers-v2-0/introduction/#SubjectConfiguration
+        Snowplow.getDefaultTracker().subject.setUserId(nil)
+        // Learn more: https://docs.snowplow.io/docs/sources/mobile-trackers/installation-and-set-up/?platform=ios
     }
 }
 
