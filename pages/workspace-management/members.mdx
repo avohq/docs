@@ -30,7 +30,7 @@ Role overview:
 | View and manage billing                | ✅       |        |        | ✅     |
 
 <Callout type="info" emoji="💡">
-\* Viewers can pull code using the CLI on the team and enterprise plans. On the free plan, only editors can pull code. [See details below](/data-design/collaboration/members#codegen-access-for-non-editors).
+\* Viewers can pull code using the CLI on the team and enterprise plans by activating a monthly active implementer seat. On the free plan, only admins and editors can pull code. [See details below](/workspace-management/members#implementer-access-for-viewers).
 </Callout>
 
 ### Admin
@@ -54,18 +54,22 @@ On the Team and Enterprise plans you can limit editor edits to just branches, re
 
 ### Viewer
 
-Members with the _Viewer_ role can access your workspace and comment, but cannot make any modifications and can not access workspace settings including the members and settings modal, audit log or billing page. On the team and enterprise plans, viewers have have access to pull Avo Codegen with the Avo CLI (not on free). Assign the _Viewer_ role to a member when you want to allow them to view your tracking plan but don't want them to be able to make changes. All new plans can add an unlimited amount of _Viewer_ users.
+Members with the _Viewer_ role can access your workspace and comment, but cannot make any modifications and cannot access workspace settings including the members and settings modal, audit log or billing page. On the team and enterprise plans, viewers can activate a monthly active implementer seat to pull Avo Codegen with the Avo CLI and use the Inspector Debugger (not available on free). Assign the _Viewer_ role to a member when you want to allow them to view your tracking plan but don't want them to be able to make changes. All new plans can add an unlimited amount of _Viewer_ users.
 
 
 ### Billing Only
 
 Members with a _Billing Only_ role can only access the Billing page of the workspace. They can update payment methods and sign up for new subscriptions. Billing users are free of charge.
 
-### Codegen access for non-Editors
+### Implementer access for Viewers
 
-Editors and Admins have codegen access on all plans: free, team and enterprise. Additionally, View members have codegen access on the team and enterprise plans, charged per monthly active non-Editor pulling code. Learn more about [codegen and its benefits](/implementation/avo-codegen-overview).
+Editors and Admins have full implementer access (including pulling code with the CLI and using the Inspector Debugger) on all plans: free, team and enterprise. 
 
-Codegen access is not a role that you can be assigned to members on invite.
+Viewers on the team and enterprise plans can also get implementer access by activating a monthly active implementer seat. Each viewer who needs to pull code or use the Inspector Debugger must have an active implementer seat, which is charged per monthly active viewer using these features. See the [pricing page](https://www.avo.app/pricing) for more details.
+
+Implementer access is not a role that can be assigned to members on invite. Viewers activate their implementer seat when they first use an implementer feature each month.
+
+Learn more about [codegen and its benefits](/implementation/avo-codegen-overview).
 
 ### Legacy Roles
 
