@@ -37,11 +37,11 @@ See all events flowing through Inspector in real-time, organized chronologically
 ### Event details and validation
 
 <Callout type="info">
-  Property value validation is currently only available for [supported SDKs and integrations](#supported-sdks-and-integrations). Support on other platforms coming soon.
+  Property value validation is an advanced feature. See [Enabling advanced debugger features](#enabling-advanced-debugger-features) for setup instructions.
 </Callout>
 
 Click any event to see:
-- **Complete property list** - All properties sent with the event, including their types and values (if property value validation is enabled and you have [decrypted the values](#decrypting-values-in-the-debugger))
+- **Complete property list** - All properties sent with the event, including their types and values (if [property value validation](#property-value-validation) is enabled and you have [decrypted the values](#decrypting-values-in-the-debugger))
 - **Tracking plan validation** - Details on the validation status, with immediate feedback on [issue types](/inspector/issue-types-in-inspector) like unexpected properties, type mismatches, or missing required properties
 - **Event metadata** - Source, version, stream session information, and timestamps
 - **Link to tracking plan** - Quick access to view the event definition in your tracking plan
@@ -96,12 +96,22 @@ Use the filters at the top of the debugger to focus your view:
 
 - **Environment filter** - Filter by development or staging environments
 - **Source filter** - Show events from specific platforms (iOS, Android, Web, etc.)
-- **Stream session filter** (coming soon) - Filter events to a specific user stream session
+- **Stream session filter** - Filter events to a specific user stream session. See [Enabling advanced debugger features](#enabling-advanced-debugger-features) for setup instructions.
 - **Search** - Search for specific event names
 
 To find your events in the debugger while debugging:
 1. Filter down on the environment and source that you are triggering events from
-2. (Coming soon) Look at the stream ID column to identify which stream is sending events that match the ones you are triggering from your application, based on timing and event names and filter down to that stream session
+2. Look at the stream ID column to identify which stream is sending events that match the ones you are triggering from your application, based on timing and event names, and filter down to that stream session
+
+#### Session filtering
+
+Session filtering allows you to filter the event stream to show only events from a specific user session. This makes it much easier to find your own events when debugging, especially in busy development or staging environments where multiple team members may be triggering events simultaneously. See [Enabling advanced debugger features](#enabling-advanced-debugger-features) for setup instructions.
+
+Each session is identified by a unique stream ID and color-coded in the debugger for easy visual tracking. When session filtering is enabled:
+
+- Events are grouped by session, enabling you to identify the events you are sending from your application in the debugger to QA the implementation
+- You can click on any stream ID to filter the view to only show events from that session
+- The filter persists as you navigate, helping you focus on a specific debugging session
 
 ### Controlling the event stream
 
@@ -113,31 +123,9 @@ The debugger provides controls for managing the live stream:
 
 ### Property value validation
 
-The Inspector Debugger supports property value validation, allowing you to see the actual values being sent with your events and verify they match your expected data. This is useful for catching [property value issues](/inspector/issue-types-in-inspector#property-value-issues) where values that don't match the [property constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined in Avo, such as allowed values and regex patterns for string properties, min and max values for numerical properties, and required or unexpected keys in object properties.
+The Inspector Debugger supports property value validation, allowing you to see the actual values being sent with your events and verify they match your expected data. This is useful for catching [property value issues](/inspector/issue-types-in-inspector#property-value-issues) where values don't match the [property constraints](/data-design/avo-tracking-plan/properties#property-types-and-constraints) defined in Avo, such as allowed values and regex patterns for string properties, min and max values for numerical properties, and required or unexpected keys in object properties.
 
-Property values are encrypted end-to-end for privacy and security. You can always see if there is an issue related to the value but to see the actual values you need to [decrypt them using your private key](#decrypting-values-in-the-debugger).
-
-#### Setting up property value validation
-
-Property value validation is enabled when the Property value validation setting is enabled in your workspace setting and you are using a supported SDK or integration version. You will always see validation issues (such as values not matching allowed values or regex patterns), but the actual property values will appear as encrypted. To see the actual values that are causing issues, you need to generate and configure encryption keys.
-
-![Inspector settings with property value validation enabled](/images/inspector/debugger/value-validation-setting.png)
-
-##### For existing Inspector installations
-
-If you already have Inspector set up and want to enable property value validation:
-
-1. **Enable value validation in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
-2. **Update to a supported SDK or integration** - Update to the latest version of a [supported SDK or integration](#supported-sdks-and-integrations) that includes property value validation
-3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair using the Avo CLI and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
-
-##### For new Inspector installations
-
-If you're setting up Inspector for the first time:
-
-1. **Enable property value validation in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
-2. **Install the SDK or connect an integration** - Follow the [Inspector installation overview](/inspector/inspector-installation-overview) to set up Inspector. Property value validation is included by default in the latest versions of [supported SDKs and integrations](#supported-sdks-and-integrations).
-3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair using the Avo CLI and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
+Property values are encrypted end-to-end for privacy and security. You will always see validation issues (such as values not matching allowed values or regex patterns), but the actual property values will appear as encrypted. To see the actual values that are causing issues, you need to [decrypt them using your private key](#decrypting-values-in-the-debugger).
 
 #### How encryption works
 
@@ -174,13 +162,42 @@ Once decrypted, you can see the actual values sent with each event and identify 
   Your private key is only stored locally in the application during your session and is never sent to Avo's servers. Decryption happens entirely on your machine.
 </Callout>
 
-##### Supported SDKs and integrations
+## Enabling advanced debugger features
 
-Property value validation is currently supported on:
+The Inspector Debugger offers advanced features that require enabling in your workspace settings and upgrading to the latest SDK or integration version:
+
+- **[Property value validation](#property-value-validation)** - See validation issues for property values that don't match the constraints defined in your tracking plan, such as allowed values, regex patterns, min/max values, and object key requirements
+- **[Session filtering](#session-filtering)** - Filter the event stream to a specific user session, making it easier to find and debug your own events
+
+Property value validation is enabled when the Property value validation setting is enabled in your workspace settings and you are using a supported SDK or integration version.
+You will always see validation issues (such as values not matching allowed values or regex patterns), but the actual property values will appear as encrypted.
+To see the actual values that are causing issues, enable Inspector value validation for your workspace and generate and configure encryption keys.
+
+![Inspector settings with property value validation enabled](/images/inspector/debugger/value-validation-setting.png)
+
+### For existing Inspector installations
+
+If you already have Inspector set up and want to enable these advanced features:
+
+1. **Enable in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
+2. **Update to a supported SDK or integration** - Update to the latest version of a [supported SDK or integration](#supported-sdks-and-integrations) that includes these features
+3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
+
+### For new Inspector installations
+
+If you're setting up Inspector for the first time:
+
+1. **Enable in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
+2. **Install the SDK or connect an integration** - Follow the [Inspector installation overview](/inspector/inspector-installation-overview) to set up Inspector. These features are included by default in the latest versions of [supported SDKs and integrations](#supported-sdks-and-integrations).
+3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
+
+### Supported SDKs and integrations
+
+Property value validation and session filtering are currently supported on:
 - [Inspector Web SDK](/reference/avo-inspector-sdks/web) (v1.5.0+)
 - [Segment integration](/inspector/connect-inspector-to-segment)
 
-Support for other platforms is coming soon. Reach out to support if you need property value validation for other platforms.
+Support for other platforms is coming soon. Reach out to support if you need these features for other platforms.
 
 ## Troubleshooting
 
