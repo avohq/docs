@@ -37,7 +37,7 @@ See all events flowing through Inspector in real-time, organized chronologically
 ### Event details and validation
 
 <Callout type="info">
-  Property value validation is currently only available for [supported SDKs and integrations](#supported-sdks-and-integrations). Support on other platforms coming soon.
+  Property value validation is available for [supported SDKs and integrations](#supported-sdks-and-integrations). Make sure you are using the minimum required version.
 </Callout>
 
 Click any event to see:
@@ -176,11 +176,17 @@ Once decrypted, you can see the actual values sent with each event and identify 
 
 ##### Supported SDKs and integrations
 
-Property value validation is currently supported on:
-- [Inspector Web SDK](/reference/avo-inspector-sdks/web) (v1.5.0+)
-- [Segment integration](/inspector/connect-inspector-to-segment)
+Property value validation is supported on the following SDKs and integrations:
 
-Support for other platforms is coming soon. Reach out to support if you need property value validation for other platforms.
+| Platform | Package Manager | Min Version | Languages |
+|----------|----------------|-------------|-----------|
+| Web | npm / yarn | 1.3.0+ | JavaScript, TypeScript, ReScript |
+| iOS | CocoaPods | 2.2.1+ | Swift, Objective-C |
+| iOS | SPM | 1.5.0+ | Swift, Objective-C |
+| Android | JitPack / Maven | 2.4.0+ | Kotlin, Java |
+| Segment | Integration | v2 | All sources |
+
+To get access to all the features, including stream ID, client-side value validation, and property value report, update to the minimum version listed above.
 
 ## Troubleshooting
 
