@@ -37,7 +37,7 @@ See all events flowing through Inspector in real-time, organized chronologically
 ### Event details and validation
 
 <Callout type="info">
-  Property value validation is an advanced feature. See [Enabling advanced debugger features](#enabling-advanced-debugger-features) for setup instructions.
+  Property value validation is an advanced feature available for [supported SDKs and integrations](#supported-sdks-and-integrations). See [Enabling advanced debugger features](#enabling-advanced-debugger-features) for setup instructions.
 </Callout>
 
 Click any event to see:
@@ -78,6 +78,10 @@ When an event matches multiple variants in the tracking plan, Avo selects the be
 5. **Specific vs default (tiebreaker)** - If all else is equal, prefer the specific variant over the default event.
 
 ## How to use the Inspector Debugger
+
+<Callout type="info" emoji="💡">
+  To use the Inspector Debugger, the Inspector needs to be installed in your application. See the [Inspector installation overview](/inspector/inspector-installation-overview) for instructions.
+</Callout>
 
 ### Accessing the debugger
 
@@ -194,10 +198,16 @@ If you're setting up Inspector for the first time:
 ### Supported SDKs and integrations
 
 Property value validation and session filtering are currently supported on:
-- [Inspector Web SDK](/reference/avo-inspector-sdks/web) (v1.5.0+)
-- [Segment integration](/inspector/connect-inspector-to-segment)
 
-Support for other platforms is coming soon. Reach out to support if you need these features for other platforms.
+| Platform | Package Manager | Min Version | Languages |
+|----------|----------------|-------------|-----------|
+| Web | npm / yarn | 1.3.0+ | JavaScript, TypeScript, ReScript |
+| iOS | CocoaPods | 2.2.1+ | Swift, Objective-C |
+| iOS | SPM | 1.5.0+ | Swift, Objective-C |
+| Android | JitPack / Maven | 2.4.0+ | Kotlin, Java |
+| Segment | Integration | v2 | All sources |
+
+To get access to all the features, including stream ID, client-side value validation, and property value report, update to the minimum version listed above. Support for other platforms is coming soon. Reach out to support if you need these features for other platforms.
 
 ## Troubleshooting
 
