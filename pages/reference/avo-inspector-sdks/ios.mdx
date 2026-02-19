@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Avo Inspector iOS SDK
 
 ## Quick Start Guide
@@ -39,17 +41,19 @@ Obtain the API key in Inspector tab in your [Avo.app](https://www.avo.app/welcom
 You will need to create an instance of `AvoInspector` with the constructor.
 
 ```swift
-init(apiKey: String?, env: AvoInspectorEnv)
+init(apiKey: String, env: AvoInspectorEnv, proxyEndpoint: String, publicEncryptionKey: String?)
 ```
 
 ```objectivec
--(instancetype) initWithApiKey: (NSString *) apiKey env: (AvoInspectorEnv) env;
+-(instancetype) initWithApiKey: (NSString *) apiKey env: (AvoInspectorEnv) env proxyEndpoint: (NSString *) proxyEndpoint publicEncryptionKey: (NSString * _Nullable) publicEncryptionKey;
 ```
 
 > #### Parameters:
 >
 > - `String apiKey` - the API key you get in Inspector tab of your Avo workspace
 > - `AvoInspectorEnv env` - current environment: development, staging or production
+> - `String proxyEndpoint` - proxy endpoint used by the SDK for network requests
+> - `String publicEncryptionKey` (optional) - public key used to encrypt property values for secure debugging in Inspector
 
 #### Property value validation
 
