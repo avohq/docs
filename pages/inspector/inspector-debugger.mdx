@@ -141,11 +141,7 @@ Property values are only sent to Avo if you provide a public encryption key to e
 
 ![Inspector Debugger with encrypted values](/images/inspector/debugger/inspector-debugger-event-details.png)
 
-To generate a public/private key pair, you can run the following command in your terminal:
-
-```bash
-node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
-```
+To start encrypting and validating property values, [generate encryption keys](#generating-encryption-keys) and pass the public key to your SDK during initialization.
 
 #### Decrypting values in the debugger
 
@@ -168,32 +164,33 @@ Once decrypted, you can see the actual values sent with each event and identify 
 
 ## Enabling advanced debugger features
 
-The Inspector Debugger offers advanced features that require enabling in your workspace settings and upgrading to the latest SDK or integration version:
+The Inspector Debugger offers advanced features when using a [supported SDK or integration version](#supported-sdks-and-integrations). 
 
-- **[Property value validation](#property-value-validation)** - See validation issues for property values that don't match the constraints defined in your tracking plan, such as allowed values, regex patterns, min/max values, and object key requirements
-- **[Session filtering](#session-filtering)** - Filter the event stream to a specific user session, making it easier to find and debug your own events
+To enable them you have to install or update the supported SDK or integration to the minimum version listed in the [supported SDKs and integrations](#supported-sdks-and-integrations) table below.
 
-Property value validation is enabled when the Property value validation setting is enabled in your workspace settings and you are using a supported SDK or integration version.
-You will always see validation issues (such as values not matching allowed values or regex patterns), but the actual property values will appear as encrypted.
-To see the actual values that are causing issues, enable Inspector value validation for your workspace and generate and configure encryption keys.
+Each feature has different setup requirements:
+
+- **[Session filtering](#session-filtering)** - Filter the event stream to a specific user session, making it easier to find and debug your own events. Works automatically with supported SDK versions — no additional settings required.
+- **[Property value validation](#property-value-validation)** - See validation issues for property values that don't match the constraints defined in your tracking plan, such as allowed values, regex patterns, min/max values, and object key requirements. To enable it, you need to:
+  1. **Enable property value validation** - Go to Inspector settings in your Avo workspace and enable the Property value validation setting.
+  2. **(Optional) [Generate encryption keys](#generating-encryption-keys)** - To see the actual property values (not just validation issues), generate a key pair and pass the public key to your SDK.
 
 ![Inspector settings with property value validation enabled](/images/inspector/debugger/value-validation-setting.png)
 
-### For existing Inspector installations
+### Generating encryption keys
 
-If you already have Inspector set up and want to enable these advanced features:
+By default, property values appear encrypted in the debugger. You will always see validation issues, but to see the actual values that are causing issues, you need to generate a key pair.
 
-1. **Enable in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
-2. **Update to a supported SDK or integration** - Update to the latest version of a [supported SDK or integration](#supported-sdks-and-integrations) that includes these features
-3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
+Run the following command in your terminal:
 
-### For new Inspector installations
+```bash
+node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
+```
 
-If you're setting up Inspector for the first time:
+Then:
 
-1. **Enable in settings** - Go to Inspector settings in your Avo workspace and enable property value validation
-2. **Install the SDK or connect an integration** - Follow the [Inspector installation overview](/inspector/inspector-installation-overview) to set up Inspector. These features are included by default in the latest versions of [supported SDKs and integrations](#supported-sdks-and-integrations).
-3. **(Optional) Generate encryption keys** - To see the actual property values (not just the validation issues), generate a public/private key pair and configure your SDK with the public key. See [How encryption works](#how-encryption-works) for details.
+1. **Pass the public key to your SDK** - Add the public key when initializing the Inspector SDK or configuring your integration. See the setup guide for your [platform](#supported-sdks-and-integrations).
+2. **Store your private key securely** - Save it in a password manager. You'll need it to [decrypt values in the debugger](#decrypting-values-in-the-debugger). Never share your private key.
 
 ### Supported SDKs and integrations
 
