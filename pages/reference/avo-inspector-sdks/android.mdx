@@ -59,11 +59,11 @@ Obtain the API key in Inspector tab in your [Avo.app](https://www.avo.app/welcom
 You will need to create an instance of `AvoInspector` with the constructor.
 
 ```java
-public AvoInspector(String apiKey, Application application, AvoInspectorEnv env, @Nullable Activity rootActivityForVisualInspector)
+public AvoInspector(@NonNull String apiKey, @NonNull Application application, @NonNull AvoInspectorEnv env, @Nullable Activity rootActivityForVisualInspector, @Nullable String publicEncryptionKey)
 ```
 
 ```kotlin
-class AvoInspector(apiKey: String?, application: Application?, env: AvoInspectorEnv?, rootActivityForVisualInspector: Activity?)
+class AvoInspector(apiKey: String, application: Application, env: AvoInspectorEnv, rootActivityForVisualInspector: Activity?, publicEncryptionKey: String?)
 ```
 
 > #### Parameters:
@@ -72,6 +72,7 @@ class AvoInspector(apiKey: String?, application: Application?, env: AvoInspector
 > - `Application application` - reference to your Application class
 > - `AvoInspectorEnv env` - current environment: development, staging or production
 > - `Activity rootActivityForVisualInspector` - you root activity that will be used to show Visual Inspector, a view where you can track the reported schemas.
+> - `String publicEncryptionKey` (optional) - public key used to encrypt property values for secure debugging in Inspector.
 
 [More about the Visual Inspector below](#visual-inspector)
 
