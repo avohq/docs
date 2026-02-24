@@ -29,6 +29,74 @@ Avo Inspector requires two core steps to add observability:
 
 Both steps have installation options available to you to support different configurations. Which ever path you take, your data observability journey starts with creating an Avo source because this is where you create source specific API keys and can get the initialization code. If you haven't created a source yet, follow the docs to [create and set up your GTM source](/inspector/configuring-inspector-sources).
 
+## Migrating to v2 and enabling property value validation
+
+Inspector v2 adds support for **property value validation** — the Inspector can validate actual property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, regex patterns, and min/max ranges. Property values are encrypted on the client before being sent to Avo, so only you can decrypt them.
+
+### Generating encryption keys
+
+To enable property value validation, you need a P-256 (ECIES) key pair. Run the following command to generate one:
+
+```bash
+node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'uncompressed'));"
+```
+
+This outputs:
+- **Public key** (130-character hex string starting with `04`) — provide this to the Inspector SDK
+- **Private key** (64-character hex string) — save securely; used to [decrypt values in the Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values)
+
+<Callout type="warning">
+  Store your private key in a secure location like a password manager. Never share or expose it to a third party. Avo cannot decrypt your property values without it.
+</Callout>
+
+### Migrating the GTM Template (client side)
+
+If you are using the Avo Inspector GTM template from the Template Gallery:
+
+1. **Update the template** — Get the latest version of the Avo Inspector template from the Template Gallery. The updated template includes a new optional field: **Public Encryption Key**.
+2. **Add your public key** — In the Tag Configuration, paste your hex public key into the **Public Encryption Key** field. Leave it empty to continue without encryption.
+3. **Enable in Avo** — Go to workspace settings and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
+
+The template is backwards-compatible — existing tags continue to work without changes. The encryption key field is optional.
+
+### Migrating the GTM Recipe (client side)
+
+If you imported the [GTM recipe](https://github.com/avohq/gtm-web-recipe):
+
+1. **Re-download the recipe** — Get the latest `GTM-58RX3LLN_workspace19.json` from the [gtm-web-recipe repo](https://github.com/avohq/gtm-web-recipe). The updated recipe loads Inspector v2 which supports encryption.
+2. **Re-import into GTM** — Import the updated recipe into your GTM container. You may want to merge with your existing tags if you have customized filters.
+3. **Add the encryption key** — In the **Avo Inspector Init** tag, add the following line before `inspector.load()`:
+```js
+if ('YOUR-HEX-PUBLIC-KEY') {
+  inspector.__PUBLIC_ENCRYPTION_KEY__ = 'YOUR-HEX-PUBLIC-KEY';
+}
+```
+4. **Enable in Avo** — Go to workspace settings and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
+
+If you don't need encryption, you can skip step 3 — the v2 SDK works identically to v1 without a key.
+
+### Migrating the HTML script tag
+
+If you are using the HTML script tag snippet directly (either in GTM or embedded in your page):
+
+1. **Update the CDN URL** — Change `inspector-v1.min.js` to `inspector-v2.min.js`:
+```html
+(t.src = 'https://cdn.avo.app/inspector/inspector-v2.min.js');
+```
+2. **Add encryption key** (optional) — Add this line before `inspector.load()`:
+```js
+inspector.__PUBLIC_ENCRYPTION_KEY__ = 'YOUR-HEX-PUBLIC-KEY';
+```
+3. **Enable in Avo** — Go to workspace settings and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
+
+The full updated snippet is available in the [Web SDK reference](/reference/avo-inspector-sdks/web#installation-option-2-html-tag).
+
+<Callout type="info">
+  The v1 CDN bundle remains available at its original URL. Existing integrations that don't update will continue to work — they just won't have property value validation support.
+</Callout>
+
+---
+
 ## Inspector Client side GTM integration with a template
 
 The simplest way to integrate GTM with inspector is to use the Avo Inspector template provided in the official Template Gallery.
