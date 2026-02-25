@@ -35,19 +35,7 @@ Inspector v2 adds support for **property value validation** — the Inspector ca
 
 ### Generating encryption keys
 
-To enable property value validation, you need a P-256 (ECIES) key pair. Run the following command to generate one:
-
-```bash
-node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'uncompressed'));"
-```
-
-This outputs:
-- **Public key** (130-character hex string starting with `04`) — provide this to the Inspector SDK
-- **Private key** (64-character hex string) — save securely; used to [decrypt values in the Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values)
-
-<Callout type="warning">
-  Store your private key in a secure location like a password manager. Never share or expose it to a third party. Avo cannot decrypt your property values without it.
-</Callout>
+For key generation instructions, follow the [Inspector Debugger docs](https://www.avo.app/docs/inspector/inspector-debugger#generating-encryption-keys).
 
 ### Migrating the GTM Template (client side)
 
