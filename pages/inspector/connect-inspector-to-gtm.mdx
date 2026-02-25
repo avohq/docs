@@ -63,6 +63,20 @@ if ('YOUR-HEX-PUBLIC-KEY') {
 
 If you don't need property value validation, you can skip step 3 — the v2 SDK works identically to v1 without a key. Without a key, property values are not sent to Avo.
 
+### Migrating the GTM Server-side template
+
+If you are using the Avo Inspector server-side GTM template from the Template Gallery:
+
+1. **Update the template** — Get the latest version of the Avo Inspector template from the Template Gallery. The updated template adds event spec validation and stream ID support.
+2. **Configure the environment** — Set the environment to `dev` or `staging` to enable client-side event spec validation. In production, events are sent directly without validation for optimal throughput.
+3. **Enable in Avo** — Go to workspace settings and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
+
+The server-side template validates events against the tracking plan spec in dev and staging environments, checking constraints like allowed values, pinned values, and min/max ranges. Regex validation is not supported in the GTM Server sandbox and is silently skipped.
+
+<Callout type="info">
+  Encryption is not supported in the GTM Server template due to sandbox limitations (no cryptographic APIs). Property values are not sent to Avo from the server-side template. If property value encryption is required, use the client-side GTM template or a native SDK instead.
+</Callout>
+
 ### Migrating the HTML script tag
 
 If you are using the HTML script tag snippet directly (either in GTM or embedded in your page):
