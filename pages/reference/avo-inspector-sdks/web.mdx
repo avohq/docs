@@ -55,26 +55,8 @@ You can enable property value validation to validate property values against the
 To enable property value validation:
 
 1. **Enable property value validation in settings** - Go to workspace settings in your Avo workspace and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
-
-To be able to [decrypt the property values](/inspector/inspector-debugger#decrypting-property-values) in the Inspector Debugger, you need to generate a public/private key pair:
-
-**Step 1: Generate encryption keys**
-
-Run the following command to generate a P-256 (ECIES) key pair:
-
-```bash
-node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'uncompressed'));"
-```
-
-This will output:
-- **Public key** (130-character hex string starting with `04`) - Provided to the Inspector SDK for encrypting property values
-- **Private key** (64-character hex string) - Used by you to decrypt values in the Inspector Debugger
-
-**Step 2: Store your private key securely**
-
-Save your private key in a secure location like a password manager. You'll need this to [decrypt values in the Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values). Never share or expose your private key to a third party.
-
-**Step 3: Add the public key to the Inspector initialization**
+2. **Generate encryption keys** - Follow the key generation guide in the [Inspector Debugger docs](https://www.avo.app/docs/inspector/inspector-debugger#generating-encryption-keys).
+3. **Add the public key to the Inspector initialization**
 
 Pass the public key in the constructor options:
 
