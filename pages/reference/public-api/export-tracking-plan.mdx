@@ -2137,15 +2137,17 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.
 
 <details>
 <summary><b> Preview NDJSON Response </b></summary>
-```ndjson
+```json
 {"schema":"iglu:app.avo/page_viewed/jsonschema/1-0-0","data":{"$schema":"http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#","self":{"vendor":"app.avo","name":"page_viewed","format":"jsonschema","version":"1-0-0"},"type":"object","description":"When a user views a web page within the website","properties":{"page_title":{"type":"string","description":"Title of the web page"},"page_url":{"type":"string","description":"URL of the web page"},"page_query":{"type":"string","description":"HTML query string from page URL (?variable=value etc)"}},"required":["page_title","page_url","page_query"],"additionalProperties":false}}
 {"schema":"iglu:app.avo/link_clicked/jsonschema/1-0-0","data":{"$schema":"http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#","self":{"vendor":"app.avo","name":"link_clicked","format":"jsonschema","version":"1-0-0"},"type":"object","description":"When a user clicks a web link","properties":{"link_label":{"type":"string","description":"The label on the link as seen by the user"},"link_url":{"type":"string","description":"The destination URL of the link"}},"required":["link_label","link_url"],"additionalProperties":false}}
 ```
 </details>
 
-## Changelog 4 march 2026
+## Changelog
 
-### New Features
+### 4 March 2026
+
+#### New Features
 
 - `payloadFormat` optional query parameter added to the export endpoint, supporting three output formats:
   - `jsonSchema` (default) — unchanged behavior, returns a JSON Schema representation of the tracking plan
@@ -2154,9 +2156,9 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.
 - `vendor` optional query parameter added for use with `payloadFormat=snowplowSchemas`. Specifies the Iglu vendor namespace (defaults to `app.avo`). Only alphanumeric characters, dots, hyphens, and underscores are accepted; invalid values return HTTP 400.
 - Passing an unrecognized `payloadFormat` value returns HTTP 400.
 
-## Changelog 14 march 2024
+### 14 March 2024
 
-### Bug Fixes
+#### Bug Fixes
 
 - Optional Lists are now defined as optional, instead of the values inside them.
 
