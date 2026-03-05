@@ -4,7 +4,7 @@
 
 _Export tracking plan using Avo API_
 
-The Export API gives you the possibility to export your Avo tracking plan as JSON Schema from any branch.
+The Export API gives you the possibility to export your Avo tracking plan from any branch in multiple formats: JSON Schema (default), Snowplow Iglu self-describing JSON schemas, or NDJSON.
 
 ## Endpoint
 
@@ -46,15 +46,52 @@ The base64 encoded token expects `name:secret`
 
 See more on [authorization](/public-api/authentication#authenticating-with-avo-api)
 
+## Query Parameters
+
+### - _payloadFormat_ (optional)
+
+Controls the output format of the export. Defaults to `jsonSchema` if not provided.
+
+| Value | Description |
+|---|---|
+| `jsonSchema` | Default. Returns a JSON Schema representation of the tracking plan (unchanged behavior). |
+| `snowplowSchemas` | Returns [Snowplow Iglu self-describing JSON schemas](https://docs.snowplow.io/docs/pipeline-components-and-applications/iglu/). Response has shape `{ "eventSchemas": [...], "contextSchemas": [...] }`. Per-event schema versions are extracted from pinned schema properties. |
+| `ndjson` | Returns the tracking plan as [Newline Delimited JSON (NDJSON)](https://github.com/ndjson/ndjson-spec), with each event schema as a self-contained JSON envelope on its own line. |
+
+Returns HTTP 400 if an unrecognized value is provided.
+
+### - _vendor_ (optional, Snowplow only)
+
+The Iglu vendor namespace to use when `payloadFormat=snowplowSchemas`. Defaults to `app.avo` if not provided.
+
+- Must contain only alphanumeric characters, dots (`.`), hyphens (`-`), and underscores (`_`)
+- Returns HTTP 400 if the value contains invalid characters
+
 ## Example Usage
 
-### Request
+### JSON Schema (default)
 
 ```sh
 $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1
+# or explicitly:
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1?payloadFormat=jsonSchema"
 ```
 
-### Response:
+### Snowplow Schemas
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1?payloadFormat=snowplowSchemas"
+# with a custom vendor:
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1?payloadFormat=snowplowSchemas&vendor=com.mycompany"
+```
+
+### NDJSON
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1?payloadFormat=ndjson"
+```
+
+### Response (JSON Schema):
 
 <details>
 <summary><b> Preview Json Response </b></summary>
@@ -2056,9 +2093,72 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET https://api.avo.a
 ```
 </details>
 
-## Changelog 14 march 2024
+### Response (Snowplow Schemas):
 
-### Bug Fixes
+<details>
+<summary><b> Preview Snowplow Schemas Response </b></summary>
+```json
+{
+  "eventSchemas": [
+    {
+      "$schema": "http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#",
+      "self": {
+        "vendor": "app.avo",
+        "name": "page_viewed",
+        "format": "jsonschema",
+        "version": "1-0-0"
+      },
+      "type": "object",
+      "description": "When a user views a web page within the website",
+      "properties": {
+        "page_title": {
+          "type": "string",
+          "description": "Title of the web page"
+        },
+        "page_url": {
+          "type": "string",
+          "description": "URL of the web page"
+        },
+        "page_query": {
+          "type": "string",
+          "description": "HTML query string from page URL (?variable=value etc)"
+        }
+      },
+      "required": ["page_title", "page_url", "page_query"],
+      "additionalProperties": false
+    }
+  ],
+  "contextSchemas": []
+}
+```
+</details>
+
+### Response (NDJSON):
+
+<details>
+<summary><b> Preview NDJSON Response </b></summary>
+```json
+{"schema":"iglu:app.avo/page_viewed/jsonschema/1-0-0","data":{"$schema":"http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#","self":{"vendor":"app.avo","name":"page_viewed","format":"jsonschema","version":"1-0-0"},"type":"object","description":"When a user views a web page within the website","properties":{"page_title":{"type":"string","description":"Title of the web page"},"page_url":{"type":"string","description":"URL of the web page"},"page_query":{"type":"string","description":"HTML query string from page URL (?variable=value etc)"}},"required":["page_title","page_url","page_query"],"additionalProperties":false}}
+{"schema":"iglu:app.avo/link_clicked/jsonschema/1-0-0","data":{"$schema":"http://iglucentral.com/schemas/com.snowplowanalytics.self-desc/schema/jsonschema/1-0-0#","self":{"vendor":"app.avo","name":"link_clicked","format":"jsonschema","version":"1-0-0"},"type":"object","description":"When a user clicks a web link","properties":{"link_label":{"type":"string","description":"The label on the link as seen by the user"},"link_url":{"type":"string","description":"The destination URL of the link"}},"required":["link_label","link_url"],"additionalProperties":false}}
+```
+</details>
+
+## Changelog
+
+### 4 March 2026
+
+#### New Features
+
+- `payloadFormat` optional query parameter added to the export endpoint, supporting three output formats:
+  - `jsonSchema` (default) — unchanged behavior, returns a JSON Schema representation of the tracking plan
+  - `snowplowSchemas` — returns [Snowplow Iglu self-describing JSON schemas](https://docs.snowplow.io/docs/pipeline-components-and-applications/iglu/) with shape `{ "eventSchemas": [...], "contextSchemas": [...] }`. Per-event schema versions are extracted from pinned schema properties.
+  - `ndjson` — returns the tracking plan as [Newline Delimited JSON (NDJSON)](https://github.com/ndjson/ndjson-spec), one envelope per event per line
+- `vendor` optional query parameter added for use with `payloadFormat=snowplowSchemas`. Specifies the Iglu vendor namespace (defaults to `app.avo`). Only alphanumeric characters, dots, hyphens, and underscores are accepted; invalid values return HTTP 400.
+- Passing an unrecognized `payloadFormat` value returns HTTP 400.
+
+### 14 March 2024
+
+#### Bug Fixes
 
 - Optional Lists are now defined as optional, instead of the values inside them.
 
