@@ -77,31 +77,39 @@ If you are unsure of whether this applies to your source, or if you don’t know
 
 ![Destination Settings](/images/guide-segment-to-inspector/avo-destination-settings.png)
 
+##### Avo Inspector Public Encryption Key (Optional)
+
+An optional public encryption key used for property value validation. To learn more about how to generate and configure this key, see the [Property Value Validation](#property-value-validation-optional) section below.
+
 ##### Property Value Validation (Optional)
 
-Property value validation allows you to validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, regex patterns, and min/max ranges. This helps you catch issues like incorrect enum values or out-of-range numbers.
+Property value validation allows you to validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, pinned values, regex patterns, and min/max ranges. This helps you catch issues like incorrect enum values or out-of-range numbers.
 
 <Callout type="info" emoji="💡">
-  Property value validation is available for the latest version of the Segment integration. If you are using an older version, please update to the latest version.
+  Property value validation is available for the latest version of the Segment integration (Avo v2 destination). If you are using an older version, please update to the latest version.
+</Callout>
+
+When enabled, property values are validated on-device against your tracking plan constraints. Encrypted values are sent alongside the event schemas so you can inspect the actual reported values in the [Inspector Debugger](/inspector/inspector-debugger). Decryption requires your private key, which only you control — Avo never has access to your raw user data.
+
+<Callout type="info" emoji="⚠️">
+  Property value validation only runs in **Development** and **Staging** environments. In Production, only event schemas are sent — no property values are validated or encrypted, even if a public encryption key is configured.
 </Callout>
 
 To enable property value validation:
 
-1. **Enable property value validation in settings** - Go to workspace settings in your Avo workspace and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
+1. **Enable property value validation in settings** — Go to workspace settings in your Avo workspace and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
 
-To be able to [decrypt the property values](/inspector/inspector-debugger#decrypting-property-values) in the Inspector Debugger, you need to generate a public/private key pair:
-
-1. **Generate encryption keys** - Run the following command in your terminal to generate a public/private key pair:
+2. **Generate encryption keys** — Run the following command in your terminal to generate a public/private key pair:
 
 ```bash
 node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
 ```
 
-This will output a public key and a private key. 
+This will output a public key and a private key.
 
-2. **Store your private key securely** - Save your private key in a secure location like a password manager. You'll need this to decrypt values in the [Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values). Never share or expose your private key with a third party.
+3. **Store your private key securely** — Save your private key in a secure location like a password manager. You'll need this to decrypt values in the [Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values). Never share or expose your private key with a third party.
 
-3. **Add the public key to the destination settings** - Copy the public key and paste it into the "Public Key" field in the Segment destination settings.
+4. **Add the public key to the destination settings** — Copy the public key and paste it into the "Avo Inspector Public Encryption Key" field in the Segment destination settings.
 
 <Callout type="info" emoji="🔒">
   Property values are encrypted end-to-end. Avo only stores encrypted values and cannot decrypt them. Only you can decrypt the values using your private key in the Inspector Debugger dashboard.
