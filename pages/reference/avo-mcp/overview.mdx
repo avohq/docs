@@ -1,0 +1,83 @@
+import { Callout } from 'nextra/components'
+
+# Avo MCP (Alpha)
+
+The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI coding assistants. With it, tools like Claude Code, Cursor, and other MCP-compatible clients can read your tracking plan, explore branches, and generate correct analytics instrumentation — without you having to copy-paste event specs into the chat.
+
+<Callout type="warning" emoji="🚧">
+  The Avo MCP is currently in **alpha** and is read-only. We are actively working on write functionality. [Let us know what write capabilities you'd like to see](mailto:support@avo.app) — your feedback shapes what we build next.
+</Callout>
+
+What you can do with the Avo MCP:
+
+- Browse tracking plan branches and see what changed
+- Get implementation guides and code diffs for a specific source
+- Search for events and properties by meaning
+- Discover available sources in your workspace
+
+## Setup
+
+### Claude Code (CLI)
+
+Run this command to add the Avo MCP server:
+
+```bash
+claude mcp add avo --transport http https://mcp.avo.app/mcp
+```
+
+### Claude Desktop app
+
+1. Open Claude Desktop and go to **Customize** → **Connectors**
+2. Click **Add custom connector**
+3. Set the name to `avo` and the remote MCP server URL to `https://mcp.avo.app/mcp`
+
+<Callout type="info" emoji="🔒">
+  Adding connectors in Claude Desktop requires admin permissions in your organization.
+</Callout>
+
+### Other MCP clients
+
+For clients that support HTTP transport, point them at `https://mcp.avo.app/mcp`. Refer to your client's documentation for how to configure an HTTP-based MCP server.
+
+## Authentication
+
+The MCP server uses OAuth to authenticate you with Avo. The first time you invoke a tool, your MCP client will prompt you to complete an authorization flow in your browser. Once authenticated, the token is cached for subsequent requests.
+
+## Getting started
+
+All tools are workspace-scoped. The typical first-use sequence is:
+
+**1. Discover your workspaces**
+
+Call `list_workspaces` to see which Avo workspaces you have access to and find your workspace ID.
+
+**2. Save your workspace**
+
+Call `save_workspace` with your workspace ID. This persists the selection so every subsequent tool call uses it automatically — you won't need to pass `workspaceId` each time.
+
+`save_workspace` also returns the exact config snippet or environment variable needed to make the workspace selection permanent across sessions for your specific MCP client.
+
+**3. Use any tool**
+
+Once a workspace is saved, you can browse branches, look up sources, search for events, and get implementation guides directly in your AI coding session.
+
+## Common workflows
+
+### Implementing a tracking plan branch
+
+1. `list_branches` — find the branch you're working on
+2. `get_sources` — discover available sources (e.g. "iOS App", "Web App")
+3. `get_branch_implementation_guide` with a `sourceId` — get a summary of what changed and what to implement
+4. `get_branch_code_snippets` with a `sourceId` — get exact before/after code diffs for each changed event
+
+### Searching for an event
+
+Use `search` to find events by meaning, not just exact name. The tool uses vector similarity search, so queries like "user signed up" will match events named `Account Created` or `Registration Completed`.
+
+<Callout type="info" emoji="🔒">
+  Semantic search requires Avo Intelligence Smart Search to be enabled in your workspace. Workspace admins can enable it in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). If you don't have admin access, ask a workspace admin to enable it.
+</Callout>
+
+## Tools
+
+See the [Tools reference](/reference/avo-mcp/tools) for the full list of available tools and their parameters.
