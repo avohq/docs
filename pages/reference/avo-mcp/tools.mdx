@@ -41,7 +41,7 @@ Persist a workspace selection so all subsequent tool calls use it automatically.
 **Returns:** Confirmation message plus the exact CLI command or config snippet needed to persist the `WORKSPACE_ID` environment variable in your MCP client config.
 
 <Callout type="info" emoji="💡">
-  For Claude Code, the workspace ID is persisted to disk. The response tells you what to do for your specific client to make it permanent across sessions.
+  When using Claude Code, the workspace ID is persisted to disk automatically. When using other HTTP clients, the workspace ID is not persisted by default — follow the client-specific instructions in the response to set the `WORKSPACE_ID` environment variable and make it permanent across sessions.
 </Callout>
 
 ---
@@ -136,15 +136,15 @@ Get implementation snippets for all changed events on a branch, for a specific s
 | `branchName` | One of `branchId` or `branchName` | Branch name |
 | `workspaceId` | No | Workspace ID (uses saved value if omitted) |
 
-**Returns:** Code snippet diffs in unified diff format for each changed event, including:
+**Returns:** Per-event implementation snippets, including:
 
 - **Event status**: New, Added (to source), Updated, Removed (from source), or Deleted
 - **Label**: `[Codegen]` or `[Pseudocode]` per event, indicating whether generated code (`avo pull`) or manual implementation applies
-- **Unified diff** between main branch and current branch code
+- **Diff**: exact unified diff between main and current branch for `[Codegen]` events; illustrative before/after guidance for `[Pseudocode]` events (not a guaranteed exact patch)
 - **Contextual guidance** per event (e.g., run `avo pull` for Codegen events, implement manually for pseudocode events, remove calls for deleted events)
 
 <Callout type="info" emoji="💡">
-  **Codegen vs pseudocode:** Avo sources can use Avo Codegen (type-safe generated code pulled via `avo pull`) or manual implementation (where Avo provides pseudocode as a reference). The label on each event tells you which applies.
+  **Codegen vs pseudocode:** Avo sources can use Avo Codegen (type-safe generated code pulled via `avo pull`) or manual implementation (where Avo provides pseudocode as a reference). `[Codegen]` events include exact unified diffs you can apply directly; `[Pseudocode]` events provide illustrative guidance to help you write the implementation manually. The label on each event tells you which applies.
 </Callout>
 
 ---

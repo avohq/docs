@@ -37,7 +37,7 @@ claude mcp add avo --transport http https://mcp.avo.app/mcp
 
 ### Other MCP clients
 
-For clients that support HTTP transport and OAuth authentication, point them at `https://mcp.avo.app/mcp`. Refer to your client's documentation for how to configure an HTTP-based MCP server with OAuth.
+Point your client at `https://mcp.avo.app/mcp`. Your client must support both HTTP transport and the browser-based OAuth authorization flow described in the [Authentication](#authentication) section below — the first tool invocation will open a browser window to complete authorization, after which the token is cached. Clients that cannot complete the OAuth flow will not work with the Avo MCP server.
 
 ## Authentication
 
