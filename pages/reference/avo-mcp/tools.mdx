@@ -41,7 +41,7 @@ Persist a workspace selection so all subsequent tool calls use it automatically.
 **Returns:** Confirmation message plus the exact CLI command or config snippet needed to persist the `WORKSPACE_ID` environment variable in your MCP client config.
 
 <Callout type="info" emoji="💡">
-  In stdio mode (Claude Code), the workspace ID is persisted to disk. The response tells you what to do for your specific client to make it permanent across sessions.
+  For Claude Code, the workspace ID is persisted to disk. The response tells you what to do for your specific client to make it permanent across sessions.
 </Callout>
 
 ---
@@ -125,7 +125,7 @@ When `sourceId` is provided, the guide filters to changes affecting only that so
 
 ## `get_branch_code_snippets`
 
-Get exact before/after code diffs for all changed events on a branch, for a specific source.
+Get implementation snippets for all changed events on a branch, for a specific source.
 
 **Parameters:**
 

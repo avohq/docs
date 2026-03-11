@@ -37,7 +37,7 @@ claude mcp add avo --transport http https://mcp.avo.app/mcp
 
 ### Other MCP clients
 
-For clients that support HTTP transport, point them at `https://mcp.avo.app/mcp`. Refer to your client's documentation for how to configure an HTTP-based MCP server.
+For clients that support HTTP transport and OAuth authentication, point them at `https://mcp.avo.app/mcp`. Refer to your client's documentation for how to configure an HTTP-based MCP server with OAuth.
 
 ## Authentication
 
@@ -45,7 +45,7 @@ The MCP server uses OAuth to authenticate you with Avo. The first time you invok
 
 ## Getting started
 
-All tools are workspace-scoped. The typical first-use sequence is:
+Most tools are workspace-scoped (`health_check` and `list_workspaces` are global exceptions). The typical first-use sequence is:
 
 **1. Discover your workspaces**
 
@@ -68,7 +68,7 @@ Once a workspace is saved, you can browse branches, look up sources, search for 
 1. `list_branches` — find the branch you're working on
 2. `get_sources` — discover available sources (e.g. "iOS App", "Web App")
 3. `get_branch_implementation_guide` with a `sourceId` — get a summary of what changed and what to implement
-4. `get_branch_code_snippets` with a `sourceId` — get exact before/after code diffs for each changed event
+4. `get_branch_code_snippets` with a `sourceId` — get implementation snippets for each changed event (exact diffs for Codegen sources, pseudocode for manual sources)
 
 ### Searching for an event
 
