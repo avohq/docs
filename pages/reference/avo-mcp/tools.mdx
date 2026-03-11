@@ -1,0 +1,191 @@
+import { Callout } from 'nextra/components'
+
+# Avo MCP tools reference
+
+All tools (except `health_check` and `list_workspaces`) operate on a workspace. If you have [saved a workspace](/reference/avo-mcp/overview#getting-started), the `workspaceId` parameter is optional — the saved value is used automatically.
+
+---
+
+## `health_check`
+
+Verify the MCP server is running and responsive.
+
+**Parameters:** None
+
+**Returns:** Simple "OK" health status.
+
+---
+
+## `list_workspaces`
+
+List the Avo workspaces you have access to.
+
+**Parameters:** None
+
+**Returns:** Each workspace's name, ID, and your role in it.
+
+Call this first to find your workspace ID before calling `save_workspace`.
+
+---
+
+## `save_workspace`
+
+Persist a workspace selection so all subsequent tool calls use it automatically.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `workspaceId` | Yes | The ID of the workspace to save |
+
+**Returns:** Confirmation message plus the exact CLI command or config snippet needed to persist the `WORKSPACE_ID` environment variable in your MCP client config.
+
+<Callout type="info" emoji="💡">
+  When using Claude Code, the workspace ID is persisted to disk automatically. When using other HTTP clients, the workspace ID is not persisted by default — follow the client-specific instructions in the response to set the `WORKSPACE_ID` environment variable and make it permanent across sessions.
+</Callout>
+
+---
+
+## `list_branches`
+
+Browse branches in the workspace.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `branchStatuses` | No | Filter by status. Valid values: `Draft`, `ReadyForReview`, `ChangesRequested`, `Approved`, `Merged`, `Closed`, `Open`. Defaults to open/active branches only. |
+| `pageSize` | No | Number of results per page (1–50, default 25) |
+| `pageToken` | No | Pagination token from a previous response |
+| `branchName` | No | Substring match on branch name |
+| `creatorEmail` | No | Filter by creator email |
+| `creatorUserId` | No | Filter by creator user ID |
+| `reviewerEmail` | No | Filter by reviewer email |
+| `reviewerUserId` | No | Filter by reviewer user ID |
+| `collaboratorEmail` | No | Filter by collaborator email |
+| `collaboratorUserId` | No | Filter by collaborator user ID |
+| `createdAfter` | No | Filter to branches created after this date |
+| `createdBefore` | No | Filter to branches created before this date |
+| `impactedSourceId` | No | Filter to branches that affect a specific source |
+
+**Returns:** Compact summary per branch: name, status, ID, and creator email. Results are paginated, newest-first.
+
+By default, `Merged` and `Closed` branches are excluded to reduce noise. Pass `branchStatuses: ["Merged"]` (or any other status) to include them.
+
+---
+
+## `get_branch_details`
+
+Get full details for a specific branch.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `branchId` | One of `branchId` or `branchName` | Branch ID (takes precedence over name) |
+| `branchName` | One of `branchId` or `branchName` | Branch name (case-insensitive; matches open branches) |
+| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+
+**Returns:** Full branch details including:
+- Resolved emails for the creator, all reviewers, and all collaborators
+- The complete list of impacted source IDs
+- Branch description
+
+Use this after `list_branches` to drill into a specific branch.
+
+---
+
+## `get_branch_implementation_guide`
+
+Get a high-level implementation guide for a branch's tracking plan changes.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `branchId` | One of `branchId` or `branchName` | Branch ID |
+| `branchName` | One of `branchId` or `branchName` | Branch name |
+| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `sourceId` | No | Filter to a specific source. Use `get_sources` to find source IDs. |
+
+**Returns:**
+
+- **Summary**: total count of new, modified, and deleted events
+- **New events**: name, description, list of properties, and whether the source uses Avo Codegen or manual implementation
+- **Modified events**: what changed (name, description, or properties) with before/after values
+- **Deleted events**: name, description, and properties
+- **Implementation steps**: instructions based on your source type (Codegen: check `avo.json`, run `avo pull`, import, implement, validate; Manual: what to add, change, or remove)
+
+When `sourceId` is provided, the guide filters to changes affecting only that source and tailors the implementation steps accordingly.
+
+**When to use this vs `get_branch_code_snippets`:** Use this tool to understand the scope of changes and get structured guidance. Use `get_branch_code_snippets` when you need the actual code diffs to write implementation code.
+
+---
+
+## `get_branch_code_snippets`
+
+Get implementation snippets for all changed events on a branch, for a specific source.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `sourceId` | Yes | Source ID to get code snippets for. Use `get_sources` to find IDs. |
+| `branchId` | One of `branchId` or `branchName` | Branch ID |
+| `branchName` | One of `branchId` or `branchName` | Branch name |
+| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+
+**Returns:** Per-event implementation snippets, including:
+
+- **Event status**: New, Added (to source), Updated, Removed (from source), or Deleted
+- **Label**: `[Codegen]` or `[Pseudocode]` per event, indicating whether generated code (`avo pull`) or manual implementation applies
+- **Diff**: exact unified diff between main and current branch for `[Codegen]` events; illustrative before/after guidance for `[Pseudocode]` events (not a guaranteed exact patch)
+- **Contextual guidance** per event (e.g., run `avo pull` for Codegen events, implement manually for pseudocode events, remove calls for deleted events)
+
+<Callout type="info" emoji="💡">
+  **Codegen vs pseudocode:** Avo sources can use Avo Codegen (type-safe generated code pulled via `avo pull`) or manual implementation (where Avo provides pseudocode as a reference). `[Codegen]` events include exact unified diffs you can apply directly; `[Pseudocode]` events provide illustrative guidance to help you write the implementation manually. The label on each event tells you which applies.
+</Callout>
+
+---
+
+## `get_sources`
+
+List all sources in the workspace.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `branchId` | No | Branch ID. Defaults to the main branch. |
+| `branchName` | No | Branch name. Defaults to the main branch. |
+
+**Returns:** A table of sources with: source name, programming language, platform, filename hint, and source ID. Sources with no language or platform configured are flagged.
+
+Sources represent the different places in your codebase where tracking fires — for example, "iOS App", "Web App", or "Backend Service". Call this tool to find the `sourceId` before using `get_branch_implementation_guide` or `get_branch_code_snippets`.
+
+---
+
+## `search`
+
+Search across the tracking plan using semantic similarity.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `query` | Yes | Natural language search query |
+| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `itemType` | No | Filter by type: `event`, `property`, `metric`, `category`, or `propertyBundle` |
+| `maxResults` | No | Number of results to return (1–20, default 10) |
+
+**Returns:** Ranked results with: rank, name, type, item ID, relevance percentage, and a truncated description (80 characters).
+
+The search uses vector similarity, not keyword matching. A query like "user signed up" will match events named `Account Created` or `Registration Completed` based on meaning.
+
+Search is performed against the **main branch** only. There may be a short lag for very recently created or updated items.
+
+<Callout type="info" emoji="🔒">
+  Semantic search requires Avo Intelligence Smart Search to be enabled in your workspace. Workspace admins can enable it in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). If you don't have admin access, ask a workspace admin to enable it.
+</Callout>
