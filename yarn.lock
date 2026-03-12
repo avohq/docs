@@ -807,6 +807,18 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-14.2.32.tgz#8212d681cf6858a9e3204728f8f2b161000683ed"
   integrity sha512-2N0lSoU4GjfLSO50wvKpMQgKd4HdI2UHEhQPPPnlgfBJlOgJxkjpkYBqzk08f1gItBB6xF/n+ykso2hgxuydsA==
 
+"@noble/curves@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@noble/curves/-/curves-1.9.7.tgz#79d04b4758a43e4bca2cbdc62e7771352fa6b951"
+  integrity sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw==
+  dependencies:
+    "@noble/hashes" "1.8.0"
+
+"@noble/hashes@1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.8.0.tgz#cee43d801fcef9644b11b8194857695acd5f815a"
+  integrity sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -6982,6 +6994,11 @@ restore-cursor@^4.0.0:
     onetime "^5.1.0"
     signal-exit "^3.0.2"
 
+ret@~0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/ret/-/ret-0.5.0.tgz#30a4d38a7e704bd96dc5ffcbe7ce2a9274c41c95"
+  integrity sha512-I1XxrZSQ+oErkRR4jYbAyEEu2I0avBvvMM5JN+6EBprOGRCs63ENqZ3vjavq8fBw2+62G5LF5XelKwuJpcvcxw==
+
 retext-latin@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/retext-latin/-/retext-latin-4.0.0.tgz#d02498aa1fd39f1bf00e2ff59b1384c05d0c7ce3"
@@ -7145,6 +7162,13 @@ safe-regex-test@^1.0.3:
     call-bind "^1.0.6"
     es-errors "^1.3.0"
     is-regex "^1.1.4"
+
+safe-regex2@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/safe-regex2/-/safe-regex2-4.0.1.tgz#b0a4b0216c1dd0256af987b7aea473e1c91543a8"
+  integrity sha512-goqsB+bSlOmVX+CiFX2PFc1OV88j5jvBqIM+DgqrucHnUguAUNtiNOs+aTadq2NqsLQ+TQ3UEVG3gtSFcdlkCg==
+  dependencies:
+    ret "~0.5.0"
 
 "safer-buffer@>= 2.1.2 < 3", "safer-buffer@>= 2.1.2 < 3.0.0":
   version "2.1.2"
@@ -7332,13 +7356,15 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
-ssr-web-avo-inspector@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ssr-web-avo-inspector/-/ssr-web-avo-inspector-2.0.0.tgz#3f43abf9a744c0ebc5200c4eebe2368331468cc2"
-  integrity sha512-SuDH1//SRX386U+L3vx7b3HYuXUGpaAzGpPSPg0QpfWtSmcvYLYJh4YH6N9UCaI9bxd4/NRlOffeEF/W5VxAmg==
+ssr-web-avo-inspector@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ssr-web-avo-inspector/-/ssr-web-avo-inspector-2.1.0.tgz#c91229320da6516c495d3bb3a80ce6e5b19a670f"
+  integrity sha512-TQY8rdySYymaz3rwK9k6/wHuHKsHWzjpPYiiAf0O/XblQO0goWXRpN8evSrhXiYZY9EPuJ+PFDYCMlPromLdzQ==
   dependencies:
+    "@noble/curves" "^1.9.7"
     localforage "^1.10.0"
     localforage-driver-memory "^1.0.5"
+    safe-regex2 "^4.0.0"
 
 stdin-discarder@^0.1.0:
   version "0.1.0"

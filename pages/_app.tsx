@@ -111,7 +111,8 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
         env: getAvoInspectorEnv(),
         version: "1.0.0",
         appName: "Avo Docs",
-        suffix: "main"
+        suffix: "main",
+        publicEncryptionKey: "024ec9c17ea2fb3e727d2815941eeb7d7c6e551536c9e2dde37fbbf0ffb9850579"
       })
     },
     { client: 'Docs', version: '2.0' },
