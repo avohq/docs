@@ -83,7 +83,11 @@ An optional public encryption key used for property value validation. To learn m
 
 ##### Property Value Validation (Optional)
 
-Property value validation allows you to validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, pinned values, regex patterns, and min/max ranges. This helps you catch issues like incorrect enum values or out-of-range numbers.
+Property value validation allows you to validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, pinned values, and min/max ranges. This helps you catch issues like incorrect enum values or out-of-range numbers.
+
+<Callout type="warning">
+  The Segment integration does not yet support regex property value validation. Support for regex validation is coming soon. Other [supported SDKs and integrations](/inspector/inspector-debugger#supported-sdks-and-integrations) already support regex validation.
+</Callout>
 
 <Callout type="info" emoji="💡">
   Property value validation is available for the latest version of the Segment integration (Avo v2 destination). If you are using an older version, please update to the latest version.
