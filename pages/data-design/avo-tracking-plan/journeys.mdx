@@ -82,30 +82,34 @@ This is particularly useful when you are starting a new journey from an existing
 
 ##### How to import frames from Figma
 
-1. Open a journey in the Journey Builder.
+To import frames into Avo from Figma, follow these steps:
 
-2. Click the **Import from Figma** button in the toolbar at the top of the canvas.
+**1: Open a journey in the Journey Builder.**
 
-   [Screenshot: Import from Figma button in the Journey Builder toolbar]
+**2: Copy the link from Figma.**
 
-3. In Figma, copy the link to what you want to import — a whole file, a section, or a single frame:
+In Figma, copy the link to what you want to import — a whole file, a section, or a single frame:
 
-   - **Whole file**: Click **Share** in the top-right corner of Figma and copy the link
-   - **Section or frame**: Select it, then press `Cmd+L` (Mac) / `Ctrl+L` (Windows), or right-click and choose **Copy link to section** / **Copy link to frame**
+   - **Whole file**: Click *Share* in the top-right corner of Figma and copy the link
+   - **Section or frame**: Select it, then press `Cmd+L` (Mac) / `Ctrl+L` (Windows), or right-click and choose *Copy link to section* / *Copy link to frame*
 
    [Screenshot: Copying a frame link in Figma]
 
-4. Paste the link into the dialog in Avo.
+**3: Paste the link into your Avo journey.**
+
+Drop it into the canvas where you would like your images to be placed.
 
    [Screenshot: Paste Figma URL dialog]
 
-5. Click **Fetch frames**. Avo retrieves the file metadata from Figma and displays a visual frame picker showing all top-level frames available in the file.
+**4: Select exactly which frames you want to import.**
+
+Avo retrieves the file metadata from Figma and displays a visual frame picker showing all top-level frames available in the file or section that was selected. You can multiselect individual frames, drag across frames or use select-all.
 
    [Screenshot: Frame picker modal showing Figma frames as thumbnails]
 
-6. Select one or more frames to import. You can select individual frames or use select-all.
+**5: Click "Import.**
 
-7. Click **Import**. Avo downloads each selected frame as an image, uploads it, and creates a journey step for each one.
+Avo downloads each selected frame as an image, uploads it, and creates a journey step for each one.
 
    [Screenshot: Journey canvas with newly imported steps]
 
@@ -119,40 +123,15 @@ For each imported frame, Avo creates a journey step with:
 
 Steps are arranged in a grid layout that mirrors the spatial order of the frames in the Figma file. If the journey already contains steps, new steps are placed relative to your current cursor position on the canvas.
 
-##### Auto-generated connections
-
 Frames that were spatially close to each other in the Figma layout — specifically those in the same horizontal row — are automatically connected with edges when imported. This preserves the left-to-right visual flow of your Figma design without manual wiring.
 
 You can add, remove, or adjust connections after import just like any other journey step connection. See [Connections](#connections) for details.
 
-##### After importing
-
-Once your steps are on the canvas, you can:
-
-- Edit step names and descriptions directly in the journey builder
-- Add [image annotations](#image-annotations) to mark where actions occur
-- Add [journey triggers](#journey-triggers) connected to each step
-- Rearrange steps on the canvas to match your preferred layout
-
-Avo does not sync changes made in Figma after the initial import. If your designs change, re-import the updated frames or update the step images manually.
-
 ##### Troubleshooting
 
-**"Invalid URL" error when pasting the Figma link**
-
-Make sure you copied the link from a Figma design file using one of the methods above — share link, `Cmd/Ctrl+L`, or right-click. Links from Figma's prototype view, inspect panel, or other tools (such as FigJam boards) are not supported.
-
-**No frames appear in the picker**
-
-This can happen if:
-- The selected node is a single component or group rather than a frame or page containing multiple frames
-- The file has no top-level frames on the selected page
-
-Try copying the URL from a higher-level page or frame in the Figma file hierarchy.
-
-**Permission error or "Could not access file"**
-
-Avo can only access Figma files that are publicly accessible or shared with link access. Open the file in Figma, go to **Share**, and make sure **Anyone with the link** can view the file, then try again.
+- **"Invalid URL" error**: Make sure you copied the link from a Figma design file using one of the methods above — Share button, `Cmd/Ctrl+L`, or right-click. Links from Figma's prototype view, inspect panel, or FigJam boards are not supported.
+- **No frames appear in the picker**: The selected node may be a component or group rather than a frame or page. Try copying the link from a higher-level frame or page in the Figma file.
+- **"Could not access file"**: Avo can only access files shared with link access. In Figma, click **Share** and set access to **Anyone with the link**, then try again.
 
 ### Journey triggers
 
