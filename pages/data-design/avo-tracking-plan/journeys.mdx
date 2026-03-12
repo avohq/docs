@@ -88,23 +88,24 @@ This is particularly useful when you are starting a new journey from an existing
 
    [Screenshot: Import from Figma button in the Journey Builder toolbar]
 
-3. In the dialog that appears, paste the URL of your Figma design file. Accepted format:
+3. In Figma, copy the link to what you want to import — a whole file, a section, or a single frame:
 
-   ```
-   https://www.figma.com/design/{fileKey}/{fileName}?node-id={nodeId}
-   ```
+   - **Whole file**: Click **Share** in the top-right corner of Figma and copy the link
+   - **Section or frame**: Select it, then press `Cmd+L` (Mac) / `Ctrl+L` (Windows), or right-click and choose **Copy link to section** / **Copy link to frame**
 
-   The URL can point to a specific frame or page within the file — Avo will use it to locate the file and display the available frames.
+   [Screenshot: Copying a frame link in Figma]
+
+4. Paste the link into the dialog in Avo.
 
    [Screenshot: Paste Figma URL dialog]
 
-4. Click **Fetch frames**. Avo retrieves the file metadata from Figma and displays a visual frame picker showing all top-level frames available in the file.
+5. Click **Fetch frames**. Avo retrieves the file metadata from Figma and displays a visual frame picker showing all top-level frames available in the file.
 
    [Screenshot: Frame picker modal showing Figma frames as thumbnails]
 
-5. Select one or more frames to import. You can select individual frames or use select-all.
+6. Select one or more frames to import. You can select individual frames or use select-all.
 
-6. Click **Import**. Avo downloads each selected frame as an image, uploads it, and creates a journey step for each one.
+7. Click **Import**. Avo downloads each selected frame as an image, uploads it, and creates a journey step for each one.
 
    [Screenshot: Journey canvas with newly imported steps]
 
@@ -139,7 +140,7 @@ Avo does not sync changes made in Figma after the initial import. If your design
 
 **"Invalid URL" error when pasting the Figma link**
 
-Make sure the URL follows the format `https://www.figma.com/design/{fileKey}/{fileName}?node-id={nodeId}`. URLs from Figma's prototype view, inspect panel, or other tools (such as FigJam boards) are not supported — use a URL copied directly from a Figma design file.
+Make sure you copied the link from a Figma design file using one of the methods above — share link, `Cmd/Ctrl+L`, or right-click. Links from Figma's prototype view, inspect panel, or other tools (such as FigJam boards) are not supported.
 
 **No frames appear in the picker**
 
