@@ -99,6 +99,8 @@ The request body should be a JSON object containing a `schema` key with your eve
 | `array` (with `items`) | list |
 | `null` | any |
 
+> **Note:** Union types (e.g., `["string", "integer"]`) without `null` are mapped to `any`.
+
 #### Supported Features
 
 - `enum` → allowed values
@@ -115,8 +117,11 @@ The request body should be a JSON object containing a `schema` key with your eve
 The following features are skipped with warnings:
 
 - `patternProperties`, `if`/`then`/`else`, `not`
-- Unresolved `$ref` → parse error
 - `GroupProperty` in `x-avo-sendAs` → falls back to `EventProperty`
+
+The following will cause a parse error:
+
+- Unresolved `$ref`
 
 ## Response
 
