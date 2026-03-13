@@ -2,7 +2,7 @@
 
 _Import tracking plan using Avo API_
 
-The Import API allows you to import a tracking plan from a CSV file into a specific branch in your Avo workspace.
+The Import API allows you to import a tracking plan from a CSV file or JSON Schema payload into a specific branch in your Avo workspace.
 
 ## Endpoint
 
@@ -47,11 +47,76 @@ See more on [authorization](/public-api/authentication#authenticating-with-avo-a
 
 ## Request Body
 
-The request body should be the CSV content as a string. The request must include a `Content-Type: text/csv` header.
+The `Content-Type` header determines the import format:
+
+- `Content-Type: text/csv` — CSV import (existing behavior)
+- `Content-Type: application/json` — JSON Schema import
+- Any other value returns `400` with `"Invalid Content-Type. Accepted: text/csv, application/json"`
+
+### CSV Format
+
+The request body should be the CSV content as a string.
 
 ```body
 Your CSV content following the format described in the [importing documentation](/publishing/import/importing)
 ```
+
+### JSON Schema Format
+
+The request body should be a JSON object containing a `schema` key with your event definitions in JSON Schema format. JSON Schema imports always use the "Add only" import method.
+
+#### Example Request Body
+
+```json
+{
+  "schema": {
+    "events": {
+      "Signup Completed": {
+        "type": "object",
+        "properties": {
+          "signup_method": {
+            "type": "string",
+            "enum": ["google", "email", "github"]
+          },
+          "is_new_user": { "type": "boolean" }
+        },
+        "required": ["signup_method"]
+      }
+    }
+  }
+}
+```
+
+#### Type Mapping
+
+| JSON Schema Type | Avo Type |
+| :-- | :-- |
+| `string` | string |
+| `integer` | int |
+| `number` | float |
+| `boolean` | bool |
+| `object` | object |
+| `array` (with `items`) | list |
+| `null` | any |
+
+#### Supported Features
+
+- `enum` → allowed values
+- `const` → pinned value
+- `pattern` → regex validation
+- `required` array → marks properties as required or optional
+- Nullable types via `"type": ["string", "null"]`
+- `allOf` merges properties (last wins on conflicts)
+- `oneOf`/`anyOf` at event level merges branches; at property level → type `any`
+- `x-avo-sendAs` extension: `EventProperty`, `UserProperty`, `SystemProperty`
+
+#### Unsupported Features
+
+The following features are skipped with warnings:
+
+- `patternProperties`, `if`/`then`/`else`, `not`
+- Unresolved `$ref` → parse error
+- `GroupProperty` in `x-avo-sendAs` → falls back to `EventProperty`
 
 ## Response
 
@@ -67,7 +132,8 @@ On success, the API returns a JSON object with the import results:
     "updatedProperties": 3,
     "newSources": 1,
     "newStakeholderDomains": 2
-  }
+  },
+  "warnings": []
 }
 ```
 
@@ -81,10 +147,24 @@ On success, the API returns a JSON object with the import results:
   - `updatedProperties`: Number of existing properties that were updated
   - `newSources`: Number of new sources created
   - `newStakeholderDomains`: Number of new stakeholder domains created
+- `warnings`: An array of warning strings about skipped or unsupported schema features. Present in both success and error responses.
+
+### Error Response
+
+On error, the response also includes the `warnings` array:
+
+```json
+{
+  "error": "Description of what went wrong",
+  "warnings": ["Unsupported keyword 'patternProperties' in event 'Signup Completed'"]
+}
+```
 
 ## Example Usage
 
-### Request
+### CSV Import
+
+#### Request
 
 ```sh
 $ curl -H "Authorization: Basic <Base64 encoded token>" \
@@ -93,7 +173,7 @@ $ curl -H "Authorization: Basic <Base64 encoded token>" \
        -d 'KPI,Event Category,Event Name,Event Description,Event Property Name,Property Description,Property Value Type,Is Property Required?,Is Property Array?,Property Enumeration Options,Platforms,Status,Code Snippet\n,,Imported Event I,Event sent when a user clicks the import button. ,,,,,,,\"iOS, Android, Web\",,'
 ```
 
-### Response
+#### Response
 
 ```json
 {
@@ -105,6 +185,51 @@ $ curl -H "Authorization: Basic <Base64 encoded token>" \
     "updatedProperties": 0,
     "newSources": 0,
     "newStakeholderDomains": 0
-  }
+  },
+  "warnings": []
+}
+```
+
+### JSON Schema Import
+
+#### Request
+
+```sh
+$ curl -H "Authorization: Basic <Base64 encoded token>" \
+       -H "Content-Type: application/json" \
+       -X POST https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1 \
+       -d '{
+         "schema": {
+           "events": {
+             "Signup Completed": {
+               "type": "object",
+               "properties": {
+                 "signup_method": {
+                   "type": "string",
+                   "enum": ["google", "email", "github"]
+                 },
+                 "is_new_user": { "type": "boolean" }
+               },
+               "required": ["signup_method"]
+             }
+           }
+         }
+       }'
+```
+
+#### Response
+
+```json
+{
+  "message": "Import completed",
+  "result": {
+    "newEvents": 1,
+    "updatedEvents": 0,
+    "newProperties": 2,
+    "updatedProperties": 0,
+    "newSources": 0,
+    "newStakeholderDomains": 0
+  },
+  "warnings": []
 }
 ```
