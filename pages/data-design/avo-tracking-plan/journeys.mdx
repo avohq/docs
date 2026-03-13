@@ -74,7 +74,7 @@ For a full walkthrough of building journeys on the canvas, see [Creating a journ
 
 If your designs live in Figma, you can import frames directly into the Journey Builder instead of exporting and re-uploading them manually. Each imported frame becomes a journey step with its image and name. Steps are arranged in a grid that mirrors the spatial order of your Figma frames, and connections between adjacent frames are generated automatically.
 
-This is particularly useful when you are starting a new journey from an existing design file and want to avoid the overhead of manually recreating each screen as a journey step.
+This is particularly useful when you are starting a new journey from an existing design file and want to avoid the overhead of manually recreating each screen as a journey step and placing them to align with the flow you already have in Figma.
 
 <Callout type="info">
   The Import from Figma feature is available to workspaces with the Figma integration enabled. Contact your workspace admin or Avo support if you don't see the option.
@@ -97,7 +97,7 @@ In Figma, copy the link to what you want to import — a whole file, a section, 
 
 **3: Paste the link into your Avo journey.**
 
-Drop it into the canvas where you would like your images to be placed.
+Paste it into the canvas. Imported steps are always placed to the right of any existing content to avoid overlaps.
 
 **4: Select exactly which frames you want to import.**
 
@@ -117,9 +117,9 @@ For each imported frame, Avo creates a journey step with:
 
 - **Image**: A screenshot of the Figma frame
 - **Title**: The frame's name from Figma (e.g. "Checkout – Payment")
-- **Figma source link**: A reference back to the source Figma file and node, so anyone viewing the step can trace it to the original design
+- **Figma source link**: A reference back to the source Figma file and node, so anyone viewing the step can trace it to the original design and easily refresh the journey step in Avo when the designs have changed in Figma
 
-Steps are arranged in a grid layout that mirrors the spatial order of the frames in the Figma file. If the journey already contains steps, new steps are placed relative to your current cursor position on the canvas.
+Steps are arranged in a grid layout that mirrors the spatial order of the frames in the Figma file. If the journey already contains steps, new steps are placed to the right of existing content to avoid overlaps.
 
 Frames that were spatially close to each other in the Figma layout — specifically those in the same horizontal row — are automatically connected with edges when imported. This preserves the left-to-right visual flow of your Figma design without manual wiring.
 
