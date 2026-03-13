@@ -35,9 +35,35 @@ claude mcp add avo --transport http https://mcp.avo.app/mcp
   Adding connectors in Claude Desktop requires admin permissions in your organization.
 </Callout>
 
+### Cursor
+
+Add the following to your `mcp.json` file (or `~/.cursor/mcp.json` for global configuration):
+
+```json
+{
+  "mcpServers": {
+    "Avo": {
+      "url": "https://mcp.avo.app/mcp"
+    }
+  }
+}
+```
+
 ### Other MCP clients
 
-Point your client at `https://mcp.avo.app/mcp`. Your client must support both HTTP transport and the browser-based OAuth authorization flow described in the [Authentication](#authentication) section below — the first tool invocation will open a browser window to complete authorization, after which the token is cached. Clients that cannot complete the OAuth flow will not work with the Avo MCP server.
+Add the Avo MCP server to your client's configuration file (commonly `mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "Avo": {
+      "url": "https://mcp.avo.app/mcp"
+    }
+  }
+}
+```
+
+Your client must support both HTTP transport and the browser-based OAuth authorization flow described in the [Authentication](#authentication) section below — the first tool invocation will open a browser window to complete authorization, after which the token is cached. Clients that cannot complete the OAuth flow will not work with the Avo MCP server.
 
 ## Authentication
 
