@@ -45,7 +45,7 @@ Controls how the import interacts with existing items in your tracking plan. Pas
 
 | Value | Description |
 | :-- | :-- |
-| `addOnly` (default) | Only adds new events and properties. Nothing already in the tracking plan is modified. |
+| `addOnly` (default) | Only performs additive changes. Existing items are never overwritten or removed, but new properties and metadata (sources, tags, etc.) can be appended to existing events. |
 | `addAndUpdate` | Adds new items and updates existing items to match the imported data. See [Import Methods](#import-methods) for details. |
 
 ### - Base64 encoding secret header
@@ -241,7 +241,7 @@ The following will cause a parse error:
 **Events:**
 - New events are created (matched by name)
 - Existing events receive new properties that aren't already on the event
-- Existing events are NOT modified (description, tags, sources, etc. remain unchanged)
+- Existing event fields are NOT overwritten (e.g. description and owner remain unchanged)
 - New sources, tags, stakeholder domains, and name mappings are added to existing events
 
 **Properties:**
