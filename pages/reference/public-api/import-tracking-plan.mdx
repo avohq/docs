@@ -21,6 +21,8 @@ https://api.avo.app/workspaces/:workspaceId/branches/:branchId/import/v1
 
 This endpoint requires an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
 
+The service account must have the `ImportCSV` action permission and branch-level access to the target branch.
+
 ### Rate Limit
 
 We currently soft-enforce 1/req/s rate limit per service account for this endpoint. Please reach out to us if you have a use case in mind that requires a higher rate limit.
@@ -39,6 +41,15 @@ Locate your branchId by switching onto the branch and checking the URL
 - `avo.app/schemas/:workspaceId/branches/:branchId`
 - For the main branch, use `main` as the ID (if "Protected main branch" is disabled)
 
+### - importMethod (optional)
+
+Controls how the import interacts with existing items in your tracking plan. Pass as a query parameter.
+
+| Value | Description |
+| :-- | :-- |
+| `addOnly` (default) | Only adds new events and properties. Nothing already in the tracking plan is modified. |
+| `addAndUpdate` | Adds new items and updates existing items to match the imported data. See [Import Methods](#import-methods) for details. |
+
 ### - Base64 encoding secret header
 
 The base64 encoded token expects `name:secret`
@@ -49,7 +60,7 @@ See more on [authorization](/public-api/authentication#authenticating-with-avo-a
 
 The `Content-Type` header determines the import format:
 
-- `Content-Type: text/csv` — CSV import (existing behavior)
+- `Content-Type: text/csv` — CSV import
 - `Content-Type: application/json` — JSON Schema import
 - Any other value returns `400` with `"Invalid Content-Type. Accepted: text/csv, application/json"`
 
@@ -63,82 +74,231 @@ Your CSV content following the format described in the [importing documentation]
 
 ### JSON Schema Format
 
-The request body should be a JSON object containing a `schema` key with your event definitions in JSON Schema format. JSON Schema imports always use the "Add only" import method.
+The request body should be a JSON object. Two JSON formats are supported and auto-detected based on top-level keys.
 
-#### Example Request Body
+#### Format A: Custom JSON Schema
+
+Standard JSON Schema format where each event is a schema object with properties. This is the recommended format for importing from external tracking plan tools.
 
 ```json
 {
   "schema": {
     "events": {
-      "Signup Completed": {
+      "Event Name": {
         "type": "object",
+        "description": "Event description",
         "properties": {
-          "signup_method": {
+          "propertyName": {
             "type": "string",
-            "enum": ["google", "email", "github"]
-          },
-          "is_new_user": { "type": "boolean" }
+            "description": "Property description",
+            "enum": ["value1", "value2"]
+          }
         },
-        "required": ["signup_method"]
+        "required": ["propertyName"]
       }
     }
   }
 }
 ```
 
+**Detection:** Presence of `schema.events` as an object (keys = event names).
+
+**Note:** Avo-specific fields (tags, sources, stakeholder domains, etc.) are not supported in this format. Events are imported with empty defaults for those fields.
+
+#### Format B: Avo Export Format
+
+The format produced by Avo's [JSON Schema export](/reference/public-api/export-tracking-plan). Events are in an array with Avo-specific metadata, making this format ideal for re-importing previously exported tracking plans.
+
+```json
+{
+  "name": "Exported Tracking Plan: branch-name",
+  "events": [
+    {
+      "id": "evt-id",
+      "name": "Event Name",
+      "description": "Event description",
+      "eventType": "event",
+      "tags": ["tag1", "tag2"],
+      "categories": ["goal-id-1"],
+      "sources": [
+        {
+          "id": "src-id",
+          "name": "Source Name",
+          "implementWithCodegen": true,
+          "destinations": []
+        }
+      ],
+      "stakeholderDomains": [
+        { "id": "dom-id", "name": "Domain Name", "isOwner": true }
+      ],
+      "rules": {
+        "nameMapping": [
+          { "name": "mapped_name", "destinationId": "dest-id" }
+        ],
+        "properties": {
+          "properties": {
+            "type": "object",
+            "properties": {
+              "myProp": {
+                "id": "prop-id",
+                "type": "string",
+                "description": "Property description",
+                "isSystemProperty": false,
+                "nameMapping": [
+                  { "name": "mapped_name", "destinationId": "dest-id" }
+                ],
+                "tags": ["tag1"]
+              }
+            },
+            "required": ["myProp"]
+          },
+          "userProperties": {
+            "type": "object",
+            "properties": {}
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+**Detection:** Presence of `events` as an array.
+
+**Priority:** If both `schema` and `events` keys exist, Format A takes precedence.
+
+#### Event-Level Fields (Format B only)
+
+| Field | Type | Imported As | Notes |
+| :-- | :-- | :-- | :-- |
+| `name` | string | Event name | Required; events with empty names are skipped |
+| `description` | string | Event description | |
+| `eventType` | string | — | Events with type `"variant"` are skipped with a warning |
+| `tags` | `string[]` | Event tags | |
+| `sources` | `{ name: string }[]` | Source names | Only the `name` field is extracted |
+| `stakeholderDomains` | `{ name: string, isOwner: bool }[]` | Domain names + owner | The domain with `isOwner: true` becomes the event owner |
+| `categories` | `string[]` | **Not imported** | Export contains goal IDs, not names — left empty to avoid phantom categories |
+| `rules.nameMapping` | `{ name, destinationId }[]` | Event name mapping | |
+| `rules.properties.properties` | object | Event properties | Standard JSON Schema format |
+| `rules.properties.userProperties` | object | User properties | Merged with event properties; `sendAs` overridden to `UserProperty` |
+| `rules.properties.groupProperties` | object | **Not imported** | Warning generated |
+
 #### Type Mapping
 
-| JSON Schema Type | Avo Type |
+| JSON Schema Type | Avo Type | Notes |
+| :-- | :-- | :-- |
+| `"string"` | string | |
+| `"integer"` | int | |
+| `"number"` | float | Becomes `int` if `"multipleOf": 1` is present |
+| `"boolean"` | bool | |
+| `"object"` | object | |
+| `"array"` | list of `<items.type>` | Element type from `items.type`; defaults to `any` |
+| `"null"` | any | |
+| unknown | any | Warning generated |
+| `["string", "null"]` | string | Nullable types: the non-null type is extracted |
+| `["type1", "type2"]` | any | Multiple non-null types collapse to `any` |
+
+#### Supported Property Features
+
+| Feature | JSON Schema Field | Notes |
+| :-- | :-- | :-- |
+| Description | `description` | String |
+| Required / Optional | `required` array on parent | Determines presence (`AlwaysSent` vs `SometimesSent`) |
+| Enum / Matches | `enum` array | Numeric and boolean values are coerced to strings with a warning. For array properties, also checks `items.enum` |
+| Pinned Value | `const` | Supports string, int, float, and boolean literals |
+| Regex Pattern | `pattern` | Regex validation string |
+| Send As | `x-avo-sendAs` | `"EventProperty"`, `"UserProperty"`, or `"SystemProperty"` |
+| System Property (fallback) | `isSystemProperty` | Boolean; used when `x-avo-sendAs` is absent |
+| Name Mapping | `nameMapping` | Array of `{ "name": "...", "destinationId": "..." }` |
+| Property ID | `id` | Preserved from Avo exports for re-import deduplication |
+
+#### Composition Keywords
+
+Both formats support the following JSON Schema composition keywords:
+
+| Keyword | Behavior |
 | :-- | :-- |
-| `string` | string |
-| `integer` | int |
-| `number` | float |
-| `boolean` | bool |
-| `object` | object |
-| `array` (with `items`) | list |
-| `null` | any |
+| `allOf` | All branches merged; top-level `properties` included as base schema |
+| `oneOf` | All branches merged with warning: "results may be imprecise" |
+| `anyOf` | Same as `oneOf` |
 
-> **Note:** Union types (e.g., `["string", "integer"]`) without `null` are mapped to `any`.
-
-#### Supported Features
-
-- `enum` → allowed values
-- `const` → pinned value
-- `pattern` → regex validation
-- `required` array → marks properties as required or optional
-- Nullable types via `"type": ["string", "null"]`
-- `allOf` merges properties (last wins on conflicts)
-- `oneOf`/`anyOf` at event level merges branches; at property level → type `any`
-- `x-avo-sendAs` extension: `EventProperty`, `UserProperty`, `SystemProperty`
+> **Note:** Duplicate properties across branches are resolved with last-definition-wins semantics and a warning is generated.
 
 #### Unsupported Features
 
 The following features are skipped with warnings:
 
-- `patternProperties`, `if`/`then`/`else`, `not`
-- `GroupProperty` in `x-avo-sendAs` → falls back to `EventProperty`
+- `patternProperties`, `if`/`then`/`else`, `not` at event level
+- `oneOf` / `anyOf` at **property** level — defaults to type `any`
+- `groupProperties` in Avo export
 
 The following will cause a parse error:
 
-- Unresolved `$ref`
+- Unresolved `$ref` — only inline schemas are supported
+
+## Import Methods
+
+### Add Only (default)
+
+**Events:**
+- New events are created (matched by name)
+- Existing events receive new properties that aren't already on the event
+- Existing events are NOT modified (description, tags, sources, etc. remain unchanged)
+- New sources, tags, stakeholder domains, and name mappings are added to existing events
+
+**Properties:**
+- New properties are created
+- Existing properties are NOT modified (type, description, matches, presence, regex remain unchanged)
+
+Only additive operations are performed. Nothing already in the tracking plan is changed.
+
+### Add and Update
+
+Everything from Add Only, plus:
+
+**Events:**
+- Event description is updated if the import provides a different non-empty value
+- Owner is updated if the import specifies a different owner domain
+
+**Properties are updated when the import value differs from the existing value:**
+
+| Field | Update Condition |
+| :-- | :-- |
+| Description | Non-empty and different |
+| Type | Import type is not `any` and differs from existing |
+| List flag | Differs from existing |
+| Enum values (matches) | Import has values not present in existing |
+| Presence (required/optional) | Import required/optional status differs. **Exception:** Properties with `Mixed` presence are skipped to avoid false positives (Mixed has per-event/per-source granularity that import formats can't represent) |
+| Regex pattern | Event-specific regex differs |
+| Pinned value (const) | Import pinned value differs |
+
+**How presence works:**
+- In `required` array in JSON Schema → `AlwaysSent` (required)
+- Not in `required` array → `SometimesSent` (optional)
+- If all events agree on the same presence → a single global update is applied
+- If events disagree (mixed) → per-event presence actions are generated
 
 ## Response
+
+### Success (200)
 
 On success, the API returns a JSON object with the import results:
 
 ```json
 {
   "message": "Import completed",
+  "warnings": [
+    "Event variant 'Login - Mobile' was skipped. Variants are not supported in import.",
+    "Property 'metadata': 'oneOf' is not supported; defaulting to type 'any'."
+  ],
   "result": {
     "newEvents": 5,
     "updatedEvents": 2,
-    "newProperties": 10,
+    "newProperties": 12,
     "updatedProperties": 3,
     "newSources": 1,
-    "newStakeholderDomains": 2
-  },
-  "warnings": []
+    "newStakeholderDomains": 0
+  }
 }
 ```
 
@@ -154,16 +314,38 @@ On success, the API returns a JSON object with the import results:
   - `newStakeholderDomains`: Number of new stakeholder domains created
 - `warnings`: An array of warning strings about skipped or unsupported schema features. Present in both success and error responses.
 
-### Error Response
+### Error Responses
 
-On error, the response also includes the `warnings` array:
+| Status | Scenario |
+| :-- | :-- |
+| 400 | Invalid Content-Type, unparsable body, invalid JSON Schema structure |
+| 401 | Authentication failure |
+| 403 | Protected main branch |
+| 404 | Branch not found |
+| 409 | Branch merged/closed, or no prior actions on branch |
+| 500 | Unexpected error |
+
+All error responses include a `warnings` array for consistent shape:
 
 ```json
 {
-  "error": "Description of what went wrong",
-  "warnings": ["Unsupported keyword 'patternProperties' in event 'Signup Completed'"]
+  "message": "Error description",
+  "warnings": []
 }
 ```
+
+### Warnings
+
+Warnings are non-fatal issues collected during parsing. They are included in both success and error responses. Examples:
+
+- `"Unsupported JSON Schema type: 'foo'. Defaulting to 'any'."`
+- `"Numeric enum value 42 coerced to string"`
+- `"Boolean enum value 'true' coerced to string"`
+- `"Property 'x': 'oneOf' is not supported; defaulting to type 'any'."`
+- `"Event variant 'Login - Mobile' was skipped. Variants are not supported in import."`
+- `"Duplicate property 'userId': last definition wins."`
+- `"Event 'Checkout': 'groupProperties' is not supported in import and will be skipped."`
+- `"Invalid sendAs value FooBar; defaulting to EventProperty"`
 
 ## Example Usage
 
@@ -195,31 +377,36 @@ $ curl -H "Authorization: Basic <Base64 encoded token>" \
 }
 ```
 
-### JSON Schema Import
+### JSON Schema Import (Format A)
 
 #### Request
 
 ```sh
-$ curl -H "Authorization: Basic <Base64 encoded token>" \
-       -H "Content-Type: application/json" \
-       -X POST https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1 \
-       -d '{
-         "schema": {
-           "events": {
-             "Signup Completed": {
-               "type": "object",
-               "properties": {
-                 "signup_method": {
-                   "type": "string",
-                   "enum": ["google", "email", "github"]
-                 },
-                 "is_new_user": { "type": "boolean" }
-               },
-               "required": ["signup_method"]
-             }
-           }
-         }
-       }'
+$ curl -X POST \
+  "https://api.avo.app/workspaces/:workspaceId/branches/my-branch/import/v1?importMethod=addAndUpdate" \
+  -H "Authorization: Basic <Base64 encoded token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "schema": {
+      "events": {
+        "Button Clicked": {
+          "type": "object",
+          "description": "User clicked a button",
+          "properties": {
+            "button_name": {
+              "type": "string",
+              "description": "Name of the button",
+              "enum": ["signup", "login", "checkout"]
+            },
+            "screen": {
+              "type": "string"
+            }
+          },
+          "required": ["button_name"]
+        }
+      }
+    }
+  }'
 ```
 
 #### Response
