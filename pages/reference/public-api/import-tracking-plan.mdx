@@ -21,8 +21,6 @@ https://api.avo.app/workspaces/:workspaceId/branches/:branchId/import/v1
 
 This endpoint requires an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
 
-The service account must have the `ImportCSV` action permission and branch-level access to the target branch.
-
 ### Rate Limit
 
 We currently soft-enforce 1/req/s rate limit per service account for this endpoint. Please reach out to us if you have a use case in mind that requires a higher rate limit.
@@ -76,7 +74,7 @@ Your CSV content following the format described in the [importing documentation]
 
 The request body should be a JSON object. Two JSON formats are supported and auto-detected based on top-level keys.
 
-#### Format A: Custom JSON Schema
+#### Standard JSON Schema
 
 Standard JSON Schema format where each event is a schema object with properties. This is the recommended format for importing from external tracking plan tools.
 
@@ -105,7 +103,7 @@ Standard JSON Schema format where each event is a schema object with properties.
 
 **Note:** Avo-specific fields (tags, sources, stakeholder domains, etc.) are not supported in this format. Events are imported with empty defaults for those fields.
 
-#### Format B: Avo Export Format
+#### Avo JSON Schema Export
 
 The format produced by Avo's [JSON Schema export](/reference/public-api/export-tracking-plan). Events are in an array with Avo-specific metadata, making this format ideal for re-importing previously exported tracking plans.
 
@@ -165,9 +163,9 @@ The format produced by Avo's [JSON Schema export](/reference/public-api/export-t
 
 **Detection:** Presence of `events` as an array.
 
-**Priority:** If both `schema` and `events` keys exist, Format A takes precedence.
+**Priority:** If both `schema` and `events` keys exist, the Standard JSON Schema format takes precedence.
 
-#### Event-Level Fields (Format B only)
+#### Event-Level Fields (Avo JSON Schema Export only)
 
 | Field | Type | Imported As | Notes |
 | :-- | :-- | :-- | :-- |
@@ -377,7 +375,7 @@ $ curl -H "Authorization: Basic <Base64 encoded token>" \
 }
 ```
 
-### JSON Schema Import (Format A)
+### JSON Schema Import
 
 #### Request
 
