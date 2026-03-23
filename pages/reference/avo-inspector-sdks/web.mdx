@@ -131,7 +131,7 @@ To enable [property value validation](#property-value-validation) with the HTML 
 
 ### Installation option 3: Lite build (production only)
 
-For production environments where bundle size matters (GTM, script tags, etc.), the lite entry point excludes encryption and event spec validation — reducing the gzipped bundle from ~37 KB to ~7.5 KB. Use the full build in dev/staging environments for the complete [Inspector Debugger](/inspector/inspector-debugger) experience.
+Available since version `3.1.0`. For production environments where bundle size matters (GTM, script tags, etc.), the lite entry point excludes encryption and event spec validation. Use the full build in dev/staging environments for the complete [Inspector Debugger](/inspector/inspector-debugger) experience.
 
 ```bash npm2yarn
 npm install avo-inspector
@@ -154,10 +154,7 @@ The lite build has the same tracking API as the full version — `trackSchemaFro
 - Does not support event deduplication — if you use both Avo Codegen and manual `trackSchemaFromEvent` calls for the same events, use the full build instead to avoid sending duplicate schemas
 - Works universally with any bundler or minifier — no flags or configuration needed
 
-| | Minified | Gzipped |
-|---|---|---|
-| Full (`avo-inspector`) | 129 KB | 37 KB |
-| Lite (`avo-inspector/lite`) | 20 KB | 5.2 KB |
+**Lite build size:** ~20 KB minified, ~5.2 KB gzipped.
 
 ## 2. Send event schemas to Avo Inspector
 
