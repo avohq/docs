@@ -131,7 +131,7 @@ To enable [property value validation](#property-value-validation) with the HTML 
 
 ### Installation option 3: Lite build (production only)
 
-Available since version `3.1.0`. For production environments where bundle size matters (GTM, script tags, etc.), the lite entry point excludes encryption and event spec validation. Use the full build in dev/staging environments for the complete [Inspector Debugger](/inspector/inspector-debugger) experience.
+Available since version `3.1.0`. For production environments where bundle size matters (GTM, script tags, etc.), the lite entry point excludes property value validation, session filtering, and event deduplication. Use the full build in dev/staging environments for the complete [Inspector Debugger](/inspector/inspector-debugger) experience.
 
 ```bash npm2yarn
 npm install avo-inspector
