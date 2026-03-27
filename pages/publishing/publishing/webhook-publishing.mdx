@@ -62,10 +62,10 @@ Json representation of your tracking plan, following the [Json Schema](https://j
 | name           | string                              | The name of your Avo workspace                                                  |
 | events         | array(Event)                        | Array of Tracking Plan events                                                   |
 | removedEvents  | array(string)                       | Names of events that were archived or lost their filtered sources. Only present when "Only send changed events" is enabled |
-| metrics        | \{ metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids           |
-| sources        | \{ sourceId: Source ... }           | Objet where each Tracking Plan source is a field, keys are source ids           |
-| destinations   | \{ destinationId: Destination ... } | Objet where each Tracking Plan destination is a field, keys are destination ids |
-| categories     | \{ categoryId: Category ... }       | Objet where each Tracking Plan metric is a field, keys are category ids         |
+| metrics        | \{ metricId: Metric ... }           | Object where each Tracking Plan metric is a field, keys are metric ids           |
+| sources        | \{ sourceId: Source ... }           | Object where each Tracking Plan source is a field, keys are source ids           |
+| destinations   | \{ destinationId: Destination ... } | Object where each Tracking Plan destination is a field, keys are destination ids |
+| categories     | \{ categoryId: Category ... }       | Object where each Tracking Plan category is a field, keys are category ids       |
 | context        | \{ publishInfo: PublishInfo }       | Metadata about the webhook call                                                 |
 
 ##### Event Model
