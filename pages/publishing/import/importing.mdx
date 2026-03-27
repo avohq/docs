@@ -9,7 +9,7 @@ _Import your tracking plan from various sources to get started quickly_
   that tracking plans come in all shapes and sizes. If you don't see your format
   below you can try converting your existing spreadsheet to one of our supported
   formats or [reach out](/help/troubleshooting#contact-us) and we'll support
-  you.
+  you. You can also import programmatically via the [Import API](/reference/public-api/import-tracking-plan) using JSON Schema format.
 </Callout>
 
 ## What To Import
@@ -300,6 +300,8 @@ You can select from three import methods when importing your tracking plan:
   currently behind a feature flag. Please [reach out to
   us](/help/troubleshooting#contact-us) if you'd like to enable them.
 </Callout>
+
+When using the [Import API](/reference/public-api/import-tracking-plan), you can pass the `importMethod` query parameter with a value of `addOnly` (default), `addAndUpdate`, or `addUpdateAndRemove`. See the [Import API documentation](/reference/public-api/import-tracking-plan#query-parameters) for details.
 
 ![Screenshot of the Avo Importer](/images/workspace/importing/import-method.png)
 

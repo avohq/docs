@@ -1,34 +1,88 @@
 import PageLink, { TwoCol } from '../../../components/PageLink';
+import { Callout } from 'nextra/components'
 
 # Metrics
 
 *Learn about the metrics in your tracking plan*
 
-We always recommend starting with the _why_ in data design. That means thinking about your research questions, goals and metrics before your start defining your event structures. That way you are more likely to **design the events and properties you need to measure the success of your product update** – and won't end up with designing and implementing data structures that you don't have any use for. The added benefit of documenting metrics in context of your events is **knowing what metrics are affected by any changes to your events**. Read more in our [documenting downstream dependencies guide](/data-design/guides/documenting-downstream-dependencies).
+Metrics define how you measure the success of your product. By documenting metrics in Avo alongside your events, you create a direct link between _what_ you track and _why_ you track it, making it clear which events power which business outcomes and **which metrics are affected when an event changes**. Read more in our [documenting downstream dependencies guide](/data-design/guides/documenting-downstream-dependencies).
 
-At Avo, we have developed a framework that we call the **Purpose Meeting** to help us align on goals and metrics. Read more in the blog post about [tracking the right product metrics](https://www.avo.app/blog/tracking-the-right-product-metrics) by our CEO, Stef.
+We recommend starting every data design effort with metrics: think about your research questions and goals before defining event structures. That way you design the events and properties you actually need and avoid tracking data that has no purpose.
 
-Metrics as well as purpose meetings can be documented in Avo.
+<Callout type="info">
+  Avo supports documenting **Purpose Meetings**, a framework for aligning teams on goals and metrics before designing events. Read more in the blog post about [tracking the right product metrics](https://www.avo.app/blog/tracking-the-right-product-metrics).
+</Callout>
 
 ## How do metrics in Avo work?
 
-Metrics are used to measure the success of a feature. Usually more than one metrics are necessary to be able to evaluate the success of a feature. Example metrics for a feature that is meant to improve signup experience are:
-- Conversion from clicking a button to sign up to completing signup
-- Proportion of daily active users that are signed up
+Metrics are built from events and event variants, the building blocks needed to visualize the metric in your analytics tool. For example, a feature that improves the signup experience might have two metrics:
 
-Events and event variants are tied to metrics and can be thought as the building blocks of the metrics - the items necessary to be able to visualize the metric in your analytics tool. The metrics are therefore not only visible in the Metrics tab, but also in the event and event variant details. That way everyone can easily understand why this particular event or variant should be tracked - because it is associated with a metric which is a part of a goal.
+- **Signup Funnel Conversion**: conversion rate from clicking the sign-up button to completing signup
+- **Signed-Up Proportion**: proportion of daily active users that are signed up
+
+Because events are tied to metrics, they appear not only in the Metrics view but also in the details of every associated event and event variant. This makes it easy for anyone to understand _why_ a particular event exists: it supports a metric that is part of a goal.
+
+<Callout type="info">
+  [Journeys](/data-design/avo-tracking-plan/journeys) are a great way to visually design the events your metrics need. You compose a flow from product screenshots and connect triggers to events, giving your team visual context for what gets tracked and where. Events created in a journey can then be added to metrics just like any other event.
+</Callout>
 
 ## Metric types
 
-The available metric types in Avo are currently:
-- **Funnel**: a series of events describing a user journey. Can filter on a property in each event
-- **Segmentation**: typically used for analyzing a single event by filtering on or grouping by some properties. Can use multiple events and filter and group by properties on each of them.
-- **Retention**: a born event followed by a return event. Used to analyze how well users retain in your product by defining a born cohort and analyzing how many of those that were born return to do an action some days, weeks or months later. Can use 2 events and filter by a property on each of them.
-- **Proportion**: event A divided by event B, used to measure how many user perform an action as a proportion of some baseline. Can use 2 events and filter by a property on each of them.
+| Metric type | Purpose | Items |
+| --- | --- | --- |
+| **Funnel** | A series of events describing a user journey | Multiple events, with optional property filters per step |
+| **Event Segmentation** | Analyze events by filtering or grouping by properties | Multiple events, with optional property filters and group-by per event |
+| **Retention** | Measure how well users return after an initial action | A born event and a return event, with optional property filters |
+| **Proportion** | Event A divided by event B, measuring a ratio against a baseline | Two events, with optional property filters |
+| **[Custom Event](#custom-events)** | A reusable collection of events that can be embedded inside other metrics | Events, event variants, or other eligible Custom Events |
+
+## Creating a metric
+
+1. Navigate to the **Metrics** view in your tracking plan
+2. Click **"+ Add Metric"**
+3. Give your metric a name and description
+4. Select a metric type: Funnel, Event Segmentation, Retention, Proportion, or Custom Event
+5. Add events, event variants, or eligible Custom Events to the metric
+
+When adding items to a metric, the event picker shows three kinds of items: **events**, **event variants**, and **Custom Event metrics**. For Custom Event metrics, choose a name that clearly conveys what the composite event represents (e.g., "Successful Checkout", "All Page Views"). Once created, Custom Events appear in the event picker of every other metric.
+
+For a more detailed walkthrough, see the [step-by-step guide to defining a metric](/data-design/start-data-design#defining-a-metric).
+
+## Custom Events
+
+A Custom Event is a metric type that groups multiple events into a single reusable item, similar to custom events in analytics platforms like Mixpanel and Amplitude. Unlike regular events, a Custom Event is itself a metric that can be embedded inside other metrics, acting as a saved definition you maintain in one place.
+
+### Why use Custom Events?
+
+Custom Events let you define a collection of events and use that definition as a single source of truth across your tracking plan. Without them, you would need to re-specify the same set of underlying events every time you use them in a metric, which is error-prone and harder to maintain.
+
+**Example:** Suppose you want a single "All Page Views" metric that combines page views across sources: `Landing Page Viewed` from your marketing site, `Screen Viewed` from your mobile app, and `Page Viewed` from your payment portal. By defining a Custom Event called "All Page Views," you can drop it into any funnel, segmentation, or retention metric without having to remember and add all three events separately each time.
+
+Common use cases include:
+
+- **Composite conversion events.** Combine multiple events into a single logical step that represents a user outcome (e.g., "Successful Checkout", "Completed Onboarding").
+- **Standardized engagement definitions.** Define what counts as an "Active Session" or "Meaningful Interaction" once and use it consistently across retention, funnel, and segmentation metrics.
+- **Shared baselines.** Create a reusable baseline like "Qualified User" for use in multiple proportion metrics.
+
+### Nesting rules
+
+Custom Events support one level of nesting to keep metrics understandable and predictable. The following rules apply:
+
+- **Only Custom Event metrics can be nested.** You cannot nest a Funnel inside another Funnel, or embed a Retention metric inside a Segmentation metric. Only metrics of type Custom Event can be added as items inside other metrics.
+- **One level deep maximum.** A Custom Event that already contains other nested Custom Events cannot itself be nested inside another metric. This prevents deeply nested chains that would be difficult to understand.
+- **No adding to already-nested metrics.** A Custom Event that is already nested inside another metric cannot have additional Custom Events added to it. This prevents indirect multi-level chains (A contains B, then B gets C added to it later).
+- **No circular references.** A metric cannot contain itself, either directly or indirectly.
+- **Invalid options are shown but disabled.** When browsing the event picker, Custom Events that violate any of these rules still appear in the list but are disabled with the reason shown (e.g., "Cannot nest metrics more than one level deep"), so you can understand why a particular Custom Event is not available.
 
 ## What's next?
 
 <TwoCol>
+  <PageLink
+    image={'/docs/images/svg/analyticsmanager.svg'}
+    title="Journeys"
+    description="Visually design the events your metrics need using product screenshots"
+    href={'/data-design/avo-tracking-plan/journeys'}
+  />
   <PageLink
     image={'/docs/images/svg/analyticsmanager.svg'}
     title="Defining a metric in Avo"
@@ -38,13 +92,13 @@ The available metric types in Avo are currently:
   <PageLink
     image={'/docs/images/svg/analyticsmanager.svg'}
     title="Organizing Metrics and Events"
-    description="How to organize metrics and events in Avo."
+    description="How to organize metrics and events in Avo"
     href={'/data-design/organizing-metrics-and-events'}
   />
   <PageLink
     image={'/docs/images/svg/analyticsmanager.svg'}
     title="Documenting Purpose Meetings in Avo"
-    description="How to document the result of a purpose meeting in Avo."
+    description="How to document the result of a purpose meeting in Avo"
     href={'/data-design/guides/documenting-purpose-meetings-in-avo'}
   />
 </TwoCol>

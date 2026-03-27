@@ -123,6 +123,18 @@ For each event or variant in a trigger, you can add properties to define the pro
 - **Existing properties not yet added to the event**: That means you pick a property from the list of properties in the tracking plan that have not yet been added to the event or variant and add it to the event or variant
 - **New properties**: That means you can create a new property to both the tracking plan and the event or variant
 
+###### Nested property conditions
+
+Property conditions also support nested properties — properties inside object-type properties. For example, an `Add to Cart` event might have an object-type property called `Product`, which contains a nested object property `Characteristics` with child properties like `Color`, `Size`, and `Brand`. You can add conditions to any of these nested properties.
+
+![Nested property conditions](/images/journeys/nested-property-conditions.png)
+
+In the property condition picker, object-type properties are included just like other properties. You can search for the name of the child property that you want to add a condition for, see which parent property or properties it belongs to, and add a condition for it. The nested property path is displayed in the condition to show the full hierarchy.
+
+All four condition operators work on nested properties: **is**, **is not**, **is set**, and **is not set**.
+
+Conditions on nested properties work independently from conditions on their parent properties — you can set conditions on both a parent object property and its nested children. Pinned values from parent properties are respected when resolving available values for nested properties.
+
 ##### Property condition operators
 
 Available operators for string and boolean properties are:
@@ -152,9 +164,9 @@ This is useful to provide additional context for tracking plan viewers and imple
 #### Adding property conditions
 
 To add a property condition to a journey trigger:
-1. Click the "Add Property Condition" button in the journey trigger node in the journey builder or journey trigger details. 
-2. Select the [property](/data-design/avo-tracking-plan/journeys#details-about-properties) you want to add a condition for
-3. Select the [operator](/data-design/avo-tracking-plan/journeys#details-about-operators) you want to use for the condition
+1. Click the "Add Property Condition" button in the journey trigger node in the journey builder or journey trigger details.
+2. Select the [property](/data-design/avo-tracking-plan/journeys#properties-in-property-conditions) or [nested object property](/data-design/avo-tracking-plan/journeys#nested-property-conditions) you want to add a condition for
+3. Select the [operator](/data-design/avo-tracking-plan/journeys#property-condition-operators) you want to use for the condition
 4. If applicable, enter the value you want to use for the condition
 5. Add an optional note for the property condition
 

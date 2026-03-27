@@ -129,6 +129,33 @@ Make sure to update `__API_KEY__`, `__ENV__`, `__VERSION__` and `__APP_NAME__` b
 To enable [property value validation](#property-value-validation) with the HTML tag, uncomment the `__PUBLIC_ENCRYPTION_KEY__` line and add your public key. See the [property value validation section](#property-value-validation) above for instructions on generating keys.
 
 
+### Installation option 3: Lite build (production only)
+
+Available since version `3.1.0`. For production environments where bundle size matters (GTM, script tags, etc.), the lite entry point excludes property value validation, session filtering, and event deduplication. Use the full build in dev/staging environments for the complete [Inspector Debugger](/inspector/inspector-debugger) experience.
+
+```bash npm2yarn
+npm install avo-inspector
+```
+
+```ts
+import { AvoInspector, AvoInspectorEnv } from 'avo-inspector/lite';
+
+const inspector = new AvoInspector({
+  apiKey: 'YOUR-API-KEY',
+  env: AvoInspectorEnv.Prod,
+  version: '1.0.0',
+});
+```
+
+The lite build has the same tracking API as the full version — `trackSchemaFromEvent`, `trackSchema`, and `extractSchema` all work identically. The differences:
+
+- Does not support [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features) in the Inspector Debugger (no `publicEncryptionKey` constructor option)
+- Does not support [session filtering](/inspector/inspector-debugger) in the Inspector Debugger (no stream ID generation/persistence)
+- Does not support event deduplication — if you use both Avo Codegen and manual `trackSchemaFromEvent` calls for the same events, use the full build instead to avoid sending duplicate schemas
+- Works universally with any bundler or minifier — no flags or configuration needed
+
+**Lite build size:** ~20 KB minified, ~5.2 KB gzipped.
+
 ## 2. Send event schemas to Avo Inspector
 
 This is the core of the **Avo Inspector SDK**.
