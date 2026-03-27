@@ -46,7 +46,8 @@ Controls how the import interacts with existing items in your tracking plan. Pas
 | Value | Description |
 | :-- | :-- |
 | `addOnly` (default) | Only performs additive changes. Existing items are never overwritten or removed, but new properties and metadata (sources, tags, etc.) can be appended to existing events. |
-| `addAndUpdate` | Adds new items and updates existing items to match the imported data. See [Import Methods](#import-methods) for details. |
+| `addAndUpdate` | Adds new items and updates existing items to match the imported data. Does not remove any items. |
+| `addUpdateAndRemove` | Adds new items, updates existing items, and removes properties from events when they are absent from the imported file. Removals are event-scoped only — events not included in the import are left untouched, and properties are unlinked from events (not permanently deleted from the tracking plan). |
 
 ### - Base64 encoding secret header
 
@@ -352,10 +353,17 @@ Warnings are non-fatal issues collected during parsing. They are included in bot
 #### Request
 
 ```sh
+# Add only (default)
 $ curl -H "Authorization: Basic <Base64 encoded token>" \
        -H "Content-Type: text/csv" \
        -X POST https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1 \
        -d 'KPI,Event Category,Event Name,Event Description,Event Property Name,Property Description,Property Value Type,Is Property Required?,Is Property Array?,Property Enumeration Options,Platforms,Status,Code Snippet\n,,Imported Event I,Event sent when a user clicks the import button. ,,,,,,,\"iOS, Android, Web\",,'
+
+# Add, update, and remove
+$ curl -H "Authorization: Basic <Base64 encoded token>" \
+       -H "Content-Type: text/csv" \
+       -X POST "https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1?importMethod=addUpdateAndRemove" \
+       -d 'your CSV content'
 ```
 
 #### Response
