@@ -45,6 +45,18 @@ The base64 encoded token expects `name:secret`
 
 See more on [authorization](/public-api/authentication#authenticating-with-avo-api)
 
+## Query Parameters
+
+### - _importMethod_ (optional)
+
+Controls how the import handles existing items in your tracking plan. Defaults to `addOnly` if not provided.
+
+| Value | Description |
+|---|---|
+| `addOnly` | Default. Only appends new items from the imported file. No changes are made to existing items. |
+| `addAndUpdate` | Appends new items and updates existing items with matching names. Does not remove any items. |
+| `addUpdateAndRemove` | Appends new items, updates existing items, and removes properties from events when they are absent from the imported file. Removals are event-scoped only — events not included in the import are left untouched, and properties are unlinked from events (not permanently deleted from the tracking plan). |
+
 ## Request Body
 
 The request body should be the CSV content as a string. The request must include a `Content-Type: text/csv` header.
@@ -87,10 +99,17 @@ On success, the API returns a JSON object with the import results:
 ### Request
 
 ```sh
+# Add only (default)
 $ curl -H "Authorization: Basic <Base64 encoded token>" \
        -H "Content-Type: text/csv" \
        -X POST https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1 \
        -d 'KPI,Event Category,Event Name,Event Description,Event Property Name,Property Description,Property Value Type,Is Property Required?,Is Property Array?,Property Enumeration Options,Platforms,Status,Code Snippet\n,,Imported Event I,Event sent when a user clicks the import button. ,,,,,,,\"iOS, Android, Web\",,'
+
+# Add, update, and remove
+$ curl -H "Authorization: Basic <Base64 encoded token>" \
+       -H "Content-Type: text/csv" \
+       -X POST "https://api.avo.app/workspaces/:workspaceId/branches/main/import/v1?importMethod=addUpdateAndRemove" \
+       -d 'your CSV content'
 ```
 
 ### Response

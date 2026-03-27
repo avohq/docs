@@ -67,6 +67,14 @@ The Iglu vendor namespace to use when `payloadFormat=snowplowSchemas`. Defaults 
 - Must contain only alphanumeric characters, dots (`.`), hyphens (`-`), and underscores (`_`)
 - Returns HTTP 400 if the value contains invalid characters
 
+### - _changedEventsOnly_ (optional)
+
+When set to `true` (or `1`), only events that are new or changed on the branch are included in the export payload. This reduces payload size for downstream consumers that only need to process changes.
+
+- Only works on non-main branches. Returns HTTP 400 if used on the main branch.
+- When enabled, the response includes a `removedEvents` field — an array of event names that were archived or lost their filtered sources on the branch. When disabled, this field is omitted.
+- Source-aware: when a source filter is applied, only changes relevant to that source are considered.
+
 ## Example Usage
 
 ### JSON Schema (default)
@@ -89,6 +97,12 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.
 
 ```sh
 $ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.app/workspaces/:workspaceId/branches/main/export/v1?payloadFormat=ndjson"
+```
+
+### Changed Events Only
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.app/workspaces/:workspaceId/branches/:branchId/export/v1?changedEventsOnly=true"
 ```
 
 ### Response (JSON Schema):
