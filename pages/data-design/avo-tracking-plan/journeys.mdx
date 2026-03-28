@@ -61,13 +61,75 @@ A journey step is composed of the following details:
 
 There are several ways to add a journey step to the canvas:
 
+- **Import from Figma**: Import frames directly from a Figma design file to create steps with images, names, and auto-generated connections — see [Importing steps from Figma](#importing-steps-from-figma)
+- **Drag and drop images**: Drag and drop one or more images directly into the journey builder to create steps with images
 - **Drag from toolbar**: Drag the step icon from the toolbar at the top of the journey builder and drop it onto the canvas
 - **Step mode**: Press `s` to activate step mode, then click anywhere on the canvas to place a step node
-- **Drag and drop images**: Drag and drop one or more images directly into the journey builder to create steps with images
 
 To add an image to an existing journey step, you can drag and drop an image into the journey step or click the placeholder image in the journey step and select an image from your computer.
 
 For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey).
+
+#### Importing steps from Figma
+
+If your designs live in Figma, you can import frames directly into the Journey Builder instead of exporting and re-uploading them manually. Each imported frame becomes a journey step with its image and name. Steps are arranged in a grid that mirrors the spatial order of your Figma frames, and connections between adjacent frames are generated automatically.
+
+This is particularly useful when you are starting a new journey from an existing design file and want to avoid the overhead of manually recreating each screen as a journey step and placing them to align with the flow you already have in Figma.
+
+<Callout type="info">
+  The Import from Figma feature is available to workspaces with the Figma integration enabled. Contact your workspace admin or Avo support if you don't see the option.
+</Callout>
+
+##### How to import frames from Figma
+
+To import frames into Avo from Figma, follow these steps:
+
+**1: Open a journey in the Journey Builder.**
+
+**2: Copy the link from Figma.**
+
+In Figma, copy the link to what you want to import — a whole file, a section, or a single frame:
+
+   - **Whole file**: Click *Share* in the top-right corner of Figma and copy the link
+   - **Section or frame**: Select it, then press `Cmd+L` (Mac) / `Ctrl+L` (Windows), or right-click and choose *Copy link to section* / *Copy link to frame*
+
+![Copying a frame link in Figma](/images/journeys/copy-from-figma.png)
+
+**3: Paste the link into your Avo journey.**
+
+Paste it into the canvas. Imported steps are always placed to the right of any existing content to avoid overlaps.
+
+**4: Select exactly which frames you want to import.**
+
+Avo retrieves the file metadata from Figma and displays a visual frame picker showing all top-level frames available in the file or section that was selected. You can multiselect individual frames, drag across frames or use select-all.
+
+![Frame picker showing Figma frames as thumbnails](/images/journeys/import-selection.png)
+
+**5: Click "Import".**
+
+Avo downloads each selected frame as an image, uploads it, and creates a journey step for each one.
+
+![Journey canvas with newly imported steps](/images/journeys/import-complete.png)
+
+##### What gets created
+
+For each imported frame, Avo creates a journey step with:
+
+- **Image**: A screenshot of the Figma frame
+- **Title**: The frame's name from Figma (e.g. "Checkout – Payment")
+- **Figma source link**: A reference back to the source Figma file and node, so anyone viewing the step can trace it to the original design and easily refresh the journey step in Avo when the designs have changed in Figma
+
+Steps are arranged in a grid layout that mirrors the spatial order of the frames in the Figma file. If the journey already contains steps, new steps are placed to the right of existing content to avoid overlaps.
+
+Frames that were spatially close to each other in the Figma layout — specifically those in the same horizontal row — are automatically connected with edges when imported. This preserves the left-to-right visual flow of your Figma design without manual wiring.
+
+You can add, remove, or adjust connections after import just like any other journey step connection. See [Connections](#connections) for details.
+
+##### Troubleshooting
+
+- **"Invalid URL" error**: Make sure you copied the link from a Figma design file using one of the methods above — Share button, `Cmd/Ctrl+L`, or right-click. Links from Figma's prototype view, inspect panel, or FigJam boards are not supported.
+- **No frames appear in the picker**: The selected node may be a component or group rather than a frame or page. Try copying the link from a higher-level frame or page in the Figma file.
+- **"Could not access file"**: Avo can only access files shared with link access. In Figma, click **Share** and set access to **Anyone with the link**, then try again.
 
 ### Journey triggers
 
@@ -240,7 +302,7 @@ To create a journey, click the "Create Journey" button in the Journeys view. Thi
 There are many possible ways to build journeys and there is no one-size-fits-all solution. But the following workflow is common and recommended:
 
 1. Add a [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description) for the journey
-2. Add [journey steps](/data-design/avo-tracking-plan/journeys#journey-steps) to the canvas by dragging and dropping images, dragging from the toolbar, or pressing `s` to activate step mode
+2. Add [journey steps](/data-design/avo-tracking-plan/journeys#journey-steps) to the canvas using [Import from Figma](#importing-steps-from-figma) to pull frames directly from a design file, or by dragging and dropping images, dragging from the toolbar, or pressing `s` to activate step mode
 3. Order the steps to visualize the user journey and [connect](/data-design/avo-tracking-plan/journeys#connections) them to each other so AI can [generate relevant triggers](/data-design/guides/agentic-data-design#generate-triggers) for each step
 4. Fill in the details for each [journey step](/data-design/avo-tracking-plan/journeys#journey-steps), one-by-one:
     - Add a [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description) for the journey step
