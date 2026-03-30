@@ -289,12 +289,19 @@ CSV format for importing.
 
 ## Import Methods
 
-You can select from two import methods when importing your tracking plan:
+You can select from three import methods when importing your tracking plan:
 
 - **Add only**: This is the default import method. The importer will only append new items from the imported file to your tracking plan. No destructive changes will be made to existing items in your tracking plan.
 - **Add and update**: This import method will append new items from the imported file to your tracking plan and update existing items with the same name to match the imported file. Note that this import will not remove any items from your tracking plan.
+- **Add, update and remove**: This import method will append new items, update existing items, and remove properties from events when they are absent from the imported file. Removals are event-scoped only — events not included in the import are left untouched, and properties are unlinked from events (not permanently deleted from the tracking plan). Built-in properties and user/group properties are protected from removal.
 
-When using the [Import API](/reference/public-api/import-tracking-plan), you can pass the `importMethod` query parameter with a value of `addOnly` (default) or `addAndUpdate`. See the [Import API documentation](/reference/public-api/import-tracking-plan#import-methods) for detailed behavior of each method.
+<Callout type="info" emoji="💡">
+  The **Add and Update** and **Add, Update and Remove** import methods are
+  currently behind a feature flag. Please [reach out to
+  us](/help/troubleshooting#contact-us) if you'd like to enable them.
+</Callout>
+
+When using the [Import API](/reference/public-api/import-tracking-plan), you can pass the `importMethod` query parameter with a value of `addOnly` (default), `addAndUpdate`, or `addUpdateAndRemove`. See the [Import API documentation](/reference/public-api/import-tracking-plan#query-parameters) for details.
 
 ![Screenshot of the Avo Importer](/images/workspace/importing/import-method.png)
 
