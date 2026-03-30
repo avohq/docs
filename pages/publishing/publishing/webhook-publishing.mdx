@@ -20,7 +20,9 @@ The Tracking Plan will be delivered with a `POST` request containing the Trackin
 
 ## Only Send Changed Events
 
-When "Only send changed events" is enabled in the Events Filter section of your webhook configuration, only events that are new or changed on the merged branch are included in the webhook payload. This reduces payload size for downstream consumers that only need to process changes.
+When "Only send changed events" is enabled in the Events Filter section of your webhook configuration, only events that have source-impacting changes on the merged branch are included in the webhook payload. This reduces payload size for downstream consumers that only need to process changes.
+
+An event is considered "changed" when the change impacts a source. For example, a property being added to or removed from an event on a source counts as a change, but a property that is not attached to any event, or an event that is not attached to any source, will not appear as changed.
 
 When this option is enabled, the payload includes a `removedEvents` field containing the names of events that were archived or lost their filtered sources. This allows downstream consumers to clean up removed events.
 
