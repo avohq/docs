@@ -2,7 +2,7 @@ import { Callout } from 'nextra/components'
 
 # Avo MCP tools reference
 
-All tools (except `health_check` and `list_workspaces`) operate on a workspace. If you have [saved a workspace](/reference/avo-mcp/overview#getting-started), the `workspaceId` parameter is optional — the saved value is used automatically.
+All tools (except `health_check` and `list_workspaces`) operate on a workspace. Most tools accept an optional `workspaceId` parameter and support branch resolution by either ID or name.
 
 ---
 
@@ -23,26 +23,6 @@ List the Avo workspaces you have access to.
 **Parameters:** None
 
 **Returns:** Each workspace's name, ID, and your role in it.
-
-Call this first to find your workspace ID before calling `save_workspace`.
-
----
-
-## `save_workspace`
-
-Persist a workspace selection so all subsequent tool calls use it automatically.
-
-**Parameters:**
-
-| Parameter | Required | Description |
-|---|---|---|
-| `workspaceId` | Yes | The ID of the workspace to save |
-
-**Returns:** Confirmation message plus the exact CLI command or config snippet needed to persist the `WORKSPACE_ID` environment variable in your MCP client config.
-
-<Callout type="info" emoji="💡">
-  When using Claude Code, the workspace ID is persisted to disk automatically. When using other HTTP clients, the workspace ID is not persisted by default — follow the client-specific instructions in the response to set the `WORKSPACE_ID` environment variable and make it permanent across sessions.
-</Callout>
 
 ---
 
@@ -164,6 +144,21 @@ List all sources in the workspace.
 **Returns:** A table of sources with: source name, programming language, platform, filename hint, and source ID. Sources with no language or platform configured are flagged.
 
 Sources represent the different places in your codebase where tracking fires — for example, "iOS App", "Web App", or "Backend Service". Call this tool to find the `sourceId` before using `get_branch_implementation_guide` or `get_branch_code_snippets`.
+
+---
+
+## `get`
+
+Get details for any tracking plan item by ID.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `itemId` | Yes | The ID of the item to look up |
+| `workspaceId` | No | Workspace ID |
+
+**Returns:** Full details for the item. Supports events, properties, metrics, categories, property bundles, sources, destinations, group types, and event variants.
 
 ---
 
