@@ -34,7 +34,7 @@ Browse branches in the workspace.
 
 | Parameter | Required | Description |
 |---|---|---|
-| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `workspaceId` | No | Workspace ID |
 | `branchStatuses` | No | Filter by status. Valid values: `Draft`, `ReadyForReview`, `ChangesRequested`, `Approved`, `Merged`, `Closed`, `Open`. Defaults to open/active branches only. |
 | `pageSize` | No | Number of results per page (1–50, default 25) |
 | `pageToken` | No | Pagination token from a previous response |
@@ -65,7 +65,7 @@ Get full details for a specific branch.
 |---|---|---|
 | `branchId` | One of `branchId` or `branchName` | Branch ID (takes precedence over name) |
 | `branchName` | One of `branchId` or `branchName` | Branch name (case-insensitive; matches open branches) |
-| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `workspaceId` | No | Workspace ID |
 
 **Returns:** Full branch details including:
 - Resolved emails for the creator, all reviewers, and all collaborators
@@ -86,7 +86,7 @@ Get a high-level implementation guide for a branch's tracking plan changes.
 |---|---|---|
 | `branchId` | One of `branchId` or `branchName` | Branch ID |
 | `branchName` | One of `branchId` or `branchName` | Branch name |
-| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `workspaceId` | No | Workspace ID |
 | `sourceId` | No | Filter to a specific source. Use `get_sources` to find source IDs. |
 
 **Returns:**
@@ -114,7 +114,7 @@ Get implementation snippets for all changed events on a branch, for a specific s
 | `sourceId` | Yes | Source ID to get code snippets for. Use `get_sources` to find IDs. |
 | `branchId` | One of `branchId` or `branchName` | Branch ID |
 | `branchName` | One of `branchId` or `branchName` | Branch name |
-| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `workspaceId` | No | Workspace ID |
 
 **Returns:** Per-event implementation snippets, including:
 
@@ -137,7 +137,7 @@ List all sources in the workspace.
 
 | Parameter | Required | Description |
 |---|---|---|
-| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `workspaceId` | No | Workspace ID |
 | `branchId` | No | Branch ID. Defaults to the main branch. |
 | `branchName` | No | Branch name. Defaults to the main branch. |
 
@@ -171,7 +171,7 @@ Search across the tracking plan using semantic similarity.
 | Parameter | Required | Description |
 |---|---|---|
 | `query` | Yes | Natural language search query |
-| `workspaceId` | No | Workspace ID (uses saved value if omitted) |
+| `workspaceId` | No | Workspace ID |
 | `itemType` | No | Filter by type: `event`, `property`, `metric`, `category`, or `propertyBundle` |
 | `maxResults` | No | Number of results to return (1–20, default 10) |
 
