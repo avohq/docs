@@ -12,6 +12,7 @@ What you can do with the Avo MCP:
 
 - Browse tracking plan branches and see what changed
 - Get implementation guides and code diffs for a specific source
+- Look up details for any tracking plan item — events, properties, metrics, and more
 - Search for events and properties by meaning
 - Discover available sources in your workspace
 
@@ -71,21 +72,15 @@ The MCP server uses OAuth to authenticate you with Avo. The first time you invok
 
 ## Getting started
 
-Most tools are workspace-scoped (`health_check` and `list_workspaces` are global exceptions). The typical first-use sequence is:
+Most tools are workspace-scoped (`health_check` and `list_workspaces` are the exceptions). The typical first-use sequence is:
 
 **1. Discover your workspaces**
 
 Call `list_workspaces` to see which Avo workspaces you have access to and find your workspace ID.
 
-**2. Save your workspace**
+**2. Use any tool**
 
-Call `save_workspace` with your workspace ID. This persists the selection in your mcp's configuration so every subsequent tool call uses it automatically — you won't need to pass `workspaceId` each time.
-
-`save_workspace` also returns the exact config snippet or environment variable needed to make the workspace selection permanent across sessions for your specific MCP client.
-
-**3. Use any tool**
-
-Once a workspace is saved, you can browse branches, look up sources, search for events, and get implementation guides directly in your AI session.
+Pass your `workspaceId` to any tool, or omit it if your MCP client has it configured. You can browse branches, look up sources, search for events, and get implementation guides directly in your AI session.
 
 ## Common workflows
 
@@ -95,6 +90,10 @@ Once a workspace is saved, you can browse branches, look up sources, search for 
 2. `get_sources` — discover available sources (e.g. "iOS App", "Web App")
 3. `get_branch_implementation_guide` with a `branchId` and a `sourceId` — get a summary of what changed and what to implement on a specific branch
 4. `get_branch_code_snippets` with a `branchId` and a `sourceId` — get implementation snippets for each changed event (exact diffs for Codegen sources, pseudocode for manual sources) on a specific branch
+
+### Looking up a tracking plan item
+
+Use `get` with an item ID to fetch full details for any tracking plan item — events, properties, metrics, categories, property bundles, sources, destinations, group types, or event variants. You can find item IDs from `search` results, branch details, or implementation guides.
 
 ### Searching for an event
 
