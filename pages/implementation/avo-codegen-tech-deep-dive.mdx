@@ -62,18 +62,37 @@ Learn more about the CLI [here](/implementation/cli).
 First thing you need to do after importing the generated file is to initialize Avo.
 There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. [Contact us](/help/troubleshooting) if you want to change the setup.
 Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the [Codegen tab](/implementation/guides/download-or-copy-avo-file-manually) for specific recommendations.
-Samples below are in Swift and the code is very similar in other programming languages:
+
+<Callout type="info">
+  **New workspaces** use the constructor/object-based pattern by default: `Avo.initAvo(...)` is a factory method that returns an `Avo` instance, and you call event methods on that instance. **Existing and legacy workspaces** may use the static pattern, where `initAvo` is a static method and event tracking functions are called directly on the `Avo` class without instantiation. [Contact us](/help/troubleshooting) if you want to migrate to the constructor-based pattern.
+</Callout>
+
+Samples below are in Swift and the code is very similar in other programming languages.
+
+**Constructor/object-based pattern (default for new workspaces):**
 
 ```swift
-public static func initAvo(env: AvoEnv,
+let avo = await Avo.initAvo(env: .dev,
     requiredStringSystemProperty: RequiredStringSystemProperty,
-    optionalStringSystemProperty: OptionalStringSystemProperty?,
-    requiredIntSystemProperty: Int,
-    optionalFloatSystemProperty: Double?,
-    optionalListSystemProperty: [Int]?,
-    firstDestination: AvoCustomDestination,
-    secondDestination: AvoCustomDestination,
-    debugger: NSObject, strict: Bool = false, noop: Bool = false)
+    optionalStringSystemProperty: nil,
+    requiredIntSystemProperty: 0,
+    optionalFloatSystemProperty: nil,
+    optionalListSystemProperty: nil,
+    firstDestination: myFirstDestination,
+    secondDestination: mySecondDestination)
+```
+
+**Static pattern (legacy/existing workspaces):**
+
+```swift
+Avo.initAvo(env: .dev,
+    requiredStringSystemProperty: RequiredStringSystemProperty,
+    optionalStringSystemProperty: nil,
+    requiredIntSystemProperty: 0,
+    optionalFloatSystemProperty: nil,
+    optionalListSystemProperty: nil,
+    firstDestination: myFirstDestination,
+    secondDestination: mySecondDestination)
 ```
 
 - `env` - Avo is designed to act differently based on the environment. Supported values are development, staging and production. Most important differences include sending data to different projects in your analytics (to not pollute production data with dev/testing session) and ability to crash the app in development if Avo detects an error in the analytics.
