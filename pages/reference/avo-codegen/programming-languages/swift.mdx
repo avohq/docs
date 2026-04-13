@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # Avo Codegen in Swift
 
 ### Platforms
@@ -32,10 +34,10 @@ You can also [download the file manually](/explore-tracking-plan/download-or-cop
 
 #### Step 2. Initialize Avo
 
-Initialize Avo by creating an object using constructor from the generated Avo file
+Initialize Avo by creating an object using the constructor from the generated Avo file. Store it as a property so it is accessible from other methods:
 
 ```swift
-val avo = Avo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+let avo = Avo(env: .dev/*, other parameters depending on your tracking plan setup*/)
 ```
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/swift#constructor).
@@ -92,8 +94,30 @@ public init(env: AvoEnv,
     strict: Bool = true, noop: Bool = false)
 ```
 
-Creates the Avo object that will be used to track.
+Creates an `Avo` instance that you store and inject into your app:
+
+```swift
+let avo = Avo(env: .dev/*, other parameters*/)
+avo.testEmptyEvent()
+```
+
+<Callout type="info">
+  The returned `Avo` instance is designed to be stored and injected into your app using a dependency injection approach. Consider using [swift-dependencies](https://github.com/pointfreeco/swift-dependencies) to manage and inject the `Avo` instance throughout your app.
+</Callout>
+
 This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
+
+<details>
+<summary>Legacy: Static pattern</summary>
+
+Legacy workspaces use the static pattern, where `initAvo` stores state globally and events are called on the `Avo` class directly:
+
+```swift
+Avo.initAvo(env: .dev/*, other parameters*/)
+Avo.eventName(/*event properties*/)
+```
+
+</details>
 
 ##### Arguments
 
