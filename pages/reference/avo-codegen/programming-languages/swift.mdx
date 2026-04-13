@@ -34,11 +34,11 @@ You can also [download the file manually](/explore-tracking-plan/download-or-cop
 
 #### Step 2. Initialize Avo
 
-Initialize Avo by calling `Avo.initAvo(env:...)` from the generated Avo file. The function is `async` and returns an `Avo` instance, so call it inside a `Task` block:
+Initialize Avo by calling `Avo.initAvo(env:...)` from the generated Avo file. The function is `async` and returns an `Avo` instance. Store it as a property on your class so it is accessible from other methods:
 
 ```swift
 Task {
-    let avo = await Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+    self.avo = await Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
 }
 ```
 
@@ -109,6 +109,8 @@ Task {
   The returned `Avo` instance is designed to be stored and injected into your app using a dependency injection approach. Consider using [swift-dependencies](https://github.com/pointfreeco/swift-dependencies) to manage and inject the `Avo` instance throughout your app.
 </Callout>
 
+This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
+
 <details>
 <summary>Legacy: Static pattern</summary>
 
@@ -122,8 +124,6 @@ Avo.testEmptyEvent()
 Unlike the constructor pattern, the static `initAvo` returns void and stores tracking state globally on the `Avo` class rather than returning an instance.
 
 </details>
-
-This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
 
 ##### Arguments
 
