@@ -110,14 +110,12 @@ This method will call the `make(env, apiKey)` callback in all the provided [dest
 <details>
 <summary>Legacy: Static pattern</summary>
 
-For existing workspaces using the static pattern, `initAvo` returns void and stores state globally. This pattern is not recommended for new integrations.
+Legacy workspaces use the static pattern, where `initAvo` stores state globally and events are called on the `Avo` class directly:
 
 ```swift
-Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
-Avo.testEmptyEvent()
+Avo.initAvo(env: .dev/*, other parameters*/)
+Avo.eventName(/*event properties*/)
 ```
-
-Unlike the constructor pattern, the static `initAvo` returns void and stores tracking state globally on the `Avo` class rather than returning an instance.
 
 </details>
 

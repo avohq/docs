@@ -105,16 +105,11 @@ avo.testEmptyEvent()
 <details>
 <summary>Legacy: Static pattern</summary>
 
-Existing workspaces may use the static pattern, which is not recommended for new integrations. With the static pattern, you initialize Avo once using a static method and call event functions statically:
+Legacy workspaces use the static pattern, where you initialize and call events statically:
 
 ```kotlin
-StaticAvo.initAvoWithInspector(inspector, application, context, AvoEnv.DEV, /*, other parameters depending on your tracking plan setup*/)
-```
-
-Then call events statically:
-
-```kotlin
-StaticAvo.eventName(/*event properties*/)
+Avo.initAvo(application, context, AvoEnv.DEV/*, other parameters*/)
+Avo.eventName(/*event properties*/)
 ```
 
 </details>
