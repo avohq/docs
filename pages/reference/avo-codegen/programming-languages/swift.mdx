@@ -34,10 +34,10 @@ You can also [download the file manually](/explore-tracking-plan/download-or-cop
 
 #### Step 2. Initialize Avo
 
-Initialize Avo by calling `Avo.initAvo(env:...)` from the generated Avo file. The function returns an `Avo` instance. Store it as a property so it is accessible from other methods:
+Initialize Avo by creating an object using the constructor from the generated Avo file. Store it as a property so it is accessible from other methods:
 
 ```swift
-let avo = Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+let avo = Avo(env: .dev/*, other parameters depending on your tracking plan setup*/)
 ```
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/swift#constructor).
@@ -85,19 +85,19 @@ To do that:
 #### Constructor
 
 ```swift
-static func initAvo(env: AvoEnv,
+public init(env: AvoEnv,
     // Other parameters may not be present, depending on your tracking plan
     systemProperty0: Int, systemProperty1: Bool,
     mixpanelDestination: AvoCustomDestination,
     segmentDestination: AvoCustomDestination,
     otherDestination: AvoCustomDestination,
-    strict: Bool = true, noop: Bool = false) -> Avo
+    strict: Bool = true, noop: Bool = false)
 ```
 
-Creates and returns an `Avo` instance that you store and inject into your app:
+Creates an `Avo` instance that you store and inject into your app:
 
 ```swift
-let avo = Avo.initAvo(env: .dev/*, other parameters*/)
+let avo = Avo(env: .dev/*, other parameters*/)
 avo.testEmptyEvent()
 ```
 
