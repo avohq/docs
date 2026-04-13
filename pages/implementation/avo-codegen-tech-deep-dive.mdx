@@ -74,14 +74,10 @@ Samples below are in Swift and the code is very similar in other programming lan
 Because `initAvo` is `async`, it must be called from an async context — for example, inside a `Task { }` block in Swift:
 
 ```swift
-let avo = await Avo.initAvo(env: .dev,
-    requiredStringSystemProperty: RequiredStringSystemProperty,
-    optionalStringSystemProperty: nil,
-    requiredIntSystemProperty: 0,
-    optionalFloatSystemProperty: nil,
-    optionalListSystemProperty: nil,
-    firstDestination: myFirstDestination,
-    secondDestination: mySecondDestination)
+Task {
+    let avo = await Avo.initAvo(env: .dev/*, other parameters*/)
+    // avo is now ready to track events
+}
 ```
 
 **Static pattern (legacy/existing workspaces):**

@@ -100,7 +100,7 @@ Creates and returns an `Avo` instance that will be used to track. The constructo
 
 ```swift
 Task {
-    let avo = await Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+    self.avo = await Avo.initAvo(env: .dev/*, other parameters*/)
     avo.testEmptyEvent()
 }
 ```
