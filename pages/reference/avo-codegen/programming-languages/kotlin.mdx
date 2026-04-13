@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # Avo Codegen in Kotlin
 
 ### Platforms
@@ -87,6 +89,35 @@ class AvoImpl(env: AvoEnv,
 
 Creates the Avo object that will be used to track.
 This method will call the `Make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
+
+After initializing, call event functions on the `avo` instance:
+
+```kotlin
+avo.testEmptyEvent()
+```
+
+<Callout type="info">
+  We recommend using dependency injection to share the `avo` instance across your app. Frameworks like [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) make it straightforward to provide and inject the `AvoImpl` instance wherever you need to track events.
+</Callout>
+
+> **Note:** `AvoImpl` is the default generated class name for new workspaces, matching the workspace prefix. If you are using Kotlin Multiplatform (KMP, beta), you may see a different class name depending on your workspace configuration.
+
+<details>
+<summary>Legacy: Static pattern</summary>
+
+Existing workspaces may use the static pattern, which is not recommended for new integrations. With the static pattern, you initialize Avo once using a static method and call event functions statically:
+
+```kotlin
+StaticAvo.initAvoWithInspector(inspector, application, context, AvoEnv.DEV, /*, other parameters depending on your tracking plan setup*/)
+```
+
+Then call events statically:
+
+```kotlin
+StaticAvo.eventName(/*event properties*/)
+```
+
+</details>
 
 ##### Arguments
 
