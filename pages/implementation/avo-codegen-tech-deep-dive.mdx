@@ -71,13 +71,9 @@ Samples below are in Swift and the code is very similar in other programming lan
 
 **Constructor/object-based pattern (default for new workspaces):**
 
-Because `initAvo` is `async`, it must be called from an async context — for example, inside a `Task { }` block in Swift:
-
 ```swift
-Task {
-    let avo = await Avo.initAvo(env: .dev/*, other parameters*/)
-    // avo is now ready to track events
-}
+let avo = Avo.initAvo(env: .dev/*, other parameters*/)
+// avo is now ready to track events
 ```
 
 **Static pattern (legacy/existing workspaces):**

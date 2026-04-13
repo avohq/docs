@@ -34,12 +34,10 @@ You can also [download the file manually](/explore-tracking-plan/download-or-cop
 
 #### Step 2. Initialize Avo
 
-Initialize Avo by calling `Avo.initAvo(env:...)` from the generated Avo file. The function is `async` and returns an `Avo` instance. Store it as a property on your class so it is accessible from other methods:
+Initialize Avo by calling `Avo.initAvo(env:...)` from the generated Avo file. The function returns an `Avo` instance. Store it as a property so it is accessible from other methods:
 
 ```swift
-Task {
-    self.avo = await Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
-}
+let avo = Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
 ```
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/swift#constructor).
@@ -93,16 +91,14 @@ static func initAvo(env: AvoEnv,
     mixpanelDestination: AvoCustomDestination,
     segmentDestination: AvoCustomDestination,
     otherDestination: AvoCustomDestination,
-    strict: Bool = true, noop: Bool = false) async -> Avo
+    strict: Bool = true, noop: Bool = false) -> Avo
 ```
 
-Creates and returns an `Avo` instance that will be used to track. The constructor returns an `Avo` instance that you store and inject into your app. Call it with `await` inside a `Task` block:
+Creates and returns an `Avo` instance that you store and inject into your app:
 
 ```swift
-Task {
-    self.avo = await Avo.initAvo(env: .dev/*, other parameters*/)
-    avo.testEmptyEvent()
-}
+let avo = Avo.initAvo(env: .dev/*, other parameters*/)
+avo.testEmptyEvent()
 ```
 
 <Callout type="info">
