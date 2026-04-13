@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components'
+
 # Avo Codegen in Swift
 
 ### Platforms
@@ -32,10 +34,12 @@ You can also [download the file manually](/explore-tracking-plan/download-or-cop
 
 #### Step 2. Initialize Avo
 
-Initialize Avo by creating an object using constructor from the generated Avo file
+Initialize Avo by calling `Avo.initAvo(env:...)` from the generated Avo file. The function is `async` and returns an `Avo` instance, so call it inside a `Task` block:
 
 ```swift
-val avo = Avo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+Task {
+    let avo = await Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+}
 ```
 
 The actual parameters depend on your tracking plan setup, see the parameters explanation in [the reference below](/implementation/reference/swift#constructor).
@@ -83,16 +87,42 @@ To do that:
 #### Constructor
 
 ```swift
-public init(env: AvoEnv,
+static func initAvo(env: AvoEnv,
     // Other parameters may not be present, depending on your tracking plan
     systemProperty0: Int, systemProperty1: Bool,
     mixpanelDestination: AvoCustomDestination,
     segmentDestination: AvoCustomDestination,
     otherDestination: AvoCustomDestination,
-    strict: Bool = true, noop: Bool = false)
+    strict: Bool = true, noop: Bool = false) async -> Avo
 ```
 
-Creates the Avo object that will be used to track.
+Creates and returns an `Avo` instance that will be used to track. The constructor returns an `Avo` instance that you store and inject into your app. Call it with `await` inside a `Task` block:
+
+```swift
+Task {
+    let avo = await Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+    avo.testEmptyEvent()
+}
+```
+
+<Callout type="info">
+  The returned `Avo` instance is designed to be stored and injected into your app using a dependency injection approach. Consider using [swift-dependencies](https://github.com/pointfreeco/swift-dependencies) to manage and inject the `Avo` instance throughout your app.
+</Callout>
+
+<details>
+<summary>Legacy: Static pattern</summary>
+
+For existing workspaces using the static pattern, `initAvo` returns void and stores state globally. This pattern is not recommended for new integrations.
+
+```swift
+Avo.initAvo(env: .dev/*, other parameters depending on your tracking plan setup*/)
+Avo.testEmptyEvent()
+```
+
+Unlike the constructor pattern, the static `initAvo` returns void and stores tracking state globally on the `Avo` class rather than returning an instance.
+
+</details>
+
 This method will call the `make(env, apiKey)` callback in all the provided [destination interfaces](/implementation/destinations#destination-interface-callback-methods). It will also initialize the analytics SDKs of the legacy [Avo Managed destinations](/implementation/destinations#avo-managed-destination-legacy).
 
 ##### Arguments
