@@ -184,3 +184,31 @@ Search is performed against the **main branch** only. There may be a short lag f
 <Callout type="info" emoji="🔒">
   Semantic search requires Avo Intelligence Smart Search to be enabled in your workspace. Workspace admins can enable it in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). If you don't have admin access, ask a workspace admin to enable it.
 </Callout>
+
+---
+
+## `save_items`
+
+<Callout type="warning" emoji="🚧">
+  This tool is currently under construction and gated behind an alpha feature flag. Only the `create` operation is functional — `update` and `remove` are not yet implemented. [Contact us](mailto:support@avo.app) if you'd like early access.
+</Callout>
+
+Create tracking plan items on a branch.
+
+**Parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `branchId` | Yes | The branch ID to save items to |
+| `items` | Yes | Array of items to save (max 500). Each item requires `op` (operation), `type` (item type), and `name`. |
+| `treatWarningsAsErrors` | No | If `true`, validation warnings are treated as errors and the operation will fail |
+| `dryRun` | No | If `true`, validates the items without persisting changes |
+
+**Item structure:**
+
+Each item in the `items` array requires:
+- `op`: The operation to perform. Currently only `create` is supported (`update` and `remove` return `NotYetImplemented`).
+- `type`: The item type (e.g., `event`, `property`)
+- `name`: The name of the item to create
+
+**Returns:** Results of the save operation, including any validation errors or warnings.
