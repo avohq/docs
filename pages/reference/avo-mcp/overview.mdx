@@ -9,7 +9,7 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
 - **Writes:** always happen on a branch (never directly on main). Merging to main stays a human step in the Avo app.
 
 <Callout type="warning" emoji="🚧">
-  **Write access is in closed beta.** The `read` tools are generally available; the `write` tools (`workflow`, `save_items`, and `save_metrics`) are enabled per-workspace. [Email us at support@avo.app](mailto:support@avo.app) if you'd like your workspace added to the beta.
+  **Write access is in closed beta.** The `read` tools are generally available; the `write` tools (`workflow` and `save_items`) are enabled per-workspace. [Email us at support@avo.app](mailto:support@avo.app) if you'd like your workspace added to the beta.
 </Callout>
 
 <Callout type="warning" emoji="🔒">
@@ -30,7 +30,6 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
 
 - Create a new branch from main
 - Create, update, and (for some entities) remove events, properties, and event variants on a branch
-- Create, update, and archive metrics (Funnel, EventSegmentation, Proportion, Retention, CustomEvent, Cohort) on a branch — including cohort conditions that reference events
 - Cross-reference newly created items inside a single batch using temporary IDs
 
 ## Capability matrix
@@ -48,7 +47,6 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
 | Semantic search across the plan | [`search`](/reference/avo-mcp/tools#search) | `read` |
 | Create a branch | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
 | Create / update / remove events, properties, event variants on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
-| Create / update / archive metrics on a branch | [`save_metrics`](/reference/avo-mcp/tools#save_metrics) | `write` |
 
 See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
 
@@ -136,12 +134,6 @@ Pass `workspaceId` to every workspace-scoped tool. (Stdio clients can also set t
 1. `workflow` with `action: "create_branch"` and a `branchName` → returns `branchId`.
 2. `save_items` on that `branchId` with a batch of `event` / `property` / `event_variant` items. Use `tempId` for forward references so a newly created property can be attached to a newly created event in a single call.
 3. Tell the user the branch is ready — the MCP does not merge. Open the branch in the [Avo web app](https://www.avo.app) (or ask a reviewer) to review and merge it to main.
-
-### Define a metric
-
-1. `workflow` with `action: "create_branch"` → `branchId` (or reuse an existing branch).
-2. `save_metrics` on that `branchId` with one or more metric items. Pass `metricType` (`Funnel`, `EventSegmentation`, `Proportion`, `Retention`, `CustomEvent`, or `Cohort`) plus the per-type shape.
-3. For cohort metrics, the `CohortMetricType` workspace flag must be enabled — ask a workspace admin if `save_metrics` rejects a Cohort create for that reason. Cohort conditions can reference events created in the same batch via `$tmp:` refs.
 
 ### Fix a property on an existing branch
 
