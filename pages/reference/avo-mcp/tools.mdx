@@ -306,8 +306,8 @@ Every item shares these fields:
 | `tempId` | string | **Create only.** Declares a temporary handle (e.g. `"prop1"`). Reference it elsewhere in the same call as `"$tmp:prop1"`. The server allocates a real ID and resolves all `$tmp:` references before writing. |
 | `eventId` | string | Required on `update` / `remove` of events. |
 | `propertyId` | string | Required on `update` / `remove` of properties. |
-| `baseEventId` | string | Required for `event_variant` items — the parent event's ID. Supports `$tmp:` refs. |
-| `variantId` | string | Required on `update` of `event_variant`. Caller-supplied on `create` of `event_variant`. |
+| `baseEventId` | string | Required for `event_variant` items — the parent event's ID. |
+| `variantId` | string | Required on `update` of `event_variant`. On `create`, provide either `variantId` directly or a `tempId` on the same item (the server resolves the `tempId` into `variantId`). |
 | `nameSuffix` | string | Required on `create` of `event_variant` — suffix appended to the parent event name (e.g. `buy_now` produces `click / buy_now`). |
 | `description` | string | Create-only. Event / property description. |
 
@@ -316,7 +316,7 @@ Every item shares these fields:
 | Field | Notes |
 |---|---|
 | `properties` | Array of property IDs (or `$tmp:` refs) to attach. |
-| `sources` | Array of source IDs (or `$tmp:` refs) to include the event in. |
+| `sources` | Array of source IDs to include the event in. Find source IDs with [`get_sources`](#get_sources). |
 
 **Create-property fields:**
 
@@ -339,7 +339,7 @@ Every item shares these fields:
 |---|---|
 | `set.description` | New event description. |
 | `addProperties` / `removeProperties` | Property IDs (or `$tmp:` refs) to associate / disassociate. |
-| `addSources` / `removeSources` | Source IDs (or `$tmp:` refs) to include / exclude. |
+| `addSources` / `removeSources` | Source IDs to include / exclude. |
 
 **Update-event_variant fields:** _(require `baseEventId` + `variantId`)_
 
@@ -374,7 +374,7 @@ To reference a newly-created item from another item in the same call, declare a 
 
 - `tempId` is **create-only** — setting it on an `update` or `remove` returns an error.
 - `tempId` names must be unique within a single `save_items` call.
-- `$tmp:` references are resolved in every reference position: `properties`, `sources`, `addProperties`, `removeProperties`, `addSources`, `removeSources`, `attachProperties`, `bundleOverrides`, and inside `overrides[].propertyId` / `addComponentOverrides[].propertyId`.
+- `$tmp:` references are resolved in these array fields: `properties`, `addProperties`, `removeProperties`, `attachProperties`, and inside `overrides[].propertyId` / `addComponentOverrides[].propertyId`. Source, destination, and bundle IDs cannot be `$tmp:` refs — they must be real IDs, since `save_items` does not create those entity types.
 - If a `$tmp:` ref names a tempId that wasn't declared on any item, the server returns a validation error.
 
 ### Example: create a new event with a new property in one call
