@@ -5,7 +5,7 @@ import { Callout } from 'nextra/components'
 Every tool except `health_check` and `list_workspaces` operates on a workspace. Pass `workspaceId` as a parameter; stdio clients can also set the `WORKSPACE_ID` environment variable.
 
 <Callout type="info" emoji="🔒">
-  Tools are grouped below by capability. Each tool lists the OAuth scope required. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
+  Tools are grouped below by capability. Each tool lists the OAuth scope required. Write tools (`workflow`, `save_items`, `save_metrics`) require the `write` scope, which is requested as a separate consent step on first use.
 </Callout>
 
 **Discovery & navigation**
@@ -26,6 +26,7 @@ Every tool except `health_check` and `list_workspaces` operates on a workspace. 
 **Writing (beta)**
 - [`workflow`](#workflow) — progress the plan forward (e.g. create a branch)
 - [`save_items`](#save_items) — create / update / remove events, properties, event variants on a branch
+- [`save_metrics`](#save_metrics) — create / update / archive metrics on a branch
 
 ---
 
@@ -351,21 +352,27 @@ Every item shares these fields:
 | `addComponentOverrides` | Override specs to add or replace. Same shape as create `overrides`. |
 | `removeComponentOverrides` | Property IDs whose overrides should be cleared. |
 
-**Update-property — allowed values:** _(require `propertyId`)_
+**Update-property fields:** _(require `propertyId`)_
 
 | Field | Notes |
 |---|---|
+| `set.description` | New property description. |
+| `set.propertyType` | New type. Same value set as create: `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). |
 | `addAllowedValues` | **Top-level on the item, not inside `set`.** String values to add to a string-typed property's allowed list. |
 | `removeAllowedValues` | **Top-level on the item, not inside `set`.** Values not in the current list are silently no-ops. |
+
+**Remove-property:** _(require `propertyId`)_
+
+`{ op: "remove", type: "property", propertyId: "..." }` archives the property on the branch and cascades a `RemovePropertyRefV3` action for every event that references it, mirroring the Avo UI. The action is destructive but reversible from the Avo app. If you only have the property name, look up the ID first with [`get`](#get) or [`search`](#search) so that any name-conflict ambiguity is surfaced before the mutation runs.
 
 <Callout type="warning" emoji="🚧">
   **Not yet implemented.** The following return a `NotYetImplemented` error from the server:
 
   - `op: "remove"` on `event` items
-  - `op: "remove"` on `property` items
-  - `op: "update"` on `property` items with `set.description`, `set.propertyType`, or `set.sendAs`
+  - `op: "remove"` on `event_variant` items
+  - `set.sendAs` on `op: "update"` of `property` items — `sendAs` is immutable after create
 
-  Creating events/properties/event-variants, updating events and event variants, and updating a property's allowed values all work today.
+  Everything else (create events / properties / event-variants; update events and event-variants; update a property's `description`, `propertyType`, or allowed values; remove a property) works today.
 </Callout>
 
 ### Temporary IDs (`tempId` / `$tmp:`)
@@ -442,3 +449,161 @@ Returns a structured result with:
 - `too many items (got N, max 100)` — batch is over the 100-item cap.
 - `NotYetImplemented` — one of the unsupported operations above.
 - Per-item audit-pipeline validation failures (e.g. illegal name, duplicate property, etc.) — returned inside the `errors` array rather than failing the whole call.
+
+---
+
+## `save_metrics`
+
+**Scope:** `write`
+
+<Callout type="warning" emoji="🚧">
+  Write access is in closed beta. [Email support@avo.app](mailto:support@avo.app) to have your workspace enabled.
+</Callout>
+
+Batch create, update, and archive metrics on a branch. Supports all six metric types: `Funnel`, `EventSegmentation`, `Proportion`, `Retention`, `CustomEvent`, and `Cohort`. A single call can mix metric types and operations, and can cross-reference newly-created events or metrics via temporary IDs.
+
+**Top-level parameters:**
+
+| Parameter | Required | Description |
+|---|---|---|
+| `branchId` | Yes | The branch to write to. Get it from `workflow`/`create_branch` or `list_branches`. |
+| `metrics` | Yes | Array of metric items to apply. |
+| `workspaceId` | No | Workspace ID |
+
+The request is capped at **50 items** per call (stricter than `save_items`' 100-item cap because a single Cohort create can fan out to dozens of underlying actions).
+
+### Item shape
+
+Every metric item shares these fields:
+
+| Field | Type | Notes |
+|---|---|---|
+| `op` | `"create"` \| `"update"` \| `"archive"` | Defaults to `"create"`. Metrics use **archive**, not remove. |
+| `type` | `"metric"` | Optional, defaults to `"metric"`. Only metrics are handled here — `save_items` handles events and properties. |
+| `name` | string | Required. Metric name. |
+| `tempId` | string | **Create only.** Declares a temporary handle (e.g. `"m1"`). Reference it elsewhere in the same call as `"$tmp:m1"`. Returned back to you on `createdEntities` so you can map it to the allocated real ID. |
+| `metricId` | string | Required on `update` / `archive`. |
+| `description` | string | Create only. Metric description. |
+
+**Create fields:**
+
+| Field | Notes |
+|---|---|
+| `metricType` | Required. One of `Funnel`, `EventSegmentation`, `Proportion`, `Retention`, `CustomEvent`, `Cohort`. Immutable after create. |
+| `items` | Required for non-Cohort metrics. Array of metric items whose shape depends on `metricType`. The server validates the shape. |
+| `cohortConditions` | Required for `Cohort` metrics; rejected on non-Cohort types. Array of cohort conditions that reference events (by `eventId` or `$tmp:` ref) and property filters. Max 25 conditions per metric. |
+
+**Update fields:** _(require `metricId`)_
+
+| Field | Notes |
+|---|---|
+| `setName` | Rename the metric. |
+| `setDescription` | Set the metric description. |
+| `addItems` / `removeItems` | Non-Cohort: metric items to add, or item IDs to remove. |
+| `addCohortConditions` / `updateCohortConditions` / `removeCohortConditions` | Cohort: conditions to add, conditions to update, or condition IDs to remove. |
+
+`setType` is **rejected** — metric type is immutable post-create. To change a metric's type, archive the existing metric and create a new one.
+
+**Archive:** `{ op: "archive", metricId: "..." }` archives the metric on the branch.
+
+<Callout type="info" emoji="🔒">
+  Cohort metrics require the `CohortMetricType` workspace flag to be enabled. If a Cohort create is rejected for that reason, ask a workspace admin to enable the flag in workspace settings.
+</Callout>
+
+<Callout type="info" emoji="💡">
+  The per-type shape of `items` and the shape of `cohortConditions` are validated server-side. See the Avo schema documentation for the exact shapes; at a high level, non-Cohort `items` reference events and properties that participate in the metric, and each `cohortConditions` entry describes an event criterion plus optional property filters and time/frequency bounds.
+</Callout>
+
+### Temporary IDs (`tempId` / `$tmp:`)
+
+Same semantics as `save_items`, with one addition: `$tmp:` references are resolved inside nested fields too — notably `items[].metricId`, `items[].eventId`, and `cohortConditions[].eventId`. This lets a Cohort metric reference an event created in the same batch, or a Funnel reference a property created in the same batch.
+
+`createdEntities` entries include the `tempId` you originally declared, so a client that batched several creates can map each allocated real ID back to its handle.
+
+### Example: create a Funnel metric
+
+```json
+{
+  "branchId": "br-abc123",
+  "metrics": [
+    {
+      "op": "create",
+      "name": "Signup Funnel",
+      "metricType": "Funnel",
+      "description": "Landing → Signup → Verified",
+      "items": [
+        { "eventId": "evt-landing" },
+        { "eventId": "evt-signup" },
+        { "eventId": "evt-verified" }
+      ]
+    }
+  ]
+}
+```
+
+### Example: create a Cohort referencing an event created in the same call
+
+```json
+{
+  "branchId": "br-abc123",
+  "metrics": [
+    {
+      "op": "create",
+      "name": "Activated Users",
+      "metricType": "Cohort",
+      "cohortConditions": [
+        { "eventId": "$tmp:activated_event", "withinDays": 7 }
+      ]
+    }
+  ]
+}
+```
+
+(The `$tmp:activated_event` reference here would be declared via a create-event item in a `save_items` call on the same branch, then looked up by its resolved ID. Metrics and events are written through separate tools; cross-batch `$tmp:` resolution lives within a single call.)
+
+### Example: rename and redescribe a metric
+
+```json
+{
+  "branchId": "br-abc123",
+  "metrics": [
+    {
+      "op": "update",
+      "metricId": "met-abc123",
+      "setName": "Checkout Funnel (v2)",
+      "setDescription": "Updated to include Apple Pay step"
+    }
+  ]
+}
+```
+
+### Example: archive a metric
+
+```json
+{
+  "branchId": "br-abc123",
+  "metrics": [
+    { "op": "archive", "metricId": "met-abc123" }
+  ]
+}
+```
+
+### Response
+
+Returns a structured result with:
+
+- `createdEntities`, `updatedEntities`, `archivedEntities` — each entry has `name`, `entityId`, `entityType`, and (where the caller supplied one) `tempId`. Metrics use an `archivedEntities` envelope, not `removedEntities`.
+- `errors` — per-item validation errors, each with the item index, name, type, and message.
+- `warnings` — non-fatal notices, same shape as errors.
+- `success` — overall boolean.
+
+**Common errors:**
+
+- Missing `write` scope — the client must re-authorize with `write`.
+- `too many items (got N, max 50)` — batch is over the 50-item cap (checked pre-auth).
+- `type_ cannot be changed during update. Archive and recreate instead.` — an update item carried `setType`.
+- `cohortConditions` supplied on a non-Cohort metric, or omitted on a Cohort create.
+- `cohortConditions exceeds max of 25 per metric spec`.
+- Bounds violations on Cohort conditions (e.g. `frequency: 0` rejected with a clear message).
+- Cohort create rejected because the `CohortMetricType` workspace flag is not enabled.
+- Per-item validation failures — returned inside the `errors` array rather than failing the whole call.
