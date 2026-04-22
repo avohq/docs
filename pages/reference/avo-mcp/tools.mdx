@@ -351,21 +351,27 @@ Every item shares these fields:
 | `addComponentOverrides` | Override specs to add or replace. Same shape as create `overrides`. |
 | `removeComponentOverrides` | Property IDs whose overrides should be cleared. |
 
-**Update-property — allowed values:** _(require `propertyId`)_
+**Update-property fields:** _(require `propertyId`)_
 
 | Field | Notes |
 |---|---|
+| `set.description` | New property description. |
+| `set.propertyType` | New type. Same value set as create: `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). |
 | `addAllowedValues` | **Top-level on the item, not inside `set`.** String values to add to a string-typed property's allowed list. |
 | `removeAllowedValues` | **Top-level on the item, not inside `set`.** Values not in the current list are silently no-ops. |
+
+**Remove-property:** _(require `propertyId`)_
+
+`{ op: "remove", type: "property", propertyId: "..." }` archives the property on the branch and cascades a `RemovePropertyRefV3` action for every event that references it, mirroring the Avo UI. The action is destructive but reversible from the Avo app. If you only have the property name, look up the ID first with [`get`](#get) or [`search`](#search) so that any name-conflict ambiguity is surfaced before the mutation runs.
 
 <Callout type="warning" emoji="🚧">
   **Not yet implemented.** The following return a `NotYetImplemented` error from the server:
 
   - `op: "remove"` on `event` items
-  - `op: "remove"` on `property` items
-  - `op: "update"` on `property` items with `set.description`, `set.propertyType`, or `set.sendAs`
+  - `op: "remove"` on `event_variant` items
+  - `set.sendAs` on `op: "update"` of `property` items — `sendAs` is immutable after create
 
-  Creating events/properties/event-variants, updating events and event variants, and updating a property's allowed values all work today.
+  Everything else (create events / properties / event-variants; update events and event-variants; update a property's `description`, `propertyType`, or allowed values; remove a property) works today.
 </Callout>
 
 ### Temporary IDs (`tempId` / `$tmp:`)
