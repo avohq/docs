@@ -14,8 +14,35 @@ Avo Inspector prints logs prefixed with
 
 Logs are enabled by default in the development environment.
 
-You can enable or disable the logs with the following code:
+You can enable or disable the logs by calling `enableLogging` on your `AvoInspector` instance:
 
 ```swift
-AvoInspector.setLogging(shouldPrintLogs)
+// iOS (Swift)
+avoInspector.enableLogging(shouldPrintLogs)
+```
+
+```kotlin
+// Android (Kotlin) — static method on AvoInspector
+AvoInspector.enableLogging(shouldPrintLogs)
+```
+
+```js
+// Web / Node / React Native
+avoInspector.enableLogging(shouldPrintLogs)
+```
+
+### Web (HTML snippet) installations
+
+When the Avo Inspector is loaded via the HTML snippet, `window.inspector` starts as a method queue and is replaced by the real `AvoInspector` instance only after the CDN bundle finishes loading. `enableLogging` is not part of the queued methods, so it must be called once the SDK is initialized:
+
+```html
+<script>
+  (function waitForInspector() {
+    if (window.inspector && typeof window.inspector.enableLogging === 'function') {
+      window.inspector.enableLogging(false); // pass true to enable verbose logs
+    } else {
+      setTimeout(waitForInspector, 50);
+    }
+  })();
+</script>
 ```
