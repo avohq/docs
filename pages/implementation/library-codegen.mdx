@@ -1,5 +1,7 @@
 # Library codegen for Kotlin, Swift, and TypeScript
 
+> **Draft — internal review.** This page describes the library-shaped codegen output but does not yet include the customer-facing opt-in flag, the recommended Swift module / Kotlin Gradle layout, or the destination-wrapper details. Those open items are listed in [Questions / gaps](#questions--gaps) at the bottom. Don't link this page from customer-facing places until it's filled in.
+
 This page covers the library approach for generated tracking code. It's a different shape of output for Kotlin, Swift, and TypeScript sources. The previous (single-file) codegen is still supported.
 
 ---
@@ -250,7 +252,7 @@ avo.track(new LoginSuccessEvent(1730000000, 'team_42', 'acme.example'));
 
 ### Checklist of changes in your app
 
-1. **Drop the legacy `Avo` constructor**. Replace direct `Avo(...)` / `Avo.initAvo(...)` calls with the new init that takes no destinations (Swift, Kotlin) or accepts the codegen-bound config from `AvoConfig.ts` (TypeScript).
+1. **Drop the legacy `Avo` constructor.** Only the legacy `Avo(env:, customDestination:, ...)` constructor (Swift/Kotlin) and the legacy free-function `Avo.initAvo(config, destinations)` (TypeScript) are gone. In the new shape you keep using `Avo.initAvo(...)` for Swift and Kotlin — that's the generated extension on the library `Avo` class — and you switch to `Avo.init(config, codegenConfig)` for TypeScript with the codegen-bound config imported from `AvoConfig.ts`.
 2. **Replace event method calls with event constructors and a single `process` / `track` call.** Each `avo.someEvent(...)` becomes `avo.process(SomeEvent(...))` (Swift/Kotlin) or `avo.track(new SomeEvent(...))` (TypeScript).
 3. **Move your destination SDK calls to your own code (Swift/Kotlin).** The new `process()` returns a per-destination payload map; the legacy `Avo` class invoked your destinations for you. You're now responsible for calling `myAnalyticsSDK.logEvent(name, properties)`.
 4. **In TypeScript, choose between manual fan-out and `AvoConfig.destinations`.** If you keep manual fan-out, the migration is closer to Swift/Kotlin. If you wire up `destinations`, you must implement the `AvoDestination` interface (`make`, `logEvent`, `setUserProperties`) for every destination — all-or-nothing.
