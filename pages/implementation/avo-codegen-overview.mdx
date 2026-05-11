@@ -42,6 +42,8 @@ In the Avo Tracking Plan you can configure which analytics [actions](/data-desig
 
 Learn more in the [Codegen tech deep dive docs](/implementation/avo-codegen-tech-deep-dive).
 
+For Kotlin, Swift, and TypeScript sources, Avo can emit code in a "library" shape that splits the runtime from the per-event types. See [Library codegen](/implementation/library-codegen) for the file layout, quick starts, and migration steps from the single-file output.
+
 ## Does my event data flow through Avo servers?
 
 No. None of your events ever go through Avo servers. They go directly from your devices (whether that's a front-end client or a server) to the data destination.
