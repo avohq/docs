@@ -2,7 +2,6 @@ export default {
   "avo-codegen-overview": "Avo Codegen overview",
   "start-using-avo-codegen": "Avo Codegen setup",
   "avo-codegen-tech-deep-dive": "Avo Codegen technical deep dive",
-  "library-codegen": "Library codegen (Kotlin, Swift, TypeScript)",
   "cli": "Quickstart: Avo CLI",
   "guides": "Guides",
   "devs-101": {
