@@ -68,7 +68,7 @@ try {
     }
 } catch (e: AvoVerificationError) {
     // Validation failed and strict mode is on.
-    Log.w("avo", e.messages.joinToString(", "))
+    println("[avo] ${e.messages.joinToString(", ")}")
 }
 ```
 
@@ -81,7 +81,7 @@ try {
 - `Analytics.swift` — `AvoTypes` namespace, per-event structs, `AvoTrackingPlanConfig`, and an `extension Avo` with a no-config `initAvo`
 - `AnalyticsLibraryInterface.swift` — runtime
 
-The app file imports `Library`. You can package the library file as a Swift module called `Library` (SPM, Xcode target, internal framework — whichever fits your project), or drop both files into the same module and treat the import as a no-op. Either works.
+The app file imports `Library`. You decide where the library file lives: package it as a Swift module called `Library` (SPM package, Xcode target, internal framework — whichever fits your project) so the import resolves, or drop both files into the same module and remove the `import Library` line from the app file by hand. Either approach works; the library file is just Swift source.
 
 Initialize:
 
@@ -197,13 +197,17 @@ avo.loginSuccess(
 
 // Library mode
 val avo = Avo.initAvo(env = AvoEnv.DEV)
-val payloads = avo.process(LoginSuccessEvent(
-    timestamp = 1730000000,
-    teamId = "team_42",
-    teamDomain = "acme.example",
-))
-payloads["custom"]?.let { event ->
-    myAnalyticsSdk.logEvent(event.name, event.properties)
+try {
+    val payloads = avo.process(LoginSuccessEvent(
+        timestamp = 1730000000,
+        teamId = "team_42",
+        teamDomain = "acme.example",
+    ))
+    payloads["custom"]?.let { event ->
+        myAnalyticsSdk.logEvent(event.name, event.properties)
+    }
+} catch (e: AvoVerificationError) {
+    println("[avo] ${e.messages.joinToString(", ")}")
 }
 ```
 
@@ -220,13 +224,17 @@ avo.loginSuccess(
 
 // Library mode
 let avo = Avo.initAvo(env: .dev)
-let payloads = try avo.process(event: LoginSuccessEvent(
-    timestamp: 1730000000,
-    teamId: "team_42",
-    teamDomain: "acme.example"
-))
-if let event = payloads["custom"] {
-    MyAnalyticsSDK.logEvent(name: event.name, properties: event.properties)
+do {
+    let payloads = try avo.process(event: LoginSuccessEvent(
+        timestamp: 1730000000,
+        teamId: "team_42",
+        teamDomain: "acme.example"
+    ))
+    if let event = payloads["custom"] {
+        MyAnalyticsSDK.logEvent(name: event.name, properties: event.properties)
+    }
+} catch let error as AvoVerificationError {
+    print("Avo verification: \(error.messages.joined(separator: \", \"))")
 }
 ```
 
@@ -243,15 +251,24 @@ Avo.loginSuccess({
 });
 
 // Library mode
-import { Avo, AvoEnv, LoginSuccessEvent } from './Avo';
+import { Avo, AvoEnv, AvoVerificationError, LoginSuccessEvent } from './Avo';
 import codegenConfig from './AvoConfig';
 
 const avo = Avo.init({ env: AvoEnv.Dev }, codegenConfig);
-const payloads = avo.track(new LoginSuccessEvent(1730000000, 'team_42', 'acme.example'));
 
-const custom = payloads['Custom'];
-if (custom) {
-  myAnalyticsSDK.logEvent(custom.name, custom.properties);
+try {
+  const payloads = avo.track(new LoginSuccessEvent(1730000000, 'team_42', 'acme.example'));
+
+  const custom = payloads['Custom'];
+  if (custom) {
+    myAnalyticsSDK.logEvent(custom.name, custom.properties);
+  }
+} catch (e) {
+  if (e instanceof AvoVerificationError) {
+    console.error('[avo]', e.messages.join(', '));
+  } else {
+    throw e;
+  }
 }
 ```
 
