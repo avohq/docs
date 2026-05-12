@@ -18,13 +18,7 @@ Library mode is the better fit when you have multiple Avo sources sharing the sa
 
 ### Mental model
 
-Events are values you construct. The `Avo` instance turns them into per-destination payloads.
-
-```
-LoginSuccessEvent(name = "Alice")  ──┐
-                                     ├──> avo.process / avo.track ──> { "Custom": AvoDestinationEvent(...) }
-            (a plain data type)      ┘
-```
+Events are values you construct, not method calls. You build an instance of `LoginSuccessEvent(timestamp: ..., teamId: ..., ...)` and pass it to `avo.process(event)` (Swift/Kotlin) or `avo.track(event)` (TypeScript). The call returns a map keyed by destination name, with the per-destination payload (event name + properties) for each one.
 
 The boundary: the library file knows nothing about your tracking plan. The app file knows nothing about how validation or invocation metrics work. You decide what to do with the per-destination map the call returns — either fan out manually, or hand off to destination implementations the runtime calls for you.
 
@@ -182,8 +176,6 @@ try {
 
 `track()` returns `Record<string, AvoDestinationEvent>` keyed by `DestinationKey` from `AvoConfig.ts`. It throws `AvoVerificationError` the same way Kotlin/Swift do.
 
-For a worked example of a TypeScript library-mode setup, see `platform_tests/typescript/web/LibraryInterfaceApp/src/AvoLibrary.ts` in the monorepo.
-
 ---
 
 ## 3. Differences from the single-source output
@@ -276,11 +268,9 @@ if (custom) {
 ### What changes
 
 1. **`Avo` constructor signature.** The single-source `Avo(env:, customDestination:, ...)` (Swift/Kotlin) and the free-function `Avo.initAvo(config, destinations)` (TypeScript) become `Avo.initAvo(env:)` (Swift/Kotlin) and `Avo.init(config, codegenConfig)` (TypeScript).
-2. **Event method calls become event constructors and a single `process` / `track` call.** Each `avo.someEvent(...)` becomes `avo.process(SomeEvent(...))` (Swift/Kotlin) or `avo.track(new SomeEvent(...))` (TypeScript). Wrap the call in `try` / `do-catch` — `process()` / `track()` throws `AvoVerificationError` when `strict` is on, as shown in the quick-start examples.
-3. **TypeScript: `AvoDestination` interface.** Custom destinations implement `AvoDestination` with `make / logEvent / setUserProperties`. All-or-nothing — provide implementations for every `DestinationKey`, or omit `destinations` entirely and fan out manually.
-4. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
-5. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
+2. **Event method calls become event constructors and a single `process` / `track` call.** Each `avo.someEvent(...)` becomes `avo.process(SomeEvent(...))` (Swift/Kotlin) or `avo.track(new SomeEvent(...))` (TypeScript).
+3. **`process()` / `track()` throws `AvoVerificationError`.** In library mode all three languages throw a typed `AvoVerificationError` when `strict` is on. Wrap calls in `try` / `do-catch` — see the quick-start examples.
+4. **TypeScript: `AvoDestination` interface.** Custom destinations implement `AvoDestination` with `make / logEvent / setUserProperties`. All-or-nothing — provide implementations for every `DestinationKey`, or omit `destinations` entirely and fan out manually.
+5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
+6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
 
-### Open items
-
-- **Multi-source versioning.** If you have multiple library-mode sources at different codegen versions sharing the same library file, there's currently no built-in mechanism to reconcile them. A real mechanism will land in a future release; in the meantime regenerate from the same CLI version across sources.
