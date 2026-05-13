@@ -14,7 +14,7 @@ Library mode is the better fit when you have multiple Avo sources sharing the sa
 
 - **Library file**: the runtime. `AvoEnv`, `AvoAssert`, `AvoInvoke`, the `AvoEvent` protocol/interface, and the `Avo` class. Regenerated rarely. Every source generates an identical library file. Shared across all sources/apps. Optionally orchestrated from a single place — "the library".
 - **App file**: per-source types and a thin config object. Regenerated whenever the tracking plan source changes.
-- In TypeScript, a third file `AvoConfig.ts` holds the codegen-bound `schemaId`/`actionId`/`branchId`/`sourceId` plus destination API keys. It has no runtime imports — just the values.
+- In TypeScript, a third file `AvoConfig.ts` holds the source config with `schemaId`/`actionId`/`branchId`/`sourceId` plus destination API keys. It has no runtime imports — just the values.
 
 ### Mental model
 
