@@ -1,0 +1,293 @@
+# Library codegen for Kotlin, Swift, and TypeScript
+
+Avo can emit generated code in two shapes for Kotlin, Swift, and TypeScript sources: the default **single-source** output (one file per source) and the **library mode** output that splits the runtime from the per-source types. Both modes are supported — they serve different use cases and you can generate either from the same source.
+
+Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types.
+
+---
+
+## 1. The shape of library mode
+
+`avo pull` emits multiple files per source instead of one. The shared source-independent runtime — `Avo` class, validation helpers, `AvoEvent` protocol/interface, `AvoInvoke` — lives in a separate "library" file. The per-source "app" file contains only the things that change when your tracking plan changes: per-event classes and the codegen-bound IDs. Optionally, a third file is extracted with everything needed for `Avo` initialization, so initialization can be decoupled from the apps too.
+
+### What gets generated
+
+- **Library file**: the runtime. `AvoEnv`, `AvoAssert`, `AvoInvoke`, the `AvoEvent` protocol/interface, and the `Avo` class. Regenerated rarely. Every source generates an identical library file. Shared across all sources/apps. Optionally orchestrated from a single place — "the library".
+- **App file**: per-source types and a thin config object. Regenerated whenever the tracking plan source changes.
+- In TypeScript, a third file `AvoConfig.ts` holds the source config with `schemaId`/`actionId`/`branchId`/`sourceId` plus destination API keys. It has no runtime imports — just the values.
+
+### Mental model
+
+Events are values you construct, not method calls. You build an instance of `LoginSuccessEvent(timestamp: ..., teamId: ..., ...)` and pass it to `avo.process(event)` (Swift/Kotlin) or `avo.track(event)` (TypeScript). The call returns a map keyed by destination name, with the per-destination payload (event name + properties) for each one.
+
+The boundary: the library file knows nothing about your tracking plan. The app file knows nothing about how validation or invocation metrics work. You decide what to do with the per-destination map the call returns — either fan out manually, or hand off to destination implementations the runtime calls for you.
+
+---
+
+## 2. Quick start
+
+Enable library mode on a per-source basis with the `--forceFeatures` flag on `avo pull`. The flag names match the language:
+
+```bash
+avo pull --forceFeatures SwiftLibraryInterface
+avo pull --forceFeatures KotlinLibraryInterface
+avo pull --forceFeatures TypeScriptLibraryInterface
+```
+
+You can also enable these features in your Avo workspace if you'd like them on by default — [reach out](/help/troubleshooting) and we'll switch them on for your source.
+
+### Kotlin
+
+`avo pull` produces:
+
+- `Analytics.kt` — per-event data classes and `AvoTrackingPlanConfig`
+- `AnalyticsLibraryInterface.kt` — runtime (`Avo` class, `AvoEvent`, `AvoAssert`, `AvoInvoke`)
+
+Both files share the same package (inferred from the source path, default `sh.avo`). Treat them like any other Kotlin files in your project — drop them anywhere in your source tree that fits your module layout.
+
+Initialize using the `initAvo` extension that's generated alongside the per-event classes:
+
+```kotlin
+import sh.avo.Avo
+import sh.avo.AvoEnv
+import sh.avo.AvoVerificationError
+import sh.avo.LoginSuccessEvent
+import sh.avo.initAvo
+
+val avo = Avo.initAvo(env = AvoEnv.DEV)
+
+try {
+    val payloads = avo.process(LoginSuccessEvent(
+        timestamp = 1730000000,
+        teamId = "team_42",
+        teamDomain = "acme.example"
+    ))
+
+    payloads["custom"]?.let { event ->
+        myAnalyticsSdk.logEvent(event.name, event.properties)
+    }
+} catch (e: AvoVerificationError) {
+    // Validation failed and strict mode is on.
+    println("[avo] ${e.messages.joinToString(", ")}")
+}
+```
+
+`process()` returns `Map<String, AvoDestinationEvent>` keyed by destination name (lowercased identifier from your Avo workspace). It throws `AvoVerificationError` when validation fails and `strict = true` (the default); otherwise it logs a warning and continues. Returns an empty map in noop mode.
+
+### Swift
+
+`avo pull` produces:
+
+- `Analytics.swift` — `AvoTypes` namespace, per-event structs, `AvoTrackingPlanConfig`, and an `extension Avo` with a no-config `initAvo`
+- `AnalyticsLibraryInterface.swift` — runtime
+
+The app file imports `Library`. You decide where the library file lives: package it as a Swift module called `Library` (SPM package, Xcode target, internal framework — whichever fits your project) so the import resolves, or drop both files into the same module and remove the `import Library` line from the app file by hand. Either approach works; the library file is just Swift source.
+
+Initialize:
+
+```swift
+import Library
+
+let avo = Avo.initAvo(env: .dev)
+
+do {
+    let payloads = try avo.process(event: LoginSuccessEvent(
+        timestamp: 1730000000,
+        teamId: "team_42",
+        teamDomain: "acme.example"
+    ))
+
+    if let event = payloads["custom"] {
+        MyAnalyticsSDK.logEvent(name: event.name, properties: event.properties)
+    }
+} catch let error as AvoVerificationError {
+    // Validation failed and strict mode is on.
+    print("Avo verification: \(error.messages.joined(separator: \", \"))")
+}
+```
+
+`process(event:)` returns `[String: AvoDestinationEvent]`. It throws `AvoVerificationError` when validation fails and `strict` is on; otherwise it logs via `NSLog` and continues.
+
+### TypeScript
+
+`avo pull` produces three files:
+
+- `Avo.ts` — per-event classes (`LoginSuccessEvent`, etc.) extending `BaseAvoEvent`, plus re-exports of the public runtime surface
+- `AvoLibrary.ts` — runtime (`Avo` class, `AvoEvent`, `AvoAssert`, `BaseAvoEvent`)
+- `AvoConfig.ts` — codegen-bound config (default export), `DestinationKey` union, and per-destination API keys
+
+`AvoConfig.ts` is the only file that contains your `schemaId`/`actionId`/`branchId`. Move it (and update the import path) wherever you want `Avo.init` to live — at the app level, a library level, or any module boundary.
+
+There are no runtime dependencies outside the standard library and `fetch` (used by `AvoInvoke`).
+
+`Avo.init` takes two arguments: a runtime `AvoConfig` and the codegen-bound config (default-exported from `AvoConfig.ts`). The recommended starting point is to wire all destinations through the runtime:
+
+```ts
+import { Avo, AvoEnv, AvoVerificationError, LoginSuccessEvent } from './Avo';
+import codegenConfig from './AvoConfig';
+
+const avo = Avo.init(
+  {
+    env: AvoEnv.Dev,
+    destinations: {
+      Custom: {
+        make(env, apiKey) { /* initialize your SDK */ },
+        logEvent(event) { myAnalyticsSDK.logEvent(event.name, event.properties); },
+        setUserProperties(userId, props) { myAnalyticsSDK.identify(userId, props); },
+      },
+    },
+  },
+  codegenConfig,
+);
+
+try {
+  avo.track(new LoginSuccessEvent(1730000000, 'team_42', 'acme.example'));
+} catch (e) {
+  if (e instanceof AvoVerificationError) {
+    console.error('[avo]', e.messages.join(', '));
+  } else {
+    throw e;
+  }
+}
+```
+
+`AvoDestination` (`make`, `logEvent`, `setUserProperties`) plays the same role as the custom destination interface in the single-source output — the shape is different but the idea is the same. `destinations` is all-or-nothing: if you provide any, you must provide an implementation for every `DestinationKey` or `Avo.init` will throw.
+
+If the all-or-nothing model doesn't fit (for example, you want to fan out manually for some destinations), omit `destinations` and fan out yourself:
+
+```ts
+const avo = Avo.init({ env: AvoEnv.Dev }, codegenConfig);
+
+try {
+  const payloads = avo.track(new LoginSuccessEvent(1730000000, 'team_42', 'acme.example'));
+
+  const custom = payloads['Custom'];
+  if (custom) {
+    myAnalyticsSDK.logEvent(custom.name, custom.properties);
+  }
+} catch (e) {
+  if (e instanceof AvoVerificationError) {
+    console.error('[avo]', e.messages.join(', '));
+  } else {
+    throw e;
+  }
+}
+```
+
+`track()` returns `Record<string, AvoDestinationEvent>` keyed by `DestinationKey` from `AvoConfig.ts`. It throws `AvoVerificationError` the same way Kotlin/Swift do.
+
+---
+
+## 3. Differences from the single-source output
+
+If you're switching an existing source from the single-source output to library mode, here's what changes — and what stays the same.
+
+### Before / after
+
+#### Kotlin
+
+```kotlin
+// Single-source
+val avo = Avo(env = AvoEnv.DEV, customDestination = MyCustomDestination())
+avo.loginSuccess(
+    timestamp = 1730000000,
+    teamId = "team_42",
+    teamDomain = "acme.example",
+)
+
+// Library mode
+val avo = Avo.initAvo(env = AvoEnv.DEV)
+try {
+    val payloads = avo.process(LoginSuccessEvent(
+        timestamp = 1730000000,
+        teamId = "team_42",
+        teamDomain = "acme.example",
+    ))
+    payloads["custom"]?.let { event ->
+        myAnalyticsSdk.logEvent(event.name, event.properties)
+    }
+} catch (e: AvoVerificationError) {
+    println("[avo] ${e.messages.joinToString(", ")}")
+}
+```
+
+#### Swift
+
+```swift
+// Single-source
+let avo = Avo(env: .dev, customDestination: MyCustomDestination())
+avo.loginSuccess(
+    timestamp: 1730000000,
+    teamId: "team_42",
+    teamDomain: "acme.example"
+)
+
+// Library mode
+let avo = Avo.initAvo(env: .dev)
+do {
+    let payloads = try avo.process(event: LoginSuccessEvent(
+        timestamp: 1730000000,
+        teamId: "team_42",
+        teamDomain: "acme.example"
+    ))
+    if let event = payloads["custom"] {
+        MyAnalyticsSDK.logEvent(name: event.name, properties: event.properties)
+    }
+} catch let error as AvoVerificationError {
+    print("Avo verification: \(error.messages.joined(separator: \", \"))")
+}
+```
+
+#### TypeScript
+
+```ts
+// Single-source
+import Avo from './Avo';
+Avo.initAvo({ env: Avo.AvoEnv.Dev }, /* destinations */ {});
+Avo.loginSuccess({
+  timestamp: 1730000000,
+  teamId: 'team_42',
+  teamDomain: 'acme.example',
+});
+
+// Library mode
+import { Avo, AvoEnv, AvoVerificationError, LoginSuccessEvent } from './Avo';
+import codegenConfig from './AvoConfig';
+
+const avo = Avo.init({ env: AvoEnv.Dev }, codegenConfig);
+
+try {
+  const payloads = avo.track(new LoginSuccessEvent(1730000000, 'team_42', 'acme.example'));
+
+  const custom = payloads['Custom'];
+  if (custom) {
+    myAnalyticsSDK.logEvent(custom.name, custom.properties);
+  }
+} catch (e) {
+  if (e instanceof AvoVerificationError) {
+    console.error('[avo]', e.messages.join(', '));
+  } else {
+    throw e;
+  }
+}
+```
+
+### What stays the same
+
+- **Event names, property names, and validation rules.** The tracking plan is unchanged — only the shape of the generated code differs.
+- **Strict / noop modes.** `strict` (throw on validation failure in non-prod) and `noop` (drop everything) behave the same way.
+- **Inspector integration.** Construct your Avo Inspector instance from the SDK and pass it into the init call — same as the single-source output.
+- **Implementation status tracking.** The CLI reports event-usage status the same way regardless of mode.
+- **Destination interface idea.** TypeScript's `AvoDestination` (`make`, `logEvent`, `setUserProperties`) plays the same role as the single-source custom destination — the shape differs but the concept is the same.
+- **The `avo pull` workflow.** Same command, same authentication, same source/destination configuration in your Avo workspace.
+- **Destination API keys.** Still embedded by codegen. In TypeScript they're in `AvoConfig.ts`; in Swift/Kotlin they're inside `AvoTrackingPlanConfig` and used by the `initAvo` extension.
+
+### What changes
+
+1. **`Avo` constructor signature.** The single-source `Avo(env:, customDestination:, ...)` (Swift/Kotlin) and the free-function `Avo.initAvo(config, destinations)` (TypeScript) become `Avo.initAvo(env:)` (Swift/Kotlin) and `Avo.init(config, codegenConfig)` (TypeScript).
+2. **Event method calls become event constructors and a single `process` / `track` call.** Each `avo.someEvent(...)` becomes `avo.process(SomeEvent(...))` (Swift/Kotlin) or `avo.track(new SomeEvent(...))` (TypeScript).
+3. **`process()` / `track()` throws `AvoVerificationError`.** In library mode all three languages throw a typed `AvoVerificationError` when `strict` is on. Wrap calls in `try` / `do-catch` — see the quick-start examples.
+4. **TypeScript: `AvoDestination` interface.** Custom destinations implement `AvoDestination` with `make / logEvent / setUserProperties`. All-or-nothing — provide implementations for every `DestinationKey`, or omit `destinations` entirely and fan out manually.
+5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
+6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
+
