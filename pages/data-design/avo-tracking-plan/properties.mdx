@@ -10,6 +10,49 @@ Properties are also known as traits, attributes, metadata, etc. They are informa
 Looking for ways to organize properties and reuse them across events? See [Organizing your tracking plan](/data-design/guides/organizing-metrics-and-events)—especially [tags](/data-design/guides/organizing-metrics-and-events#tags), [categories](/data-design/guides/organizing-metrics-and-events#categories), [property bundles](/data-design/guides/organizing-metrics-and-events#property-bundles), and how these relate to [metrics](/data-design/guides/organizing-metrics-and-events#metrics).
 </Callout>
 
+## Creating properties
+
+Avo provides several ways to create properties, depending on whether you're designing in the context of an event or curating the property library directly.
+
+<Callout type="info" emoji="💡">When creating a new property you will receive guidance on how to name the property in a way that adheres to the [naming convention](/audit/advanced-event-naming-rules) defined for your workspace.</Callout>
+
+### Standard property creation methods
+
+- **Properties view creation button**: Click `+ Add Property` at the top of the Properties view to create event, user, or system properties in the property library
+- **From event details ("+ Add Event Property")**: From the Log Event action of an event, click `+ Add Event Property` and start typing a name — if no match exists, Avo offers to create a new property in place (see [creating new properties from event details](/data-design/start-data-design#step-1-create-a-new-event-property))
+- **Command palette**: Hit `C` on your keyboard and select "Property" from the command palette
+- **Group types and group properties**: see [Creating Group Types](#creating-group-types) and [Creating Group properties](#creating-group-properties) below for group-scoped properties
+- **From metrics**: Properties can also be created inline when defining a [metric](/data-design/avo-tracking-plan/metrics) filter or group-by
+
+### Fast property creation methods
+
+For creating multiple properties quickly, Avo offers streamlined approaches:
+
+#### Inline creation from event details
+
+When adding properties to events, you can chain creations from the "+ Add Event Property" flow — Avo audits the name as you type and offers to create new properties without leaving the event details.
+
+#### Workbench inline creation
+
+From the [workbench](/data-design/avo-tracking-plan/workbench), edit events inline and create new properties on the fly while you shape the event's payload.
+
+### From AI coding assistants (MCP)
+
+If you use Claude, Cursor, Codex, Claude Code, or another MCP-compatible client, you can create properties directly from your AI assistant via the [Avo MCP](/reference/avo-mcp/overview). All writes happen on a branch — the MCP never merges to main.
+
+- Create a new branch with the [`workflow`](/reference/avo-mcp/tools#workflow) tool
+- Create event, user, or system properties on that branch with [`save_items`](/reference/avo-mcp/tools#save_items), including type, `sendAs`, and description in a single call
+- Cross-reference newly-created properties to newly-created events in the same batch using [temporary IDs](/reference/avo-mcp/tools#temporary-ids-tempid--tmp)
+- Add allowed values, change a property's description or type, or remove a property — all via `save_items` `op: "update"` / `op: "remove"`
+
+<Callout type="warning" emoji="🚧">
+  Write access to the Avo MCP is in closed beta. [Email support@avo.app](mailto:support@avo.app) to enable it for your workspace. Read tools (`get`, `search`, branch inspection) are generally available.
+</Callout>
+
+### Adding context with bulk editing
+
+After creating multiple properties, you can attach shared context across them at once using **[bulk editing](/data-design/guides/bulk-editing)** — for example, applying common tags, categories, or stakeholders to a group of newly-created properties.
+
 ## Property Definition
 
 A property is defined in the event details within the relevant [actions](/data-design/avo-tracking-plan/events#actions) or in the properties view.

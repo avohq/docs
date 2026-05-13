@@ -14,9 +14,9 @@ import { Callout } from 'nextra/components';
 - The basic concepts in Avo and event design
 - What to look out for when designing data
 
-## Two approaches to data design
+## Approaches to data design
 
-There are two main approaches to designing your tracking in Avo:
+There are three main approaches to designing your tracking in Avo:
 
 ### Visual design with Journeys (recommended)
 
@@ -33,7 +33,20 @@ The traditional approach covered in this guide involves creating metrics, events
 - Defining metrics independently of a specific feature
 - Making small updates to your tracking plan like adding a new allowed value to a string property
 
-Both approaches result in the same tracking plan structures—journeys simply provide a visual layer for designing and reviewing tracking in context.
+All three approaches result in the same tracking plan structures—Journeys provides a visual layer for designing and reviewing tracking in context, and the Avo MCP lets you drive changes from an AI coding assistant.
+
+### From your AI coding assistant (Avo MCP)
+
+If you use Claude, Cursor, Codex, Claude Code, or another MCP-compatible client, the [Avo MCP](/reference/avo-mcp/overview) lets your AI assistant create and update events, properties, and event variants on a branch in your workspace. This approach is useful when:
+- You want to draft tracking changes alongside the code that emits them
+- You'd rather describe the change in natural language than click through the UI
+- You're already in a coding agent that has context about the feature you're shipping
+
+The MCP creates and writes to branches via [`workflow`](/reference/avo-mcp/tools#workflow) and [`save_items`](/reference/avo-mcp/tools#save_items) but never merges to main — review and merge stay a human step in the [Avo web app](https://www.avo.app).
+
+<Callout type="warning" emoji="🚧">
+  Write access to the Avo MCP is in closed beta. [Email support@avo.app](mailto:support@avo.app) to enable it for your workspace.
+</Callout>
 
 ## Defining a metric
 

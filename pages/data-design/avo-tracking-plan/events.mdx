@@ -53,6 +53,19 @@ From the workbench interface, you can create events inline:
 3. Hit Enter to create and immediately add another event
 4. Use Tab to navigate between inline creation fields
 
+### From AI coding assistants (MCP)
+
+If you use Claude, Cursor, Codex, Claude Code, or another MCP-compatible client, you can create events directly from your AI assistant via the [Avo MCP](/reference/avo-mcp/overview). All writes happen on a branch — the MCP never merges to main.
+
+- Create a new branch with the [`workflow`](/reference/avo-mcp/tools#workflow) tool
+- Create events (with description, sources, and attached properties) on that branch with [`save_items`](/reference/avo-mcp/tools#save_items)
+- Create new events and new properties in a single batched call using [temporary IDs](/reference/avo-mcp/tools#temporary-ids-tempid--tmp)
+- Update an event's description, properties, or sources with `save_items` `op: "update"`
+
+<Callout type="warning" emoji="🚧">
+  Write access to the Avo MCP is in closed beta. [Email support@avo.app](mailto:support@avo.app) to enable it for your workspace. Read tools (`get`, `search`, branch inspection) are generally available.
+</Callout>
+
 ### Adding context with bulk editing
 
 After creating multiple events using the fast creation methods, you can efficiently add context to all of them at once using **[bulk editing](/data-design/guides/bulk-editing)**. Simply:
