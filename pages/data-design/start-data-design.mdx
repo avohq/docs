@@ -27,15 +27,7 @@ There are three main approaches to designing your tracking in Avo:
 
 With journeys, you [Import from Figma](/data-design/avo-tracking-plan/journeys#importing-steps-from-figma) or drag and drop screenshots, add triggers for user actions, and connect them to events—all in a visual canvas. Learn more in our [Journeys documentation](/data-design/avo-tracking-plan/journeys).
 
-### Direct event and metric creation
-
-The traditional approach covered in this guide involves creating metrics, events, and properties directly in their respective views. This is useful when:
-- Defining metrics independently of a specific feature
-- Making small updates to your tracking plan like adding a new allowed value to a string property
-
-All three approaches result in the same tracking plan structures—Journeys provides a visual layer for designing and reviewing tracking in context, and the Avo MCP lets you drive changes from an AI coding assistant.
-
-### From your AI coding assistant (Avo MCP)
+### From your AI coding assistant (Avo MCP, fastest)
 
 If you use Claude, Cursor, Codex, Claude Code, or another MCP-compatible client, the [Avo MCP](/reference/avo-mcp/overview) lets your AI assistant create and update events, properties, and event variants on a branch in your workspace. This approach is useful when:
 - You want to draft tracking changes alongside the code that emits them
@@ -47,6 +39,14 @@ The MCP creates and writes to branches via [`workflow`](/reference/avo-mcp/tools
 <Callout type="info" emoji="🚧">
   The Avo MCP is in general beta — enabled for every workspace, no need to request access. [Email support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
 </Callout>
+
+### Direct event and metric creation
+
+The traditional approach covered in this guide involves creating metrics, events, and properties directly in their respective views. This is useful when:
+- Defining metrics independently of a specific feature
+- Making small updates to your tracking plan like adding a new allowed value to a string property
+
+All three approaches result in the same tracking plan structures—Journeys provides a visual layer for designing and reviewing tracking in context, and the Avo MCP lets you drive changes from an AI coding assistant.
 
 ## Defining a metric
 
