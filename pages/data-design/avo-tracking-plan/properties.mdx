@@ -33,9 +33,9 @@ For creating multiple properties quickly, Avo offers streamlined approaches. The
 If you use Claude, Cursor, Codex, Claude Code, or another MCP-compatible client, you can create properties directly from your AI assistant via the [Avo MCP](/reference/avo-mcp/overview). All writes happen on a branch — the MCP never merges to main.
 
 - Create a new branch with the [`workflow`](/reference/avo-mcp/tools#workflow) tool
-- Create event, user, or system properties on that branch with [`save_items`](/reference/avo-mcp/tools#save_items), including type, `sendAs`, and description in a single call
-- Cross-reference newly-created properties to newly-created events in the same batch using [temporary IDs](/reference/avo-mcp/tools#temporary-ids-tempid--tmp)
-- Add allowed values, change a property's description or type, or remove a property — all via `save_items` `op: "update"` / `op: "remove"`
+- Create event, user, or system properties on that branch with [`save_items`](/reference/avo-mcp/tools#save_items)
+- Cross-reference newly-created properties to newly-created events in the same batch
+- Add allowed values, change a property's description or type, or remove a property — all via [`save_items`](/reference/avo-mcp/tools#save_items) `op: "update"` / `op: "remove"`
 
 <Callout type="info" emoji="🚧">
   The Avo MCP is in general beta — enabled for every workspace, no need to request access. [Email support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
