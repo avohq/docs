@@ -110,6 +110,10 @@ do {
 
 ### TypeScript
 
+TypeScript library mode has two file layouts. By default `avo pull` emits one file for all events; with the **"Generate one file per event"** source setting on (Source → Avo Codegen Setup), each event gets its own module. The two were previously mutually exclusive — now they work together. Both layouts expose the same `./Avo` import surface, so the init, destination, and tracking code below applies to either one.
+
+#### One file for all events
+
 `avo pull` produces three files:
 
 - `Avo.ts` — per-event classes (`LoginSuccessEvent`, etc.) extending `BaseAvoEvent`, plus re-exports of the public runtime surface
@@ -176,19 +180,17 @@ try {
 
 `track()` returns `Record<string, AvoDestinationEvent>` keyed by `DestinationKey` from `AvoConfig.ts`. It throws `AvoVerificationError` the same way Kotlin/Swift do.
 
-### One file per event (TypeScript)
+#### One file per event
 
-TypeScript library mode can be combined with the **"Generate one file per event"** source setting (Source → Avo Codegen Setup → "Generate one file per event"), which splits each event into its own module for better tree‑shaking. The two were previously mutually exclusive — now they work together.
-
-With both enabled, `avo pull` emits an `AvoEvents/` directory and one extra file:
+With the **"Generate one file per event"** source setting on, each event is split into its own module for better tree‑shaking. `avo pull` then emits an `AvoEvents/` directory and one extra file:
 
 ```text
-Library mode
+One file for all events
 ├─ Avo.ts          # per-event classes + runtime re-exports
 ├─ AvoLibrary.ts   # runtime
 └─ AvoConfig.ts    # codegen-bound config
 
-Library mode + one file per event
+One file per event
 ├─ Avo.ts                    # thin barrel — re-exports everything below
 ├─ AvoLibrary.ts             # runtime (unchanged)
 ├─ AvoConfig.ts              # codegen-bound config (unchanged)
@@ -199,7 +201,7 @@ Library mode + one file per event
    └─ <Event>.ts             # one module per event
 ```
 
-The public import surface does not change. `Avo.ts` becomes a thin barrel that re‑exports the runtime (`Avo`, `AvoEnv`, `AvoVerificationError`, …), every per‑event class, `AppSystemProperties`, and the shared types — so `import { Avo, AvoEnv, AvoVerificationError, LoginSuccessEvent } from './Avo'` keeps working exactly as in the quick start above. You don't need to change any call sites.
+The public import surface does not change. `Avo.ts` becomes a thin barrel that re‑exports the runtime (`Avo`, `AvoEnv`, `AvoVerificationError`, …), every per‑event class, `AppSystemProperties`, and the shared types — so `import { Avo, AvoEnv, AvoVerificationError, LoginSuccessEvent } from './Avo'` keeps working exactly as in the one-file layout above. You don't need to change any call sites.
 
 `AppSystemProperties` moves out of `Avo.ts` into its own `AvoAppSystemProperties.ts` file so the per‑event modules can import it from a sibling — importing it from the `Avo.ts` barrel would create an import cycle, since the barrel re‑exports the per‑event files. You still import `AppSystemProperties` from `./Avo`; this is only an internal file split.
 
