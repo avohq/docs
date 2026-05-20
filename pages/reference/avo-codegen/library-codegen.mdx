@@ -106,7 +106,7 @@ do {
 }
 ```
 
-`process(event:)` returns `[String: AvoDestinationEvent]`. In development and staging it throws `AvoVerificationError` when validation fails and `strict` is on, otherwise it logs via `NSLog` and continues. In production, validation is skipped entirely — `process(event:)` never throws or logs.
+`process(event:)` returns `[String: AvoDestinationEvent]`. In development and staging it throws `AvoVerificationError` when validation fails and `strict` is on, otherwise it logs via `NSLog` and continues. In production, validation is skipped entirely — `process(event:)` never throws or logs. Returns an empty dictionary in noop mode.
 
 ### TypeScript
 
@@ -302,7 +302,7 @@ try {
 ### What stays the same
 
 - **Event names, property names, and validation rules.** The tracking plan is unchanged — only the shape of the generated code differs.
-- **Strict / noop modes.** `strict` (throw on validation failure in development and staging) and `noop` (drop network calls) behave the same as in the single-source output — validation is silent in production, and `noop` is force-disabled in production.
+- **Strict / noop modes.** `strict` (throw on validation failure in development and staging) and `noop` (drop network calls) behave the same as in the single-source output — validation is skipped entirely in production, and `noop` is force-disabled in production.
 - **Inspector integration.** Construct your Avo Inspector instance from the SDK and pass it into the init call — same as the single-source output.
 - **Implementation status tracking.** The CLI reports event-usage status the same way regardless of mode.
 - **Destination interface.** TypeScript's `AvoCustomDestination` has the same shape as the single-source custom destination (`make`, `logEvent`, `setUserProperties`, `identify`, `unidentify`, `logPage`, `revenue`) — an existing single-source implementation is drop-in compatible.
