@@ -72,7 +72,7 @@ try {
 }
 ```
 
-`process()` returns `Map<String, AvoDestinationEvent>` keyed by destination name (lowercased identifier from your Avo workspace). In development and staging it throws `AvoVerificationError` when validation fails and `strict = true` (the default), otherwise it logs a warning and continues. In production, validation is skipped entirely — `process()` never throws or logs, and always returns the destination map. Returns an empty map in noop mode.
+`process()` returns `Map<String, AvoDestinationEvent>` keyed by destination name (lowercased identifier from your Avo workspace). In development and staging it throws `AvoVerificationError` when validation fails and `strict = true` (the default), otherwise it logs a warning and continues. In production, runtime validation is skipped entirely — `process()` never throws or logs, and always returns the destination map. Returns an empty map in noop mode.
 
 ### Swift
 
@@ -106,11 +106,11 @@ do {
 }
 ```
 
-`process(event:)` returns `[String: AvoDestinationEvent]`. In development and staging it throws `AvoVerificationError` when validation fails and `strict` is on, otherwise it logs via `NSLog` and continues. In production, validation is skipped entirely — `process(event:)` never throws or logs. Returns an empty dictionary in noop mode.
+`process(event:)` returns `[String: AvoDestinationEvent]`. In development and staging it throws `AvoVerificationError` when validation fails and `strict` is on, otherwise it logs via `NSLog` and continues. In production, runtime validation is skipped entirely — `process(event:)` never throws or logs. Returns an empty dictionary in noop mode.
 
 ### TypeScript
 
-TypeScript library mode has two file layouts. By default `avo pull` emits one file for all events; with the **"Generate one file per event"** source setting on (Source → Avo Codegen Setup), each event gets its own module. The two were previously mutually exclusive — now they work together. Both layouts expose the same `./Avo` import surface, so the init, destination, and tracking code below applies to either one.
+TypeScript library mode has two file layouts. By default `avo pull` emits one file for all events; with the **"Generate one file per event"** source setting on (Source → Avo Codegen Setup), each event gets its own module. Both layouts expose the same `./Avo` import surface, so the init, destination, and tracking code below applies to either one.
 
 #### One file for all events
 
@@ -304,7 +304,7 @@ try {
 ### What stays the same
 
 - **Event names, property names, and validation rules.** The tracking plan is unchanged — only the shape of the generated code differs.
-- **Strict / noop modes.** `strict` (throw on validation failure in development and staging) and `noop` (drop network calls) behave the same as in the single-source output — validation is skipped entirely in production, and `noop` is force-disabled in production.
+- **Strict / noop modes.** `strict` (throw on validation failure in development and staging) and `noop` (drop network calls) behave the same as in the single-source output — runtime validation is skipped entirely in production, and `noop` is force-disabled in production.
 - **Inspector integration.** Construct your Avo Inspector instance from the SDK and pass it into the init call — same as the single-source output.
 - **Implementation status tracking.** The CLI reports event-usage status the same way regardless of mode.
 - **Destination interface.** TypeScript's `AvoCustomDestination` has the same shape as the single-source custom destination (`make`, `logEvent`, `setUserProperties`, `identify`, `unidentify`, `logPage`, `revenue`) — an existing single-source implementation is drop-in compatible.
@@ -315,7 +315,7 @@ try {
 
 1. **`Avo` constructor signature.** The single-source `Avo(env:, customDestination:, ...)` (Swift/Kotlin) and the free-function `Avo.initAvo(config, destinations)` (TypeScript) become `Avo.initAvo(env:)` (Swift/Kotlin) and `Avo.init(config, codegenConfig)` (TypeScript).
 2. **Event method calls become event constructors and a single `process` / `track` call.** Each `avo.someEvent(...)` becomes `avo.process(SomeEvent(...))` (Swift/Kotlin) or `avo.track(new SomeEvent(...))` (TypeScript).
-3. **`process()` / `track()` throws `AvoVerificationError`.** In development and staging, library mode in all three languages throws a typed `AvoVerificationError` when `strict` is on — wrap calls in `try` / `do-catch`, see the quick-start examples. In production, validation is skipped entirely, so the call never throws.
+3. **`process()` / `track()` throws `AvoVerificationError`.** In development and staging, library mode in all three languages throws a typed `AvoVerificationError` when `strict` is on — wrap calls in `try` / `do-catch`, see the quick-start examples. In production, runtime validation is skipped entirely, so the call never throws.
 4. **TypeScript: how custom destinations are wired.** Custom destinations are passed in the `destinations` map of the runtime config, keyed by `DestinationKey`, instead of as separate `Avo` constructor arguments. All-or-nothing — provide an implementation for every `DestinationKey`, or omit `destinations` entirely and fan out manually. The `AvoCustomDestination` interface itself has the same shape as the single-source custom destination.
 5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
 6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
