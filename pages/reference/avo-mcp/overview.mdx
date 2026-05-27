@@ -121,7 +121,7 @@ Pass `workspaceId` to every workspace-scoped tool. (Stdio clients can also set t
 
 ## Example workflows
 
-The connector's core flows, each with a concrete example. Tool calls are shown as `tool(arguments)`; sample JSON shows the response shape. Real responses include the full item shape documented in the [Tools reference](/reference/avo-mcp/tools).
+The connector's core flows, each with a concrete example. Tool calls are written inline as `tool(arguments)`; the JSON blocks show what success looks like. Real responses include the full item shape documented in the [Tools reference](/reference/avo-mcp/tools).
 
 ### Discover what's in the plan
 
@@ -131,12 +131,11 @@ Use `search` for fuzzy lookup by meaning ("user signed up" matches `Account Crea
   Semantic search requires Avo Intelligence Smart Search to be enabled in your workspace. Workspace admins can enable it in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). Without it, fall back to `get` with an exact name.
 </Callout>
 
-```text
-You: What events do we have for signup?
+**You:** What events do we have for signup?
 
-Claude calls search({ query: "signup", itemType: "event" }).
+Claude calls `search({ query: "signup", itemType: "event" })`. Returns:
 
-Returns:
+```json
 {
   "results": [
     {
@@ -155,28 +154,23 @@ Returns:
     }
   ]
 }
-
-Claude then calls get({ type: "event", id: "evt-9f2b...", includePropertyDetails: true }) for the full shape, and replies:
-
-You have two signup events. The closest match is **Account Created** —
-sent when a user successfully creates an account — with properties
-Authentication Method (Email, Google, Apple) and Referral Source. There's
-also **Signup Started**, fired when the signup screen opens. Want a closer
-look at either?
 ```
+
+Claude then calls `get({ type: "event", id: "evt-9f2b...", includePropertyDetails: true })` for the full shape, and replies:
+
+**Claude:** You have two signup events. The closest match is **Account Created** — sent when a user successfully creates an account — with properties Authentication Method (Email, Google, Apple) and Referral Source. There's also **Signup Started**, fired when the signup screen opens. Want a closer look at either?
 
 ### Design tracking for a new feature
 
 The flagship write flow. Claude reads the workspace's audit rules with `get(workspaceConfig)`, does both-lenses recon (semantic `search` and structural-filter `search`) to find what already exists, proposes a plan, and on approval creates a branch with `workflow` and writes the new items in a single batched `save_items` call — using `tempId` to attach a newly-created property to a newly-created event atomically.
 
-```text
-You: We're adding social sharing to the post detail screen — Twitter,
-LinkedIn, or copy link. Design the tracking for it.
+**You:** We're adding social sharing to the post detail screen — Twitter, LinkedIn, or copy link. Design the tracking for it.
 
-Claude: I'll check the workspace's audit rules, see what already exists,
-and propose a plan before touching a branch.
+**Claude:** I'll check the workspace's audit rules, see what already exists, and propose a plan before touching a branch.
 
-Claude calls get({ type: "workspaceConfig" }), which returns the workspace's naming and audit rules:
+Claude calls `get({ type: "workspaceConfig" })`, which returns the workspace's naming and audit rules:
+
+```json
 {
   "eventNaming": {
     "structure": "object-action",
@@ -188,10 +182,11 @@ Claude calls get({ type: "workspaceConfig" }), which returns the workspace's nam
     "Property names must be descriptive (e.g. Product Name, not Product)"
   ]
 }
+```
 
-Claude then searches for existing share-related events with search({ query: "share", itemType: "event" }), and lists the properties on the matched Article Shared event with search({ itemType: "property", eventNames: ["Article Shared"] }) — finding Share Method and Share Destination already exist.
+Claude then searches for existing share-related events with `search({ query: "share", itemType: "event" })`, and lists the properties on the matched `Article Shared` event with `search({ itemType: "property", eventNames: ["Article Shared"] })` — finding `Share Method` and `Share Destination` already exist.
 
-Claude: Here's the plan, anchored on a **Post Share Rate** metric:
+**Claude:** Here's the plan, anchored on a **Post Share Rate** metric:
 
 **Reuse**
 - `Share Method` (string: Twitter, LinkedIn, Copy Link) — already on `Article Shared`
@@ -201,14 +196,13 @@ Claude: Here's the plan, anchored on a **Post Share Rate** metric:
 - **Post Shared** event — sent when a user shares a post from the post detail screen
 - **Post ID** property (string, event) — the ID of the post being shared
 
-Matches the workspace convention (Title Case, object-action, past tense).
-Proceed with the branch?
+Matches the workspace convention (Title Case, object-action, past tense). Proceed with the branch?
 
-You: yes
+**You:** yes
 
-Claude calls workflow({ action: "create_branch", branchName: "add-post-sharing-tracking" }), then batches the new property and the new event in one save_items call. The event's properties array references the new property by "$tmp:post_id" alongside the real IDs of the two reused properties — the server resolves the temp ID into a real one and attaches everything atomically.
+Claude calls `workflow({ action: "create_branch", branchName: "add-post-sharing-tracking" })`, then batches the new property and the new event in one `save_items` call. The event's `properties` array references the new property by `"$tmp:post_id"` alongside the real IDs of the two reused properties — the server resolves the temp ID into a real one and attaches everything atomically. `save_items` returns:
 
-save_items returns:
+```json
 {
   "success": true,
   "createdEntities": [
@@ -220,23 +214,19 @@ save_items returns:
   "errors": [],
   "warnings": []
 }
-
-Claude: Done. Branch
-[`add-post-sharing-tracking`](https://www.avo.app/schemas/default/branches/br-4e8a...)
-has the new **Post Shared** event with one new property (**Post ID**) and
-two reused ones (**Share Method**, **Share Destination**). Open the branch
-in the Avo app to review and merge to main.
 ```
+
+**Claude:** Done. Branch [`add-post-sharing-tracking`](https://www.avo.app/schemas/default/branches/br-4e8a...) has the new **Post Shared** event with one new property (**Post ID**) and two reused ones (**Share Method**, **Share Destination**). Open the branch in the Avo app to review and merge to main.
 
 ### Review and implement a branch in code
 
 Resolve a branch by name with `list_branches`, read the high-level change set with `get_branch_implementation_guide`, then pull the per-event code diff for a specific source with `get_branch_code_snippets` (after looking up the `sourceId` via `get_sources`). Implementation handoff: the diff goes into the codebase, code review happens in git, and the human merges the Avo branch from the web app.
 
-```text
-You: I'm implementing the update-signup-flow branch on iOS. Walk me through it.
+**You:** I'm implementing the update-signup-flow branch on iOS. Walk me through it.
 
-Claude resolves the branch name with list_branches({ branchName: "update-signup-flow" }), then calls get_branch_implementation_guide({ branchId: "br-6c2d..." }):
+Claude resolves the branch name with `list_branches({ branchName: "update-signup-flow" })`, then calls `get_branch_implementation_guide({ branchId: "br-6c2d..." })`:
 
+```json
 {
   "summary": { "newEvents": 1, "modifiedEvents": 1, "deletedEvents": 0 },
   "newEvents": [
@@ -257,9 +247,11 @@ Claude resolves the branch name with list_branches({ branchName: "update-signup-
     }
   ]
 }
+```
 
-Claude looks up the iOS source with get_sources(), then pulls per-event code diffs with get_branch_code_snippets({ branchId: "br-6c2d...", sourceId: "src-ios" }):
+Claude looks up the iOS source with `get_sources()`, then pulls per-event code diffs with `get_branch_code_snippets({ branchId: "br-6c2d...", sourceId: "src-ios" })`:
 
+```json
 {
   "snippets": [
     {
@@ -276,21 +268,27 @@ Claude looks up the iOS source with get_sources(), then pulls per-event code dif
     }
   ]
 }
+```
 
-Claude: Here's what's on `update-signup-flow` for iOS:
+**Claude:** Here's what's on `update-signup-flow` for iOS:
 
 **1 new event** — `Signup Step Completed` (Codegen)
-**1 modified event** — `Signup Completed` gains an `Authentication Method`
-property (Codegen)
+**1 modified event** — `Signup Completed` gains an `Authentication Method` property (Codegen)
 
-The iOS source uses Avo Codegen, so the next step is to run `avo pull`
-locally to regenerate `Avo.swift`, then update each call site:
+The iOS source uses Avo Codegen, so the next step is to run `avo pull` locally to regenerate `Avo.swift`, then update each call site:
 
 - Add `Avo.signupStepCompleted(...)` at each signup-step transition
 - Pass `authenticationMethod` to existing `Avo.signupCompleted()` calls
 
 Want me to find the call sites in the iOS project, or are you good from here?
-```
+
+---
+
+This isn't a finite list of workflows — check out the [Tools reference](/reference/avo-mcp/tools) to explore what else is possible.
+
+## Tools
+
+See the [Tools reference](/reference/avo-mcp/tools) for the full list of tools and their parameters.
 
 ## Troubleshooting
 
@@ -311,7 +309,3 @@ Want me to find the call sites in the iOS project, or are you good from here?
 For bug reports, feature requests, or help connecting an MCP client, email [support@avo.app](mailto:support@avo.app).
 
 How Avo collects, uses, and retains data is covered in the [Avo Privacy Policy](https://www.avo.app/l/privacy).
-
-## Tools
-
-See the [Tools reference](/reference/avo-mcp/tools) for the full list of tools and their parameters.
