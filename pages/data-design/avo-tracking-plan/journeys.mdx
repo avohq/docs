@@ -125,6 +125,12 @@ Frames that were spatially close to each other in the Figma layout — specifica
 
 You can add, remove, or adjust connections after import just like any other journey step connection. See [Connections](#connections) for details.
 
+##### Recommended Figma seat type
+
+Avo reads Figma files on your behalf using the OAuth token from the connected Figma account. Figma applies [rate limits](https://developers.figma.com/docs/rest-api/rate-limits/) to its REST API per seat type — Dev and Full seats get the highest monthly and per-minute quotas, while View and Collab seats share a much smaller monthly quota and are the first to be throttled. For a smooth import experience, connect a Figma account that has a Dev or Full seat.
+
+If you hit Figma's monthly API quota, Avo surfaces a toast suggesting you reconnect using a Dev or Full seat account. Disconnect the current Figma integration from **Workspace Settings → Integrations**, then connect with a different Figma account.
+
 ##### Troubleshooting
 
 - **"Invalid URL" error**: Make sure you copied the link from a Figma design file using one of the methods above — Share button, `Cmd/Ctrl+L`, or right-click. Links from Figma's prototype view, inspect panel, or FigJam boards are not supported.
