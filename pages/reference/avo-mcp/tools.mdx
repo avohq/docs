@@ -238,6 +238,29 @@ Semantic similarity search across events, properties, metrics, categories, and p
 
 **Returns:** Ranked results with rank, name, type, item ID, relevance percentage, and a truncated description (80 characters).
 
+```json
+{
+  "results": [
+    {
+      "rank": 1,
+      "name": "Account Created",
+      "itemType": "event",
+      "itemId": "evt-9f2b...",
+      "relevance": 0.91,
+      "description": "Sent when a new account is successfully created."
+    },
+    {
+      "rank": 2,
+      "name": "Signup Started",
+      "itemType": "event",
+      "itemId": "evt-3c11...",
+      "relevance": 0.87,
+      "description": "Sent when the user opens the signup screen."
+    }
+  ]
+}
+```
+
 Search is performed against the **main branch** only. There is a brief indexing lag for very recently created or updated items.
 
 <Callout type="info" emoji="🔒">
@@ -436,6 +459,21 @@ Returns a structured result with:
 - `errors` — per-item validation or audit errors, each with the item index, name, and a message.
 - `warnings` — non-fatal notices, same shape as errors.
 - `success` — overall boolean.
+
+```json
+{
+  "success": true,
+  "createdEntities": [
+    { "name": "Checkout Method", "entityId": "prop-9d44...", "entityType": "property" }
+  ],
+  "updatedEntities": [
+    { "name": "Checkout Completed", "entityId": "evt-3f01...", "entityType": "event" }
+  ],
+  "removedEntities": [],
+  "errors": [],
+  "warnings": []
+}
+```
 
 **Common errors:**
 

@@ -25,8 +25,6 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
 - **Create a branch and add or update events, properties, and event variants** in a single batched write.
 - **Combine Avo with your data MCP** (Amplitude, Mixpanel, BigQuery, etc.) to diagnose tracking gaps from real data.
 
-The `read` scope covers everything except the last two; writes step up to a `write` scope on first use.
-
 ## Capability matrix
 
 | Capability | Tool | Scope |
@@ -113,59 +111,6 @@ Call `list_workspaces` to find your `workspaceId`.
 **2. Use any tool**
 
 Pass `workspaceId` to every workspace-scoped tool. (Stdio clients can also set the `WORKSPACE_ID` environment variable so it's picked up automatically.)
-
-## Example: search and save_items
-
-The two tools a catalog reviewer is most likely to call. Real responses include the full item shape — see the [Tools reference](/reference/avo-mcp/tools) for the canonical schema.
-
-Look up signup-related events with semantic `search`:
-
-```json
-// search({ query: "signup", itemType: "event" })
-{
-  "results": [
-    {
-      "rank": 1,
-      "name": "Account Created",
-      "itemId": "evt-9f2b...",
-      "relevance": 0.91,
-      "description": "Sent when a new account is successfully created."
-    },
-    {
-      "rank": 2,
-      "name": "Signup Started",
-      "itemId": "evt-3c11...",
-      "relevance": 0.87,
-      "description": "Sent when the user opens the signup screen."
-    }
-  ]
-}
-```
-
-Create a new property and a new event in a single batched `save_items` call, using `tempId` to attach the new property to the new event atomically:
-
-```json
-// save_items({
-//   branchId: "br-7d2f...",
-//   items: [
-//     { op: "create", type: "property", tempId: "post_id",
-//       name: "Post ID", propertyType: "string", sendAs: "event" },
-//     { op: "create", type: "event", name: "Post Shared",
-//       properties: ["$tmp:post_id"], sources: ["src-web"] }
-//   ]
-// })
-{
-  "success": true,
-  "createdEntities": [
-    { "name": "Post ID", "entityId": "prop-9d44...", "entityType": "property" },
-    { "name": "Post Shared", "entityId": "evt-3f01...", "entityType": "event" }
-  ],
-  "updatedEntities": [],
-  "removedEntities": [],
-  "errors": [],
-  "warnings": []
-}
-```
 
 ## Tools
 
