@@ -147,6 +147,189 @@ Use `search` to find events by meaning, not just exact name. A query like `"user
   Semantic search requires Avo Intelligence Smart Search to be enabled in your workspace. Workspace admins can enable it in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). If you don't have admin access, ask a workspace admin to enable it.
 </Callout>
 
+## Example sessions
+
+The blocks below show what each major flow looks like end-to-end — the user prompt, the tool calls Claude makes, the JSON the server returns, and how Claude wraps up. JSON has been trimmed for readability; real responses include the full item shape documented in the [Tools reference](/reference/avo-mcp/tools).
+
+### Find events by meaning
+
+```text
+You: What events do we have for signup?
+
+Claude → search({
+  query: "signup",
+  itemType: "event",
+  maxResults: 5
+})
+
+Server ← {
+  "results": [
+    {
+      "rank": 1,
+      "name": "Account Created",
+      "itemType": "event",
+      "itemId": "evt-9f2b...",
+      "relevance": 0.91,
+      "description": "Sent when a new account is successfully created..."
+    },
+    {
+      "rank": 2,
+      "name": "Signup Started",
+      "itemType": "event",
+      "itemId": "evt-3c11...",
+      "relevance": 0.87,
+      "description": "Sent when the user opens the signup screen..."
+    }
+  ]
+}
+
+Claude → get({
+  type: "event",
+  id: "evt-9f2b...",
+  includePropertyDetails: true
+})
+
+Server ← {
+  "name": "Account Created",
+  "id": "evt-9f2b...",
+  "description": "Sent when a new account is successfully created.",
+  "sources": ["iOS", "Android", "Web"],
+  "properties": [
+    {
+      "name": "Authentication Method",
+      "type": "string",
+      "allowedValues": ["Email", "Google", "Apple"]
+    },
+    { "name": "Referral Source", "type": "string" }
+  ]
+}
+
+Claude: You have two signup events. The closest match is **Account Created**
+— sent when a user successfully creates an account — with properties
+Authentication Method (Email, Google, Apple) and Referral Source. There's
+also **Signup Started**, fired when the signup screen opens. Want a closer
+look at either?
+```
+
+### Create a property on a branch
+
+```text
+You: Add a Checkout Method property to the Checkout Completed event.
+
+Claude: I'll create a branch, add the property, and attach it to the event.
+You'll see a one-time re-auth prompt for write access in your browser.
+
+Claude → workflow({
+  action: "create_branch",
+  branchName: "add-checkout-method"
+})
+
+Server ← {
+  "branchId": "br-7d2f...",
+  "branchName": "add-checkout-method",
+  "branchUrl": "https://www.avo.app/schemas/default/branches/br-7d2f..."
+}
+
+Claude → get({ type: "event", name: "Checkout Completed" })
+
+Server ← {
+  "name": "Checkout Completed",
+  "id": "evt-c2a8...",
+  "description": "Sent when the user successfully completes a checkout."
+}
+
+Claude → save_items({
+  branchId: "br-7d2f...",
+  items: [
+    {
+      op: "create",
+      type: "property",
+      tempId: "checkout_method",
+      name: "Checkout Method",
+      propertyType: "string",
+      sendAs: "event",
+      description: "How the user completed checkout (Apple Pay, Google Pay, Card)"
+    },
+    {
+      op: "update",
+      type: "event",
+      eventId: "evt-c2a8...",
+      addProperties: ["$tmp:checkout_method"]
+    }
+  ]
+})
+
+Server ← {
+  "success": true,
+  "createdEntities": [
+    {
+      "name": "Checkout Method",
+      "entityId": "prop-44e1...",
+      "entityType": "property"
+    }
+  ],
+  "updatedEntities": [
+    {
+      "name": "Checkout Completed",
+      "entityId": "evt-c2a8...",
+      "entityType": "event"
+    }
+  ],
+  "removedEntities": [],
+  "errors": [],
+  "warnings": []
+}
+
+Claude: Done. **Checkout Method** (string, event property) is created and
+attached to **Checkout Completed** on the branch
+[`add-checkout-method`](https://www.avo.app/schemas/default/branches/br-7d2f...).
+Open the branch in the Avo app to review and merge to main — merging stays
+a human step.
+```
+
+### Open a new branch
+
+```text
+You: Open a new branch called update-signup-flow.
+
+Claude: You'll see a one-time re-auth prompt for write access in your browser.
+
+Claude → workflow({
+  action: "create_branch",
+  branchName: "update-signup-flow"
+})
+
+Server ← {
+  "branchId": "br-1a4c...",
+  "branchName": "update-signup-flow",
+  "branchUrl": "https://www.avo.app/schemas/default/branches/br-1a4c..."
+}
+
+Claude: Branch
+[`update-signup-flow`](https://www.avo.app/schemas/default/branches/br-1a4c...)
+is ready. What changes do you want to make on it?
+```
+
+## Troubleshooting
+
+**A second browser prompt appears the first time you write.** Write tools require the `write` scope, which is a step-up consent on top of `read`. Your client opens the OAuth flow again and the prompt only appears once per session.
+
+**`search` returns nothing for a clearly relevant query.** Semantic search requires Avo Intelligence Smart Search to be enabled. Workspace admins can turn it on in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). Without it, fall back to `get` with an exact name.
+
+**The wrong branch is returned by name.** `branchName` resolves to a best match and prioritizes open branches, so an ambiguous name can pick the wrong one. Resolve the name to a `branchId` with `list_branches` and pass `branchId` to the follow-up call.
+
+**`save_items` returns a `NotYetImplemented` error.** A small set of operations are not supported yet — removing events, removing event variants, and changing a property's `sendAs`. See the [`save_items` reference](/reference/avo-mcp/tools#save_items) for the full list.
+
+**Authentication never completes.** The first tool call opens a browser to sign in. MCP clients that cannot open a browser (CI runners, headless containers) cannot complete the OAuth flow.
+
+**`workspace access denied`.** The MCP enforces the same membership rules as the Avo web app. Confirm you're a member of the workspace at [avo.app](https://www.avo.app) — and that you're signing in with the same identity — before retrying.
+
+## Support and privacy
+
+For bug reports, feature requests, or help connecting an MCP client, email [support@avo.app](mailto:support@avo.app).
+
+How Avo collects, uses, and retains data is covered in the [Avo Privacy Policy](https://www.avo.app/l/privacy).
+
 ## Tools
 
 See the [Tools reference](/reference/avo-mcp/tools) for the full list of tools and their parameters.
