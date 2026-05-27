@@ -211,50 +211,102 @@ also **Signup Started**, fired when the signup screen opens. Want a closer
 look at either?
 ```
 
-### Create a property on a branch
+### Design tracking for a new feature
 
 ```text
-You: Add a Checkout Method property to the Checkout Completed event.
+You: We're adding social sharing to the post detail screen — Twitter,
+LinkedIn, or copy link. Design the tracking for it.
 
-Claude: I'll create a branch, add the property, and attach it to the event.
-You'll see a one-time re-auth prompt for write access in your browser.
+Claude: I'll check the workspace's audit rules, see what already exists,
+and propose a plan before touching a branch.
 
-Claude → workflow({
-  action: "create_branch",
-  branchName: "add-checkout-method"
+Claude → get({ type: "workspaceConfig" })
+
+Server ← {
+  "eventNaming": {
+    "structure": "object-action",
+    "casing": "Title Case",
+    "tense": "past"
+  },
+  "propertyNaming": { "casing": "Title Case" },
+  "rules": [
+    "Event names must end in a past-tense verb",
+    "Property names must be descriptive (e.g. Product Name, not Product)"
+  ]
+}
+
+Claude → search({ query: "share", itemType: "event", maxResults: 5 })
+
+Server ← {
+  "results": [
+    {
+      "rank": 1,
+      "name": "Article Shared",
+      "itemType": "event",
+      "itemId": "evt-7c91...",
+      "relevance": 0.84,
+      "description": "Sent when a user shares an article from the feed..."
+    }
+  ]
+}
+
+Claude → search({
+  itemType: "property",
+  eventNames: ["Article Shared"]
 })
 
 Server ← {
-  "branchId": "br-7d2f...",
-  "branchName": "add-checkout-method",
-  "branchUrl": "https://www.avo.app/schemas/default/branches/br-7d2f..."
+  "results": [
+    { "name": "Share Method", "itemId": "prop-2a08...", "itemType": "property" },
+    { "name": "Share Destination", "itemId": "prop-8b13...", "itemType": "property" }
+  ]
 }
 
-Claude → get({ type: "event", name: "Checkout Completed" })
+Claude: Here's the plan, anchored on a **Post Share Rate** metric:
+
+**Reuse**
+- `Share Method` (string: Twitter, LinkedIn, Copy Link) — already on `Article Shared`
+- `Share Destination` — same shape we need
+
+**Create**
+- **Post Shared** event — sent when a user shares a post from the post detail screen
+- **Post ID** property (string, event) — the ID of the post being shared
+
+Matches the workspace convention (Title Case, object-action, past tense).
+Proceed with the branch?
+
+You: yes
+
+Claude → workflow({
+  action: "create_branch",
+  branchName: "add-post-sharing-tracking"
+})
 
 Server ← {
-  "name": "Checkout Completed",
-  "id": "evt-c2a8...",
-  "description": "Sent when the user successfully completes a checkout."
+  "branchId": "br-4e8a...",
+  "branchName": "add-post-sharing-tracking",
+  "branchUrl": "https://www.avo.app/schemas/default/branches/br-4e8a..."
 }
 
 Claude → save_items({
-  branchId: "br-7d2f...",
+  branchId: "br-4e8a...",
   items: [
     {
       op: "create",
       type: "property",
-      tempId: "checkout_method",
-      name: "Checkout Method",
+      tempId: "post_id",
+      name: "Post ID",
       propertyType: "string",
       sendAs: "event",
-      description: "How the user completed checkout (Apple Pay, Google Pay, Card)"
+      description: "The ID of the post being shared."
     },
     {
-      op: "update",
+      op: "create",
       type: "event",
-      eventId: "evt-c2a8...",
-      addProperties: ["$tmp:checkout_method"]
+      name: "Post Shared",
+      description: "Sent when a user shares a post from the post detail screen.",
+      properties: ["$tmp:post_id", "prop-2a08...", "prop-8b13..."],
+      sources: ["src-ios", "src-android", "src-web"]
     }
   ]
 })
@@ -262,52 +314,108 @@ Claude → save_items({
 Server ← {
   "success": true,
   "createdEntities": [
-    {
-      "name": "Checkout Method",
-      "entityId": "prop-44e1...",
-      "entityType": "property"
-    }
+    { "name": "Post ID", "entityId": "prop-9d44...", "entityType": "property" },
+    { "name": "Post Shared", "entityId": "evt-3f01...", "entityType": "event" }
   ],
-  "updatedEntities": [
-    {
-      "name": "Checkout Completed",
-      "entityId": "evt-c2a8...",
-      "entityType": "event"
-    }
-  ],
+  "updatedEntities": [],
   "removedEntities": [],
   "errors": [],
   "warnings": []
 }
 
-Claude: Done. **Checkout Method** (string, event property) is created and
-attached to **Checkout Completed** on the branch
-[`add-checkout-method`](https://www.avo.app/schemas/default/branches/br-7d2f...).
-Open the branch in the Avo app to review and merge to main — merging stays
-a human step.
+Claude: Done. Branch
+[`add-post-sharing-tracking`](https://www.avo.app/schemas/default/branches/br-4e8a...)
+has the new **Post Shared** event with one new property (**Post ID**) and two
+reused ones (**Share Method**, **Share Destination**). Open the branch in
+the Avo app to review and merge to main.
 ```
 
-### Open a new branch
+### Review and implement a branch in code
 
 ```text
-You: Open a new branch called update-signup-flow.
+You: I'm implementing the update-signup-flow branch on iOS. Walk me through it.
 
-Claude: You'll see a one-time re-auth prompt for write access in your browser.
+Claude → list_branches({ branchName: "update-signup-flow" })
 
-Claude → workflow({
-  action: "create_branch",
-  branchName: "update-signup-flow"
+Server ← {
+  "branches": [
+    {
+      "branchId": "br-6c2d...",
+      "branchName": "update-signup-flow",
+      "status": "Approved",
+      "creator": "alex@example.com"
+    }
+  ]
+}
+
+Claude → get_branch_implementation_guide({ branchId: "br-6c2d..." })
+
+Server ← {
+  "summary": { "newEvents": 1, "modifiedEvents": 1, "deletedEvents": 0 },
+  "newEvents": [
+    {
+      "name": "Signup Step Completed",
+      "description": "Sent when the user completes a step in the signup funnel.",
+      "properties": ["Signup Step", "Step Outcome"],
+      "implementationType": "Codegen"
+    }
+  ],
+  "modifiedEvents": [
+    {
+      "name": "Signup Completed",
+      "changes": [
+        { "field": "properties", "added": ["Authentication Method"] }
+      ],
+      "implementationType": "Codegen"
+    }
+  ]
+}
+
+Claude → get_sources({})
+
+Server ← {
+  "sources": [
+    { "name": "iOS", "sourceId": "src-ios", "language": "Swift", "platform": "iOS" },
+    { "name": "Android", "sourceId": "src-android", "language": "Kotlin", "platform": "Android" },
+    { "name": "Web", "sourceId": "src-web", "language": "TypeScript", "platform": "Web" }
+  ]
+}
+
+Claude → get_branch_code_snippets({
+  branchId: "br-6c2d...",
+  sourceId: "src-ios"
 })
 
 Server ← {
-  "branchId": "br-1a4c...",
-  "branchName": "update-signup-flow",
-  "branchUrl": "https://www.avo.app/schemas/default/branches/br-1a4c..."
+  "snippets": [
+    {
+      "event": "Signup Step Completed",
+      "status": "New",
+      "label": "Codegen",
+      "diff": "+ Avo.signupStepCompleted(signupStep: ..., stepOutcome: ...)"
+    },
+    {
+      "event": "Signup Completed",
+      "status": "Updated",
+      "label": "Codegen",
+      "diff": "- Avo.signupCompleted()\n+ Avo.signupCompleted(authenticationMethod: ...)"
+    }
+  ]
 }
 
-Claude: Branch
-[`update-signup-flow`](https://www.avo.app/schemas/default/branches/br-1a4c...)
-is ready. What changes do you want to make on it?
+Claude: Here's what's on `update-signup-flow` for iOS:
+
+**1 new event** — `Signup Step Completed` (Codegen)
+**1 modified event** — `Signup Completed` gains an `Authentication Method` property
+(Codegen)
+
+The iOS source uses Avo Codegen, so the next step is to run `avo pull` locally
+to regenerate `Avo.swift`, then update each call site:
+
+- Add `Avo.signupStepCompleted(...)` at each signup-step transition
+- Pass `authenticationMethod` to existing `Avo.signupCompleted()` calls
+
+Want me to find the call sites in the iOS project, or are you good from here?
 ```
 
 ## Troubleshooting
