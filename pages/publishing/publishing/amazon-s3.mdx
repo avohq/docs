@@ -1,0 +1,120 @@
+import { Callout } from 'nextra/components'
+
+# Amazon S3
+
+*Publishing your tracking plan to an Amazon S3 bucket*
+
+{/* TODO: replace placeholder /images/publishing_amazon_s3.svg with the real Amazon S3 logo */}
+![Amazon S3 Logo](/images/publishing_amazon_s3.svg)
+
+## Introduction
+
+Avo can publish a snapshot of your tracking plan as a JSON file to an S3 bucket you control. This is useful when you want your tracking plan to be a versioned source-of-truth for downstream data tooling, dashboards, schema registries, or CI/CD checks. You can configure the integration to publish whenever a branch is merged or with a push of a button.
+
+## What you'll need from your AWS side
+
+To set up the integration, you'll need the following on the AWS side:
+
+1. **An S3 bucket** in any standard AWS region. GovCloud and China regions are not currently supported.
+2. **An IAM user dedicated to Avo** with an access key pair (Access Key ID and Secret Access Key). We recommend a per-purpose user over reusing an existing one — it's easier to rotate and easier to audit.
+3. **A permission policy** on that user that limits it to writing into the Avo bucket:
+
+   ```json
+   {
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": ["s3:PutObject"],
+         "Resource": "arn:aws:s3:::<your-bucket>/*"
+       }
+     ]
+   }
+   ```
+
+4. **A key prefix** (optional) if you want Avo's output under a sub-path inside the bucket. Otherwise files land at the bucket root.
+
+<Callout type="info" emoji="💡">
+Default encryption at rest (SSE-S3, or SSE-KMS with an AWS-managed key) works without any extra setup. SSE-KMS with a customer-managed CMK is not currently supported.
+</Callout>
+
+## Configure the Amazon S3 integration
+
+To enable the integration, navigate to the Publishing screen in your Avo workspace, click "Add Integration" and select "Amazon S3". See details in our [setting up and configuring a publishing integration docs](/publishing/publishing/overview#setting-up-and-configuring-a-publishing-integration).
+
+{/* TODO: screenshot — configuring the Amazon S3 integration in Avo */}
+
+You'll configure the following fields:
+
+| Field | Description |
+|:------|:------------|
+| **S3 Bucket Name** | The bucket name only — no `s3://` prefix and no region. |
+| **AWS Region** | The region the bucket lives in. |
+| **Key Prefix** (optional) | A path segment placed in front of every object key, e.g. `avo-exports`. |
+| **AWS Access Key ID** | From the IAM user you created for Avo. |
+| **AWS Secret Access Key** | Stored encrypted in GCP Secret Manager; it never leaves the Avo backend in plaintext after submission. To rotate it, re-enter the new secret — Avo handles the version bump server-side. |
+| **Payload Format** | The JSON shape Avo serializes. See [Payload formats](#payload-formats) below. |
+| **Only send changed events** | When on, the published payload only includes events whose schema changed on this branch, which is useful for incremental syncs. When off, every publish is a full snapshot. |
+| **Automatically publish on branch merge** | When on, every branch merge triggers an automatic publish. When off, publishing only happens on a manual button click. |
+
+## What gets written and where
+
+Every publish writes two objects under the same prefix:
+
+```
+<keyPrefix>/<workspaceId>/<branchId>/<timestamp>-<publishType>.json   ← immutable snapshot
+<keyPrefix>/<workspaceId>/<branchId>/latest.json                      ← rolling pointer
+```
+
+- **`<timestamp>-<publishType>.json`** is the historical record of a single publish. The filename embeds an ISO-8601 timestamp and a short tag describing why the publish ran (`manual`, `merge`, and so on). It's never overwritten.
+- **`latest.json`** is identical in content to the most recent timestamped file, and is always overwritten. Downstream consumers that just want "the current tracking plan" should read this; consumers that need history can list the timestamped files.
+- **`<workspaceId>`** is the Avo workspace ID. It's stable and never changes.
+- **`<branchId>`** is the Avo branch the publish came from. Branches merged to main share a single main-branch ID; feature branches each have their own. This lets downstream tooling pin to a specific feature branch during development and switch to main once merged. Auto-publishes that run on branch merge always land in the main folder.
+
+### Example
+
+With **Key Prefix** = `avo-exports` and a publish from your main branch:
+
+```
+avo-exports/workspace_id/main/2026-05-29T14-23-11Z-merge.json
+avo-exports/workspace_id/main/latest.json
+```
+
+{/* TODO: screenshot — what the S3 bucket looks like after the first publish */}
+
+## Payload formats
+
+You can choose the JSON shape Avo serializes. The **Payload Format** dropdown offers two formats, each documented in detail on the [Webhook payload format docs](/publishing/publishing/webhook-publishing#payload-format):
+
+- **Json Schema** — a representation of your tracking plan following the [JSON Schema](https://json-schema.org/) standard. This is the common pick for downstream validation.
+- **NDJSON** — newline-delimited JSON, with one event or property object per line. Useful for streaming the file into row-oriented data tooling.
+
+## Publishing modes
+
+- **Manual** — Click **Publish** on the integration page. Use this for one-off snapshots, or when you want a human in the loop before pushing schema changes downstream.
+- **Auto-publish on branch merge** — Every time a branch is merged in Avo, a publish runs automatically. Because the merge target is main, these publishes always write to the main folder (`<workspaceId>/<mainBranchId>/`), not a feature-branch folder. Use this if your downstream pipeline should always reflect the current production tracking plan with no manual step. See [Configure Auto publishing](/publishing/publishing/overview#configure-auto-publishing) for details.
+
+Both modes write to the same files. The `<publishType>` segment in the timestamped filename tells you which one triggered the publish.
+
+## Security
+
+- The AWS Secret Access Key is encrypted at rest in GCP Secret Manager (Avo's infrastructure) and only decrypted in-memory inside the Cloud Function that performs the S3 write. It is never stored in Avo's primary database, never logged, and never returned to the browser.
+- Re-submitting the secret rotates it — there's no separate rotate step.
+- Removing the integration deletes the stored secret from Secret Manager. Versioned history is retained for audit (GCP default retention) but is no longer reachable from the Avo UI.
+- We recommend scoping the IAM user to `s3:PutObject` on the Avo bucket only. Avoid attaching `AmazonS3FullAccess` or similar broad policies.
+
+## Failure handling
+
+When a publish fails, the integration page shows a red "Published with errors" message and the activity log below the integration captures the specific failure. Avo writes the timestamped snapshot first and only updates `latest.json` after that write succeeds, so consumers reading `latest.json` always see a complete, consistent snapshot — never a partially written file.
+
+The error message in the Avo UI surfaces the underlying AWS response. The most common failures and how to resolve them:
+
+- **403 Access Denied**: The IAM user doesn't have `s3:PutObject` on the target bucket or key prefix. Confirm the permission policy is attached to the user and that its `Resource` ARN matches your bucket, e.g. `arn:aws:s3:::<your-bucket>/*`.
+- **403 SignatureDoesNotMatch / InvalidAccessKeyId**: The Access Key ID or Secret Access Key is wrong, or the key has been deactivated or rotated in AWS. Re-enter a valid access key pair in the integration config.
+- **404 NoSuchBucket**: The configured bucket doesn't exist in the configured region. Check the **S3 Bucket Name** (name only, no `s3://` prefix) and that the **AWS Region** matches where the bucket actually lives.
+- **301 PermanentRedirect**: The bucket is in a different region than the one configured. Update **AWS Region** to the bucket's real region.
+- **KMS / encryption errors**: The bucket enforces SSE-KMS with a customer-managed key, which is not currently supported. Switch the bucket to SSE-S3 or an AWS-managed KMS key.
+- **Network timeout**: The request to AWS timed out. This is usually transient — click **Publish** again to retry.
+- **Other errors**: The activity log captures the raw AWS error. If it isn't one of the above, reach out via the in-app support widget or at [support@avo.app](mailto:support@avo.app).
+
+{/* TODO: screenshot — the activity log on a failed publish */}
