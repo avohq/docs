@@ -31,7 +31,7 @@ To set up the integration, you'll need the following on the AWS side:
    }
    ```
 
-4. **A key prefix** (optional) if you want Avo's output under a sub-path inside the bucket. Otherwise files land at the bucket root.
+4. **A folder prefix** (optional) if you want Avo's output under a sub-path inside the bucket. Otherwise files land at the bucket root.
 
 <Callout type="info" emoji="💡">
 Default encryption at rest (SSE-S3, or SSE-KMS with an AWS-managed key) works without any extra setup. SSE-KMS with a customer-managed CMK is not currently supported.
@@ -49,7 +49,7 @@ You'll configure the following fields:
 |:------|:------------|
 | **S3 Bucket Name** | The bucket name only — no `s3://` prefix and no region. |
 | **AWS Region** | The region the bucket lives in. |
-| **Key Prefix** (optional) | A path segment placed in front of every object key, e.g. `avo-exports`. |
+| **Folder Prefix** (optional) | A path segment placed in front of every object key, e.g. `avo-exports`. |
 | **AWS Access Key ID** | From the IAM user you created for Avo. |
 | **AWS Secret Access Key** | Stored encrypted in GCP Secret Manager; it never leaves the Avo backend in plaintext after submission. To rotate it, re-enter the new secret — Avo handles the version bump server-side. |
 | **Payload Format** | The JSON shape Avo serializes. See [Payload formats](#payload-formats) below. |
@@ -61,8 +61,8 @@ You'll configure the following fields:
 Every publish writes two objects under the same prefix:
 
 ```
-<keyPrefix>/<workspaceId>/<branchId>/<timestamp>-<publishType>.json   ← immutable snapshot
-<keyPrefix>/<workspaceId>/<branchId>/latest.json                      ← rolling pointer
+<folderPrefix>/<workspaceId>/<branchId>/<timestamp>-<publishType>.json   ← immutable snapshot
+<folderPrefix>/<workspaceId>/<branchId>/latest.json                      ← rolling pointer
 ```
 
 - **`<timestamp>-<publishType>.json`** is the historical record of a single publish. The filename embeds an ISO-8601 timestamp and a short tag describing why the publish ran (`manual`, `merge`, and so on). It's never overwritten.
@@ -72,7 +72,7 @@ Every publish writes two objects under the same prefix:
 
 ### Example
 
-With **Key Prefix** = `avo-exports` and a publish from your main branch:
+With **Folder Prefix** = `avo-exports` and a publish from your main branch:
 
 ```
 avo-exports/workspace_id/main/2026-05-29T14-23-11Z-merge.json
@@ -108,7 +108,7 @@ When a publish fails, the integration page shows a red "Published with errors" m
 
 The error message in the Avo UI surfaces the underlying AWS response. The most common failures and how to resolve them:
 
-- **403 Access Denied**: The IAM user doesn't have `s3:PutObject` on the target bucket or key prefix. Confirm the permission policy is attached to the user and that its `Resource` ARN matches your bucket, e.g. `arn:aws:s3:::<your-bucket>/*`.
+- **403 Access Denied**: The IAM user doesn't have `s3:PutObject` on the target bucket or folder prefix. Confirm the permission policy is attached to the user and that its `Resource` ARN matches your bucket, e.g. `arn:aws:s3:::<your-bucket>/*`.
 - **403 SignatureDoesNotMatch / InvalidAccessKeyId**: The Access Key ID or Secret Access Key is wrong, or the key has been deactivated or rotated in AWS. Re-enter a valid access key pair in the integration config.
 - **404 NoSuchBucket**: The configured bucket doesn't exist in the configured region. Check the **S3 Bucket Name** (name only, no `s3://` prefix) and that the **AWS Region** matches where the bucket actually lives.
 - **301 PermanentRedirect**: The bucket is in a different region than the one configured. Update **AWS Region** to the bucket's real region.
