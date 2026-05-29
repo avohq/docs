@@ -49,7 +49,7 @@ You'll configure the following fields:
 |:------|:------------|
 | **S3 Bucket Name** | The bucket name only — no `s3://` prefix and no region. |
 | **AWS Region** | The region the bucket lives in. |
-| **Folder Prefix** (optional) | A path segment placed in front of every object key, e.g. `avo-exports`. |
+| **Folder Prefix** (optional) | A path segment placed in front of the workspace and branch folders Avo creates, e.g. `avo-exports`. |
 | **AWS Access Key ID** | From the IAM user you created for Avo. |
 | **AWS Secret Access Key** | Stored encrypted in GCP Secret Manager; it never leaves the Avo backend in plaintext after submission. To rotate it, re-enter the new secret — Avo handles the version bump server-side. |
 | **Payload Format** | The JSON shape Avo serializes. See [Payload formats](#payload-formats) below. |
