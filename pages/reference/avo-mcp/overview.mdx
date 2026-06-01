@@ -1,3 +1,8 @@
+---
+title: Avo MCP
+description: Connect Claude, ChatGPT, Cursor, and other MCP-compatible clients to your Avo tracking plan. Read tracking-plan items, design changes from a feature brief, and write changes back to a branch via OAuth 2.0.
+---
+
 import { Callout } from 'nextra/components'
 
 # Avo MCP
@@ -16,13 +21,13 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
   Writes require the `write` scope and always happen on a branch. The MCP server will never merge a branch into main — that remains a human step in the [Avo web app](https://www.avo.app).
 </Callout>
 
-## What you can do
+## Use cases
 
 The Avo MCP lets Claude work directly against your tracking plan — reading items, designing changes against your workspace's conventions, and writing those changes back to a branch.
 
 **Getting started.** Every tool except `list_workspaces` is workspace-scoped. Call `list_workspaces` first to find your `workspaceId`, then pass that ID to subsequent tool calls. (Stdio clients can also set the `WORKSPACE_ID` environment variable so it's picked up automatically.)
 
-These are the three major use cases — many more flows are possible through the same tools.
+The three use cases below cover the most common flows. Many more are possible through the same tools.
 
 ### Search the tracking plan
 
@@ -56,6 +61,13 @@ The MCP exposes five tools mapped to agent intents:
 | **Progress** — create a branch or update its description | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while its replacement in `search(type:"branch")` ships. See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
+
+## Limits
+
+- **`save_items`** accepts at most 100 items per call.
+- **`search`** semantic mode caps at 20 results per call (default 10). Filter mode caps at 500 results (default 10).
+- **`list_branches`** returns up to 50 results per page (default 25). Use `pageToken` to paginate.
+- **Tokens** carry the user's identity; workspace access is verified at every call against your Avo workspace membership, so a token alone is not sufficient if you lose workspace access.
 
 ## Setup
 
@@ -132,8 +144,37 @@ See the [Tools reference](/reference/avo-mcp/tools) for the full list of tools, 
 
 **`workspace access denied`.** The MCP enforces the same membership rules as the Avo web app. Confirm you're a member of the workspace at [avo.app](https://www.avo.app) — and that you're signing in with the same identity — before retrying.
 
+## FAQ
+
+### Does the Avo MCP merge branches to main?
+
+No. The MCP creates branches and writes items on them, but merging always remains a human step in the [Avo web app](https://www.avo.app). Merges to main are deliberate, reviewable changes to your tracking plan, not background automation.
+
+### What data does Avo collect through the MCP?
+
+The MCP reads and writes tracking-plan content (events, properties, metrics, etc.) already stored in your Avo workspace. It does not collect your codebase, your prompts, or any data your MCP client sends to its model. Standard operational telemetry — request IDs, error counts — is retained for reliability. See the [Avo Privacy Policy](https://www.avo.app/l/privacy) for full details.
+
+### Do I need to be a workspace admin to use the Avo MCP?
+
+For most tools, no — any workspace member can read the plan and write to branches via the MCP. Two exceptions: enabling semantic `search` requires an admin to turn on Avo Intelligence Smart Search in [Workspace Settings](https://www.avo.app/schemas/default?settings=general), and adding the connector inside Claude Desktop requires admin permissions in your Claude organization.
+
+### Can multiple team members use the Avo MCP simultaneously?
+
+Yes. Each user authenticates with their own Avo identity via OAuth, so concurrent sessions and writes are independent and audited per user in the Avo web app.
+
+### Which MCP clients are supported?
+
+Any client that supports HTTP transport and the browser-based OAuth 2.0 authorization flow. Tested clients include Claude Code, Claude Desktop, Cursor, and Codex. Clients that cannot open a browser — CI runners, headless containers — cannot complete the OAuth flow.
+
 ## Support and privacy
 
 For bug reports, feature requests, or help connecting an MCP client, email [support@avo.app](mailto:support@avo.app).
 
-How Avo collects, uses, and retains data is covered in the [Avo Privacy Policy](https://www.avo.app/l/privacy).
+### Privacy summary
+
+- **What is collected.** The MCP reads and writes tracking-plan content already stored in your Avo workspace. It does not collect your codebase, prompts, or data your MCP client sends to its model.
+- **How it's used.** Tool calls update your tracking plan or return its current state. Operational telemetry (request IDs, error counts) is collected for reliability and abuse prevention.
+- **Storage and retention.** Tracking-plan content lives in your Avo workspace under the existing retention policy. OAuth tokens and operational logs follow the schedule in the [Avo Privacy Policy](https://www.avo.app/l/privacy).
+- **Third-party sharing.** Avo does not forward tracking-plan content to AI providers. The MCP returns data to your client; your client decides what to send onward to its model.
+
+Full data-handling details are in the [Avo Privacy Policy](https://www.avo.app/l/privacy).

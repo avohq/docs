@@ -1,3 +1,8 @@
+---
+title: Avo MCP tools reference
+description: Reference for the five canonical Avo MCP tools (list_workspaces, search, get, save_items, workflow) plus parameter shapes, return schemas, and per-tool examples with natural-language prompts.
+---
+
 import { Callout } from 'nextra/components'
 
 # Avo MCP tools reference
@@ -254,6 +259,17 @@ Claude calls `get` with `type: "branch"` and combines `changes` and `code_snippe
 </Callout>
 
 Batch create, update, remove, and archive events, properties, event variants, property bundles, and metrics on a branch. A single call can mix item types and operations, and can cross-reference new items via temporary IDs.
+
+<Callout type="info" emoji="💡">
+  **Quick reference.** Common patterns:
+
+  - **Create an event with new properties** — pair `create-event` and `create-property` items in one batch, using `tempId` to cross-reference.
+  - **Add allowed values to a property** — `update-property` with top-level `addAllowedValues`.
+  - **Rename an event or property** — `update-event` / `update-property` with `set.name`.
+  - **Archive an event** — `op: "archive"` (or legacy `op: "remove"`).
+  - **Create a funnel metric** — `create-metric` with `metricType: "Funnel"` and `items`.
+  - **Toggle a property between scalar and list** — `update-property` with top-level `isList: true` / `false`.
+</Callout>
 
 ### Parameters
 
