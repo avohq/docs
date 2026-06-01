@@ -132,7 +132,7 @@ See the [Tools reference](/reference/avo-mcp/tools) for the full list of tools, 
 
 **The wrong branch is returned by name.** `branchName` resolves to a best match and prioritizes open branches, so an ambiguous name can pick the wrong one. Resolve the name to a `branchId` with `list_branches` first and pass `branchId` to the follow-up call.
 
-**`save_items` returns a `NotYetImplemented` error.** A small set of operations are not supported yet — archiving events, removing event variants, and changing a property's `sendAs`. See the [`save_items` reference](/reference/avo-mcp/tools#save_items) for the full list.
+**`save_items` returns a `NotYetImplemented` error.** A small set of operations are not supported yet — removing event variants and changing a property's `sendAs`. See the [`save_items` reference](/reference/avo-mcp/tools#save_items) for the full list.
 
 **Authentication never completes.** The first tool call opens a browser to sign in. MCP clients that cannot open a browser (CI runners, headless containers) cannot complete the OAuth flow.
 

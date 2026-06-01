@@ -54,139 +54,6 @@ Claude calls `list_workspaces` with no parameters and uses the returned `workspa
 
 ---
 
-## `list_branches`
-
-**Scope:** `read`
-
-<Callout type="info" emoji="🚧">
-  **Transitional.** This tool stays available while branch enumeration is being folded into [`search`](#search) with `type: "branch"`. Until that ships, use `list_branches` to enumerate branches.
-</Callout>
-
-Browse branches in a workspace with filtering and pagination. Results are paginated newest-first.
-
-### Parameters
-
-| Parameter | Required | Description |
-|---|---|---|
-| `workspaceId` | No | Workspace ID |
-| `branchStatuses` | No | Filter by status. Valid values: `Draft`, `ReadyForReview`, `ChangesRequested`, `Approved`, `Merged`, `Closed`, `Open`. Defaults to open/active branches only. |
-| `pageSize` | No | Results per page (1–50, default 25) |
-| `pageToken` | No | Pagination token from a previous response |
-| `branchName` | No | Substring match on branch name (case-insensitive) |
-| `creatorEmail` | No | Filter by creator email |
-| `creatorUserId` | No | Filter by creator user ID |
-| `reviewerEmail` | No | Filter by reviewer email |
-| `reviewerUserId` | No | Filter by reviewer user ID |
-| `collaboratorEmail` | No | Filter by collaborator email |
-| `collaboratorUserId` | No | Filter by collaborator user ID |
-| `createdAfter` | No | ISO 8601 date — only branches created after |
-| `createdBefore` | No | ISO 8601 date — only branches created before |
-| `impactedSourceId` | No | Filter to branches affecting a specific source |
-
-By default `Merged` and `Closed` branches are excluded. Pass `branchStatuses: ["Merged"]` (or any other value) to include them.
-
-<Callout type="info" emoji="💡">
-  To find "my branches," pass your own email as `creatorEmail` or `reviewerEmail`. The tool does not auto-inject your identity into the filter.
-</Callout>
-
-### Returns
-
-Compact per-branch summary — name, status, ID, creator email — plus a `nextPageToken` when more results are available. Call [`get`](#get) with `type: "branch"` and `include: ["overview"]` for full resolved data.
-
-### Examples
-
-#### Find branches I'm reviewing
-
-**Prompt:** *"What branches am I assigned to review?"*
-
-Claude passes the user's email as `reviewerEmail` and filters status to `ReadyForReview`. The tool does not auto-inject the caller's identity, so the email has to be supplied explicitly.
-
-```json
-{
-  "reviewerEmail": "thora@avo.sh",
-  "branchStatuses": ["ReadyForReview"]
-}
-```
-
-### Common errors
-
-- Workspace access denied.
-- Invalid `pageSize` (outside 1–50).
-- Invalid date format on `createdAfter` / `createdBefore`.
-
----
-
-## `get`
-
-**Scope:** `read`
-
-Universal item-details tool. Look up a single tracking plan item by ID or exact name, read a branch's overview and code snippets, or enumerate workspace-level entities. Defaults to the main branch.
-
-### Parameters
-
-| Parameter | Required | Description |
-|---|---|---|
-| `type` | Yes | Item type. One of: `event`, `property`, `metric`, `category`, `propertyBundle`, `source`, `destination`, `groupType`, `eventVariant`, `branch`, `workspaceConfig`. |
-| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant` unless `name` is provided. Optional for `source`/`destination`/`groupType` (omit both `id` and `name` to enumerate). Optional for `branch` (defaults to the active branch context if omitted). Not used by `workspaceConfig`. |
-| `name` | Varies by type | Exact name match. Alternative to `id` for most types. May return multiple matches for ambiguous names (especially properties) — use [`search`](#search) for fuzzy lookup. |
-| `variantId` | For `eventVariant` | The variant ID. Combined with `id` (the base event ID). |
-| `include` | For `branch` | Array of branch facets to return: `overview`, `changes`, `code_snippets`. Combine `changes` and `code_snippets` for an implementer-ready picture of the branch. |
-| `sourceId` | When `include` contains `code_snippets` | Source ID to scope the code snippets to. |
-| `branchId` | No | Branch to look up on. Defaults to main. `branchId` takes precedence over `branchName`. |
-| `branchName` | No | Alternative to `branchId`. |
-| `includePropertyDetails` | No | Events only. When `true`, includes full property definitions (type, constraints, allowed values). Defaults to `false`, which returns only property ID + name references. |
-| `includeArchived` | No | When `true` (default), includes archived items in results. When `false`, only active items. |
-| `workspaceId` | No | Workspace ID |
-
-### Returns
-
-Full details for the item, shaped per item type.
-
-- `type: "event" \| "property" \| "metric" \| "category" \| "propertyBundle" \| "eventVariant"` — the item's full definition.
-- `type: "source" \| "destination" \| "groupType"` — a single entity when `id`/`name` is provided, or a workspace-level list when both are omitted.
-- `type: "branch"` — branch facets requested via `include`. `overview` returns resolved emails for the creator, reviewers, and collaborators, branch status, impacted source IDs, and description. `changes` returns the structured diff (new, modified, and deleted events with their properties and descriptions). `code_snippets` returns per-event code diffs for the source named in `sourceId` — exact unified diffs for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources.
-- `type: "workspaceConfig"` — the workspace's event/property naming conventions and casing rules, plus custom field definitions and the list of recognized PII types. Use this before proposing new events or properties so names match the workspace's audit rules.
-
-### Examples
-
-#### Look up an event by exact name
-
-**Prompt:** *"How is the `Account Created` event defined?"*
-
-Claude calls `get` with the exact name and `includePropertyDetails: true` so the response includes each attached property's type, constraints, and allowed values. Useful when the agent already knows the canonical name and wants the full schema in one call.
-
-```json
-{
-  "type": "event",
-  "name": "Account Created",
-  "includePropertyDetails": true
-}
-```
-
-#### Read what changed on a branch
-
-**Prompt:** *"What's on the `checkout-v2` branch — and can you show me the iOS code diff?"*
-
-Claude calls `get` with `type: "branch"` and combines `changes` and `code_snippets` in `include`. `sourceId` scopes the diff to a single source.
-
-```json
-{
-  "type": "branch",
-  "branchName": "checkout-v2",
-  "include": ["changes", "code_snippets"],
-  "sourceId": "src-ios"
-}
-```
-
-### Common errors
-
-- Item not found.
-- Ambiguous name (returns multiple matches — narrow by ID).
-- `sourceId` missing when `include` contains `code_snippets`.
-- Workspace access denied.
-
----
-
 ## `search`
 
 **Scope:** `read`
@@ -229,6 +96,8 @@ Semantic search is performed against the **main branch** only. The semantic inde
 | `owners` | No | Filter by owner. |
 | `destinations` | No | Filter by destination name. |
 | `type` | No | With `itemType: "event"`, filter by event type. |
+| `customField` | No | Filter by custom-field name. Resolve valid names from [`get`](#get) with `type: "workspaceConfig"`. |
+| `pii` | No | Filter by PII type. Resolve valid types from [`get`](#get) with `type: "workspaceConfig"`. |
 | `nameMapping` | No | Filter by destination-name-mapping. Tagged object: `{ kind: "any" }` (items with any mapping) or `{ kind: "matchesAny", names: [...], includeNoMapping?: bool }` (items whose mapped name is in `names`; with `includeNoMapping: true` items without a mapping rule also pass). Omitting `nameMapping` means no filter on mapping. |
 | `branchId` | No | Branch to enumerate on. Defaults to main. |
 | `branchName` | No | Alternative to `branchId`. |
@@ -306,72 +175,81 @@ Filter mode is selected by omitting `query`. Multiple filter keys are AND'd, so 
 
 ---
 
-## `workflow`
+## `get`
 
-**Scope:** `write`
+**Scope:** `read`
 
-<Callout type="info" emoji="🚧">
-  Write access is in general beta — enabled for every workspace, no need to request access. [Email support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
-</Callout>
+Get item details for any of four type families:
 
-Branch-lifecycle write operations. Currently supports two actions:
+- **Tracking-plan items** — `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant`. Look up by `id` or exact `name`. For events, `includePropertyDetails: true` returns each property's type, constraints, and allowed values inline.
+- **Workspace metadata** — `source`, `destination`, `groupType`. Pass `id` or `name` for one item; omit both to enumerate the workspace list.
+- **Workspace config** — `workspaceConfig`. Naming/casing rules, custom-field definitions, and the PII type list. Custom-field and PII-type names plug straight into [`search`'s](#search) `customField` and `pii` filters.
+- **Branches** — `branch`. Identify with `branchId` or `branchName`. Use `include` to pick content: `"overview"` (branch metadata + baseline status), `"changes"` (diff vs. main, like the web branch screen), `"code_snippets"` (per-source generated code; requires `sourceId`). `include` defaults to `["overview"]`.
 
-- `create_branch` — open a new branch.
-- `update_branch_description` — set the description on an existing open branch.
-
-<Callout type="info" emoji="💡">
-  A branch is a draft workspace for tracking-plan changes, analogous to a git branch. All write operations via the MCP happen on a branch — `save_items` requires a `branchId` that exists. The MCP never merges to main; open the branch in the Avo app to review and merge.
-</Callout>
+Defaults to the main branch when no branch is specified.
 
 ### Parameters
 
 | Parameter | Required | Description |
 |---|---|---|
-| `action` | Yes | The workflow action. One of: `create_branch`, `update_branch_description`. |
-| `branchName` | For `create_branch`; alternative to `branchId` for `update_branch_description` | Name for the new branch (`create_branch`), or the existing branch's name (`update_branch_description`). |
-| `branchId` | Alternative to `branchName` for `update_branch_description` | ID of the existing branch to update. Provide exactly one of `branchId` or `branchName`. |
-| `description` | For `update_branch_description` | The new description text. |
+| `type` | Yes | Item type. One of: `event`, `property`, `metric`, `category`, `propertyBundle`, `source`, `destination`, `groupType`, `eventVariant`, `branch`, `workspaceConfig`. |
+| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant` unless `name` is provided. Optional for `source`/`destination`/`groupType` (omit both `id` and `name` to enumerate). Optional for `branch` (defaults to the active branch context if omitted). Not used by `workspaceConfig`. |
+| `name` | Varies by type | Exact name match. Alternative to `id` for most types. May return multiple matches for ambiguous names (especially properties) — use [`search`](#search) for fuzzy lookup. |
+| `variantId` | For `eventVariant` | The variant ID. Combined with `id` (the base event ID). |
+| `include` | For `branch` | Array of branch facets to return: `overview`, `changes`, `code_snippets`. Defaults to `["overview"]`. Combine `changes` and `code_snippets` for an implementer-ready picture of the branch. |
+| `sourceId` | When `include` contains `code_snippets` | Source ID to scope the code snippets to. |
+| `branchId` | No | Branch to look up on. Defaults to main. `branchId` takes precedence over `branchName`. |
+| `branchName` | No | Alternative to `branchId`. |
+| `includePropertyDetails` | No | Events only. When `true`, includes full property definitions (type, constraints, allowed values). Defaults to `false`, which returns only property ID + name references. |
+| `includeArchived` | No | When `true` (default), includes archived items in results. When `false`, only active items. |
 | `workspaceId` | No | Workspace ID |
 
 ### Returns
 
-For `create_branch`: the new branch's `branchId`, `branchName`, and a `branchUrl` that opens it in the Avo web app. For `update_branch_description`: confirmation with the resolved `branchId` and the updated description.
+Full details for the item, shaped per item type.
+
+- `type: "event" \| "property" \| "metric" \| "category" \| "propertyBundle" \| "eventVariant"` — the item's full definition.
+- `type: "source" \| "destination" \| "groupType"` — a single entity when `id`/`name` is provided, or a workspace-level list when both are omitted.
+- `type: "branch"` — branch facets requested via `include`. `overview` returns resolved emails for the creator, reviewers, and collaborators, branch status, impacted source IDs, and description. `changes` returns the structured diff (new, modified, and deleted events with their properties and descriptions). `code_snippets` returns per-event code diffs for the source named in `sourceId` — exact unified diffs for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources.
+- `type: "workspaceConfig"` — the workspace's event/property naming conventions and casing rules, plus custom field definitions and the list of recognized PII types. Use this before proposing new events or properties so names match the workspace's audit rules.
 
 ### Examples
 
-#### Create a branch for a new feature
+#### Look up an event by exact name
 
-**Prompt:** *"Start an Avo branch for the new checkout flow we're shipping next sprint."*
+**Prompt:** *"How is the `Account Created` event defined?"*
 
-Claude calls `workflow` with `action: "create_branch"` and a descriptive `branchName`. The returned `branchId` is required for the follow-up `save_items` calls that write the new events and properties.
+Claude calls `get` with the exact name and `includePropertyDetails: true` so the response includes each attached property's type, constraints, and allowed values. Useful when the agent already knows the canonical name and wants the full schema in one call.
 
 ```json
 {
-  "action": "create_branch",
-  "branchName": "add-checkout-tracking"
+  "type": "event",
+  "name": "Account Created",
+  "includePropertyDetails": true
 }
 ```
 
-#### Update a branch's description
+#### Read what changed on a branch
 
-**Prompt:** *"Update the description on the `add-checkout-tracking` branch to mention that we're now also tracking abandonment."*
+**Prompt:** *"What's on the `checkout-v2` branch — and can you show me the iOS code diff?"*
 
-Claude looks up the branch by name (no separate `branchId` lookup needed for this action) and replaces the description in one call.
+Claude calls `get` with `type: "branch"` and combines `changes` and `code_snippets` in `include`. `sourceId` scopes the diff to a single source.
 
 ```json
 {
-  "action": "update_branch_description",
-  "branchName": "add-checkout-tracking",
-  "description": "Adds the Checkout Completed and Checkout Abandoned events with the Checkout Method property."
+  "type": "branch",
+  "branchName": "checkout-v2",
+  "include": ["changes", "code_snippets"],
+  "sourceId": "src-ios"
 }
 ```
 
 ### Common errors
 
-- Missing `write` scope — re-authorize with `write`.
+- Item not found.
+- Ambiguous name (returns multiple matches — narrow by ID).
+- `sourceId` missing when `include` contains `code_snippets`.
 - Workspace access denied.
-- Unsupported action value.
-- Both `branchId` and `branchName` provided — `update_branch_description` requires exactly one.
 
 ---
 
@@ -403,11 +281,11 @@ Every item shares these fields:
 
 | Field | Type | Notes |
 |---|---|---|
-| `op` | `"create"` \| `"update"` \| `"remove"` \| `"archive"` | Defaults to `"create"`. Not every op applies to every type — see "Supported ops" below. |
+| `op` | `"create"` \| `"update"` \| `"remove"` \| `"archive"` | Defaults to `"create"`. Not every op applies to every type — see "Supported ops" below. For events, `"archive"` is the canonical archive op and `"remove"` is accepted as a legacy alias that behaves identically. For properties and property bundles, `"remove"` is the archive op (no `"archive"` variant). |
 | `type` | `"event"` \| `"property"` \| `"event_variant"` \| `"property_bundle"` \| `"metric"` | Required. |
-| `name` | string | Required on `create` for events, properties, property bundles, and metrics. Cosmetic on `event_variant` items and on `update`/`remove` of other types. |
+| `name` | string | Required on `create` for events, properties, property bundles, and metrics. Cosmetic on `event_variant` items and on `update`/`remove`/`archive` of other types. |
 | `tempId` | string | **Create only.** Declares a temporary handle (e.g. `"prop1"`). Reference it elsewhere in the same call as `"$tmp:prop1"`. The server allocates a real ID and resolves all `$tmp:` references before writing. |
-| `eventId` | string | Required on `update` / `remove` of events. |
+| `eventId` | string | Required on `update` / `archive` (or legacy `remove`) of events. |
 | `propertyId` | string | Required on `update` / `remove` of properties. |
 | `propertyBundleId` | string | Required on `update` / `remove` of property bundles. |
 | `metricId` | string | Required on `update` / `archive` of metrics. |
@@ -420,7 +298,7 @@ Every item shares these fields:
 
 | Type | create | update | remove | archive |
 |---|:-:|:-:|:-:|:-:|
-| `event` | ✅ | ✅ | ❌ (see "Not yet implemented") | — |
+| `event` | ✅ | ✅ | ✅ (legacy alias for `archive`) | ✅ (archives the event) |
 | `property` | ✅ | ✅ | ✅ (archives the property + cascades references) | — |
 | `event_variant` | ✅ | ✅ | ❌ (see "Not yet implemented") | — |
 | `property_bundle` | ✅ | ✅ | ✅ (archives the bundle) | — |
@@ -433,6 +311,7 @@ Every item shares these fields:
 | `properties` | Array of property IDs (or `$tmp:` refs) to attach. |
 | `propertyBundles` | Array of property bundle IDs (or `$tmp:` refs) to attach to the event. |
 | `sources` | Array of source IDs to include the event in. Find source IDs with [`get`](#get) (`type: "source"` with `id`/`name` omitted to enumerate). |
+| `tags` | Array of literal tag-name strings to apply to the event. |
 
 **Create-property fields:**
 
@@ -440,6 +319,7 @@ Every item shares these fields:
 |---|---|
 | `propertyType` | `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). |
 | `sendAs` | `event`, `user`, or `system`. |
+| `tags` | Array of literal tag-name strings to apply to the property. |
 | `eventConfigs` | *(optional)* Per-event/per-source property settings on a fresh property. On `create`, only `events: { kind: "allEvents" }` entries are accepted — per-event-scoped entries are rejected because the property isn't attached to any event yet. See "Per-event property settings (`eventConfigs`)" below. |
 
 **Create-event_variant fields:**
@@ -469,10 +349,12 @@ Every item shares these fields:
 
 | Field | Notes |
 |---|---|
+| `set.name` | Rename the event. Renaming to the same name is a no-op; renaming to a name already held by another live event is rejected. |
 | `set.description` | New event description. |
 | `addProperties` / `removeProperties` | Property IDs (or `$tmp:` refs) to associate / disassociate. |
 | `addPropertyBundles` / `removePropertyBundles` | Property bundle IDs (or `$tmp:` refs) to attach / detach. |
 | `addSources` / `removeSources` | Source IDs to include / exclude. |
+| `addTags` / `removeTags` | **Top-level on the item, not inside `set`.** Tag-name strings to apply or remove. |
 
 **Update-event_variant fields:** _(require `baseEventId` + `variantId`)_
 
@@ -488,10 +370,13 @@ Every item shares these fields:
 
 | Field | Notes |
 |---|---|
+| `set.name` | Rename the property. Renaming to the same name is a no-op; renaming to a name already held by another live property is rejected. |
 | `set.description` | New property description. |
 | `set.propertyType` | New type. Same value set as create: `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). |
 | `addAllowedValues` | **Top-level on the item, not inside `set`.** String values to add to a string-typed property's allowed list. |
 | `removeAllowedValues` | **Top-level on the item, not inside `set`.** Values not in the current list are silently no-ops. |
+| `addTags` / `removeTags` | **Top-level on the item, not inside `set`.** Tag-name strings to apply or remove. |
+| `isList` | **Top-level on the item, not inside `set`.** Boolean — switches the property between scalar (`false`) and list (`true`). Property-only. |
 | `eventConfigs` | **Top-level on the item.** Per-event/per-source property settings — change presence, pin a value, or restrict allowed values per event. See "Per-event property settings (`eventConfigs`)" below. |
 
 **Update-property_bundle fields:** _(require `propertyBundleId`)_
@@ -511,13 +396,17 @@ Every item shares these fields:
 | `addItems` / `removeItems` | For non-cohort metrics, add or remove metric items. |
 | `addCohortConditions` / `updateCohortConditions` / `removeCohortConditions` | For `Cohort` metrics, manage the cohort condition list. |
 
+**Archive-event:** _(require `eventId`)_
+
+`{ op: "archive", type: "event", eventId: "..." }` archives the event on the branch. `{ op: "remove", type: "event", eventId: "..." }` is accepted as a legacy alias and behaves identically.
+
 **Remove-property:** _(require `propertyId`)_
 
-`{ op: "remove", type: "property", propertyId: "..." }` archives the property on the branch and cascades removal references on every event that uses it, mirroring the Avo UI. The action is destructive but reversible from the Avo app. If you only have the property name, look up the ID first with [`get`](#get) or [`search`](#search) so that any name-conflict ambiguity is surfaced before the mutation runs.
+`{ op: "remove", type: "property", propertyId: "..." }` archives the property on the branch and cascades removal references on every event that uses it, mirroring the Avo UI. Properties use `op: "remove"` for archive — there is no separate `op: "archive"` for properties. The action is destructive but reversible from the Avo app. If you only have the property name, look up the ID first with [`get`](#get) or [`search`](#search) so that any name-conflict ambiguity is surfaced before the mutation runs.
 
 **Remove-property_bundle:** _(require `propertyBundleId`)_
 
-`{ op: "remove", type: "property_bundle", propertyBundleId: "..." }` archives the bundle on the branch.
+`{ op: "remove", type: "property_bundle", propertyBundleId: "..." }` archives the bundle on the branch. Bundles use `op: "remove"` for archive — there is no separate `op: "archive"` for bundles.
 
 **Archive-metric:** _(require `metricId`)_
 
@@ -536,11 +425,10 @@ Every item shares these fields:
 <Callout type="warning" emoji="🚧">
   **Not yet implemented.** The following return a `NotYetImplemented` error from the server:
 
-  - `op: "remove"` on `event` items (archiving events)
   - `op: "remove"` on `event_variant` items
   - `set.sendAs` on `op: "update"` of `property` items — `sendAs` is immutable after create
 
-  Everything else works today: create / update events, properties, event variants, property bundles, metrics; archive properties, bundles, metrics; per-event property settings via `eventConfigs`.
+  Everything else works today: create / update events, properties, event variants, property bundles, metrics; archive events, properties, bundles, metrics; rename events and properties via `set.name`; toggle a property between scalar and list via `isList`; apply or remove tags via `addTags` / `removeTags`; per-event property settings via `eventConfigs`.
 </Callout>
 
 ### Temporary IDs (`tempId` / `$tmp:`)
@@ -645,3 +533,134 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 - `too many items (got N, max 100)` — batch is over the 100-item cap.
 - `NotYetImplemented` — one of the unsupported operations above.
 - Per-item audit-pipeline validation failures (e.g. illegal name, duplicate property, etc.) — returned inside the `errors` array rather than failing the whole call.
+## `workflow`
+
+**Scope:** `write`
+
+<Callout type="info" emoji="🚧">
+  Write access is in general beta — enabled for every workspace, no need to request access. [Email support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
+</Callout>
+
+Branch-lifecycle write operations. Currently supports two actions:
+
+- `create_branch` — open a new branch.
+- `update_branch_description` — set the description on an existing open branch.
+
+<Callout type="info" emoji="💡">
+  A branch is a draft workspace for tracking-plan changes, analogous to a git branch. All write operations via the MCP happen on a branch — `save_items` requires a `branchId` that exists. The MCP never merges to main; open the branch in the Avo app to review and merge.
+</Callout>
+
+### Parameters
+
+| Parameter | Required | Description |
+|---|---|---|
+| `action` | Yes | The workflow action. One of: `create_branch`, `update_branch_description`. |
+| `branchName` | For `create_branch`; alternative to `branchId` for `update_branch_description` | Name for the new branch (`create_branch`), or the existing branch's name (`update_branch_description`). |
+| `branchId` | Alternative to `branchName` for `update_branch_description` | ID of the existing branch to update. Provide exactly one of `branchId` or `branchName`. |
+| `description` | For `update_branch_description` | The new description text. |
+| `workspaceId` | No | Workspace ID |
+
+### Returns
+
+For `create_branch`: the new branch's `branchId`, `branchName`, and a `branchUrl` that opens it in the Avo web app. For `update_branch_description`: confirmation with the resolved `branchId` and the updated description.
+
+### Examples
+
+#### Create a branch for a new feature
+
+**Prompt:** *"Start an Avo branch for the new checkout flow we're shipping next sprint."*
+
+Claude calls `workflow` with `action: "create_branch"` and a descriptive `branchName`. The returned `branchId` is required for the follow-up `save_items` calls that write the new events and properties.
+
+```json
+{
+  "action": "create_branch",
+  "branchName": "add-checkout-tracking"
+}
+```
+
+#### Update a branch's description
+
+**Prompt:** *"Update the description on the `add-checkout-tracking` branch to mention that we're now also tracking abandonment."*
+
+Claude looks up the branch by name (no separate `branchId` lookup needed for this action) and replaces the description in one call.
+
+```json
+{
+  "action": "update_branch_description",
+  "branchName": "add-checkout-tracking",
+  "description": "Adds the Checkout Completed and Checkout Abandoned events with the Checkout Method property."
+}
+```
+
+### Common errors
+
+- Missing `write` scope — re-authorize with `write`.
+- Workspace access denied.
+- Unsupported action value.
+- Both `branchId` and `branchName` provided — `update_branch_description` requires exactly one.
+
+---
+
+## `list_branches`
+
+**Scope:** `read`
+
+<Callout type="info" emoji="🚧">
+  **Transitional.** This tool stays available while branch enumeration is being folded into [`search`](#search) with `type: "branch"`. Until that ships, use `list_branches` to enumerate branches.
+</Callout>
+
+Browse branches in a workspace with filtering and pagination. Results are paginated newest-first.
+
+### Parameters
+
+| Parameter | Required | Description |
+|---|---|---|
+| `workspaceId` | No | Workspace ID |
+| `branchStatuses` | No | Filter by status. Valid values: `Draft`, `ReadyForReview`, `ChangesRequested`, `Approved`, `Merged`, `Closed`, `Open`. Defaults to open/active branches only. |
+| `pageSize` | No | Results per page (1–50, default 25) |
+| `pageToken` | No | Pagination token from a previous response |
+| `branchName` | No | Substring match on branch name (case-insensitive) |
+| `creatorEmail` | No | Filter by creator email |
+| `creatorUserId` | No | Filter by creator user ID |
+| `reviewerEmail` | No | Filter by reviewer email |
+| `reviewerUserId` | No | Filter by reviewer user ID |
+| `collaboratorEmail` | No | Filter by collaborator email |
+| `collaboratorUserId` | No | Filter by collaborator user ID |
+| `createdAfter` | No | ISO 8601 date — only branches created after |
+| `createdBefore` | No | ISO 8601 date — only branches created before |
+| `impactedSourceId` | No | Filter to branches affecting a specific source |
+
+By default `Merged` and `Closed` branches are excluded. Pass `branchStatuses: ["Merged"]` (or any other value) to include them.
+
+<Callout type="info" emoji="💡">
+  To find "my branches," pass your own email as `creatorEmail` or `reviewerEmail`. The tool does not auto-inject your identity into the filter.
+</Callout>
+
+### Returns
+
+Compact per-branch summary — name, status, ID, creator email — plus a `nextPageToken` when more results are available. Call [`get`](#get) with `type: "branch"` and `include: ["overview"]` for full resolved data.
+
+### Examples
+
+#### Find branches I'm reviewing
+
+**Prompt:** *"What branches am I assigned to review?"*
+
+Claude passes the user's email as `reviewerEmail` and filters status to `ReadyForReview`. The tool does not auto-inject the caller's identity, so the email has to be supplied explicitly.
+
+```json
+{
+  "reviewerEmail": "thora@avo.sh",
+  "branchStatuses": ["ReadyForReview"]
+}
+```
+
+### Common errors
+
+- Workspace access denied.
+- Invalid `pageSize` (outside 1–50).
+- Invalid date format on `createdAfter` / `createdBefore`.
+
+---
+
