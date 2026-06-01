@@ -7,7 +7,7 @@ import { Callout } from 'nextra/components'
 
 # Avo MCP
 
-The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI coding assistants. Tools like Claude, ChatGPT, Cursor, Codex, Claude Code, and other MCP-compatible clients can **read** your tracking plan, **explore branches**, and **write changes on a branch** — without you copy-pasting specs into the chat.
+Avo MCP gives AI coding assistants direct access to your Avo tracking plan. Claude, ChatGPT, Cursor, Codex, Claude Code, and other MCP-compatible clients can **read** the plan, **explore branches**, and **write changes on a branch** — without copy-pasting specs into the chat. (MCP stands for [Model Context Protocol](https://modelcontextprotocol.io/).)
 
 - **Transport:** Streamable HTTP at `https://mcp.avo.app/mcp`
 - **Authentication:** OAuth 2.0 + PKCE, scoped to your Avo identity
@@ -22,8 +22,6 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
 </Callout>
 
 ## Use cases
-
-The Avo MCP lets Claude work directly against your tracking plan — reading items, designing changes against your workspace's conventions, and writing those changes back to a branch.
 
 **Getting started.** Every tool except `list_workspaces` is workspace-scoped. Call `list_workspaces` first to find your `workspaceId`, then pass that ID to subsequent tool calls. (Stdio clients can also set the `WORKSPACE_ID` environment variable so it's picked up automatically.)
 
@@ -71,6 +69,10 @@ Branch read flows are covered by `get` and `search`. One transitional tool — [
 
 ## Setup
 
+<Callout type="info" emoji="🔒">
+  **First-call behavior.** Your client must support HTTP transport and the browser-based OAuth 2.0 authorization flow. The first tool invocation opens a browser, you sign in with Avo, the client caches the token, and subsequent calls use it automatically. CI runners and headless containers cannot complete this flow.
+</Callout>
+
 ### Claude Code (CLI)
 
 ```bash
@@ -112,8 +114,6 @@ Add the following to your `mcp.json` (or `~/.cursor/mcp.json` for global config)
   }
 }
 ```
-
-Your client must support HTTP transport and the browser-based OAuth authorization flow. The first tool invocation opens a browser, you sign in with your Avo credentials, the client receives a token, and the token is cached for subsequent calls. Clients that cannot complete the OAuth flow will not work with the Avo MCP.
 
 ## Authentication
 

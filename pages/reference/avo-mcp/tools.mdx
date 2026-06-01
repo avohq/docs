@@ -252,10 +252,14 @@ Claude calls `get` with `type: "branch"` and combines `changes` and `code_snippe
 
 ## `save_items`
 
-**Scope:** `write`
+**Scope:** `write` · **Destructive:** archive / remove ops
 
 <Callout type="info" emoji="🚧">
   Write access is in general beta — enabled for every workspace, no need to request access. [Email support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
+</Callout>
+
+<Callout type="warning" emoji="⚠️">
+  **Destructive operations.** `op: "archive"` on events and metrics, and `op: "remove"` on properties and property bundles, archive the target item on the branch. Property archives cascade — references on every event that uses the property are also removed. All archives are reversible from the Avo web app, but the cascade means a single call can touch many events.
 </Callout>
 
 Batch create, update, remove, and archive events, properties, event variants, property bundles, and metrics on a branch. A single call can mix item types and operations, and can cross-reference new items via temporary IDs.
