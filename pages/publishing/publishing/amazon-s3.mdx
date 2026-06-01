@@ -55,6 +55,8 @@ Instead of storing an access key pair, you can have Avo assume an IAM role in yo
 
    A **trust policy** that lets Avo's Google identity assume the role. Paste the **Avo GCP service account (audience)** value from the Avo integration screen into the `accounts.google.com:aud` condition:
 
+   {/* TODO (security hardening): the trust policy pins on `accounts.google.com:aud` = Avo's service account email. The `aud` claim is set by the token requester, so it isn't a proof of identity. Harden to also/instead condition on `accounts.google.com:sub` (the service account's numeric unique ID, which is bound to Avo's identity) once the UI surfaces that value. See CodeRabbit thread on PR #1707. */}
+
    ```json
    {
      "Version": "2012-10-17",
