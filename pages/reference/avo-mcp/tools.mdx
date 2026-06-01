@@ -432,7 +432,7 @@ Every item shares these fields:
 - **`setPinnedValue`** — pin a value for the property. With `events: { kind: "onEvent" }` pins per-event; with `events: { kind: "allEvents" }` pins property-wide.
 - **`restrictAllowedValues`** — change the property's allowed value list for an event. Carries a `valuesChange` delta: `addValues` (non-empty), `removeValues`, or `clear` (no payload).
 
-`eventConfigs` entries reference pre-existing events — a same-batch `create`-event item isn't visible to `eventConfigs` yet, so create the event in an earlier call (or the same batch, ordered before the property update that references it).
+`eventConfigs` entries can only reference events that existed before the current batch started — `$tmp:` references are not supported in `eventConfigs` fields, so a `create`-event item earlier in the same batch is not visible to `eventConfigs`. Create the event in an earlier `save_items` call, then reference its real `eventId` from `eventConfigs`.
 
 <Callout type="warning" emoji="🚧">
   **Not yet implemented.** The following return a `NotYetImplemented` error from the server:
