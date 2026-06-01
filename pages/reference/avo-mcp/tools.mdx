@@ -5,28 +5,20 @@ import { Callout } from 'nextra/components'
 Every tool except `list_workspaces` operates on a workspace. Pass `workspaceId` as a parameter; stdio clients can also set the `WORKSPACE_ID` environment variable.
 
 <Callout type="info" emoji="🔒">
-  Tools are grouped below by intent. Each tool lists the OAuth scope required. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
+  Each tool lists the OAuth scope it requires. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
 </Callout>
 
-The MCP maps five canonical tools to agent intents:
+The MCP exposes five canonical tools mapped to agent intents:
 
-**Entry point**
-- [`list_workspaces`](#list_workspaces) — find your workspace IDs
+| Intent | Tool | Scope |
+|---|---|---|
+| **Entry point** — find your workspace IDs | [`list_workspaces`](#list_workspaces) | `read` |
+| **Discover** — find items by meaning or by structural filter | [`search`](#search) | `read` |
+| **Understand** — full details for an event, property, branch, source, etc. | [`get`](#get) | `read` |
+| **Change** — create, update, remove, or archive items on a branch | [`save_items`](#save_items) | `write` |
+| **Progress** — create a branch or update its description | [`workflow`](#workflow) | `write` |
 
-**Discover** *(read)*
-- [`search`](#search) — find items by meaning or by structural filter
-
-**Understand** *(read)*
-- [`get`](#get) — full details for any tracking plan item (or a branch overview / code snippets)
-
-**Change** *(write)*
-- [`save_items`](#save_items) — create, update, remove, or archive events, properties, event variants, property bundles, and metrics on a branch
-
-**Progress** *(write)*
-- [`workflow`](#workflow) — create a branch or update its description
-
-**Transitional** *(read — kept while its replacement ships)*
-- [`list_branches`](#list_branches) — browse branches (planned: folded into `search(type:"branch")`)
+Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](#list_branches) — remains available while its replacement in `search(type:"branch")` ships.
 
 ---
 

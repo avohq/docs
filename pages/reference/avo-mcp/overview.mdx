@@ -18,6 +18,12 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
 
 ## What you can do
 
+The Avo MCP lets Claude work directly against your tracking plan — reading items, designing changes against your workspace's conventions, and writing those changes back to a branch.
+
+**Getting started.** Every tool except `list_workspaces` is workspace-scoped. Call `list_workspaces` first to find your `workspaceId`, then pass that ID to subsequent tool calls. (Stdio clients can also set the `WORKSPACE_ID` environment variable so it's picked up automatically.)
+
+These are the three major use cases — many more flows are possible through the same tools.
+
 ### Search the tracking plan
 
 Ask Claude what's already instrumented — *"what events do we have for signup?"* or *"is there anything that captures checkout completion?"*. The MCP runs a semantic search across events, properties, and metrics, returns ranked matches, then pulls the full definition of the ones that look right.
@@ -107,18 +113,6 @@ The MCP server uses OAuth 2.0 with PKCE.
 - **Token signing:** RS256 keys backed by Google Cloud KMS (HSM) in production.
 
 If a tool that requires `write` is called with a token that only has `read`, the server returns an error prompting the client to re-authorize with `write`.
-
-## Getting started
-
-Every tool except `list_workspaces` is workspace-scoped. The typical first-use sequence:
-
-**1. Discover your workspaces**
-
-Call `list_workspaces` to find your `workspaceId`.
-
-**2. Use any tool**
-
-Pass `workspaceId` to every workspace-scoped tool. (Stdio clients can also set the `WORKSPACE_ID` environment variable so it's picked up automatically.)
 
 ## Tools
 
