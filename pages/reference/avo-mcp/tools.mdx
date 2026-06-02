@@ -57,7 +57,7 @@ Claude calls `list_workspaces` with no parameters and uses the returned `workspa
 
 Find tracking plan items in one of two modes — the mode is selected automatically by which parameters you pass. **Combining `query` with structural filters returns 400.** For ID-based lookups use [`get`](#get).
 
-- **Semantic search** — pass `query` to find items by meaning across events, properties, metrics, categories, property bundles, and event variants. Uses vector similarity, not keyword matching — `"user signed up"` matches `Account Created` or `Registration Completed`.
+- **Semantic search** — pass `query` to find items by meaning across events, properties, metrics, categories, property bundles, and event variants. Avo embeds each item with OpenAI embeddings and runs a vector-similarity search at query time, so `"user signed up"` matches `Account Created` or `Registration Completed` even when no keyword overlaps. Requires Avo Intelligence Smart Search to be enabled in [Workspace Settings](https://www.avo.app/schemas/default?settings=general).
 - **Structured listing** — omit `query` and pass filters to enumerate exact matches with keyset pagination.
 
 ### Parameters
