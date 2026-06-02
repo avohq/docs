@@ -1,13 +1,13 @@
 ---
 title: Avo MCP
-description: Connect Claude, ChatGPT, Cursor, and other MCP-compatible clients to your Avo tracking plan. Read tracking-plan items, design changes from a feature brief, and write changes back to a branch via OAuth 2.0.
+description: Connect Claude, ChatGPT, Cursor, and other Model Context Protocol clients to your Avo tracking plan. Read tracking-plan items, design changes from a feature brief, and write changes back to a branch via OAuth 2.0.
 ---
 
 import { Callout } from 'nextra/components'
 
 # Avo MCP
 
-Avo MCP gives AI coding assistants direct access to your Avo tracking plan. Claude, ChatGPT, Cursor, Codex, Claude Code, and other MCP-compatible clients can **read** the plan, **explore branches**, and **write changes on a branch** — without copy-pasting specs into the chat. (MCP stands for [Model Context Protocol](https://modelcontextprotocol.io/).)
+Avo MCP ([Model Context Protocol](https://modelcontextprotocol.io/)) gives AI coding assistants direct access to your Avo tracking plan. Claude, ChatGPT, Cursor, Codex, Claude Code, and other MCP-compatible clients can **read** the plan, **explore branches**, and **write changes on a branch** — without copy-pasting specs into the chat.
 
 - **Transport:** Streamable HTTP at `https://mcp.avo.app/mcp`
 - **Authentication:** OAuth 2.0 + PKCE, scoped to your Avo identity
@@ -23,9 +23,7 @@ Avo MCP gives AI coding assistants direct access to your Avo tracking plan. Clau
 
 ## Use cases
 
-**Getting started.** Every tool except `list_workspaces` is workspace-scoped. Call `list_workspaces` first to find your `workspaceId`, then pass that ID to subsequent tool calls. (Stdio clients can also set the `WORKSPACE_ID` environment variable so it's picked up automatically.)
-
-The three use cases below cover the most common flows. Many more are possible through the same tools.
+**Getting started.** These tools let you search your tracking plan, design tracking for new features, and review Avo branches before you implement them. Start by calling `list_workspaces` to get your `workspaceId` — every other tool is scoped to a workspace, so you'll pass that ID into subsequent calls.
 
 ### Search the tracking plan
 
@@ -33,7 +31,7 @@ Ask Claude what's already instrumented — *"what events do we have for signup?"
 
 ### Design tracking for a new feature
 
-Share a PRD, Figma designs, or just a feature description. Claude reads your workspace's audit rules, hunts for items you can reuse, and proposes a plan — events, properties, metrics — for you to review before any write happens. On approval, it creates a branch and writes everything in a single batched call, using temporary IDs to attach a brand-new property to a brand-new event in the same write. The MCP never merges to main — you finalize the branch in the Avo web app.
+Share a PRD (product requirements document), Figma designs, or just a feature description. Claude reads your workspace's audit rules, hunts for items you can reuse, and proposes a plan — events, properties, metrics — for you to review before any write happens. On approval, it creates a branch and writes everything in a single batched call, using temporary IDs to attach a brand-new property to a brand-new event in the same write. The MCP never merges to main — you finalize the branch in the Avo web app.
 
 ### Review and implement an Avo branch
 
@@ -75,7 +73,7 @@ No. The MCP creates branches and writes items on them, but merging always remain
 
 ### What data does Avo collect through the MCP?
 
-The MCP reads and writes tracking-plan content — events, properties, event variants, metrics, categories, and property bundles — already stored in your Avo workspace. It does not collect your codebase, your prompts, or any data your MCP client sends to its model. Standard operational telemetry — request IDs, error counts — is retained for reliability. See the [Avo Privacy Policy](https://www.avo.app/l/privacy) for full details.
+The MCP reads and writes tracking-plan content — events, properties, event variants, metrics, categories, and property bundles — already stored in your Avo workspace. It does not collect your codebase, your prompts, or any data your MCP client sends to its model. Standard operational telemetry — request IDs, error counts — is retained for reliability. See the [Avo Privacy Policy](https://www.avo.app/privacy) for full details.
 
 ### Do I need to be a workspace admin to use the Avo MCP?
 
@@ -166,7 +164,7 @@ For bug reports, feature requests, or help connecting an MCP client, email [supp
 
 - **What is collected.** The MCP reads and writes tracking-plan content already stored in your Avo workspace. It does not collect your codebase, prompts, or data your MCP client sends to its model.
 - **How it's used.** Tool calls update your tracking plan or return its current state. Operational telemetry (request IDs, error counts) is collected for reliability and abuse prevention.
-- **Storage and retention.** Tracking-plan content lives in your Avo workspace under the existing retention policy. OAuth tokens and operational logs follow the schedule in the [Avo Privacy Policy](https://www.avo.app/l/privacy).
+- **Storage and retention.** Tracking-plan content lives in your Avo workspace under the existing retention policy. OAuth tokens and operational logs follow the schedule in the [Avo Privacy Policy](https://www.avo.app/privacy).
 - **Third-party sharing.** Avo does not forward tracking-plan content to AI providers. The MCP returns data to your client; your client decides what to send onward to its model.
 
-Full data-handling details are in the [Avo Privacy Policy](https://www.avo.app/l/privacy).
+Full data-handling details are in the [Avo Privacy Policy](https://www.avo.app/privacy).
