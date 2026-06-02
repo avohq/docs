@@ -285,7 +285,7 @@ Batch create, update, remove, and archive events, properties, event variants, pr
 | `items` | Yes | Array of items to apply. Each item is typed by its `type` field and has an `op` (default `create`). |
 | `workspaceId` | No | Workspace ID |
 
-The request is capped at **100 items** per call.
+The request is capped at **50 items** per call.
 
 ### Item shape
 
@@ -293,18 +293,19 @@ Every item shares these fields:
 
 | Field | Type | Notes |
 |---|---|---|
-| `op` | `"create"` \| `"update"` \| `"remove"` \| `"archive"` | Defaults to `"create"`. Not every op applies to every type — see "Supported ops" below. For events, `"archive"` is the canonical archive op and `"remove"` is accepted as a legacy alias that behaves identically. For properties and property bundles, `"remove"` is the archive op (no `"archive"` variant). |
-| `type` | `"event"` \| `"property"` \| `"event_variant"` \| `"property_bundle"` \| `"metric"` | Required. |
-| `name` | string | Required on `create` for events, properties, property bundles, and metrics. Cosmetic on `event_variant` items and on `update`/`remove`/`archive` of other types. |
+| `op` | `"create"` \| `"update"` \| `"remove"` \| `"archive"` | Defaults to `"create"`. Not every op applies to every type — see "Supported ops" below. For events and event variants, `"archive"` is the canonical archive op and `"remove"` is accepted as a legacy alias for events (event variants accept only `"archive"`). For properties, property bundles, and categories, `"remove"` is the archive op (no `"archive"` variant). |
+| `type` | `"event"` \| `"property"` \| `"event_variant"` \| `"property_bundle"` \| `"metric"` \| `"category"` | Required. |
+| `name` | string | Required on `create` for events, properties, property bundles, metrics, and categories. Cosmetic on `event_variant` items and on `update`/`remove`/`archive` of other types. |
 | `tempId` | string | **Create only.** Declares a temporary handle (e.g. `"prop1"`). Reference it elsewhere in the same call as `"$tmp:prop1"`. The server allocates a real ID and resolves all `$tmp:` references before writing. |
 | `eventId` | string | Required on `update` / `archive` (or legacy `remove`) of events. |
 | `propertyId` | string | Required on `update` / `remove` of properties. |
 | `propertyBundleId` | string | Required on `update` / `remove` of property bundles. |
 | `metricId` | string | Required on `update` / `archive` of metrics. |
+| `categoryId` | string | Required on `update` / `remove` of categories. |
 | `baseEventId` | string | Required for `event_variant` items — the parent event's ID. |
-| `variantId` | string | Required on `update` of `event_variant`. On `create`, provide either `variantId` directly or a `tempId` on the same item. |
+| `variantId` | string | Required on `update` / `archive` of `event_variant`. On `create`, provide either `variantId` directly or a `tempId` on the same item. |
 | `nameSuffix` | string | Required on `create` of `event_variant` — suffix appended to the parent event name (e.g. `buy_now` produces `click / buy_now`). |
-| `description` | string | Create-only. Event / property / bundle / metric description. |
+| `description` | string | Create-only. Event / property / event variant / bundle / metric / category description. |
 
 **Supported ops by type:**
 
@@ -312,9 +313,10 @@ Every item shares these fields:
 |---|:-:|:-:|:-:|:-:|
 | `event` | ✅ | ✅ | ✅ (legacy alias for `archive`) | ✅ (archives the event) |
 | `property` | ✅ | ✅ | ✅ (archives the property + cascades references) | — |
-| `event_variant` | ✅ | ✅ | ❌ (see "Not yet implemented") | — |
+| `event_variant` | ✅ | ✅ | ❌ (see "Not yet implemented") | ✅ (archives the variant) |
 | `property_bundle` | ✅ | ✅ | ✅ (archives the bundle) | — |
 | `metric` | ✅ | ✅ | — | ✅ |
+| `category` | ✅ | ✅ | ✅ (archives the category; does **not** cascade) | — |
 
 **Create-event fields:**
 
@@ -324,6 +326,7 @@ Every item shares these fields:
 | `propertyBundles` | Array of property bundle IDs (or `$tmp:` refs) to attach to the event. |
 | `sources` | Array of source IDs to include the event in. Find source IDs with [`get`](#get) (`type: "source"` with `id`/`name` omitted to enumerate). |
 | `tags` | Array of literal tag-name strings to apply to the event. |
+| `nameMappings` | Per-destination name mappings. Array of tagged objects — `{ kind: "allDestinations", name: "..." }` to map across every destination, or `{ kind: "destination", destinationId: "...", name: "..." }` to map per destination. Also accepted on `update`-event items. |
 
 **Create-property fields:**
 
@@ -332,6 +335,7 @@ Every item shares these fields:
 | `propertyType` | `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). |
 | `sendAs` | `event`, `user`, or `system`. |
 | `tags` | Array of literal tag-name strings to apply to the property. |
+| `nameMappings` | Per-destination name mappings. Array of tagged objects — `{ kind: "allDestinations", name: "..." }` or `{ kind: "destination", destinationId: "...", name: "..." }`. Also accepted on `update`-property items. |
 | `eventConfigs` | *(optional)* Per-event/per-source property settings on a fresh property. On `create`, only `events: { kind: "allEvents" }` entries are accepted — per-event-scoped entries are rejected because the property isn't attached to any event yet. See "Per-event property settings (`eventConfigs`)" below. |
 
 **Create-event_variant fields:**
@@ -367,6 +371,7 @@ Every item shares these fields:
 | `addPropertyBundles` / `removePropertyBundles` | Property bundle IDs (or `$tmp:` refs) to attach / detach. |
 | `addSources` / `removeSources` | Source IDs to include / exclude. |
 | `addTags` / `removeTags` | **Top-level on the item, not inside `set`.** Tag-name strings to apply or remove. |
+| `addCategories` / `removeCategories` | **Top-level on the item.** Category **names** (or `$tmp:` refs to `create`-category items in the same batch) to add or remove. Note: categories are referenced by name, not ID. |
 
 **Update-event_variant fields:** _(require `baseEventId` + `variantId`)_
 
@@ -374,9 +379,19 @@ Every item shares these fields:
 |---|---|
 | `set.nameSuffix` | New variant suffix. |
 | `set.description` | New variant description. |
+| `set.triggers` | Replace the trigger list on the variant. |
 | `attachProperties` / `removeProperties` | Property IDs to attach / detach from this variant. |
+| `clearAttachedProperties` | Boolean — when `true`, detaches all properties from the variant in one call. |
 | `addComponentOverrides` | Override specs to add or replace. Same shape as create `overrides`. |
-| `removeComponentOverrides` | Property IDs whose overrides should be cleared. |
+| `removeComponentOverrides` | Property IDs whose component overrides should be cleared. |
+| `addSourceOverrides` / `removeSourceOverrides` | Source-override specs to add or remove. |
+| `clearSourceOverrides` | Boolean — when `true`, clears all source overrides on the variant. |
+| `addBundleOverrides` / `removeBundleOverrides` | Bundle-override specs to add or remove. |
+| `clearBundleOverrides` | Boolean — when `true`, clears all bundle overrides on the variant. |
+| `addVariantPropertyRegex` / `removeVariantPropertyRegex` | Variant property regex specs to add or remove. |
+| `clearVariantPropertyRegexOverride` | Boolean — when `true`, clears all variant property regex overrides. |
+
+The variant override surface uses a three-state lattice — `add*` / `remove*` / `clear*` — for attached properties, source overrides, bundle overrides, and variant property regex overrides. Use `add*` / `remove*` for incremental changes; use `clear*` only when you need to wipe the whole set in one call.
 
 **Update-property fields:** _(require `propertyId`)_
 
@@ -388,6 +403,7 @@ Every item shares these fields:
 | `addAllowedValues` | **Top-level on the item, not inside `set`.** String values to add to a string-typed property's allowed list. |
 | `removeAllowedValues` | **Top-level on the item, not inside `set`.** Values not in the current list are silently no-ops. |
 | `addTags` / `removeTags` | **Top-level on the item, not inside `set`.** Tag-name strings to apply or remove. |
+| `addCategories` / `removeCategories` | **Top-level on the item.** Category names (or `$tmp:` refs) to add or remove. Categories are referenced by name, not ID. |
 | `isList` | **Top-level on the item, not inside `set`.** Boolean — switches the property between scalar (`false`) and list (`true`). Property-only. |
 | `eventConfigs` | **Top-level on the item.** Per-event/per-source property settings — change presence, pin a value, or restrict allowed values per event. See "Per-event property settings (`eventConfigs`)" below. |
 
@@ -407,10 +423,22 @@ Every item shares these fields:
 | `setDescription` | New metric description. |
 | `addItems` / `removeItems` | For non-cohort metrics, add or remove metric items. |
 | `addCohortConditions` / `updateCohortConditions` / `removeCohortConditions` | For `Cohort` metrics, manage the cohort condition list. |
+| `addCategories` / `removeCategories` | **Top-level on the item.** Category names (or `$tmp:` refs) to add or remove. Categories are referenced by name, not ID. |
+
+**Update-category fields:** _(require `categoryId`)_
+
+| Field | Notes |
+|---|---|
+| `set.name` | Rename the category. |
+| `set.description` | New category description. |
 
 **Archive-event:** _(require `eventId`)_
 
 `{ op: "archive", type: "event", eventId: "..." }` archives the event on the branch. `{ op: "remove", type: "event", eventId: "..." }` is accepted as a legacy alias and behaves identically.
+
+**Archive-event_variant:** _(require `baseEventId` + `variantId`)_
+
+`{ op: "archive", type: "event_variant", baseEventId: "...", variantId: "..." }` archives the variant on the branch. Event variants accept only `op: "archive"` — `op: "remove"` is not supported.
 
 **Remove-property:** _(require `propertyId`)_
 
@@ -420,9 +448,36 @@ Every item shares these fields:
 
 `{ op: "remove", type: "property_bundle", propertyBundleId: "..." }` archives the bundle on the branch. Bundles use `op: "remove"` for archive — there is no separate `op: "archive"` for bundles.
 
+**Remove-category:** _(require `categoryId`)_
+
+`{ op: "remove", type: "category", categoryId: "..." }` archives the category on the branch. Categories use `op: "remove"` for archive — there is no separate `op: "archive"` for categories. Unlike `Remove-property`, this does **not** cascade — events, properties, and metrics that referenced the category keep their `addCategories` history pointing at the (now-archived) category. To migrate members to a different category first, see "Merging categories" below.
+
 **Archive-metric:** _(require `metricId`)_
 
 `{ op: "archive", type: "metric", metricId: "..." }` archives the metric on the branch.
+
+### Owner and stakeholder fields
+
+<Callout type="warning" emoji="⚠️">
+  **Branch-independent.** Owner and stakeholder assignments take effect **immediately workspace-wide**, even if the branch is later discarded. Discarding the branch will **not** roll back these changes. Treat these fields as out-of-branch mutations, not draft edits.
+</Callout>
+
+`owner` and `stakeholders` fields are accepted on event, property, and metric items (both `create` and `update`):
+
+| Field | Notes |
+|---|---|
+| `owner.stakeholder` | Sets the owning stakeholder. Reference must point to an existing stakeholder (stakeholders are created in the Avo web app — the MCP does not create them). |
+| `stakeholders.add` | Array of stakeholder references to add as collaborators. |
+| `stakeholders.remove` | Array of stakeholder references to remove as collaborators. |
+
+### Merging categories
+
+The MCP has no dedicated "merge categories" op. To merge category `A` into category `B`, send a single `save_items` batch containing:
+
+1. An `update` item for every event, property, and metric in `A` carrying `addCategories: ["B"], removeCategories: ["A"]`.
+2. A `{ op: "remove", type: "category", categoryId: "<id of A>" }` item.
+
+Both must travel in the same batch — the category removal in step 2 does **not** cascade to its members, so step 1 has to move the members first.
 
 ### Per-event property settings (`eventConfigs`)
 
@@ -440,7 +495,7 @@ Every item shares these fields:
   - `op: "remove"` on `event_variant` items
   - `set.sendAs` on `op: "update"` of `property` items — `sendAs` is immutable after create
 
-  Everything else works today: create / update events, properties, event variants, property bundles, metrics; archive events, properties, bundles, metrics; rename events and properties via `set.name`; toggle a property between scalar and list via `isList`; apply or remove tags via `addTags` / `removeTags`; per-event property settings via `eventConfigs`.
+  Everything else works today: create / update events, properties, event variants, property bundles, metrics, categories; archive events, event variants, properties, bundles, metrics, categories; rename events and properties via `set.name`; toggle a property between scalar and list via `isList`; apply or remove tags via `addTags` / `removeTags`; per-event property settings via `eventConfigs`.
 </Callout>
 
 ### Temporary IDs (`tempId` / `$tmp:`)
@@ -542,7 +597,7 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 - `Duplicate tempId "<name>"` — each `tempId` must be unique across items in the batch.
 - `Unknown $tmp: reference` — a `$tmp:` ref names a tempId that wasn't declared.
 - `<idField> is required for <op> <entity> items` — missing `eventId` / `propertyId` / `baseEventId` / `variantId` / `propertyBundleId` / `metricId`.
-- `too many items (got N, max 100)` — batch is over the 100-item cap.
+- `too many items (got N, max 50)` — batch is over the 50-item cap.
 - `NotYetImplemented` — one of the unsupported operations above.
 - Per-item audit-pipeline validation failures (e.g. illegal name, duplicate property, etc.) — returned inside the `errors` array rather than failing the whole call.
 ## `workflow`

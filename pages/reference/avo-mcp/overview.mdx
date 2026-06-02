@@ -62,7 +62,7 @@ Branch read flows are covered by `get` and `search`. One transitional tool — [
 
 ## Limits
 
-- **`save_items`** accepts at most 100 items per call.
+- **`save_items`** accepts at most 50 items per call.
 - **`search`** semantic mode caps at 20 results per call (default 10). Filter mode caps at 500 results (default 10).
 - **`list_branches`** returns up to 50 results per page (default 25). Use `pageToken` to paginate.
 - **Tokens** carry the user's identity; workspace access is verified at every call against your Avo workspace membership, so a token alone is not sufficient if you lose workspace access.
