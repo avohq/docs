@@ -676,3 +676,13 @@ Claude passes the user's email as `reviewerEmail` and filters status to `ReadyFo
 
 ---
 
+## Troubleshooting
+
+Tool-specific behavior issues. Authentication and workspace access issues are covered in [Troubleshooting on the overview page](/reference/avo-mcp/overview#troubleshooting).
+
+**[`search`](#search) returns nothing for a clearly relevant query.** Semantic search requires Avo Intelligence Smart Search to be enabled. Workspace admins can turn it on in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). Without it, fall back to [`get`](#get) with an exact name or [`search`](#search) in filter mode.
+
+**The wrong branch is returned by name.** `branchName` resolves to a best match and prioritizes open branches, so an ambiguous name can pick the wrong one. Resolve the name to a `branchId` with [`list_branches`](#list_branches) first and pass `branchId` to the follow-up call.
+
+**[`save_items`](#save_items) returns a `NotYetImplemented` error.** A small set of operations are not supported yet — removing event variants and changing a property's `sendAs`. See the [`save_items` reference](#save_items) for the full list.
+
