@@ -10,121 +10,128 @@ import { Callout } from 'nextra/components'
 
 Avo can publish a snapshot of your tracking plan as a JSON file to an S3 bucket you control. This is useful when you want your tracking plan to be a versioned source-of-truth for downstream data tooling, dashboards, schema registries, or CI/CD checks. You can configure the integration to publish whenever a branch is merged or with a push of a button.
 
-## Authentication modes
-
-Avo supports two ways to authenticate to your bucket. Both publish the same files and differ only in how Avo proves its identity to AWS — pick one per integration:
-
-- **Access Keys** — you create an IAM user, and Avo stores its access key pair encrypted in GCP Secret Manager. Simplest to set up; covered in the section directly below.
-- **Role Assumption (OIDC)** — you create an IAM role that trusts Google's OIDC issuer. Avo holds no AWS credentials at all and exchanges a short-lived, Google-signed token for temporary credentials on each publish. See [Role Assumption mode (OIDC)](#role-assumption-mode-oidc).
-
-## What you'll need from your AWS side
-
-To set up the integration, you'll need the following on the AWS side:
-
-1. **An S3 bucket** in any standard AWS region. GovCloud and China regions are not currently supported.
-2. **An IAM user dedicated to Avo** with an access key pair (Access Key ID and Secret Access Key). We recommend a per-purpose user over reusing an existing one — it's easier to rotate and easier to audit.
-3. **A permission policy** on that user that limits it to writing into the Avo bucket:
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": ["s3:PutObject"],
-         "Resource": "arn:aws:s3:::<your-bucket>/*"
-       }
-     ]
-   }
-   ```
-
-4. **A folder prefix** (optional) if you want Avo's output under a sub-path inside the bucket. Otherwise files land at the bucket root.
-
-<Callout type="info" emoji="💡">
-Default encryption at rest (SSE-S3, or SSE-KMS with an AWS-managed key) works without any extra setup. SSE-KMS with a customer-managed CMK is not currently supported.
-</Callout>
-
-## Role Assumption mode (OIDC)
-
-Instead of storing an access key pair, you can have Avo assume an IAM role in your account via OpenID Connect (OIDC). With this mode Avo never holds any AWS credentials — not even encrypted. The mechanism is AWS's built-in trust of Google's OIDC issuer (`accounts.google.com`), so there's no IAM identity provider to register in your account.
-
-### AWS setup
-
-1. **An S3 bucket** — same as Access Keys mode.
-2. **An IAM role** with two policies attached:
-
-   A **trust policy** that lets Avo's Google identity assume the role. Paste the **Avo GCP service account (audience)** value from the Avo integration screen into the `accounts.google.com:aud` condition:
-
-   {/* TODO (security hardening): the trust policy pins on `accounts.google.com:aud` = Avo's service account email. The `aud` claim is set by the token requester, so it isn't a proof of identity. Harden to also/instead condition on `accounts.google.com:sub` (the service account's numeric unique ID, which is bound to Avo's identity) once the UI surfaces that value. See CodeRabbit thread on PR #1707. */}
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Principal": { "Federated": "accounts.google.com" },
-         "Action": "sts:AssumeRoleWithWebIdentity",
-         "Condition": {
-           "StringEquals": {
-             "accounts.google.com:aud": "avo-s3-publisher@avo-web-app.iam.gserviceaccount.com"
-           }
-         }
-       }
-     ]
-   }
-   ```
-
-   A **permission policy** limiting the role to writing into your bucket — identical to Access Keys mode:
-
-   ```json
-   {
-     "Version": "2012-10-17",
-     "Statement": [
-       {
-         "Effect": "Allow",
-         "Action": ["s3:PutObject"],
-         "Resource": "arn:aws:s3:::<your-bucket>/*"
-       }
-     ]
-   }
-   ```
-
-<Callout type="info" emoji="💡">
-The trust policy must use `Principal: { "Federated": "accounts.google.com" }`. If your organization's policies forbid `accounts.google.com` as a federated identity provider, use [Access Keys mode](#what-youll-need-from-your-aws-side) instead.
-</Callout>
-
-### How a publish authenticates
-
-Per publish, Avo's Cloud Function:
-
-1. Fetches a Google-signed JWT (audience = the GCP service account shown in Avo) from the GCP metadata server.
-2. Calls AWS STS `AssumeRoleWithWebIdentity` with that JWT and your **Role ARN**.
-3. AWS validates the JWT against Google's public JWKS and the `accounts.google.com:aud` condition in your trust policy, then mints temporary credentials valid for 15 minutes.
-4. The Cloud Function uses those credentials to `PutObject`; they expire automatically.
-
-Avo never holds long-lived AWS credentials anywhere.
-
 ## Configure the Amazon S3 integration
 
 To enable the integration, navigate to the Publishing screen in your Avo workspace, click "Add Integration" and select "Amazon S3". See details in our [setting up and configuring a publishing integration docs](/publishing/publishing/overview#setting-up-and-configuring-a-publishing-integration).
 
 {/* TODO: screenshot — configuring the Amazon S3 integration in Avo */}
 
-You'll configure the following fields:
+These fields are common to both authentication modes:
 
 | Field | Description |
 |:------|:------------|
 | **S3 Bucket Name** | The bucket name only — no `s3://` prefix and no region. |
 | **AWS Region** | The region the bucket lives in. |
 | **Folder Prefix** (optional) | A path segment placed in front of the workspace and branch folders Avo creates, e.g. `avo-exports`. |
-| **AWS Access Key ID** | From the IAM user you created for Avo. |
-| **AWS Secret Access Key** | Stored encrypted in GCP Secret Manager; it never leaves the Avo backend in plaintext after submission. To rotate it, re-enter the new secret — Avo handles the version bump server-side. |
-| **Avo's GCP service account (audience)** _(Role Assumption mode)_ | Read-only. Copy this into your role's trust policy `accounts.google.com:aud` condition. |
-| **Role ARN** _(Role Assumption mode)_ | The ARN of the IAM role Avo should assume, e.g. `arn:aws:iam::123456789012:role/avo-s3-publisher`. |
 | **Payload Format** | The JSON shape Avo serializes. See [Payload formats](#payload-formats) below. |
 | **Only send changed events** | When on, the published payload only includes events whose schema changed on this branch, which is useful for incremental syncs. When off, every publish is a full snapshot. |
 | **Automatically publish on branch merge** | When on, every branch merge triggers an automatic publish. When off, publishing only happens on a manual button click. |
+
+You'll also enter authentication credentials, which differ by mode — see [Authentication modes](#authentication-modes) below.
+
+## Authentication modes
+
+Avo supports two ways to authenticate to your bucket. Both publish the same files and differ only in how Avo proves its identity to AWS — pick one per integration:
+
+| | Access Keys | Role Assumption (OIDC) |
+|:--|:--|:--|
+| **You create** | An IAM user with an access key pair | An IAM role with an OIDC trust policy |
+| **Avo stores** | The secret access key, encrypted in GCP Secret Manager | Nothing — no AWS credentials at all |
+| **What you give Avo** | Access Key ID and Secret Access Key | Role ARN (and you paste Avo's service account ID into your trust policy `accounts.google.com:sub` condition) |
+| **Best for** | Quickest setup | Avoiding long-lived credentials |
+
+Either mode writes to an **S3 bucket** you own, in any standard AWS region — GovCloud and China regions are not currently supported. The AWS setup and the Avo-side fields for each mode follow below.
+
+<Callout type="info" emoji="💡">
+Default encryption at rest (SSE-S3, or SSE-KMS with an AWS-managed key) works without any extra setup. SSE-KMS with a customer-managed CMK is not currently supported.
+</Callout>
+
+### Access Keys
+
+Create an **IAM user dedicated to Avo** with an access key pair (Access Key ID and Secret Access Key). We recommend a per-purpose user over reusing an existing one — it's easier to rotate and easier to audit.
+
+Attach a **permission policy** that limits the user to writing into your bucket:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": "arn:aws:s3:::<your-bucket>/*"
+    }
+  ]
+}
+```
+
+Then enter these fields in Avo:
+
+| Field | Description |
+|:------|:------------|
+| **AWS Access Key ID** | From the IAM user you created above. |
+| **AWS Secret Access Key** | Stored encrypted in GCP Secret Manager; it never leaves the Avo backend in plaintext after submission. To rotate it, re-enter the new secret — Avo handles the version bump server-side. |
+
+### Role Assumption (OIDC)
+
+Instead of storing an access key pair, you can have Avo assume an IAM role in your account via OpenID Connect (OIDC). With this mode Avo never holds any AWS credentials — not even encrypted. The mechanism is AWS's built-in trust of Google's OIDC issuer (`accounts.google.com`), so there's no IAM identity provider to register in your account.
+
+Create an **IAM role** with two policies attached. First, a **trust policy** that lets Avo's Google identity assume the role. From the Avo integration screen, copy **Avo's service account ID** — a 21-digit number Google assigns to the service account (the JWT `sub` claim) — and paste it into the `accounts.google.com:sub` condition. The screen also shows the service-account email beneath the ID for context, so you know which account the ID belongs to; the email is not the value you paste.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": { "Federated": "accounts.google.com" },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "accounts.google.com:sub": "103456789012345678901"
+        }
+      }
+    }
+  ]
+}
+```
+
+Second, a **permission policy** limiting the role to writing into your bucket — identical to Access Keys mode:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject"],
+      "Resource": "arn:aws:s3:::<your-bucket>/*"
+    }
+  ]
+}
+```
+
+<Callout type="info" emoji="💡">
+The trust policy must use `Principal: { "Federated": "accounts.google.com" }`. If your organization's policies forbid `accounts.google.com` as a federated identity provider, use [Access Keys](#access-keys) instead.
+</Callout>
+
+Then enter these fields in Avo:
+
+| Field | Description |
+|:------|:------------|
+| **Avo's service account ID** | Read-only — the 21-digit ID Avo displays for you to paste into your trust policy `accounts.google.com:sub` condition (above). |
+| **Role ARN** | The ARN of the IAM role Avo should assume, e.g. `arn:aws:iam::123456789012:role/avo-s3-publisher`. |
+
+#### How a publish authenticates
+
+Per publish, Avo's Cloud Function:
+
+1. Fetches a short-lived, Google-signed JWT from the GCP metadata server. The JWT's `sub` claim is Avo's service account's unique 21-digit ID — a value only Google can populate.
+2. Calls AWS STS `AssumeRoleWithWebIdentity` with that JWT and your **Role ARN**.
+3. AWS validates the JWT signature against Google's public JWKS and checks the `sub` claim matches your trust policy condition — i.e. that this JWT was minted by Avo's specific service account, identified by its 21-digit unique ID (the one JWT claim only Google can populate). It then mints temporary credentials valid for 15 minutes.
+4. The Cloud Function uses those credentials to `PutObject`; they expire automatically.
+
+Avo never holds long-lived AWS credentials anywhere.
 
 ## What gets written and where
 
@@ -175,7 +182,7 @@ Both modes write to the same files. The `<publishType>` segment in the timestamp
 For **Role Assumption (OIDC)** mode:
 
 - Avo holds no AWS credentials — not even encrypted. There's no secret to store, log, or leak.
-- The mechanism is AWS's built-in trust of Google's OIDC issuer. The `accounts.google.com:aud` condition in your trust policy ensures only Avo's specific GCP service account can mint tokens the role will accept.
+- The mechanism is AWS's built-in trust of Google's OIDC issuer. The `accounts.google.com:sub` condition in your trust policy pins trust to Avo's specific service account by its 21-digit unique ID — a value only Google can populate and the token requester can't forge. (Implementation note for security-aware readers: conditioning on `sub` rather than `aud` is deliberate — `aud` is whatever the caller requests when minting the token, so it isn't an identity proof, whereas AWS validates `sub` independently and the caller can't set it.)
 - Each token is Google-signed, lives about an hour, and is exchanged for AWS temporary credentials (valid 15 minutes) on every publish.
 - We recommend scoping the role to `s3:PutObject` on the Avo bucket only — the same least-privilege guidance as the access-keys IAM user.
 
@@ -187,7 +194,7 @@ The error message in the Avo UI surfaces the underlying AWS response. The most c
 
 - **403 Access Denied**: The IAM user (Access Keys mode) or assumed role (Role Assumption mode) doesn't have `s3:PutObject` on the target bucket or folder prefix. Confirm the permission policy is attached and that its `Resource` ARN matches your bucket, e.g. `arn:aws:s3:::<your-bucket>/*`.
 - **403 SignatureDoesNotMatch / InvalidAccessKeyId** _(Access Keys mode)_: The Access Key ID or Secret Access Key is wrong, or the key has been deactivated or rotated in AWS. Re-enter a valid access key pair in the integration config.
-- **AccessDenied on `AssumeRoleWithWebIdentity`** _(Role Assumption mode)_: AWS refused to let Avo assume the role. The `accounts.google.com:aud` condition in your trust policy doesn't match the GCP service account shown in Avo, or the trust policy isn't using `Principal: { "Federated": "accounts.google.com" }`. Re-copy the audience value from the integration screen into the condition.
+- **AccessDenied on `AssumeRoleWithWebIdentity`** _(Role Assumption mode)_: AWS refused to let Avo assume the role. The `accounts.google.com:sub` condition in your trust policy doesn't match Avo's service account ID shown in Avo, or the trust policy isn't using `Principal: { "Federated": "accounts.google.com" }`. Re-copy the service account ID from the integration screen into the condition.
 - **InvalidIdentityToken** _(Role Assumption mode)_: AWS couldn't validate the Google-signed token (expired, clock skew, or a transient issue fetching Google's JWKS). This is usually transient — click **Publish** again to retry.
 - **Role ARN errors (NoSuchEntity / malformed ARN)** _(Role Assumption mode)_: The configured **Role ARN** doesn't exist or is malformed. Confirm it matches the role you created, e.g. `arn:aws:iam::123456789012:role/avo-s3-publisher`.
 - **404 NoSuchBucket**: The configured bucket doesn't exist in the configured region. Check the **S3 Bucket Name** (name only, no `s3://` prefix) and that the **AWS Region** matches where the bucket actually lives.
