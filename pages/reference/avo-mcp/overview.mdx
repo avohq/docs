@@ -1,8 +1,13 @@
+---
+title: Avo MCP
+description: Connect Claude, ChatGPT, Cursor, and other Model Context Protocol clients to your Avo tracking plan. Read tracking-plan items, design changes from a feature brief, and write changes back to a branch via OAuth 2.0.
+---
+
 import { Callout } from 'nextra/components'
 
 # Avo MCP
 
-The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI coding assistants. Tools like Claude, ChatGPT, Cursor, Codex, Claude Code, and other MCP-compatible clients can **read** your tracking plan, **explore branches**, and **write changes on a branch** — without you copy-pasting specs into the chat.
+Avo MCP ([Model Context Protocol](https://modelcontextprotocol.io/)) gives AI coding assistants direct access to your Avo tracking plan. Claude, ChatGPT, Cursor, Codex, Claude Code, and other MCP-compatible clients can **read** the plan, **explore branches**, and **write changes on a branch** — without copy-pasting specs into the chat.
 
 - **Transport:** Streamable HTTP at `https://mcp.avo.app/mcp`
 - **Authentication:** OAuth 2.0 + PKCE, scoped to your Avo identity
@@ -16,41 +21,78 @@ The Avo MCP (Model Context Protocol) server exposes your Avo tracking plan to AI
   Writes require the `write` scope and always happen on a branch. The MCP server will never merge a branch into main — that remains a human step in the [Avo web app](https://www.avo.app).
 </Callout>
 
-## What you can do
+## Use cases
 
-### Read (scope: `read`)
+**Getting started.** These tools let you search your tracking plan, design tracking for new features, and review Avo branches before you implement them. Start by calling `list_workspaces` to get your `workspaceId` — every other tool is scoped to a workspace, so you'll pass that ID into subsequent calls.
 
-- Browse branches and see who created, reviewed, or collaborated on them
-- Get implementation guides and code diffs for a specific source on a branch
-- Look up details for any tracking plan item — events, properties, metrics, categories, property bundles, sources, destinations, group types, event variants
-- Search the plan semantically by meaning
-- Discover available sources in your workspace
+### Search the tracking plan
 
-### Write (scope: `write`)
+Ask Claude what's already instrumented — *"what events do we have for signup?"* or *"is there anything that captures checkout completion?"*. The MCP runs a semantic search across events, properties, and metrics, returns ranked matches, then pulls the full definition of the ones that look right.
 
-- Create a new branch from main
-- Create, update, and (for some entities) remove events, properties, and event variants on a branch
-- Cross-reference newly created items inside a single batch using temporary IDs
+### Design tracking for a new feature
+
+Share a PRD (product requirements document), Figma designs, or just a feature description. Claude reads your workspace's audit rules, hunts for items you can reuse, and proposes a plan — events, properties, metrics — for you to review before any write happens. On approval, it creates a branch and writes everything in a single batched call, using temporary IDs to attach a brand-new property to a brand-new event in the same write. The MCP never merges to main — you finalize the branch in the Avo web app.
+
+### Review and implement an Avo branch
+
+Point Claude at a branch and it returns a structured diff: new, modified, and removed events with their properties and descriptions. Pick a source and ask for per-event code snippets to drop into your codebase. The diff is exact for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources.
+
+### Other example flows
+
+- Look up any event, property, or metric by exact name or ID
+- Query your product data correctly through your data MCP (Amplitude, Mixpanel, BigQuery, etc.) — Avo knows your metric definitions and which events compose them, so AI agents can build accurate queries instead of guessing
+- Diagnose tracking gaps by comparing what your data MCP returns against Avo's plan
+- Make small edits to a branch — fill in allowed values, rename properties, add categories
+- Browse and filter open branches by status, creator, or reviewer
 
 ## Capability matrix
 
-| Capability | Tool | Scope |
-|---|---|---|
-| Health check | [`health_check`](/reference/avo-mcp/tools#health_check) | `read` |
-| List workspaces you can access | [`list_workspaces`](/reference/avo-mcp/tools#list_workspaces) | `read` |
-| List branches in a workspace | [`list_branches`](/reference/avo-mcp/tools#list_branches) | `read` |
-| Branch details (reviewers, status, impacted sources) | [`get_branch_details`](/reference/avo-mcp/tools#get_branch_details) | `read` |
-| What changed on a branch (implementation guide) | [`get_branch_implementation_guide`](/reference/avo-mcp/tools#get_branch_implementation_guide) | `read` |
-| Per-event code diffs for a branch + source | [`get_branch_code_snippets`](/reference/avo-mcp/tools#get_branch_code_snippets) | `read` |
-| List sources in a workspace | [`get_sources`](/reference/avo-mcp/tools#get_sources) | `read` |
-| Look up any item by ID or exact name | [`get`](/reference/avo-mcp/tools#get) | `read` |
-| Semantic search across the plan | [`search`](/reference/avo-mcp/tools#search) | `read` |
-| Create a branch | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
-| Create / update / remove events, properties, event variants on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
+The MCP exposes five tools mapped to agent intents:
 
-See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
+| Intent | Tool | Scope |
+|---|---|---|
+| **Entry point** — find your workspace IDs | [`list_workspaces`](/reference/avo-mcp/tools#list_workspaces) | `read` |
+| **Discover** — find items by meaning or by structural filter | [`search`](/reference/avo-mcp/tools#search) | `read` |
+| **Understand** — full details for an event, property, branch, source, etc. | [`get`](/reference/avo-mcp/tools#get) | `read` |
+| **Change** — create, update, remove, or archive items on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
+| **Progress** — create a branch or update its description | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
+
+Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while its replacement in `search(type:"branch")` ships. See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
+
+## Limits
+
+- **`save_items`** accepts at most 50 items per call.
+- **`search`** semantic mode caps at 20 results per call (default 10). Filter mode caps at 500 results (default 10).
+- **`list_branches`** returns up to 50 results per page (default 25). Use `pageToken` to paginate.
+- **Tokens** carry the user's identity; workspace access is verified at every call against your Avo workspace membership, so a token alone is not sufficient if you lose workspace access.
+
+## FAQ
+
+### Does the Avo MCP merge branches to main?
+
+No. The MCP creates branches and writes items on them, but merging always remains a human step in the [Avo web app](https://www.avo.app). Merges to main are deliberate, reviewable changes to your tracking plan, not background automation.
+
+### What data does Avo collect through the MCP?
+
+The MCP reads and writes tracking-plan content — events, properties, event variants, metrics, categories, and property bundles — already stored in your Avo workspace. It does not collect your codebase, your prompts, or any data your MCP client sends to its model. Standard operational telemetry — request IDs, error counts — is retained for reliability. See the [Avo Privacy Policy](https://www.avo.app/privacy) for full details.
+
+### Do I need to be a workspace admin to use the Avo MCP?
+
+For most tools, no — any workspace member can read the plan and write to branches via the MCP. Two exceptions: enabling semantic `search` requires an admin to turn on Avo Intelligence Smart Search in [Workspace Settings](https://www.avo.app/schemas/default?settings=general), and adding the connector inside Claude Desktop requires admin permissions in your Claude organization.
+
+### Can multiple team members use the Avo MCP simultaneously?
+
+Yes. Each user authenticates with their own Avo identity via OAuth, so concurrent sessions and writes are independent and audited per user in the Avo web app.
+
+### Which MCP clients are supported?
+
+Any client that supports HTTP transport and the browser-based OAuth 2.0 authorization flow. Tested clients include Claude Code, Claude Desktop, Cursor, and Codex. Clients that cannot open a browser — CI runners, headless containers — cannot complete the OAuth flow.
 
 ## Setup
+
+<Callout type="info" emoji="🔒">
+  **First-call behavior.** Your client must support HTTP transport and the browser-based OAuth 2.0 authorization flow. The first tool invocation opens a browser, you sign in with Avo, the client caches the token, and subsequent calls use it automatically. CI runners and headless containers cannot complete this flow.
+</Callout>
 
 ### Claude Code (CLI)
 
@@ -94,8 +136,6 @@ Add the following to your `mcp.json` (or `~/.cursor/mcp.json` for global config)
 }
 ```
 
-Your client must support HTTP transport and the browser-based OAuth authorization flow. The first tool invocation opens a browser, you sign in with your Avo credentials, the client receives a token, and the token is cached for subsequent calls. Clients that cannot complete the OAuth flow will not work with the Avo MCP.
-
 ## Authentication
 
 The MCP server uses OAuth 2.0 with PKCE.
@@ -107,46 +147,25 @@ The MCP server uses OAuth 2.0 with PKCE.
 
 If a tool that requires `write` is called with a token that only has `read`, the server returns an error prompting the client to re-authorize with `write`.
 
-## Getting started
+## Troubleshooting
 
-Most tools are workspace-scoped (`health_check` and `list_workspaces` are the exceptions). The typical first-use sequence:
+Authentication and workspace access issues live here. For tool-specific issues — `search` returning nothing, ambiguous branch names, `NotYetImplemented` errors — see [Troubleshooting in the Tools reference](/reference/avo-mcp/tools#troubleshooting).
 
-**1. Discover your workspaces**
+**A second browser prompt appears the first time you write.** Write tools require the `write` scope, which is a step-up consent on top of `read`. Your client opens the OAuth flow again; the prompt appears once per session.
 
-Call `list_workspaces` to find your `workspaceId`.
+**Authentication never completes.** The first tool call opens a browser to sign in. MCP clients that cannot open a browser (CI runners, headless containers) cannot complete the OAuth flow.
 
-**2. Use any tool**
+**`workspace access denied`.** The MCP enforces the same membership rules as the Avo web app. Confirm you're a member of the workspace at [avo.app](https://www.avo.app) — and that you're signing in with the same identity — before retrying.
 
-Pass `workspaceId` to every workspace-scoped tool. (Stdio clients can also set the `WORKSPACE_ID` environment variable so it's picked up automatically.)
+## Support and privacy
 
-## Recommended agent flows
+For bug reports, feature requests, or help connecting an MCP client, email [support@avo.app](mailto:support@avo.app).
 
-### Explore the plan
+### Privacy summary
 
-`list_workspaces` → `search` or `get` to inspect items by meaning or by ID/name.
+- **What is collected.** The MCP reads and writes tracking-plan content already stored in your Avo workspace. It does not collect your codebase, prompts, or data your MCP client sends to its model.
+- **How it's used.** Tool calls update your tracking plan or return its current state. Operational telemetry (request IDs, error counts) is collected for reliability and abuse prevention.
+- **Storage and retention.** Tracking-plan content lives in your Avo workspace under the existing retention policy. OAuth tokens and operational logs follow the schedule in the [Avo Privacy Policy](https://www.avo.app/privacy).
+- **Third-party sharing.** Avo does not forward tracking-plan content to AI providers. The MCP returns data to your client; your client decides what to send onward to its model.
 
-### Find work on a branch
-
-`list_branches` → `get_branch_details` → `get_branch_implementation_guide` → `get_branch_code_snippets` (with a `sourceId` from `get_sources`).
-
-### Add events for a new feature
-
-1. `workflow` with `action: "create_branch"` and a `branchName` → returns `branchId`.
-2. `save_items` on that `branchId` with a batch of `event` / `property` / `event_variant` items. Use `tempId` for forward references so a newly created property can be attached to a newly created event in a single call.
-3. Tell the user the branch is ready — the MCP does not merge. Open the branch in the [Avo web app](https://www.avo.app) (or ask a reviewer) to review and merge it to main.
-
-### Fix a property on an existing branch
-
-`list_branches` → `get_branch_details` to get `branchId` → `save_items` with `op: "update"` targeting an `eventId` or `propertyId`.
-
-### Searching for an event
-
-Use `search` to find events by meaning, not just exact name. A query like `"user signed up"` will match events named `Account Created` or `Registration Completed`.
-
-<Callout type="info" emoji="🔒">
-  Semantic search requires Avo Intelligence Smart Search to be enabled in your workspace. Workspace admins can enable it in [Workspace Settings](https://www.avo.app/schemas/default?settings=general). If you don't have admin access, ask a workspace admin to enable it.
-</Callout>
-
-## Tools
-
-See the [Tools reference](/reference/avo-mcp/tools) for the full list of tools and their parameters.
+Full data-handling details are in the [Avo Privacy Policy](https://www.avo.app/privacy).
