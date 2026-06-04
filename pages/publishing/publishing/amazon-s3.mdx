@@ -185,6 +185,7 @@ For **Role Assumption (OIDC)** mode:
 - The mechanism is AWS's built-in trust of Google's OIDC issuer. The `accounts.google.com:sub` condition in your trust policy pins trust to Avo's specific service account by its 21-digit unique ID — a value only Google can populate and the token requester can't forge. (Implementation note for security-aware readers: conditioning on `sub` rather than `aud` is deliberate — `aud` is whatever the caller requests when minting the token, so it isn't an identity proof, whereas AWS validates `sub` independently and the caller can't set it.)
 - Each token is Google-signed, lives about an hour, and is exchanged for AWS temporary credentials (valid 15 minutes) on every publish.
 - We recommend scoping the role to `s3:PutObject` on the Avo bucket only — the same least-privilege guidance as the access-keys IAM user.
+- The service account that mints the OIDC token is **dedicated to this integration and holds zero IAM roles in Avo's GCP project** — it has no permissions to read Avo's database, fetch secrets, or invoke other services. You pin your AWS trust policy to this identity by its 21-digit ID, so even a full compromise of the publish path yields only "write to opted-in customer buckets," never a foothold inside Avo.
 
 ## Failure handling
 
