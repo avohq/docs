@@ -16,65 +16,28 @@ To enable the integration, navigate to the Publishing screen in your Avo workspa
 
 {/* TODO: screenshot — configuring the Amazon S3 integration in Avo */}
 
-These fields are common to both authentication modes:
+You'll configure the following fields:
 
 | Field | Description |
 |:------|:------------|
 | **S3 Bucket Name** | The bucket name only — no `s3://` prefix and no region. |
 | **AWS Region** | The region the bucket lives in. |
 | **Folder Prefix** (optional) | A path segment placed in front of the workspace and branch folders Avo creates, e.g. `avo-exports`. |
+| **Avo's service account ID** | Read-only — the 21-digit ID Avo displays for you to paste into your trust policy `accounts.google.com:sub` condition. |
+| **Role ARN** | The ARN of the IAM role Avo should assume, e.g. `arn:aws:iam::123456789012:role/avo-s3-publisher`. |
 | **Payload Format** | The JSON shape Avo serializes. See [Payload formats](#payload-formats) below. |
 | **Only send changed events** | When on, the published payload only includes events whose schema changed on this branch, which is useful for incremental syncs. When off, every publish is a full snapshot. |
 | **Automatically publish on branch merge** | When on, every branch merge triggers an automatic publish. When off, publishing only happens on a manual button click. |
 
-You'll also enter authentication credentials, which differ by mode — see [Authentication modes](#authentication-modes) below.
-
-## Authentication modes
-
-Avo supports two ways to authenticate to your bucket. Both publish the same files and differ only in how Avo proves its identity to AWS — pick one per integration:
-
-| | Access Keys | Role Assumption (OIDC) |
-|:--|:--|:--|
-| **You create** | An IAM user with an access key pair | An IAM role with an OIDC trust policy |
-| **Avo stores** | The secret access key, encrypted in GCP Secret Manager | Nothing — no AWS credentials at all |
-| **What you give Avo** | Access Key ID and Secret Access Key | Role ARN (and you paste Avo's service account ID into your trust policy `accounts.google.com:sub` condition) |
-| **Best for** | Quickest setup | Avoiding long-lived credentials |
-
-Either mode writes to an **S3 bucket** you own, in any standard AWS region — GovCloud and China regions are not currently supported. The AWS setup and the Avo-side fields for each mode follow below.
+Your bucket can live in any standard AWS region — GovCloud and China regions are not currently supported. Each integration writes to a single bucket; to publish to multiple buckets (e.g. dev, staging, prod), create a separate integration for each. Creating the IAM role behind the **Role ARN** and **Avo's service account ID** fields is covered in [Configuring AWS for Avo](#configuring-aws-for-avo) below.
 
 <Callout type="info" emoji="💡">
 Default encryption at rest (SSE-S3, or SSE-KMS with an AWS-managed key) works without any extra setup. SSE-KMS with a customer-managed CMK is not currently supported.
 </Callout>
 
-### Access Keys
+## Configuring AWS for Avo
 
-Create an **IAM user dedicated to Avo** with an access key pair (Access Key ID and Secret Access Key). We recommend a per-purpose user over reusing an existing one — it's easier to rotate and easier to audit.
-
-Attach a **permission policy** that limits the user to writing into your bucket:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": ["s3:PutObject"],
-      "Resource": "arn:aws:s3:::<your-bucket>/*"
-    }
-  ]
-}
-```
-
-Then enter these fields in Avo:
-
-| Field | Description |
-|:------|:------------|
-| **AWS Access Key ID** | From the IAM user you created above. |
-| **AWS Secret Access Key** | Stored encrypted in GCP Secret Manager; it never leaves the Avo backend in plaintext after submission. To rotate it, re-enter the new secret — Avo handles the version bump server-side. |
-
-### Role Assumption (OIDC)
-
-Instead of storing an access key pair, you can have Avo assume an IAM role in your account via OpenID Connect (OIDC). With this mode Avo never holds any AWS credentials — not even encrypted. The mechanism is AWS's built-in trust of Google's OIDC issuer (`accounts.google.com`), so there's no IAM identity provider to register in your account.
+Avo authenticates to your bucket by assuming an IAM role in your account via OpenID Connect (OIDC) — it never holds any AWS credentials, not even encrypted. The mechanism is AWS's built-in trust of Google's OIDC issuer (`accounts.google.com`), so there's no IAM identity provider to register in your account.
 
 Create an **IAM role** with two policies attached. First, a **trust policy** that lets Avo's Google identity assume the role. From the Avo integration screen, copy **Avo's service account ID** — a 21-digit number Google assigns to the service account (the JWT `sub` claim) — and paste it into the `accounts.google.com:sub` condition. The screen also shows the service-account email beneath the ID for context, so you know which account the ID belongs to; the email is not the value you paste.
 
@@ -88,7 +51,7 @@ Create an **IAM role** with two policies attached. First, a **trust policy** tha
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "StringEquals": {
-          "accounts.google.com:sub": "103456789012345678901"
+          "accounts.google.com:sub": "107886548342266542732"
         }
       }
     }
@@ -96,7 +59,7 @@ Create an **IAM role** with two policies attached. First, a **trust policy** tha
 }
 ```
 
-Second, a **permission policy** limiting the role to writing into your bucket — identical to Access Keys mode:
+Second, a **permission policy** limiting the role to writing into your bucket:
 
 ```json
 {
@@ -112,17 +75,10 @@ Second, a **permission policy** limiting the role to writing into your bucket �
 ```
 
 <Callout type="info" emoji="💡">
-The trust policy must use `Principal: { "Federated": "accounts.google.com" }`. If your organization's policies forbid `accounts.google.com` as a federated identity provider, use [Access Keys](#access-keys) instead.
+The trust policy must use `Principal: { "Federated": "accounts.google.com" }`. If your organization's policies forbid `accounts.google.com` as a federated identity provider, [get in touch](mailto:support@avo.app) — we'll discuss workarounds.
 </Callout>
 
-Then enter these fields in Avo:
-
-| Field | Description |
-|:------|:------------|
-| **Avo's service account ID** | Read-only — the 21-digit ID Avo displays for you to paste into your trust policy `accounts.google.com:sub` condition (above). |
-| **Role ARN** | The ARN of the IAM role Avo should assume, e.g. `arn:aws:iam::123456789012:role/avo-s3-publisher`. |
-
-#### How a publish authenticates
+### How a publish authenticates
 
 Per publish, Avo's Cloud Function:
 
@@ -146,6 +102,7 @@ Every publish writes two objects under the same prefix:
 - **`latest.json`** is identical in content to the most recent timestamped file, and is always overwritten. Downstream consumers that just want "the current tracking plan" should read this; consumers that need history can list the timestamped files.
 - **`<workspaceId>`** is the Avo workspace ID. It's stable and never changes.
 - **`<branchId>`** is the Avo branch the publish came from. Branches merged to main share a single main-branch ID; feature branches each have their own. This lets downstream tooling pin to a specific feature branch during development and switch to main once merged. Auto-publishes that run on branch merge always land in the main folder.
+- The object key layout is fixed: customizing the `<workspaceId>/<branchId>/<filename>` segments (beyond the optional folder prefix) isn't currently supported.
 
 ### Example
 
@@ -174,18 +131,11 @@ Both modes write to the same files. The `<publishType>` segment in the timestamp
 
 ## Security
 
-- The AWS Secret Access Key is encrypted at rest in GCP Secret Manager (Avo's infrastructure) and only decrypted in-memory inside the Cloud Function that performs the S3 write. It is never stored in Avo's primary database, never logged, and never returned to the browser.
-- Re-submitting the secret rotates it — there's no separate rotate step.
-- Removing the integration deletes the stored secret from Secret Manager. Versioned history is retained for audit (GCP default retention) but is no longer reachable from the Avo UI.
-- We recommend scoping the IAM user to `s3:PutObject` on the Avo bucket only. Avoid attaching `AmazonS3FullAccess` or similar broad policies.
-
-For **Role Assumption (OIDC)** mode:
-
 - Avo holds no AWS credentials — not even encrypted. There's no secret to store, log, or leak.
 - The mechanism is AWS's built-in trust of Google's OIDC issuer. The `accounts.google.com:sub` condition in your trust policy pins trust to Avo's specific service account by its 21-digit unique ID — a value only Google can populate and the token requester can't forge. (Implementation note for security-aware readers: conditioning on `sub` rather than `aud` is deliberate — `aud` is whatever the caller requests when minting the token, so it isn't an identity proof, whereas AWS validates `sub` independently and the caller can't set it.)
 - Each token is Google-signed, lives about an hour, and is exchanged for AWS temporary credentials (valid 15 minutes) on every publish.
-- We recommend scoping the role to `s3:PutObject` on the Avo bucket only — the same least-privilege guidance as the access-keys IAM user.
 - The service account that mints the OIDC token is **dedicated to this integration and holds zero IAM roles in Avo's GCP project** — it has no permissions to read Avo's database, fetch secrets, or invoke other services. You pin your AWS trust policy to this identity by its 21-digit ID, so even a full compromise of the publish path yields only "write to opted-in customer buckets," never a foothold inside Avo.
+- We recommend scoping the role to `s3:PutObject` on the Avo bucket only. Avoid attaching `AmazonS3FullAccess` or similar broad policies.
 
 ## Failure handling
 
@@ -193,11 +143,10 @@ When a publish fails, the integration page shows a red "Published with errors" m
 
 The error message in the Avo UI surfaces the underlying AWS response. The most common failures and how to resolve them:
 
-- **403 Access Denied**: The IAM user (Access Keys mode) or assumed role (Role Assumption mode) doesn't have `s3:PutObject` on the target bucket or folder prefix. Confirm the permission policy is attached and that its `Resource` ARN matches your bucket, e.g. `arn:aws:s3:::<your-bucket>/*`.
-- **403 SignatureDoesNotMatch / InvalidAccessKeyId** _(Access Keys mode)_: The Access Key ID or Secret Access Key is wrong, or the key has been deactivated or rotated in AWS. Re-enter a valid access key pair in the integration config.
-- **AccessDenied on `AssumeRoleWithWebIdentity`** _(Role Assumption mode)_: AWS refused to let Avo assume the role. The `accounts.google.com:sub` condition in your trust policy doesn't match Avo's service account ID shown in Avo, or the trust policy isn't using `Principal: { "Federated": "accounts.google.com" }`. Re-copy the service account ID from the integration screen into the condition.
-- **InvalidIdentityToken** _(Role Assumption mode)_: AWS couldn't validate the Google-signed token (expired, clock skew, or a transient issue fetching Google's JWKS). This is usually transient — click **Publish** again to retry.
-- **Role ARN errors (NoSuchEntity / malformed ARN)** _(Role Assumption mode)_: The configured **Role ARN** doesn't exist or is malformed. Confirm it matches the role you created, e.g. `arn:aws:iam::123456789012:role/avo-s3-publisher`.
+- **403 Access Denied**: The assumed role doesn't have `s3:PutObject` on the target bucket or folder prefix. Confirm the permission policy is attached and that its `Resource` ARN matches your bucket, e.g. `arn:aws:s3:::<your-bucket>/*`.
+- **AccessDenied on `AssumeRoleWithWebIdentity`**: AWS refused to let Avo assume the role. The `accounts.google.com:sub` condition in your trust policy doesn't match Avo's service account ID shown in Avo, or the trust policy isn't using `Principal: { "Federated": "accounts.google.com" }`. Re-copy the service account ID from the integration screen into the condition.
+- **InvalidIdentityToken**: AWS couldn't validate the Google-signed token (expired, clock skew, or a transient issue fetching Google's JWKS). This is usually transient — click **Publish** again to retry.
+- **Role ARN errors (NoSuchEntity / malformed ARN)**: The configured **Role ARN** doesn't exist or is malformed. Confirm it matches the role you created, e.g. `arn:aws:iam::123456789012:role/avo-s3-publisher`.
 - **404 NoSuchBucket**: The configured bucket doesn't exist in the configured region. Check the **S3 Bucket Name** (name only, no `s3://` prefix) and that the **AWS Region** matches where the bucket actually lives.
 - **301 PermanentRedirect**: The bucket is in a different region than the one configured. Update **AWS Region** to the bucket's real region.
 - **KMS / encryption errors**: The bucket enforces SSE-KMS with a customer-managed key, which is not currently supported. Switch the bucket to SSE-S3 or an AWS-managed KMS key.
