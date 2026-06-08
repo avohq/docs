@@ -1,0 +1,33 @@
+---
+title: Adopting Avo with AI agents
+description: The entry point for adopting Avo when you use AI coding agents. Covers both greenfield setup and fixing inconsistent agent-generated analytics — all proposals land on a branch, never on main, and merging is always a human step.
+---
+
+import PageLink, { TwoCol } from '../../components/PageLink'
+
+# Adopting Avo with AI agents
+
+If your workflow involves AI coding agents — Claude Code, Cursor, Codex, and others — generating analytics tracking, Avo gives that tracking a governed home: a shared tracking plan, audit rules that enforce your naming conventions, and a branch-based review flow. Your agent connects through the [Avo MCP](/reference/avo-mcp/overview) and proposes changes, but every write lands on a branch — never on main — and merging is always a deliberate human step in the Avo web app.
+
+AI agents go wrong in two places: **what they design** (inconsistent names, duplicates, ignoring the conventions you've already established) and **how they implement it** (code that drifts from the spec). Avo addresses both. Pick the page that matches where you are:
+
+<TwoCol>
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Adding Avo to a project with AI-generated analytics"
+    description="The safe, incremental path to install the Avo MCP and open your first branch — whether your project has existing analytics or none yet."
+    href="/adopting-avo-with-ai-agents/adding-avo-to-a-new-project"
+  />
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Fixing and preventing inconsistent AI-generated analytics"
+    description="Your agent is generating tracking but events are inconsistent, duplicated, or never match the spec. Here's how Avo surfaces what's already wrong and prevents new mess — across both the design problem (bad names, duplicates, ignores conventions) and the implementation problem (code that drifts from the plan)."
+    href="/adopting-avo-with-ai-agents/fixing-inconsistent-ai-generated-analytics"
+  />
+</TwoCol>
+
+## Related
+
+- [Agentic data design](/data-design/guides/agentic-data-design) — Avo's in-app AI suggestions for designing tracking.
+- [What is a Tracking Plan?](/data-design) — the governance model Avo enforces.
+- [Avo MCP overview](/reference/avo-mcp/overview) — setup, tools, OAuth, and the branch-write guarantee in full.

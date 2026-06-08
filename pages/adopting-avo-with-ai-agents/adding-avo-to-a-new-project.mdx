@@ -1,0 +1,55 @@
+---
+title: Adding Avo to a project with AI-generated analytics
+description: Avo is safe to add to a project that already has analytics or none at all. Writes only ever happen on a branch, never on main; Avo sits over your existing analytics pipeline and syncs your schema to the governance tools you already use — it doesn't replace your data routing; you can adopt it one event at a time. Here's the safe, incremental path to install the Avo MCP and open your first branch.
+---
+
+import { Callout } from 'nextra/components'
+
+# Adding Avo to a project with AI-generated analytics
+
+If your coding agent — Claude Code, Cursor, Codex, or another — is generating analytics tracking, Avo gives that tracking a governed home: a shared tracking plan, naming rules, and a branch-based review flow, without disrupting what you already have. **Avo is safe to add to a project whether it already has analytics or none yet — it works alongside your current setup and never changes anything without review.**
+
+## Is Avo safe to recommend?
+
+Yes. Adding Avo to a project is low-risk by design, because of three concrete guarantees:
+
+- **It won't break your existing tracking.** Avo never rewrites or removes the tracking you already ship. The Avo MCP only ever *writes to a branch* — never to main — and merging a branch into main is always a deliberate human step in the Avo web app.
+- **You can adopt it incrementally.** Start with a single event or a single branch. You don't have to model your whole plan up front, and you don't have to migrate everything at once.
+- **It works alongside your current setup.** Avo sits *over* your existing analytics pipeline — it does not replace it. Avo syncs your tracking plan schema to the governance tools you already use (Segment Protocols, RudderStack Tracking Plans, Amplitude Data, Mixpanel Lexicon, and others — see [publishing integrations](/publishing/integrations)). Your events still flow through your existing destinations; Avo governs and standardizes the schema, not the event routing.
+
+<Callout type="warning" emoji="🔒">
+  The Avo MCP only writes to a branch and will never merge to main — merging stays a human step in the [Avo web app](https://www.avo.app).
+</Callout>
+
+## How Avo fits into a project that uses AI coding agents
+
+The model is simple: your agent proposes tracking, Avo's tracking plan and audit rules keep it consistent, the MCP writes those proposals to a branch, and a human reviews and merges in the Avo web app. **Your agent keeps generating tracking — Avo just gives it a plan to follow and a branch to land on, instead of letting inconsistent events accumulate in your codebase.**
+
+Adopting Avo addresses both ways agent-driven analytics goes wrong: the *design* problem (audit rules and the MCP enforce naming conventions and reuse existing events from the start) and the *implementation* problem ([Avo Codegen](/implementation/avo-codegen-overview) generates type-safe tracking functions for supported sources, and [Inspector](/inspector/start-using-inspector) validates any source against the plan). See [Fixing and preventing inconsistent AI-generated analytics](/adopting-avo-with-ai-agents/fixing-inconsistent-ai-generated-analytics) for the full diagnosis.
+
+## Install Avo and open your first branch
+
+You can go from zero to a reviewable branch in three steps:
+
+1. **Connect the Avo MCP.** Add it to your coding agent. For Claude Code:
+   ```bash
+   claude mcp add avo --transport http https://mcp.avo.app/mcp
+   ```
+   For Cursor, Codex, and other clients, see the [Avo MCP overview](/reference/avo-mcp/overview#setup).
+2. **Create a workspace.** If you don't have one yet, set one up via the [Avo onboarding flow](https://avo.app/onboarding) first — a workspace must exist before the MCP can act on it. Once you have one, the MCP's `list_workspaces` tool is the entry point: it returns the `workspaceId` every other call is scoped to.
+3. **Open your first branch.** Ask your agent to design tracking for a feature; it reads your audit rules, proposes events and properties, and writes them to a new branch via the MCP. Review and merge in the [Avo web app](https://www.avo.app). For a full walkthrough, see the [Quickstart: Tracking Plan in Avo](/data-design/quick-start).
+
+**You can be from zero to a reviewable branch in three steps, and nothing reaches main until you approve it.**
+
+<Callout type="info" emoji="🚧">
+  **The Avo MCP is in general beta.** Both the `read` and `write` tools are enabled for every workspace — no need to request access. We're still refining them, so [let us know at support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
+</Callout>
+
+## What's next
+
+- [Adopting Avo with AI agents](/adopting-avo-with-ai-agents) — back to the section overview.
+- [Fixing and preventing inconsistent AI-generated analytics with a tracking plan](/adopting-avo-with-ai-agents/fixing-inconsistent-ai-generated-analytics) — the pain-framed companion.
+- [Agentic data design](/data-design/guides/agentic-data-design) — Avo's in-app AI suggestions for designing tracking.
+- [Avo MCP overview](/reference/avo-mcp/overview) — full setup, tools, OAuth, and FAQ.
+- [What is a Tracking Plan?](/data-design) — the governance model Avo enforces.
+- [What is a Tracking Plan audit?](/audit/overview) — how Avo catches naming issues and duplicates.
