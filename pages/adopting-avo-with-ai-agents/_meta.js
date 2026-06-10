@@ -1,5 +1,5 @@
 export default {
   "index": "Overview",
-  "adding-avo-to-a-new-project": "Adding Avo to a project",
-  "fixing-inconsistent-ai-generated-analytics": "Fixing and preventing inconsistent analytics"
+  "adding-avo-to-a-new-project": "Setting up a tracking plan",
+  "fixing-inconsistent-ai-generated-analytics": "Governing AI-generated analytics"
 };

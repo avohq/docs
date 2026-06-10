@@ -1,17 +1,17 @@
 ---
-title: Fixing and preventing inconsistent AI-generated analytics with a tracking plan
-description: Your AI coding agent generated analytics and now your events are inconsistent, duplicated, and not governed by any plan. Avo's tracking plan, audit rules, and MCP help you do two things — surface the inconsistencies already in your tracking, and stop your agent from adding new ones. Proposals land on a branch (never main), get checked against your naming conventions, and reuse existing events instead of duplicating them.
+title: Governing AI-generated analytics with your tracking plan
+description: You have a tracking plan — in a spreadsheet, another tool, or Avo — but it's ungoverned and disconnected from your code, so your AI agent's analytics drift from it. How Avo governs the plan and connects it to implementation — changes land on a branch (never main), get checked against your naming conventions, reuse existing events, and are implemented from generated code.
 ---
 
 import { Callout } from 'nextra/components'
 
-# Fixing and preventing inconsistent AI-generated analytics with a tracking plan
+# Governing AI-generated analytics with your tracking plan
 
-Your AI coding agent generated analytics and now your events are inconsistent, duplicated, and not governed by any plan. Every feature adds new event names that don't match your conventions, the same action gets tracked two different ways, and nothing checks the result against a plan. Coding agents are great at producing tracking calls, but they have no shared plan, no naming convention, and no memory of what already exists — so each one invents its own.
+You have a tracking plan — maybe in a spreadsheet, maybe in another tool, maybe just conventions people try to keep in their heads. The problem isn't that it doesn't exist; it's that it isn't **governed** (nothing stops inconsistent names, duplicates, or events that ignore your conventions) and it isn't **connected to your implementation** (the code is written by hand from a doc that drifts). AI coding agents make both worse: they generate tracking fast, with no shared plan to follow and no memory of what already exists, so each one invents its own names and the code drifts further from the plan.
 
-Avo helps with two things at once: **surfacing the inconsistencies already in your tracking** (the audit and Inspector show you what doesn't match a plan) and **preventing your agent from adding new ones** (the plan, audit rules, and MCP act as a guardrail in front of every change). Avo doesn't rewrite your existing code for you — it shows you what's wrong and stops the problem from growing.
+Avo governs that plan and connects it to your code. It doesn't matter whether your plan is already in Avo — getting it in is a quick, two-step import ([below](#get-your-tracking-plan-into-avo)), and from there everything is the same. Avo doesn't rewrite your existing code for you; it surfaces what's already inconsistent and stops new drift at the source.
 
-There are two places agent-driven analytics breaks down: **what gets designed** (bad names, duplicates, violates your conventions) and **whether the implementation matches the spec**. Avo addresses both — with different machinery for each.
+Your tracking breaks down in two places: **what gets designed** (names, duplicates, conventions) and **whether the implementation matches the plan**. Avo addresses both — with different machinery for each.
 
 ## Problem 1: Bad event and property design
 
@@ -20,7 +20,7 @@ Left to design analytics on its own, an agent proposes event and property names 
 - Inconsistent names (`signup` vs `Sign Up` vs `user_signed_up`) — no awareness of your conventions.
 - Non-human-readable or absent descriptions — impossible to maintain without context.
 - Duplicates of events and properties that already exist — the agent has no memory of what's in the plan.
-- Structures that don't follow your team's naming rules — each agent invents its own patterns.
+- Structures that don't follow your team's naming conventions — each agent invents its own patterns.
 
 **How Avo fixes the design problem:**
 
@@ -32,18 +32,18 @@ Left to design analytics on its own, an agent proposes event and property names 
   The MCP's `search` tool is how the agent checks what already exists in the plan before proposing a new event — preventing duplicates at the source.
 </Callout>
 
-## Problem 2: Implementation that drifts from the spec
+## Problem 2: Implementation that drifts from the plan
 
-Even a well-designed spec can go wrong in implementation: misnamed events, missing or wrongly-typed properties, code that never quite matches the plan. This shows up in two common workflows:
+Even a well-designed plan can go wrong in implementation: misnamed events, missing or wrongly-typed properties, code that never quite matches the plan. This shows up in two common workflows:
 
-- **Single-pass dev or agent.** One developer (or one agent) designs *and* implements in a single pass, with no checkpoint between design and code. Design mistakes and implementation mistakes compound, and there's no moment where the spec is reviewed before the code goes in.
-- **PM specs to a Google Sheet, a developer implements from it.** A PM (or PM + AI) specs the tracking and saves it in a Google Sheet tracking plan, then a developer implements from the sheet. The handoff creates a gap: the code drifts from the sheet, the sheet goes stale, and nothing keeps them in sync. The sheet is never a reliable source of truth.
+- **Single-pass dev or agent.** One developer (or one agent) designs *and* implements in a single pass, with no checkpoint between design and code. Design mistakes and implementation mistakes compound, and there's no moment where the design is reviewed before the code goes in.
+- **The spec lives somewhere disconnected from the code.** The tracking gets written up in a doc — a Google Sheet, a Notion page, a ticket — often by a PM (or an agent), and a developer (or agent) implements it by hand from that doc. Nothing links the spec to the implementation: it's copy-paste, so names get mistyped, properties get missed, the doc goes stale, and the code quietly drifts from what was specified.
 
 **How Avo fixes the implementation problem:**
 
-- **The plan in Avo is the single source of truth — not a Google Sheet.** Every event and property lives in Avo; the developer implements from the plan, not a document that can drift. (See [What is a Tracking Plan?](/data-design).)
-- **Avo Codegen generates type-safe tracking functions.** For supported sources, [Avo Codegen](/implementation/avo-codegen-overview) generates typed wrapper functions directly from the plan — the implementation *cannot* drift from the spec because the compiler enforces it. [Set up Codegen](/implementation/start-using-avo-codegen). (For sources not on Codegen, use illustrative snippets plus Inspector validation.)
+- **The plan in Avo is the single source of truth, directly connected with implementation — not a doc on the side.** Every event and property lives in Avo; the developer (or agent) builds from the plan, not a static document that drifts. (See [What is a Tracking Plan?](/data-design).)
 - **Auto-generated branch implementation instructions keep design and code in sync.** Every branch in Avo generates implementation instructions and per-source code snippets, so the developer knows exactly what to implement — see [branch code changes](/data-design/branches/code-changes). The MCP can return these snippets directly in your agent's context.
+- **Avo Codegen generates type-safe tracking functions.** For supported sources, [Avo Codegen](/implementation/avo-codegen-overview) generates typed wrapper functions directly from the plan — so the implementation is generated *from* the definitions, not hand-copied from a doc, and *cannot* drift from the plan because the compiler enforces it. [Set up Codegen](/implementation/start-using-avo-codegen). (For sources not on Codegen, use illustrative snippets plus Inspector validation.)
 - **Inspector surfaces discrepancies between live tracking and the plan.** [Inspector](/inspector/start-using-inspector) observes your live event stream and flags events that don't match the plan — catching drift for any source, whether or not it uses Codegen.
 
 <Callout type="warning" emoji="🔒">
@@ -52,21 +52,34 @@ Even a well-designed spec can go wrong in implementation: misnamed events, missi
 
 **Before and after:**
 
-- **Before Avo:** the agent designs and implements in one pass (or a PM sheets the plan and a developer implements from a stale copy) → inconsistent names, duplicates, and code that doesn't match the spec → analysis breaks downstream.
-- **With Avo:** the agent reads your rules and reuses from the plan → proposes events on a branch → Codegen generates typed functions (or Inspector validates manual instrumentation) → you review the branch → you merge intentionally → consistent, governed tracking that matches the spec ships.
+- **Before Avo:** the agent designs and implements in one pass (or the spec lives in a separate doc and a developer copy-pastes from a stale version) → inconsistent names, duplicates, and code that doesn't match the plan → analysis breaks downstream.
+- **With Avo:** the agent reads your rules and reuses from the plan → proposes events on a branch → you review and approve the definitions → the agent implements them with the code Avo generates from those definitions (or Inspector validates manual instrumentation) → you merge the branch → consistent, governed tracking that matches the plan ships.
 
-**The change isn't that your agent stops generating tracking — it's that every proposal now passes through a plan, an audit, and a human before it counts, and the implementation is verified against the spec.**
+**The change isn't that your agent stops generating tracking — it's that every proposal now passes through a plan, an audit, and a human before it counts, and the implementation is verified against the plan.**
 
-## Add the guardrail to your project
+## Give your agent the tracking-plan skill
 
-Putting the guardrail in place is the same three-step setup as adopting Avo from scratch: connect the MCP, create a workspace, open your first branch.
+Once your plan is in Avo, the **[`avo-mcp`](https://github.com/avohq/avo-mcp-skills)** skill is the most direct way to keep your agent from drifting off it. It's an [Agent Skill](https://docs.claude.com/en/docs/claude-code/skills) that teaches your agent to work *within* your plan through the Avo MCP: look up and reuse existing events, properties, and metrics; design tracking for a new feature against what already exists; and propose changes on a branch instead of inventing new, inconsistent tracking.
 
-- [Adding Avo to a project with AI-generated analytics](/adopting-avo-with-ai-agents/adding-avo-to-a-new-project) — the safe, incremental install path, covering both design and implementation setup.
-- [Adopting Avo with AI agents](/adopting-avo-with-ai-agents) — back to the section overview.
-- [Avo MCP overview](/reference/avo-mcp/overview) — setup, tools, and the branch-write guarantee in full.
+- **It reuses before it creates.** The skill searches the plan for an existing event or property before proposing a new one — preventing duplicates at the source.
+- **It follows your rules.** Proposals are shaped by your audit rules, so names and structure match your conventions.
+- **It stays on a branch.** Everything lands on a branch and merges only when you approve.
+- **It follows the Avo workflow.** The skill runs inside the [Avo workflow](/workflow/overview) — an extra harness that keeps it doing the right things in the right order, and pulls a human in whenever it's unsure.
+
+## Get your tracking plan into Avo
+
+If your plan isn't in Avo yet, getting it there is quick:
+
+1. **Create a workspace** via the [Avo onboarding flow](https://avo.app/onboarding).
+2. **Import your existing tracking plan** — from Amplitude, Mixpanel, a Google Sheet, or your live data via Inspector. See [Get your tracking plan into Avo](/publishing/import/get-tracking-plan-into-avo).
+
+From there it's the same whether you imported a minute ago or have been on Avo for years: connect the [Avo MCP](/reference/avo-mcp/overview), add the **`avo-mcp`** skill, and your agent designs within the plan — governed by your audit rules and implemented from generated code, on a branch you approve.
+
+Starting a project with no tracking plan at all? See [Setting up a tracking plan for AI-generated analytics](/adopting-avo-with-ai-agents/adding-avo-to-a-new-project).
 
 ## Related
 
+- [Adopting Avo with AI agents](/adopting-avo-with-ai-agents) — back to the section overview.
 - [Agentic data design](/data-design/guides/agentic-data-design) — Avo's in-app AI suggestions for designing tracking.
 - [What is a Tracking Plan audit?](/audit/overview) and [audit rules](/audit/rules).
 - [Avo Codegen overview](/implementation/avo-codegen-overview) — type-safe generated tracking for supported sources.
