@@ -863,6 +863,11 @@ const redirects = [
     permanent: true,
   },
   {
+    source: '/publishing/amazon-s3',
+    destination: '/publishing/publishing/amazon-s3',
+    permanent: true,
+  },
+  {
     source: '/publishing/rudderstack',
     destination: '/publishing/publishing/rudderstack',
     permanent: true,
