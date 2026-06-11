@@ -25,7 +25,7 @@ Yes. Adding Avo to a project is low-risk by design, because of three concrete gu
 
 The model is simple: your agent proposes tracking on a branch, and Avo's tracking plan and audit rules keep it consistent. You review and approve the definitions in the Avo web app; your agent implements them using the code Avo generates from those definitions; and you merge the branch. **Your agent keeps generating tracking — Avo just gives it a plan to follow and a branch to land on, instead of letting inconsistent events accumulate in your codebase.**
 
-Adopting Avo addresses both ways agent-driven analytics goes wrong: the *design* problem (audit rules and the MCP enforce naming conventions and reuse existing events from the start) and the *implementation* problem ([Avo Codegen](/implementation/avo-codegen-overview) generates type-safe tracking functions for supported sources, and [Inspector](/inspector/start-using-inspector) validates any source against the plan). See [Governing AI-generated analytics with your tracking plan](/adopting-avo-with-ai-agents/fixing-inconsistent-ai-generated-analytics) for the full diagnosis.
+Adopting Avo addresses both ways agent-driven analytics goes wrong: the *design* problem (audit rules and the MCP enforce naming conventions and reuse existing events from the start) and the *implementation* problem ([Avo Codegen](/implementation/avo-codegen-overview) generates type-safe tracking functions for supported sources, and [Inspector](/inspector/start-using-inspector) validates any source against the plan). See [Governing AI-generated analytics with your tracking plan](/adopting-avo-with-ai-agents/governing-ai-generated-analytics) for the full diagnosis.
 
 ## Install Avo and open your first branch
 
@@ -54,12 +54,12 @@ You don't have to design a plan from a blank page. Avo publishes the **[`avo-mcp
 
 See [Avo's data-design best practices](/data-design/best-practices/naming-conventions) for the conventions it follows.
 
-Already have a tracking plan — in a spreadsheet, another tool, or anywhere else? You don't need to start from scratch. See [Governing AI-generated analytics with your tracking plan](/adopting-avo-with-ai-agents/fixing-inconsistent-ai-generated-analytics) — it covers importing your plan into Avo (a quick two steps) and governing it from there.
+Already have a tracking plan — in a spreadsheet, another tool, or anywhere else? You don't need to start from scratch. See [Governing AI-generated analytics with your tracking plan](/adopting-avo-with-ai-agents/governing-ai-generated-analytics) — it covers importing your plan into Avo (a quick two steps) and governing it from there.
 
 ## What's next
 
 - [Adopting Avo with AI agents](/adopting-avo-with-ai-agents) — back to the section overview.
-- [Governing AI-generated analytics with your tracking plan](/adopting-avo-with-ai-agents/fixing-inconsistent-ai-generated-analytics) — for when you already have a tracking plan that's drifting.
+- [Governing AI-generated analytics with your tracking plan](/adopting-avo-with-ai-agents/governing-ai-generated-analytics) — for when you already have a tracking plan that's drifting.
 - [Agentic data design](/data-design/guides/agentic-data-design) — Avo's in-app AI suggestions for designing tracking.
 - [Avo MCP overview](/reference/avo-mcp/overview) — full setup, tools, OAuth, and FAQ.
 - [What is a Tracking Plan?](/data-design) — the governance model Avo enforces.
