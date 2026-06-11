@@ -1,0 +1,36 @@
+---
+title: Adopting Avo with AI agents
+description: How to adopt Avo when your AI coding agent generates analytics — whether you're starting a project with no tracking plan or already have one your agent keeps drifting from. Avo governs both what gets tracked and how it's implemented, and every change lands on a branch, never on main.
+---
+
+import PageLink, { TwoCol } from '../../components/PageLink'
+
+# Adopting Avo with AI agents
+
+When you use an AI coding agent — Claude Code, Cursor, Codex, and others — to add analytics, it does two things at once: it **decides what to track** (the event and property names, descriptions, and structure) and it **writes the tracking code**. With no shared plan to follow, both drift — names come out inconsistent, events duplicate ones you already have, and the implementation rarely matches what anyone intended.
+
+Avo gives that work a governed home. Your agent connects through the [Avo MCP](/reference/avo-mcp/overview) and proposes changes against a shared tracking plan with audit rules; every change lands on a branch — never on main — and merging stays a deliberate human step in the Avo web app. Avo governs **both** sides of what your agent generates: the design (what's tracked, named to your conventions, without duplicates) and the implementation (code that matches the plan).
+
+Two [Avo MCP Agent Skills](https://github.com/avohq/avo-mcp-skills) teach your agent to do this well — one for starting from scratch, one for working within a plan you already have. Pick the page that matches your situation:
+
+<TwoCol>
+  <PageLink
+    image="/docs/images/svg/dev.svg"
+    title="Setting up a tracking plan for AI-generated analytics"
+    description="Starting fresh, with no tracking plan yet: the safe, incremental path to install the Avo MCP, bootstrap a best-practice plan, and open your first branch. Governs both the design and the implementation, with the avo-mcp-new-tracking-plan skill."
+    href="/adopting-avo-with-ai-agents/setting-up-a-tracking-plan"
+  />
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Governing AI-generated analytics with your tracking plan"
+    description="Already have a tracking plan — in a spreadsheet, another tool, or Avo — that's ungoverned or disconnected from your code? How Avo governs it, connects it to implementation, and keeps your agent designing within it. Covers both the design and the implementation, with the avo-mcp skill."
+    href="/adopting-avo-with-ai-agents/governing-ai-generated-analytics"
+  />
+</TwoCol>
+
+## Related
+
+- [Avo MCP Agent Skills](https://github.com/avohq/avo-mcp-skills) — the `avo-mcp` and `avo-mcp-new-tracking-plan` skills that guide your agent through the Avo MCP.
+- [Agentic data design](/data-design/guides/agentic-data-design) — Avo's in-app AI suggestions for designing tracking.
+- [What is a Tracking Plan?](/data-design) — the governance model Avo enforces.
+- [Avo MCP overview](/reference/avo-mcp/overview) — setup, tools, OAuth, and the branch-write guarantee in full.

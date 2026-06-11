@@ -1,5 +1,6 @@
 export default {
   "index": "Getting Started",
+  "adopting-avo-with-ai-agents": "Adopting Avo with AI agents",
   "workflow": "Avo Workflow",
   "audit": "Tracking Plan Audit",
   "data-design": "Tracking Plan Management",
