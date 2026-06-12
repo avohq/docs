@@ -182,8 +182,9 @@ The format produced by Avo's [JSON Schema export](/reference/public-api/export-t
 | `rules.properties.userProperties` | object | User properties | Merged with event properties; `sendAs` overridden to `UserProperty` |
 | `rules.properties.groupProperties` | object | **Not imported** | Warning generated |
 | `x-avo-customFields` | object | Event custom field values | Only values for [custom fields](/data-design/avo-tracking-plan/governance/custom-fields) that already exist in the workspace; unknown field names are skipped with a warning |
+| `x-avo-containsPii` | boolean | **Not imported** | Computed from the PII status of the event's properties, never set directly |
 
-> **Note on governance fields:** Custom field values and PII status are only applied for custom field and [PII type](/data-design/avo-tracking-plan/governance/tagging-pii) definitions that already exist in the workspace. Imports never create new definitions. Since event variants are not supported in import, custom field values on variants cannot be imported.
+> **Note on governance fields:** Custom field values and PII status are only applied for custom field and [PII type](/data-design/avo-tracking-plan/governance/tagging-pii) definitions that already exist in the workspace. Imports never create new definitions. `x-avo-containsPii` is ignored on import — it's recomputed from the PII status of the event's properties. Since event variants are not supported in import, custom field values on variants cannot be imported.
 
 #### Type Mapping
 
