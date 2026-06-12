@@ -14,6 +14,8 @@ To export your tracking plan Schema:
 
    ![](/images/workspace/export-modal.png)
 
+For workspaces using [Governance](/data-design/avo-tracking-plan/governance) (Enterprise plan), the exports include the governance values: the CSV export has one column per active [custom field](/data-design/avo-tracking-plan/governance/custom-fields) (multi select values are semicolon-separated) and "PII" and "PII Type" columns for the [PII status](/data-design/avo-tracking-plan/governance/tagging-pii) of properties. The JSON export includes the same values as `x-avo-customFields`, `x-avo-pii`, `x-avo-piiType` and `x-avo-containsPii` vendor extensions — see the [Export API reference](/reference/public-api/export-tracking-plan#governance-fields).
+
 ## Programmatic export with the Export API
 
 Use the **Export API** to programmatically export your tracking plan as JSON Schema from any branch. This is ideal for automation, CI/CD pipelines, or integrating with external tools.

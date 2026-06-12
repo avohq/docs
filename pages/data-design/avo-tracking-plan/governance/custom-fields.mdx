@@ -1,0 +1,77 @@
+import { Callout } from 'nextra/components'
+
+# Custom fields
+
+_Attach structured, admin-defined metadata to the items in your tracking plan_
+
+<Callout type="info" emoji="💡">Custom fields are part of [Governance](/data-design/avo-tracking-plan/governance), available on the Enterprise plan only. See [plans and pricing](https://www.avo.app/pricing).</Callout>
+
+<Callout type="info" emoji="🚧">
+  Custom fields are in beta. Reach out at [support@avo.app](mailto:support@avo.app) to get access and provide feedback.
+</Callout>
+
+Custom fields let workspace admins define structured metadata fields that the workspace attaches to tracking plan items, beyond Avo's built-in fields like name, description, tags and categories. Typical examples are "Priority" and "TTL" (time to live — the expected lifespan of an event or property).
+
+Custom fields apply to **events**, **event variants** and **properties**. Each field can be scoped to any combination of these three item types.
+
+<Callout type="info" emoji="💡">Event variants do not inherit custom field values from their base event — each variant sets its own values.</Callout>
+
+## Managing custom field definitions
+
+Custom field definitions are managed by workspace admins on the **Custom Fields** tab of the [Governance page](/data-design/avo-tracking-plan/governance). To create a field, click `+ New custom field` and define:
+
+- **Name** and an optional **description**
+- **Type** – Text, Single select or Multi select
+- **Allowed values** – for single and multi select fields, the list of values editors can pick from
+- **Scopes** – whether the field applies to events, event variants and/or properties
+- **Required toggles** – per scope, whether the field is required
+
+![The new custom field modal on the Governance Custom Fields tab](/images/governance/new-custom-field.png)
+
+Like other governance changes, creating and editing custom field definitions happens on a [branch](/data-design/branches) and goes through the normal branch review and merge workflow.
+
+### Field types
+
+Each custom field has one of three types. The type is immutable after creation — to change the type of a field you archive it and create a new one.
+
+- **Text**: A free-form text input
+- **Single select**: Pick one value from an admin-defined list of allowed values
+- **Multi select**: Pick one or more values from an admin-defined list of allowed values
+
+Select fields must have at least one allowed value. If an allowed value is removed later, existing values on items are preserved but shown as deprecated.
+
+### Required fields
+
+The "required" toggle is set per scope — for example a field can be required on events but optional on properties. Required fields are enforced through [audit rules](/audit/rules#all-required-custom-fields-are-set): missing values surface as audit issues and, when the rule is enforced, can block branch merging the same way other audit rules do.
+
+### Reordering, archiving and limits
+
+- **Reordering**: Fields can be reordered on the Custom Fields tab. The order controls the display order of the fields on item details and in exports.
+- **Archiving**: Archiving a field hides the field and its values without deleting them. Unarchiving restores both the field and the values that were set before it was archived.
+- **Limits**: A workspace can have up to 50 active custom fields. Archived fields don't count towards the limit.
+
+## Using custom fields in the tracking plan
+
+Editors fill in custom fields in a **Custom Fields** section on the event, event variant and property detail views, on a branch. The input matches the field type: a text input for Text fields, a dropdown for Single select fields and a tag-style multi-select for Multi select fields.
+
+![The Custom Fields section on event details](/images/governance/custom-fields-on-event-details.png)
+
+## Viewing custom field values
+
+### Item details
+
+Custom field values are shown in the Custom Fields section on the event, variant and property detail views, in the order the fields are arranged on the Governance Custom Fields tab.
+
+### Properties view
+
+The Properties view has a column per custom field scoped to properties. To add a custom field column to your view, click `Customize` and enable it. You can also move the column up the list in the customize menu to place it closer to the front of the table, where it's more visible.
+
+## Custom field values in branch diffs and exports
+
+- **Branch diffs**: Added, changed and cleared values show up in the [branch changes view](/data-design/branches/branch-changes)
+- **CSV export**: One column per custom field in the [CSV export](/publishing/exporting). Multi select values are semicolon-separated
+- **JSON Schema export**: An `x-avo-customFields` vendor extension in the [JSON Schema export](/reference/public-api/export-tracking-plan)
+
+### Importing custom field values
+
+The [Import API](/reference/public-api/import-tracking-plan) and JSON Schema import accept custom field values for existing field definitions. Unknown field names are skipped with warnings — importing never auto-creates custom field definitions. Note that the Import API does not support event variants, so custom field values on variants can't be imported.

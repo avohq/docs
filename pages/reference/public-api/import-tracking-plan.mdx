@@ -181,6 +181,9 @@ The format produced by Avo's [JSON Schema export](/reference/public-api/export-t
 | `rules.properties.properties` | object | Event properties | Standard JSON Schema format |
 | `rules.properties.userProperties` | object | User properties | Merged with event properties; `sendAs` overridden to `UserProperty` |
 | `rules.properties.groupProperties` | object | **Not imported** | Warning generated |
+| `x-avo-customFields` | object | Event custom field values | Only values for [custom fields](/data-design/avo-tracking-plan/governance/custom-fields) that already exist in the workspace; unknown field names are skipped with a warning |
+
+> **Note on governance fields:** Custom field values and PII status are only applied for custom field and [PII type](/data-design/avo-tracking-plan/governance/tagging-pii) definitions that already exist in the workspace. Imports never create new definitions. Since event variants are not supported in import, custom field values on variants cannot be imported.
 
 #### Type Mapping
 
@@ -210,6 +213,8 @@ The format produced by Avo's [JSON Schema export](/reference/public-api/export-t
 | System Property (fallback) | `isSystemProperty` | Boolean; used when `x-avo-sendAs` is absent |
 | Name Mapping | `nameMapping` | Array of `{ "name": "...", "destinationId": "..." }` |
 | Property ID | `id` | Preserved from Avo exports for re-import deduplication |
+| PII Status | `x-avo-pii`, `x-avo-piiType` | [PII status](/data-design/avo-tracking-plan/governance/tagging-pii) (`Undeclared`, `Not PII` or `PII`) and PII type name. PII types must already exist in the workspace — unknown types are skipped with a warning |
+| Custom Fields | `x-avo-customFields` | [Custom field](/data-design/avo-tracking-plan/governance/custom-fields) values for existing field definitions — unknown field names are skipped with a warning, never auto-created |
 
 #### Composition Keywords
 
