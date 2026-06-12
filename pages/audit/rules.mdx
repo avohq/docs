@@ -155,21 +155,29 @@ Add the property to one or more relevant categories. Learn more about [Categorie
 
 \* These rules can only fail after importing an existing tracking plan to Avo. When editing your Tracking Plan in Avo, Avo prevents you from introducing conflicting events and properties.
 
-## Governance Rules
+## Custom Field and PII Rules
 
-These rules enforce the standards defined on the [Governance](/data-design/avo-tracking-plan/governance) page and are available on the Enterprise plan.
+These rules enforce the [custom field](/data-design/avo-tracking-plan/governance/custom-fields) and [PII](/data-design/avo-tracking-plan/governance/tagging-pii) standards defined on the [Governance](/data-design/avo-tracking-plan/governance) page and are available on the Enterprise plan.
 
-### All required custom fields are set
+### All events and variants have required custom fields
 
-Checks if all events, event variants and properties have a value set for every [custom field](/data-design/avo-tracking-plan/governance/custom-fields) that is marked as required for that item type. Custom fields can be required per scope, so a field can for example be required on events while remaining optional on properties.
+Checks if all events and event variants have a value for every custom field that applies to events and is marked as required. Event variants inherit custom field values from their base event, so filling in the base event also resolves its variants.
 
 #### How to resolve
 
-Fill in the missing custom field values in the Custom Fields section of the event, variant or property details, on a branch. Note that event variants don't inherit custom field values from their base event — required fields scoped to variants need to be filled in on each variant.
+Fill in the missing custom field values in the Custom Fields section of the event details, on a branch.
 
-### All properties have a declared PII status
+### All properties have required custom fields
 
-Checks for properties with an Undeclared [PII status](/data-design/avo-tracking-plan/governance/tagging-pii). Every property defaults to Undeclared until someone explicitly reviews it and marks it as either Not PII or PII, so this rule ensures every property in your tracking plan has been reviewed for personally identifiable information.
+Checks if all properties have a value for every custom field that applies to properties and is marked as required.
+
+#### How to resolve
+
+Fill in the missing custom field values in the Custom Fields section of the property details, on a branch.
+
+### All properties have PII declared
+
+Checks for properties with an Undeclared [PII status](/data-design/avo-tracking-plan/governance/tagging-pii). Every property defaults to Undeclared until someone explicitly reviews it and marks it as either Not PII or PII, so this rule ensures every property in your tracking plan has been reviewed for personally identifiable information. Enforced in the [branch audit](/audit/branch-audit), it guarantees every new property gets a PII declaration before it goes live.
 
 #### How to resolve
 

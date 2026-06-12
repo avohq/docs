@@ -14,11 +14,11 @@ With PII tagging, your workspace classifies which properties carry personally id
 
 ## PII Types
 
-PII Types are workspace-defined classifications, for example "Email" or "Phone number". They are managed by workspace admins on the **PII Types** tab of the [Governance page](/data-design/avo-tracking-plan/governance) via `+ New PII type`.
+PII Types are workspace-defined classifications, for example "Personal Identifier" or "Contact Information". They are managed by workspace admins on the **PII Types** tab of the [Governance page](/data-design/avo-tracking-plan/governance) via `+ New PII type`.
 
 ![The PII Types tab on the Governance page with the default PII types](/images/governance/pii-overview.png)
 
-To get started quickly, you can optionally add Avo's default PII types:
+To get started quickly, click "Use Avo's defaults" to add Avo's default PII types:
 
 - **Personal Identifier**
 - **Contact Information**
@@ -66,7 +66,9 @@ The Events view has a "Contains PII" column, plus a "Contains PII" filter to foc
 
 ### Properties view
 
-The Properties view has a "PII Status" column showing each property's declared status, plus a "Contains PII" filter. Like on the Events view, click `Customize` to add the column to your view and move it up the list for better visibility.
+The Properties view has a "PII Status" column showing each property's declared status, plus "PII Status" and "PII Type" filters. Like on the Events view, click `Customize` to add the column to your view and move it up the list for better visibility.
+
+The PII Status filter is especially handy when classifying an existing tracking plan: filter to Undeclared and work through the list until nothing is left.
 
 ![The PII Status column on the Properties view](/images/governance/custom-fields-pii-properties-view.png)
 
@@ -74,10 +76,10 @@ The Properties view has a "PII Status" column showing each property's declared s
 
 - **Branch diffs**: PII status changes show up in the [branch changes view](/data-design/branches/branch-changes)
 - **CSV export**: "PII" and "PII Type" columns in the [CSV export](/publishing/exporting)
-- **JSON Schema export**: `x-avo-pii` and `x-avo-piiType` vendor extensions on properties and `x-avo-containsPii` on events in the [JSON Schema export](/reference/public-api/export-tracking-plan)
+- **JSON Schema export**: A `pii` object (`isPii` and, for PII properties, `piiType`) on properties, and a `pii` object with `containsPii` and the list of `piiTypes` on events, in the [JSON Schema export](/reference/public-api/export-tracking-plan#governance-fields)
 
-The [Import API](/reference/public-api/import-tracking-plan) and JSON Schema import round-trip the PII fields the same way as [custom fields](/data-design/avo-tracking-plan/governance/custom-fields#importing-custom-field-values): values referencing existing PII types are applied, unknown types are skipped with warnings and never auto-created.
+The [Import API](/reference/public-api/import-tracking-plan) and JSON Schema import round-trip the property-level `pii` object the same way as [custom fields](/data-design/avo-tracking-plan/governance/custom-fields#importing-custom-field-values): values referencing existing PII types are applied, unknown types are skipped with warnings and never auto-created.
 
 ## Enforcing PII declarations with the audit
 
-The [audit rule](/audit/rules#all-properties-have-a-declared-pii-status) "All properties have a declared PII status" can require every property to be either Not PII or PII — in other words, no Undeclared properties. Like other audit rules it surfaces issues in the branch and tracking plan audits and can optionally block branch merging, depending on your workspace's [audit configuration](/audit/rules#audit-rule-configuration).
+The [audit rule](/audit/rules#all-properties-have-pii-declared) "All properties have PII declared" can require every property to be either Not PII or PII — in other words, no Undeclared properties. Like other audit rules it surfaces issues in the branch and tracking plan audits and can optionally block branch merging, depending on your workspace's [audit configuration](/audit/rules#audit-rule-configuration). Enforced in the [branch audit](/audit/branch-audit), it guarantees every new property gets a PII declaration before it goes live.
