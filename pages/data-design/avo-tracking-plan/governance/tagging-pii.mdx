@@ -16,7 +16,7 @@ With PII tagging, your workspace classifies which properties carry personally id
 
 PII Types are workspace-defined classifications, for example "Email" or "Phone number". They are managed by workspace admins on the **PII Types** tab of the [Governance page](/data-design/avo-tracking-plan/governance) via `+ New PII type`.
 
-![The PII Types tab on the Governance page](/images/governance/pii-types-tab.png)
+![The PII Types tab on the Governance page with the default PII types](/images/governance/pii-overview.png)
 
 To get started quickly, you can optionally add Avo's default PII types:
 
@@ -26,7 +26,9 @@ To get started quickly, you can optionally add Avo's default PII types:
 - **Health Data**
 - **Location Data**
 
-The defaults behave like any other PII type once added — you can edit their names and descriptions, and archive the ones that don't fit your workspace's taxonomy.
+The defaults behave like any other PII type once added — you can edit their names and descriptions, and archive the ones that don't fit your workspace's taxonomy. Opening a PII type also shows which properties use it.
+
+![Editing a PII type's description and seeing which properties use it](/images/governance/pii-details.png)
 
 A property pointing at an archived PII type shows the type name with an "(archived)" suffix, so existing classifications stay visible even after the type is retired.
 
@@ -46,7 +48,7 @@ The distinction between Undeclared and Not PII is what makes the status useful: 
 
 To set the PII status of a property, click the PII pill in the property detail header and choose Not PII, Undeclared or PII. When choosing PII, you also pick which PII type applies.
 
-![The PII pill in the property detail header](/images/governance/pii-pill-property-details.png)
+![The PII pill open in the property detail header with the Not PII, Undeclared and PII options and a PII type picker](/images/governance/pii-events-details.png)
 
 If the workspace doesn't have any PII types yet, the UI prompts you to ask a workspace admin to add some on the Governance page.
 
@@ -65,6 +67,8 @@ The Events view has a "Contains PII" column, plus a "Contains PII" filter to foc
 ### Properties view
 
 The Properties view has a "PII Status" column showing each property's declared status, plus a "Contains PII" filter. Like on the Events view, click `Customize` to add the column to your view and move it up the list for better visibility.
+
+![The PII Status column on the Properties view](/images/governance/custom-fields-pii-properties-view.png)
 
 ## PII status in branch diffs and exports
 

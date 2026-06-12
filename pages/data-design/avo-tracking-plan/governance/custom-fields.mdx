@@ -18,7 +18,11 @@ Custom fields apply to **events**, **event variants** and **properties**. Each f
 
 ## Managing custom field definitions
 
-Custom field definitions are managed by workspace admins on the **Custom Fields** tab of the [Governance page](/data-design/avo-tracking-plan/governance). To create a field, click `+ New custom field` and define:
+Custom field definitions are managed by workspace admins on the **Custom Fields** tab of the [Governance page](/data-design/avo-tracking-plan/governance).
+
+![The Custom Fields tab on the Governance page listing the workspace's custom fields](/images/governance/custom-fields-overview.png)
+
+To create a field, click `+ New custom field` and define:
 
 - **Name** and an optional **description**
 - **Type** – Text, Single select or Multi select
@@ -26,7 +30,7 @@ Custom field definitions are managed by workspace admins on the **Custom Fields*
 - **Scopes** – whether the field applies to events, event variants and/or properties
 - **Required toggles** – per scope, whether the field is required
 
-![The new custom field modal on the Governance Custom Fields tab](/images/governance/new-custom-field.png)
+![The details of a Priority custom field with allowed values, scopes and per-scope required toggles](/images/governance/custom-field-details.png)
 
 Like other governance changes, creating and editing custom field definitions happens on a [branch](/data-design/branches) and goes through the normal branch review and merge workflow.
 
@@ -54,7 +58,7 @@ The "required" toggle is set per scope — for example a field can be required o
 
 Editors fill in custom fields in a **Custom Fields** section on the event, event variant and property detail views, on a branch. The input matches the field type: a text input for Text fields, a dropdown for Single select fields and a tag-style multi-select for Multi select fields.
 
-![The Custom Fields section on event details](/images/governance/custom-fields-on-event-details.png)
+![The Custom Fields section on property details, with a required Priority field and the TTL dropdown open](/images/governance/custom-fields-event-details.png)
 
 ## Viewing custom field values
 
@@ -65,6 +69,8 @@ Custom field values are shown in the Custom Fields section on the event, variant
 ### Properties view
 
 The Properties view has a column per custom field scoped to properties. To add a custom field column to your view, click `Customize` and enable it. You can also move the column up the list in the customize menu to place it closer to the front of the table, where it's more visible.
+
+![The Properties view with PII Status and Priority columns](/images/governance/custom-fields-pii-properties-view.png)
 
 ## Custom field values in branch diffs and exports
 
