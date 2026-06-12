@@ -1,0 +1,62 @@
+import { Callout } from 'nextra/components'
+import PageLink, { TwoCol } from '../../../../components/PageLink'
+
+# Governance
+
+_Your tracking plan standards in one place: custom fields, PII, audit rules and stakeholders_
+
+<Callout type="info" emoji="💡">Governance is available on the Enterprise plan only. See [plans and pricing](https://www.avo.app/pricing).</Callout>
+
+<Callout type="info" emoji="🚧">
+  Governance is in beta. Reach out at [support@avo.app](mailto:support@avo.app) to get access and provide feedback.
+</Callout>
+
+The Governance page is the home for your tracking plan standards — how teams define what good looks like and have Avo enforce it. You'll find it under **Tracking Plan > Governance** in the sidebar of your Avo workspace, covering four areas:
+
+- **Custom Fields** – admin-defined metadata fields, beyond Avo's built-in fields, that can be attached to events and properties
+- **PII Types** – an admin-defined taxonomy for classifying which properties carry personally identifiable information
+- **Audit rules** – the [tracking plan audit](/audit/rules) that checks the whole plan against your standards, from naming conventions to required custom fields
+- **Stakeholders** – [stakeholder teams](/data-design/avo-tracking-plan/stakeholder-domains) that document who owns and depends on your tracking plan items
+
+Custom Fields and PII Types are managed directly on the page; Audit rules and Stakeholders link out to their own surfaces and have their own docs.
+
+![The Governance page under Tracking Plan in the Avo sidebar, showing the Custom Fields and PII Types tabs](/images/governance/governance-page.png)
+
+## Who can manage governance
+
+Only workspace members with the _Admin_ role can create, edit and archive custom fields and PII types. All other roles see the Governance page read-only — the actions are disabled with the tooltip "Only workspace admins can manage governance fields and PII types".
+
+Setting custom field values and PII status on individual events and properties is regular tracking plan editing, available to _Editor_ and _Admin_ roles. See [Members and roles](/workspace-management/members) for the full role overview.
+
+## Governance changes are branch-reviewed
+
+Custom field and PII type definitions, and the values set on items, live in the tracking plan model. That means changes to them are made on [branches](/data-design/branches), show up in branch diffs, and go through the normal branch review and merge workflow — the same as any other tracking plan change.
+
+## Learn more
+
+<TwoCol>
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Custom fields"
+    description="Attach structured metadata to events, variants and properties"
+    href="/data-design/avo-tracking-plan/governance/custom-fields"
+  />
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Tagging PII"
+    description="Classify which properties carry personally identifiable information"
+    href="/data-design/avo-tracking-plan/governance/tagging-pii"
+  />
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Audit rules and configuration"
+    description="Enforce governance standards through the tracking plan audit"
+    href="/audit/rules"
+  />
+  <PageLink
+    image="/docs/images/svg/analyticsmanager.svg"
+    title="Stakeholders"
+    description="Document which teams own and depend on your tracking plan items"
+    href="/data-design/avo-tracking-plan/stakeholder-domains"
+  />
+</TwoCol>

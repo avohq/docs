@@ -26,16 +26,19 @@ Role overview:
 | Manage and invite members              |         |        |        | ✅     |
 | Manage workspace settings              |         |        |        | ✅     |
 | Manage stakeholder teams               |         |        |        | ✅     |
+| Manage governance (custom fields and PII types)\*\* |         |        |        | ✅     |
 | Manage service accounts                |         |        |        | ✅     |
 | View and manage billing                | ✅       |        |        | ✅     |
 
 <Callout type="info" emoji="💡">
 \* Viewers can pull code using the CLI on the team and enterprise plans by activating a monthly active implementer seat. On the free plan, only admins and editors can pull code. [See details below](/workspace-management/members#implementer-access-for-viewers).
+
+\*\* Managing [Governance](/data-design/avo-tracking-plan/governance) custom fields and PII types is available on the Enterprise plan only.
 </Callout>
 
 ### Admin
 
-Members with the _Admin_ role can change your workspace name, publish integrations, edit other members roles, invite new members and manage service accounts. Admins can access the Audit Log, Billing page and all workspace settings. If the _protected main branch_ config is active, Admins can override merging a branch without approval.
+Members with the _Admin_ role can change your workspace name, publish integrations, edit other members roles, invite new members and manage service accounts. Admins can access the Audit Log, Billing page and all workspace settings. If the _protected main branch_ config is active, Admins can override merging a branch without approval. On the Enterprise plan, only Admins can manage [Governance](/data-design/avo-tracking-plan/governance) custom fields and PII types — all other roles see the Governance page read-only.
 
 ### Editor
 

@@ -77,6 +77,18 @@ An event is considered "changed" when the change impacts a source. For example, 
 - When enabled, the response includes a `removedEvents` field containing an array of event names that were archived or lost their filtered sources on the branch. When disabled, this field is omitted.
 - Source-aware: when a source filter is applied, only changes relevant to that source are considered.
 
+## Governance fields
+
+For workspaces using [Governance](/data-design/avo-tracking-plan/governance) (Enterprise plan), the JSON Schema export includes the governance values:
+
+| Field | Where | Description |
+|---|---|---|
+| `customFields` | Events and properties | Object mapping each [custom field](/data-design/avo-tracking-plan/governance/custom-fields) name to its value — a string, or an array of strings for multi select fields |
+| `pii` | Properties | Object with `isPii` (boolean) and, for PII properties, `piiType` (the PII type name). Absent when the property's [PII status](/data-design/avo-tracking-plan/governance/tagging-pii) is Undeclared |
+| `pii` | Events | Object with `containsPii: true` and `piiTypes` (the names of the PII types found on the event's properties). Only present when the event contains PII properties |
+
+`customFields` and the property-level `pii` object round-trip through the [Import API](/reference/public-api/import-tracking-plan), as long as the custom field and PII type definitions exist in the target workspace. The event-level `pii` object is informational only — it's computed from the PII status of the event's properties and ignored on import.
+
 ## Example Usage
 
 ### JSON Schema (default)
