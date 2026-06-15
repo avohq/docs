@@ -59,7 +59,7 @@ Even a well-designed plan can go wrong in implementation: misnamed events, missi
 
 ## Give your agent the tracking-plan skill
 
-Once your plan is in Avo, the **[`avo-mcp`](https://github.com/avohq/avo-mcp-skills)** skill is the most direct way to keep your agent from drifting off it. It's an [Agent Skill](https://docs.claude.com/en/docs/claude-code/skills) that teaches your agent to work *within* your plan through the Avo MCP: look up and reuse existing events, properties, and metrics; design tracking for a new feature against what already exists; and propose changes on a branch instead of inventing new, inconsistent tracking.
+Once your plan is in Avo, the **[`data-designer`](https://github.com/avohq/avo-mcp)** skill is the most direct way to keep your agent from drifting off it. It's an [Agent Skill](https://docs.claude.com/en/docs/claude-code/skills) that teaches your agent to work *within* your plan through the Avo MCP: look up and reuse existing events, properties, and metrics; design tracking for a new feature against what already exists; and propose changes on a branch instead of inventing new, inconsistent tracking.
 
 - **It reuses before it creates.** The skill searches the plan for an existing event or property before proposing a new one — preventing duplicates at the source.
 - **It follows your rules.** Proposals are shaped by your audit rules, so names and structure match your conventions.
@@ -71,7 +71,7 @@ Once your plan is in Avo, the **[`avo-mcp`](https://github.com/avohq/avo-mcp-ski
 If your plan isn't in Avo yet, getting it there is quick:
 
 1. **Create a workspace** via the [Avo onboarding flow](https://avo.app/onboarding).
-2. **Import your existing tracking plan — the fastest way is through the Avo MCP.** With the [Avo MCP](/reference/avo-mcp/overview) connected and the **`avo-mcp`** skill added, ask your agent to import your plan from wherever it lives today — a spreadsheet, another tool, or an analytics platform like Amplitude or Mixpanel. Prefer to do it by hand? You can also [import it in the Avo web app](/publishing/import/get-tracking-plan-into-avo) once the workspace exists.
+2. **Import your existing tracking plan — the fastest way is through the Avo MCP.** With the [Avo MCP](/reference/avo-mcp/overview) connected and the **`data-designer`** skill added, ask your agent to import your plan from wherever it lives today — a spreadsheet, another tool, or an analytics platform like Amplitude or Mixpanel. Prefer to do it by hand? You can also [import it in the Avo web app](/publishing/import/get-tracking-plan-into-avo) once the workspace exists.
 
 From there everything is the same whether you imported a minute ago or have been on Avo for years: your agent designs within the plan — governed by your audit rules and implemented from generated code, on a branch you approve.
 
