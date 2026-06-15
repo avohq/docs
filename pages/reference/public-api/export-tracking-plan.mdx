@@ -83,7 +83,7 @@ For workspaces using [Governance](/data-design/avo-tracking-plan/governance) (En
 
 | Field | Where | Description |
 |---|---|---|
-| `customFields` | Events and properties | Object mapping each [custom field](/data-design/avo-tracking-plan/governance/custom-fields) name to its value — a string, or an array of strings for multi select fields |
+| `customFields` | Events and properties | Object mapping each [custom field](/data-design/avo-tracking-plan/governance/custom-fields) name to its value, encoded per field type: a string (Text, Single select), an array of strings (Multi select, Array of strings), a boolean (Boolean), or a JSON value (JSON) |
 | `pii` | Properties | Object with `isPii` (boolean) and, for PII properties, `piiType` (the PII type name). Absent when the property's [PII status](/data-design/avo-tracking-plan/governance/tagging-pii) is Undeclared |
 | `pii` | Events | Object with `containsPii: true` and `piiTypes` (the names of the PII types found on the event's properties). Only present when the event contains PII properties |
 

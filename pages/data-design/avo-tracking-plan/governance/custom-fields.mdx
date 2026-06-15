@@ -25,7 +25,7 @@ Custom field definitions are managed by workspace admins on the **Custom Fields*
 To create a field, click `+ New custom field` and define:
 
 - **Name** and an optional **description**
-- **Type** – Text, Single select or Multi select
+- **Type** – the field type (see [Field types](#field-types) below)
 - **Allowed values** – for single and multi select fields, the list of values editors can pick from
 - **Scopes** – whether the field applies to events and/or properties
 - **Required toggles** – per scope, whether the field is required
@@ -36,13 +36,18 @@ Like other governance changes, creating and editing custom field definitions hap
 
 ### Field types
 
-Each custom field has one of three types. The type is immutable after creation — to change the type of a field you archive it and create a new one.
+Each custom field has one of the following types. The type is immutable after creation — to change the type of a field you archive it and create a new one.
 
 - **Text**: A free-form text input
 - **Single select**: Pick one value from an admin-defined list of allowed values
 - **Multi select**: Pick one or more values from an admin-defined list of allowed values
+- **Boolean**: A true/false value
+- **JSON**: An arbitrary JSON value, for structured metadata that doesn't fit the other types
+- **Array of strings**: A free-form list of string values — unlike Multi select, the values aren't constrained to a predefined list
 
-Select fields must have at least one allowed value. If an allowed value is removed later, existing values on items are preserved but shown as deprecated.
+Only Single select and Multi select use allowed values, and they must have at least one. If an allowed value is removed later, existing values on items are preserved but shown as deprecated.
+
+<Callout type="info" emoji="💡">Boolean, JSON and Array of strings are newer field types still rolling out — reach out at [support@avo.app](mailto:support@avo.app) if you don't see them in your workspace yet.</Callout>
 
 ### Required fields
 
@@ -78,7 +83,7 @@ Both views can also be filtered by custom field values — for example to see al
 
 - **Branch diffs**: Added, changed and cleared values show up in the [branch changes view](/data-design/branches/branch-changes)
 - **CSV export**: One column per custom field in the [CSV export](/publishing/exporting). Multi select values are semicolon-separated
-- **JSON Schema export**: A `customFields` object on events and properties in the [JSON Schema export](/reference/public-api/export-tracking-plan#governance-fields), mapping each field name to its value
+- **JSON Schema export**: A `customFields` object on events and properties in the [JSON Schema export](/reference/public-api/export-tracking-plan#governance-fields), mapping each field name to its value (encoded according to the field type)
 
 ### Importing custom field values
 
