@@ -21,7 +21,7 @@ The MCP exposes five canonical tools mapped to agent intents:
 | **Discover** — find items by meaning or by structural filter | [`search`](#search) | `read` |
 | **Understand** — full details for an event, property, branch, source, etc. | [`get`](#get) | `read` |
 | **Change** — create, update, remove, or archive items on a branch | [`save_items`](#save_items) | `write` |
-| **Progress** — create a branch or update its description | [`workflow`](#workflow) | `write` |
+| **Progress** — create a branch, update its description, pull main, set a source's language, or bulk-import a plan | [`workflow`](#workflow) | `write` |
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](#list_branches) — remains available while its replacement in `search(type:"branch")` ships.
 
@@ -100,8 +100,7 @@ Semantic search is performed against the **main branch** only. The semantic inde
 | `customField` | No | Filter by custom-field name. Resolve valid names from [`get`](#get) with `type: "workspaceConfig"`. |
 | `pii` | No | Filter by PII type. Resolve valid types from [`get`](#get) with `type: "workspaceConfig"`. |
 | `nameMapping` | No | Filter by destination-name-mapping. Tagged object: `{ kind: "any" }` (items with any mapping) or `{ kind: "matchesAny", names: [...], includeNoMapping?: bool }` (items whose mapped name is in `names`; with `includeNoMapping: true` items without a mapping rule also pass). Omitting `nameMapping` means no filter on mapping. |
-| `branchId` | No | Branch to enumerate on. Defaults to main. |
-| `branchName` | No | Alternative to `branchId`. |
+| `branch` | No | Branch **ID** to enumerate items on. Defaults to main. (Filter mode only — there is no `branchName` alias on `search`; resolve a name to an ID with [`list_branches`](#list_branches) first.) |
 | `pageToken` | No | Pagination token from a previous response. |
 
 Multiple values inside one array are OR'd; values across different filter keys are AND'd.
@@ -181,7 +180,7 @@ Get item details for any of four type families:
 - **Tracking-plan items** — `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant`. Look up by `id` or exact `name`. For events, `includePropertyDetails: true` returns each property's type, constraints, and allowed values inline.
 - **Workspace metadata** — `source`, `destination`, `groupType`. Pass `id` or `name` for one item; omit both to enumerate the workspace list.
 - **Workspace config** — `workspaceConfig`. Naming/casing rules, custom-field definitions, and the PII type list. Custom-field and PII-type names plug straight into [`search`'s](#search) `customField` and `pii` filters.
-- **Branches** — `branch`. Identify with `branchId` or `branchName`. Use `include` to pick content: `"overview"` (branch metadata + baseline status), `"changes"` (diff vs. main, like the web branch screen), `"code_snippets"` (per-source generated code; requires `sourceId`). `include` defaults to `["overview"]`.
+- **Branches** — `branch`. Identify with `branchId` or `branchName`. Use `include` to pick content: `"overview"` (branch metadata + baseline status + resolved creator/reviewer/collaborator emails + impacted sources + comments/approvals stats), `"all_changes"` (full diff vs. main, like the web branch screen), `"event_changes"` (events + event variants only), `"property_changes"` (properties + property bundles + categories only), `"code_snippets"` (per-source generated code; requires `sourceId`), `"implementation_guide"` (numbered implementation steps + per-event codegen instructions). Multiple values union, and `event_changes` + `property_changes` equals `all_changes`. `include` defaults to `["overview"]`.
 
 Defaults to the main branch when no branch is specified.
 
@@ -193,8 +192,8 @@ Defaults to the main branch when no branch is specified.
 | `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant` unless `name` is provided. Optional for `source`/`destination`/`groupType` (omit both `id` and `name` to enumerate). Optional for `branch` (defaults to the active branch context if omitted). Not used by `workspaceConfig`. |
 | `name` | Varies by type | Exact name match. Alternative to `id` for most types. May return multiple matches for ambiguous names (especially properties) — use [`search`](#search) for fuzzy lookup. |
 | `variantId` | For `eventVariant` | The variant ID. Combined with `id` (the base event ID). |
-| `include` | For `branch` | Array of branch facets to return: `overview`, `changes`, `code_snippets`. Defaults to `["overview"]`. Combine `changes` and `code_snippets` for an implementer-ready picture of the branch. |
-| `sourceId` | When `include` contains `code_snippets` | Source ID to scope the code snippets to. |
+| `include` | For `branch` | Array of branch facets to return: `overview`, `all_changes`, `event_changes`, `property_changes`, `code_snippets`, `implementation_guide`. Defaults to `["overview"]`. Multiple values union. The deprecated value `changes` is accepted as an alias for `all_changes`. Unknown values are dropped with a warning. Combine `all_changes` and `code_snippets` (or use `implementation_guide`) for an implementer-ready picture of the branch. |
+| `sourceId` | Required for `code_snippets`; optional elsewhere | Source ID to scope branch content. **Required** when `include` contains `code_snippets` (single-source in v1). Optional on `all_changes` / `event_changes` / `property_changes` / `implementation_guide`: it filters event-shaped diffs to one source (property, bundle, and category diffs stay workspace-wide) and gates the per-event codegen instructions in `implementation_guide`. Find source IDs with [`search`](#search) (`itemType: "source"`). |
 | `branchId` | No | Branch to look up on. Defaults to main. `branchId` takes precedence over `branchName`. |
 | `branchName` | No | Alternative to `branchId`. |
 | `includePropertyDetails` | No | Events only. When `true`, includes full property definitions (type, constraints, allowed values). Defaults to `false`, which returns only property ID + name references. |
@@ -207,7 +206,7 @@ Full details for the item, shaped per item type.
 
 - `type: "event" \| "property" \| "metric" \| "category" \| "propertyBundle" \| "eventVariant"` — the item's full definition.
 - `type: "source" \| "destination" \| "groupType"` — a single entity when `id`/`name` is provided, or a workspace-level list when both are omitted.
-- `type: "branch"` — branch facets requested via `include`. `overview` returns resolved emails for the creator, reviewers, and collaborators, branch status, impacted source IDs, and description. `changes` returns the structured diff (new, modified, and deleted events with their properties and descriptions). `code_snippets` returns per-event code diffs for the source named in `sourceId` — exact unified diffs for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources.
+- `type: "branch"` — branch facets requested via `include`. `overview` returns resolved emails for the creator, reviewers, and collaborators, branch status, impacted source IDs, comments/approvals stats, and description. `all_changes` returns the full structured diff vs. main (new, modified, and deleted events and properties with their descriptions); `event_changes` and `property_changes` return just the event- or property-side of that diff. `code_snippets` returns per-event code diffs for the source named in `sourceId` — exact unified diffs for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources. `implementation_guide` returns numbered implementation steps plus per-event codegen instructions (scoped to `sourceId` when provided).
 - `type: "workspaceConfig"` — the workspace's event/property naming conventions and casing rules, plus custom field definitions and the list of recognized PII types. Use this before proposing new events or properties so names match the workspace's audit rules.
 
 ### Examples
@@ -230,13 +229,13 @@ Claude calls `get` with the exact name and `includePropertyDetails: true` so the
 
 **Prompt:** *"What's on the `checkout-v2` branch — and can you show me the iOS code diff?"*
 
-Claude calls `get` with `type: "branch"` and combines `changes` and `code_snippets` in `include`. `sourceId` scopes the diff to a single source.
+Claude calls `get` with `type: "branch"` and combines `all_changes` and `code_snippets` in `include`. `sourceId` scopes the diff to a single source.
 
 ```json
 {
   "type": "branch",
   "branchName": "checkout-v2",
-  "include": ["changes", "code_snippets"],
+  "include": ["all_changes", "code_snippets"],
   "sourceId": "src-ios"
 }
 ```
@@ -602,34 +601,52 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 - Per-item audit-pipeline validation failures (e.g. illegal name, duplicate property, etc.) — returned inside the `errors` array rather than failing the whole call.
 ## `workflow`
 
-**Scope:** `write`
+**Scope:** `write` · **Destructive:** `import` with `importMethod: "add_update_and_remove"`
 
 <Callout type="info" emoji="🚧">
   Write access is in general beta — enabled for every workspace, no need to request access. [Email support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
 </Callout>
 
-Branch-lifecycle write operations. Currently supports two actions:
+Branch-lifecycle write operations, selected by the `action` parameter. Five actions are supported:
 
 - `create_branch` — open a new branch.
 - `update_branch_description` — set the description on an existing open branch.
+- `pull_main` — pull the latest changes from main into an open branch. **Requires Codegen access**; on overlapping changes, incoming main changes win.
+- `set_source_language` — set a source's programming language on an open branch.
+- `import` — bulk-import a tracking-plan export (CSV or Avo JSON Schema) into an open branch. **Requires Admin role**; never targets main.
 
 <Callout type="info" emoji="💡">
   A branch is a draft workspace for tracking-plan changes, analogous to a git branch. All write operations via the MCP happen on a branch — `save_items` requires a `branchId` that exists. The MCP never merges to main; open the branch in the Avo app to review and merge.
 </Callout>
 
+<Callout type="warning" emoji="⚠️">
+  **Destructive import.** `import` with `importMethod: "add_update_and_remove"` removes properties from events when they are absent from the import payload. Only use it with a **complete** export — never a partial one. The change lands on a branch and is reviewable before merge, but a partial payload can strip large numbers of properties.
+</Callout>
+
 ### Parameters
+
+Which parameters apply depends on `action` — see "Required" below.
 
 | Parameter | Required | Description |
 |---|---|---|
-| `action` | Yes | The workflow action. One of: `create_branch`, `update_branch_description`. |
-| `branchName` | For `create_branch`; alternative to `branchId` for `update_branch_description` | Name for the new branch (`create_branch`), or the existing branch's name (`update_branch_description`). |
-| `branchId` | Alternative to `branchName` for `update_branch_description` | ID of the existing branch to update. Provide exactly one of `branchId` or `branchName`. |
-| `description` | For `update_branch_description` | The new description text. |
+| `action` | Yes | The workflow action. One of: `create_branch`, `update_branch_description`, `pull_main`, `set_source_language`, `import`. |
+| `branchName` | For `create_branch`; alternative to `branchId` for `update_branch_description` / `set_source_language` | Name for the new branch (`create_branch`), or the existing branch's name. |
+| `branchId` | Alternative to `branchName` for `update_branch_description` / `set_source_language`; required for `pull_main` and `import` | ID of the existing branch. For `update_branch_description` and `set_source_language`, provide exactly one of `branchId` or `branchName`. |
+| `description` | For `update_branch_description` (optional on `create_branch`) | Branch description text. On `create_branch`, optionally sets the new branch's description. Empty / whitespace-only strings are treated as a no-op on `update_branch_description`. |
+| `sourceId` | For `set_source_language` | The source whose language to set. Find it with [`get`](#get) (`type: "source"`) or [`search`](#search) (`itemType: "source"`). |
+| `language` | For `set_source_language` | The source's programming language. One of: `Swift`, `JavaScript_V2`, `Reason_V2`, `Java`, `JSON`, `Python`, `Python3`, `PHP`, `Kotlin`, `C#`, `TypeScript`, `Objective-C`, `Ruby`, `Dart`, `Go`. The server validates the language against the source's platform and returns the supported list on a mismatch. |
+| `format` | For `import` | Payload format. `csv` (a CSV export — auto-detects Avo, Amplitude, Mixpanel, Segment, and spreadsheet formats) or `json_schema` (an Avo JSON Schema document). |
+| `payload` | For `import` | The raw CSV text or Avo JSON Schema document, as a string. |
+| `importMethod` | Optional for `import` | `add_only` (default — only appends new items), `add_and_update` (also overwrites existing items with imported values), or `add_update_and_remove` (**destructive** — additionally removes properties from events when absent from the import; use only with a complete export). |
 | `workspaceId` | No | Workspace ID |
 
 ### Returns
 
-For `create_branch`: the new branch's `branchId`, `branchName`, and a `branchUrl` that opens it in the Avo web app. For `update_branch_description`: confirmation with the resolved `branchId` and the updated description.
+- `create_branch` — the new branch's `branchId`, `branchName`, and a `branchUrl` that opens it in the Avo web app.
+- `update_branch_description` — confirmation with the resolved `branchId` and the updated description.
+- `pull_main` — confirmation that main was pulled into the branch.
+- `set_source_language` — confirmation with the resolved source and language.
+- `import` — a summary of what the import added, updated, and removed on the branch.
 
 ### Examples
 
@@ -660,12 +677,46 @@ Claude looks up the branch by name (no separate `branchId` lookup needed for thi
 }
 ```
 
+#### Set a source's codegen language
+
+**Prompt:** *"Set the iOS source on the `add-checkout-tracking` branch to Swift."*
+
+Claude resolves the `sourceId` with [`get`](#get) (`type: "source"`), then sets the language on the branch.
+
+```json
+{
+  "action": "set_source_language",
+  "branchName": "add-checkout-tracking",
+  "sourceId": "src-ios",
+  "language": "Swift"
+}
+```
+
+#### Bulk-import a tracking plan onto a branch
+
+**Prompt:** *"Import this Amplitude CSV export onto a fresh branch."*
+
+Claude opens a branch with `create_branch`, then calls `import` with the CSV `payload` on the returned `branchId`. `add_only` (the default) only appends new items, so it never removes anything.
+
+```json
+{
+  "action": "import",
+  "branchId": "br-abc123",
+  "format": "csv",
+  "payload": "Event Name,Property Name,...\nCheckout Completed,checkout_method,...",
+  "importMethod": "add_only"
+}
+```
+
 ### Common errors
 
 - Missing `write` scope — re-authorize with `write`.
 - Workspace access denied.
 - Unsupported action value.
-- Both `branchId` and `branchName` provided — `update_branch_description` requires exactly one.
+- Both `branchId` and `branchName` provided — `update_branch_description` and `set_source_language` require exactly one.
+- `pull_main` without Codegen access, or `import` without Admin role — permission error.
+- `set_source_language` with a language the source's platform doesn't support — the error lists the supported tokens.
+- `import` missing `format` or `payload`, or with an unknown `format` / `importMethod` token.
 
 ---
 
