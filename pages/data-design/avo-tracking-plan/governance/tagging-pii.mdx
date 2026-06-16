@@ -83,3 +83,7 @@ The [Import API](/reference/public-api/import-tracking-plan) and JSON Schema imp
 ## Enforcing PII declarations with the audit
 
 The [audit rule](/audit/rules#all-properties-have-pii-declared) "All properties have PII declared" can require every property to be either Not PII or PII — in other words, no Undeclared properties. Like other audit rules it surfaces issues in the branch and tracking plan audits and can optionally block branch merging, depending on your workspace's [audit configuration](/audit/rules#audit-rule-configuration). Enforced in the [branch audit](/audit/branch-audit), it guarantees every new property gets a PII declaration before it goes live.
+
+## Looping in a stakeholder on PII changes
+
+On the Enterprise plan, you can have a [stakeholder team](/data-design/avo-tracking-plan/stakeholder-domains) automatically added as a required reviewer whenever a branch changes the workspace's PII data flow — for example a new PII property, a property toggled from Not PII to PII, or PII sent to a new destination. This is a reliable way to bring a privacy or data-governance team into every change that touches sensitive data. Enable it with the **"Impacted by PII changes"** setting in the [stakeholder team settings](/workspace-management/domains#defining-what-changes-impact-a-stakeholder).

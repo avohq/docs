@@ -53,9 +53,8 @@ Only Single select and Multi select use allowed values, and they must have at le
 
 The "required" toggle is set per scope — for example a field can be required on events but optional on properties. Required fields are enforced through the audit rules ["All events and variants have required custom fields"](/audit/rules#all-events-and-variants-have-required-custom-fields) and ["All properties have required custom fields"](/audit/rules#all-properties-have-required-custom-fields): missing values surface as audit issues and, when the rules are enforced, can block branch merging the same way other audit rules do.
 
-### Reordering, archiving and limits
+### Archiving and limits
 
-- **Reordering**: Fields can be reordered on the Custom Fields tab. The order controls the display order of the fields on item details and in exports.
 - **Archiving**: Archiving a field hides the field and its values without deleting them. Unarchiving restores both the field and the values that were set before it was archived.
 - **Limits**: A workspace can have up to 50 active custom fields. Archived fields don't count towards the limit.
 
@@ -69,7 +68,7 @@ Editors fill in custom fields in a **Custom Fields** section on the event and pr
 
 ### Item details
 
-Custom field values are shown in the Custom Fields section on the event and property detail views, in the order the fields are arranged on the Governance Custom Fields tab. Event variants show the values inherited from their base event.
+Custom field values are shown in the Custom Fields section on the event and property detail views, in the same order the fields appear on the Governance Custom Fields tab. Event variants show the values inherited from their base event.
 
 ### Events and Properties views
 
