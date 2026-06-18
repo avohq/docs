@@ -54,10 +54,10 @@ The MCP exposes five tools mapped to agent intents:
 | **Entry point** — find your workspace IDs | [`list_workspaces`](/reference/avo-mcp/tools#list_workspaces) | `read` |
 | **Discover** — find items by meaning or by structural filter | [`search`](/reference/avo-mcp/tools#search) | `read` |
 | **Understand** — full details for an event, property, branch, source, etc. | [`get`](/reference/avo-mcp/tools#get) | `read` |
-| **Change** — create, update, remove, or archive items on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
-| **Progress** — create a branch or update its description | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
+| **Change** — create, update, archive, or restore items on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
+| **Progress** — create a branch, update its description, pull main, set a source's language, or bulk-import a plan | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
 
-Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while its replacement in `search(type:"branch")` ships. See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
+Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while branch enumeration is folded into `search` (as `itemType: "branch"`). See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
 
 ## Limits
 
