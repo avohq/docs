@@ -93,8 +93,8 @@ Semantic search is performed against the **main branch** only. The semantic inde
 | `variantNames` | No | Filter by event variant name. |
 | `properties` | No | With `itemType: "event"`, returns events referencing any of these properties. |
 | `includeVariants` | No | With `itemType: "event"`, interleaves each event's variants in the result set. |
-| `stakeholders` | No | Filter by stakeholder. |
-| `owners` | No | Filter by owner. |
+| `stakeholders` | No | Filter by stakeholder domain (names only). Tagged object: `{ kind: "any" }` (items with any stakeholder) or `{ kind: "matches", values: [...], includeNoneAssigned?: bool }` (items whose stakeholder domain name is in `values`; with `includeNoneAssigned: true` items with no stakeholder also pass). |
+| `owners` | No | Filter by owner domain (names only). Tagged object: `{ kind: "any" }` (items with any owner) or `{ kind: "matches", values: [...], includeNoneAssigned?: bool }` (items whose owner domain name is in `values`; with `includeNoneAssigned: true` unowned items also pass). |
 | `destinations` | No | Filter by destination name. |
 | `type` | No | With `itemType: "event"`, filter by event type. |
 | `customField` | No | Filter by custom-field name. Resolve valid names from [`get`](#get) with `type: "workspaceConfig"`. |
@@ -171,7 +171,7 @@ Filter mode is selected by omitting `query`. Multiple filter keys are AND'd, so 
 
 Get item details for any of four type families:
 
-- **Tracking-plan items** — `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant`. Look up by `id` or exact `name` — except `eventVariant`, which is identified by the base event's `id` plus `variantId` (never by name). For events, `includePropertyDetails: true` returns each property's type, constraints, and allowed values inline.
+- **Tracking-plan items** — `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant`. Look up by `id` or exact `name` — except `eventVariant`, which is identified by the base event's `id` plus `variantId` (never by name). For events, `includePropertyDetails: true` returns each property's type, constraints, and allowed values inline. Event, property, and event-variant results also list their owner and stakeholders under a **Domain Stakeholders** section (the owner is suffixed `(owner)`); it is omitted when the item has no stakeholders.
 - **Workspace metadata** — `source`, `destination`, `groupType`. `get` returns a **single** item, so pass `id` or `name`. To enumerate the workspace list, use [`search`](#search) (`itemType: "source"` / `"destination"` / `"groupType"`).
 - **Workspace config** — `workspaceConfig`. Naming/casing rules and event/property validation rules (with the enforcement point), custom-field definitions, the PII type list, and the workspace's tags and categories. Custom-field and PII-type names plug straight into [`search`'s](#search) `customField` and `pii` filters.
 - **Branches** — `branch`. Identify with `branchId` or `branchName`. Use `include` to pick content: `"overview"` (branch metadata + baseline status + resolved creator/reviewer/collaborator emails + impacted sources + comments/approvals stats), `"all_changes"` (full diff vs. main, like the web branch screen), `"event_changes"` (events + event variants only), `"property_changes"` (properties + property bundles + categories only), `"code_snippets"` (per-source generated code; requires `sourceId`), `"implementation_guide"` (numbered implementation steps + per-event codegen instructions). Multiple values union, and `event_changes` + `property_changes` equals `all_changes`. `include` defaults to `["overview"]`.
@@ -198,7 +198,7 @@ Defaults to the main branch when no branch is specified.
 
 Full details for the item, shaped per item type.
 
-- `type: "event" \| "property" \| "metric" \| "category" \| "propertyBundle" \| "eventVariant"` — the item's full definition.
+- `type: "event" \| "property" \| "metric" \| "category" \| "propertyBundle" \| "eventVariant"` — the item's full definition. For events, properties, and event variants this includes a **Domain Stakeholders** section listing the item's stakeholders by name, with the owner suffixed `(owner)` — the read side of [`save_items`](#save_items)'s `owner` / `stakeholders` fields. The section is omitted when the item has no stakeholders.
 - `type: "source" \| "destination" \| "groupType"` — a single entity; `id` or `name` is required (enumerate the workspace list with [`search`](#search)).
 - `type: "branch"` — branch facets requested via `include`. `overview` returns resolved emails for the creator, reviewers, and collaborators, branch status, impacted source IDs, comments/approvals stats, and description. `all_changes` returns the full structured diff vs. main (new, modified, and deleted events and properties with their descriptions); `event_changes` and `property_changes` return just the event- or property-side of that diff. `code_snippets` returns per-event code diffs for the source named in `sourceId` — exact unified diffs for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources. `implementation_guide` returns numbered implementation steps plus per-event codegen instructions (scoped to `sourceId` when provided).
 - `type: "workspaceConfig"` — the workspace's event/property naming conventions and casing rules, the event and property **validation rules** (with their severities and the enforcement point — where Avo blocks), custom field definitions, the list of recognized PII types, and the workspace's **tags** and **categories** listings. Use this before proposing new events or properties so names match the workspace's audit rules.
@@ -463,13 +463,25 @@ The tool's per-field schema (the `describe` text on each parameter) is the autho
   **Branch-independent.** Owner and stakeholder assignments take effect **immediately workspace-wide**, even if the branch is later discarded. Discarding the branch will **not** roll back these changes. Treat these fields as out-of-branch mutations, not draft edits.
 </Callout>
 
-`owner` and `stakeholders` fields are accepted on event, property, and event variant items (both `create` and `update`):
+`owner` and `stakeholders` fields are accepted on event, property, and event variant items, on both `create` and `update`. Both reference **existing** stakeholders — the MCP does not create stakeholders (create them in the Avo web app). A **stakeholder reference** is an object with exactly one of `stakeholderId` or `stakeholderName` (a name is resolved server-side to an ID).
 
 | Field | Notes |
 |---|---|
-| `owner.stakeholder` | Sets the owning stakeholder. Reference must point to an existing stakeholder (stakeholders are created in the Avo web app — the MCP does not create them). |
-| `stakeholders.add` | Array of stakeholder references to add as collaborators. |
-| `stakeholders.remove` | Array of stakeholder references to remove as collaborators. |
+| `owner` | Tagged object selected by `action`. `{ "action": "set", "stakeholder": <ref> }` assigns the owning stakeholder; `{ "action": "clear" }` removes the owner assignment. Omitting `owner` leaves it unchanged. `clear` **demotes** the current owner to a non-owning stakeholder — it stays in the item's stakeholder set; to drop the relationship entirely, also pass that stakeholder under `stakeholders.remove`. |
+| `stakeholders.add` | Array of stakeholder references to add to the item's stakeholder set. An empty array is an explicit no-op. A stakeholder named as `owner` need not be repeated here — the writer dedupes. |
+| `stakeholders.remove` | Array of stakeholder references to remove from the set. An empty array is an explicit no-op. |
+
+Omitting `stakeholders` (or `owner`) leaves that aspect unchanged.
+
+```json
+{
+  "op": "update",
+  "type": "event",
+  "eventId": "evt-3f01…",
+  "owner": { "action": "set", "stakeholder": { "stakeholderName": "Growth" } },
+  "stakeholders": { "add": [{ "stakeholderName": "Data Platform" }] }
+}
+```
 
 ### Merging categories
 
