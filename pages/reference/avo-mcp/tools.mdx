@@ -93,8 +93,8 @@ Semantic search is performed against the **main branch** only. The semantic inde
 | `variantNames` | No | Filter by event variant name. |
 | `properties` | No | With `itemType: "event"`, returns events referencing any of these properties. |
 | `includeVariants` | No | With `itemType: "event"`, interleaves each event's variants in the result set. |
-| `stakeholders` | No | Filter by stakeholder domain (names only). Tagged object: `{ kind: "any" }` (items with any stakeholder) or `{ kind: "matches", values: [...], includeNoneAssigned?: bool }` (items whose stakeholder domain name is in `values`; with `includeNoneAssigned: true` items with no stakeholder also pass). |
-| `owners` | No | Filter by owner domain (names only). Tagged object: `{ kind: "any" }` (items with any owner) or `{ kind: "matches", values: [...], includeNoneAssigned?: bool }` (items whose owner domain name is in `values`; with `includeNoneAssigned: true` unowned items also pass). |
+| `stakeholders` | No | Filter by stakeholder team (names only). Tagged object: `{ kind: "any" }` (items with any stakeholder) or `{ kind: "matches", values: [...], includeNoneAssigned?: bool }` (items whose stakeholder team name is in `values`; with `includeNoneAssigned: true` items with no stakeholder also pass). |
+| `owners` | No | Filter by owner stakeholder (names only). Tagged object: `{ kind: "any" }` (items with any owner) or `{ kind: "matches", values: [...], includeNoneAssigned?: bool }` (items whose owner stakeholder name is in `values`; with `includeNoneAssigned: true` unowned items also pass). |
 | `destinations` | No | Filter by destination name. |
 | `type` | No | With `itemType: "event"`, filter by event type. |
 | `customField` | No | Filter by custom-field name. Resolve valid names from [`get`](#get) with `type: "workspaceConfig"`. |
