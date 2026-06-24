@@ -98,7 +98,7 @@ Every publish writes two objects under the same prefix:
 <folderPrefix>/<workspaceId>/<branchId>/latest.json                      ← rolling pointer
 ```
 
-- **`<timestamp>-<publishType>.json`** is the historical record of a single publish. The filename embeds an ISO-8601 timestamp and a short tag describing why the publish ran (`manual`, `merge`, and so on). It's never overwritten.
+- **`<timestamp>-<publishType>.json`** is the historical record of a single publish. The filename embeds an ISO-8601 timestamp and a short tag describing why the publish ran (`Manual` or `BranchMerge`). It's never overwritten.
 - **`latest.json`** is identical in content to the most recent timestamped file, and is always overwritten. Downstream consumers that just want "the current tracking plan" should read this; consumers that need history can list the timestamped files.
 - **`<workspaceId>`** is the Avo workspace ID. It's stable and never changes.
 - **`<branchId>`** is the Avo branch the publish came from. Branches merged to main share a single main-branch ID; feature branches each have their own. This lets downstream tooling pin to a specific feature branch during development and switch to main once merged. Auto-publishes that run on branch merge always land in the main folder.
@@ -109,7 +109,7 @@ Every publish writes two objects under the same prefix:
 With **Folder Prefix** = `avo-exports` and a publish from your main branch:
 
 ```
-avo-exports/workspace_id/main/2026-05-29T14-23-11Z-merge.json
+avo-exports/workspace_id/main/2026-05-29T14:23:11.000Z-BranchMerge.json
 avo-exports/workspace_id/main/latest.json
 ```
 
