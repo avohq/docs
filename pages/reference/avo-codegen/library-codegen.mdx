@@ -72,7 +72,7 @@ try {
 }
 ```
 
-`process()` returns `Map<String, AvoDestinationEvent>` keyed by destination name (lowercased identifier from your Avo workspace). It throws `AvoVerificationError` when validation fails and `strict = true` (the default); otherwise it logs a warning and continues. Returns an empty map in noop mode.
+`process()` returns `Map<String, AvoDestinationEvent>` keyed by destination name (lowercased identifier from your Avo workspace). In development and staging it throws `AvoVerificationError` when validation fails and `strict = true` (the default), otherwise it logs a warning and continues. In production, runtime validation is skipped entirely — `process()` never throws or logs, and always returns the destination map. Returns an empty map in noop mode.
 
 ### Swift
 
@@ -106,9 +106,13 @@ do {
 }
 ```
 
-`process(event:)` returns `[String: AvoDestinationEvent]`. It throws `AvoVerificationError` when validation fails and `strict` is on; otherwise it logs via `NSLog` and continues.
+`process(event:)` returns `[String: AvoDestinationEvent]`. In development and staging it throws `AvoVerificationError` when validation fails and `strict` is on, otherwise it logs via `NSLog` and continues. In production, runtime validation is skipped entirely — `process(event:)` never throws or logs. Returns an empty dictionary in noop mode.
 
 ### TypeScript
+
+TypeScript library mode has two file layouts. By default `avo pull` emits one file for all events; with the **"Generate one file per event"** source setting on (Source → Avo Codegen Setup), each event gets its own module. Both layouts expose the same `./Avo` import surface, so the init, destination, and tracking code below applies to either one.
+
+#### One file for all events
 
 `avo pull` produces three files:
 
@@ -151,7 +155,7 @@ try {
 }
 ```
 
-`AvoDestination` (`make`, `logEvent`, `setUserProperties`) plays the same role as the custom destination interface in the single-source output — the shape is different but the idea is the same. `destinations` is all-or-nothing: if you provide any, you must provide an implementation for every `DestinationKey` or `Avo.init` will throw.
+`AvoCustomDestination` has the same shape as the custom destination interface in the single-source output — `make` (optional), `logEvent`, `setUserProperties`, `identify`, `unidentify`, `logPage`, and `revenue` — so an existing single-source destination implementation is drop-in compatible. `destinations` is all-or-nothing: if you provide any, you must provide an implementation for every `DestinationKey` or `Avo.init` will throw.
 
 If the all-or-nothing model doesn't fit (for example, you want to fan out manually for some destinations), omit `destinations` and fan out yourself:
 
@@ -175,6 +179,31 @@ try {
 ```
 
 `track()` returns `Record<string, AvoDestinationEvent>` keyed by `DestinationKey` from `AvoConfig.ts`. It throws `AvoVerificationError` the same way Kotlin/Swift do.
+
+#### One file per event
+
+With the **"Generate one file per event"** source setting on, each event is split into its own module for better tree‑shaking. `avo pull` then emits an `AvoEvents/` directory and one extra file:
+
+```text
+One file for all events
+├─ Avo.ts          # per-event classes + runtime re-exports
+├─ AvoLibrary.ts   # runtime
+└─ AvoConfig.ts    # codegen-bound config
+
+One file per event
+├─ Avo.ts                    # thin barrel — re-exports everything below
+├─ AvoLibrary.ts             # runtime (unchanged)
+├─ AvoConfig.ts              # codegen-bound config (unchanged)
+├─ AvoAppSystemProperties.ts # AppSystemProperties singleton
+└─ AvoEvents/
+   ├─ index.ts
+   ├─ types.ts               # shared object and enum types
+   └─ <Event>.ts             # one module per event
+```
+
+The public import surface does not change. `Avo.ts` becomes a thin barrel that re‑exports the runtime (`Avo`, `AvoEnv`, `AvoVerificationError`, …), every per‑event class, `AppSystemProperties`, and the shared types — so `import { Avo, AvoEnv, AvoVerificationError, LoginSuccessEvent } from './Avo'` keeps working exactly as in the one-file layout above. You don't need to change any call sites.
+
+`AppSystemProperties` moves out of `Avo.ts` into its own `AvoAppSystemProperties.ts` file so the per‑event modules can import it from a sibling — importing it from the `Avo.ts` barrel would create an import cycle, since the barrel re‑exports the per‑event files. You still import `AppSystemProperties` from `./Avo`; this is only an internal file split.
 
 ---
 
@@ -275,10 +304,10 @@ try {
 ### What stays the same
 
 - **Event names, property names, and validation rules.** The tracking plan is unchanged — only the shape of the generated code differs.
-- **Strict / noop modes.** `strict` (throw on validation failure in non-prod) and `noop` (drop everything) behave the same way.
+- **Strict / noop modes.** `strict` (throw on validation failure in development and staging) and `noop` (drop network calls) behave the same as in the single-source output — runtime validation is skipped entirely in production, and `noop` is force-disabled in production.
 - **Inspector integration.** Construct your Avo Inspector instance from the SDK and pass it into the init call — same as the single-source output.
 - **Implementation status tracking.** The CLI reports event-usage status the same way regardless of mode.
-- **Destination interface idea.** TypeScript's `AvoDestination` (`make`, `logEvent`, `setUserProperties`) plays the same role as the single-source custom destination — the shape differs but the concept is the same.
+- **Destination interface.** TypeScript's `AvoCustomDestination` has the same shape as the single-source custom destination (`make`, `logEvent`, `setUserProperties`, `identify`, `unidentify`, `logPage`, `revenue`) — an existing single-source implementation is drop-in compatible.
 - **The `avo pull` workflow.** Same command, same authentication, same source/destination configuration in your Avo workspace.
 - **Destination API keys.** Still embedded by codegen. In TypeScript they're in `AvoConfig.ts`; in Swift/Kotlin they're inside `AvoTrackingPlanConfig` and used by the `initAvo` extension.
 
@@ -286,8 +315,8 @@ try {
 
 1. **`Avo` constructor signature.** The single-source `Avo(env:, customDestination:, ...)` (Swift/Kotlin) and the free-function `Avo.initAvo(config, destinations)` (TypeScript) become `Avo.initAvo(env:)` (Swift/Kotlin) and `Avo.init(config, codegenConfig)` (TypeScript).
 2. **Event method calls become event constructors and a single `process` / `track` call.** Each `avo.someEvent(...)` becomes `avo.process(SomeEvent(...))` (Swift/Kotlin) or `avo.track(new SomeEvent(...))` (TypeScript).
-3. **`process()` / `track()` throws `AvoVerificationError`.** In library mode all three languages throw a typed `AvoVerificationError` when `strict` is on. Wrap calls in `try` / `do-catch` — see the quick-start examples.
-4. **TypeScript: `AvoDestination` interface.** Custom destinations implement `AvoDestination` with `make / logEvent / setUserProperties`. All-or-nothing — provide implementations for every `DestinationKey`, or omit `destinations` entirely and fan out manually.
+3. **`process()` / `track()` throws `AvoVerificationError`.** In development and staging, library mode in all three languages throws a typed `AvoVerificationError` when `strict` is on — wrap calls in `try` / `do-catch`, see the quick-start examples. In production, runtime validation is skipped entirely, so the call never throws.
+4. **TypeScript: how custom destinations are wired.** Custom destinations are passed in the `destinations` map of the runtime config, keyed by `DestinationKey`, instead of as separate `Avo` constructor arguments. All-or-nothing — provide an implementation for every `DestinationKey`, or omit `destinations` entirely and fan out manually. The `AvoCustomDestination` interface itself has the same shape as the single-source custom destination.
 5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
 6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
 
