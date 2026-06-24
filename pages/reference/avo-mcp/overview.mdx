@@ -1,25 +1,142 @@
 ---
 title: Avo MCP
-description: Connect Claude, ChatGPT, Cursor, and other Model Context Protocol clients to your Avo tracking plan. Read tracking-plan items, design changes from a feature brief, and write changes back to a branch via OAuth 2.0.
+description: Connect Claude, ChatGPT, Cursor, and other Model Context Protocol clients to your Avo tracking plan — or install the Avo Claude Code plugin. Read tracking-plan items, design changes from a feature brief, and write changes back to a branch via OAuth 2.0.
 ---
 
 import { Callout } from 'nextra/components'
 
 # Avo MCP
 
-Avo MCP ([Model Context Protocol](https://modelcontextprotocol.io/)) gives AI coding assistants direct access to your Avo tracking plan. Claude, ChatGPT, Cursor, Codex, Claude Code, and other MCP-compatible clients can **read** the plan, **explore branches**, and **write changes on a branch** — without copy-pasting specs into the chat.
+Avo MCP ([Model Context Protocol](https://modelcontextprotocol.io/)) gives AI coding assistants direct access to your Avo tracking plan. Claude Code, Claude Desktop, Cursor, ChatGPT, Codex, and other MCP-compatible clients can **read** the plan, **explore branches**, and **write changes on a branch** — without copy-pasting specs into the chat.
+
+The fastest way to use Avo from **Claude Code** is the **Avo Claude Code plugin**, which installs two Agent Skills and registers the Avo MCP server in one step. Every other client connects to the same remote server directly.
 
 - **Transport:** Streamable HTTP at `https://mcp.avo.app/mcp`
-- **Authentication:** OAuth 2.0 + PKCE, scoped to your Avo identity
+- **Authentication:** OAuth 2.0 + PKCE, scoped to your Avo identity — no API keys, no local binary
 - **Writes:** always happen on a branch (never directly on main). Merging to main stays a human step in the Avo app.
 
 <Callout type="info" emoji="🚧">
   **The Avo MCP is in general beta.** Both the `read` and `write` tools are enabled for every workspace — no need to request access. We're still refining them, so [let us know at support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
 </Callout>
 
-<Callout type="warning" emoji="🔒">
-  Writes require the `write` scope and always happen on a branch. The MCP server will never merge a branch into main — that remains a human step in the [Avo web app](https://www.avo.app).
+## What's included
+
+The **Avo Claude Code plugin** (`avo`, published from the [`avohq/avo-mcp`](https://github.com/avohq/avo-mcp) marketplace) bundles everything you need to design tracking from Claude Code:
+
+- **`data-designer` skill** — work with an *existing* Avo tracking plan: search what's already instrumented, design changes for a new feature, and review or implement a branch.
+- **`data-designer-new-plan` skill** — bootstrap a *brand-new* tracking plan from scratch.
+- **The Avo MCP server** — registered automatically when you install the plugin, so you don't run a separate `claude mcp add` step. It's a remote, OAuth-protected server — nothing is installed or compiled on your machine.
+
+If you're not using Claude Code, you connect the same MCP server directly — see [Connect the server directly](#connect-the-server-directly).
+
+## Requirements
+
+- **An Avo account** with access to a workspace. [Sign up or sign in at avo.app](https://www.avo.app). The MCP authenticates as *you* and enforces the same workspace membership as the Avo web app.
+- **An MCP client that can open a browser** to complete the OAuth sign-in. Tested clients include Claude Code, Claude Desktop, Cursor, and Codex. Headless environments (CI runners, containers) can't complete the browser flow.
+- For the plugin specifically, a recent **Claude Code** with plugin marketplace support.
+
+## Install as a Claude Code plugin
+
+This is the easiest path for Claude Code. It installs both skills and registers the MCP server for you.
+
+From any Claude Code session, add the Avo marketplace and install the plugin:
+
+```bash
+claude plugin marketplace add avohq/avo-mcp
+claude plugin install avo@avo-mcp
+```
+
+Then reload plugins to activate it:
+
+```
+/reload-plugins
+```
+
+(or restart Claude Code).
+
+That's it — the `avo` plugin's two skills are now available, and the Avo MCP server is registered. The first time a tool runs, you'll sign in with Avo in your browser (see [Authentication and first use](#authentication-and-first-use)).
+
+<Callout type="info" emoji="🧭">
+  **Looking for Avo in the Claude plugin directory?** It's not listed there yet (submission pending review). For now, install it from the `avohq/avo-mcp` marketplace using the commands above.
 </Callout>
+
+## Connect the server directly
+
+Use these instructions for any client other than the Claude Code plugin — Cursor, Claude Desktop, generic MCP clients, and Claude Code without the plugin. They all connect to the same remote server at `https://mcp.avo.app/mcp`.
+
+<Callout type="info" emoji="🔒">
+  **First-call behavior.** Your client must support HTTP transport and the browser-based OAuth 2.0 authorization flow. The first tool invocation opens a browser, you sign in with Avo, the client caches the token, and subsequent calls use it automatically. CI runners and headless containers cannot complete this flow.
+</Callout>
+
+### Claude Code (CLI) without the plugin
+
+If you'd rather register just the server (no skills), add it directly:
+
+```bash
+claude mcp add avo --transport http https://mcp.avo.app/mcp
+```
+
+For the full experience — skills included — use the [plugin](#install-as-a-claude-code-plugin) instead.
+
+### Claude Desktop app
+
+1. Open Claude Desktop → **Customize** → **Connectors**
+2. Click **Add custom connector**
+3. Name: `Avo`, Remote MCP server URL: `https://mcp.avo.app/mcp`
+
+<Callout type="info" emoji="🔒">
+  Adding connectors in Claude Desktop requires admin permissions in your organization.
+</Callout>
+
+### Cursor
+
+Add the following to your `mcp.json` (or `~/.cursor/mcp.json` for global config):
+
+```json
+{
+  "mcpServers": {
+    "Avo": {
+      "url": "https://mcp.avo.app/mcp"
+    }
+  }
+}
+```
+
+### Other MCP clients
+
+```json
+{
+  "mcpServers": {
+    "Avo": {
+      "url": "https://mcp.avo.app/mcp"
+    }
+  }
+}
+```
+
+## Authentication and first use
+
+The MCP server uses OAuth 2.0 with PKCE — there are no API keys to manage and no secrets bundled in the plugin.
+
+1. **First tool call → browser sign-in.** The first time any Avo tool runs, your client opens a browser. You sign in with your Avo account and approve `read` access. The client caches the token, and later calls reuse it automatically.
+2. **First write → one-time re-auth.** Write tools require the `write` scope. The first time you write, your client steps up and opens the browser once more to grant `write`. After that, reads and writes work without further prompts for the session.
+
+Under the hood:
+
+- **Protected resource metadata:** served at [`https://mcp.avo.app/.well-known/oauth-protected-resource`](https://mcp.avo.app/.well-known/oauth-protected-resource) per [RFC 9728](https://www.rfc-editor.org/rfc/rfc9728). The authorization server is `https://api.avo.app` — clients discover its endpoints via `https://api.avo.app/.well-known/oauth-authorization-server`.
+- **Dynamic client registration:** `POST https://api.avo.app/oauth/register` per [RFC 7591](https://www.rfc-editor.org/rfc/rfc7591). Most MCP clients register themselves automatically on first connect.
+- **Scopes:** `read` and `write`. Clients request `read` by default and step up to `write` on the first write call. Tokens carry the user identity; workspace access is verified at call time against your Avo workspace membership.
+- **Token signing:** RS256 keys backed by Google Cloud KMS (HSM) in production.
+
+## Example prompts
+
+Once the plugin (or server) is connected, talk to Claude in plain language. A few prompts to get started:
+
+- *"What Avo events do we already have for signup?"* — semantic search across the tracking plan.
+- *"Here's a PRD for a new checkout flow. Design the events and properties we'd need in Avo."* — Claude reads your audit rules, reuses existing items where it can, and proposes a plan before writing anything.
+- *"Create a branch and add those events and properties."* — writes the approved plan to a new branch (triggers the one-time write re-auth on first use).
+- *"Show me a diff of the `checkout-redesign` branch and generate the Avo Codegen calls for the new events."* — review a branch and get per-event code snippets.
+- *"We have no tracking plan yet — help me bootstrap one for our mobile app."* — the `data-designer-new-plan` skill scaffolds a fresh plan.
 
 ## Use cases
 
@@ -59,6 +176,24 @@ The MCP exposes five tools mapped to agent intents:
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while branch enumeration is folded into `search` (as `itemType: "branch"`). See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
 
+## How writes work: branch only, human merge
+
+Every change the MCP makes lands on a **branch**, never directly on main.
+
+<Callout type="warning" emoji="🔒">
+  Writes require the `write` scope and always happen on a branch. The MCP server will never merge a branch into main — that remains a human step in the [Avo web app](https://www.avo.app).
+</Callout>
+
+This keeps tracking-plan changes deliberate and reviewable. Claude can draft and refine a branch for you, but a human opens the Avo web app to review the diff and merge it to main. There is no background automation that changes your production tracking plan.
+
+## Security and trust
+
+- **Remote, OAuth-protected server.** The plugin and every client connect to the hosted Avo MCP server at `https://mcp.avo.app/mcp` over OAuth 2.0 + PKCE. You authenticate with your own Avo identity in the browser.
+- **No local binary.** Nothing is compiled or executed on your machine. The plugin only registers the remote server and bundles the two skill prompts — there's no daemon, no downloaded executable.
+- **No bundled secrets.** The plugin ships no API keys or tokens. Access is granted per user, at call time, via OAuth; tokens are cached by your client, not by the plugin repo.
+- **Per-user identity and access checks.** Tokens carry the user's identity, and workspace access is re-verified at every call against your Avo workspace membership — so a token alone is not enough if you lose access.
+- **Branch-only writes with human merge.** See [How writes work](#how-writes-work-branch-only-human-merge) above.
+
 ## Limits
 
 - **`save_items`** accepts at most 50 items per call.
@@ -67,6 +202,10 @@ Branch read flows are covered by `get` and `search`. One transitional tool — [
 - **Tokens** carry the user's identity; workspace access is verified at every call against your Avo workspace membership, so a token alone is not sufficient if you lose workspace access.
 
 ## FAQ
+
+### Do I need the plugin, or can I just connect the server?
+
+Either works. On **Claude Code**, the plugin is the easiest path because it installs the `data-designer` and `data-designer-new-plan` skills and registers the server in one step. On any other client — or on Claude Code if you only want the raw tools — [connect the server directly](#connect-the-server-directly).
 
 ### Does the Avo MCP merge branches to main?
 
@@ -88,68 +227,11 @@ Yes. Each user authenticates with their own Avo identity via OAuth, so concurren
 
 Any client that supports HTTP transport and the browser-based OAuth 2.0 authorization flow. Tested clients include Claude Code, Claude Desktop, Cursor, and Codex. Clients that cannot open a browser — CI runners, headless containers — cannot complete the OAuth flow.
 
-## Setup
-
-<Callout type="info" emoji="🔒">
-  **First-call behavior.** Your client must support HTTP transport and the browser-based OAuth 2.0 authorization flow. The first tool invocation opens a browser, you sign in with Avo, the client caches the token, and subsequent calls use it automatically. CI runners and headless containers cannot complete this flow.
-</Callout>
-
-### Claude Code (CLI)
-
-```bash
-claude mcp add avo --transport http https://mcp.avo.app/mcp
-```
-
-### Claude Desktop app
-
-1. Open Claude Desktop → **Customize** → **Connectors**
-2. Click **Add custom connector**
-3. Name: `Avo`, Remote MCP server URL: `https://mcp.avo.app/mcp`
-
-<Callout type="info" emoji="🔒">
-  Adding connectors in Claude Desktop requires admin permissions in your organization.
-</Callout>
-
-### Cursor
-
-Add the following to your `mcp.json` (or `~/.cursor/mcp.json` for global config):
-
-```json
-{
-  "mcpServers": {
-    "Avo": {
-      "url": "https://mcp.avo.app/mcp"
-    }
-  }
-}
-```
-
-### Other MCP clients
-
-```json
-{
-  "mcpServers": {
-    "Avo": {
-      "url": "https://mcp.avo.app/mcp"
-    }
-  }
-}
-```
-
-## Authentication
-
-The MCP server uses OAuth 2.0 with PKCE.
-
-- **Protected resource metadata:** served at [`https://mcp.avo.app/.well-known/oauth-protected-resource`](https://mcp.avo.app/.well-known/oauth-protected-resource) per [RFC 9728](https://www.rfc-editor.org/rfc/rfc9728). The authorization server is `https://api.avo.app` — clients discover its endpoints via `https://api.avo.app/.well-known/oauth-authorization-server`.
-- **Dynamic client registration:** `POST https://api.avo.app/oauth/register` per [RFC 7591](https://www.rfc-editor.org/rfc/rfc7591). Most MCP clients register themselves automatically on first connect.
-- **Scopes:** `read` and `write`. Clients request `read` by default. When you invoke a write tool, your client will step up and request the `write` scope (a second browser prompt). Tokens carry the user identity; workspace access is verified at call time against your Avo workspace membership.
-- **Token signing:** RS256 keys backed by Google Cloud KMS (HSM) in production.
-
-If a tool that requires `write` is called with a token that only has `read`, the server returns an error prompting the client to re-authorize with `write`.
-
 ## Troubleshooting
 
 Authentication and workspace access issues live here. For tool-specific issues — `search` returning nothing, ambiguous branch names, `NotYetImplemented` errors — see [Troubleshooting in the Tools reference](/reference/avo-mcp/tools#troubleshooting).
+
+**The plugin installed but the tools or skills aren't available.** Run `/reload-plugins`, or restart Claude Code. Confirm the marketplace and plugin were added with `claude plugin marketplace add avohq/avo-mcp` followed by `claude plugin install avo@avo-mcp`.
 
 **A second browser prompt appears the first time you write.** Write tools require the `write` scope, which is a step-up consent on top of `read`. Your client opens the OAuth flow again; the prompt appears once per session.
 
