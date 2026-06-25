@@ -39,6 +39,14 @@ const config: DocsThemeConfig = {
     const fullUrl =
       router.asPath === '/' ? baseUrl : `${baseUrl}${router.asPath}`;
 
+    // Clean Markdown twin of this page (generated into public/ by
+    // scripts/generate-llms.mjs). Advertising it lets AI agents that land on
+    // the HTML page discover the portable .md version. Mirrors the .md URL
+    // scheme: page URL + ".md", with the homepage served at /docs/index.md.
+    const cleanPath = router.asPath.split(/[?#]/)[0].replace(/\/$/, '');
+    const markdownUrl =
+      cleanPath === '' ? `${baseUrl}/index.md` : `${baseUrl}${cleanPath}.md`;
+
     const ogUrl = title
       ? `${baseUrl}/api/og?title=${encodeURIComponent(title)}`
       : `${baseUrl}/api/og`;
@@ -58,6 +66,7 @@ const config: DocsThemeConfig = {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={fullUrl} />
         <link rel="canonical" href={fullUrl} />
+        <link rel="alternate" type="text/markdown" href={markdownUrl} />
         <meta property="twitter:image" content={ogUrl} />
         <meta property="og:image" content={ogUrl} />
         <meta property="og:locale" content="en_US" />
