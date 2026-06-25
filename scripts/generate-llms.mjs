@@ -225,25 +225,107 @@ function getAttr(tag, name) {
 // Link rewriting
 // ---------------------------------------------------------------------------
 
+// source -> destination map of exact (non-param) redirects from next.config.mjs.
+// Populated once in main(); empty means "no redirect resolution" (links to
+// redirected paths simply stay as canonical HTML URLs — the prior behavior).
+let REDIRECT_MAP = new Map();
+
+/**
+ * Parse the static `redirects` array out of next.config.mjs and build a
+ * source -> destination map of exact redirects. Param/wildcard redirects
+ * (`:slug`, `*`) are skipped — they can't be resolved by literal lookup.
+ * Failure is non-fatal: returns an empty map and links fall back to HTML.
+ */
+function loadRedirects() {
+  try {
+    const cfg = fs.readFileSync(path.join(ROOT, 'next.config.mjs'), 'utf8');
+    const m = cfg.match(/const redirects\s*=\s*(\[[\s\S]*?\]);/);
+    if (!m) return new Map();
+    const arr = new Function(`return (${m[1]});`)();
+    const map = new Map();
+    for (const r of arr) {
+      if (!r || typeof r.source !== 'string' || typeof r.destination !== 'string') continue;
+      if (/[:*]/.test(r.source)) continue;
+      map.set(r.source.replace(/\/$/, ''), r.destination);
+    }
+    return map;
+  } catch (err) {
+    console.warn(
+      `[generate-llms] could not parse redirects from next.config.mjs; links to redirected paths will stay as HTML URLs: ${err.message}`,
+    );
+    return new Map();
+  }
+}
+
+/**
+ * Follow the redirect chain for a path (cycle-guarded). Returns the final
+ * destination path plus any `#anchor` picked up from a redirect destination.
+ */
+function resolveRedirect(pathPart) {
+  let cur = pathPart.replace(/\/$/, '');
+  let hash = '';
+  const seen = new Set();
+  while (REDIRECT_MAP.has(cur) && !seen.has(cur)) {
+    seen.add(cur);
+    let dest = REDIRECT_MAP.get(cur);
+    const hi = dest.indexOf('#');
+    if (hi !== -1) {
+      hash = dest.slice(hi);
+      dest = dest.slice(0, hi);
+    }
+    cur = dest.replace(/\/$/, '');
+  }
+  return { path: cur, hash };
+}
+
 /**
  * Rewrite a single link/asset target to an absolute URL.
  * Internal doc routes that resolve to a known page become .md links.
  */
 function rewriteTarget(target, slugSet) {
   const t = target.trim();
-  if (/^(https?:|mailto:|tel:|#)/.test(t)) return t; // external / anchor
+
+  if (/^(mailto:|tel:|#)/.test(t)) return t;
+
+  // Absolute links. Authors often write full https://www.avo.app/docs/<page>
+  // URLs; rewrite those to the page's .md twin too (guarded by slugSet, so
+  // asset/app URLs like /docs/images/* or /docs/api/* are left alone).
+  if (/^https?:\/\//.test(t)) {
+    const m = t.match(/^https?:\/\/(?:www\.)?avo\.app\/docs(\/[^#?]*)?(#.*)?$/);
+    if (m) {
+      const ap = (m[1] || '/').replace(/\/$/, '');
+      const ah = m[2] || '';
+      return resolveDocPath(ap, ah, slugSet) ?? t;
+    }
+    return t; // other external URL
+  }
+
   if (t.startsWith('/docs/')) return `${SITE}${t}`; // already-absolute asset (images, etc.)
   if (!t.startsWith('/')) return t; // relative — leave untouched
 
   const hashIdx = t.indexOf('#');
   const pathPart = hashIdx === -1 ? t : t.slice(0, hashIdx);
   const hash = hashIdx === -1 ? '' : t.slice(hashIdx);
-  const slug = pathPart.replace(/^\//, '').replace(/\/$/, '');
 
+  // Param/wildcard redirect or a genuinely missing page: keep the canonical
+  // HTML URL rather than inventing a broken .md link.
+  return resolveDocPath(pathPart, hash, slugSet) ?? `${DOCS_BASE}${pathPart}${hash}`;
+}
+
+/**
+ * Resolve an internal doc path (no /docs prefix) to its .md URL, directly or by
+ * following redirects. Returns null when it maps to no known page.
+ */
+function resolveDocPath(pathPart, hash, slugSet) {
+  const slug = pathPart.replace(/^\//, '').replace(/\/$/, '');
   if (slugSet.has(slug)) return `${slugToMdUrl(slug)}${hash}`;
-  // Unknown internal path (e.g. a route that only exists via a redirect):
-  // keep it as an absolute HTML link rather than inventing a broken .md URL.
-  return `${DOCS_BASE}${pathPart}${hash}`;
+
+  const resolved = resolveRedirect(pathPart);
+  const resolvedSlug = resolved.path.replace(/^\//, '');
+  if (resolvedSlug !== slug && slugSet.has(resolvedSlug)) {
+    return `${slugToMdUrl(resolvedSlug)}${hash || resolved.hash}`;
+  }
+  return null;
 }
 
 function rewriteMarkdownLinks(text, slugSet) {
@@ -480,6 +562,7 @@ async function collectPages(dir) {
 async function main() {
   const files = findContentFiles(PAGES_DIR);
   const slugSet = new Set(files.map(fileToSlug));
+  REDIRECT_MAP = loadRedirects();
 
   // Convert every page once; keep results keyed by slug.
   const pages = new Map(); // slug -> { title, description, markdown }
