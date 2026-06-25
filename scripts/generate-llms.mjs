@@ -38,78 +38,98 @@ const SITE_DESCRIPTION =
 // every page still gets a .md file and is included in llms-full.txt, so full
 // coverage is preserved.
 //
-// To add/remove a page from the index, edit the slug lists below. A slug is the
-// page URL minus the /docs prefix and any .md suffix (the homepage is ''). The
-// build validates every slug exists and warns on any that don't, so a renamed
-// page surfaces as a warning instead of a dead link.
+// Each section lists entries as { slug, label?, desc? }. A slug is the page URL
+// minus the /docs prefix and any .md suffix (the homepage is ''). label/desc are
+// optional hand-written overrides; when omitted they fall back to the page's H1
+// title and frontmatter description. The build validates every slug exists and
+// warns on any that don't, so a renamed page surfaces as a warning, not a dead
+// link.
+//
+// This mirrors the canonical avo.app/llms.txt curation verbatim (sections,
+// page selection, labels, descriptions) so the Cloudflare redirect that points
+// /llms.txt here is content-neutral.
 const CURATED_SECTIONS = [
-  { title: 'Getting started', slugs: ['', 'faqs/yes-you-can-faq'] },
   {
-    title: 'Adopting Avo with AI agents',
-    slugs: [
-      'adopting-avo-with-ai-agents',
-      'adopting-avo-with-ai-agents/setting-up-a-tracking-plan',
-      'adopting-avo-with-ai-agents/governing-ai-generated-analytics',
+    title: 'Getting started',
+    entries: [
+      { slug: '', label: 'Getting started', desc: 'What Avo is and how to start using it.' },
+      { slug: 'data-design', label: 'What is a tracking plan?', desc: 'The core concept behind Avo, a single source of truth for analytics.' },
+      { slug: 'data-design/quick-start', label: 'Quickstart: tracking plan in Avo', desc: 'Set up your first tracking plan.' },
+      { slug: 'data-design/start-data-design', label: 'Deep dive: data design in Avo', desc: 'The substantive guide to designing analytics data well in Avo.' },
     ],
   },
   {
-    title: 'Avo MCP',
-    slugs: ['reference/avo-mcp/overview', 'reference/avo-mcp/tools'],
+    title: 'Adopting Avo with AI agents',
+    entries: [
+      { slug: 'adopting-avo-with-ai-agents', label: 'Overview', desc: 'Why and how to adopt Avo when AI agents are designing and implementing your analytics.' },
+      { slug: 'adopting-avo-with-ai-agents/setting-up-a-tracking-plan', label: 'Setting up a tracking plan', desc: 'Get a tracking plan into Avo, even starting from scratch or from another tool.' },
+      { slug: 'adopting-avo-with-ai-agents/governing-ai-generated-analytics', label: 'Governing AI-generated analytics', desc: 'How Avo stops AI agents from creating inconsistent, duplicate, or drifting analytics and keeps implementation in sync with the plan.' },
+    ],
+  },
+  {
+    title: 'Avo MCP (for AI assistants and agents)',
+    entries: [
+      { slug: 'reference/avo-mcp/overview', label: 'Avo MCP overview', desc: 'Connect Claude, Cursor, Codex, and other MCP clients to your Avo tracking plan to read the plan, design tracking for new features, and write changes on a branch. Remote server at https://mcp.avo.app/mcp.' },
+      { slug: 'reference/avo-mcp/tools', label: 'Avo MCP tools reference', desc: 'Full parameters and return shapes for the MCP tools (list_workspaces, search, get, save_items, workflow).' },
+      { slug: 'data-design/guides/agentic-data-design', label: 'Agentic data design', desc: 'How to design analytics tracking with AI agents while keeping events consistent and governed.' },
+    ],
   },
   {
     title: 'The tracking plan',
-    slugs: [
-      'data-design',
-      'data-design/start-data-design',
-      'data-design/avo-tracking-plan',
-      'data-design/avo-tracking-plan/events',
-      'data-design/avo-tracking-plan/properties',
-      'data-design/avo-tracking-plan/metrics',
-      'data-design/avo-tracking-plan/journeys',
-      'data-design/branches',
+    entries: [
+      { slug: 'data-design/avo-tracking-plan', label: 'The Avo tracking plan: overview', desc: 'How events, properties, metrics, sources, and journeys fit together.' },
+      { slug: 'data-design/avo-tracking-plan/journeys', label: 'Journeys', desc: 'Organize events into the user journeys they belong to.' },
+      { slug: 'data-design/avo-tracking-plan/events', label: 'Events', desc: 'Define and document analytics events.' },
+      { slug: 'data-design/avo-tracking-plan/properties', label: 'Properties', desc: 'Define and reuse event properties.' },
+      { slug: 'data-design/avo-tracking-plan/metrics', label: 'Metrics', desc: 'Define metrics composed from events.' },
+      { slug: 'data-design/branches', label: 'Branches', desc: 'Try out and review tracking-plan changes on a branch before merging them into your source of truth.' },
     ],
   },
-  { title: 'Workflow', slugs: ['workflow/overview'] },
+  {
+    title: 'Workflow',
+    entries: [
+      { slug: 'workflow/overview', label: 'Avo workflow overview', desc: 'Plan, review, implement, validate, and publish analytics changes on branches.' },
+    ],
+  },
   {
     title: 'Quality and governance',
-    slugs: [
-      'audit/overview',
-      'audit/quickstart',
-      'audit/rules',
-      'data-design/best-practices/naming-conventions',
+    entries: [
+      { slug: 'audit/overview', label: 'Tracking plan audit', desc: 'Automated quality and naming-consistency checks for your tracking plan.' },
+      { slug: 'audit/rules', label: 'Audit rules', desc: 'The full set of rules the audit checks for, and how to read, fix, and configure them.' },
+      { slug: 'data-design/best-practices/naming-conventions', label: 'Naming conventions', desc: 'Best practices for consistent event and property names.' },
+      { slug: 'data-design/best-practices/defining-descriptive-events-and-properties', label: 'Defining descriptive events and properties', desc: 'How to write clear, reusable definitions.' },
+      { slug: 'data-design/guides/organizing-event-hierarchy', label: 'Defining event hierarchy', desc: 'Structure events consistently to avoid duplication and sprawl.' },
+      { slug: 'data-design/guides/organizing-metrics-and-events', label: 'Organizing tracking plans', desc: 'Keep events and metrics organized as the plan grows.' },
+      { slug: 'data-design/guides/documenting-purpose-meetings-in-avo', label: 'Documenting purpose meetings', desc: "Align stakeholders on what to measure and why before building, Avo's method for designing analytics with intent." },
+      { slug: 'data-design/avo-tracking-plan/stakeholder-domains', label: 'Stakeholders', desc: 'Assign ownership of tracking-plan areas to stakeholder teams for governance.' },
     ],
   },
   {
     title: 'Observability',
-    slugs: [
-      'inspector/start-using-inspector',
-      'inspector/inspector-installation-overview',
-      'reference/avo-inspector-sdks/overview',
+    entries: [
+      { slug: 'inspector/start-using-inspector', label: 'Inspector quickstart', desc: 'Monitor live tracking data quality and find and fix issues in production.' },
     ],
   },
   {
     title: 'Type-safe implementation',
-    slugs: [
-      'implementation/avo-codegen-overview',
-      'implementation/start-using-avo-codegen',
-      'implementation/cli',
-      'reference/avo-codegen/programming-languages',
+    entries: [
+      { slug: 'implementation/avo-codegen-overview', label: 'Avo Codegen overview', desc: 'Generate type-safe analytics tracking code from your tracking plan.' },
+      { slug: 'implementation/cli', label: 'Quickstart: Avo CLI', desc: 'Pull generated code and run validation in CI.' },
+      { slug: 'reference/avo-codegen/programming-languages', label: 'Avo Codegen languages', desc: 'Supported languages for generated code.' },
     ],
   },
   {
-    title: 'Publishing',
-    slugs: [
-      'publishing/publishing/overview',
-      'publishing/exporting',
-      'publishing/import/get-tracking-plan-into-avo',
+    title: 'Publishing, import and export',
+    entries: [
+      { slug: 'publishing/publishing/overview', label: 'Publishing overview', desc: 'Push tracking-plan definitions to analytics, CDP, and governance destinations — Amplitude, Mixpanel, Segment, RudderStack, mParticle, Adobe Experience Platform, and Snowplow — or export via webhooks and S3 for custom build pipelines and warehouses such as Snowflake, Databricks, and BigQuery.' },
+      { slug: 'publishing/import/get-tracking-plan-into-avo', label: 'Importing overview', desc: 'Get an existing tracking plan into Avo — import from Amplitude, Mixpanel, or Google Sheets, or from Inspector.' },
+      { slug: 'reference/public-api/overview', label: 'Avo public API', desc: 'Programmatic access to branches and the tracking plan.' },
     ],
   },
   {
     title: 'Reference',
-    slugs: [
-      'reference/public-api/overview',
-      'reference/avo-debuggers/overview',
-      'reference/avo-intelligence',
+    entries: [
+      { slug: 'reference/avo-intelligence', label: 'Avo Intelligence', desc: 'AI-powered features like Smart Search that make working with your tracking plan faster.' },
     ],
   },
 ];
@@ -489,24 +509,27 @@ async function main() {
     ``,
     `> ${SITE_DESCRIPTION}`,
     ``,
-    `Every documentation page is also available as clean Markdown: append \`.md\` to any page URL (e.g. ${DOCS_BASE}/data-design/avo-tracking-plan/events.md). For the entire documentation concatenated into one file, see ${DOCS_BASE}/llms-full.txt.`,
-    ``,
     `## Documentation`,
+    ``,
+    `Learn what Avo is, how the tracking plan works, and how humans and AI agents use it together to design, implement, and govern analytics.`,
+    ``,
+    `Every page below is also available as clean Markdown — append \`.md\` to any URL. For the entire documentation in one file, see ${DOCS_BASE}/llms-full.txt.`,
     ``,
   ];
 
   const missing = [];
   for (const section of CURATED_SECTIONS) {
     const lines = [];
-    for (const slug of section.slugs) {
-      const page = pages.get(slug);
+    for (const entry of section.entries) {
+      const page = pages.get(entry.slug);
       if (!page) {
-        missing.push(slug);
+        missing.push(entry.slug);
         continue;
       }
-      const label = page.title || slug || 'Get Started';
-      const desc = page.description ? `: ${page.description}` : '';
-      lines.push(`- [${label}](${slugToMdUrl(slug)})${desc}`);
+      const label = entry.label || page.title || entry.slug || 'Overview';
+      const description = entry.desc ?? page.description;
+      const desc = description ? `: ${description}` : '';
+      lines.push(`- [${label}](${slugToMdUrl(entry.slug)})${desc}`);
     }
     if (lines.length) {
       llms.push(`### ${section.title}`, ``, ...lines, ``);
