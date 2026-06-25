@@ -15,8 +15,9 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PAGES_DIR = path.join(ROOT, 'pages');
 const PUBLIC_DIR = path.join(ROOT, 'public');
 
@@ -186,10 +187,12 @@ function parseFrontmatter(src) {
 
 /** Read an attr from a JSX tag string, handling foo="x", foo='x', foo={'x'}, foo={"x"}. */
 function getAttr(tag, name) {
+  // `(?<![\w-])` anchors the attribute name on a word boundary so e.g.
+  // getAttr(tag, 'src') doesn't accidentally match `data-src="…"`.
   const patterns = [
-    new RegExp(`${name}=\\{\\s*['"\`]([^'"\`]*)['"\`]\\s*\\}`),
-    new RegExp(`${name}="([^"]*)"`),
-    new RegExp(`${name}='([^']*)'`),
+    new RegExp(`(?<![\\w-])${name}=\\{\\s*['"\`]([^'"\`]*)['"\`]\\s*\\}`),
+    new RegExp(`(?<![\\w-])${name}="([^"]*)"`),
+    new RegExp(`(?<![\\w-])${name}='([^']*)'`),
   ];
   for (const re of patterns) {
     const m = tag.match(re);
@@ -245,7 +248,10 @@ function transformTextSegment(text, slugSet) {
   let out = text;
 
   // Strip ESM import/export statements (these only appear outside code fences).
-  out = out.replace(/^[ \t]*import\s+[^\n]*\n?/gm, '');
+  // Match only ESM-shaped imports (`import x from '...'` / `import '...'`) so a
+  // prose line that merely starts with the word "import" isn't dropped.
+  out = out.replace(/^[ \t]*import\s+[^\n]*\bfrom\b\s*['"][^\n]*\n?/gm, '');
+  out = out.replace(/^[ \t]*import\s+['"][^\n]*\n?/gm, '');
   out = out.replace(/^[ \t]*export\s+(default\s+)?[^\n]*\n?/gm, '');
 
   // <Callout ...>inner</Callout> -> blockquote (optionally led by its emoji).
