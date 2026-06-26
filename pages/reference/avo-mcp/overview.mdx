@@ -164,7 +164,7 @@ Point Claude at a branch and it returns a structured diff: new, modified, and re
 
 ## Capability matrix
 
-The MCP exposes five tools mapped to agent intents:
+The MCP exposes six tools mapped to agent intents:
 
 | Intent | Tool | Scope |
 |---|---|---|
@@ -173,6 +173,7 @@ The MCP exposes five tools mapped to agent intents:
 | **Understand** — full details for an event, property, branch, source, etc. | [`get`](/reference/avo-mcp/tools#get) | `read` |
 | **Change** — create, update, archive, or restore items on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
 | **Progress** — create a branch, update its description, pull main, set a source's language, or bulk-import a plan | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
+| **Tell Avo** — report the agent's own experience back to Avo's product team | [`give_feedback`](/reference/avo-mcp/tools#give_feedback) | `write` |
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while branch enumeration is folded into `search` (as `itemType: "branch"`). See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
 

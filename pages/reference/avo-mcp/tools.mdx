@@ -1,6 +1,6 @@
 ---
 title: Avo MCP tools reference
-description: Reference for the five canonical Avo MCP tools (list_workspaces, search, get, save_items, workflow) plus parameter shapes, return schemas, and per-tool examples with natural-language prompts.
+description: Reference for the six canonical Avo MCP tools (list_workspaces, search, get, save_items, workflow, give_feedback) plus parameter shapes, return schemas, and per-tool examples with natural-language prompts.
 ---
 
 import { Callout } from 'nextra/components'
@@ -13,7 +13,7 @@ Every tool except `list_workspaces` operates on a workspace. Pass `workspaceId` 
   Each tool lists the OAuth scope it requires. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
 </Callout>
 
-The MCP exposes five canonical tools mapped to agent intents:
+The MCP exposes six canonical tools mapped to agent intents:
 
 | Intent | Tool | Scope |
 |---|---|---|
@@ -22,6 +22,7 @@ The MCP exposes five canonical tools mapped to agent intents:
 | **Understand** — full details for an event, property, branch, source, etc. | [`get`](#get) | `read` |
 | **Change** — create, update, archive, or restore items on a branch | [`save_items`](#save_items) | `write` |
 | **Progress** — create a branch, update its description, pull main, set a source's language, or bulk-import a plan | [`workflow`](#workflow) | `write` |
+| **Tell Avo** — report the agent's own experience back to Avo's product team | [`give_feedback`](#give_feedback) | `write` |
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](#list_branches) — remains available while branch enumeration is folded into `search` (as `itemType: "branch"`).
 
@@ -729,6 +730,73 @@ Claude opens a branch with `create_branch`, then calls `import` with the CSV `pa
 - `pull_main` without Codegen access, or `import` without Admin role — permission error.
 - `set_source_language` with a language the source's platform doesn't support — the error lists the supported tokens.
 - `import` missing `format` or `payload`, or with an unknown `format` / `importMethod` token.
+
+---
+
+## `give_feedback`
+
+**Scope:** `write`
+
+<Callout type="info" emoji="💡">
+  This tool submits feedback to Avo's product team. It does **not** read or modify the tracking plan — nothing about your workspace's events, properties, or branches changes when you call it.
+</Callout>
+
+Report the agent's own experience with the Avo MCP directly to Avo's product team. Any agent on the MCP can call this proactively, in the moment — there is no human relaying the feedback. Each submission lands instantly as a triaged item in the queue Avo's product team already works from.
+
+Call `give_feedback` whenever the MCP couldn't do what you set out to accomplish — a missing capability, a tool that behaved confusingly, or a goal you couldn't finish — as well as for any other observation worth passing along. Alongside the feedback message, include the **intent** behind the call: what you were actually trying to achieve. That "why" — the unmet goal behind a call — is the part ordinary telemetry can't see, and it's what helps Avo decide what to build next.
+
+### Parameters
+
+| Parameter | Required | Description |
+|---|---|---|
+| `feedback` | Yes | The feedback message — what the agent observed, what was missing, or what went wrong. |
+| `intent` | No | Why the agent made the call: the goal it was trying to achieve (e.g. the task it couldn't finish). Supplies the "why" that telemetry alone can't capture. |
+| `workspaceId` | No | Workspace ID. |
+
+### Returns
+
+A confirmation that the feedback was recorded and routed to Avo's product team's triage queue. No tracking-plan data is read or returned. The block below is illustrative — see the per-field schema on the tool for the authoritative shape.
+
+```json
+{
+  "success": true,
+  "message": "Thanks — your feedback was recorded and sent to Avo's product team."
+}
+```
+
+### Examples
+
+#### Report a capability the MCP is missing
+
+**Prompt:** *"Merge my `add-checkout-events` branch for me."*
+
+Claude finds the branch but no way to merge it through the MCP — branch merging is a deliberate human review-and-publish gate, not an MCP action. Rather than silently giving up, it calls `give_feedback` with the observation and the intent behind it, so Avo's product team sees the unmet goal.
+
+```json
+{
+  "feedback": "There's no way to merge a tracking-plan branch through the MCP.",
+  "intent": "The user asked me to merge their add-checkout-events branch, and I couldn't complete it."
+}
+```
+
+#### Flag a confusing tool
+
+**Prompt:** *"Why did that last change not show up on main?"*
+
+After explaining that MCP writes land on a branch and need a human merge, Claude passes along that the behavior wasn't obvious from the tools alone.
+
+```json
+{
+  "feedback": "It wasn't clear that save_items writes only land on a branch and never reach main without a human merge.",
+  "intent": "I was trying to explain to the user why their change wasn't visible on main."
+}
+```
+
+### Common errors
+
+- Empty or missing `feedback` — the message is required.
+- Missing `write` scope — the client must re-authorize with `write`.
+- Workspace access denied.
 
 ---
 
