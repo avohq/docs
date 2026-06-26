@@ -768,14 +768,14 @@ A confirmation that the feedback was recorded and routed to Avo's product team's
 
 #### Report a capability the MCP is missing
 
-**Prompt:** *"Set up alerting so the team gets paged when the `Checkout Completed` volume drops."*
+**Prompt:** *"Merge my `add-checkout-events` branch for me."*
 
-Claude searches and inspects the plan but finds no way to configure alerts through the MCP. Rather than silently giving up, it calls `give_feedback` with the observation and the intent behind it, so Avo's product team sees the unmet goal.
+Claude finds the branch but no way to merge it through the MCP — branch merging is a deliberate human review-and-publish gate, not an MCP action. Rather than silently giving up, it calls `give_feedback` with the observation and the intent behind it, so Avo's product team sees the unmet goal.
 
 ```json
 {
-  "feedback": "There's no way to configure volume alerts on an event through the MCP.",
-  "intent": "The user asked me to set up paging when Checkout Completed volume drops, and I couldn't complete it."
+  "feedback": "There's no way to merge a tracking-plan branch through the MCP.",
+  "intent": "The user asked me to merge their add-checkout-events branch, and I couldn't complete it."
 }
 ```
 
