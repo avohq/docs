@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "DEV=true next dev",
-    "build": "next build",
+    "generate:llms": "node scripts/generate-llms.mjs",
+    "build": "node scripts/generate-llms.mjs && next build",
     "start": "next start",
     "spellcheck": "yarn cspell --no-progress --show-suggestions --show-context 'pages/**/*.mdx' --locale en-us",
     "lint": "next lint",
