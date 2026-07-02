@@ -62,10 +62,17 @@ Learn more about the CLI [here](/implementation/cli).
 First thing you need to do after importing the generated file is to initialize Avo.
 There will either be a static `initAvo` method or a class, named `Avo` by default, with a constructor, depending on your setup. [Contact us](/help/troubleshooting) if you want to change the setup.
 Regardless of the option, the arguments you would need to provide are the same, and based on your tracking plan. Check out the [Codegen tab](/implementation/guides/download-or-copy-avo-file-manually) for specific recommendations.
-Samples below are in Swift and the code is very similar in other programming languages:
+
+<Callout type="info">
+  **New workspaces** use the constructor/object-based pattern by default: you create an `Avo` instance with `Avo(env: ...)` and call event methods on that instance. **Legacy workspaces** may use the static pattern, where `initAvo` is a static method and events are called directly on the `Avo` class. [Contact us](/help/troubleshooting) if you want to migrate to the constructor-based pattern.
+</Callout>
+
+Samples below are in Swift and the code is very similar in other programming languages.
+
+**Constructor/object-based pattern (default for new workspaces):**
 
 ```swift
-public static func initAvo(env: AvoEnv,
+public init(env: AvoEnv,
     requiredStringSystemProperty: RequiredStringSystemProperty,
     optionalStringSystemProperty: OptionalStringSystemProperty?,
     requiredIntSystemProperty: Int,
@@ -75,6 +82,23 @@ public static func initAvo(env: AvoEnv,
     secondDestination: AvoCustomDestination,
     debugger: NSObject, strict: Bool = false, noop: Bool = false)
 ```
+
+```swift
+let avo = Avo(env: .dev/*, other parameters*/)
+// avo is now ready to track events
+```
+
+<details>
+<summary>Legacy: Static pattern</summary>
+
+Legacy workspaces use the static pattern, where `initAvo` stores state globally and events are called on the `Avo` class directly:
+
+```swift
+Avo.initAvo(env: .dev/*, other parameters*/)
+Avo.eventName(/*event properties*/)
+```
+
+</details>
 
 - `env` - Avo is designed to act differently based on the environment. Supported values are development, staging and production. Most important differences include sending data to different projects in your analytics (to not pollute production data with dev/testing session) and ability to crash the app in development if Avo detects an error in the analytics.
 - `system properties` - this are properties designed to be sent with each event. You need to provide them during initialization. You can update their values later with the `setSystemProperties` method.

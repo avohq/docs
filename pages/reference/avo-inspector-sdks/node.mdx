@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Avo Inspector Node.js SDK
 
 ## Quick Start Guide
@@ -30,6 +32,7 @@ constructor(options: {
     env: AvoInspectorEnv;
     version: string;
     appName?: string;
+    publicEncryptionKey?: string;
 });
 ```
 
@@ -41,6 +44,57 @@ All the following methods are available in the **AvoInspector** class.
 > - `env` - current environment: `"dev"`, `"staging"` or `"prod"`
 > - `appVersion` - your application version. A lot of Inspector features rely on versioning and you need to provide a comparable string here to get value from them. We recommend using semantic versioning or integers that are incremented in every release.
 > - `appName` - your application name. Optional; Provide it to make it easier to distinguish between data from different apps.
+> - `publicEncryptionKey` - optional. Your hex-encoded P-256 public key for [property value validation](#property-value-validation).
+
+#### Property value validation
+
+You can enable property value validation to validate property values against the [constraints defined in your tracking plan](/data-design/avo-tracking-plan/properties#property-types-and-constraints), such as allowed values, regex patterns, and min/max ranges.
+
+<Callout type="info" emoji="💡">
+  Property value validation is available for version 1.2.0+ of the Node.js Inspector SDK. If you are using an older version, please update to the latest version.
+</Callout>
+
+To enable property value validation:
+
+1. **Enable property value validation in settings** - Go to workspace settings in your Avo workspace and enable [property value validation](/inspector/inspector-debugger#enabling-advanced-debugger-features).
+
+To be able to [decrypt the property values](/inspector/inspector-debugger#decrypting-property-values) in the Inspector Debugger, you need to generate a public/private key pair:
+
+**Step 1: Generate encryption keys**
+
+Run the following command in your terminal to generate a public/private key pair:
+
+```bash
+node -e "const { createECDH } = require('crypto'); const ecdh = createECDH('prime256v1'); ecdh.generateKeys(); console.log('Private Key:', ecdh.getPrivateKey('hex')); console.log('Public Key:', ecdh.getPublicKey('hex', 'compressed'));"
+```
+
+This will output:
+- **Public key** - Used by Avo to encrypt property values
+- **Private key** - Used by you to decrypt values in the Inspector Debugger
+
+**Step 2: Store your private key securely**
+
+Save your private key in a secure location like a password manager. You'll need this to [decrypt values in the Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values). Never share or expose your private key to a third party.
+
+**Step 3: Add the public key to the Inspector initialization**
+
+Pass the public key when initializing the `AvoInspector` instance:
+
+```ts
+const inspector = new Inspector.AvoInspector({
+  apiKey: 'YOUR-API-KEY',
+  env: 'dev',
+  version: '1.0.0',
+  appName: 'My App',
+  publicEncryptionKey: 'YOUR-HEX-PUBLIC-KEY',
+});
+```
+
+<Callout type="info" emoji="🔒">
+  Property values are encrypted end-to-end. Avo only stores encrypted values and cannot decrypt them. Only you can decrypt the values using your private key in the Inspector Debugger dashboard.
+</Callout>
+
+Learn more about [decrypting property values in the Inspector Debugger](/inspector/inspector-debugger#decrypting-property-values) and the [property value issue types](/inspector/issue-types-in-inspector#property-value-issues) that can be detected.
 
 ## Sending event schemas to Avo Inspector
 

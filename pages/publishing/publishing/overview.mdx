@@ -92,6 +92,10 @@ You can customize which events in Avo are published to which integrations by usi
 
 ![Publishing filter to publish only events sent from Web to Amplitude](/images/publish_filter.png)
 
+#### Only send changed events
+
+For Webhook integrations, you can enable "Only send changed events" in the Events Filter section. When enabled, only events that have source-impacting changes on the merged branch are included in the payload, along with a `removedEvents` field listing events that were archived or lost their filtered sources. A change is considered source-impacting when it affects an event attached to a source. Properties or events not connected to any source will not appear as changed. See [Webhook Publishing](/publishing/webhook-publishing#only-send-changed-events) for more details.
+
 #### Filtering and source specific property presence
 
 How is source specific property presence published?

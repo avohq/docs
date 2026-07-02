@@ -18,6 +18,16 @@ To enable the Webhook integration you need to configure it with a URL where you 
 
 The Tracking Plan will be delivered with a `POST` request containing the Tracking Plan on a JSON format. The only requirement for this endpoint is to return a `200` response status code when it has successfully received the tracking plan.
 
+## Only Send Changed Events
+
+When "Only send changed events" is enabled in the Events Filter section of your webhook configuration, only events that have source-impacting changes on the merged branch are included in the webhook payload. This reduces payload size for downstream consumers that only need to process changes.
+
+An event is considered "changed" when the change impacts a source. For example, a property being added to or removed from an event on a source counts as a change, but a property that is not attached to any event, or an event that is not attached to any source, will not appear as changed.
+
+When this option is enabled, the payload includes a `removedEvents` field containing the names of events that were archived or lost their filtered sources. This allows downstream consumers to clean up removed events.
+
+This filter is source-aware — when a source filter is applied, only changes relevant to that source are considered.
+
 ## Payload Format
 
 Currently there are four different payload formats you can choose from for the webhook: **Snowplow Schemas**, **Avo Json**, **NDJSON**, and **Json Schema** (default).
@@ -49,15 +59,16 @@ Json representation of the state of your entire Avo workspace. Currently behind 
 
 Json representation of your tracking plan, following the [Json Schema](https://json-schema.org/) standard. Example payload [can be found here](/implementation/avo-tracking-plan-webhook)
 
-| Attribute    | Type                                | Description                                                                     |
-|:-------------|:------------------------------------|:--------------------------------------------------------------------------------|
-| name         | string                              | The name of your Avo workspace                                                  |
-| events       | array(Event)                        | Array of Tracking Plan events                                                   |
-| metrics      | \{ metricId: Metric ... }           | Objet where each Tracking Plan metric is a field, keys are metric ids           |
-| sources      | \{ sourceId: Source ... }           | Objet where each Tracking Plan source is a field, keys are source ids           |
-| destinations | \{ destinationId: Destination ... } | Objet where each Tracking Plan destination is a field, keys are destination ids |
-| categories   | \{ categoryId: Category ... }       | Objet where each Tracking Plan metric is a field, keys are category ids         |
-| context      | \{ publishInfo: PublishInfo }       | Metadata about the webhook call                                                 |
+| Attribute      | Type                                | Description                                                                     |
+|:---------------|:------------------------------------|:--------------------------------------------------------------------------------|
+| name           | string                              | The name of your Avo workspace                                                  |
+| events         | array(Event)                        | Array of Tracking Plan events                                                   |
+| removedEvents  | array(string)                       | Names of events that were archived or lost their filtered sources. Only present when "Only send changed events" is enabled |
+| metrics        | \{ metricId: Metric ... }           | Object where each Tracking Plan metric is a field, keys are metric ids           |
+| sources        | \{ sourceId: Source ... }           | Object where each Tracking Plan source is a field, keys are source ids           |
+| destinations   | \{ destinationId: Destination ... } | Object where each Tracking Plan destination is a field, keys are destination ids |
+| categories     | \{ categoryId: Category ... }       | Object where each Tracking Plan category is a field, keys are category ids       |
+| context        | \{ publishInfo: PublishInfo }       | Metadata about the webhook call                                                 |
 
 ##### Event Model
 

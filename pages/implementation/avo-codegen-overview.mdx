@@ -42,6 +42,8 @@ In the Avo Tracking Plan you can configure which analytics [actions](/data-desig
 
 Learn more in the [Codegen tech deep dive docs](/implementation/avo-codegen-tech-deep-dive).
 
+For mixed multi-source setups — a tracking library reused across apps, or many Avo sources in a single app — Avo can emit code in a "library" shape that splits the runtime from the per-source types. See [Library codegen](/reference/avo-codegen/library-codegen) for the file layout and quick starts.
+
 ## Does my event data flow through Avo servers?
 
 No. None of your events ever go through Avo servers. They go directly from your devices (whether that's a front-end client or a server) to the data destination.

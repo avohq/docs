@@ -1,10 +1,10 @@
 import Error from 'next/error'
 import { useEffect } from 'react';
-import Avo from '../Avo';
+import { docsPageErrored } from '../AvoEvents';
 
 export default function NotFound() {
     useEffect(() => {
-        Avo.docsPageErrored({
+        docsPageErrored({
           path: window.location.pathname,
           errorCode: "404"
         });

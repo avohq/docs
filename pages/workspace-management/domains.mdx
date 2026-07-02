@@ -92,6 +92,10 @@ This setting is particularly useful for stakeholder teams that want to stay info
 This setting only affects when a stakeholder is considered impacted. All changes, breaking and non-breaking, are still tracked and documented in the tracking plan.
 </Callout>
 
+**Impacted by PII changes**
+
+On the Enterprise plan, you can also mark a stakeholder team as **"Impacted by PII changes"**. When enabled, the team is considered impacted — and, if configured, automatically added as a required reviewer — whenever a branch changes the workspace's PII data flow: a new [PII property](/data-design/avo-tracking-plan/governance/tagging-pii), a property toggled from Not PII to PII, PII attached to a new event, or a PII event sent from a new source or to a new destination. This is useful for looping a privacy or data-governance team into every change that touches sensitive data.
+
 #### Settings hierarchy
 
 Understanding how stakeholder settings interact:

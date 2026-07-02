@@ -155,6 +155,36 @@ Add the property to one or more relevant categories. Learn more about [Categorie
 
 \* These rules can only fail after importing an existing tracking plan to Avo. When editing your Tracking Plan in Avo, Avo prevents you from introducing conflicting events and properties.
 
+## Custom Field and PII Rules
+
+These rules enforce the [custom field](/data-design/avo-tracking-plan/governance/custom-fields) and [PII](/data-design/avo-tracking-plan/governance/tagging-pii) standards defined on the [Governance](/data-design/avo-tracking-plan/governance) page and are available on the Enterprise plan.
+
+### All events and variants have required custom fields
+
+Checks if all events and event variants have a value for every custom field that applies to events and is marked as required. Event variants inherit custom field values from their base event, so filling in the base event also resolves its variants.
+
+#### How to resolve
+
+Fill in the missing custom field values in the Custom Fields section of the event details, on a branch.
+
+### All properties have required custom fields
+
+Checks if all properties have a value for every custom field that applies to properties and is marked as required.
+
+#### How to resolve
+
+Fill in the missing custom field values in the Custom Fields section of the property details, on a branch.
+
+### All properties have PII declared
+
+Checks for properties with an Undeclared [PII status](/data-design/avo-tracking-plan/governance/tagging-pii). Every property defaults to Undeclared until someone explicitly reviews it and marks it as either Not PII or PII, so this rule ensures every property in your tracking plan has been reviewed for personally identifiable information. Enforced in the [branch audit](/audit/branch-audit), it guarantees every new property gets a PII declaration before it goes live.
+
+#### How to resolve
+
+Open the property details, click the PII pill in the header and mark the property as Not PII, or as PII with the relevant PII type selected.
+
+<Callout type="info" emoji="💡">**Best practice:** Declaring a PII status on every property makes it visible at a glance which events touch sensitive data and gives downstream consumers a reliable signal in [exports](/publishing/exporting).</Callout>
+
 ## Audit Rule Configuration
 
 For new workspaces all rules are enabled by default, and casing rules default to the most common casing seen in the workspace. Workspaces on the Team and Enterprise plans are able to configure the audit to include or exclude each rule and manually set their casing rules for events and properties. 

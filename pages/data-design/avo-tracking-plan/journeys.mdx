@@ -61,13 +61,81 @@ A journey step is composed of the following details:
 
 There are several ways to add a journey step to the canvas:
 
+- **Import from Figma**: Import frames directly from a Figma design file to create steps with images, names, and auto-generated connections — see [Importing steps from Figma](#importing-steps-from-figma)
+- **Drag and drop images**: Drag and drop one or more images directly into the journey builder to create steps with images
 - **Drag from toolbar**: Drag the step icon from the toolbar at the top of the journey builder and drop it onto the canvas
 - **Step mode**: Press `s` to activate step mode, then click anywhere on the canvas to place a step node
-- **Drag and drop images**: Drag and drop one or more images directly into the journey builder to create steps with images
 
 To add an image to an existing journey step, you can drag and drop an image into the journey step or click the placeholder image in the journey step and select an image from your computer.
 
 For a full walkthrough of building journeys on the canvas, see [Creating a journey](#creating-a-journey).
+
+#### Importing steps from Figma
+
+If your designs live in Figma, you can import frames directly into the Journey Builder instead of exporting and re-uploading them manually. Each imported frame becomes a journey step with its image and name. Steps are arranged in a grid that mirrors the spatial order of your Figma frames, and connections between adjacent frames are generated automatically.
+
+This is particularly useful when you are starting a new journey from an existing design file and want to avoid the overhead of manually recreating each screen as a journey step and placing them to align with the flow you already have in Figma.
+
+<Callout type="info">
+  The Import from Figma feature is available to workspaces with the Figma integration enabled. Contact your workspace admin or Avo support if you don't see the option.
+</Callout>
+
+##### How to import frames from Figma
+
+To import frames into Avo from Figma, follow these steps:
+
+**1: Open a journey in the Journey Builder.**
+
+**2: Copy the link from Figma.**
+
+In Figma, copy the link to what you want to import — a whole file, a section, or a single frame:
+
+   - **Whole file**: Click *Share* in the top-right corner of Figma and copy the link
+   - **Section or frame**: Select it, then press `Cmd+L` (Mac) / `Ctrl+L` (Windows), or right-click and choose *Copy link to section* / *Copy link to frame*
+
+![Copying a frame link in Figma](/images/journeys/copy-from-figma.png)
+
+**3: Paste the link into your Avo journey.**
+
+Paste it into the canvas. Imported steps are always placed to the right of any existing content to avoid overlaps.
+
+**4: Select exactly which frames you want to import.**
+
+Avo retrieves the file metadata from Figma and displays a visual frame picker showing all top-level frames available in the file or section that was selected. You can multiselect individual frames, drag across frames or use select-all.
+
+![Frame picker showing Figma frames as thumbnails](/images/journeys/import-selection.png)
+
+**5: Click "Import".**
+
+Avo downloads each selected frame as an image, uploads it, and creates a journey step for each one.
+
+![Journey canvas with newly imported steps](/images/journeys/import-complete.png)
+
+##### What gets created
+
+For each imported frame, Avo creates a journey step with:
+
+- **Image**: A screenshot of the Figma frame
+- **Title**: The frame's name from Figma (e.g. "Checkout – Payment")
+- **Figma source link**: A reference back to the source Figma file and node, so anyone viewing the step can trace it to the original design and easily refresh the journey step in Avo when the designs have changed in Figma
+
+Steps are arranged in a grid layout that mirrors the spatial order of the frames in the Figma file. If the journey already contains steps, new steps are placed to the right of existing content to avoid overlaps.
+
+Frames that were spatially close to each other in the Figma layout — specifically those in the same horizontal row — are automatically connected with edges when imported. This preserves the left-to-right visual flow of your Figma design without manual wiring.
+
+You can add, remove, or adjust connections after import just like any other journey step connection. See [Connections](#connections) for details.
+
+##### Recommended Figma seat type
+
+Avo reads Figma files on your behalf using the OAuth token from the connected Figma account. Figma applies [rate limits](https://developers.figma.com/docs/rest-api/rate-limits/) to its REST API per seat type — Dev and Full seats get the highest monthly and per-minute quotas, while View and Collab seats share a much smaller monthly quota and are the first to be throttled. For a smooth import experience, connect a Figma account that has a Dev or Full seat.
+
+If you hit Figma's monthly API quota, Avo surfaces a toast suggesting you reconnect using a Dev or Full seat account. Disconnect the current Figma integration from **Workspace Settings → Integrations**, then connect with a different Figma account.
+
+##### Troubleshooting
+
+- **"Invalid URL" error**: Make sure you copied the link from a Figma design file using one of the methods above — Share button, `Cmd/Ctrl+L`, or right-click. Links from Figma's prototype view, inspect panel, or FigJam boards are not supported.
+- **No frames appear in the picker**: The selected node may be a component or group rather than a frame or page. Try copying the link from a higher-level frame or page in the Figma file.
+- **"Could not access file"**: Avo can only access files shared with link access. In Figma, click **Share** and set access to **Anyone with the link**, then try again.
 
 ### Journey triggers
 
@@ -123,6 +191,18 @@ For each event or variant in a trigger, you can add properties to define the pro
 - **Existing properties not yet added to the event**: That means you pick a property from the list of properties in the tracking plan that have not yet been added to the event or variant and add it to the event or variant
 - **New properties**: That means you can create a new property to both the tracking plan and the event or variant
 
+###### Nested property conditions
+
+Property conditions also support nested properties — properties inside object-type properties. For example, an `Add to Cart` event might have an object-type property called `Product`, which contains a nested object property `Characteristics` with child properties like `Color`, `Size`, and `Brand`. You can add conditions to any of these nested properties.
+
+![Nested property conditions](/images/journeys/nested-property-conditions.png)
+
+In the property condition picker, object-type properties are included just like other properties. You can search for the name of the child property that you want to add a condition for, see which parent property or properties it belongs to, and add a condition for it. The nested property path is displayed in the condition to show the full hierarchy.
+
+All four condition operators work on nested properties: **is**, **is not**, **is set**, and **is not set**.
+
+Conditions on nested properties work independently from conditions on their parent properties — you can set conditions on both a parent object property and its nested children. Pinned values from parent properties are respected when resolving available values for nested properties.
+
 ##### Property condition operators
 
 Available operators for string and boolean properties are:
@@ -152,9 +232,9 @@ This is useful to provide additional context for tracking plan viewers and imple
 #### Adding property conditions
 
 To add a property condition to a journey trigger:
-1. Click the "Add Property Condition" button in the journey trigger node in the journey builder or journey trigger details. 
-2. Select the [property](/data-design/avo-tracking-plan/journeys#details-about-properties) you want to add a condition for
-3. Select the [operator](/data-design/avo-tracking-plan/journeys#details-about-operators) you want to use for the condition
+1. Click the "Add Property Condition" button in the journey trigger node in the journey builder or journey trigger details.
+2. Select the [property](/data-design/avo-tracking-plan/journeys#properties-in-property-conditions) or [nested object property](/data-design/avo-tracking-plan/journeys#nested-property-conditions) you want to add a condition for
+3. Select the [operator](/data-design/avo-tracking-plan/journeys#property-condition-operators) you want to use for the condition
 4. If applicable, enter the value you want to use for the condition
 5. Add an optional note for the property condition
 
@@ -228,7 +308,7 @@ To create a journey, click the "Create Journey" button in the Journeys view. Thi
 There are many possible ways to build journeys and there is no one-size-fits-all solution. But the following workflow is common and recommended:
 
 1. Add a [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description) for the journey
-2. Add [journey steps](/data-design/avo-tracking-plan/journeys#journey-steps) to the canvas by dragging and dropping images, dragging from the toolbar, or pressing `s` to activate step mode
+2. Add [journey steps](/data-design/avo-tracking-plan/journeys#journey-steps) to the canvas using [Import from Figma](#importing-steps-from-figma) to pull frames directly from a design file, or by dragging and dropping images, dragging from the toolbar, or pressing `s` to activate step mode
 3. Order the steps to visualize the user journey and [connect](/data-design/avo-tracking-plan/journeys#connections) them to each other so AI can [generate relevant triggers](/data-design/guides/agentic-data-design#generate-triggers) for each step
 4. Fill in the details for each [journey step](/data-design/avo-tracking-plan/journeys#journey-steps), one-by-one:
     - Add a [name](/data-design/avo-tracking-plan/journeys#journey-name) and [description](/data-design/avo-tracking-plan/journeys#journey-description) for the journey step

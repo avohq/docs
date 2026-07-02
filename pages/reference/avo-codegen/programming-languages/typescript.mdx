@@ -2,6 +2,10 @@ import { Callout } from 'nextra/components';
 
 # Avo Codegen in TypeScript
 
+<Callout type="info" emoji="💡">
+This page documents the single-file TypeScript output. Avo can also emit TypeScript in a "library" shape that splits the runtime from per-source types and a codegen-bound config file — see [Library codegen](/reference/avo-codegen/library-codegen).
+</Callout>
+
 ### Platforms
 
 Avo can code generate Avo Codegen in TypeScript targeted at the following platforms
@@ -77,6 +81,8 @@ For Web sources using TypeScript you can enable a source setting that generates 
 
 
 When enabled, the generated output is split into one file per event. You still initialize Avo from `Avo.ts`; event functions are imported from `AvoEvents`.
+
+This section describes one-file-per-event for the standard (non-library) output mode. The same setting can also be combined with TypeScript [library mode](/reference/avo-codegen/library-codegen#one-file-per-event) — see that page for the library-mode file layout.
 
 ###### Folder structure
 
@@ -423,9 +429,10 @@ You'll implement it like this:
 ```typescript
 const snowplowDestination = {
   make: function (env: string) {
+    // Optional: You can initialize Snowplow here or leave empty if initialized elsewhere.
     // Your custom Snowplow initialization, that includes the `newTracker` call
-    newTracker('sp1', '{{collector_url}}', { appId: 'my-app-id', plugins: [] });
-    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracker-setup/
+    // newTracker('sp1', '{{collector_url}}', { appId: 'my-app-id', plugins: [] });
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/
   },
   trackSelfDescribingEvent: (
     schema: string,
@@ -439,19 +446,19 @@ const snowplowDestination = {
       },
       context: contexts,
     });
-    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
   trackPageView: (title: string): void => {
     trackPageView(title);
-    // Learn more: https://docs.snowplowanalytics.com/docs/collecting-data/collecting-from-own-applications/javascript-trackers/browser-tracker/browser-tracker-v3-reference/tracking-events/#page-views
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
   identify: (userId: string): void => {
     setUserId(userId);
-    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.setuserid.md
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
   unidentify: (): void => {
     clearUserData();
-    // Learn more: https://github.com/snowplow/snowplow-javascript-tracker/blob/master/trackers/browser-tracker/docs/markdown/browser-tracker.clearuserdata.md
+    // Learn more: https://docs.snowplow.io/docs/sources/web-trackers/custom-tracking-using-schemas/
   },
 };
 ```

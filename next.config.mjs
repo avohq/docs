@@ -6,6 +6,25 @@ const nextConfig = {
   async redirects() {
     return redirects;
   },
+  // Serve the AI-consumable surface (generated into public/ by
+  // scripts/generate-llms.mjs) with explicit text content types. Sources are
+  // matched after basePath, so these cover /docs/<slug>.md and /docs/llms*.txt.
+  async headers() {
+    return [
+      {
+        source: '/:path*.md',
+        headers: [
+          { key: 'Content-Type', value: 'text/markdown; charset=utf-8' },
+        ],
+      },
+      {
+        source: '/:file(llms\\.txt|llms-full\\.txt)',
+        headers: [
+          { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
+        ],
+      },
+    ];
+  },
 };
 
 const withNextra = nextra({
