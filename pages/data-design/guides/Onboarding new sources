@@ -1,0 +1,116 @@
+<!--
+Draft v3 — internal notes for the docs PR
+
+Cross-references marked with <!-- REVIEW: ... --> comments need URL
+confirmation against the repo before merging.
+
+Suggested placement:
+  Primary path:  /docs/data-design/onboarding-a-new-source
+  IA:            top-level under Data Design, alongside (not under)
+                 start-data-design. It's a workflow guide, not a feature
+                 reference — earns its own slot.
+
+Suggested cross-link callouts to add to existing pages (do these as part of
+the same PR or a follow-up):
+  - /docs/data-design/start-data-design
+    Top-of-page callout: "Already have a tracking plan and adding a new
+    source? Start with Onboarding a new source."
+  - /docs/data-design/avo-tracking-plan/define-sources-and-destinations
+    "See also" link back here.
+  - /docs/data-design/avo-tracking-plan/properties  (presence section)
+    "See also" link to Step 4 of this guide.
+  - /docs/data-design/branches/pulling-pushing-items-between-branches
+    "See also" link to Step 3 of this guide.
+
+Frontmatter format not included — please add per this repo's conventions
+(title, sidebar_label, slug, description, etc.).
+-->
+
+# Onboarding a new source to an existing tracking plan
+
+_Use this guide when you've already defined a tracking plan in Avo and you're now adding a new platform, brand, or market source to it. If you're starting from a blank tracking plan, the [Start data design](https://www.avo.app/docs/data-design/start-data-design) guide is the right entry point instead._
+
+## When to use this guide
+
+Reach for this guide when:
+
+- You have an existing tracking plan in Avo with events, properties, and (typically) a global taxonomy.
+- You're adding a new source — a new platform (e.g. iOS), a new brand, or a new market — that needs to send some subset of those events.
+- The source has its own implementation timeline that may not match the rest of the plan, and you may want to break the work into smaller branches.
+
+This is a common pattern when teams are reimplementing tracking, expanding to a new brand, market, or product line, or rolling out Avo in stages across a multi-platform product. If you're starting fresh, use [Start data design](https://www.avo.app/docs/data-design/start-data-design) instead.
+
+## How this fits with the broader Avo workflow
+
+This guide focuses on the Plan and Implement steps of the [Avo workflow](https://www.avo.app/docs/workflow) <!-- REVIEW: confirm canonical URL for the workflow overview doc --> for the specific case of adding a new source. The shape is the same as any other planning work — branch, edit, review, implement, validate, publish — but with source-level decisions (event assignment, property presence per source, branch slicing) layered on top.
+
+## Step 1 — Create the source in Avo
+
+Open a branch and add the new source. See [Define sources and destinations](https://www.avo.app/docs/data-design/avo-tracking-plan/define-sources-and-destinations) for the click-by-click. As you create it, set:
+
+- **Source name and platform** — match how engineering refers to the codebase (e.g. `web-app`, `ios-app`).
+- **Destinations** — which destinations this source sends to. Often the same as other sources for the same product.
+- **Codegen language and output (if using Codegen)** — see [Avo Codegen overview](https://www.avo.app/docs/implementation/avo-codegen-overview). <!-- REVIEW: confirm canonical URL for Codegen overview --> Configure now so engineering can pick it up later in step 4.
+
+## Step 2 — Assign events from the central taxonomy to the source
+
+On the same branch, walk the event list and add the new source to each event. For larger plans, use bulk-edit on the events list — filter the events you want, select them, and add the source in one operation.
+
+**Branch strategy:** use one branch per logical grouping — often per market, brand, or product line — depending on how your organization slices ownership. If multiple sources within a group have meaningfully different timelines or reviewers, one branch per source is fine, but per-group keeps coordination simpler.
+
+**Configure source-specific property behavior.** Once an event is assigned to the source, you can configure each property on that event differently per source:
+
+- **Presence** — required, optional, or not sent. A property can be required on one source and optional on another.
+- **Allowed values (where it applies)** — a constrained list of values for this source. Useful when the same property has source-specific values.
+
+Reference: [Configuring when properties are required or optional](https://www.avo.app/docs/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional).
+
+Tips:
+
+- Default to the global presence and only override where the source genuinely behaves differently — fewer overrides means easier maintenance.
+- Document the reason for each override in the event description so a future reviewer doesn't have to reverse-engineer it.
+- If you find yourself overriding the same property the same way across many events on this source, consider whether the global definition should change instead.
+
+<!-- REVIEW: consider adding a screenshot of the bulk-assign flow on the events list — most useful place for a visual. -->
+
+## Step 3 — Share with data consumers and implementers to review and align on implementation
+
+This is a working session, not just a sign-off. With the analytics owner who'll consume the data and the engineering DRI who'll implement it:
+
+- **Sanity-check the source-specific property behavior** — does it match what the source can actually send?
+- **Decide which sources will implement what events, when.** Use this conversation to lock the implementation slices.
+- **Slice the work if it won't land at once.** If a source's implementation will roll out in stages, push a subset of changes from this branch into smaller implementation branches using [push and pull between branches](https://www.avo.app/docs/data-design/branches/pulling-pushing-items-between-branches#pushing-items-to-another-branch). Each implementation branch can then move on its own timeline.
+
+Required reviewers can be configured per source so the right people are pulled in automatically — see [Required reviewers](https://www.avo.app/docs/data-design/required-reviewers). <!-- REVIEW: confirm canonical URL for required reviewers -->
+
+## Step 4 — Implement and validate
+
+Once the branch (or implementation slice) is aligned and approved:
+
+- Engineering pulls the latest [Avo Codegen](https://www.avo.app/docs/implementation/avo-codegen-overview) for the source and uses the generated tracking functions.
+- Validate in dev and staging using the inline debugger <!-- REVIEW: add link to inline debugger doc once URL is confirmed --> and the [Avo Inspector debugger](https://www.avo.app/docs/inspector/avo-inspector-overview).
+- Once green in dev/staging, the branch is ready to merge.
+
+**Dependency:** Codegen and Inspector must be set up on the source first. If they aren't yet, prioritize that before starting implementation.
+
+## Step 5 — Publish
+
+Publish each Avo branch to main once the corresponding git branch is merged. If you're using direct publishing destinations (e.g. a webhook, cloud storage such as S3 or GCS, or a destination connector), confirm the publish completes after the merge.
+
+If you broke the work into multiple implementation branches, repeat steps 3–5 for each.
+
+## Common pitfalls
+
+- **Assigning a source to every event by default.** Saves time today, costs accuracy forever. Be deliberate.
+- **Treating source-specific overrides as the rule, not the exception.** If you have many overrides on one source, the global definition is probably wrong.
+- **Merging to main before implementation lands.** Inspector will report drift between plan and production until the code catches up. Keep the branch open until the slice is implemented.
+- **Skipping push/pull and copying work manually between branches.** Manual copies drift. Use push to keep the source of truth on one branch.
+
+## Related docs
+
+- [Start data design](https://www.avo.app/docs/data-design/start-data-design) — for greenfield tracking plans.
+- [Define sources and destinations](https://www.avo.app/docs/data-design/avo-tracking-plan/define-sources-and-destinations) — full source configuration reference.
+- [Configuring when properties are required or optional](https://www.avo.app/docs/data-design/avo-tracking-plan/properties#configuring-when-properties-are-required-or-optional) — property behavior reference.
+- [Push and pull between branches](https://www.avo.app/docs/data-design/branches/pulling-pushing-items-between-branches#pushing-items-to-another-branch) — move work between branches without merging.
+- [Avo Codegen overview](https://www.avo.app/docs/implementation/avo-codegen-overview) — generate type-safe tracking calls per source.
+- [Avo Inspector overview](https://www.avo.app/docs/inspector/avo-inspector-overview) — validate implementation in dev, staging, and production.
