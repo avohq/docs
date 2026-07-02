@@ -80,7 +80,7 @@ Here's what a typical sequence of audit log entries looks like:
 |-----------|------|--------|--------|---------|
 | 2025-03-15 14:23:47 | sarah@company.com | **Merged** | Branch: add-checkout-events | Merged branch to main (8 events, 3 properties) |
 | 2025-03-15 14:18:32 | sarah@company.com | **Approved** | Branch: add-checkout-events | Approved changes for merge |
-| 2025-03-15 11:05:19 | david@company.com | **Updated** | Property: payment_method | Changed type from `string` to `enum` with values: [credit_card, paypal, apple_pay] |
+| 2025-03-15 11:05:19 | david@company.com | **Updated** | Property: payment_method | Changed type from `string` to `enum` with values: [credit_card, PayPal, apple_pay] |
 | 2025-03-15 10:42:03 | david@company.com | **Created** | Event: Checkout Started | Added to category "E-commerce" with 5 properties |
 | 2025-03-14 16:54:11 | emma@company.com | **Published** | Source: iOS App (Production) | Published [Codegen](/implementation/avo-codegen-overview) updates to production |
 | 2025-03-14 15:31:28 | emma@company.com | **Deleted** | Property: legacy_user_id | Removed unused property from 3 events |
@@ -276,7 +276,7 @@ A typical investigation workflow looks like this:
 
 #### Step-by-step: Investigating a metrics drop
 
-**Example scenario**: Your weekly metrics report shows that a key conversion event dropped by 30% last Thursday. You need to determine if a tracking plan change caused the issue.
+**Example scenario**: Your weekly metrics report indicates a key conversion event decreased by 30% last Thursday. You need to determine if a tracking plan change caused the issue.
 
 1. Navigate to the Audit Log
 2. Set **Date range** filter to start Wednesday (one day before the drop) and end today
@@ -324,7 +324,7 @@ A typical onboarding workflow looks like this:
 2. Filter by **Target** = "Categories" to see category management history
 3. Sort by oldest first to see the initial category structure
 4. Review **Action** = "Created" entries to see when each category was established
-5. Filter by **Action** = "Updated" to see how categories evolved over time
+5. Filter by **Action** = "Updated" to see how categories evolved
 6. For specific events, use the **Search** field to find when they were added to categories
 7. Look at the user who created categories and the timeframe to connect decisions to product context
 8. Export a timeline of category evolution to share with the new team member
@@ -389,7 +389,7 @@ The CSV export includes all columns from the Audit Log view:
 Timestamp,User,Action,Target,Details
 2025-03-15 14:23:47,sarah@company.com,Merged,Branch: add-checkout-events,"Merged branch to main (8 events, 3 properties)"
 2025-03-15 14:18:32,sarah@company.com,Approved,Branch: add-checkout-events,Approved changes for merge
-2025-03-15 11:05:19,david@company.com,Updated,Property: payment_method,"Changed type from 'string' to 'enum' with values: [credit_card, paypal, apple_pay]"
+2025-03-15 11:05:19,david@company.com,Updated,Property: payment_method,"Changed type from 'string' to 'enum' with values: [credit_card, PayPal, apple_pay]"
 ```
 
 This format is ideal for:
@@ -449,7 +449,7 @@ We recommend periodically reviewing the Audit Log to stay informed about trackin
 A typical review cadence:
 - **Weekly** - Quick scan of recent changes for active projects
 - **Monthly** - Comprehensive review of all tracking plan modifications
-- **Quarterly** - Deep analysis of trends and patterns for strategic planning
+- **Quarterly** - Comprehensive analysis of trends and patterns for strategic planning
 
 ### Investigating issues systematically
 
