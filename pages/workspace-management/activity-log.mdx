@@ -1,0 +1,48 @@
+import PageLink from '../../components/PageLink';
+import { Callout } from 'nextra/components';
+
+# Activity Log
+
+The Activity Log is a chronological record of the changes made to your tracking plan in Avo. It shows who changed what and when, so you can trace the history of an event, property, or other item and understand how your tracking plan has evolved.
+
+<Callout type="info" emoji="💡">
+The Activity Log tracks changes to your tracking plan schema — not the analytics events flowing through your implementation. To monitor live event data, see [Inspector](/inspector/start-using-inspector).
+</Callout>
+
+## What the Activity Log captures
+
+The Activity Log records the changes that workspace members make to your tracking plan. Each entry shows the change that was made, the team member who made it, and when it happened — a bit like commits in Git, where every change is timestamped and attributed to the person who made it. If a change was made on a [branch](/data-design/branches), the entry links to that branch.
+
+Because it records changes, the Activity Log reflects modifications to your tracking plan rather than read activity like viewing pages or running searches.
+
+## Where to find the Activity Log
+
+You can view activity in two places in Avo:
+
+- **Workspace Activity Log** — Open the [Activity Log for your workspace](https://www.avo.app/schemas/default) to see changes across your tracking plan in one place.
+- **Item activity log** — Open an event, property, or [event variant](/data-design/avo-tracking-plan/event-variants) and scroll to the activity log at the bottom to see the change history for that specific item.
+
+## Restoring archived items
+
+When you [archive](/data-design/guides/archive-and-restore) an item, it's moved out of your tracking plan but kept in your workspace. You can find the archive activity in the Activity Log and restore the item from there:
+
+1. Find the archive activity in the [Activity Log of your workspace](https://www.avo.app/schemas/default)
+2. Click the `...` menu on the item and select **Restore**
+
+Items can also be restored from the Command Palette and the branch review screen. See [Archiving and restoring](/data-design/guides/archive-and-restore) for the full walkthrough.
+
+## What's next?
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Archiving and restoring"
+  description="Learn how to archive items and bring them back from the Activity Log"
+  href={'/data-design/guides/archive-and-restore'}
+/>
+
+<PageLink
+  image="/docs/images/svg/analyticsmanager.svg"
+  title="Inspector"
+  description="Monitor live event data and validate your tracking implementation"
+  href={'/inspector/start-using-inspector'}
+/>
