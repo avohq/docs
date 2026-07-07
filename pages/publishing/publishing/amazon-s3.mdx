@@ -137,8 +137,14 @@ Both modes write to the same files. The `<publishType>` segment in the timestamp
 
 - Avo holds no AWS credentials — not even encrypted. There's no secret to store, log, or leak. Each publish mints a fresh Google-signed token (valid about an hour) and exchanges it for AWS temporary credentials that expire after 15 minutes.
 - The service account that mints the token is **dedicated to this integration and holds zero IAM roles in Avo's GCP project** — it can't read Avo's database, fetch secrets, or invoke other services. Your trust policy pins to this identity by its 21-digit `sub`, so even a full compromise of the publish path yields only "write to opted-in customer buckets," never a foothold inside Avo.
-- Conditioning on `sub` rather than `aud` is deliberate: `aud` is whatever the caller requests when minting the token, so it isn't an identity proof, whereas AWS validates `sub` independently and the caller can't set it.
 - Scope the role to `s3:PutObject` on the Avo bucket only — avoid `AmazonS3FullAccess` or similar broad policies.
+
+<details>
+<summary>Why the trust policy conditions on `sub`, not `aud`</summary>
+
+`aud` is whatever the caller requests when minting the token, so it isn't an identity proof. AWS validates `sub` independently and the caller can't set it — which is why the trust policy pins to Avo's 21-digit service-account `sub`.
+
+</details>
 
 ## Failure handling
 
