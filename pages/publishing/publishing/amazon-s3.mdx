@@ -119,11 +119,12 @@ avo-exports/workspace_id/main/latest.json
 
 ## Payload formats
 
-You can choose the JSON shape Avo serializes. The **Payload Format** dropdown offers three formats, each documented in detail on the [Webhook payload format docs](/publishing/publishing/webhook-publishing#payload-format):
+You can choose the JSON shape Avo serializes, each documented in detail on the [Webhook payload format docs](/publishing/publishing/webhook-publishing#payload-format):
 
 - **JSON Schema** — a representation of your tracking plan following the [JSON Schema](https://json-schema.org/) standard. This is the common pick for downstream validation.
 - **NDJSON** — newline-delimited JSON, with one event or property object per line. Useful for streaming the file into row-oriented data tooling.
 - **Snowplow Schemas** — a [Snowplow Schema](/publishing/publishing/webhook-publishing#snowplow-schemas) for every event, for integrating Avo with Snowplow Iglu. Selecting this format reveals a **Vendor** field where you set the Snowplow vendor value stamped into the schemas.
+- **[Avo JSON](/publishing/publishing/webhook-publishing#avo-json)** — a JSON representation of your entire Avo workspace. This format is behind a feature flag; [contact us](mailto:support@avo.app) to enable it.
 
 ## Publishing modes
 
