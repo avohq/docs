@@ -206,7 +206,7 @@ Full details for the item, shaped per item type.
 
 ### Trigger context on events
 
-When an event has [triggers](/data-design/event-triggers), `get` with `type: "event"` returns each trigger with its full context, so an agent can see *when* the event fires — not just that a trigger exists. There are two trigger shapes:
+When an event has [triggers](/data-design/guides/event-triggers), `get` with `type: "event"` returns each trigger with its full context, so an agent can see *when* the event fires — not just that a trigger exists. There are two trigger shapes:
 
 - **Journey triggers** — triggers connected to a [journey](/data-design/avo-tracking-plan/journeys). Each renders with the trigger's name and description, the **screen** it fires on, the screenshot URL, the marker position on that screenshot (a dot or an area, when the trigger has one), the **connected event** the trigger sends, and the **gating property conditions** — `is` / `is not` conditions with their values and `is set` / `is not set` presence conditions, with nested property paths shown in full (e.g. `product.category is "shoes"`). This is what lets an agent read a trigger as *"on the Checkout screen, when the user taps Pay, send `Payment Started` when `payment_method` is `"card"`"* — instead of guessing the firing moment from the event name.
 - **Standalone triggers** — "Triggered when" triggers not connected to a journey (including legacy ones). Each renders with its name/description, screenshot URL (when present), and the sources it applies to. There is no connected event or condition to resolve.
