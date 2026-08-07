@@ -93,10 +93,6 @@ These changes appear in your branch's diff and activity log, but they do **not**
   **Edited a description and saw no impacted stakeholders?** That is expected. Descriptions, tags, custom fields and triggers are documentation: they change how an item is understood, not how it is implemented or sent. Impacted stakeholders exists to warn you before you disrupt data other teams rely on, so it only counts changes that alter the data itself. Your description change is still on the branch, still shows up in the diff, and still goes through the normal review and merge flow.
 </Callout>
 
-<Callout type="info" emoji="💡">
-  Removing a regex validation from a property, with no other change to that property, is treated as no change at all – loosening a constraint cannot break an existing implementation.
-</Callout>
-
 ### Settings that change what counts
 
 Three stakeholder team settings adjust the rules above. They are available on the [Enterprise Plan](http://avo.app/pricing) and are configured per stakeholder team in [stakeholder team settings](/workspace-management/domains#stakeholder-team-settings).
