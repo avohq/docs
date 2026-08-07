@@ -35,6 +35,71 @@ When you click the indicator it will expand to show the following:
   Note that the full Impacted Stakeholders functionality is only available on our [Enterprise Plan](http://avo.app/pricing).
 </Callout>
 
+## What counts as an impacting change?
+
+Avo calculates impact from a **behavioral diff** of your branch against main – it compares how each event *will be sent*, per source, before and after your changes. Event variants are diffed as events of their own, and properties are compared as they resolve onto each event (including properties that come in through property bundles).
+
+A stakeholder team is marked impacted when an item they are a stakeholder or owner of shows up in that diff. **Changes that only affect how an item is documented – not how it is sent – do not mark anyone as impacted.**
+
+### Changes that impact stakeholders
+
+**On an event or event variant**
+
+| Change | Breaking? |
+| --- | --- |
+| Adding a new event or event variant | Breaking |
+| Removing (archiving) an event or event variant | Breaking |
+| Renaming an event or event variant | Breaking |
+| Changing an event's name mapping | Breaking |
+| Adding or removing a source on the event | Breaking |
+| Turning "Include in code generation" on or off for a source | Breaking |
+| Changing the event's actions (log event, update user properties, etc.) | Breaking |
+| Changing which destinations the event is sent to | Non-breaking |
+| Changing the event's group types (event groups or user groups) | Non-breaking |
+| Changing the property whitelist for an analytics tool | Non-breaking |
+
+**On a property, as it is sent with an event**
+
+| Change | Breaking? |
+| --- | --- |
+| Adding a property to an event, or removing it | Breaking |
+| Renaming a property | Breaking |
+| Changing a property's type, or making it a list | Breaking |
+| Changing a property's presence (required, sometimes sent, never sent) | Breaking |
+| Changing a property's name mapping | Breaking |
+| Removing an allowed value, or adding the first regex / min / max rule | Breaking |
+| Adding an allowed value to a property that already has allowed values | Non-breaking |
+| Changing a pinned value | Breaking |
+| Changing nested properties on an object property | Breaking |
+| Changing the property operation (for example set vs. increment) | Non-breaking |
+
+Because properties are compared *per event*, editing a property that is sent with many events marks the stakeholders of every one of those events as impacted. See [Minimizing stakeholder impact](#minimizing-stakeholder-impact) for how to scope a property change to just the events that need it.
+
+### Changes that do not impact stakeholders
+
+These changes appear in your branch's diff and activity log, but they do **not** add anyone to the impacted stakeholders list:
+
+- **Descriptions** on events, event variants and properties
+- **Tags** on events and properties
+- **Custom field values** on events and properties
+- **Event triggers** – screenshots, trigger descriptions and user journeys
+- **Category and metric membership** – adding an event to a category, or editing a category or metric
+- **Assigning or removing stakeholder teams and owners** on an item
+- **Source and destination settings** themselves, such as renaming a source
+- Changes to an event that has **no sources attached** – with no source to send it, there is no sent shape to change
+- Adding or removing a property that is **never sent** for that source
+
+<Callout type="info" emoji="💡">
+  **Edited a description and saw no impacted stakeholders?** That is expected. Descriptions, tags, custom fields and triggers are documentation: they change how an item is understood, not how it is implemented or sent. Impacted stakeholders exists to warn you before you disrupt data other teams rely on, so it only counts changes that alter the data itself. Your description change is still on the branch, still shows up in the diff, and still goes through the normal review and merge flow.
+</Callout>
+
+### Settings that change what counts
+
+Three stakeholder team settings adjust the rules above. They are available on the [Enterprise Plan](http://avo.app/pricing) and are configured per stakeholder team in [stakeholder team settings](/workspace-management/domains#stakeholder-team-settings).
+
+- **Only impacted by breaking changes** – the team is left out of the impacted list for anything marked Non-breaking in the tables above, and is not required to review it.
+- **Impacted by new items** and **Impacted by PII changes** – these work in the opposite direction: the team is marked impacted whenever the branch adds a new event or property, or changes a PII declaration, **anywhere in the tracking plan** – even on items they are not a stakeholder or owner of. Note that a PII declaration change on its own does not otherwise count as an impacting change.
+
 ## Minimizing stakeholder impact
 
 While there are fundamental data structures that need to be consistent across multiple teams and platforms, stakeholder teams frequently need to expand on them and add nuances that don't need to apply to every single place these events and properties are tracked.
