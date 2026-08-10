@@ -160,7 +160,6 @@ You can learn more about common Tracking Plan spreadsheet formats [on our blog.]
 | Property Name                | The name of a property that should be sent                        | Any string                            | Device Type                                |
 | Property Description         | The description of the property                                   | Any string                            | The type of client user is currently using |
 | Property Value Type          | The type of the property                                          | string, int, float, bool, object, any | string                                     |
-| Is Property Required?        | True if the property should always be sent with your event. Optional — if this column is omitted, all imported properties default to required (`true`). | true, false                           | true                                       |
 | Is Property Array?           | True if property should be array of values                        | true, false                           | false                                      |
 | Property Enumeration Options | Finite list of all values allowed for the property, if applicable | Comma separated strings               | iOS, Android, Web, Desktop, Fire           |
 
@@ -178,6 +177,7 @@ You can create and attach [event property bundles](/data-design/avo-tracking-pla
 
 | Column Name                                       | Description                                                                                                                                            | Allowed Values          | Example Value         |
 | :------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------- | :-------------------- |
+| Is Property Required?                             | Whether the property must always be sent with your event. If this column is omitted, all imported properties default to required (`true`).             | true, false             | true                  |
 | Property Type                                     | The type of the property as it is sent to your downstream destination                                                                                  | Event, User, System     | Event                 |
 | Event Tags                                        | The tags attached to your event (separate multiple tags with ';')                                                                                      | Any string              | Owner:Growth          |
 | Event Variant Name                                | To import event variants, provide the event variant suffix here. When provided, all following properties will be imported as event variant properties. | Any string              | Mobile                |
