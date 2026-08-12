@@ -115,6 +115,18 @@ and then check or uncheck the events you want to add/remove on the modal that ap
 
 This is a really convenient way to bulk add or remove a source to multiple events, instead of having to go into each event details to add or remove the source.
 
+#### System Properties
+
+The System Properties section allows you to configure the presence of all system properties for this particular source in one place. This section appears right below the events table in the source overview.
+
+Each system property can be configured with one of three options:
+
+- **Always**: The property is always sent from this source. It will be marked as required in Inspector validation and Codegen initialization method.
+- **Sometimes**: The property is optionally sent from this source. It will be marked as optional in Inspector validation and Codegen initialization method.
+- **Never**: The property is never sent from this source. It will not be expected in Inspector validation and Codegen initialization method will not include it.
+
+This is a convenient way to configure all system properties for a source at once, ensuring that your tracking plan accurately reflects which system properties are available on each platform. For example, you might set the `device_type` property to "Always" for your iOS source, since it's always available and sent on that platform.
+
 ### Inspector Setup
 
 Inspector Setup part of the source details contains an overview of how to set up Inspector for this source for the first time and the API key needed to be able to start sending data.
