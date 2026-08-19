@@ -127,6 +127,15 @@ The `eventType` of events that are generated from variants is `variant`, while r
 | ?enum        | array(string)                | Allowed enum values                           |
 | ?operations  | array(string)                | Array of property ops, e.g. "SnowplowContext" |
 | ?pattern     | string                       | Regex pattern for string type properties      |
+| ?sourcePresence | array(SourcePresence)     | Per-source presence for this property on this event. Opt-in per workspace — see [Per-source property presence](#per-source-property-presence) |
+
+##### SourcePresence Model
+
+| Attribute  | Type                                                | Description                                          |
+|:-----------|:----------------------------------------------------|:-----------------------------------------------------|
+| sourceId   | string                                              | Source id — the join key                             |
+| sourceName | string                                              | Source display name, advisory only                   |
+| presence   | enum: ["alwaysSent", "sometimesSent", "neverSent"]  | Whether the property is always, sometimes, or never sent from this source on this event |
 
 ##### NameMapping Model for regular workspaces
 
@@ -297,3 +306,32 @@ Each line describes a property scoped to an event, user, or group.
 | maximum             | number or null                  | Maximum numeric value if defined                                           |
 | regex               | string or null                  | Regex constraint (event override preferred; falls back to property rule)   |
 | stakeholder_domains | array(StakeholderDomain) | Stakeholder domains for this property                                      |
+| ?source_presence    | array(SourcePresenceNdjson) | Per-source presence for this property on this event. Opt-in per workspace, and absent when the export covers no source for the event — see [Per-source property presence](#per-source-property-presence) |
+
+##### SourcePresenceNdjson Model
+
+Keys are snake_case like every other NDJSON column; the values are camelCase, matching the `actions` column.
+
+| Attribute   | Type                                               | Description                                          |
+|:------------|:---------------------------------------------------|:-----------------------------------------------------|
+| source_id   | string                                             | Source id — the join key                             |
+| source_name | string                                             | Source display name, advisory only                   |
+| presence    | enum: ["alwaysSent", "sometimesSent", "neverSent"] | Whether the property is always, sometimes, or never sent from this source on this event |
+
+#### Per-source property presence
+
+A property can be configured to be sent from some of an event's sources and not others. Both payload formats can carry that breakdown per property: `sourcePresence` on each property entry in the JSON Schema format, and `source_presence` on each line of the properties NDJSON file.
+
+**This is opt-in per workspace and off by default.** Existing workspaces see no change to either payload until the field is enabled for them — ask Avo support to turn it on. Workspaces created after the field shipped have it on.
+
+Each entry names one source and states whether the property is `alwaysSent`, `sometimesSent`, or `neverSent` from it on that event.
+
+- **The breakdown is complete.** Every source the payload covers for that event gets an entry, `alwaysSent` included, so you never have to infer presence from a missing entry. Match on the source id.
+- **It covers the sources this payload covers.** Under a source filter it narrows to the filter, exactly as `required` does. In the NDJSON format the event's `sources` array matches that set exactly. In the JSON Schema format the event's `sources` array is not narrowed by the filter, so it can list sources the breakdown does not cover — infer nothing about a listed source that has no entry.
+- **The key can be absent**, and only in one case: the export covers no source at all for that event. It is never emitted as an empty array or as null.
+- **It is deliberately not on the events NDJSON line.** The property summary embedded there keeps its existing four keys; the breakdown lives on the properties line only, so the payload does not carry it twice.
+- **`required` is unchanged.** It stays a single value per property across all covered sources. The breakdown decomposes it rather than replacing it: where any covered source is `sometimesSent` or `neverSent`, the property is not required. One legacy configuration diverges from that correspondence — a property using the older "excluded sources" setting reports `neverSent` for an excluded source while still being listed as required.
+
+<Callout type="warning">
+  If you load the NDJSON export into a warehouse with a fixed schema — for example a BigQuery load job with `ignoreUnknownValues=false` — an unexpected column makes the load fail. Widen your schema before the field is enabled for your workspace.
+</Callout>
