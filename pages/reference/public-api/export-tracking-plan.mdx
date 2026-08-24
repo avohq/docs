@@ -77,6 +77,43 @@ An event is considered "changed" when the change impacts a source. For example, 
 - When enabled, the response includes a `removedEvents` field containing an array of event names that were archived or lost their filtered sources on the branch. When disabled, this field is omitted.
 - Source-aware: when a source filter is applied, only changes relevant to that source are considered.
 
+## Per-source property presence
+
+A property can be configured to be sent from some of an event's sources and not others. When enabled, each property entry carries that breakdown as `sourcePresence` in the JSON Schema format, and each line of the properties file carries it as `source_presence` in the `ndjson` format.
+
+**This is opt-in per workspace and off by default.** If you don't see the field, it hasn't been enabled for your workspace — ask Avo support to turn it on. Workspaces created after the field shipped have it on. It is purely additive: no existing field changes value or position when it is enabled.
+
+```json
+"user_tier": {
+  "id": "p_user_tier",
+  "index": 2,
+  "nameMapping": [],
+  "isSystemProperty": false,
+  "type": ["string", "null"],
+  "sourcePresence": [
+    { "sourceId": "src_web", "sourceName": "Website", "presence": "alwaysSent" },
+    { "sourceId": "src_android", "sourceName": "Android", "presence": "sometimesSent" },
+    { "sourceId": "src_ios", "sourceName": "iOS", "presence": "neverSent" }
+  ]
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `sourceId` | string | Source id. This is the join key — match on it, not on the name |
+| `sourceName` | string | Source display name. Advisory only |
+| `presence` | `alwaysSent` \| `sometimesSent` \| `neverSent` | Whether the property is always, sometimes, or never sent from this source on this event |
+
+How to read it:
+
+- **The breakdown is complete.** Every source the export covers for that event gets an entry, `alwaysSent` included, so you never have to infer presence from a missing entry.
+- **It covers the sources this export covers.** Under a source filter it narrows to the filter, exactly as `required` does. In the `ndjson` format the event's `sources` array matches that set exactly. In the JSON Schema format the event's `sources` array is not narrowed by the filter, so it can list sources the breakdown does not cover — infer nothing about a listed source that has no entry.
+- **The key can be absent**, and only in one case: the export covers no source at all for that event. It is never emitted as an empty array or as null.
+- **In the `ndjson` format it is on the properties file only**, deliberately not on the embedded property summary in the events file, so the payload does not carry it twice.
+- **`required` is unchanged.** It stays a single value per property across all covered sources; the breakdown decomposes it rather than replacing it. Where any covered source is `sometimesSent` or `neverSent`, the property is not required. One legacy configuration diverges: a property using the older "excluded sources" setting reports `neverSent` for an excluded source while still being listed as required.
+
+If you load the `ndjson` export into a warehouse with a fixed schema — for example a BigQuery load job with `ignoreUnknownValues=false` — an unexpected column makes the load fail. Widen your schema before the field is enabled for your workspace.
+
 ## Governance fields
 
 For workspaces using [Governance](/data-design/avo-tracking-plan/governance) (Enterprise plan), the JSON Schema export includes the governance values:
