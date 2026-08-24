@@ -97,8 +97,17 @@ These changes appear in your branch's diff and activity log, but they do **not**
 
 Three stakeholder team settings adjust the rules above. They are available on the [Enterprise Plan](http://avo.app/pricing) and are configured per stakeholder team in [stakeholder team settings](/workspace-management/domains#stakeholder-team-settings).
 
-- **Only impacted by breaking changes** – the team is left out of the impacted list for anything marked Non-breaking in the tables above, and is not required to review it.
+- **Only impacted by breaking changes** – the team is not added as a required reviewer when everything the branch changes for them is Non-breaking. It affects the review requirement only: the team still appears in the impacted stakeholders list, each impacted item is labelled Breaking or Non-breaking there, and Slack notifications are unaffected.
 - **Impacted by new items** and **Impacted by PII changes** – these work in the opposite direction: the team is marked impacted whenever the branch adds a new event or property, or changes a PII declaration, **anywhere in the tracking plan** – even on items they are not a stakeholder or owner of. Note that a PII declaration change on its own does not otherwise count as an impacting change.
+
+#### With "Require approval from owning stakeholders" enabled
+
+The workspace setting and the team setting answer different questions, and a team is only required to review when both say yes.
+
+- **The workspace setting decides who is pulled in.** With it enabled, every impacted *owner* team is added as a required reviewer, regardless of what that team chose in its own notification settings. It does not apply to teams that are stakeholders but not owners – those still follow their own **When impacted as stakeholder** setting.
+- **The team setting decides whether the change counts as impact in the first place.** If a team has *Only impacted by breaking changes* enabled and the branch only makes Non-breaking changes to its items, the team is not required to review – even under the workspace requirement.
+
+In short: the workspace setting makes review the default for owning teams across all changes, and each team can narrow that to breaking changes only. Note that for an **owner** team, only the items it *owns* count towards that decision. A team that owns an item receiving a Non-breaking change, and is merely a stakeholder on another item receiving a Breaking one, is not required to review.
 
 ## Minimizing stakeholder impact
 
