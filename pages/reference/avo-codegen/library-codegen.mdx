@@ -2,7 +2,7 @@
 
 Avo can emit generated code in two shapes for Kotlin, Swift, and TypeScript sources: the default **single-source** output (one file per source) and the **library mode** output that splits the runtime from the per-source types. Both modes are supported — they serve different use cases and you can generate either from the same source.
 
-Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types.
+Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types. If that library is shared between repositories, see [section 4](#4-sharing-one-library-interface-across-repositories) for how to stop each repo regenerating it.
 
 ---
 
@@ -320,3 +320,59 @@ try {
 5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
 6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
 
+
+---
+
+## 4. Sharing one library interface across repositories
+
+When one repository owns the library file and others only consume it, a plain `avo pull` on either side generates files that do not belong there. The `libraryInterfaceFileFilter` setting in `avo.json` (Avo CLI 3.6.0+) tells `avo pull` which side to generate. It only affects sources in library mode.
+
+| Value | Generates | Use in |
+|---|---|---|
+| `all` (default) | Every file, as before | Repos holding both the interface and the events |
+| `interface-only` | Only the library file: `AnalyticsLibraryInterface.kt` / `.swift`, `AvoLibrary.ts` | The repo that owns the shared interface |
+| `events-only` | Everything else: the app file, and in TypeScript also `AvoConfig.ts`, `AvoEvents/` and `AvoAppSystemProperties.ts` | Client repos importing the interface from a shared module |
+
+`AvoConfig.ts` is on the events side despite its name: it holds the source-specific ids and keys a shared interface must not contain.
+
+### Configuring it
+
+Add the keys to `avo.json` by hand — `avo init` does not prompt for them. A top-level key applies to every source; the same key on a `source` entry overrides it for that source. `avo pull --libraryInterfaceFileFilter <value>` overrides both for a single run without writing to `avo.json`. Each source resolves: flag → source key → top-level key → `all`.
+
+Client repos also need **`libraryInterfaceSharedModule`** — the module the generated app files import the interface from, placed top-level or per-source the same way:
+
+| Language | Value |
+|---|---|
+| Kotlin | Package name of the shared interface, e.g. `"sh.avo.shared"` |
+| TypeScript | Module specifier. A bare specifier (`"@acme/analytics"`) is emitted verbatim in every generated import of the library interface. A relative one (`"../shared/AvoLibrary"`) is resolved relative to the output folder, so it only works within one repository |
+| Swift | Not used — the app file already does `import Library`; ship the shared interface as that module |
+
+The value is passed to codegen verbatim and only has an effect when the resolved filter is not `all`. The repo that owns the interface does not need it.
+
+Shared repo:
+
+```json
+{
+  "libraryInterfaceFileFilter": "interface-only",
+  "sources": [{ "id": "...", "name": "Web", "path": "src/Avo.ts", "actionId": "...", "branchId": "...", "updatedAt": "..." }]
+}
+```
+
+Each client repo:
+
+```json
+{
+  "libraryInterfaceFileFilter": "events-only",
+  "libraryInterfaceSharedModule": "@acme/analytics",
+  "sources": [{ "id": "...", "name": "Web", "path": "src/Avo.ts", "actionId": "...", "branchId": "...", "updatedAt": "..." }]
+}
+```
+
+In a monorepo with a single `avo.json`, put the same keys on the individual `sources` entries instead. `path` stays as usual: an `interface-only` source with `path: "src/Avo.ts"` writes only `src/AvoLibrary.ts`.
+
+### Good to know
+
+- **Stale files are reported, never deleted.** After a filter change, `avo pull` warns `[avo] Warning: <file> is no longer generated here because of the current libraryInterfaceFileFilter…` for each file it used to write, on every pull until you remove it.
+- **`avo.json` conflicts:** if the two sides disagree on `libraryInterfaceFileFilter`, your current branch's value is kept and the discarded one is printed.
+- **Invalid values** are rejected by every command that reads `avo.json`.
+- **Which sources can share one interface:** the library file has no source-specific ids or keys, but its `AvoEnv` cases come from the source's destination environments — share it between repos pulling the same source, or sources with an identical set of destination environments.
