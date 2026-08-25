@@ -21,20 +21,9 @@ Base URL for both: `https://api.avo.app`
 
 Both endpoints take an `issueId`. You'll find an issue's id in the Avo web app URL when you open that issue: `https://www.avo.app/schemas/{workspaceId}/inspector/issues/ii/{issueId}`.
 
-### Watch the path: `/issues/:issueId` is a different resource
-
-There is a third route in this path space that is easy to hit by accident:
-
-```Url
-GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/:issueId
-```
-
 <Callout type="info" emoji="💡">
-**`/issues/:issueId` without `/v3/` resolves a `sharedIssueId`, not an `issueId`.**<br/>
-Despite the path segment name, this route looks up `shared_issue_id`. Because a shared issue spans sources, it returns a **bare JSON array** — one single-issue object per source — rather than a single object. Query parameters are dropped on this route before they reach the handler, so anything you append is silently ignored.
+**Use the `/v3/` path exactly as written.** The single-issue endpoint is `/inspector/issues/v3/:issueId`. Dropping the `/v3/` segment does not reach this endpoint.
 </Callout>
-
-The variations endpoint sits directly beside that route in the path space, but takes a real `issueId` — the same kind of id the single-issue endpoint takes. So `/issues/:id` wants a `sharedIssueId` while `/issues/:id/variations` wants an `issueId`. Passing the wrong kind of id to either returns 404 rather than an error that explains itself.
 
 ## Authentication
 
@@ -152,7 +141,7 @@ GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/v3/:issueId
 
 Returns one issue with its counts **broken down per app version**, over a window you choose. This is the endpoint to reach for when you need to know which release a problem is concentrated in, or when 24 hours is the wrong window.
 
-`:issueId` is an `issueId`, not a `sharedIssueId` — see [watch the path](#watch-the-path-issuesissueid-is-a-different-resource) above.
+`:issueId` is the issue's own id, the value returned as `issueId` in the response below.
 
 <Callout type="info" emoji="💡">
 **Firebase ID token only.** Service account Basic and Avo OAuth JWT are both rejected with 401 on this endpoint. See [Authentication](#authentication) for what a service-account integration can call instead.
@@ -328,7 +317,7 @@ That is what makes it the debugging endpoint. Put the causing shape next to the 
 
 Accepts service account Basic, Avo OAuth JWT, or a Firebase ID token — so this is the endpoint a service-account integration can build on.
 
-`:issueId` here is a real **`issueId`** — the same kind of id the single-issue endpoint takes, *not* a `sharedIssueId`, even though this route sits directly beside the shared-id route.
+`:issueId` here is the same kind of id the single-issue endpoint takes.
 
 ### Query parameters
 
