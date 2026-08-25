@@ -1,0 +1,646 @@
+import { Callout } from 'nextra/components';
+
+# Inspector Issues
+
+_Read Inspector issues and observed event shapes over HTTP_
+
+Three GET endpoints expose Inspector data outside the Avo web app: a list of issues, a single issue, and the observed event shapes ("variations") behind an issue. They are documented together because they share a base URL and a workspace-scoping model — but **not** an authentication model, and the differences between them cause most broken integrations.
+
+This page is written for someone wiring these endpoints into a script, a CI check, or an agent tool. The response body is your only view of the data, so every field, fallback and silent behavior is spelled out below.
+
+Base URL for all three: `https://api.avo.app`
+
+## Endpoints
+
+| # | Method and path | Returns | Reach for it when |
+| --- | --- | --- | --- |
+| A | `GET /workspaces/:workspaceId/inspector/issues/v5` | The issue **list** — `{"issues": [...]}` | You want the issues currently counting in a workspace. This is the endpoint most integrations need, and the only one that hands you `issueId` values to pass to the other two. |
+| B | `GET /workspaces/:workspaceId/inspector/issues/v3/:issueId` | A **single issue** — a bare object | You already have one `issueId` and need per-app-version counts, or a window other than 24 hours. Accepts a Firebase ID token only. |
+| C | `GET /workspaces/:workspaceId/inspector/issues/:issueId/variations` | The **event shapes** behind an issue, as JSON or CSV | You need the payloads themselves — which property names and types were actually sent — so you can diff the shape causing the issue against the healthy one. |
+
+`:workspaceId` is the ID of your workspace. You'll find it in the URL of your Avo tab after `/schemas/`. It is also returned as `schemaId` on every response object.
+
+Endpoint A is the entry point: it is the only endpoint that does not need an id up front, and endpoints B and C both take an `issueId` from its response. There is no endpoint that searches for an issue by event name.
+
+### Watch the path: `/issues/:issueId` is a different resource
+
+There is a fourth route in this path space that is easy to hit by accident:
+
+```Url
+GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/:issueId
+```
+
+<Callout type="info" emoji="💡">
+**`/issues/:issueId` without `/v3/` resolves a `sharedIssueId`, not an `issueId`.**<br/>
+Despite the path segment name, this route looks up `shared_issue_id`. Because a shared issue spans sources, it returns a **bare JSON array** — one endpoint B object per source — rather than a single object. Query parameters are dropped on this route before they reach the handler, so anything you append is silently ignored.
+</Callout>
+
+Endpoint C sits directly beside that route in the path space, but takes a real `issueId` — the same kind of id endpoint B takes. So `/issues/:id` wants a `sharedIssueId` while `/issues/:id/variations` wants an `issueId`. Passing the wrong kind of id to either returns 404 rather than an error that explains itself.
+
+## Authentication
+
+Authentication is **not uniform across these endpoints**. This is the single most common cause of a working list call sitting next to a 401 on the detail call.
+
+| Credential | A `/issues/v5` | B `/issues/v3/:issueId` | C `/variations` |
+| --- | --- | --- | --- |
+| Service account Basic (`Authorization: Basic base64(name:secret)`) | ✅ | ❌ 401 | ✅ |
+| Avo OAuth JWT (`Authorization: Bearer ...`) | ✅ | ❌ 401 | ✅ |
+| Firebase ID token (`Authorization: Bearer ...`) | ✅ | ✅ | ✅ |
+
+<Callout type="warning" emoji="⚠️">
+**The single-issue endpoint accepts a Firebase ID token only.**<br/>
+`GET /inspector/issues/v3/:issueId` runs on an older auth stack that requires a `Bearer ` prefix and verifies the token as a Firebase ID token. A service account Basic credential and an Avo OAuth JWT are both **rejected with 401** — including a service account that is correctly registered in the workspace. If you are integrating with a service account, there is no supported way to call endpoint B.
+</Callout>
+
+We recommend the following path for any service-account or OAuth integration:
+
+1. List issues with **endpoint A** (`/issues/v5`) — it carries every field endpoint B carries, except that `appVersions` is an array of version names rather than per-version counts.
+2. For the shapes behind a specific issue, call **endpoint C** (`/variations`) with the `issueId` from step 1.
+
+Neither A nor C requires an OAuth scope, and neither requires a particular workspace role — any workspace member passes.
+
+See [authorization header](/public-api/authentication#authenticating-with-avo-api) for how to build the Basic credential from a service account name and secret. The `Basic ` scheme is matched **case-sensitively**, so a lowercase `basic ` is not recognized as a service-account credential — it is treated as a malformed Bearer token and rejected with the message below.
+
+### Authentication error bodies
+
+Endpoints A and C share one authenticator, so they return the same four bodies. All of them use a `message` key, unlike the `error` key the endpoints themselves use for 400/404/500.
+
+| Code | Body | Condition |
+| --- | --- | --- |
+| `401` | `{"message": "Authorization header missing"}` | No `Authorization` header at all. |
+| `401` | `{"message": "Authorization header missing or invalid"}` | Unrecognized scheme, empty Bearer token, or any Bearer verification failure — an expired, revoked or wrong-project Firebase token and an invalid Avo OAuth JWT are indistinguishable here. |
+| `401` | `{"message": "Invalid authorization"}` | Any Basic failure: bad secret, unknown service account, or a service account not registered in this workspace. |
+| `403` | `{"message": "Access denied to workspace"}` | A verified Bearer identity that is not a member of `:workspaceId`. |
+
+A service account is never checked against the workspace ACL — its only workspace binding is the account record living under that workspace — so a service account can never produce the 403. Endpoint B is on a different stack and answers every auth failure with `401 {"error": "Unauthorized"}`.
+
+### Workspace scoping
+
+Every query filters on `schema_id`, so a credential can only ever see its own workspace's rows. That produces two different failures that are easy to confuse:
+
+- **403 `{"message": "Access denied to workspace"}`** — the Bearer credential is valid, but its user is not in the ACL for `:workspaceId`. An unknown `:workspaceId` returns the same 403, because there is no ACL document to match against. A Basic credential whose service account is not registered in that workspace returns **401 `{"message": "Invalid authorization"}`** instead. On endpoint B, a non-member gets **401 `{"error": "Unauthorized"}`**.
+- **404** — the credential is valid *and* scoped to the right workspace, but the requested id isn't in that workspace's rows. Because the lookup is workspace-scoped (`schema_id = $1 AND issue_id = $2`), an id belonging to a different workspace simply doesn't match and returns 404 rather than revealing that the id exists elsewhere.
+
+So a 403 means "wrong workspace credential" and a 404 means "right credential, id not here" — including the case where the id is real but lives in someone else's workspace. Super-admin credentials bypass both checks.
+
+### Rate limits
+
+There is no rate limit on any of these three endpoints.
+
+## Your first call
+
+Once you have a credential, listing issues is a single request. Everything else on this page is a refinement of it.
+
+```sh
+$ curl --compressed \
+       -H "authorization: Basic <Base64 encoded token>" \
+       -X GET "https://api.avo.app/workspaces/:workspaceId/inspector/issues/v5"
+```
+
+That returns `{"issues": [...]}` for the workspace's unresolved issues. From there you can:
+
+- Narrow the list with `status` and `appVersions` — see [endpoint A's query parameters](#query-parameters).
+- Take any `issues[].issueId` and call [endpoint C](#c--listing-event-variations) to see the event shapes behind it.
+
+Now that you have a working call, the sections below cover what the response does *not* tell you.
+
+## Before you integrate
+
+Seven behaviors are not visible anywhere in the response body, and each one produces a plausible-looking but wrong integration when it is assumed away. Five of them cut across endpoints and are covered here:
+
+1. [The list is a 24-hour, count-gated view](#the-list-is-a-24-hour-count-gated-view--not-all-issues) — and an empty array has three different meanings.
+2. [The time windows are fixed, and the freshest hour is missing](#the-time-windows-are-fixed-and-the-freshest-hour-is-missing).
+3. [`eventCount` is not "events affected by this issue"](#eventcount-is-not-events-affected-by-this-issue).
+4. [`issueId` is a snapshot handle, not a durable key](#issueid-is-a-snapshot-handle-sharedissueid-is-the-identity).
+5. [No response tells you which event variant was matched](#no-variant-attribution).
+
+Two more are specific to endpoint C and are covered in its own section: [`variationsTruncated` is the only reliable completeness signal](#read-variationstruncated-never-count-rows), and [property names are the raw names the SDK sent](#property-names-are-raw-observed-names), not tracking-plan names.
+
+### The list is a 24-hour, count-gated view — not "all issues"
+
+<Callout type="warning" emoji="⚠️">
+**An empty `issues` array has three legitimate meanings, and you cannot tell them apart from the response.**<br/>
+For every status except `Resolved`, an issue is returned only if it was **last seen within 30 days** *and* accumulated **at least one violating occurrence in the last 24 hours**. So `{"issues": []}` may mean:<br/><br/>
+1. The workspace is genuinely clean.<br/>
+2. **The query failed.** On a Postgres query or connection failure the endpoint returns **HTTP 200 with `{"issues": []}`** — deliberately fail-closed, not a 5xx. A dead database replica is observably identical to a clean workspace.<br/>
+3. There are many open issues, none of which fired in the last 24 hours. This is the normal state of a healthy workspace between releases.<br/><br/>
+Do not build an alert on "the array is empty" and do not treat an empty array as proof of health. If you need a durable inventory of open issues, poll on a schedule and keep your own record rather than trusting a single response.
+</Callout>
+
+Two further consequences of the count gate:
+
+- The issue-count join is chained through the event-count join on `app_version`, so the issue must have fired in the last 24 hours *in an app version that also has event counts in the same window*. Otherwise its count is 0 and the issue is dropped from the response.
+- For `status=Resolved`, **both** the 30-day gate and the 24-hour count gate are lifted.
+
+### The time windows are fixed, and the freshest hour is missing
+
+Endpoint A counts over 24 hours and endpoint C looks back 24 hours. Neither window is configurable — both are literals in the query, with no parameter to widen or shift them. Endpoint B is the only one that takes a window, via its `time` parameter.
+
+<Callout type="info" emoji="💡">
+**Expect roughly an hour of lag, and do not use these endpoints to verify a deploy you just shipped.**<br/>
+Both endpoints read continuous aggregates refreshed on a ten-minute schedule with a one-hour end offset. On endpoint A that means roughly an hour of lag on the freshest counts. On endpoint C the aggregate is materialized-only, so **the most recent hour is not visible at all** — a deploy 20 minutes old shows nothing there. If you are validating an implementation as you ship it, use the [Inspector Debugger](/inspector/inspector-debugger) rather than these endpoints.
+</Callout>
+
+Looking further back is not an option either: on endpoint C both the aggregate and the raw table drop data after 48 hours, so the 24-hour window is always fully covered and there is nothing older to read.
+
+### `eventCount` is not "events affected by this issue"
+
+<Callout type="info" emoji="💡">
+**`eventCount` is the total 24-hour volume of that event on that source — every shape, healthy ones included.** `issueCount` is the per-issue figure: occurrences in the last 24 hours that actually violated.<br/><br/>
+The number worth reporting is the ratio. `issueCount: 1428` against `eventCount: 96204` is a 1.5% violation rate on a high-volume event; reading `eventCount` as "affected events" overstates the blast radius by two orders of magnitude.
+</Callout>
+
+### `issueId` is a snapshot handle; `sharedIssueId` is the identity
+
+`issueId` is `sha256(schemaId : sourceId : eventName : propertyName : issueType payload)` — the **full** encoded `issueType` payload is hashed.
+
+<Callout type="warning" emoji="⚠️">
+**`issueId` is not stable.** It changes when a tracking-plan edit moves a `propertyId`, `eventId` or `expectedPropertyType` inside the payload, and when a newly observed runtime type is appended to an `InconsistentType` issue's `propertyTypes`. Because `issue_id` is the primary key of the issues table, a changed hash creates a **new row**: the old issue is orphaned with its original `firstSeen`, and the new one starts fresh with no history. Treat `issueId` as a handle valid within one response or one session — safe to pass straight to `/variations`, not safe to persist as a long-lived key in your own database.
+</Callout>
+
+`sharedIssueId` is `sha256(schemaId : eventName : propertyName : issueType)`, with `sourceId` omitted — that omission is what groups one logical problem across several sources. For `InconsistentType` the volatile `propertyTypes` array is deliberately excluded from the hash as well.
+
+That stability only goes so far, though. `sharedIssueId` is insulated from **newly observed types** and from **source**, but it is not immune to tracking-plan edits in general. For the five issue types other than `InconsistentType` it still hashes `propertyId` / `eventId` / `expectedPropertyType`, so a tracking-plan edit moves **both** ids. Only `InconsistentType` is fully insulated.
+
+### No variant attribution
+
+<Callout type="info" emoji="💡">
+**Nothing in any response — JSON or CSV — tells you which event variant Inspector matched against.** There is no variant field in any of these payloads, no variant column in the underlying tables, and variant is not an input to either id hash. The tracking-plan model reaches the matcher already flattened, so variant identity is erased before validation and never reaches the issue row. It cannot be recovered from the response or from the id. If your tracking plan leans on [variants](/data-design/avo-tracking-plan/event-variants), expect to reconcile variant identity yourself.
+</Callout>
+
+## A — Listing issues
+
+```Url
+GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/v5
+```
+
+Returns every issue currently counting in the workspace, one row per event-or-property problem **per source**. This is the same data behind the [Inspector issues view](/inspector/inspector-issues-view), and the endpoint to start from: it is the only one you can call without already holding an id.
+
+Accepts service account Basic, Avo OAuth JWT, or a Firebase ID token.
+
+**The response is always gzipped.** `Content-Encoding: gzip` is set unconditionally, regardless of what you send in `Accept-Encoding`. Pass `--compressed` to curl, or decompress explicitly in your HTTP client. This is unique to endpoint A — neither B nor C sets `Content-Encoding`.
+
+### Query parameters
+
+The handler reads exactly these two, plus `:workspaceId` from the path.
+
+| Parameter | Type | Required | Default when omitted | Accepted values | On invalid input |
+| --- | --- | --- | --- | --- | --- |
+| `status` | string | Optional | `Unresolved` | `unresolved`, `ignored`, `resolved` — case-insensitive | **Silently falls back to `Unresolved`.** No 400. |
+| `appVersions` | comma-separated string | Optional | No version filter | Any strings, split on `,` | An empty string is treated as absent. Unknown versions match nothing, so the issue is excluded. No 400. |
+
+The three `status` values map to the statuses you set in the Avo web app. Note the naming shift across the three layers, which is the usual source of a silently-empty response:
+
+| Avo web app label | `status` parameter value | `issueStatus.status.type` in the response |
+| --- | --- | --- |
+| Unresolved | `unresolved` | `Unresolved` |
+| **Ignore** | `ignored` | `Ignored` |
+| Resolved | `resolved` | `Resolved` |
+
+The parameter is lower-cased before matching, so `ignored`, `Ignored` and `IGNORED` are all accepted — but `ignore` is not, and falls back to `Unresolved` without an error. `status=unresolved` also returns issues that have never had a status set. See [issue status](/inspector/inspector-issues-view#issue-status) for what each one means.
+
+<Callout type="warning" emoji="⚠️">
+**There is no `sourceId`, `eventName`, `category`, `tag`, saved view, time range, `sort`, `limit`, `offset`, `cursor` or `format` parameter on this endpoint,** and the query has no `ORDER BY`, `LIMIT` or `OFFSET`. All source, event, category and tag filtering, and all sorting, in the [Inspector issues view](/inspector/inspector-issues-view) happens client-side after the full response is fetched. Plan to filter and sort in your own code.
+</Callout>
+
+### Response
+
+The envelope is exactly `{"issues": [...]}` — no `total`, no `nextCursor`, no sibling fields.
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `issueId` | string, never null | sha256 hex. See [snapshot handle](#issueid-is-a-snapshot-handle-sharedissueid-is-the-identity) above. |
+| `sharedIssueId` | string, never null | sha256 hex. Stable identity across sources. |
+| `schemaId` | string | Your workspace ID. |
+| `sourceId` | string | A single source — an issue row is per-source. |
+| `eventName` | string | The event name as observed. |
+| `propertyName` | string \| null | `null` for event-level issue types. |
+| `issueType` | object | Tagged union, see below. |
+| `oldestAppVersion` | string | |
+| `newestAppVersion` | string | |
+| `firstSeen` | string (ISO 8601) | Earliest first-seen for this issue row. |
+| `lastSeen` | string (ISO 8601) | Max last-seen across the 24-hour buckets, falling back to the last-seen day. |
+| `issueCount` | number | Occurrences that **violated**, last 24 hours only. |
+| `eventCount` | number | **Total** occurrences of that event on that source in the last 24 hours, all shapes including healthy ones. |
+| `appVersions` | string[] | Distinct versions seen in the 24-hour window. Names only — no per-version stats on this endpoint. Can be `[]` under `status=Resolved`, where the count gate is lifted and the issue is returned even with no counts in the window. |
+| `issueStatus` | object | `{status, updatedAt: string \| null, updatedBy: string \| null}` |
+| `regression` | boolean | Always present. `true` when this issue had been marked **Resolved** and was then observed again — see below. |
+| `branchIds` | string[] | Always present; `[]` when the issue is not linked to any branch. |
+
+#### `regression`
+
+`regression` is set to `true` when an issue a user had marked **Resolved** is observed again past the point at which it was supposed to be fixed. Inspector then moves the issue back to `Unresolved` and flags it. "Past the point it was supposed to be fixed" is exactly the `validateIn` recorded on the resolution:
+
+| `validateIn` | Regresses when the newly observed variation is |
+| --- | --- |
+| `CurrentAppVersion(v)` | on app version **≥ v** |
+| `CustomAppVersion(v)` | on app version **≥ v** |
+| `NextAppVersion(v)` | on app version **strictly > v** |
+| `Date(t)` | seen **after** `t` |
+| `Never` | never — the issue is not reopened and never flagged |
+
+Two things to code around:
+
+- **`Ignored` does not produce a regression.** An ignored issue that resurfaces is also moved back to `Unresolved`, but `regression` stays `false`. Only `Resolved` sets it.
+- **The flag is cleared the moment anyone sets the status manually again**, to any value. A newly created issue is never a regression.
+
+Read `regression` together with `issueStatus.status`: the Avo web app only surfaces it while the status is `Unresolved`, which is the only state it is meaningful in.
+
+#### `issueStatus.status`
+
+```json
+{ "type": "Unresolved" }
+{ "type": "Ignored",  "validateIn": { "type": "NextAppVersion", "appVersion": "8.15.0" } }
+{ "type": "Resolved", "validateIn": { "type": "Never" } }
+```
+
+`validateIn` is one of `{"type":"CurrentAppVersion","appVersion":string}`, `{"type":"NextAppVersion","appVersion":string}`, `{"type":"CustomAppVersion","appVersion":string}`, `{"type":"Date","date":ISO 8601}` or `{"type":"Never"}`.
+
+#### `issueType`
+
+A tagged union: `type` plus a payload key. The concepts behind each type are documented in [issue types in Inspector](/inspector/issue-types-in-inspector).
+
+```json
+{ "type": "EventNotInTrackingPlan" }
+{ "type": "UnexpectedEvent" }
+{ "type": "MissingExpectedProperty", "missingExpectedProperty": { "eventId": "...", "propertyId": "...", "propertyName": "..." } }
+{ "type": "PropertyTypeInconsistentWithTrackingPlan", "PropertyTypeInconsistentWithTrackingPlan": { "eventId": "..." , "propertyId": "...", "propertyName": "...", "expectedPropertyType": "...", "actualPropertyType": "..." } }
+{ "type": "UnexpectedProperty", "unexpectedProperty": { "eventId": "...", "propertyName": "...", "propertyType": "..." } }
+{ "type": "InconsistentType", "inconsistentType": { "propertyName": "...", "propertyTypes": ["string", "int"] } }
+```
+
+**Casing inconsistency to code around:** every payload key is camelCase *except* `PropertyTypeInconsistentWithTrackingPlan`, whose payload key repeats the PascalCase type name. `eventId` inside that payload is nullable; the other payloads' ids are not.
+
+### Status codes
+
+| Code | Condition |
+| --- | --- |
+| `200` | Success (gzipped). |
+| `200` with `{"issues": []}` | Also returned on a **Postgres query or connection failure** — fail-closed by design. Not a 5xx. |
+| `200`, partially populated | Per-row decode failures are swallowed: a malformed row is dropped from an otherwise successful response, with no marker in the body. |
+| `401` | No `Authorization` header, invalid bearer token, bad Basic secret, or a service account not registered in this workspace. See [authentication error bodies](#authentication-error-bodies). |
+| `403` | Authenticated, but not an ACL member of `:workspaceId` — including an unknown `:workspaceId`. Body `{"message": "Access denied to workspace"}`. |
+| `500` | Body `{"error": "Internal Server Error"}`. A throw after authentication, for example an invalid date reaching the encoder. |
+
+There is **no 400** for any malformed parameter, and **no 404** on this endpoint.
+
+### Example
+
+#### Request
+
+```sh
+$ curl --compressed \
+       -H "authorization: Basic <Base64 encoded token>" \
+       -X GET "https://api.avo.app/workspaces/hAtPI0dEsq/inspector/issues/v5?status=unresolved&appVersions=8.14.2,8.13.1"
+```
+
+#### Response
+
+```json
+{
+  "issues": [
+    {
+      "issueId": "2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26",
+      "sharedIssueId": "8b4d0f6a1c93e57204ab8d1f6e3c9057b24da8f1093c6e5b7d20a41fc8e93b56",
+      "schemaId": "hAtPI0dEsq",
+      "sourceId": "9Zq7YAo0R",
+      "eventName": "Checkout Completed",
+      "propertyName": "revenue",
+      "issueType": {
+        "type": "PropertyTypeInconsistentWithTrackingPlan",
+        "PropertyTypeInconsistentWithTrackingPlan": {
+          "eventId": "yT2rKpQ4Xa",
+          "propertyId": "Bv8nLm1Zq0",
+          "propertyName": "revenue",
+          "expectedPropertyType": "float",
+          "actualPropertyType": "string"
+        }
+      },
+      "oldestAppVersion": "8.13.1",
+      "newestAppVersion": "8.14.2",
+      "firstSeen": "2026-08-11T09:42:18.000Z",
+      "lastSeen": "2026-08-24T06:00:00.000Z",
+      "issueCount": 1428,
+      "eventCount": 96204,
+      "appVersions": ["8.13.1", "8.14.2"],
+      "issueStatus": {
+        "status": { "type": "Unresolved" },
+        "updatedAt": null,
+        "updatedBy": null
+      },
+      "regression": false,
+      "branchIds": []
+    },
+    {
+      "issueId": "c07a5f39b1d84e26af0c93b7512de6a8409fb17c3d6528eab94017f2c85d3b60",
+      "sharedIssueId": "e51b7d02a94c36f8017be2d5c8390a4f62d17bc03e9584a1f70d2c6b83459e17",
+      "schemaId": "hAtPI0dEsq",
+      "sourceId": "kR4vXn8Tb",
+      "eventName": "Subscription Renewal Reminder Dismissed",
+      "propertyName": null,
+      "issueType": { "type": "EventNotInTrackingPlan" },
+      "oldestAppVersion": "8.14.2",
+      "newestAppVersion": "8.14.2",
+      "firstSeen": "2026-08-22T14:07:55.000Z",
+      "lastSeen": "2026-08-24T06:00:00.000Z",
+      "issueCount": 3106,
+      "eventCount": 3106,
+      "appVersions": ["8.14.2"],
+      "issueStatus": {
+        "status": { "type": "Unresolved" },
+        "updatedAt": null,
+        "updatedBy": null
+      },
+      "regression": false,
+      "branchIds": []
+    }
+  ]
+}
+```
+
+## B — Retrieving a single issue
+
+```Url
+GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/v3/:issueId
+```
+
+Returns one issue with its counts **broken down per app version**, over a window you choose. Endpoint A gives you app version *names* only, so this is the endpoint to reach for when you need to know which release a problem is concentrated in, or when 24 hours is the wrong window.
+
+`:issueId` is an `issueId` — the value from `issues[].issueId` on endpoint A, not a `sharedIssueId`.
+
+<Callout type="info" emoji="💡">
+**Firebase ID token only.** Service account Basic and Avo OAuth JWT are both rejected with 401 on this endpoint. See [Authentication](#authentication) for the service-account path (list with A, shapes with C).
+</Callout>
+
+### Query parameters
+
+| Parameter | Type | Required | Default when omitted | Accepted values | On invalid input |
+| --- | --- | --- | --- | --- | --- |
+| `time` | string | Optional | `24h` | Matches `^(\d+)([hd])$`, case-insensitive — for example `12h`, `7d`, `30D` | **Silently coerced to 24 hours.** No 400. |
+
+`time` also selects the underlying rollup: `24h` reads the eight-hour aggregates, anything else reads the daily aggregate tables. The value is regex-sanitized before use. There is no `format`, no filtering and no pagination on this endpoint.
+
+### Response
+
+A **bare object**, not wrapped in an envelope, and **not** gzipped. Field names match endpoint A with one difference:
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `appVersions` | object | A dictionary keyed by version string, **not an array**. Each value is `{"appVersion": string, "issueCount": number, "eventCount": number, "lastSeen": string \| null}`. |
+
+Top-level `issueCount` and `eventCount` are the sums across versions; top-level `lastSeen` is the max across versions, falling back to the last-seen day. All other fields carry the same types and nullability as on endpoint A.
+
+### Status codes
+
+| Code | Body | Condition |
+| --- | --- | --- |
+| `200` | The issue object | At least one row matched. |
+| `401` | `{"error": "Unauthorized"}` | Missing, invalid, or non-Firebase `Authorization` header — **or** an authenticated caller who is not a member of `:workspaceId`. |
+| `404` | `{"error": "Issue Not found"}` | Zero rows for this workspace and id. Covers an unknown id, a malformed id, and an id belonging to a **different** workspace. Note the exact casing. |
+| `500` | `{"error": "Internal Server Error"}` | Database error. |
+
+Note the asymmetry with endpoint A: endpoint B propagates a database failure as a 500, while endpoint A swallows the same failure into a 200 with an empty array. If you are health-checking Inspector, B is the endpoint that tells you the truth — but only a Firebase ID token can call it.
+
+There is no 400 on this endpoint.
+
+### Example
+
+#### Request
+
+```sh
+$ curl -H "authorization: Bearer <Firebase ID token>" \
+       -X GET "https://api.avo.app/workspaces/hAtPI0dEsq/inspector/issues/v3/2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26?time=7d"
+```
+
+#### Response
+
+```json
+{
+  "issueId": "2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26",
+  "sharedIssueId": "8b4d0f6a1c93e57204ab8d1f6e3c9057b24da8f1093c6e5b7d20a41fc8e93b56",
+  "schemaId": "hAtPI0dEsq",
+  "sourceId": "9Zq7YAo0R",
+  "eventName": "Checkout Completed",
+  "propertyName": "revenue",
+  "issueType": {
+    "type": "PropertyTypeInconsistentWithTrackingPlan",
+    "PropertyTypeInconsistentWithTrackingPlan": {
+      "eventId": "yT2rKpQ4Xa",
+      "propertyId": "Bv8nLm1Zq0",
+      "propertyName": "revenue",
+      "expectedPropertyType": "float",
+      "actualPropertyType": "string"
+    }
+  },
+  "oldestAppVersion": "8.13.1",
+  "newestAppVersion": "8.14.2",
+  "firstSeen": "2026-08-11T09:42:18.000Z",
+  "lastSeen": "2026-08-24T06:00:00.000Z",
+  "issueCount": 9871,
+  "eventCount": 644390,
+  "appVersions": {
+    "8.13.1": {
+      "appVersion": "8.13.1",
+      "issueCount": 7204,
+      "eventCount": 402118,
+      "lastSeen": "2026-08-23T21:00:00.000Z"
+    },
+    "8.14.2": {
+      "appVersion": "8.14.2",
+      "issueCount": 2667,
+      "eventCount": 242272,
+      "lastSeen": "2026-08-24T06:00:00.000Z"
+    }
+  },
+  "issueStatus": {
+    "status": { "type": "Unresolved" },
+    "updatedAt": null,
+    "updatedBy": null
+  },
+  "regression": false,
+  "branchIds": []
+}
+```
+
+## C — Listing event variations
+
+```Url
+GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/:issueId/variations
+```
+
+A **variation** is one observed shape of an event: a distinct combination of property names and property types, per app version, per source. Endpoints A and B tell you *that* an event is wrong; this endpoint tells you *how* it is wrong, by returning every shape that event was seen in alongside a `causingIssue` flag and an occurrence count.
+
+That is what makes it the debugging endpoint. Put the causing shape next to the healthy one and the diff — a property missing here, a type differing there, and the volume split between them — is usually the whole story. Available as JSON or, with `?format=csv`, as a two-section CSV built for exactly that diff.
+
+Accepts service account Basic, Avo OAuth JWT, or a Firebase ID token — so this is the endpoint a service-account integration uses in place of endpoint B.
+
+`:issueId` here is a real **`issueId`** — the same kind of id endpoint B takes, *not* a `sharedIssueId`, even though this route sits directly beside the shared-id route.
+
+### Query parameters
+
+| Parameter | Type | Required | Default when omitted | Accepted values | On invalid input |
+| --- | --- | --- | --- | --- | --- |
+| `format` | string | Optional | `json` | `csv`, case-insensitive | Anything else — including `""` and `xml` — returns JSON. Never errors. |
+| `sourceId` | string | Optional | No source filter | **One** exact `source_id` | Blank or whitespace means no filter. |
+| `appVersion` | string | Optional | No version filter | **One** exact `app_version` | Blank or whitespace means no filter. |
+
+<Callout type="info" emoji="💡">
+**`sourceId` and `appVersion` take single values only.** The filters are strict equality, so `?sourceId=a,b` matches the literal string `"a,b"` and returns nothing. Repeating a parameter — `?sourceId=a&sourceId=b` — arrives as an array, is parsed as absent, and the filter is **silently ignored** with no error. A non-string route parameter (for example a duplicated `:issueId`) returns `400 {"error": "Invalid request"}` *before* authentication runs.
+</Callout>
+
+<Callout type="warning" emoji="⚠️">
+**The issue's own source is not applied as a filter.** Without `?sourceId=`, you get variations of that **event name across every source in the workspace**, not just the source the issue was reported on. If you want the issue's own source, pass its `sourceId` explicitly.
+</Callout>
+
+#### Staying under the 400-row cap
+
+The query is capped at 400 rows, and both `app_version` and `source_id` are grouping keys — so one logical event shape yields **one row per app version per source**. An event with modest shape diversity across several versions and sources reaches the cap on cardinality alone.
+
+Ordering and the limit are applied in the database, before anything you could filter client-side, so the shape you care about may already have been cut from the response. Filtering after the fact does not recover it. Passing `?sourceId=` and `?appVersion=` — taking the `sourceId` from the issue itself — is the sanctioned way to stay under the cap.
+
+### Response
+
+The envelope is `{"variations": [...], "variationsTruncated": bool}`. Each row has exactly these 13 fields:
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `eventVariationKey` | string | Identifies this shape. sha256 hex of `schemaId + sourceId + eventName + appVersion + propertyNameSignature + propertyTypeSignature`, so it changes whenever any of those change. |
+| `causingIssue` | boolean | Whether this shape is one of the shapes causing the issue you asked about. |
+| `count` | number | Occurrences of this shape in the window. **Sampling-adjusted, not a raw tally** — the pipeline sums `count / samplingRate` and rounds, so on a sampled source this is an extrapolated estimate. Treat it as an estimate when comparing against counts from your own systems. |
+| `eventName` | string | The event name as observed. |
+| `sourceId` | string | The Avo Source ID. |
+| `schemaId` | string | Your workspace ID. |
+| `appVersion` | string \| null | Nullable in the encoder, but always populated on this endpoint — a row with no app version fails to decode and is dropped. |
+| `minCreatedAt` | string \| null | ISO 8601. Invalid or infinite timestamps emit `null` rather than throwing. |
+| `maxCreatedAt` | string \| null | ISO 8601, same guard. |
+| `eventKey` | string \| null | **Not a tracking-plan ID.** sha256 hex of `schemaId + sourceId + eventName`, computed from the *observed* event name. All variations of one observed name on one source share it. Nullable in the encoder, always populated here. |
+| `sourceKey` | string \| null | **Not the same value as `sourceId`.** The composite `schemaId + "-" + sourceId`. Use `sourceId` for anything that has to match an Avo Source. Nullable in the encoder, always populated here. |
+| `propertyNameSignature` | string[] | Observed property names, sorted by name. |
+| `propertyTypeSignature` | string[] | Observed property types. **Strictly parallel to `propertyNameSignature`** — same length, same order, so `propertyTypeSignature[i]` is the type of `propertyNameSignature[i]`. Both are built by mapping one list of (name, type) pairs sorted by name, and an event whose types cannot be fully parsed is dropped rather than emitted with a short array. |
+
+#### Read `variationsTruncated`, never count rows
+
+<Callout type="warning" emoji="⚠️">
+**Never compare `variations.length` to 400.**<br/>
+`variationsTruncated` is computed from the **raw** row count, but rows that fail to decode are dropped from the array you receive. So a truncated page can arrive with **399 rows and look complete**. The flag is the only reliable completeness signal.
+</Callout>
+
+#### Property names are raw observed names
+
+<Callout type="warning" emoji="⚠️">
+**`propertyNameSignature` holds the names the SDK actually sent, not tracking-plan names.** These come straight from the event payload; nothing in that path consults the [Tracking Plan](/data-design/start-data-design). The only mutation is privacy redaction of values shaped like data in a name position, which surfaces as the literals `<Object redacted by Avo>`, `<ID string redacted by Avo>` and `<URL redacted by Avo>`. If you diff these against tracking-plan property names, reconcile naming conventions first or you will report false discrepancies.<br/><br/>
+Redaction can also map two distinct names onto the **same** placeholder, so `propertyNameSignature` is not guaranteed to be free of duplicates. In the CSV those duplicates collapse into a single column and the last type wins.
+</Callout>
+
+The window here is a fixed 24 hours, and the most recent hour is not visible at all — see [the time windows are fixed](#the-time-windows-are-fixed-and-the-freshest-hour-is-missing) above.
+
+### CSV output
+
+`?format=csv` returns the same rows shaped for diffing: causing shapes in one section, healthy shapes in another, with one column per property name so the two halves line up column for column. Reach for it when you want to eyeball a shape difference or hand the result to a spreadsheet rather than parse it.
+
+The response is `text/csv; charset=utf-8`, lines joined with `\n`, **no trailing newline** and no BOM. The structure is fixed:
+
+1. **Line 0 is always the truncation marker**, emitted for both verdicts: `# variationsTruncated: true` or `# variationsTruncated: false`.
+2. `# Variations causing the issue`, then a header line, then the causing rows.
+3. `# Variations not causing the issue`, then the **same** header line again, then the remaining rows.
+
+Both section headers are emitted even when a section is empty, and both sections repeat an identical header line so the two halves diff column for column. Causing rows come first.
+
+Columns, in order:
+
+```
+event_variation_key, causing_issue, count, event_name, source_id, app_version,
+min_created_at, max_created_at
+```
+
+...followed by **one column per property name**: the union of `propertyNameSignature` across all rows, deduped in first-appearance order, with the causing rows scanned first. `causing_issue` is an explicit column rendered `true` / `false`.
+
+Each property cell holds the **type** of that property in that row, and an empty cell when the row does not carry the property. A cell can also hold the literal `unknown`, which means the row supplied the name but no type at that position — a defensive fallback that the current ingestion path should never produce, but worth handling if you parse strictly. Date cells fall back to an empty cell rather than throwing on an invalid timestamp.
+
+Quoting: every cell — **including the header line** — is wrapped in double quotes, except an empty string, which stays bare. Internal `"` is doubled. A cell starting with `=`, `+`, `-`, `@`, tab, CR or LF is prefixed with `'` as a CSV injection guard.
+
+```csv
+# variationsTruncated: false
+# Variations causing the issue
+"event_variation_key","causing_issue","count","event_name","source_id","app_version","min_created_at","max_created_at","currency","payment_method","revenue"
+"5d2b81f0a37c94e618df05b2c7a3e9410fb86d24c503a1e79b0d4f6238ca7e15","true","1428","Checkout Completed","9Zq7YAo0R","8.14.2","2026-08-23T07:00:00.000Z","2026-08-24T06:00:00.000Z","string","string","string"
+"b0f47ac125d3e896402fc7b13a5d90e648127cf3ab05d9e7261340bfc85a92d6","true","96","Checkout Completed","9Zq7YAo0R","8.13.1","2026-08-23T07:00:00.000Z","2026-08-24T05:00:00.000Z","string",,"string"
+# Variations not causing the issue
+"event_variation_key","causing_issue","count","event_name","source_id","app_version","min_created_at","max_created_at","currency","payment_method","revenue"
+"e93c4a70b1d582f6047ae3c9128d5b0f76a2e841c30f9b57d6812ac4053e7fb9","false","94776","Checkout Completed","9Zq7YAo0R","8.14.2","2026-08-23T07:00:00.000Z","2026-08-24T06:00:00.000Z","string","string","float"
+```
+
+In that example the second causing row has no `payment_method` property, so its cell is bare.
+
+### Status codes
+
+| Code | Body | Condition |
+| --- | --- | --- |
+| `200` | JSON or CSV | Success. |
+| `400` | `{"error": "Invalid request"}` | A non-string route parameter — for example a duplicated `:issueId`. Checked **before** authentication. |
+| `401` | `{"message": "Authorization header missing"}`, `{"message": "Authorization header missing or invalid"}` or `{"message": "Invalid authorization"}` | Missing or invalid credential — see [authentication error bodies](#authentication-error-bodies) for which is which. |
+| `403` | `{"message": "Access denied to workspace"}` | Valid Bearer credential, not a member of `:workspaceId`. |
+| `404` | `{"error": "Issue not found"}` | The id is not in this workspace's rows. Note the lowercase `not found`, unlike endpoint B. |
+| `500` | `{"error": "Internal Server Error"}` | Identity error, row-fetch error, connection-pool failure, or an uncaught throw. |
+
+This endpoint fails closed on the causing-key lookup: if that lookup errors it returns 500 rather than a 200 with every row marked non-causing.
+
+### Example
+
+#### Request
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" \
+       -X GET "https://api.avo.app/workspaces/hAtPI0dEsq/inspector/issues/2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26/variations?sourceId=9Zq7YAo0R&appVersion=8.14.2"
+```
+
+#### Response
+
+```json
+{
+  "variations": [
+    {
+      "eventVariationKey": "5d2b81f0a37c94e618df05b2c7a3e9410fb86d24c503a1e79b0d4f6238ca7e15",
+      "causingIssue": true,
+      "count": 1428,
+      "eventName": "Checkout Completed",
+      "sourceId": "9Zq7YAo0R",
+      "schemaId": "hAtPI0dEsq",
+      "appVersion": "8.14.2",
+      "minCreatedAt": "2026-08-23T07:00:00.000Z",
+      "maxCreatedAt": "2026-08-24T06:00:00.000Z",
+      "eventKey": "a4e1c07b93d5f28601ab7c4e9d0f3b2586c1a97e4f0b3d8c25e6a1470bf9d3c8",
+      "sourceKey": "hAtPI0dEsq-9Zq7YAo0R",
+      "propertyNameSignature": ["currency", "payment_method", "revenue"],
+      "propertyTypeSignature": ["string", "string", "string"]
+    },
+    {
+      "eventVariationKey": "e93c4a70b1d582f6047ae3c9128d5b0f76a2e841c30f9b57d6812ac4053e7fb9",
+      "causingIssue": false,
+      "count": 94776,
+      "eventName": "Checkout Completed",
+      "sourceId": "9Zq7YAo0R",
+      "schemaId": "hAtPI0dEsq",
+      "appVersion": "8.14.2",
+      "minCreatedAt": "2026-08-23T07:00:00.000Z",
+      "maxCreatedAt": "2026-08-24T06:00:00.000Z",
+      "eventKey": "a4e1c07b93d5f28601ab7c4e9d0f3b2586c1a97e4f0b3d8c25e6a1470bf9d3c8",
+      "sourceKey": "hAtPI0dEsq-9Zq7YAo0R",
+      "propertyNameSignature": ["currency", "payment_method", "revenue"],
+      "propertyTypeSignature": ["string", "string", "float"]
+    }
+  ],
+  "variationsTruncated": false
+}
+```
+
+The two shapes carry the same property names and differ only in the type of `revenue` — `string` on the shape causing the issue, `float` on the healthy one. That diff, plus the `count` ratio, is what these endpoints are for. Note that `eventKey` and `sourceKey` are identical on both rows: they identify the observed event name and the source, not the shape.
+
+## What's next?
+
+Now that you can read issues over HTTP, the conceptual docs explain what you are looking at and what to do about it:
+
+- [Issue types in Inspector](/inspector/issue-types-in-inspector) — what each `issueType` detects, in the same language the Avo web app uses.
+- [Inspector issues view](/inspector/inspector-issues-view) — the view backed by endpoint A, including issue statuses and regressions.
+- [Fixing issues found in Inspector](/inspector/inspector-fix-issues) — turning a variation diff into a tracking plan or implementation change.
+- [Authentication](/public-api/authentication#authenticating-with-avo-api) — creating a service account and building the `Authorization` header.
