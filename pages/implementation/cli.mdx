@@ -47,7 +47,7 @@ When you run this command for the first time it will prompt you to select which 
 Please commit the `avo.json` file into your version control, in order to keep it in sync across your team.
 
 ```bash
-avo pull [--branch "my-branch"] [--force] [--forceFeatures ...,...] [SourceName]
+avo pull [--branch "my-branch"] [--force] [--forceFeatures ...,...] [--libraryInterfaceFileFilter interface-only|events-only|all] [SourceName]
 ```
 
 Options:
@@ -56,6 +56,7 @@ Options:
   --branch         Name of Avo branch to pull from,
   --force          Proceed ignoring the unsupported features for given source type (e.g. group analytics)
   --forceFeatures  A list of experimental codegen features to force enable. Pass unsupported name to get the list of available features
+  --libraryInterfaceFileFilter  For sources in library mode, which files to generate on this run: interface-only, events-only or all. Overrides the avo.json setting without changing it
 ```
 
 ### Step 4: Monitor the analytics implementation
@@ -131,6 +132,8 @@ You can also specify the interface file path manually, by adding `interfaceFileP
   }
 ]
 ```
+
+If your source uses [library mode](/reference/avo-codegen/library-codegen) and the library interface is shared between repositories, see [Sharing one library interface across repositories](/reference/avo-codegen/library-codegen#4-sharing-one-library-interface-across-repositories) for the `libraryInterfaceFileFilter` and `libraryInterfaceSharedModule` settings in `avo.json`.
 
 ## Using Avo Branches
 

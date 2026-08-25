@@ -2,7 +2,7 @@
 
 Avo can emit generated code in two shapes for Kotlin, Swift, and TypeScript sources: the default **single-source** output (one file per source) and the **library mode** output that splits the runtime from the per-source types. Both modes are supported — they serve different use cases and you can generate either from the same source.
 
-Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types.
+Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types. If that library is shared between repositories, see [section 4](#4-sharing-one-library-interface-across-repositories) for how to stop each repo regenerating it.
 
 ---
 
@@ -320,3 +320,130 @@ try {
 5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
 6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
 
+
+---
+
+## 4. Sharing one library interface across repositories
+
+By default `avo pull` regenerates every file for a source — the library file and the app file(s) alike. That is right when they live together, but not when the library file is shared: one repository (or package) owns the library interface, and the apps that consume it own only their event files. There, a plain `avo pull` in a client repo emits a second copy of the interface next to the events, and a pull in the shared repo emits event files it has no use for.
+
+The `libraryInterfaceFileFilter` setting in `avo.json` declares, per repository or per source, which side of that split `avo pull` generates. It requires Avo CLI 3.6.0 or later and only affects sources in library mode — for the single-source output it does nothing.
+
+### Values
+
+| Value | Generates | Use in |
+|---|---|---|
+| `all` (default) | Every file, exactly as before | Repos that hold both the interface and the events |
+| `interface-only` | Only the library file | The repo that owns the shared interface |
+| `events-only` | Everything except the library file | Client repos that import the interface from a shared module |
+
+Which files fall on each side:
+
+| Language | `interface-only` | `events-only` |
+|---|---|---|
+| Kotlin | `AnalyticsLibraryInterface.kt` | `Analytics.kt` |
+| Swift | `AnalyticsLibraryInterface.swift` | `Analytics.swift` |
+| TypeScript | `AvoLibrary.ts` | `Avo.ts`, `AvoConfig.ts` and — with one file per event — `AvoEvents/` and `AvoAppSystemProperties.ts` |
+
+`AvoConfig.ts` is on the events side despite its name: it carries the source-specific ids and keys, which is exactly what a shared interface must not contain.
+
+### Configuring it
+
+Add the key to `avo.json` by hand — `avo init` does not prompt for it. Set it at the top level to apply to every source in the file, or on a single `source` entry to override it for that source:
+
+```json
+{
+  "avo": { "version": 3 },
+  "schema": { "id": "...", "name": "..." },
+  "branch": { "id": "...", "name": "..." },
+  "libraryInterfaceFileFilter": "events-only",
+  "libraryInterfaceSharedModule": "@acme/analytics",
+  "sources": [
+    {
+      "id": "...",
+      "name": "Web",
+      "path": "src/Avo.ts",
+      "actionId": "...",
+      "branchId": "...",
+      "updatedAt": "..."
+    }
+  ]
+}
+```
+
+The source's `path` stays what it always was; the library file name is derived from it as usual, so an `interface-only` source with `path: "src/Avo.ts"` writes only `src/AvoLibrary.ts`.
+
+For a one-off run, `avo pull --libraryInterfaceFileFilter <value>` overrides the setting without writing it to `avo.json`. Each source resolves its own value in this order: the `--libraryInterfaceFileFilter` flag, then the source's own key, then the top-level key, then `all`.
+
+### Pointing event files at the shared interface
+
+The generated app file imports the library interface. When the interface lives in another package, that import has to name it — which is what `libraryInterfaceSharedModule` is for. Set it in the **client** repo (top-level or per-source, same precedence as the filter), in the form the language's import statement needs:
+
+| Language | Value | Example |
+|---|---|---|
+| Kotlin | Package name of the shared interface | `"sh.avo.shared"` |
+| TypeScript | Module specifier. A bare specifier (`@acme/analytics`) is emitted verbatim from every generated file. A relative one (`../shared/AvoLibrary`) is resolved relative to the output folder, so it only works when the interface is in the same repository | `"@acme/analytics"` |
+| Swift | Not used — the app file already does `import Library`, so ship the shared interface as that module | — |
+
+The value is passed to codegen verbatim and only takes effect when the resolved filter is not `all`; under `all` the output is unchanged whether or not it is set. The shared repo itself does not need `libraryInterfaceSharedModule` — it emits the interface, it does not import it.
+
+### Example: one shared package, several client apps
+
+Shared repo, which owns the interface and publishes it as `@acme/analytics`:
+
+```json
+{
+  "libraryInterfaceFileFilter": "interface-only",
+  "sources": [
+    { "id": "...", "name": "Web", "path": "src/Avo.ts", "actionId": "...", "branchId": "...", "updatedAt": "..." }
+  ]
+}
+```
+
+Each client repo, which consumes it:
+
+```json
+{
+  "libraryInterfaceFileFilter": "events-only",
+  "libraryInterfaceSharedModule": "@acme/analytics",
+  "sources": [
+    { "id": "...", "name": "Web", "path": "src/Avo.ts", "actionId": "...", "branchId": "...", "updatedAt": "..." }
+  ]
+}
+```
+
+In a monorepo with one `avo.json`, put the keys on the sources instead:
+
+```json
+"sources": [
+  {
+    "id": "...",
+    "name": "Shared",
+    "path": "packages/analytics/src/Avo.ts",
+    "libraryInterfaceFileFilter": "interface-only",
+    "actionId": "...",
+    "branchId": "...",
+    "updatedAt": "..."
+  },
+  {
+    "id": "...",
+    "name": "Web",
+    "path": "apps/web/src/Avo.ts",
+    "libraryInterfaceFileFilter": "events-only",
+    "libraryInterfaceSharedModule": "@acme/analytics",
+    "actionId": "...",
+    "branchId": "...",
+    "updatedAt": "..."
+  }
+]
+```
+
+### What to expect after changing the filter
+
+- **Stale files are reported, never deleted.** When a file that was generated before is no longer generated under the current filter, `avo pull` prints `[avo] Warning: <file> is no longer generated here because of the current libraryInterfaceFileFilter. It is now stale and may shadow the generated code; remove it.` — on every pull, until you remove the file yourself.
+- **Git conflicts in `avo.json`.** If the two sides of a conflict disagree on `libraryInterfaceFileFilter`, `avo pull` and `avo conflict` keep your current branch's value and print which value was discarded.
+- **Invalid values are rejected** by every command that reads `avo.json`: `Invalid libraryInterfaceFileFilter '<value>' — must be one of interface-only, events-only, all`.
+
+### Which sources can share one interface
+
+The library file contains no source-specific ids or keys, but it is not entirely plan-independent: its `AvoEnv` cases are derived from the destination environments of the source it was generated from. A shared interface is therefore safe to consume from repositories pulling the same source, or sources with an identical set of destination environments.
