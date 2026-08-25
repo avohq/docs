@@ -32,7 +32,11 @@ Every lookup is scoped to your workspace, so an `issueId` that does not belong t
 
 ### Rate limits
 
-No rate limit is currently enforced on these endpoints, but Avo may introduce one. Build retries with backoff into your integration and handle `429`.
+Treat these endpoints as rate limited. They are not throttled today, but the rest of the Avo public API soft-enforces **1 request per second per service account**, and that is the figure to design against — an integration built to that budget will not break if enforcement is introduced here.
+
+Retry on `429 Too Many Requests` rather than failing: back off exponentially instead of retrying immediately, and respect `Retry-After` if it is present. Poll on a schedule rather than in a tight loop.
+
+If your use case needs a higher sustained request rate, [reach out](/help/troubleshooting).
 
 ## Your first call
 
