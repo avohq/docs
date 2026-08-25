@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components';
 
 _Read Inspector issues and observed event shapes over HTTP_
 
-Two GET endpoints expose Inspector data outside the Avo web app: a single issue, and the observed event shapes ("variations") behind an issue. Both are addressed by an `issueId` you already hold. They are documented together because they share a base URL and a workspace-scoping model — but **not** an authentication model, and that difference causes most broken integrations.
+Two GET endpoints expose Inspector data outside the Avo web app: a single issue, and the observed event shapes ("variations") behind an issue. Both are addressed by an `issueId` you already hold, and both share a base URL, an authentication model and a workspace-scoping model.
 
 This page is written for someone wiring these endpoints into a script, a CI check, or an agent tool. The response body is your only view of the data, so every field, fallback and silent behavior is spelled out below.
 
@@ -14,7 +14,7 @@ Base URL for both: `https://api.avo.app`
 
 | Method and path | Returns | Reach for it when |
 | --- | --- | --- |
-| `GET /workspaces/:workspaceId/inspector/issues/v3/:issueId` | A **single issue** — a bare object | You need per-app-version counts for one issue, or a window other than 24 hours. Accepts a Firebase ID token only. |
+| `GET /workspaces/:workspaceId/inspector/issues/v3/:issueId` | A **single issue** — a bare object | You need per-app-version counts for one issue, or a window other than 24 hours. |
 | `GET /workspaces/:workspaceId/inspector/issues/:issueId/variations` | The **event shapes** behind an issue, as JSON or CSV | You need the payloads themselves — which property names and types were actually sent — so you can diff the shape causing the issue against the healthy one. |
 
 `:workspaceId` is the ID of your workspace. You'll find it in the URL of your Avo tab after `/schemas/`. It is also returned as `schemaId` on every response object.
@@ -27,26 +27,19 @@ Both endpoints take an `issueId`. You'll find an issue's id in the Avo web app U
 
 ## Authentication
 
-Authentication is **not uniform across these endpoints**. This is the single most common cause of a working variations call sitting next to a 401 on the single-issue call.
+Both endpoints accept the same three credentials:
 
-| Credential | `/issues/v3/:issueId` | `/variations` |
-| --- | --- | --- |
-| Service account Basic (`Authorization: Basic base64(name:secret)`) | ❌ 401 | ✅ |
-| Avo OAuth JWT (`Authorization: Bearer ...`) | ❌ 401 | ✅ |
-| Firebase ID token (`Authorization: Bearer ...`) | ✅ | ✅ |
+- **Service account Basic** — `Authorization: Basic base64(name:secret)`
+- **Avo OAuth JWT** — `Authorization: Bearer ...`
+- **Firebase ID token** — `Authorization: Bearer ...`
 
-<Callout type="warning" emoji="⚠️">
-**The single-issue endpoint accepts a Firebase ID token only.**<br/>
-`GET /inspector/issues/v3/:issueId` runs on an older auth stack that requires a `Bearer ` prefix and verifies the token as a Firebase ID token. A service account Basic credential and an Avo OAuth JWT are both **rejected with 401** — including a service account that is correctly registered in the workspace. If you are integrating with a service account, there is no supported way to call it.
-</Callout>
-
-We recommend planning your integration around that split: a service-account or OAuth credential can call `/variations` with an `issueId` it already holds, and that is the endpoint to build on. The variations endpoint requires no OAuth scope and no particular workspace role — any workspace member passes.
+Neither endpoint requires an OAuth scope, and neither requires a particular workspace role — any workspace member passes.
 
 See [authorization header](/public-api/authentication#authenticating-with-avo-api) for how to build the Basic credential from a service account name and secret. The `Basic ` scheme is matched **case-sensitively**, so a lowercase `basic ` is not recognized as a service-account credential — it is treated as a malformed Bearer token and rejected with the message below.
 
 ### Authentication error bodies
 
-The variations endpoint runs on the shared Avo API authenticator, which returns these four bodies. All of them use a `message` key, unlike the `error` key the endpoints themselves use for 400/404/500.
+Both endpoints run on the shared Avo API authenticator, which returns these four bodies. All of them use a `message` key, unlike the `error` key the endpoints themselves use for 400/404/500.
 
 | Code | Body | Condition |
 | --- | --- | --- |
@@ -55,13 +48,13 @@ The variations endpoint runs on the shared Avo API authenticator, which returns 
 | `401` | `{"message": "Invalid authorization"}` | Any Basic failure: bad secret, unknown service account, or a service account not registered in this workspace. |
 | `403` | `{"message": "Access denied to workspace"}` | A verified Bearer identity that is not a member of `:workspaceId`. |
 
-A service account is never checked against the workspace ACL — its only workspace binding is the account record living under that workspace — so a service account can never produce the 403. The single-issue endpoint is on a different stack and answers every auth failure with `401 {"error": "Unauthorized"}`.
+A service account is never checked against the workspace ACL — its only workspace binding is the account record living under that workspace — so a service account can never produce the 403.
 
 ### Workspace scoping
 
 Every query filters on `schema_id`, so a credential can only ever see its own workspace's rows. That produces two different failures that are easy to confuse:
 
-- **403 `{"message": "Access denied to workspace"}`** — the Bearer credential is valid, but its user is not in the ACL for `:workspaceId`. An unknown `:workspaceId` returns the same 403, because there is no ACL document to match against. A Basic credential whose service account is not registered in that workspace returns **401 `{"message": "Invalid authorization"}`** instead. On the single-issue endpoint, a non-member gets **401 `{"error": "Unauthorized"}`**.
+- **403 `{"message": "Access denied to workspace"}`** — the Bearer credential is valid, but its user is not in the ACL for `:workspaceId`. An unknown `:workspaceId` returns the same 403, because there is no ACL document to match against. A Basic credential whose service account is not registered in that workspace returns **401 `{"message": "Invalid authorization"}`** instead.
 - **404** — the credential is valid *and* scoped to the right workspace, but the requested id isn't in that workspace's rows. Because the lookup is workspace-scoped (`schema_id = $1 AND issue_id = $2`), an id belonging to a different workspace simply doesn't match and returns 404 rather than revealing that the id exists elsewhere.
 
 So a 403 means "wrong workspace credential" and a 404 means "right credential, id not here" — including the case where the id is real but lives in someone else's workspace. Super-admin credentials bypass both checks.
@@ -82,7 +75,7 @@ $ curl -H "authorization: Basic <Base64 encoded token>" \
 That returns `{"variations": [...], "variationsTruncated": false}` — every shape that event was seen in over the last 24 hours, each flagged with whether it is one of the shapes causing the issue. From there you can:
 
 - Narrow the response to one source and one app version, or switch it to CSV — see [listing event variations](#listing-event-variations).
-- Read the issue's own counts broken down per app version with [the single-issue endpoint](#retrieving-a-single-issue), if you hold a Firebase ID token.
+- Read the issue's own counts broken down per app version with [the single-issue endpoint](#retrieving-a-single-issue).
 
 Now that you have a working call, the sections below cover what the response does *not* tell you.
 
@@ -142,10 +135,6 @@ GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/v3/:issueId
 Returns one issue with its counts **broken down per app version**, over a window you choose. This is the endpoint to reach for when you need to know which release a problem is concentrated in, or when 24 hours is the wrong window.
 
 `:issueId` is the issue's own id, the value returned as `issueId` in the response below.
-
-<Callout type="info" emoji="💡">
-**Firebase ID token only.** Service account Basic and Avo OAuth JWT are both rejected with 401 on this endpoint. See [Authentication](#authentication) for what a service-account integration can call instead.
-</Callout>
 
 ### Query parameters
 
@@ -240,7 +229,8 @@ Read `regression` together with `issueStatus.status`: the Avo web app only surfa
 | Code | Body | Condition |
 | --- | --- | --- |
 | `200` | The issue object | At least one row matched. |
-| `401` | `{"error": "Unauthorized"}` | Missing, invalid, or non-Firebase `Authorization` header — **or** an authenticated caller who is not a member of `:workspaceId`. |
+| `401` | See [authentication error bodies](#authentication-error-bodies) | Missing or invalid credential. |
+| `403` | `{"message": "Access denied to workspace"}` | A verified Bearer identity that is not a member of `:workspaceId`. |
 | `404` | `{"error": "Issue Not found"}` | Zero rows for this workspace and id. Covers an unknown id, a malformed id, and an id belonging to a **different** workspace. Note the exact casing. |
 | `500` | `{"error": "Internal Server Error"}` | Database error. |
 
@@ -251,7 +241,7 @@ There is no 400 on this endpoint.
 #### Request
 
 ```sh
-$ curl -H "authorization: Bearer <Firebase ID token>" \
+$ curl -H "authorization: Basic <Base64 encoded token>" \
        -X GET "https://api.avo.app/workspaces/hAtPI0dEsq/inspector/issues/v3/2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26?time=7d"
 ```
 
@@ -314,8 +304,6 @@ GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/:issueId/variat
 A **variation** is one observed shape of an event: a distinct combination of property names and property types, per app version, per source. The single-issue endpoint tells you *that* an event is wrong and how often; this endpoint tells you *how* it is wrong, by returning every shape that event was seen in alongside a `causingIssue` flag and an occurrence count.
 
 That is what makes it the debugging endpoint. Put the causing shape next to the healthy one and the diff — a property missing here, a type differing there, and the volume split between them — is usually the whole story. Available as JSON or, with `?format=csv`, as a two-section CSV built for exactly that diff.
-
-Accepts service account Basic, Avo OAuth JWT, or a Firebase ID token — so this is the endpoint a service-account integration can build on.
 
 `:issueId` here is the same kind of id the single-issue endpoint takes.
 
