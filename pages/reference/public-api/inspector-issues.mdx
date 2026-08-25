@@ -81,14 +81,14 @@ Now that you have a working call, the sections below cover what the response doe
 
 ## Before you integrate
 
-Six behaviors are not visible anywhere in the response body, and each one produces a plausible-looking but wrong integration when it is assumed away. Four of them cut across both endpoints and are covered here:
+Five behaviors are not visible anywhere in the response body, and each one produces a plausible-looking but wrong integration when it is assumed away. Four of them cut across both endpoints and are covered here:
 
 1. [The time windows are fixed, and the freshest hour is missing](#the-time-windows-are-fixed-and-the-freshest-hour-is-missing).
 2. [`eventCount` is not "events affected by this issue"](#eventcount-is-not-events-affected-by-this-issue).
 3. [`issueId` is a snapshot handle, not a durable key](#issueid-is-a-snapshot-handle-sharedissueid-is-the-identity).
 4. [No response tells you which event variant was matched](#no-variant-attribution).
 
-Two more are specific to the variations endpoint and are covered in its own section: [`variationsTruncated` is the only reliable completeness signal](#read-variationstruncated-never-count-rows), and [property names are the raw names the SDK sent](#property-names-are-raw-observed-names), not tracking-plan names.
+One more is specific to the variations endpoint and is covered in its own section: [property names are the raw names the SDK sent](#property-names-are-raw-observed-names), not tracking-plan names.
 
 ### The time windows are fixed, and the freshest hour is missing
 
@@ -327,11 +327,13 @@ That is what makes it the debugging endpoint. Put the causing shape next to the 
 
 The query is capped at 400 rows, and both `app_version` and `source_id` are grouping keys — so one logical event shape yields **one row per app version per source**. An event with modest shape diversity across several versions and sources reaches the cap on cardinality alone.
 
-Ordering and the limit are applied in the database, before anything you could filter client-side, so the shape you care about may already have been cut from the response. Filtering after the fact does not recover it. Passing `?sourceId=` and `?appVersion=` — taking the `sourceId` from the issue itself — is the sanctioned way to stay under the cap.
+**`variationsTruncated: true` means you reached that cap** and the response is a partial view of the shapes for this event.
+
+Ordering and the limit are applied in the database, before anything you could filter client-side, so the shape you care about may already have been cut from the response. Filtering after the fact does not recover it. Narrow the query itself instead: pass `?sourceId=` — taking the `sourceId` from the issue — and `?appVersion=` to scope the response to the source and release you care about, and read the flag again to confirm you are now under the cap.
 
 ### Response
 
-The envelope is `{"variations": [...], "variationsTruncated": bool}`. Each row has exactly these 13 fields:
+The envelope is `{"variations": [...], "variationsTruncated": bool}`, where `variationsTruncated` is `true` if the response hit the [400-row cap](#staying-under-the-400-row-cap). Each row has exactly these 13 fields:
 
 | Field | Type | Notes |
 | --- | --- | --- |
@@ -348,13 +350,6 @@ The envelope is `{"variations": [...], "variationsTruncated": bool}`. Each row h
 | `sourceKey` | string \| null | **Not the same value as `sourceId`.** The composite `schemaId + "-" + sourceId`. Use `sourceId` for anything that has to match an Avo Source. Nullable in the encoder, always populated here. |
 | `propertyNameSignature` | string[] | Observed property names, sorted by name. |
 | `propertyTypeSignature` | string[] | Observed property types. **Strictly parallel to `propertyNameSignature`** — same length, same order, so `propertyTypeSignature[i]` is the type of `propertyNameSignature[i]`. Both are built by mapping one list of (name, type) pairs sorted by name, and an event whose types cannot be fully parsed is dropped rather than emitted with a short array. |
-
-#### Read `variationsTruncated`, never count rows
-
-<Callout type="warning" emoji="⚠️">
-**Never compare `variations.length` to 400.**<br/>
-`variationsTruncated` is computed from the **raw** row count, but rows that fail to decode are dropped from the array you receive. So a truncated page can arrive with **399 rows and look complete**. The flag is the only reliable completeness signal.
-</Callout>
 
 #### Property names are raw observed names
 
