@@ -368,9 +368,9 @@ How the parameter shows up depends on the [destination mode](/data-design/avo-tr
 
 - **Destination Interface** (the default for new sources): every destination on the source that uses a destination interface shares a single required parameter, `Custom Destination Page Name`. It is passed as `pageName` to your `logPage` callback. This parameter is added in the generated code regardless of the destination type, so an event going to, for example, Amplitude through a destination interface gets it too.
 - **Snowplow destination interface**: Snowplow keeps its own interface, so the parameter is `Snowplow: Page Name` and it is passed to the `trackPageView` callback.
-- **Avo Managed (legacy)**: the parameter is destination specific, `Segment: Page Name`, `mParticle: Page Name` or `Snowplow: Page Name`. Legacy destinations without page tracking (for example Amplitude or Mixpanel) don't get a parameter and ignore the action.
+- **Avo Managed (legacy)**: the parameter is destination-specific, `Segment: Page Name`, `mParticle: Page Name` or `Snowplow: Page Name`. Legacy destinations without page tracking (for example Amplitude or Mixpanel) don't get a parameter and ignore the action.
 
-In the event details Avo shows the destination specific Page Name properties (`Segment: Page Name`, `mParticle: Page Name` and `Snowplow: Page Name`) as built-in properties whenever the event is sent to a destination of that type, in both modes. `Segment: Page Name` is grouped with the automatic Segment page properties described below, but is still a required parameter of the generated Avo Function.
+In the event details Avo shows the destination-specific Page Name properties (`Segment: Page Name`, `mParticle: Page Name` and `Snowplow: Page Name`) as built-in properties whenever the event is sent to a destination of that type, in both modes. In Destination Interface mode they are display only: the generated parameter is still the single `Custom Destination Page Name` (or `Snowplow: Page Name` for the Snowplow interface). In Avo Managed mode they are the generated parameters. `Segment: Page Name` is grouped with the automatic Segment page properties described below.
 
 ##### Log Page View with a destination interface
 
@@ -387,7 +387,7 @@ logPage(pageName, eventProperties) {
 - The callback is named `logPage` in JavaScript, TypeScript, Swift, Kotlin, Java, C#, Objective-C and ReScript, and `log_page` in Python, Ruby and PHP (PHP also accepts `logPage`).
 - In Swift, Kotlin, Java and C# `logPage` is part of the generated interface and has to be implemented, though the implementation can be empty. In JavaScript, TypeScript, Python, PHP, Ruby and Objective-C it is optional: if the callback is missing, Avo logs a "Page method is not implemented" warning and continues.
 
-Language specific examples of the interface are in the [programming language docs](/reference/avo-codegen/programming-languages). Snowplow destinations use the [Snowplow destination interface](/reference/avo-codegen/destinations#snowplow-destination-interface) instead, where the page view arrives in the `trackPageView(pageName)` callback. Unlike `logPage`, it receives only the page name, not the event properties.
+Language-specific examples of the interface are in the [programming language docs](/reference/avo-codegen/programming-languages). Snowplow destinations use the [Snowplow destination interface](/reference/avo-codegen/destinations#snowplow-destination-interface) instead, where the page view arrives in the `trackPageView(pageName)` callback. Unlike `logPage`, it receives only the page name, not the event properties.
 
 ##### Log Page View with an Avo Managed destination (legacy)
 
