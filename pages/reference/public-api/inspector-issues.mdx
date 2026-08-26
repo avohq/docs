@@ -1,0 +1,315 @@
+import { Callout } from 'nextra/components';
+
+# Inspector Issues
+
+_Read Inspector issues and the event shapes behind them over HTTP_
+
+Two GET endpoints: one returns a single Inspector issue, the other returns the event shapes ("variations") behind it. Both take an `issueId`, which you'll find in the Avo web app URL when you open an issue: `https://www.avo.app/schemas/{workspaceId}/inspector/issues/ii/{issueId}`.
+
+The base URL for the Avo public API is `https://api.avo.app`.
+
+## Endpoints
+
+| Method and path | Returns | Use it when |
+| --- | --- | --- |
+| `GET /workspaces/:workspaceId/inspector/issues/v3/:issueId` | A single issue | You need counts broken down per app version, or a window other than 24 hours. |
+| `GET /workspaces/:workspaceId/inspector/issues/:issueId/variations` | The event shapes behind an issue, as JSON or CSV | You want to see exactly what the event looked like when it triggered the issue. |
+
+`:workspaceId` is the ID of your workspace, from the URL of your Avo tab after `/schemas/`.
+
+<Callout type="info" emoji="💡">
+**Inspector data takes a few minutes to arrive**, so an event sent moments ago won't be in a response yet. To check an implementation as you ship it, use the [Inspector Debugger](/inspector/inspector-debugger).
+</Callout>
+
+## Authentication
+
+Both endpoints require an [authorization header](/public-api/authentication#authenticating-with-avo-api) containing a Base64 encoded service account name and secret.
+
+| Code | Body | Condition |
+| --- | --- | --- |
+| `401` | `{"message": "Authorization header missing"}` | No `Authorization` header. |
+| `401` | `{"message": "Invalid authorization"}` | Bad secret, unknown service account, or a service account not registered in this workspace. |
+
+An `issueId` from another workspace returns 404, the same as an id that doesn't exist.
+
+### Rate limits
+
+Treat these endpoints as rate limited. Design for **1 request per second per service account**, the limit soft-enforced across the rest of the Avo public API. Retry on `429 Too Many Requests` with exponential backoff, and respect `Retry-After` if it's there.
+
+If you need a higher sustained rate, [reach out](/help/troubleshooting).
+
+## Retrieving a single issue
+
+```Url
+GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/v3/:issueId
+```
+
+Returns one issue, with its counts broken down per app version.
+
+### Query parameters
+
+| Parameter | Type | Default | Accepted values |
+| --- | --- | --- | --- |
+| `time` | string | `24h` | A number followed by `h` or `d`, such as `12h` or `7d`. Anything else falls back to `24h`. |
+
+### Response
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `issueId` | string | Identifies this issue on this source. |
+| `sharedIssueId` | string | Groups the same problem across sources. |
+| `schemaId` | string | Your workspace ID. |
+| `sourceId` | string | The source this issue was found on. |
+| `eventName` | string | The event name as sent. |
+| `propertyName` | string \| null | `null` for event-level issue types. |
+| `issueType` | object | What kind of issue this is. See below. |
+| `oldestAppVersion` | string | |
+| `newestAppVersion` | string | |
+| `firstSeen` | string (ISO 8601) | |
+| `lastSeen` | string (ISO 8601) | |
+| `issueCount` | number | Occurrences that violated, summed across versions. |
+| `eventCount` | number | **Total** occurrences of that event on that source, including the ones that were fine. |
+| `appVersions` | object | Keyed by version string, **not an array**. Each value is `{"appVersion": string, "issueCount": number, "eventCount": number, "lastSeen": string \| null}`. |
+| `issueStatus` | object | `{status, updatedAt: string \| null, updatedBy: string \| null}`. See below. |
+| `regression` | boolean | See below. |
+| `branchIds` | string[] | `[]` when the issue isn't linked to a branch. |
+
+<Callout type="warning" emoji="⚠️">
+**`eventCount` is not the number of events affected by the issue.** It is the total volume of that event on that source, healthy occurrences included. `issueCount` is the part that violated. Report the ratio between them: `issueCount: 1428` out of `eventCount: 96204` is a 1.5% violation rate, not 96,204 broken events.
+</Callout>
+
+#### `issueType`
+
+A `type` plus a payload key. For what each type means, see [issue types in Inspector](/inspector/issue-types-in-inspector).
+
+```json
+{ "type": "EventNotInTrackingPlan" }
+{ "type": "UnexpectedEvent" }
+{ "type": "MissingExpectedProperty", "missingExpectedProperty": { "eventId": "...", "propertyId": "...", "propertyName": "..." } }
+{ "type": "PropertyTypeInconsistentWithTrackingPlan", "PropertyTypeInconsistentWithTrackingPlan": { "eventId": "..." , "propertyId": "...", "propertyName": "...", "expectedPropertyType": "...", "actualPropertyType": "..." } }
+{ "type": "UnexpectedProperty", "unexpectedProperty": { "eventId": "...", "propertyName": "...", "propertyType": "..." } }
+{ "type": "InconsistentType", "inconsistentType": { "propertyName": "...", "propertyTypes": ["string", "int"] } }
+```
+
+Payload keys are camelCase, except on `PropertyTypeInconsistentWithTrackingPlan`, where the key repeats the PascalCase type name.
+
+#### `issueStatus.status`
+
+```json
+{ "type": "Unresolved" }
+{ "type": "Ignored",  "validateIn": { "type": "NextAppVersion", "appVersion": "8.15.0" } }
+{ "type": "Resolved", "validateIn": { "type": "Never" } }
+```
+
+`validateIn` is one of `{"type":"CurrentAppVersion","appVersion":string}`, `{"type":"NextAppVersion","appVersion":string}`, `{"type":"CustomAppVersion","appVersion":string}`, `{"type":"Date","date":ISO 8601}` or `{"type":"Never"}`.
+
+The status labelled **Ignore** in the Avo web app reads back as `Ignored`. An issue that never had a status set reads as `Unresolved`. See [issue status](/inspector/inspector-issues-view#issue-status) for what each one means.
+
+#### `regression`
+
+`true` when an issue that was marked **Resolved** came back after the point it was meant to be fixed, which is the `validateIn` recorded when it was resolved. Inspector moves the issue back to `Unresolved` and sets the flag.
+
+Setting the status again clears it, and an `Ignored` issue that comes back never sets it. It only means anything while the status is `Unresolved`.
+
+### Status codes
+
+| Code | Body | Condition |
+| --- | --- | --- |
+| `200` | The issue object | |
+| `401` | See [authentication](#authentication) | Missing or invalid credential. |
+| `404` | `{"error": "Issue Not found"}` | No issue with this id in your workspace. |
+| `500` | `{"error": "Internal Server Error"}` | |
+
+### Example
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" \
+       -X GET "https://api.avo.app/workspaces/hAtPI0dEsq/inspector/issues/v3/2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26?time=7d"
+```
+
+```json
+{
+  "issueId": "2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26",
+  "sharedIssueId": "8b4d0f6a1c93e57204ab8d1f6e3c9057b24da8f1093c6e5b7d20a41fc8e93b56",
+  "schemaId": "hAtPI0dEsq",
+  "sourceId": "9Zq7YAo0R",
+  "eventName": "Checkout Completed",
+  "propertyName": "revenue",
+  "issueType": {
+    "type": "PropertyTypeInconsistentWithTrackingPlan",
+    "PropertyTypeInconsistentWithTrackingPlan": {
+      "eventId": "yT2rKpQ4Xa",
+      "propertyId": "Bv8nLm1Zq0",
+      "propertyName": "revenue",
+      "expectedPropertyType": "float",
+      "actualPropertyType": "string"
+    }
+  },
+  "oldestAppVersion": "8.13.1",
+  "newestAppVersion": "8.14.2",
+  "firstSeen": "2026-08-11T09:42:18.000Z",
+  "lastSeen": "2026-08-24T06:00:00.000Z",
+  "issueCount": 9871,
+  "eventCount": 644390,
+  "appVersions": {
+    "8.13.1": {
+      "appVersion": "8.13.1",
+      "issueCount": 7204,
+      "eventCount": 402118,
+      "lastSeen": "2026-08-23T21:00:00.000Z"
+    },
+    "8.14.2": {
+      "appVersion": "8.14.2",
+      "issueCount": 2667,
+      "eventCount": 242272,
+      "lastSeen": "2026-08-24T06:00:00.000Z"
+    }
+  },
+  "issueStatus": {
+    "status": { "type": "Unresolved" },
+    "updatedAt": null,
+    "updatedBy": null
+  },
+  "regression": false,
+  "branchIds": []
+}
+```
+
+## Listing event variations
+
+```Url
+GET https://api.avo.app/workspaces/:workspaceId/inspector/issues/:issueId/variations
+```
+
+A **variation** is one observed shape of an event: a particular combination of property names and types, per app version, per source. This endpoint returns every shape the event was seen in over the last 24 hours, each with a `causingIssue` flag and a count, so you can compare a shape that triggered the issue against one that didn't.
+
+The window is always 24 hours and can't be changed.
+
+### Query parameters
+
+| Parameter | Type | Default | Accepted values |
+| --- | --- | --- | --- |
+| `format` | string | `json` | `csv` returns CSV. Anything else returns JSON. |
+| `sourceId` | string | No filter | One source ID. |
+| `appVersion` | string | No filter | One app version. |
+
+`sourceId` and `appVersion` take a single value each and match exactly, so `?sourceId=a,b` finds nothing. Repeating a parameter is ignored.
+
+<Callout type="warning" emoji="⚠️">
+**Without `?sourceId=`, you get the event across every source in your workspace**, not just the source the issue was reported on. Pass the issue's own `sourceId` if that's what you want.
+</Callout>
+
+The response is capped at 400 rows, and each shape produces one row per app version per source. `variationsTruncated: true` means you hit the cap and are only seeing part of the picture. Narrow the query with `sourceId` and `appVersion`, then check the flag again.
+
+### Response
+
+`{"variations": [...], "variationsTruncated": bool}`, where each row has:
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `eventVariationKey` | string | Identifies this shape on this source and app version. |
+| `causingIssue` | boolean | Whether this shape is one of the shapes causing the issue. |
+| `count` | number | Occurrences in the window. An estimate on sampled sources. |
+| `eventName` | string | The event name as sent. |
+| `sourceId` | string | The Avo Source ID. |
+| `schemaId` | string | Your workspace ID. |
+| `appVersion` | string \| null | |
+| `minCreatedAt` | string \| null | ISO 8601. |
+| `maxCreatedAt` | string \| null | ISO 8601. |
+| `propertyNameSignature` | string[] | The property names that were sent, sorted by name. |
+| `propertyTypeSignature` | string[] | Their types, in the same order, so `propertyTypeSignature[i]` is the type of `propertyNameSignature[i]`. |
+
+Rows also carry `eventKey` and `sourceKey`, which you can ignore.
+
+<Callout type="warning" emoji="⚠️">
+**`propertyNameSignature` holds the names the SDK actually sent, not your tracking plan's names.** Line them up before comparing, or you'll report differences that aren't real. Names that look like data are redacted and come back as `<Object redacted by Avo>`, `<ID string redacted by Avo>` or `<URL redacted by Avo>`.
+</Callout>
+
+Nothing in the response says which event [variant](/data-design/avo-tracking-plan/event-variants) Inspector matched against.
+
+### CSV output
+
+`?format=csv` returns the same rows arranged for comparison, as `text/csv; charset=utf-8`:
+
+1. `# variationsTruncated: true` or `false`.
+2. `# Variations causing the issue`, a header row, then the causing rows.
+3. `# Variations not causing the issue`, the same header row, then the rest.
+
+Both sections appear even when empty. Columns are `event_variation_key`, `causing_issue`, `count`, `event_name`, `source_id`, `app_version`, `min_created_at`, `max_created_at`, then one column per property name, in the order the names first appear.
+
+Each property cell holds that property's type in that row, or is empty if the row doesn't carry it. Every cell is quoted, including the header row; empty cells stay bare.
+
+```csv
+# variationsTruncated: false
+# Variations causing the issue
+"event_variation_key","causing_issue","count","event_name","source_id","app_version","min_created_at","max_created_at","currency","payment_method","revenue"
+"5d2b81f0a37c94e618df05b2c7a3e9410fb86d24c503a1e79b0d4f6238ca7e15","true","1428","Checkout Completed","9Zq7YAo0R","8.14.2","2026-08-23T07:00:00.000Z","2026-08-24T06:00:00.000Z","string","string","string"
+"b0f47ac125d3e896402fc7b13a5d90e648127cf3ab05d9e7261340bfc85a92d6","true","96","Checkout Completed","9Zq7YAo0R","8.13.1","2026-08-23T07:00:00.000Z","2026-08-24T05:00:00.000Z","string",,"string"
+# Variations not causing the issue
+"event_variation_key","causing_issue","count","event_name","source_id","app_version","min_created_at","max_created_at","currency","payment_method","revenue"
+"e93c4a70b1d582f6047ae3c9128d5b0f76a2e841c30f9b57d6812ac4053e7fb9","false","94776","Checkout Completed","9Zq7YAo0R","8.14.2","2026-08-23T07:00:00.000Z","2026-08-24T06:00:00.000Z","string","string","float"
+```
+
+### Status codes
+
+| Code | Body | Condition |
+| --- | --- | --- |
+| `200` | JSON or CSV | |
+| `400` | `{"error": "Invalid request"}` | Malformed request parameters. |
+| `401` | See [authentication](#authentication) | Missing or invalid credential. |
+| `404` | `{"error": "Issue not found"}` | No issue with this id in your workspace. |
+| `500` | `{"error": "Internal Server Error"}` | |
+
+### Example
+
+```sh
+$ curl -H "authorization: Basic <Base64 encoded token>" \
+       -X GET "https://api.avo.app/workspaces/hAtPI0dEsq/inspector/issues/2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26/variations?sourceId=9Zq7YAo0R&appVersion=8.14.2"
+```
+
+```json
+{
+  "variations": [
+    {
+      "eventVariationKey": "5d2b81f0a37c94e618df05b2c7a3e9410fb86d24c503a1e79b0d4f6238ca7e15",
+      "causingIssue": true,
+      "count": 1428,
+      "eventName": "Checkout Completed",
+      "sourceId": "9Zq7YAo0R",
+      "schemaId": "hAtPI0dEsq",
+      "appVersion": "8.14.2",
+      "minCreatedAt": "2026-08-23T07:00:00.000Z",
+      "maxCreatedAt": "2026-08-24T06:00:00.000Z",
+      "eventKey": "a4e1c07b93d5f28601ab7c4e9d0f3b2586c1a97e4f0b3d8c25e6a1470bf9d3c8",
+      "sourceKey": "hAtPI0dEsq-9Zq7YAo0R",
+      "propertyNameSignature": ["currency", "payment_method", "revenue"],
+      "propertyTypeSignature": ["string", "string", "string"]
+    },
+    {
+      "eventVariationKey": "e93c4a70b1d582f6047ae3c9128d5b0f76a2e841c30f9b57d6812ac4053e7fb9",
+      "causingIssue": false,
+      "count": 94776,
+      "eventName": "Checkout Completed",
+      "sourceId": "9Zq7YAo0R",
+      "schemaId": "hAtPI0dEsq",
+      "appVersion": "8.14.2",
+      "minCreatedAt": "2026-08-23T07:00:00.000Z",
+      "maxCreatedAt": "2026-08-24T06:00:00.000Z",
+      "eventKey": "a4e1c07b93d5f28601ab7c4e9d0f3b2586c1a97e4f0b3d8c25e6a1470bf9d3c8",
+      "sourceKey": "hAtPI0dEsq-9Zq7YAo0R",
+      "propertyNameSignature": ["currency", "payment_method", "revenue"],
+      "propertyTypeSignature": ["string", "string", "float"]
+    }
+  ],
+  "variationsTruncated": false
+}
+```
+
+Both shapes carry the same property names. The only difference is the type of `revenue`: `string` on the shape causing the issue, `float` on the healthy one.
+
+## What's next?
+
+- [Issue types in Inspector](/inspector/issue-types-in-inspector): what each `issueType` detects.
+- [Inspector issues view](/inspector/inspector-issues-view): the same issues in the Avo web app.
+- [Fixing issues found in Inspector](/inspector/inspector-fix-issues): turning a shape difference into a fix.
+- [Authentication](/public-api/authentication#authenticating-with-avo-api): creating a service account.
