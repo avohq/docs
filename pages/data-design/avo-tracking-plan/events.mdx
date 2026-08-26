@@ -350,20 +350,41 @@ then call track
 
 #### Log Page View
 
-Add the Log Page View action to include page tracking on web and screen tracking on mobile. 
+Add the Log Page View action to events that are sent when the user lands on a page (web) or a screen (mobile). In addition to tracking the event, the destination will also register a page or screen view, so page analytics in the destination (page view counts, page dimensions, navigation reports) are populated without a separate `page()` call in your code.
 
-##### Log Page View in the Codegen
+Adding the action changes three things: Avo adds a built-in **Page Name** property to the event for each destination that supports page views, Avo lists the page properties Segment collects automatically on web, and Avo Codegen calls the destination's page or screen method in the generated Avo Function.
 
-When Log Page View is set on events, Avo Codegen will do the following for each platform
+##### Page Name properties
 
-##### Segment
+When Log Page View is set on an event, Avo adds one built-in, required Page Name property per destination the event is sent to that supports page views. The Page Name is passed to the destination's page or screen call and is not included in the event properties.
 
-For the Segment platform, Avo will add 1 property that matches the [Segment page
-property](https://segment.com/docs/spec/page/) with the prefix "Segment: ".
+| Destination | Property added | Notes |
+| --- | --- | --- |
+| Segment | `Segment: Page Name` | Grouped with the automatic Segment page properties in the event details, but still a required parameter of the generated Avo Function. |
+| mParticle | `mParticle: Page Name` | |
+| Snowplow | `Snowplow: Page Name` | |
+| Custom destination ([destination interface](/reference/avo-codegen/destinations#destination-interface-overview)) | `Custom Destination Page Name` | Only present in the generated code; passed as the `pageName` parameter to your `logPage` callback. |
 
-- Segment: Page Name
+Destinations without page or screen tracking (for example Amplitude or Mixpanel) don't get a Page Name property and the Log Page View action does not change how the event is sent to them.
 
-Calls either page or screen (depending on your apps platform) with the Page Name property and then call track. If you want to only log a page view, not an event, you can remove the Log Event action from the event.
+##### Automatic Segment page properties on web
+
+If the event has the Log Page View action, is sent to Segment and at least one of its sources is a web source, Avo also shows five automatic properties on the event: `title`, `path`, `url`, `referrer` and `search`. These match the properties the Segment analytics.js SDK adds to every `page()` call from the DOM (`document.title`, `location.pathname`, the canonical URL or `location.href`, `document.referrer` and `location.search`).
+
+You don't implement these properties. They are listed so the tracking plan reflects what Segment will receive, and they are included in the [Segment Protocols publishing](/publishing/publishing/segment-protocols) integration as sometimes sent. Avoid creating your own properties with the same names.
+
+##### Log Page View in Avo Codegen
+
+When an event has the Log Page View action, the generated Avo Function takes the Page Name property as a parameter and calls the destination's page or screen method **before** the regular track call, passing the event properties along. If the event also has the Log Event action, the event is tracked as usual right after the page view call. If you only want the page view and not the event, remove the Log Event action from the event.
+
+| Destination | What Avo Codegen calls |
+| --- | --- |
+| Segment | `page(pageName, eventProperties)` on web and Ruby sources, `screen(pageName, eventProperties)` on iOS, Android, React Native and Expo sources. Other server sources don't get a page call. |
+| Snowplow | `trackPageView(pageName)`, or the `trackPageView` callback of your [Snowplow destination interface](/reference/avo-codegen/destinations#snowplow-destination-interface). |
+| mParticle | `screen(pageName, eventProperties)` on iOS sources. |
+| Custom destination | The `logPage(pageName, eventProperties)` callback of your [destination interface](/reference/avo-codegen/destinations#destination-interface-callback-methods) (`log_page` in Python and Ruby, `log_page` or `logPage` in PHP). On server sources the user id, and the anonymous id where applicable, are passed first. In JavaScript, TypeScript, Python and PHP the callback is optional: if it is missing, Avo logs an error and continues. |
+
+<Callout type="info" emoji="💡">In workspaces set up for Adobe Analytics the action is labeled **Page View - s.t()**. See [Avo as a solutions design document](/data-design/guides/avo-as-solutions-design-document) for how it maps to Adobe page events.</Callout>
 
 #### Push to Data Layer (coming soon)
 
