@@ -56,8 +56,8 @@ Returns one issue, with its counts broken down per app version.
 
 | Field | Type | Notes |
 | --- | --- | --- |
-| `issueId` | string | Identifies this issue on this source. Not stable, see below. |
-| `sharedIssueId` | string | Stable identity for the same problem across sources. |
+| `issueId` | string | Identifies this issue on this source. |
+| `sharedIssueId` | string | Groups the same problem across sources. |
 | `schemaId` | string | Your workspace ID. |
 | `sourceId` | string | The source this issue was found on. |
 | `eventName` | string | The event name as sent. |
@@ -76,10 +76,6 @@ Returns one issue, with its counts broken down per app version.
 
 <Callout type="warning" emoji="⚠️">
 **`eventCount` is not the number of events affected by the issue.** It is the total volume of that event on that source, healthy occurrences included. `issueCount` is the part that violated. Report the ratio between them: `issueCount: 1428` out of `eventCount: 96204` is a 1.5% violation rate, not 96,204 broken events.
-</Callout>
-
-<Callout type="warning" emoji="⚠️">
-**Don't store `issueId` as a long-lived key.** It changes when you edit the event or property behind the issue in your tracking plan, and when a new type shows up on an `InconsistentType` issue. When it changes you get a new issue with no history. Use `sharedIssueId` if you need a durable identity.
 </Callout>
 
 #### `issueType`
