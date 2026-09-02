@@ -174,7 +174,7 @@ The format produced by Avo's [JSON Schema export](/reference/public-api/export-t
 | `description` | string | Event description | |
 | `eventType` | string | — | Events with type `"variant"` are skipped with a warning |
 | `tags` | `string[]` | Event tags | |
-| `sources` | `{ name: string }[]` | Source names | Only the `name` field is extracted |
+| `sources` | `{ name: string }[]` | Source names | Only the `name` field is extracted. `implementWithCodegen` is ignored — see [Include in Codegen](#include-in-codegen) for how the setting is decided |
 | `stakeholderDomains` | `{ name: string, isOwner: bool }[]` | Domain names + owner | The domain with `isOwner: true` becomes the event owner |
 | `categories` | `string[]` | **Not imported** | Export contains goal IDs, not names — left empty to avoid phantom categories |
 | `rules.nameMapping` | `{ name, destinationId }[]` | Event name mapping | |
@@ -240,6 +240,17 @@ The following features are skipped with warnings:
 The following will cause a parse error:
 
 - Unresolved `$ref` — only inline schemas are supported
+
+## Include in Codegen
+
+The import does not read `implementWithCodegen` from the payload. Instead, when the import attaches a source to an event, it decides "Include in Codegen" the same way the Avo UI does when you attach a source by hand:
+
+- **On**, if your plan includes codegen **and** the source is configured for codegen — it has a programming language, a platform, and at least one destination.
+- **Off**, otherwise. A source the import itself creates is always off, because a brand-new source has no language or platform yet.
+
+This applies only when a source is **newly attached** to an event. Re-importing an event whose source is already attached leaves the existing setting untouched, so a toggle you changed in the UI is never overwritten by a later import.
+
+To change "Include in Codegen" on an event that is already attached to a source, use the Avo MCP server's `save_items` tool (`setSourceCodegen`) or the Avo UI.
 
 ## Import Methods
 
