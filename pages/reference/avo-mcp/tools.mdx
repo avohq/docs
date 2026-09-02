@@ -337,12 +337,13 @@ Claude calls `get` with `type: "branch"` and combines `all_changes` and `code_sn
 
 **Prompt:** *"Walk me through the checkout journey — which events fire on each screen?"*
 
-Claude first lists the branch's journeys with [`search`](#search) (`itemType: "journey"`) to find the journey's ID, then calls `get` with it. Journeys are addressed by ID only.
+Claude first lists the branch's journeys with [`search`](#search) (`itemType: "journey"`) to find the journey's ID, then calls `get` with it. Journeys are addressed by ID only. A journey added on a branch exists only on that branch, so pass the branch the listing used as `branchId` (or `branchName`); omit it when the listing was on main.
 
 ```json
 {
   "type": "journey",
-  "id": "jrn-7d3a…"
+  "id": "jrn-7d3a…",
+  "branchId": "brc-2f8e…"
 }
 ```
 
