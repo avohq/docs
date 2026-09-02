@@ -136,6 +136,7 @@ Once the plugin (or server) is connected, talk to Claude in plain language. A fe
 - *"Here's a PRD for a new checkout flow. Design the events and properties we'd need in Avo."* — Claude reads your audit rules, reuses existing items where it can, and proposes a plan before writing anything.
 - *"Create a branch and add those events and properties."* — writes the approved plan to a new branch (triggers the one-time write re-auth on first use).
 - *"Show me a diff of the `checkout-redesign` branch and generate the Avo Codegen calls for the new events."* — review a branch and get per-event code snippets.
+- *"Walk me through the checkout journey — what fires on each screen?"* — reads a [journey](/data-design/avo-tracking-plan/journeys) screen by screen, with the events and property conditions on each trigger.
 - *"We have no tracking plan yet — help me bootstrap one for our mobile app."* — the `data-designer-new-plan` skill scaffolds a fresh plan.
 
 ## Use cases
@@ -157,6 +158,7 @@ Point Claude at a branch and it returns a structured diff: new, modified, and re
 ### Other example flows
 
 - Look up any event, property, or metric by exact name or ID
+- Read a journey screen by screen — which events fire on each step, under which property conditions, and where each step leads
 - Query your product data correctly through your data MCP (Amplitude, Mixpanel, BigQuery, etc.) — Avo knows your metric definitions and which events compose them, so AI agents can build accurate queries instead of guessing
 - Diagnose tracking gaps by comparing what your data MCP returns against Avo's plan
 - Make small edits to a branch — fill in allowed values, rename properties, add categories
@@ -170,7 +172,7 @@ The MCP exposes six tools mapped to agent intents:
 |---|---|---|
 | **Entry point** — find your workspace IDs | [`list_workspaces`](/reference/avo-mcp/tools#list_workspaces) | `read` |
 | **Discover** — find items by meaning or by structural filter | [`search`](/reference/avo-mcp/tools#search) | `read` |
-| **Understand** — full details for an event, property, branch, source, etc. | [`get`](/reference/avo-mcp/tools#get) | `read` |
+| **Understand** — full details for an event, property, journey, branch, source, etc. | [`get`](/reference/avo-mcp/tools#get) | `read` |
 | **Change** — create, update, archive, or restore items on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
 | **Progress** — create a branch, update its description, pull main, set a source's language, or bulk-import a plan | [`workflow`](/reference/avo-mcp/tools#workflow) | `write` |
 | **Tell Avo** — report the agent's own experience back to Avo's product team | [`give_feedback`](/reference/avo-mcp/tools#give_feedback) | `write` |
@@ -198,7 +200,7 @@ This keeps tracking-plan changes deliberate and reviewable. Claude can draft and
 ## Limits
 
 - **`save_items`** accepts at most 50 items per call.
-- **`search`** semantic mode caps at 20 results per call (default 10). Filter mode caps at 500 results (default 10).
+- **`search`** semantic mode caps at 20 results per call (default 10). Filter mode caps at 500 results (default 10). Journey listings (`itemType: "journey"`) return up to 100 per page (default 25); use `pageToken` to paginate.
 - **`list_branches`** returns up to 50 results per page (default 25). Use `pageToken` to paginate.
 - **Tokens** carry the user's identity; workspace access is verified at every call against your Avo workspace membership, so a token alone is not sufficient if you lose workspace access.
 
