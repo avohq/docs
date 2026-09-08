@@ -1,23 +1,24 @@
 ---
 title: Avo MCP tools reference
-description: Reference for the six canonical Avo MCP tools (list_workspaces, search, get, save_items, workflow, give_feedback) plus parameter shapes, return schemas, and per-tool examples with natural-language prompts.
+description: Reference for the Avo MCP tools (list_workspaces, describe_tool, search, get, save_items, workflow, give_feedback, list_branches) — the parameters each tool takes, what a save_items item looks like and which fields each item type accepts, what each tool returns, and examples with natural-language prompts.
 ---
 
 import { Callout } from 'nextra/components'
 
 # Avo MCP tools reference
 
-Every tool except `list_workspaces` operates on a workspace. Pass `workspaceId` as a parameter; stdio clients can also set the `WORKSPACE_ID` environment variable.
+Every tool except `list_workspaces` and `describe_tool` operates on a workspace. Pass `workspaceId` as a parameter; stdio clients can also set the `WORKSPACE_ID` environment variable.
 
 <Callout type="info" emoji="🔒">
   Each tool lists the OAuth scope it requires. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
 </Callout>
 
-The MCP exposes six canonical tools mapped to agent intents:
+The MCP exposes seven canonical tools mapped to agent intents:
 
 | Intent | Tool | Scope |
 |---|---|---|
 | **Entry point** — find your workspace IDs | [`list_workspaces`](#list_workspaces) | `read` |
+| **Look up the fields** — see exactly which parameters and fields a call accepts before making it | [`describe_tool`](#describe_tool) | none |
 | **Discover** — find items by meaning or by structural filter | [`search`](#search) | `read` |
 | **Understand** — full details for an event, property, journey, branch, source, etc. | [`get`](#get) | `read` |
 | **Change** — create, update, archive, or restore items on a branch | [`save_items`](#save_items) | `write` |
@@ -25,6 +26,40 @@ The MCP exposes six canonical tools mapped to agent intents:
 | **Tell Avo** — report the agent's own experience back to Avo's product team | [`give_feedback`](#give_feedback) | `write` |
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](#list_branches) — remains available while branch enumeration is folded into `search` (as `itemType: "branch"`).
+
+## How an agent finds out what to send
+
+When an MCP client connects, it downloads a definition of every tool. Those definitions are kept short on purpose: several clients silently hide a tool whose definition is too long, and `save_items` accepts hundreds of fields across nine item types. So the `save_items` definition only describes the shape of an item, and the full list of fields for each item type is fetched when needed with [`describe_tool`](#describe_tool). The flow an agent follows:
+
+1. Connect. The short instructions the server sends on connect list every tool, its item types and actions, and what to call next.
+2. `describe_tool()` — the same overview plus a short "Designing tracking" guide.
+3. `describe_tool(tool:"save_items", type:"<type>", op:"<op>")` — the exact fields for the item type and operation it is about to write.
+4. Write with [`save_items`](#save_items).
+
+If a `save_items` item carries an unknown field or an invalid value, the error message repeats the field list for that item type, so an agent can correct itself without another `describe_tool` call.
+
+## Item type vocabulary
+
+`save_items`, `search`, and `get` share one **snake_case** entity vocabulary:
+
+| Type | `search` | `get` | `save_items` |
+|---|:-:|:-:|:-:|
+| `event` | ✅ | ✅ | ✅ |
+| `property` | ✅ | ✅ | ✅ |
+| `metric` | ✅ | ✅ | ✅ |
+| `category` | ✅ | ✅ | ✅ |
+| `event_variant` | ✅ | ✅ | ✅ |
+| `property_bundle` | ✅ | ✅ | ✅ |
+| `source` | ✅ | ✅ | ✅ |
+| `destination` | ✅ | ✅ | ✅ |
+| `group_type` | ✅ | ✅ | ✅ |
+| `journey` | ✅ | ✅ (by `id`) | ❌ read-only |
+| `workspace_config` | ❌ | ✅ (takes no `id`) | ❌ |
+| `branch` | ❌ | ✅ | ❌ |
+
+<Callout type="warning" emoji="⚠️">
+  **Deprecated spellings.** The camelCase spellings `eventVariant`, `propertyBundle`, `groupType`, and `workspaceConfig` still work for now but are deprecated and will be removed. Use the snake_case spellings in anything you write today.
+</Callout>
 
 ---
 
@@ -52,11 +87,79 @@ Claude calls `list_workspaces` with no parameters and uses the returned `workspa
 
 ---
 
+## `describe_tool`
+
+**Scope:** none — read-only, rendered locally by the MCP server. No workspace data, no branch, no authentication, no side effects.
+
+Tells you what a call accepts before you make it: an overview of every tool, what a `save_items` item looks like, the fields each item type accepts for a given operation, the parameters of each `workflow` action, and the item types `search` and `get` understand.
+
+### Parameters
+
+All parameters are optional strings. There are no nested objects or unions.
+
+| Parameter | Values | Description |
+|---|---|---|
+| `tool` | `list_workspaces`, `describe_tool`, `search`, `get`, `save_items`, `workflow`, `give_feedback`, `list_branches` | Which tool to describe. Omit for an overview of every tool. |
+| `type` | An item type (see [Item type vocabulary](#item-type-vocabulary)) | For `save_items`: list the fields that item type accepts. |
+| `action` | `create_branch`, `update_branch_description`, `pull_main`, `set_source_language`, `import` | For `workflow`: render that action's parameters. |
+| `op` | `create`, `update`, `archive`, `unarchive` | For `save_items`: narrow the fields table to one operation. |
+| `format` | `full` (default), `concise` | `concise` returns the fields table only (no placement note, example, or limits line). |
+
+### Returns
+
+Plain text, shaped by what you asked for:
+
+- **`describe_tool()`** — the tool overview (the same text the server sends on connect) followed by a "Designing tracking" guide and the link to the [avo-mcp plugin](https://github.com/avohq/avo-mcp). The guide only appears in this response, not in the instructions sent on connect.
+- **`describe_tool(tool:"save_items")`** — an explanation of the [item shape](#item-shape) and a pointer to call again with a `type`.
+- **`describe_tool(tool:"save_items", type:"property")`** — the fields table for that type: one line per field with its name, JSON type, whether it is required, which ops accept it, and a one-line doc. Fields with a closed value set list the accepted values (`One of: …`); the `set` object lists its accepted nested keys. Add `op:"update"` to narrow to one operation.
+- **`describe_tool(tool:"workflow")`** — the list of actions. Add `action:"<action>"` for that action's parameters and an example call.
+- **`describe_tool(tool:"search")`** / **`describe_tool(tool:"get")`** — each read tool's item-type vocabulary, and for `get(type:"branch")` the accepted `include` values.
+- **Unknown `type` or `action`** — an error that lists the valid values, so an agent can self-correct from the message alone.
+
+### Examples
+
+#### Learn what a property update accepts before writing one
+
+**Prompt:** *"Rename the `product_id` property and add two allowed values."*
+
+Before its first property write of the session, Claude fetches the list of fields a property update accepts and reads that renames go in `set.name` while allowed-value changes go in the top-level `addAllowedValues`.
+
+```json
+{
+  "tool": "save_items",
+  "type": "property",
+  "op": "update"
+}
+```
+
+The response (abridged):
+
+```text
+Fields for property (op: update):
+- propertyId (string, required; update/archive/unarchive) — The property's id. Required for update/archive/unarchive.
+- addAllowedValues (array; create/update) — Create/update (string property): allowed values to add.
+- removeAllowedValues (array; update) — Update only: allowed values to remove …
+- isList (boolean; update) — Update: toggle whether the property holds a list of values.
+- addCategories (array; update) — Update: category names to attach …
+- set (object; update) — Update only: scalar field changes … Nested keys (set.<key>): nameSuffix, description, propertyType, sendAs, name, platform, programmingLanguage, libraryName, libraryDestination, analyticsTool, triggers.
+
+Placement: scalar renames go in set.*; collection deltas at the item top level.
+Limits: up to 50 items per call; $tmp: refs resolve within one call.
+```
+
+#### Get an overview of every tool
+
+**Prompt:** *"What can the Avo MCP do?"*
+
+Claude calls `describe_tool` with no parameters and summarizes the tool overview for the user.
+
+---
+
 ## `search`
 
 **Scope:** `read`
 
-Find tracking plan items in one of two modes — the mode is selected automatically by which parameters you pass. **Combining `query` with structural filters is rejected** (the tool returns an error message, not an HTTP status) — pick one mode. `branch` and `pageToken` are filter-mode only and likewise cannot be combined with `query`. For ID-based lookups use [`get`](#get).
+Find tracking plan items in one of two modes — the mode is selected automatically by which parameters you pass. **Combining `query` with structural filters is rejected** (the tool returns an error message, not an HTTP status) — pick one mode. An empty call (no `query`, no filter, no `branch`) is rejected too. `branch` and `pageToken` are filter-mode only and likewise cannot be combined with `query`. For ID-based lookups use [`get`](#get).
 
 - **Semantic search** — pass `query` to find items by meaning across events, properties, metrics, categories, property bundles, and event variants. Avo embeds each item with OpenAI embeddings and runs a vector-similarity search at query time, so `"user signed up"` matches `Account Created` or `Registration Completed` even when no keyword overlaps.
 - **Structured listing** — omit `query` and pass filters to enumerate exact matches with keyset pagination. The same mode lists a branch's [journeys](/data-design/avo-tracking-plan/journeys) with `itemType: "journey"` — see [Listing journeys](#listing-journeys).
@@ -71,9 +174,26 @@ Find tracking plan items in one of two modes — the mode is selected automatica
 
 | Parameter | Required | Description |
 |---|---|---|
-| `itemType` | No | Filter by type: `event` (default), `property`, `metric`, `category`, `propertyBundle`, `eventVariant`, `source`, `destination`, `groupType`, or `journey`. The workspace-metadata types (`source` / `destination` / `groupType`) enumerate the workspace list and `journey` enumerates a branch's journeys. These enumerate-only types are valid in filter mode only (omit `query`) and accept just `branch` — plus `pageToken` for `journey`; content filters such as `tags` or `eventNames` are rejected. See [Listing journeys](#listing-journeys). |
-| `maxResults` | No | Semantic mode: 1–20, default 10. Filter mode: 1–500, default 10. `itemType: "journey"` pages separately: 1–100, default 25. |
-| `workspaceId` | No | Workspace ID. |
+| `itemType` | No | The type of item to return. Defaults to `event`. What each type supports is in the table below. |
+| `maxResults` | No | Semantic mode: 1–20, default 10. Filter mode: 1–500, default 10. `journey` listings: 1–100, default 25. |
+| `workspaceId` | No | Workspace ID. Repeat it on every page when paginating. |
+
+**What each `itemType` supports**
+
+| `itemType` | Semantic (`query`) | Filter mode | Content filters (`tags`, `eventNames`, …) | Scoped by |
+|---|:-:|:-:|:-:|---|
+| `event` (default) | ✅ | ✅ | ✅ | `branch`, `pageToken` |
+| `property` | ✅ | ✅ | ✅ | `branch`, `pageToken` |
+| `metric` | ✅ | ✅ | ✅ (not `sources`) | `branch`, `pageToken` |
+| `category` | ✅ | ✅ | ✅ | `branch`, `pageToken` |
+| `property_bundle` | ✅ | ✅ | ✅ | `branch`, `pageToken` |
+| `event_variant` | ✅ | ✅ | ✅ | `branch`, `pageToken` |
+| `source` | ❌ | ✅ lists the workspace's sources | ❌ | `branch` |
+| `destination` | ❌ | ✅ lists the workspace's destinations | ❌ | `branch` |
+| `group_type` | ❌ | ✅ lists the workspace's group types | ❌ | `branch` |
+| `journey` | ❌ | ✅ lists the branch's journeys — see [Listing journeys](#listing-journeys) | ❌ | `branch`, `pageToken` |
+
+The camelCase spellings (`propertyBundle`, `eventVariant`, `groupType`) still work but are deprecated. Passing `query` or a content filter with one of the list-only types is rejected.
 
 **Semantic mode** *(pass `query`)*
 
@@ -98,8 +218,8 @@ Semantic search is performed against the **main branch** only. The semantic inde
 | `owners` | No | Filter by owner stakeholder (names only). Tagged object: `{ kind: "any" }` (items with any owner) or `{ kind: "matches", values: [...], includeNoneAssigned?: bool }` (items whose owner stakeholder name is in `values`; with `includeNoneAssigned: true` unowned items also pass). |
 | `destinations` | No | Filter by destination name. |
 | `type` | No | With `itemType: "event"`, filter by event type. |
-| `customField` | No | Filter by custom-field name. Resolve valid names from [`get`](#get) with `type: "workspaceConfig"`. |
-| `pii` | No | Filter by PII type. Resolve valid types from [`get`](#get) with `type: "workspaceConfig"`. |
+| `customField` | No | Filter by custom-field name. Resolve valid names from [`get`](#get) with `type: "workspace_config"`. |
+| `pii` | No | Filter by PII type. Resolve valid types from [`get`](#get) with `type: "workspace_config"`. |
 | `nameMapping` | No | Filter by destination-name-mapping. Tagged object: `{ kind: "any" }` (items with any mapping) or `{ kind: "matchesAny", names: [...], includeNoMapping?: bool }` (items whose mapped name is in `names`; with `includeNoMapping: true` items without a mapping rule also pass). Omitting `nameMapping` means no filter on mapping. |
 | `branch` | No | Branch **ID** to enumerate items on. Defaults to main. (Filter mode only — there is no `branchName` alias on `search`; resolve a name to an ID with [`list_branches`](#list_branches) first.) |
 | `pageToken` | No | Pagination token from a previous response. |
@@ -113,7 +233,7 @@ A **Markdown document** (not JSON) — a `# Search Results` heading, a result co
 - **Semantic mode** columns: `Rank | Name | Type | Item ID | Branch | Description`.
 - **Filter mode** columns: `Rank | Name | Type | Item ID | Description` — event-variant rows instead use `Rank | Name | Base Event | Variant ID | Description`.
 
-In filter mode, when more results are available the document ends with a **Next page** instruction: call `search` again with the same `itemType` / filters / `branch` **plus** the supplied `pageToken` (the token alone is not enough — you must repeat the original filters). Any filters that were ignored or coerced are listed under a **Filter warnings** section.
+In filter mode, when more results are available the document ends with a **Next page** instruction: call `search` again with the **same parameters** — `workspaceId`, `itemType`, every filter, `branch`, and `maxResults` — **plus** the supplied `pageToken`. The token alone is not enough: omitting `maxResults` reverts the page size to the default, and omitting `workspaceId` can resolve the next page against a different workspace. Any filters that were ignored or coerced are listed under a **Filter warnings** section.
 
 ```markdown
 # Search Results
@@ -196,8 +316,9 @@ Claude resolves the branch name to an ID with [`list_branches`](#list_branches),
 
 - `query` and structural filters combined — rejected with an error (no HTTP status). Choose one mode.
 - `query` combined with `branch` or `pageToken` — rejected; those are filter-mode-only parameters.
-- `itemType: "journey"` (or `source` / `destination` / `groupType`) combined with `query` or with content filters such as `tags` or `eventNames` — rejected; these types enumerate a whole branch or workspace and take only `branch` (and `pageToken`).
+- `itemType: "journey"` (or `source` / `destination` / `group_type`) combined with `query` or with content filters such as `tags` or `eventNames` — rejected; these types enumerate a whole branch or workspace and take only `branch` (and `pageToken`).
 - `branch` passed as a name instead of an ID on a journey listing — the branch is not found; resolve the name with [`list_branches`](#list_branches) first.
+- Empty call (no `query`, no filter, no `branch`) — rejected.
 - Smart Search not enabled in the workspace — semantic mode fails; fall back to filter mode or `get`.
 - Workspace access denied.
 
@@ -209,9 +330,9 @@ Claude resolves the branch name to an ID with [`list_branches`](#list_branches),
 
 Get item details for any of five type families:
 
-- **Tracking-plan items** — `event`, `property`, `metric`, `category`, `propertyBundle`, `eventVariant`. Look up by `id` or exact `name` — except `eventVariant`, which is identified by the base event's `id` plus `variantId` (never by name). For events, `includePropertyDetails: true` returns each property's type, constraints, and allowed values inline, and any triggers on the event are returned with full context — see [Trigger context on events](#trigger-context-on-events). Event, property, and event-variant results also list their owner and stakeholders under a **Domain Stakeholders** section (the owner is suffixed `(owner)`); it is omitted when the item has no stakeholders.
-- **Workspace metadata** — `source`, `destination`, `groupType`. `get` returns a **single** item, so pass `id` or `name`. To enumerate the workspace list, use [`search`](#search) (`itemType: "source"` / `"destination"` / `"groupType"`).
-- **Workspace config** — `workspaceConfig`. Naming/casing rules and event/property validation rules (with the enforcement point), custom-field definitions, the PII type list, and the workspace's tags and categories. Custom-field and PII-type names plug straight into [`search`'s](#search) `customField` and `pii` filters.
+- **Tracking-plan items** — `event`, `property`, `metric`, `category`, `property_bundle`, `event_variant`. Look up by `id` or exact `name` — except `event_variant`, which is identified by the base event's `id` plus `variantId` (never by name). For events, `includePropertyDetails: true` returns each property's type, constraints, and allowed values inline, and any triggers on the event are returned with full context — see [Trigger context on events](#trigger-context-on-events). Event, property, and event-variant results also list their owner and stakeholders under a **Domain Stakeholders** section (the owner is suffixed `(owner)`); it is omitted when the item has no stakeholders.
+- **Workspace metadata** — `source`, `destination`, `group_type`. `get` returns a **single** item, so pass `id` or `name`. To enumerate the workspace list, use [`search`](#search) (`itemType: "source"` / `"destination"` / `"group_type"`).
+- **Workspace config** — `workspace_config` (takes no `id`). Naming/casing rules and event/property validation rules (with the enforcement point), custom-field definitions, the PII type list, and the workspace's tags and categories. Custom-field and PII-type names plug straight into [`search`'s](#search) `customField` and `pii` filters.
 - **Journeys** — `journey`. Look up by `id` only — journey names collide and are often blank, so there is no `name` lookup; find the ID with [`search`](#search) (`itemType: "journey"`). The response walks the journey screen by screen — each screen's triggers, the events they fire, the property conditions that gate them, and where each trigger leads — see [Journey graph](#journey-graph).
 - **Branches** — `branch`. Identify with `branchId` or `branchName`. Use `include` to pick content: `"overview"` (branch metadata + baseline status + resolved creator/reviewer/collaborator emails + impacted sources + comments/approvals stats), `"all_changes"` (full diff vs. main, like the web branch screen), `"event_changes"` (events + event variants only), `"property_changes"` (properties + property bundles + categories only), `"code_snippets"` (per-source generated code; requires `sourceId`), `"implementation_guide"` (numbered implementation steps + per-event codegen instructions). Multiple values union, and `event_changes` + `property_changes` equals `all_changes`. `include` defaults to `["overview"]`.
 
@@ -221,10 +342,10 @@ Defaults to the main branch when no branch is specified.
 
 | Parameter | Required | Description |
 |---|---|---|
-| `type` | Yes | Item type. One of: `event`, `property`, `metric`, `category`, `propertyBundle`, `source`, `destination`, `groupType`, `eventVariant`, `journey`, `branch`, `workspaceConfig`. |
-| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `propertyBundle` unless `name` is provided. For `source`/`destination`/`groupType`, provide `id` or `name` — `get` is single-item only, so enumerate with [`search`](#search) instead. `eventVariant` uses `id` (the base event ID) **plus** `variantId`, not `name`. For `branch`, identify with `branchId`/`branchName` (`id`/`name` are not branch identifiers; omitting both errors). `journey` requires `id` — there is no name lookup. Not used by `workspaceConfig`. |
+| `type` | Yes | Item type. One of: `event`, `property`, `metric`, `category`, `property_bundle`, `source`, `destination`, `group_type`, `event_variant`, `journey`, `branch`, `workspace_config`. camelCase aliases are accepted but deprecated. |
+| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `property_bundle` unless `name` is provided. For `source`/`destination`/`group_type`, provide `id` or `name` — `get` is single-item only, so enumerate with [`search`](#search) instead. `event_variant` uses `id` (the base event ID) **plus** `variantId`, not `name`. For `branch`, identify with `branchId`/`branchName` (`id`/`name` are not branch identifiers; omitting both errors). `journey` requires `id` — there is no name lookup. Not used by `workspace_config`. |
 | `name` | Varies by type | Exact name match. Alternative to `id` for most types (not accepted for `journey`). May return multiple matches for ambiguous names (especially properties) — use [`search`](#search) for fuzzy lookup. |
-| `variantId` | For `eventVariant` | The variant ID. Combined with `id` (the base event ID). |
+| `variantId` | For `event_variant` | The variant ID. Combined with `id` (the base event ID). |
 | `include` | For `branch` | Array of branch facets to return: `overview`, `all_changes`, `event_changes`, `property_changes`, `code_snippets`, `implementation_guide`. Defaults to `["overview"]`. Multiple values union. The deprecated value `changes` is accepted as an alias for `all_changes`. Unknown values are dropped with a warning. Combine `all_changes` and `code_snippets` (or use `implementation_guide`) for an implementer-ready picture of the branch. |
 | `sourceId` | Required for `code_snippets`; optional elsewhere | Source ID to scope branch content. **Required** when `include` contains `code_snippets` (single-source in v1). Optional on `all_changes` / `event_changes` / `property_changes` / `implementation_guide`: it filters event-shaped diffs to one source (property, bundle, and category diffs stay workspace-wide) and gates the per-event codegen instructions in `implementation_guide`. Find source IDs with [`search`](#search) (`itemType: "source"`). |
 | `branchId` | No | Branch to look up on. Defaults to main. `branchId` takes precedence over `branchName`. |
@@ -237,10 +358,10 @@ Defaults to the main branch when no branch is specified.
 
 Full details for the item, shaped per item type.
 
-- `type: "event" \| "property" \| "metric" \| "category" \| "propertyBundle" \| "eventVariant"` — the item's full definition. Event results include a **Triggers** section with full trigger context — screen, connected event, gating conditions, screenshot — when the event has triggers; see [Trigger context on events](#trigger-context-on-events). For events, properties, and event variants this includes a **Domain Stakeholders** section listing the item's stakeholders by name, with the owner suffixed `(owner)` — the read side of [`save_items`](#save_items)'s `owner` / `stakeholders` fields. The section is omitted when the item has no stakeholders.
-- `type: "source" \| "destination" \| "groupType"` — a single entity; `id` or `name` is required (enumerate the workspace list with [`search`](#search)).
+- `type: "event" \| "property" \| "metric" \| "category" \| "property_bundle" \| "event_variant"` — the item's full definition. Event results include a **Triggers** section with full trigger context — screen, connected event, gating conditions, screenshot — when the event has triggers; see [Trigger context on events](#trigger-context-on-events). For events, properties, and event variants this includes a **Domain Stakeholders** section listing the item's stakeholders by name, with the owner suffixed `(owner)` — the read side of [`save_items`](#save_items)'s `owner` / `stakeholders` fields. The section is omitted when the item has no stakeholders.
+- `type: "source" \| "destination" \| "group_type"` — a single entity; `id` or `name` is required (enumerate the workspace list with [`search`](#search)).
 - `type: "branch"` — branch facets requested via `include`. `overview` returns resolved emails for the creator, reviewers, and collaborators, branch status, impacted source IDs, comments/approvals stats, and description. `all_changes` returns the full structured diff vs. main (new, modified, and deleted events and properties with their descriptions); `event_changes` and `property_changes` return just the event- or property-side of that diff. `code_snippets` returns per-event code diffs for the source named in `sourceId` — exact unified diffs for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources. `implementation_guide` returns numbered implementation steps plus per-event codegen instructions (scoped to `sourceId` when provided).
-- `type: "workspaceConfig"` — the workspace's event/property naming conventions and casing rules, the event and property **validation rules** (with their severities and the enforcement point — where Avo blocks), custom field definitions, the list of recognized PII types, and the workspace's **tags** and **categories** listings. Use this before proposing new events or properties so names match the workspace's audit rules.
+- `type: "workspace_config"` — the workspace's event/property naming conventions and casing rules, the event and property **validation rules** (with their severities and the enforcement point — where Avo blocks), custom field definitions, the list of recognized PII types, and the workspace's **tags** and **categories** listings. Use this before proposing new events or properties so names match the workspace's audit rules.
 - `type: "journey"` — the journey rendered as a walkable graph: a header (name, description, entry screens), then one section per screen with its screenshot URL and each trigger leaving it — the trigger's name and description, its marker position, the event(s) it fires (with IDs), the property conditions per event, and the screen it leads to. See [Journey graph](#journey-graph).
 
 ### Trigger context on events
@@ -360,7 +481,7 @@ Claude first lists the branch's journeys with [`search`](#search) (`itemType: "j
 
 ## `save_items`
 
-**Scope:** `write` · **Destructive:** `archive` (and legacy `remove`)
+**Scope:** `write` · **Destructive:** `archive`
 
 <Callout type="info" emoji="🚧">
   Write access is in general beta — enabled for every workspace, no need to request access. [Email support@avo.app](mailto:support@avo.app) if you hit anything unexpected.
@@ -373,14 +494,18 @@ Claude first lists the branch's journeys with [`search`](#search) (`itemType: "j
 Batch create, update, archive, and unarchive events, properties, event variants, property bundles, metrics, categories, sources, destinations, and group types on a branch. A single call can mix item types and operations, and can cross-reference new items via temporary IDs.
 
 <Callout type="info" emoji="💡">
+  **Before your first write of a type in a session, call [`describe_tool`](#describe_tool)** with `tool:"save_items"`, the `type`, and the `op`. The `save_items` tool definition only describes the shape of an item; the fields each item type accepts come from the `describe_tool` response, and the tables below are a snapshot of it.
+</Callout>
+
+<Callout type="info" emoji="💡">
   **Quick reference.** Common patterns:
 
-  - **Create an event with new properties** — pair `create-event` and `create-property` items in one batch, using `tempId` to cross-reference.
-  - **Add allowed values to a property** — `update-property` with top-level `addAllowedValues`.
-  - **Rename an event or property** — `update-event` / `update-property` with `set.name`.
-  - **Archive an event** — `op: "archive"` (or legacy `op: "remove"`).
-  - **Create a funnel metric** — `create-metric` with `metricType: "Funnel"` and `items`.
-  - **Toggle a property between scalar and list** — `update-property` with top-level `isList: true` / `false`.
+  - **Create an event with new properties** — pair a `create` event and `create` property in one batch, using `tempId` to cross-reference.
+  - **Add allowed values to a property** — `update` property with `fields.addAllowedValues`.
+  - **Rename an event or property** — `update` with `fields.set.name`.
+  - **Archive an event** — `op: "archive"` with the event's `id`.
+  - **Create a funnel metric** — `create` metric with `fields.metricType: "Funnel"` and `fields.items`.
+  - **Toggle a property between scalar and list** — `update` property with `fields.isList: true` / `false`.
 </Callout>
 
 ### Parameters
@@ -389,188 +514,207 @@ Batch create, update, archive, and unarchive events, properties, event variants,
 
 | Parameter | Required | Description |
 |---|---|---|
-| `branchId` | Yes | The branch to write to. Get it from [`workflow`](#workflow) (`action: "create_branch"`). |
-| `items` | Yes | Array of items to apply. Each item is typed by its `type` field and has an `op` (default `create`). |
+| `branchId` | Yes | The branch to write to. Get it from [`workflow`](#workflow) (`action: "create_branch"`). Writes on main are rejected. |
+| `items` | Yes | Array of items to apply (see [Item shape](#item-shape)). |
+| `onReviewedBranch` | No | Acknowledgement for writing to a branch that is already in review. Omitted → the write is rejected so approvals aren't silently invalidated. `{ kind: "revertToDraft" }` reverts the branch to Draft and applies the edits; `{ kind: "reject" }` is the default. |
 | `workspaceId` | No | Workspace ID |
 
 The request is capped at **50 items** per call.
 
 ### Item shape
 
-Every item shares these fields:
+Every item has the same six keys. The type-specific content goes inside `fields`:
 
-| Field | Type | Notes |
+```json
+{ "op": "create", "type": "event", "id": "…", "name": "…", "tempId": "…", "fields": { } }
+```
+
+| Key | Type | Notes |
 |---|---|---|
-| `op` | `"create"` \| `"update"` \| `"archive"` \| `"unarchive"` | Defaults to `"create"`. `"archive"` archives an item (recoverable) and `"unarchive"` restores it — both apply uniformly to **every** archivable type (event, event_variant, metric, property, property_bundle, category, source, destination, groupType). `"remove"` is a **legacy alias accepted only for events and properties** (behaves as `archive`); on any other type `"remove"` is rejected with a "use `op: \"archive\"`" error. Not every op applies to every type — see "Supported ops" below. |
-| `type` | `"event"` \| `"property"` \| `"event_variant"` \| `"property_bundle"` \| `"metric"` \| `"category"` \| `"source"` \| `"destination"` \| `"groupType"` | Required. |
-| `name` | string | Required on `create` for events, properties, property bundles, metrics, and categories. Cosmetic on `event_variant` items and on `update`/`remove`/`archive` of other types. |
-| `tempId` | string | **Create only.** Declares a temporary handle (e.g. `"prop1"`). Reference it elsewhere in the same call as `"$tmp:prop1"`. The server allocates a real ID and resolves all `$tmp:` references before writing. |
-| `eventId` | string | Required on `update` / `archive` / `unarchive` (or legacy `remove`) of events. |
-| `propertyId` | string | Required on `update` / `archive` / `unarchive` (or legacy `remove`) of properties. |
-| `propertyBundleId` | string | Required on `update` / `archive` / `unarchive` of property bundles. |
-| `metricId` | string | Required on `update` / `archive` / `unarchive` of metrics. |
-| `categoryId` | string | Required on `update` / `archive` / `unarchive` of categories. |
-| `sourceId` | string | Required on `update` / `archive` / `unarchive` of sources. On `create`, supply either `sourceId` or a `tempId`. |
-| `destinationId` | string | Required on `update` / `archive` / `unarchive` of destinations. On `create`, supply either `destinationId` or a `tempId`. |
-| `groupTypeId` | string | Required on `update` / `archive` / `unarchive` of group types. On `create`, supply either `groupTypeId` or a `tempId`. |
-| `baseEventId` | string | Required for `event_variant` items — the parent event's ID. |
-| `variantId` | string | Required on `update` / `archive` / `unarchive` of `event_variant`. On `create`, provide either `variantId` directly or a `tempId` on the same item. |
-| `nameSuffix` | string | Required on `create` of `event_variant` — suffix appended to the parent event name (e.g. `buy_now` produces `click / buy_now`). |
-| `description` | string | Create-only. Event / property / event variant / bundle / metric / category description. |
+| `op` | `"create"` \| `"update"` \| `"archive"` \| `"unarchive"` | Defaults to `"create"`. Every op applies to every type. `"remove"` is no longer listed; for events and properties it still behaves as `archive`, on every other type it is rejected. |
+| `type` | string | Required. One of `event`, `property`, `event_variant`, `property_bundle`, `metric`, `category`, `source`, `destination`, `group_type`. The camelCase spellings (`eventVariant`, `propertyBundle`, `groupType`) still work but are deprecated. |
+| `id` | string | The identity ID for `update` / `archive` / `unarchive` on single-ID types — see the table below. You may pass it here or as the type's ID field inside `fields`; passing both with different values is rejected. `event_variant` has a compound identity and passes `baseEventId` + `variantId` inside `fields` instead. |
+| `name` | string | **Required on every `create`.** Cosmetic on other ops. |
+| `tempId` | string | **Create only.** A temporary handle (letters, digits, `_`, `-`; max 64 characters) for cross-referencing inside the same call. Reference it elsewhere as `"$tmp:<tempId>"`. |
+| `fields` | object | The fields for this item type and operation — exactly what `describe_tool` lists. Omit or pass `null` when the operation needs nothing beyond the ID. |
 
-**Supported ops by type:**
+**Identity ID per type** (for `update` / `archive` / `unarchive`):
 
-| Type | create | update | archive | unarchive | remove (legacy) |
-|---|:-:|:-:|:-:|:-:|:-:|
-| `event` | ✅ | ✅ | ✅ | ✅ | ✅ (alias for `archive`) |
-| `property` | ✅ | ✅ | ✅ (cascades references) | ✅ | ✅ (alias for `archive`) |
-| `event_variant` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `property_bundle` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `metric` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `category` | ✅ | ✅ | ✅ (does **not** cascade) | ✅ | ❌ |
-| `source` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `destination` | ✅ | ✅ | ✅ | ✅ | ❌ |
-| `groupType` | ✅ | ✅ | ✅ | ✅ | ❌ |
-
-**Create-event fields:**
-
-| Field | Notes |
+| Type | ID field |
 |---|---|
-| `properties` | Array of property IDs (or `$tmp:` refs) to attach. |
-| `propertyBundles` | Array of property bundle IDs (or `$tmp:` refs) to attach to the event. |
-| `sources` | Array of source IDs to include the event in. Find source IDs with [`search`](#search) (`itemType: "source"`). |
-| `tags` | Array of literal tag-name strings to apply to the event. |
-| `nameMappings` | Per-destination name mappings. Array of tagged objects — `{ kind: "allDestinations", name: "..." }` to map across every destination, or `{ kind: "destination", destinationId: "...", name: "..." }` to map per destination. Also accepted on `update`-event items. |
+| `event` | `eventId` |
+| `property` | `propertyId` |
+| `metric` | `metricId` |
+| `category` | `categoryId` |
+| `property_bundle` | `propertyBundleId` |
+| `source` | `sourceId` |
+| `destination` | `destinationId` |
+| `group_type` | `groupTypeId` |
+| `event_variant` | `baseEventId` + `variantId` (both in `fields`, on every op) |
 
-**Create-property fields:**
+**Inside `fields`, three placement rules apply to every type:**
 
-| Field | Notes |
-|---|---|
-| `propertyType` | `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). |
-| `sendAs` | `event`, `user`, or `system`. |
-| `tags` | Array of literal tag-name strings to apply to the property. |
-| `nameMappings` | Per-destination name mappings. Array of tagged objects — `{ kind: "allDestinations", name: "..." }` or `{ kind: "destination", destinationId: "...", name: "..." }`. Also accepted on `update`-property items. |
-| `eventConfigs` | *(optional)* Per-event/per-source property settings on a fresh property. On `create`, only `events: { kind: "allEvents" }` entries are accepted — per-event-scoped entries are rejected because the property isn't attached to any event yet. See "Per-event property settings (`eventConfigs`)" below. |
+- **Scalar edits go in `set`** (update only). `set` is a nested object with a closed key set: `name`, `description`, `nameSuffix`, `propertyType`, `sendAs`, `platform`, `programmingLanguage`, `libraryName`, `libraryDestination`, `analyticsTool`, `triggers`. Not every key applies to every type; unknown keys are rejected. `set.sendAs` is accepted only on create — a property's `sendAs` is immutable after creation.
+- **Collection changes stay at the top level of `fields`** — `addProperties` / `removeProperties`, `addCategories` / `removeCategories`, `addAllowedValues` / `removeAllowedValues`, and every other `add*` / `remove*` / `clear*` field.
+- **`description` is create-only**, and only for types whose create reads it: `event`, `property`, `event_variant`, `property_bundle`, `metric`, `category`. A `create` for a `source`, `destination`, or `group_type` that carries `description` is rejected. On update, use `set.description`.
 
-**Create-event_variant fields:**
+**Validation is strict.** An unknown key in `fields`, a field the current operation doesn't accept (`set` on a create, `description` or `tempId` on an update, `removeAllowedValues` on a create), or an invalid value is rejected before anything is written. The error names the item type and operation and repeats the list of fields that type accepts.
 
-| Field | Notes |
-|---|---|
-| `attachProperties` | Array of property IDs (or `$tmp:` refs) to attach to the variant. |
-| `overrides` | Component-level overrides. Each entry: `{ propertyId, pinned }` or `{ propertyId, allowed }`. `pinned` and `allowed` are mutually exclusive per override. |
-| `bundleOverrides` | Bundle IDs to attach to the variant as property bundles. |
+### Fields by item type
 
-**Create-property_bundle fields:**
+The tables below match the `describe_tool(tool:"save_items", type:"<type>")` output at the time of writing for the nine item types. The live response is authoritative. Fields marked **create/update** are accepted on both ops; the identity ID field is required on `update` / `archive` / `unarchive`. `tempId` (create only) and `set` (update only) apply to every type and are omitted from the tables.
 
-| Field | Notes |
-|---|---|
-| `addProperties` | Property IDs (or `$tmp:` refs) to include in the bundle. |
-| `attachToEvents` | Event IDs (or `$tmp:` refs) the new bundle should be attached to. |
+#### `event`
 
-**Create-metric fields:**
-
-| Field | Notes |
-|---|---|
-| `metricType` | Required. One of `Funnel`, `EventSegmentation`, `Proportion`, `Retention`, `CustomEvent`, `Cohort`. Immutable after create — archive and recreate to change. |
-| `items` | Required for non-cohort metrics. Array of metric items referencing events by `eventId` (or `$tmp:` ref), with optional `baseEventId` for event variants. |
-| `cohortConditions` | Required for `Cohort` metrics. Array of conditions referencing events by `eventId` (or `$tmp:` ref) and optional `propertyId`. |
-
-**Update-event fields:** _(require `eventId`)_
-
-| Field | Notes |
-|---|---|
-| `set.name` | Rename the event. Renaming to the same name is a no-op; renaming to a name already held by another live event is rejected. |
-| `set.description` | New event description. |
-| `addProperties` / `removeProperties` | Property IDs (or `$tmp:` refs) to associate / disassociate. |
-| `addPropertyBundles` / `removePropertyBundles` | Property bundle IDs (or `$tmp:` refs) to attach / detach. |
-| `addSources` / `removeSources` | Source IDs to include / exclude. |
-| `addTags` / `removeTags` | **Top-level on the item, not inside `set`.** Tag-name strings to apply or remove. |
-| `addCategories` / `removeCategories` | **Top-level on the item.** Category **names** (or `$tmp:` refs to `create`-category items in the same batch) to add or remove. Note: categories are referenced by name, not ID. |
-
-**Update-event_variant fields:** _(require `baseEventId` + `variantId`)_
-
-| Field | Notes |
-|---|---|
-| `set.nameSuffix` | New variant suffix. |
-| `set.description` | New variant description. |
-| `set.triggers` | Replace the trigger list on the variant. |
-| `attachProperties` / `removeProperties` | Property IDs to attach / detach from this variant. |
-| `clearAttachedProperties` | Boolean — when `true`, detaches all properties from the variant in one call. |
-| `addComponentOverrides` | Override specs to add or replace. Same shape as create `overrides`. |
-| `removeComponentOverrides` | Property IDs whose component overrides should be cleared. |
-| `addSourceOverrides` / `removeSourceOverrides` | Source-override specs to add or remove. |
-| `clearSourceOverrides` | Boolean — when `true`, clears all source overrides on the variant. |
-| `addBundleOverrides` / `removeBundleOverrides` | Bundle-override specs to add or remove. |
-| `clearBundleOverrides` | Boolean — when `true`, clears all bundle overrides on the variant. |
-| `addVariantPropertyRegex` / `removeVariantPropertyRegex` | Variant property regex specs to add or remove. |
-| `clearVariantPropertyRegexOverride` | Boolean — when `true`, clears all variant property regex overrides. |
-
-The variant override surface uses a three-state lattice — `add*` / `remove*` / `clear*` — for attached properties, source overrides, bundle overrides, and variant property regex overrides. Use `add*` / `remove*` for incremental changes; use `clear*` only when you need to wipe the whole set in one call.
-
-**Update-property fields:** _(require `propertyId`)_
-
-| Field | Notes |
-|---|---|
-| `set.name` | Rename the property. Renaming to the same name is a no-op; renaming to a name already held by another live property is rejected. |
-| `set.description` | New property description. |
-| `set.propertyType` | New type. Same value set as create: `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). |
-| `addAllowedValues` | **Top-level on the item, not inside `set`.** String values to add to a string-typed property's allowed list. |
-| `removeAllowedValues` | **Top-level on the item, not inside `set`.** Values not in the current list are silently no-ops. |
-| `addTags` / `removeTags` | **Top-level on the item, not inside `set`.** Tag-name strings to apply or remove. |
-| `addCategories` / `removeCategories` | **Top-level on the item.** Category names (or `$tmp:` refs) to add or remove. Categories are referenced by name, not ID. |
-| `isList` | **Top-level on the item, not inside `set`.** Boolean — switches the property between scalar (`false`) and list (`true`). Property-only. |
-| `eventConfigs` | **Top-level on the item.** Per-event/per-source property settings — change presence, pin a value, or restrict allowed values per event. See "Per-event property settings (`eventConfigs`)" below. |
-
-**Update-property_bundle fields:** _(require `propertyBundleId`)_
-
-| Field | Notes |
-|---|---|
-| `set.name` | Rename the bundle. |
-| `set.description` | New bundle description. |
-| `addProperties` / `removeProperties` | Property IDs (or `$tmp:` refs) to add / remove from the bundle. Bundle-to-event attachment is managed from the event side via `addPropertyBundles` / `removePropertyBundles` on event-update items. |
-
-**Update-metric fields:** _(require `metricId`)_
-
-| Field | Notes |
-|---|---|
-| `setName` | Rename the metric. |
-| `setDescription` | New metric description. |
-| `addItems` / `removeItems` | For non-cohort metrics, add or remove metric items. |
-| `addCohortConditions` / `updateCohortConditions` / `removeCohortConditions` | For `Cohort` metrics, manage the cohort condition list. |
-| `addCategories` / `removeCategories` | **Top-level on the item.** Category names (or `$tmp:` refs) to add or remove. Categories are referenced by name, not ID. |
-
-**Update-category fields:** _(require `categoryId`)_
-
-| Field | Notes |
-|---|---|
-| `set.name` | Rename the category. |
-| `set.description` | New category description. |
-
-**Source, destination, and group-type items:**
-
-These workspace-metadata types also support `create` / `update` / `archive` / `unarchive`. On `create`, set the shared `name` field and supply either the type's ID or a `tempId`; on `update` / `archive` / `unarchive`, supply the type's ID (`sourceId` / `destinationId` / `groupTypeId`).
-
-| Type | Fields |
-|---|---|
-| `source` | **Create:** `platform` (required — one of Avo's source platforms), `programmingLanguage`, `libraryName`, `libraryDestination`. **Update:** change these with `set.platform` / `set.programmingLanguage` / `set.libraryName` / `set.libraryDestination`. (A source's language can also be set via [`workflow`](#workflow) `action: "set_source_language"`.) |
-| `destination` | **Create:** `analyticsTool` (the analytics platform), `includeUserPropsWithEventProps` (bool, default `false`), `disabledByDefault` (bool, default `false`). **Update:** set or remove an API key with `apiKey: { kind: "set", env: "dev" \| "prod", value: "..." }` or `{ kind: "remove", env: "dev" \| "prod" }`. |
-| `groupType` | **Create:** `name` only (group types have no description). |
-
-The tool's per-field schema (the `describe` text on each parameter) is the authoritative reference for the full set of accepted fields.
-
-**Archive and unarchive (every archivable type).** `op: "archive"` archives an item on the branch; `op: "unarchive"` restores it. Both take the type's lookup-ID field (`eventId`, `propertyId`, `propertyBundleId`, `metricId`, `categoryId`, `sourceId`, `destinationId`, `groupTypeId`) — or, for event variants, `baseEventId` + `variantId`. All archives are reversible from the Avo app.
-
-| Type | Archive example | Notes |
+| Field | Ops | Notes |
 |---|---|---|
-| `event` | `{ op: "archive", type: "event", eventId: "..." }` | `op: "remove"` is accepted as a legacy alias. |
-| `property` | `{ op: "archive", type: "property", propertyId: "..." }` | **Cascades** — references on every event using the property are removed. `op: "remove"` is accepted as a legacy alias. If you only have the name, resolve the ID first with [`search`](#search) so name-conflict ambiguity surfaces before the mutation runs. |
-| `event_variant` | `{ op: "archive", type: "event_variant", baseEventId: "...", variantId: "..." }` | `op: "remove"` is **not** supported for variants. |
-| `property_bundle` | `{ op: "archive", type: "property_bundle", propertyBundleId: "..." }` | — |
-| `metric` | `{ op: "archive", type: "metric", metricId: "..." }` | — |
-| `category` | `{ op: "archive", type: "category", categoryId: "..." }` | Does **not** cascade — events/properties/metrics keep their `addCategories` history pointing at the now-archived category. Migrate members first (see "Merging categories"). |
-| `source` / `destination` / `groupType` | `{ op: "archive", type: "source", sourceId: "..." }` (likewise `destinationId` / `groupTypeId`) | — |
+| `eventId` | update, archive, unarchive | The event's ID (or `$tmp:` of a same-batch create). |
+| `description` | create | Event description. |
+| `sources` | create | Source IDs to include the event in. ID or `$tmp:` only. Find source IDs with [`search`](#search) (`itemType: "source"`). |
+| `properties` | create | Property IDs to attach. ID or `$tmp:` only. |
+| `propertyBundles` | create | Property bundle IDs to attach. ID or `$tmp:` only. |
+| `actions` | create | Initial action types (`identify`, `page`, `revenue`, …). Omit for `logEvent` only. |
+| `nameComponents` | create | Advanced-naming workspaces: per-building-block name values. |
+| `tags` | create | Tag names to attach (literal strings). |
+| `addProperties` / `removeProperties` | update | Property IDs (or `$tmp:`) to add / remove. |
+| `addSources` / `removeSources` | update | Source IDs to include / exclude. |
+| `setSourceCodegen` | update | Set the per-source include-in-codegen flag. |
+| `addSourceDestinations` / `removeSourceDestinations` | update | Link / unlink (source, destination) pairs on the event. |
+| `setActions` | update | Replace the event's action types. |
+| `customFieldValues` | update | Set or clear per-custom-field values. |
+| `addCategories` / `removeCategories` | update | Category **names** (or `$tmp:` to a same-batch category). The event must already exist — attaching a category to an event created in the same batch is rejected; do it in a follow-up call. |
+| `addTags` / `removeTags` | update | Tag names to attach / detach. |
+| `addGroupTypes` / `removeGroupTypes` | update | Group type names (name or `$tmp:`, not raw IDs). |
+| `addPropertyBundles` / `removePropertyBundles` | update | Property bundle IDs to attach / detach. |
+| `nameMappings` | create/update | Per-destination name mapping entries — see [Name mappings](#name-mappings). |
+| `owner`, `stakeholders` | create/update | See [Owner and stakeholder fields](#owner-and-stakeholder-fields). |
+| `set.name`, `set.description` | update | Rename (renaming to the same name is a no-op; to a name already held by another live event is rejected) / new description. |
 
-`op: "remove"` on any type other than `event` / `property` is rejected with an error directing you to `op: "archive"`.
+#### `property`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `propertyId` | update, archive, unarchive | The property's ID. |
+| `description` | create | Property description. |
+| `propertyType` | create | `string`, `int`, `long`, `float`, `bool`, `object`, `any` (aliases like `integer`, `boolean`, `double` accepted). Change later with `set.propertyType`. |
+| `sendAs` | create | `event`, `user`, or `system`. Immutable after create. |
+| `nestedProperties` | create | Object property: child-property slots `{ propertyId, … }`. |
+| `tags` | create | Tag names to attach. |
+| `addAllowedValues` | create/update | String property: allowed values to add. |
+| `removeAllowedValues` | update | Allowed values to remove. Rejected on a create. Values not in the current list are silent no-ops. |
+| `eventConfigs` | create/update | Per-event property settings — see [Per-event property settings](#per-event-property-settings-eventconfigs). Max 50 entries. |
+| `customFieldValues` | create/update | Set or clear per-custom-field values. |
+| `pii` | create/update | The property's PII state: `{ kind: "declared" \| "notPii" \| "unset" }`. |
+| `nameMappings` | create/update | See [Name mappings](#name-mappings). |
+| `isList` | update | Boolean — toggle between scalar (`false`) and list (`true`). |
+| `addNestedProperties` / `removeNestedProperties` | update | Object property: child-property slots to add / child-property IDs to detach (live IDs only, no `$tmp:`). |
+| `addPropertyRegex` / `removePropertyRegex` | update | Set the global regex rule `{ regex, testValue }` / pass `true` to remove it. |
+| `addEventRegexOverride` / `removeEventRegexOverride` | update | Set an event-specific regex override `{ eventId, regex, testValue }` / the event ID whose override to remove. |
+| `addCategories` / `removeCategories` | update | Category names (or `$tmp:`). The property must already exist. |
+| `addTags` / `removeTags` | update | Tag names to attach / detach. |
+| `owner`, `stakeholders` | create/update | See [Owner and stakeholder fields](#owner-and-stakeholder-fields). |
+| `set.name`, `set.description`, `set.propertyType` | update | Rename / new description / new type. |
+
+#### `event_variant`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `baseEventId` | all | The parent event's ID (or `$tmp:`). Required on every op. |
+| `variantId` | all | The variant's ID — **you supply it on create** (must not contain `.`). Required on every op. |
+| `description` | create | Variant description. |
+| `nameSuffix` | create | Suffix appended to the parent event name (e.g. `buy_now` produces `click / buy_now`). Change later with `set.nameSuffix`. |
+| `attachProperties` | create/update | Property IDs (or `$tmp:`) to attach to this variant. |
+| `overrides` | create | Component-level overrides `{ propertyId, pinned }` or `{ propertyId, allowed }` (mutually exclusive per override). |
+| `bundleOverrides` | create | Bundle IDs to attach to this variant. |
+| `addComponentOverrides` / `removeComponentOverrides` | update | Component override specs to add or replace / property IDs whose overrides to clear. |
+| `removeProperties` | update | Property IDs to set as explicit not-on-variant overrides. |
+| `clearAttachedProperties` | update | Property IDs whose attachment override is cleared (inherit from base). |
+| `addSourceOverrides` / `removeSourceOverrides` / `clearSourceOverrides` | update | Source-level overrides to force-add / force-remove / reset to inherit. |
+| `addBundleOverrides` / `removeBundleOverrides` / `clearBundleOverrides` | update | Bundle IDs to force-add / force-remove / reset to inherit. |
+| `addVariantPropertyRegex` | update | Set a variant regex override `{ propertyId, regex, testValue }`. |
+| `removeVariantPropertyRegex` | update | Property ID set to explicit no-regex on the variant. |
+| `clearVariantPropertyRegexOverride` | update | Property ID whose variant regex override is cleared (inherit). |
+| `owner`, `stakeholders` | create/update | See [Owner and stakeholder fields](#owner-and-stakeholder-fields). |
+| `set.nameSuffix`, `set.description`, `set.triggers` | update | New suffix / description / replace the trigger list. |
+
+The override surface is a three-state lattice — `add*` / `remove*` / `clear*` — for attached properties, source overrides, bundle overrides, and regex overrides. Use `add*` / `remove*` for explicit overrides; use `clear*` to fall back to the base event.
+
+#### `property_bundle`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `propertyBundleId` | update, archive, unarchive | The bundle's ID. |
+| `description` | create | Bundle description. |
+| `addProperties` | create/update | Property IDs (or `$tmp:`) to add to the bundle. |
+| `attachToEvents` | create | Event IDs (or `$tmp:`) to attach the new bundle to. |
+| `removeProperties` | update | Property IDs to remove from the bundle. |
+| `set.name`, `set.description` | update | Rename / new description. |
+
+Bundle-to-event attachment after creation is managed from the event side via `addPropertyBundles` / `removePropertyBundles` on an event update.
+
+#### `metric`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `metricId` | update, archive, unarchive | The metric's ID. |
+| `description` | create | Metric description. |
+| `metricType` | create | One of `Funnel`, `EventSegmentation`, `Proportion`, `Retention`, `CustomEvent`, `Cohort`. Immutable after create — archive and recreate to change. |
+| `items` | create | Non-cohort metrics: array of metric items. Each is `{ kind: "Event", id, eventId, where?, groupBy? }`, `{ kind: "EventVariant", id, baseEventId, variantId, where?, groupBy? }`, or `{ kind: "Metric", id, metricId }`. `id` is a caller-supplied local key used to address the item in later updates; `eventId` / `baseEventId` / `metricId` accept `$tmp:`. `where` entries are `{ propertyId, operator, values }` with a non-empty `values`. |
+| `cohortConditions` | create | `Cohort` metrics: array of conditions — `{ kind: "Action", id?, eventId, performed, frequency, timeWindow }` or `{ kind: "Variable", id?, propertyId, binOp, literals }`. |
+| `setName` / `setDescription` | update | Rename / new description (metrics use these top-level fields). |
+| `addItems` / `updateItems` / `removeItems` | update | Non-cohort metrics: add items / replace an item's `where` and `groupBy` by `id` / remove item IDs. |
+| `addCohortConditions` / `updateCohortConditions` / `removeCohortConditions` | update | Cohort metrics: manage the condition list. |
+| `addCategories` / `removeCategories` | update | Category names to attach / detach. |
+
+#### `category`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `categoryId` | update, archive, unarchive | The category's ID. |
+| `description` | create | Category description. |
+| `set.name`, `set.description` | update | Rename / new description. |
+
+Category membership is managed from the member side: `addCategories` / `removeCategories` on event, property, and metric updates.
+
+#### `source`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `sourceId` | all | Required on update / archive / unarchive. On create, supply `sourceId` or a `tempId`. |
+| `platform` | create (required) | The development platform this source runs on. Change later with `set.platform`. |
+| `programmingLanguage` | create | The source's programming language. Change later with `set.programmingLanguage` (or [`workflow`](#workflow) `set_source_language`). |
+| `libraryName` / `libraryDestination` | create | Codegen library name / output path. Change later via `set.*`. |
+| `connectDestinations` | update | Destination IDs (or `$tmp:`) to connect for codegen routing on the source. |
+| `disconnectDestinations` | update | Destination IDs to disconnect. **Destructive** — cascades to every event routing it on this source (and inheriting variants). |
+| `set.name`, `set.platform`, `set.programmingLanguage`, `set.libraryName`, `set.libraryDestination` | update | Scalar edits. |
+
+A `create` for a source does not accept `description`.
+
+#### `destination`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `destinationId` | all | Required on update / archive / unarchive. On create, supply `destinationId` or a `tempId`. |
+| `analyticsTool` | create (required) | The analytics platform this destination connects to. Change later with `set.analyticsTool`. |
+| `includeUserPropsWithEventProps` | create/update | Boolean. Defaults to `false` on create. |
+| `disabledByDefault` | create/update | Boolean — new events are disabled for this destination by default. Defaults to `false` on create. |
+| `apiKey` | update | Set or remove an API key for an environment: `{ kind: "set", env: "dev" \| "prod", value: "…" }` or `{ kind: "remove", env: "dev" \| "prod" }`. |
+| `set.name`, `set.analyticsTool` | update | Scalar edits. |
+
+A `create` for a destination does not accept `description`.
+
+#### `group_type`
+
+| Field | Ops | Notes |
+|---|---|---|
+| `groupTypeId` | all | Required on update / archive / unarchive. On create, supply `groupTypeId` or a `tempId`. |
+| `set.name` | update | Rename. |
+
+A `create` for a group type takes `name` only and does not accept `description`. Attach group types to events with `addGroupTypes` on an event update.
+
+### Name mappings
+
+`nameMappings` is accepted on event and property items, on **create and update**. Each entry is `{ destination, name }`, where `destination` is `{ kind: "allDestinations" }` or `{ kind: "destination", destinationId: "…" }`. `name` must be a non-empty string when present; pass `name: null` (or omit it) to **remove** the mapping for that destination. On a create there is nothing to remove yet, so a `name: null` entry is a harmless no-op. Multiple entries are allowed, one per destination scope.
 
 ### Owner and stakeholder fields
 
@@ -578,7 +722,7 @@ The tool's per-field schema (the `describe` text on each parameter) is the autho
   **Branch-independent.** Owner and stakeholder assignments take effect **immediately workspace-wide**, even if the branch is later discarded. Discarding the branch will **not** roll back these changes. Treat these fields as out-of-branch mutations, not draft edits.
 </Callout>
 
-`owner` and `stakeholders` fields are accepted on event, property, and event variant items, on both `create` and `update`. Both reference **existing** stakeholders — the MCP does not create stakeholders (create them in the Avo web app). A **stakeholder reference** is an object with exactly one of `stakeholderId` or `stakeholderName` (a name is resolved server-side to an ID).
+`owner` and `stakeholders` are accepted inside `fields` on event, property, and event variant items, on both `create` and `update`. Both reference **existing** stakeholders — the MCP does not create stakeholders (create them in the Avo web app). A **stakeholder reference** is an object with exactly one of `stakeholderId` or `stakeholderName` (a name is resolved server-side to an ID).
 
 | Field | Notes |
 |---|---|
@@ -592,9 +736,11 @@ Omitting `stakeholders` (or `owner`) leaves that aspect unchanged.
 {
   "op": "update",
   "type": "event",
-  "eventId": "evt-3f01…",
-  "owner": { "action": "set", "stakeholder": { "stakeholderName": "Growth" } },
-  "stakeholders": { "add": [{ "stakeholderName": "Data Platform" }] }
+  "id": "evt-3f01…",
+  "fields": {
+    "owner": { "action": "set", "stakeholder": { "stakeholderName": "Growth" } },
+    "stakeholders": { "add": [{ "stakeholderName": "Data Platform" }] }
+  }
 }
 ```
 
@@ -602,41 +748,36 @@ Omitting `stakeholders` (or `owner`) leaves that aspect unchanged.
 
 The MCP has no dedicated "merge categories" op. To merge category `A` into category `B`, send a single `save_items` batch containing:
 
-1. An `update` item for every event, property, and metric in `A` carrying `addCategories: ["B"], removeCategories: ["A"]`.
-2. A `{ op: "archive", type: "category", categoryId: "<id of A>" }` item.
+1. An `update` item for every event, property, and metric in `A` carrying `fields: { addCategories: ["B"], removeCategories: ["A"] }`.
+2. A `{ op: "archive", type: "category", id: "<id of A>" }` item.
 
 Both must travel in the same batch — the category archive in step 2 does **not** cascade to its members, so step 1 has to move the members first.
 
 ### Per-event property settings (`eventConfigs`)
 
-`eventConfigs` is a top-level array on an `update`-property item (and, restricted to `events: { kind: "allEvents" }`, on a `create`-property item). Each entry adjusts how the property behaves on a specific event or across all events:
+`eventConfigs` is an array inside `fields` on a property item (create or update; max 50 entries). Each entry adjusts how the property behaves on a specific event, on several events, or across all events:
 
-- **`setPresence`** — change presence to `alwaysSent`, `sometimesSent`, or `neverSent`. Can be scoped per source.
+- **`setPresence`** — change presence to `alwaysSent`, `sometimesSent`, or `neverSent`. Can be scoped per source. `sometimesSent` on `allEvents` requires a migrated workspace.
 - **`setPinnedValue`** — pin a value for the property. With `events: { kind: "onEvent" }` pins per-event; with `events: { kind: "allEvents" }` pins property-wide.
 - **`restrictAllowedValues`** — change the property's allowed value list for an event. Carries a `valuesChange` delta: `addValues` (non-empty), `removeValues`, or `clear` (no payload).
 
-`eventConfigs` entries reference events by `eventId`, and `$tmp:` references **are** supported here: an `eventConfigs[*].events.eventId` (or `eventIds`) may point at a `create`-event item earlier in the same batch via `$tmp:`, and preprocessing rewrites it to the real event ID before saving — no separate call needed. (On a property `create`, the referenced event must also attach this property in the same batch, otherwise the call fails with `UnresolvableReference`.)
-
-<Callout type="warning" emoji="🚧">
-  **Not yet implemented.** `set.sendAs` on `op: "update"` of a `property` item returns a `NotYetImplemented` error — `sendAs` is immutable after create.
-
-  Everything else works today: create / update for events, properties, event variants, property bundles, metrics, categories, sources, destinations, and group types; `archive` / `unarchive` for every archivable type; rename events and properties via `set.name`; toggle a property between scalar and list via `isList`; apply or remove tags via `addTags` / `removeTags`; per-event property settings via `eventConfigs`. (To remove an event variant, use `op: "archive"` — `op: "remove"` on a variant is rejected.)
-</Callout>
+`eventConfigs` entries reference events by `eventId`, and `$tmp:` references **are** supported here: an `eventConfigs[*].events.eventId` (or `eventIds`) may point at a `create`-event item earlier in the same batch via `$tmp:`, and preprocessing rewrites it to the real event ID before saving — no separate call needed. On a property `create`, the referenced event must also attach this property in the same batch, otherwise the call fails with `UnresolvableReference`. `allEvents` entries apply to the freshly created property directly.
 
 ### Temporary IDs (`tempId` / `$tmp:`)
 
 To reference a newly-created item from another item in the same call, declare a `tempId` on the `create` item and reference it elsewhere as `"$tmp:<name>"`:
 
-- `tempId` is **create-only** — setting it on an `update`, `remove`, or `archive` returns an error.
-- `tempId` names must be unique within a single `save_items` call.
-- `$tmp:` references are resolved in these array fields: `properties`, `addProperties`, `removeProperties`, `attachProperties`, `propertyBundles`, `addPropertyBundles`, `removePropertyBundles`, `attachToEvents`, `addSources`, `removeSources`, `bundleOverrides`; inside `overrides[].propertyId` / `addComponentOverrides[].propertyId`; within `eventConfigs[*].events.eventId` / `eventIds`; and within nested metric fields (`items[].metricId` / `eventId` / `baseEventId`, `cohortConditions[].eventId` / `propertyId`). In `addCategories` / `removeCategories` / `addGroupTypes` / `removeGroupTypes`, a `$tmp:` ref instead rewrites to the sibling `create` item's **name** (those fields take names, not IDs). Sources, destinations, and group types can be created in the same batch and referenced by their `tempId` too.
+- `tempId` is **create-only** — setting it on an `update`, `archive`, or `unarchive` returns an error.
+- `tempId` names must be unique within a single `save_items` call and match `^[\w-]+$` (max 64 characters).
+- `$tmp:` references resolve within one call only. Across calls, use the real ID returned from the previous call.
+- `$tmp:` references are resolved in these `fields` arrays: `properties`, `addProperties`, `removeProperties`, `attachProperties`, `propertyBundles`, `addPropertyBundles`, `removePropertyBundles`, `attachToEvents`, `addSources`, `removeSources`, `bundleOverrides`, `connectDestinations`, `disconnectDestinations`; inside `overrides[].propertyId` / `addComponentOverrides[].propertyId`; within `eventConfigs[*].events.eventId` / `eventIds`; and within nested metric fields (`items[].metricId` / `eventId` / `baseEventId`, `cohortConditions[].eventId` / `propertyId`). These ID fields are ID-or-`$tmp:` only — a literal name is rejected. In `addCategories` / `removeCategories` / `addGroupTypes` / `removeGroupTypes`, a `$tmp:` ref instead rewrites to the sibling `create` item's **name** (those fields take names, not IDs). Sources, destinations, and group types can be created in the same batch and referenced by their `tempId` too.
 - If a `$tmp:` ref names a tempId that wasn't declared on any item, the server returns a validation error.
 
 ### Returns
 
 A structured result with:
 
-- `createdEntities`, `updatedEntities`, `removedEntities`, `unarchivedEntities` — each entry has `name`, `entityId`, and `entityType` (`event`, `property`, `event_variant`, `property_bundle`, `metric`, `category`, `source`, `destination`, or `groupType`). Archived items are reported under `removedEntities` (a legacy field name); restored items under `unarchivedEntities`. (`updatedEntities` entries may also carry a `reason` when the update was a no-op.)
+- `createdEntities`, `updatedEntities`, `removedEntities`, `unarchivedEntities` — each entry has `name`, `entityId`, and `entityType` (`event`, `property`, `event_variant`, `property_bundle`, `metric`, `category`, `source`, `destination`, or `groupType`). Archived items are reported under `removedEntities` (a legacy field name); restored items under `unarchivedEntities`. Created entries also echo the `tempId` you supplied, so you can map temporary handles to real IDs. (`updatedEntities` entries may also carry a `reason` when the update was a no-op.)
 - `errors` — per-item validation or audit errors, each with the item index, name, and a message.
 - `warnings` — non-fatal notices, same shape as errors.
 - `success` — overall boolean.
@@ -645,7 +786,7 @@ A structured result with:
 {
   "success": true,
   "createdEntities": [
-    { "name": "Checkout Method", "entityId": "prop-9d44…", "entityType": "property" }
+    { "name": "Checkout Method", "entityId": "prop-9d44…", "entityType": "property", "tempId": "checkout_method" }
   ],
   "updatedEntities": [
     { "name": "Checkout Completed", "entityId": "evt-3f01…", "entityType": "event" }
@@ -674,17 +815,48 @@ Claude declares a `tempId` on the new property so the new event can attach it be
       "type": "property",
       "tempId": "checkout_method",
       "name": "Checkout Method",
-      "propertyType": "string",
-      "sendAs": "event",
-      "description": "How the user completed checkout"
+      "fields": {
+        "description": "How the user completed checkout",
+        "propertyType": "string",
+        "sendAs": "event",
+        "addAllowedValues": ["Card", "Apple Pay", "PayPal"]
+      }
     },
     {
       "op": "create",
       "type": "event",
       "name": "Checkout Completed",
-      "description": "Fired when the user finishes checkout",
-      "properties": ["$tmp:checkout_method"],
-      "sources": ["src-web", "src-ios"]
+      "fields": {
+        "description": "Sent when a user successfully pays and their order is placed.",
+        "properties": ["$tmp:checkout_method"],
+        "sources": ["src-web", "src-ios"]
+      }
+    }
+  ]
+}
+```
+
+#### Rename a property and add an allowed value
+
+**Prompt:** *"Rename `user_email` to `email` and allow the value `Unknown` on `Checkout Method`."*
+
+Scalar edits go in `set`; collection changes stay at the top level of `fields`.
+
+```json
+{
+  "branchId": "br-abc123",
+  "items": [
+    {
+      "op": "update",
+      "type": "property",
+      "id": "prop-1a2b…",
+      "fields": { "set": { "name": "email" } }
+    },
+    {
+      "op": "update",
+      "type": "property",
+      "id": "prop-9d44…",
+      "fields": { "addAllowedValues": ["Unknown"] }
     }
   ]
 }
@@ -704,13 +876,26 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
       "op": "create",
       "type": "metric",
       "name": "Checkout Funnel",
-      "description": "Share of users who start checkout and complete it.",
-      "metricType": "Funnel",
-      "items": [
-        { "eventId": "evt-checkout-started" },
-        { "eventId": "evt-checkout-completed" }
-      ]
+      "fields": {
+        "description": "Share of users who start checkout and complete it.",
+        "metricType": "Funnel",
+        "items": [
+          { "kind": "Event", "id": "step1", "eventId": "evt-checkout-started" },
+          { "kind": "Event", "id": "step2", "eventId": "evt-checkout-completed" }
+        ]
+      }
     }
+  ]
+}
+```
+
+#### Archive an event
+
+```json
+{
+  "branchId": "br-abc123",
+  "items": [
+    { "op": "archive", "type": "event", "id": "evt-3f01…" }
   ]
 }
 ```
@@ -719,13 +904,19 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 
 - Missing `write` scope — the client must re-authorize with `write`.
 - `branchId is required` / `items is required` — malformed request.
-- `tempId is only valid on create items` — don't set `tempId` on `update` or `remove`.
+- Unknown field, a field the operation doesn't accept, or an invalid value in `fields` — the error names the item type and operation and repeats the fields that type accepts. Call [`describe_tool`](#describe_tool) with that type and op for the full list.
+- `name` missing on a `create`.
+- `tempId is only valid on create items` — don't set `tempId` on `update`, `archive`, or `unarchive`.
 - `Duplicate tempId "<name>"` — each `tempId` must be unique across items in the batch.
 - `Unknown $tmp: reference` — a `$tmp:` ref names a tempId that wasn't declared.
-- `<idField> is required for <op> <entity> items` — missing `eventId` / `propertyId` / `baseEventId` / `variantId` / `propertyBundleId` / `metricId`.
+- `<idField> is required for <op> <entity> items` — missing identity ID.
+- `id` and `fields.<idField>` both present with different values.
 - `too many items (got N, max 50)` — batch is over the 50-item cap.
-- `NotYetImplemented` — one of the unsupported operations above.
+- `NotYetImplemented` — `set.sendAs` on a property update (`sendAs` is immutable after create).
 - Per-item audit-pipeline validation failures (e.g. illegal name, duplicate property, etc.) — returned inside the `errors` array rather than failing the whole call.
+
+---
+
 ## `workflow`
 
 **Scope:** `write` · **Destructive:** `import` with `importMethod: "add_update_and_remove"`
@@ -760,7 +951,7 @@ Which parameters apply depends on `action` — see "Required" below.
 | `branchName` | For `create_branch`; alternative to `branchId` for `update_branch_description` / `set_source_language` | Name for the new branch (`create_branch`), or the existing branch's name. |
 | `branchId` | Alternative to `branchName` for `update_branch_description` / `set_source_language`; required for `pull_main` and `import` | ID of the existing branch. For `update_branch_description` and `set_source_language`, provide exactly one of `branchId` or `branchName`. |
 | `description` | For `update_branch_description` (optional on `create_branch`) | Branch description text. On `create_branch`, optionally sets the new branch's description. Empty / whitespace-only strings are treated as a no-op on `update_branch_description`. |
-| `sourceId` | For `set_source_language` | The source whose language to set. Find it with [`get`](#get) (`type: "source"`) or [`search`](#search) (`itemType: "source"`). |
+| `sourceId` | For `set_source_language` | The source whose language to set. Find it with [`search`](#search) (`itemType: "source"`) or [`get`](#get) (`type: "source"`, by id or name). Call [`describe_tool`](#describe_tool) with `tool:"workflow"` and an `action` for that action's parameters and an example. |
 | `language` | For `set_source_language` | The source's programming language. One of: `Swift`, `JavaScript_V2`, `Reason_V2`, `Java`, `JSON`, `Python`, `Python3`, `PHP`, `Kotlin`, `C#`, `TypeScript`, `Objective-C`, `Ruby`, `Dart`, `Go`. The server validates the language against the source's platform and returns the supported list on a mismatch. |
 | `format` | For `import` | Payload format. `csv` (a CSV export — auto-detects Avo, Amplitude, Mixpanel, Segment, and spreadsheet formats) or `json_schema` (an Avo JSON Schema document). |
 | `payload` | For `import` | The raw CSV text or Avo JSON Schema document, as a string. |
@@ -930,7 +1121,7 @@ Browse branches in a workspace with filtering and pagination. Results are pagina
 |---|---|---|
 | `workspaceId` | No | Workspace ID |
 | `branchStatuses` | No | Filter by status. Valid values: `Draft`, `ReadyForReview`, `ChangesRequested`, `Approved`, `Merged`, `Closed`, `Open`. Defaults to open/active branches only. |
-| `pageSize` | No | Results per page (1–50, default 25) |
+| `pageSize` | No | Results per page, default 25. Clamped to 1–50 (an out-of-range value is coerced, not rejected). |
 | `pageToken` | No | Pagination token from a previous response |
 | `branchName` | No | Substring match on branch name (case-insensitive) |
 | `creatorEmail` | No | Filter by creator email |
@@ -971,7 +1162,6 @@ Claude passes the user's email as `reviewerEmail` and filters status to `ReadyFo
 ### Common errors
 
 - Workspace access denied.
-- Invalid `pageSize` (outside 1–50).
 - Invalid date format on `createdAfter` / `createdBefore`.
 
 ---
@@ -984,5 +1174,9 @@ Tool-specific behavior issues. Authentication and workspace access issues are co
 
 **The wrong branch is returned by name.** `branchName` resolves to a best match and prioritizes open branches, so an ambiguous name can pick the wrong one. Resolve the name to a `branchId` with [`list_branches`](#list_branches) first and pass `branchId` to the follow-up call.
 
-**[`save_items`](#save_items) returns a `NotYetImplemented` error.** Changing a property's `sendAs` is not supported — it is immutable after create. (To remove an event variant, use `op: "archive"`; `op: "remove"` on a variant is rejected, not `NotYetImplemented`.) See the [`save_items` reference](#save_items).
+**[`save_items`](#save_items) rejects an item and lists fields in the error.** The item carried a field that type or operation does not accept, or a type-specific field at the item top level instead of inside `fields`. Read the field list in the error, or call [`describe_tool`](#describe_tool) with the same `type` and `op`, and retry. Older examples that put fields like `propertyType` directly on the item no longer work.
+
+**[`save_items`](#save_items) returns a `NotYetImplemented` error.** Changing a property's `sendAs` is not supported — it is immutable after create.
+
+**My client does not show `save_items` at all.** Some MCP clients hide tools whose definition is longer than their size limit. The Avo MCP keeps every tool definition short precisely so this does not happen; if it still does, make sure the client is talking to `https://mcp.avo.app/mcp` and report it to [support@avo.app](mailto:support@avo.app).
 
