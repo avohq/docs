@@ -133,6 +133,10 @@ App", "Android App", etc.
 
 System properties are set in the Avo.initAvo() function. They can be updated with `Avo.setSystemProperties()` if needed, but otherwise the values persist during the lifecycle of the application.
 
+**Presence per source**
+
+Whether a system property is sent from a given source can be configured on the source itself as Always, Sometimes or Never. This affects how Inspector validates the property and whether Codegen includes it in the initialization method. See [System Properties in the source overview](/data-design/avo-tracking-plan/define-sources-and-destinations#system-properties) for details.
+
 ## Event property bundles
 
 Event property bundles are a way to bundle two or more related event properties to quickly and consistently add them to all related events. You can create event property bundles from the [event property bundles screen in your Avo workspace](https://www.avo.app/schemas/default/properties/bundles).
