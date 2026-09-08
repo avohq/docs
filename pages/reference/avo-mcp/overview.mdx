@@ -141,7 +141,7 @@ Once the plugin (or server) is connected, talk to Claude in plain language. A fe
 
 ## Use cases
 
-**Getting started.** These tools let you search your tracking plan, design tracking for new features, and review Avo branches before you implement them. Start by calling `list_workspaces` to get your `workspaceId` — every other tool is scoped to a workspace, so you'll pass that ID into subsequent calls.
+**Getting started.** These tools let you search your tracking plan, design tracking for new features, and review Avo branches before you implement them. Start by calling `list_workspaces` to get your `workspaceId` — every other tool is scoped to a workspace, so you'll pass that ID into subsequent calls. Before writing, your assistant calls `describe_tool` to look up exactly which fields an item type accepts — the tool definitions themselves are kept short so that every client, including those with tight size limits, sees every tool.
 
 ### Search the tracking plan
 
@@ -166,11 +166,12 @@ Point Claude at a branch and it returns a structured diff: new, modified, and re
 
 ## Capability matrix
 
-The MCP exposes six tools mapped to agent intents:
+The MCP exposes seven tools mapped to agent intents:
 
 | Intent | Tool | Scope |
 |---|---|---|
 | **Entry point** — find your workspace IDs | [`list_workspaces`](/reference/avo-mcp/tools#list_workspaces) | `read` |
+| **Look up the fields** — see exactly which parameters and fields a call accepts before making it | [`describe_tool`](/reference/avo-mcp/tools#describe_tool) | none |
 | **Discover** — find items by meaning or by structural filter | [`search`](/reference/avo-mcp/tools#search) | `read` |
 | **Understand** — full details for an event, property, journey, branch, source, etc. | [`get`](/reference/avo-mcp/tools#get) | `read` |
 | **Change** — create, update, archive, or restore items on a branch | [`save_items`](/reference/avo-mcp/tools#save_items) | `write` |
@@ -178,6 +179,8 @@ The MCP exposes six tools mapped to agent intents:
 | **Tell Avo** — report the agent's own experience back to Avo's product team | [`give_feedback`](/reference/avo-mcp/tools#give_feedback) | `write` |
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while branch enumeration is folded into `search` (as `itemType: "branch"`). See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
+
+Item types use one snake_case vocabulary across `search`, `get`, and `save_items` (`event`, `property`, `metric`, `event_variant`, `property_bundle`, `category`, `source`, `destination`, `group_type`, plus the read-only `journey` and `workspace_config`). The older camelCase spellings (`eventVariant`, `propertyBundle`, `groupType`, `workspaceConfig`) still work for now but are deprecated and will be removed.
 
 ## How writes work: branch only, human merge
 
@@ -200,8 +203,8 @@ This keeps tracking-plan changes deliberate and reviewable. Claude can draft and
 ## Limits
 
 - **`save_items`** accepts at most 50 items per call.
-- **`search`** semantic mode caps at 20 results per call (default 10). Filter mode caps at 500 results (default 10). Journey listings (`itemType: "journey"`) return up to 100 per page (default 25); use `pageToken` to paginate.
-- **`list_branches`** returns up to 50 results per page (default 25). Use `pageToken` to paginate.
+- **`search`** semantic mode caps at 20 results per call (default 10). Filter mode caps at 500 results (default 10). Journey listings (`itemType: "journey"`) return up to 100 per page (default 25); use `pageToken` to paginate. When paginating, repeat every original parameter — including `workspaceId` and `maxResults` — alongside `pageToken`.
+- **`list_branches`** returns up to 50 results per page (default 25; out-of-range sizes are clamped). Use `pageToken` to paginate.
 - **Tokens** carry the user's identity; workspace access is verified at every call against your Avo workspace membership, so a token alone is not sufficient if you lose workspace access.
 
 ## FAQ
