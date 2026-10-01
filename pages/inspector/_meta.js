@@ -19,6 +19,7 @@ export default {
   },
   "connect-inspector-to-gtm": "Inspector GTM integration",
   "connect-inspector-to-segment": "Inspector Segment integration",
+  "connect-inspector-to-segment-gateway": "Inspector Segment gateway integration",
   "connect-inspector-to-rudderstack": "Inspector RudderStack integration",
   "connect-inspector-to-posthog": "Inspector PostHog integration",
   "connect-inspector-to-snowplow": "Inspector Snowplow SDK integration",
