@@ -80,21 +80,22 @@ A few things to know:
 
 The origin hint tells Avo which source an event came from, so Inspector can attribute events at a checkpoint to the right Avo source.
 
+Segment passes on the event it received, so the event's own version is that source's version. Avo uses it as the origin app version unless you set one to override it. With an origin hint, an event with no version anywhere is recorded without one.
+
 **Map the values to sources in Avo.** For each source, open its `Inspector setup` tab and add the hint values that name it under `Origin hints`. A value can belong to only one source.
 
 **On the gateway checkpoint's destination:**
 
 1. On the "Avo Inspector v2" destination's `Track Schema From Event` mapping, set `Origin Hint` to a label that names this Segment source, such as `ios-app`.
 2. If one source carries events from several apps or platforms, map a path instead, such as `$.context.app.name` or `$.context.library.name`.
-3. Set `Origin App Version` to that source's version, such as `$.context.app.version`.
-
-Either field replaces the app version from the mapping's `App Version` field and the destination's `App Version Property` setting. When an origin hint is set, events without an origin app version are recorded without a version.
+3. Leave `Origin App Version` empty to use the event's own version: the destination's `App Version Property` setting, then the mapping's `App Version` field. `App Version` reads `$.context.app.version`, which only mobile sources send, so for a web source set `App Version Property` to the event property that carries the version, such as `app_version`.
+4. Set `Origin App Version` only to read the version from somewhere else. When set, it replaces both of those.
 
 **On each Insert Function:**
 
 1. In the function's `Settings` tab, add a setting labelled `Avo Origin Hint`. Segment names it `avoOriginHint`.
 2. In the settings of each destination the function is connected to, give `Avo Origin Hint` the value that names that destination's Segment source, such as `ios-app`. You can edit `getOriginHint` in the code instead.
-3. Make `getOriginAppVersion` in the code return that source's version. Otherwise, events with an origin hint are recorded without one.
+3. The function uses the event's own version, `event.context.app.version`, which only mobile sources send. For a web source, edit `getOriginAppVersion` in the code to return the event property that carries the version, for example `return event.properties && event.properties.app_version;`. A value it returns overrides the event's own version.
 
 ## What Inspector inspects
 
