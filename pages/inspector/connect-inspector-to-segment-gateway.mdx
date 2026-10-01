@@ -1,0 +1,131 @@
+import { Callout } from 'nextra/components';
+
+# Inspect a Segment gateway
+
+When Segment sits in the middle of your pipeline, events can change after they leave your apps. Protocols Transformations rename events and properties, destination filters drop events, and each destination receives its own version of the data. Avo Inspector can check events at more than one point along that path, so you can see where a change happened rather than only that the data in a destination looks wrong.
+
+<Callout type="info" emoji="💡">
+  Gateways are in beta. Reach out at [support@avo.app](mailto:support@avo.app) to get access and provide feedback.
+</Callout>
+
+This guide is for a Segment workspace modelled as a **gateway** in Avo. If you only want to inspect the events one Segment source collects, follow the [Inspector Segment integration](/inspector/connect-inspector-to-segment) instead.
+
+## How it works
+
+In Avo, a gateway describes a central point that events pass through. Its **inputs** are the sources that send events into Segment, and its **outputs** are the destinations Segment sends events on to. Each place where Avo Inspector checks events is called a **checkpoint**. A Segment gateway has two kinds:
+
+- **The gateway checkpoint.** The "Avo Inspector v2" destination in Segment receives every track event as Segment receives it, after any source-scoped Protocols Transformations. It is a sibling of your other destinations, so it never sees what they receive.
+- **One checkpoint per output.** Avo generates a Segment [Destination Insert Function](https://segment.com/docs/connections/functions/insert-functions/) for each output. Attached to that output's destination, it inspects each track event after the destination's filters, its destination-scoped Protocols Transformations and, for Actions destinations, its mapping triggers. It runs before the destination's field mappings, so it never sees the mapped payload.
+
+Inspector checks track events. The function passes every other event type (identify, page, screen, group, alias and delete) on to the destination without inspecting it, and it passes track events on unchanged too: it only reads them and sends their schema to Avo.
+
+<Callout type="info" emoji="💡">
+  Inspector receives the names and types of event properties, not their values. The one exception is the gateway checkpoint's destination when you add an `Avo Inspector Public Encryption Key` to it: in development and staging, values are then sent end-to-end encrypted for [property value validation](/inspector/connect-inspector-to-segment#property-value-validation-optional). Leave the key empty if you don't want that.
+</Callout>
+
+## Before you begin
+
+- The gateway exists in your Avo tracking plan, with its inputs and outputs. To find it, open **Sources** in the sidebar and then the **Gateways** tab.
+- You can create Functions in your Segment workspace and edit the settings of the destinations you want to inspect.
+- Your Segment workspace has the version of the "Avo Inspector v2" destination with a **Gateway Support** setting. This version arrives with [an update to Segment's destination](https://github.com/segmentio/action-destinations/pull/4053). If you don't see Gateway Support in the destination's settings yet, the update hasn't reached your workspace.
+
+## Step 1. Open the gateway's Inspector setup
+
+1. In Avo, open **Sources** in the sidebar, then the **Gateways** tab, and select your gateway.
+2. Open the `Inspector setup` tab.
+3. Choose `Segment` as the sender.
+4. Copy the Inspector API key shown at the top of the tab. The gateway has one key for all of its checkpoints.
+
+Set up each environment (development, staging and production) separately, each with its own destination and functions.
+
+## Step 2. Add the destination for the gateway checkpoint
+
+1. In Segment, add the **Avo Inspector v2** destination to each source that sends to this gateway.
+2. Paste the Inspector API key into `Avo Inspector API Key`.
+3. Choose the `Environment`: `dev`, `staging` or `prod`.
+4. Make sure `Gateway Support` is on. It is on by default for new destinations. If you added the destination before the setting existed, turn it on.
+5. Set `Inspected Fields` to what you want to inspect. See [What Inspector inspects](#what-inspector-inspects) below. The default is `Everything`.
+6. Keep one `Track Schema From Event` mapping and leave its `Output Reference` field empty. An empty reference is what marks these events as the gateway checkpoint.
+
+<Callout type="warning">
+  Use a separate "Avo Inspector v2" destination for the gateway. A destination that inspects a regular Avo source must keep `Gateway Support` off.
+</Callout>
+
+## Step 3. Inspect each output with an Insert Function
+
+In Avo, the `Inspect each output` step of the `Inspector setup` tab lists one Insert Function per output, titled by the output's destination. Each function already contains the Inspector API key and that output's reference. Above the functions, choose:
+
+- the `Environment` the functions report to. It defaults to `Production`, so change it before copying the code if you are setting up development or staging;
+- what to `Inspect`. Pick the same choice as `Inspected Fields` on the destination, so the gateway and its outputs inspect the same fields.
+
+The functions are regenerated whenever you change either choice, so make both choices before copying any code.
+
+For each output:
+
+1. In Avo, expand the output's Insert Function and copy its code.
+2. In Segment's Functions catalog, choose `New Function`, select `Insert` and paste the code.
+3. Choose `Connect a destination` and attach the function to that output's destination.
+4. In the destination's `Functions` tab, turn on `Enable Function`.
+
+A few things to know:
+
+- **A destination takes one insert function.** If the destination already has one, move its code into the `applyYourInsertFunction` function in Avo's code. Avo inspects the track events your code returns.
+- **Every event type is passed through.** Segment blocks event types that an insert function has no handler for. Avo's function handles every type, so if your old function left out a handler to keep an event type away from the destination, throw `EventNotSupported` for that type in `applyYourInsertFunction`.
+- **Errors in your own code still apply.** If `applyYourInsertFunction` throws, the function fails as it would without Avo. Avo's inspection never throws and never changes the event.
+- **Storage destinations can't be inspected this way.** Segment doesn't allow insert functions on storage destinations such as warehouses.
+- **Execution time.** The function sends one request to Avo per track event and waits at most one second for it, well inside Segment's five-second limit for a function. Segment bills function execution time.
+- **Outputs without a reference.** An output created before output references existed shows no reference yet. Its function has an empty `AVO_OUTPUT_REFERENCE` and sends nothing to Avo. Contact [support@avo.app](mailto:support@avo.app) if you see this, and copy the regenerated function once the output has a reference.
+
+## Step 4. Set the origin hint (optional)
+
+The origin hint tells Avo which source an event came from, so Inspector can attribute events at a checkpoint to the right Avo source.
+
+**Map the values to sources in Avo.** For each source, open its `Inspector setup` tab and add the hint values that name it under `Origin hints`. A value can belong to only one source.
+
+**On the gateway checkpoint's destination:**
+
+1. On the "Avo Inspector v2" destination's `Track Schema From Event` mapping, set `Origin Hint` to a label that names this Segment source, such as `ios-app`.
+2. If one source carries events from several apps or platforms, map a path instead, such as `$.context.app.name` or `$.context.library.name`.
+3. Set `Origin App Version` to that source's version, such as `$.context.app.version`.
+
+Either field replaces the app version from the mapping's `App Version` field and the destination's `App Version Property` setting. When an origin hint is set, events without an origin app version are recorded without a version.
+
+**On each Insert Function:**
+
+1. In the function's `Settings` tab, add a setting labelled `Avo Origin Hint`. Segment names it `avoOriginHint`.
+2. In the settings of each destination the function is connected to, give `Avo Origin Hint` the value that names that destination's Segment source, such as `ios-app`. You can edit `getOriginHint` in the code instead.
+3. Make `getOriginAppVersion` in the code return that source's version. Otherwise, events with an origin hint are recorded without one.
+
+## What Inspector inspects
+
+A warehouse stores more than an event's properties: it also stores the event's context and envelope fields as columns. A gateway can inspect those too, named the way the warehouse names its columns. You choose this with `Inspected Fields` on the "Avo Inspector v2" destination, for the gateway checkpoint, and with `Inspect` in Avo, for the Insert Functions.
+
+| Choice | What Inspector inspects |
+| --- | --- |
+| Event properties | The event properties only. |
+| Event properties and context | Also every field in the event's `context`, such as `context_page_path` or `context_library_name`. |
+| Everything | Also `anonymous_id`, `user_id`, `id` (the message ID), `event`, `timestamp`, `original_timestamp`, `sent_at` and `received_at`. |
+
+How fields are named:
+
+- Context fields are flattened. Nested keys are joined with `_` and the name is prefixed with `context_`, so `context.page.path` becomes `context_page_path`.
+- camelCase becomes snake_case, and a run of capitals ends before its last capital, so `userAgentData` becomes `user_agent_data` and `ABTest` becomes `ab_test`.
+- Arrays in `context` are inspected as their JSON text. Envelope fields that are missing or `null` are skipped.
+- If an event property already has a column's name, Inspector inspects the event property.
+
+Only names and types are sent for these fields, never their values.
+
+<Callout type="warning">
+  Your tracking plan doesn't describe context and envelope fields yet, so with `Event properties and context` or `Everything` they appear in Inspector as properties that aren't in your plan. Choose `Event properties` if you only want the properties you track to be checked.
+</Callout>
+
+## Step 5. Check the events in Avo
+
+After the destination and the functions are enabled, the [Inspector Events view](/inspector/inspector-events-view) shows what Inspector observed at the gateway checkpoint and at each output, with event counts and issues per checkpoint. Development events appear within a couple of minutes. Production events can take up to 2 hours to appear. Make sure you are looking at the environment you set up.
+
+If you run into problems with your setup, reach out at [support@avo.app](mailto:support@avo.app).
+
+## Next steps
+
+- [Review Issues](/inspector/inspector-issues-view)
+- [Set up Alerts](/inspector/inspector-slack-alerts)
