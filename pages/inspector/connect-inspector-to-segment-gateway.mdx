@@ -19,6 +19,8 @@ In Avo, a gateway describes a central point that events pass through. Its **inpu
 
 Inspector checks track events. The function passes every other event type (identify, page, screen, group, alias and delete) on to the destination without inspecting it, and it passes track events on unchanged too: it only reads them and sends their schema to Avo.
 
+**Inspection never costs you an event.** If Avo is unreachable, slow or answers with an error, the function logs it and returns the event exactly as it would without Avo, after waiting at most one second for Avo. Only an error thrown by your own code in `applyYourInsertFunction` fails the function, as it would without Avo. The gateway checkpoint is a destination of its own, so a problem reaching Avo there never affects your other destinations.
+
 <Callout type="info" emoji="💡">
   An output checkpoint sees the destination's filters, not its mappings. For an Actions destination, the field mappings in the destination's `Mappings` tab run after the Insert Function, so a property they rename, reshape or drop isn't visible to Inspector. Mapping triggers do apply: an event that matches no mapping's trigger never reaches the function. The function sees each event once, even when several mappings send it.
 </Callout>
@@ -80,11 +82,18 @@ A few things to know:
 - **Execution time.** The function sends one request to Avo per track event and waits at most one second for it, well inside Segment's five-second limit for a function. Segment bills function execution time.
 - **Outputs without a reference.** An output created before output references existed shows no reference yet. Its function has an empty `AVO_OUTPUT_REFERENCE` and sends nothing to Avo. Contact [support@avo.app](mailto:support@avo.app) if you see this, and copy the regenerated function once the output has a reference.
 
-## Step 4. Set the origin hint (optional)
+## Step 4. Set the app version (web sources only)
 
-The origin hint tells Avo which source an event came from, so Inspector can attribute events at a checkpoint to the right Avo source.
+Avo records the app version of each event, so Inspector can tell releases apart. Segment passes on the event it received, so the version is the event's own.
 
-Segment passes on the event it received, so the event's own version is that source's version. Avo uses it as the origin app version unless you set one to override it. With an origin hint, an event with no version anywhere is recorded without one.
+- **Mobile sources:** nothing to do. Segment's mobile SDKs send the version in `context.app.version`, and Avo reads it from there.
+- **Web sources:** the browser SDK sends no app version, so tell Avo which event property holds it, such as `app_version`:
+  1. On the "Avo Inspector v2" destination, set `App Version Property` to that property's name.
+  2. In each Insert Function, edit `getAppVersion` to read that property first, for example `return (event.properties && event.properties.app_version) || (event.context && event.context.app && event.context.app.version);`. Like the destination, it then falls back to the event's `context.app.version`.
+
+## Step 5. Set the origin hint (optional)
+
+The origin hint tells Avo which source an event came from, so Inspector can attribute events at a checkpoint to the right Avo source. With an origin hint, an event with no app version is recorded without one.
 
 **Map the values to sources in Avo.** For each source, open its `Inspector setup` tab and add the hint values that name it under `Origin hints`. A value can belong to only one source.
 
@@ -92,14 +101,11 @@ Segment passes on the event it received, so the event's own version is that sour
 
 1. On the "Avo Inspector v2" destination's `Track Schema From Event` mapping, set `Origin Hint` to a label that names this Segment source, such as `ios-app`.
 2. If one source carries events from several apps or platforms, map a path instead, such as `$.context.app.name` or `$.context.library.name`.
-3. Leave `Origin App Version` empty to use the event's own version: the destination's `App Version Property` setting, then the mapping's `App Version` field. `App Version` reads `$.context.app.version`, which only mobile sources send, so for a web source set `App Version Property` to the event property that carries the version, such as `app_version`.
-4. Set `Origin App Version` only to read the version from somewhere else. When set, it replaces both of those.
 
 **On each Insert Function:**
 
 1. In the function's `Settings` tab, add a setting labelled `Avo Origin Hint`. Segment names it `avoOriginHint`.
 2. In the settings of each destination the function is connected to, give `Avo Origin Hint` the value that names that destination's Segment source, such as `ios-app`. You can edit `getOriginHint` in the code instead.
-3. The function uses the event's own version, `event.context.app.version`, which only mobile sources send. For a web source, edit `getOriginAppVersion` in the code to return the event property that carries the version, for example `return event.properties && event.properties.app_version;`. A value it returns overrides the event's own version.
 
 ## What Inspector inspects
 
@@ -124,7 +130,7 @@ Only names and types are sent for these fields, never their values.
   Your tracking plan doesn't describe context and envelope fields yet, so with `Event properties and context` or `Everything the warehouse stores` they appear in Inspector as properties that aren't in your plan. Choose `Event properties` if you only want the properties you track to be checked.
 </Callout>
 
-## Step 5. Check the events in Avo
+## Step 6. Check the events in Avo
 
 After the destination and the functions are enabled, the [Inspector Events view](/inspector/inspector-events-view) shows what Inspector observed at the gateway checkpoint and at each output, with event counts and issues per checkpoint. Development events appear within a couple of minutes. Production events can take up to 2 hours to appear. Make sure you are looking at the environment you set up.
 
