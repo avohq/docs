@@ -14,7 +14,7 @@ This guide is for a Segment workspace modelled as a **gateway** in Avo. If you o
 
 In Avo, a gateway describes a central point that events pass through. Its **inputs** are the sources that send events into Segment, and its **outputs** are the destinations Segment sends events on to. Each place where Avo Inspector checks events is called a **checkpoint**. A Segment gateway has two kinds:
 
-- **The gateway checkpoint.** The "Avo Inspector v2" destination in Segment receives every track event as Segment receives it, after any source-scoped Protocols Transformations. It is a sibling of your other destinations, so it never sees what they receive.
+- **The gateway checkpoint.** The "Avo Inspector v2" destination in Segment receives every track event as Segment receives it, after any source-scoped Protocols Transformations. It is a sibling of your other destinations, so it never sees the transformations specific to other destinations.
 - **One checkpoint per output.** Avo generates a Segment [Destination Insert Function](https://segment.com/docs/connections/functions/insert-functions/) for each output. Attached to that output's destination, it inspects each track event after the destination's filters, its destination-scoped Protocols Transformations and, for Actions destinations, its mapping triggers. It runs before the destination's field mappings, so it never sees the mapped payload.
 
 Inspector checks track events. The function passes every other event type (identify, page, screen, group, alias and delete) on to the destination without inspecting it, and it passes track events on unchanged too: it only reads them and sends their schema to Avo.
