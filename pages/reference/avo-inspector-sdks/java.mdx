@@ -1,3 +1,5 @@
+import { Callout } from 'nextra/components';
+
 # Avo Inspector Java SDK
 
 ## Quick Start Guide
@@ -6,7 +8,7 @@ Find the Quick Start Guide in our [GitHub repo](https://github.com/avohq/java-av
 
 ## Installation
 
-We host the library on JitPack.io, so
+The SDK requires Java 8 or newer. We host the library on JitPack.io, so
 
 add the following to the root build.gradle:
 
@@ -22,11 +24,28 @@ and:
 
 ```groovy
 dependencies {
-    debugImplementation 'com.github.avohq.java-avo-inspector:TAG'
+    implementation 'com.github.avohq:java-avo-inspector:TAG'
 }
 ```
 
-Use the latest GitHub release tag to get the latest version of the library.
+With Maven, add the JitPack repository and the dependency to the pom.xml:
+
+```xml
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
+<dependency>
+  <groupId>com.github.avohq</groupId>
+  <artifactId>java-avo-inspector</artifactId>
+  <version>TAG</version>
+</dependency>
+```
+
+Use the latest GitHub release tag (e.g. `2.0.0`) as `TAG` to get the latest version of the library.
 
 ## Import
 
@@ -34,6 +53,7 @@ Use the latest GitHub release tag to get the latest version of the library.
 import is.avo.inspector.AvoEventSchemaType;
 import is.avo.inspector.AvoInspector;
 import is.avo.inspector.AvoInspectorEnv;
+import is.avo.inspector.AvoInspectorOptions;
 ```
 
 ## Initialization
@@ -52,6 +72,39 @@ public AvoInspector(@NotNull String apiKey, @NotNull String appVersion, @NotNull
 > - `String appVersion` - app version to attribute the events to
 > - `String appName` - application name
 > - `AvoInspectorEnv env` - current environment: AvoInspectorEnv.Dev, AvoInspectorEnv.Staging or AvoInspectorEnv.Prod
+
+The constructor throws `IllegalArgumentException` when the API key or the app version is blank, or when the API key contains a control character other than tab.
+
+You can also build the instance with `AvoInspectorOptions`, which takes the batching options as well:
+
+```java
+AvoInspector avoInspector = new AvoInspector(AvoInspectorOptions.builder()
+        .apiKey("MY_API_KEY")
+        .env(AvoInspectorEnv.Prod)    // or a String: "dev", "staging" or "prod"
+        .appVersion("1.0.0")
+        .appName("My App Name")       // optional, defaults to ""
+        .batchSize(30)                // optional, default 30; always 1 in dev
+        .batchFlushSeconds(30)        // optional, default 30
+        .maxQueueSize(1000)           // optional, default 1000
+        .disableBatchTimer(false)     // optional, default false; set true in serverless functions
+        .build());
+```
+
+Create one instance per API key and app when your application starts, and share it. The SDK is safe to use from multiple threads; don't create an instance per request.
+
+### Environment
+
+If `env` is missing or `null`, or (when passed as a `String`) anything other than exactly `"dev"`, `"staging"` or `"prod"`, the SDK does not throw. It falls back to dev and always prints this to stderr:
+
+```
+Avo Inspector: Invalid env "<value>", falling back to "dev".
+```
+
+A dev instance turns logging on for the whole process and sends every event immediately, one request per event (`batchSize` is always 1 in dev).
+
+<Callout type="warning" emoji="⚠️">
+  Always pass the env explicitly in production, e.g. `AvoInspectorEnv.Prod`. Without it your production instance runs as dev: it logs every event and sends one request per event.
+</Callout>
 
 ## Sending event schemas to Avo Inspector
 
@@ -129,16 +182,92 @@ It's handy to extract the schema from your event properties with `extractSchema(
 
 See [this](/inspector/sdk#standalone-usage) for details about event schema structure and schema types.
 
+## Flushing and shutdown
+
+Outside dev, events are buffered in memory and sent in batches: when `batchSize` events are buffered, when the oldest buffered event is `batchFlushSeconds` old, or when you call `flush()`. In dev every event is sent immediately. When more than `maxQueueSize` events are buffered the oldest are dropped.
+
+Nothing is written to disk and failed requests are not retried. The SDK's threads are daemon threads, so they don't keep the JVM alive. **Call `flush()` before your process exits, and before a serverless handler returns**, or buffered and in-flight events are lost.
+
+```java
+void flush();                // sends buffered events, waits up to 10 seconds for in-flight requests
+void flush(long timeoutMs);  // same, with a custom timeout in milliseconds
+```
+
+`flush()` never throws and the instance stays usable afterwards. In serverless functions also set `disableBatchTimer(true)`.
+
+```java
+void destroy();
+```
+
+`destroy()` stops the instance: buffered events are discarded unsent, in-flight requests are abandoned and later track calls do nothing. Call `flush()` first if you want buffered events sent.
+
+As a safety net, a JVM shutdown hook flushes every live instance, waiting up to 10 seconds in total. It runs when the JVM exits normally (for example when `main` returns or `System.exit` is called) or receives SIGTERM. It does not run on SIGKILL, `Runtime.halt()` or a JVM crash, and a serverless runtime may freeze or kill the process without running it, so an explicit `flush()` is still required.
+
+In a servlet container or any other environment that unloads and reloads your application, call `flush()` and then `destroy()` on every instance when your application stops, for example in `ServletContextListener.contextDestroyed`. Otherwise the SDK keeps sending buffered events after your application is unloaded, and its shutdown hook and threads keep the old class loader in memory.
+
+> Example usage:
+>
+> ```java
+> @Override
+> public void contextDestroyed(ServletContextEvent sce) {
+>     avoInspector.flush();
+>     avoInspector.destroy();
+> }
+> ```
+
+## Custom `Inspector` implementations
+
+All of the methods above are also on the `Inspector` interface, which `AvoInspector` implements. The methods added in 2.0 are default methods, so implementations written for 1.x keep compiling, but their defaults don't do the work:
+
+- `flush()`, `flush(long timeoutMs)` and `destroy()` do nothing by default.
+- The `trackSchemaFromEvent` overloads that take a `streamId` and `TrackOptions` call the 1.x methods by default, dropping the stream id and options.
+
+If your `Inspector` wraps an `AvoInspector`, override and forward these methods. Otherwise buffered events are never flushed and the wrapped instance is never stopped.
+
+```java
+class MyInspector implements Inspector {
+    private final AvoInspector inner;
+
+    MyInspector(AvoInspector inner) {
+        this.inner = inner;
+    }
+
+    // ... the 1.x methods, forwarded to inner ...
+
+    @Override
+    public @NotNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@NotNull String eventName, @Nullable Map<String, ?> eventProperties,
+                                                                         @Nullable String streamId, @Nullable TrackOptions options) {
+        return inner.trackSchemaFromEvent(eventName, eventProperties, streamId, options);
+    }
+
+    // ... and the other stream id / TrackOptions overloads, the same way ...
+
+    @Override
+    public void flush() {
+        inner.flush();
+    }
+
+    @Override
+    public void flush(long timeoutMs) {
+        inner.flush(timeoutMs);
+    }
+
+    @Override
+    public void destroy() {
+        inner.destroy();
+    }
+}
+```
+
 ## Other methods
 
 ### 1. Extract schema from event properties
 
-```
-java @NonNull Map<String, AvoEventSchemaType> extractSchema(@Nullable Object eventProperties);`kotlin
-fun extractSchema(eventProperties: Any?): Map<String, AvoEventSchemaType>
+```java
+@NonNull Map<String, AvoEventSchemaType> extractSchema(@Nullable Object eventProperties);
 ```
 
-This is the method used by `trackSchemaFromEvent` internally. Extracts event schema in form of `Map<String, AvoEventSchemaType>` from an event properties object.
+This is the method used by `trackSchemaFromEvent` internally. Extracts event schema in form of `Map<String, AvoEventSchemaType>` from an event properties object. It never throws and makes no network calls.
 
 > #### Parameters:
 >
@@ -163,8 +292,10 @@ This is the method used by `trackSchemaFromEvent` internally. Extracts event sch
 static void enableLogging(boolean enable); // static method on AvoInspector
 ```
 
-`enableLogging` controls printing of tracked event schemas and other helpful information to logcat. Enabled by default in development environments.
+`enableLogging` controls printing of tracked event schemas and other helpful information to stdout. It is enabled by default in dev and disabled in staging and prod. The flag is process-wide: it applies to every instance, and each new instance sets it from its own env. Do not enable it in production. Logs show event names, property names and types, never property values.
+
+Some messages are always printed to stderr, whatever this flag: failed sends, non-200 responses, dropped events, internal errors and configuration warnings such as an invalid env.
 
 > #### Parameters:
 >
-> - `boolean enable` - sets whether **Avo Inspector SDK** will print logs to the logcat.
+> - `boolean enable` - sets whether **Avo Inspector SDK** will print logs to stdout.
