@@ -20,6 +20,10 @@ In Avo, a gateway describes a central point that events pass through. Its **inpu
 Inspector checks track events. The function passes every other event type (identify, page, screen, group, alias and delete) on to the destination without inspecting it, and it passes track events on unchanged too: it only reads them and sends their schema to Avo.
 
 <Callout type="info" emoji="💡">
+  An output checkpoint sees the destination's filters, not its mappings. For an Actions destination, the field mappings in the destination's `Mappings` tab run after the Insert Function, so a property they rename, reshape or drop isn't visible to Inspector. Mapping triggers do apply: an event that matches no mapping's trigger never reaches the function. The function sees each event once, even when several mappings send it.
+</Callout>
+
+<Callout type="info" emoji="💡">
   Inspector receives the names and types of event properties, not their values. The one exception is the gateway checkpoint's destination when you add an `Avo Inspector Public Encryption Key` to it: in development and staging, values are then sent end-to-end encrypted for [property value validation](/inspector/connect-inspector-to-segment#property-value-validation-optional). Leave the key empty if you don't want that.
 </Callout>
 
