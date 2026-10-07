@@ -51,7 +51,8 @@ Set up each environment (development, staging and production) separately, each w
 3. Choose the `Environment`: `dev`, `staging` or `prod`.
 4. Make sure `Gateway Support` is on. It is on by default for new destinations. If you added the destination before the setting existed, turn it on.
 5. Set `Gateway Inspection Scope` to what you want to inspect. See [What Inspector inspects](#what-inspector-inspects) below. New destinations default to `Everything the warehouse stores`. A destination added before the setting existed shows no value and inspects only the event properties until you choose one.
-6. Keep one `Track Schema From Event` mapping and leave its `Output Reference` field empty. An empty reference is what marks these events as the gateway checkpoint.
+6. If your `Track Schema From Event` mapping was created before Gateway Inspection Scope existed, set its `Context`, `Original Timestamp`, `Sent At` and `Received At` fields to their default paths (`$.context`, `$.originalTimestamp`, `$.sentAt` and `$.receivedAt`). Without them, the context and timestamp columns aren't inspected. New mappings have them already.
+7. Keep one `Track Schema From Event` mapping and leave its `Output Reference` field empty. An empty reference is what marks these events as the gateway checkpoint.
 
 <Callout type="warning">
   Use a separate "Avo Inspector v2" destination for the gateway. A destination that inspects a regular Avo source must keep `Gateway Support` off.
