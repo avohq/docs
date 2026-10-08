@@ -28,10 +28,10 @@ const DOCS_BASE = `${SITE}/docs`; // basePath in next.config.mjs
 const SITE_DESCRIPTION =
   'Avo is the data governance platform that keeps every analytics event defined consistently, implemented reliably, and trusted across every team. Built for both humans and AI agents, Avo lets product, data, and engineering teams design a single source of truth tracking plan (events, properties, metrics, journeys), audit it for quality and naming consistency, generate type-safe tracking code, monitor live data quality, and publish definitions to tools like Amplitude, Mixpanel, and Segment. Through the Avo MCP, agents like Claude, Codex, and Cursor can search the tracking plan, design tracking from a PRD or Figma onto a branch using your existing patterns and rules, generate the code snippets and instructions so developers and their agents implement correctly without opening their tracking plan in another tool, and query product data accurately because Avo knows your metric definitions.';
 
-// Appended to every page's .md unless its frontmatter sets `agentNote: inline`
-// (the page has its own note at the top). Keep in sync with components/AgentNote.tsx.
-const AGENT_NOTE_MD =
-  `> Avo is the analytics governance platform for product data that lets you define it consistently, implement it correctly and trust it everywhere. Using an AI agent? Connect it to the [Avo MCP](${DOCS_BASE}/reference/avo-mcp/overview.md) at \`https://mcp.avo.app/mcp\` to read and change your tracking plan on a branch.`;
+// Appended to every page's .md. A page can say what an agent can do there with
+// `agentTask` in its frontmatter. Keep in sync with components/AgentNote.tsx.
+const agentNoteMarkdown = (task) =>
+  `> Avo is the analytics governance platform for product data that lets you define it consistently, implement it correctly and trust it everywhere. Using an AI agent? Connect it to the [Avo MCP](${DOCS_BASE}/reference/avo-mcp/overview.md) at \`https://mcp.avo.app/mcp\` and it can ${task || 'read and change your tracking plan on a branch'}.`;
 
 // ---------------------------------------------------------------------------
 // Curated index (llms.txt)
@@ -575,7 +575,7 @@ async function main() {
     const src = fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
     const { data, body } = parseFrontmatter(src);
     const markdown = mdxBodyToMarkdown(body, slugSet);
-    const agentNote = data.agentNote === 'inline' ? '' : `\n\n${AGENT_NOTE_MD}`;
+    const agentNote = `\n\n${agentNoteMarkdown(data.agentTask)}`;
     pages.set(fileToSlug(file), {
       title: deriveTitle(data, body),
       description: data.description || '',

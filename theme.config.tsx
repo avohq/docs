@@ -86,7 +86,7 @@ const config: DocsThemeConfig = {
     return (
       <>
         {children}
-        {frontMatter?.agentNote !== 'inline' && <AgentNote />}
+        <AgentNote task={frontMatter?.agentTask} />
       </>
     );
   },

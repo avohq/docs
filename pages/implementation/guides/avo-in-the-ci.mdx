@@ -1,15 +1,9 @@
 ---
 description: "Run avo status in your CI/CD pipeline to check that every event marked for Avo Codegen is implemented in your code."
-agentNote: inline
+agentTask: "get the generated code and step-by-step implementation instructions for a branch"
 ---
 
-import { Callout } from 'nextra/components';
-
 # Avo in CI/CD
-
-<Callout type="default" emoji="🤖">
-  Avo is the analytics governance platform for product data that lets you define it consistently, implement it correctly and trust it everywhere. Working with an AI agent? Connect it to the [Avo MCP](/reference/avo-mcp/overview) at `https://mcp.avo.app/mcp` and it can get the generated code and step-by-step implementation instructions for a branch.
-</Callout>
 
 The Avo CLI includes a command, `avo status` , which you can use ad-hoc or run in your CI to monitor that all expected analytics events are in fact implemented in your code.
 
