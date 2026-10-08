@@ -115,9 +115,7 @@ Call \***\*one of the methods\*\*** in this section every time an event is track
 ### Option 1
 
 ```java
-@NonNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@NonNull String eventName, @Nullable JSONObject eventProperties);
-// or
-@NonNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@NonNull String eventName, @Nullable Map<String, ?> eventProperties);
+@NonNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@Nullable InspectorEvent event);
 ```
 
 > Example usage:
@@ -125,16 +123,25 @@ Call \***\*one of the methods\*\*** in this section every time an event is track
 > ```java
 > void trackEvent(@NonNull String eventName, @Nullable Map<String, ?> eventParams) {
 >     tracker.track(eventName, eventParams);
->     this.avoInspector.trackSchemaFromEvent(eventName, eventParams);
+>     this.avoInspector.trackSchemaFromEvent(InspectorEvent.builder()
+>             .eventName(eventName)
+>             .eventProperties(eventParams)
+>             .build());
 > }
 > ```
 
-Extracts event schema from event properties represented by the second parameter (`JSONObject` or `Map<String, ?>`) and sends the schema to **Avo** for analysis.
+Extracts the event schema from the event's properties and sends the schema to **Avo** for analysis. Since 2.0.0 this is the only form of `trackSchemaFromEvent`: the 1.x `trackSchemaFromEvent(eventName, eventProperties)` and `trackSchemaFromEvent(eventName, eventProperties, target)` are removed.
 
 > #### Parameters:
 >
-> - `String eventName` - event name, sometimes referred as event type.
-> - `@Nullable JSONObject eventProperties` or `@Nullable Map<String, ?> eventProperties` - actual event properties, which will be converted to event schema on the device and the event schema will be sent to **Avo**. Resulting keys will be JSON fields keys and resulting values will be JSON fields values types converted to schema types.
+> - `InspectorEvent event` - built with `InspectorEvent.builder()`. Every value is optional:
+>   - `eventName(String)` - event name, sometimes referred as event type. A `null`, empty or whitespace-only name is sent as `Missing Event Name`.
+>   - `eventProperties(Map<String, ?>)` or `eventProperties(JSONObject)` - actual event properties, which will be converted to event schema and the event schema will be sent to **Avo**. Resulting keys will be JSON fields keys and resulting values will be JSON fields values types converted to schema types.
+>   - `streamId(String)` - any correlation id you choose.
+>   - `outputReference(String)`, `originHint(String)`, `originAppVersion(String)` - the gateway coordinates. With a gateway-scoped API key, always pass `originHint` and `originAppVersion`. Pass `outputReference` when the payload was bound for a specific output; leave it out for an observation at the gateway checkpoint.
+>   - `target(AvoInspectorTarget)` - sends the event to another Avo source.
+>
+> A `null` event sends nothing and returns an empty schema.
 >
 > ##### Example format:
 >
@@ -189,11 +196,11 @@ Outside dev, events are buffered in memory and sent in batches: when `batchSize`
 Nothing is written to disk and failed requests are not retried. The SDK's threads are daemon threads, so they don't keep the JVM alive. **Call `flush()` before your process exits, and before a serverless handler returns**, or buffered and in-flight events are lost.
 
 ```java
-void flush();                // sends buffered events, waits up to 10 seconds for in-flight requests
-void flush(long timeoutMs);  // same, with a custom timeout in milliseconds
+boolean flush();                // sends buffered events, waits up to 10 seconds for in-flight requests
+boolean flush(long timeoutMs);  // same, with a custom timeout in milliseconds
 ```
 
-`flush()` never throws and the instance stays usable afterwards. In serverless functions also set `disableBatchTimer(true)`.
+`flush()` returns `true` when nothing is left buffered, waiting or in flight: drained, not delivered (failed sends and dropped events are reported on stderr). It never throws and the instance stays usable afterwards. In serverless functions also set `disableBatchTimer(true)`.
 
 ```java
 void destroy();
@@ -217,12 +224,9 @@ In a servlet container or any other environment that unloads and reloads your ap
 
 ## Custom `Inspector` implementations
 
-All of the methods above are also on the `Inspector` interface, which `AvoInspector` implements. The methods added in 2.0 are default methods, so implementations written for 1.x keep compiling, but their defaults don't do the work:
+`AvoInspector` implements the `Inspector` interface: `trackSchemaFromEvent(InspectorEvent)`, `trackSchema`, `extractSchema`, `flush()`, `flush(long timeoutMs)` and `destroy()`. In 2.0 the interface has no default methods, so an implementation written for 1.x no longer compiles: it must implement the 2.0 interface. Constructors of `AvoInspector` are unchanged.
 
-- `flush()`, `flush(long timeoutMs)` and `destroy()` do nothing by default.
-- The `trackSchemaFromEvent` overloads that take a `streamId` and `GatewayOptions` call the 1.x methods by default, dropping the stream id and options.
-
-If your `Inspector` wraps an `AvoInspector`, override and forward these methods. Otherwise buffered events are never flushed and the wrapped instance is never stopped.
+If your `Inspector` wraps an `AvoInspector`, forward every method, `flush` and `destroy` included. Otherwise buffered events are never flushed and the wrapped instance is never stopped.
 
 ```java
 class MyInspector implements Inspector {
@@ -232,24 +236,21 @@ class MyInspector implements Inspector {
         this.inner = inner;
     }
 
-    // ... the 1.x methods, forwarded to inner ...
-
     @Override
-    public @NotNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@NotNull String eventName, @Nullable Map<String, ?> eventProperties,
-                                                                         @Nullable String streamId, @Nullable GatewayOptions options) {
-        return inner.trackSchemaFromEvent(eventName, eventProperties, streamId, options);
+    public @NotNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@Nullable InspectorEvent event) {
+        return inner.trackSchemaFromEvent(event);
     }
 
-    // ... and the other stream id / GatewayOptions overloads, the same way ...
+    // ... trackSchema and extractSchema, forwarded to inner the same way ...
 
     @Override
-    public void flush() {
-        inner.flush();
+    public boolean flush() {
+        return inner.flush();
     }
 
     @Override
-    public void flush(long timeoutMs) {
-        inner.flush(timeoutMs);
+    public boolean flush(long timeoutMs) {
+        return inner.flush(timeoutMs);
     }
 
     @Override
