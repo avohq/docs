@@ -1,6 +1,16 @@
+---
+description: "Avo Inspector checks the analytics events your apps actually send against your tracking plan and flags issues, without collecting user data. Start here to set it up."
+agentNote: inline
+---
+
+import { Callout } from 'nextra/components';
 import PageLink, { TwoCol } from '../../components/PageLink';
 
 # Use Inspector to improve your tracking plan health
+
+<Callout type="default" emoji="🤖">
+  Avo is the analytics governance platform for product data that lets you define it consistently, implement it correctly and trust it everywhere. Working with an AI agent? Connect it to the [Avo MCP](/reference/avo-mcp/overview) at `https://mcp.avo.app/mcp` and it can read and change the tracking plan that Inspector checks your live events against.
+</Callout>
 
 ## What is Avo Inspector
 
@@ -92,7 +102,6 @@ The Inspector events view provides a report on all event tracking Inspector has 
   href={'/inspector/inspector-events-view'}
 />
 
-
 > The production environment in Inspector is designed to handle large amounts of data and has up to 2 hours delay from receiving events to displaying them on a dashboard.
 
 > Events on dev and staging have no delay in processing and will be shown on the dashboard immediately.
@@ -132,7 +141,7 @@ The issues view is great for finding data quality issues that are important to y
 Whether your data quality issue is because the implementation is incorrect compared to the tracking plan or the tracking plan is incorrect compared to the data coming in, Inspector provides you with tool to fix your issues.
 
 <PageLink
-  image="docs/images/svg/analyticsmanager.svg"
+  image="/docs/images/svg/analyticsmanager.svg"
   title="Fix Issues"
   description="How to fix issues found with Inspector"
   href="docs/inspector/inspector-fix-issues"

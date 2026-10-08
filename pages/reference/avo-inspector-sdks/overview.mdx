@@ -1,6 +1,15 @@
+---
+description: "Avo Inspector SDKs analyze the analytics events your app sends, without collecting the data itself, so Avo can check them against your tracking plan. Setup guides for each platform."
+agentNote: inline
+---
+
 import { Callout } from 'nextra/components'
 
 # Avo Inspector SDK overview
+
+<Callout type="default" emoji="🤖">
+  Avo is the analytics governance platform for product data that lets you define it consistently, implement it correctly and trust it everywhere. Working with an AI agent? Connect it to the [Avo MCP](/reference/avo-mcp/overview) at `https://mcp.avo.app/mcp` and it can read and change the tracking plan that Inspector checks your live events against.
+</Callout>
 
 Avo Inspector analyzes the analytics events sent from your app, without collecting the actual data (not yet another tool to add to your privacy policy). Based on that analysis Avo automatically builds a single source of truth tracking plan, covering all your products and platforms, giving you a complete overview of which is tracking what, and which is not.
 
@@ -97,7 +106,6 @@ The printed logs are the following, in the chronological order:
 - `Avo Inspector: batch sent successfully.`: when the event schemas are successfully sent
 
 <Callout type="info">When setting up Inspector make sure that you see the `Avo Inspector: batch sent successfully` log. That means that your setup is most likely correct.</Callout>
-
 
 ## Batching
 
