@@ -220,7 +220,7 @@ In a servlet container or any other environment that unloads and reloads your ap
 All of the methods above are also on the `Inspector` interface, which `AvoInspector` implements. The methods added in 2.0 are default methods, so implementations written for 1.x keep compiling, but their defaults don't do the work:
 
 - `flush()`, `flush(long timeoutMs)` and `destroy()` do nothing by default.
-- The `trackSchemaFromEvent` overloads that take a `streamId` and `TrackOptions` call the 1.x methods by default, dropping the stream id and options.
+- The `trackSchemaFromEvent` overloads that take a `streamId` and `GatewayOptions` call the 1.x methods by default, dropping the stream id and options.
 
 If your `Inspector` wraps an `AvoInspector`, override and forward these methods. Otherwise buffered events are never flushed and the wrapped instance is never stopped.
 
@@ -236,11 +236,11 @@ class MyInspector implements Inspector {
 
     @Override
     public @NotNull Map<String, AvoEventSchemaType> trackSchemaFromEvent(@NotNull String eventName, @Nullable Map<String, ?> eventProperties,
-                                                                         @Nullable String streamId, @Nullable TrackOptions options) {
+                                                                         @Nullable String streamId, @Nullable GatewayOptions options) {
         return inner.trackSchemaFromEvent(eventName, eventProperties, streamId, options);
     }
 
-    // ... and the other stream id / TrackOptions overloads, the same way ...
+    // ... and the other stream id / GatewayOptions overloads, the same way ...
 
     @Override
     public void flush() {
