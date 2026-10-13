@@ -354,6 +354,9 @@ function imageToMarkdown(tag) {
 function transformTextSegment(text, slugSet) {
   let out = text;
 
+  // Strip MDX comments ({/* ... */}): editor notes, not page content.
+  out = out.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+
   // Strip ESM import/export statements (these only appear outside code fences).
   // Match only ESM-shaped imports (`import x from '...'` / `import '...'`) so a
   // prose line that merely starts with the word "import" isn't dropped.
@@ -427,9 +430,34 @@ function transformTextSegment(text, slugSet) {
   return out;
 }
 
+/**
+ * <Tabs items={['A', 'B']}> with one <Tabs.Tab> per item -> a "### A" / "### B"
+ * heading per tab, so the markdown keeps each tab's label. Runs over the whole
+ * body because a tab's content can span code fences.
+ */
+function tabsToHeadings(body) {
+  let labels = [];
+  return body
+    .split('\n')
+    .map((line) => {
+      const open = line.match(/^\s*<Tabs\b[^>]*\bitems=\{\[([^\]]*)\]\}[^>]*>\s*$/);
+      if (open) {
+        labels = [...open[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]);
+        return '';
+      }
+      if (/^\s*<Tabs\.Tab\b[^>]*>\s*$/.test(line)) {
+        const label = labels.shift();
+        return label ? `### ${label}` : '';
+      }
+      if (/^\s*<\/Tabs(?:\.Tab)?>\s*$/.test(line)) return '';
+      return line;
+    })
+    .join('\n');
+}
+
 /** Convert an MDX body to clean markdown, leaving fenced code blocks untouched. */
 function mdxBodyToMarkdown(body, slugSet) {
-  const lines = body.split('\n');
+  const lines = tabsToHeadings(body).split('\n');
   const segments = [];
   let buf = [];
   let inFence = false;

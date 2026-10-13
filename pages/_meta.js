@@ -5,6 +5,7 @@ export default {
   "audit": "Tracking Plan Audit",
   "data-design": "Tracking Plan Management",
   "inspector": "Tracking Observability",
+  "gateways": "Gateways (closed beta)",
   "publishing": "Import, Export and Publishing",
   "implementation": "Type safe code, unit tests and CI",
   "workspace-management": "Managing your workspace",

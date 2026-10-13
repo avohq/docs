@@ -1,0 +1,70 @@
+---
+title: Gateway transformations
+description: "Describe what your tag manager or CDP changes before each destination: renamed events, removed or required properties, pinned values and more."
+---
+
+import { Callout } from 'nextra/components'
+
+# Transformations
+
+_Describe what your gateway changes at each checkpoint, in the same terms as the rest of your tracking plan._
+
+<Callout type="info" emoji="🚧">
+  Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
+</Callout>
+
+<Callout type="default" emoji="🤖">
+  Working with an AI agent? Connect it to the [Avo MCP](/reference/avo-mcp/overview) at `https://mcp.avo.app/mcp` and it can write these transformations for you on a branch and tell you what an event looks like after them.
+</Callout>
+
+A transformation records what a gateway does to events at one checkpoint. Avo applies the transformations in the order an event travels, so it can work out what each checkpoint should receive.
+
+## Where a transformation can sit
+
+| Checkpoint | Use it for |
+| --- | --- |
+| An input | What the gateway does to events from one source as they arrive, such as renaming a property one app sends differently |
+| The gateway | What happens to every event before it fans out to the outputs |
+| An output | What one destination receives, such as Meta's naming or the properties Pinterest doesn't need |
+
+An event's shape at an output is the result of every transformation on its path: its source, then the input it entered through, then the gateway, then that output. A checkpoint with no transformation passes events through unchanged.
+
+## What a transformation can change
+
+**Event names.** Send an event under a different name from a checkpoint on, for example `Order Completed` sent to Meta as `Purchase`. Renames are set per event.
+
+**Properties.** Each property rule applies to every event that passes through that checkpoint and carries the property. A rule can:
+
+- set the property's name as sent, for example `transaction_id` sent as `order_id`
+- set its presence: always sent, sometimes sent or never sent
+- pin it to one value
+- disallow values that the property otherwise allows
+- require it to match a regex
+- stop sending it from this checkpoint on
+
+**Bundles.** Attach a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles) at a checkpoint to send its properties from there on, or detach one to stop sending them.
+
+## What a property rule means
+
+Every property rule says what it does to events that enter the checkpoint. The Transformations tab shows it next to the rule.
+
+| Rule | In the app | What it does |
+| --- | --- | --- |
+| **Add** | Added at this stage | The gateway adds the property to events that don't already send it. Use it for values the gateway fills in, such as a click id read from a cookie. |
+| **Tighten** | Tightened where already sent | Only constrains the property on events that already send it, for example by pinning a value or disallowing values. It never adds the property. |
+| **Require** | Required of every entering event | Every event entering the checkpoint must send the property. It never adds it, so the sources that feed the checkpoint have to. |
+
+{/* REVIEW before publish: rule intents (enrich, tighten, require) merged on 6 Oct; confirm the MCP describe_tool lists the `intent` field in production before publishing. */}
+
+For example, if a Meta audience is built on `tier`, a Require rule on `tier` at the Meta output says that every product view reaching Meta must carry it. If one of the sources feeding the gateway doesn't send `tier`, that's the gap to fix at the source.
+
+## Removing a property versus clearing a rule
+
+These are different:
+
+- **Stop sending** a property at a checkpoint, and it's not sent from that checkpoint on.
+- **Clear** a property's rule at a checkpoint, and the checkpoint goes back to whatever it inherits from earlier on the path.
+
+## Changing transformations
+
+Transformations are written through the [Avo MCP](/reference/avo-mcp/overview) on a branch, by you or your agent, and reviewed and merged like any other change. The branch diff shows each changed rule as before and after. See [Set up a gateway](/gateways/set-up-a-gateway) for example prompts.

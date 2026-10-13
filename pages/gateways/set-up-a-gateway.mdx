@@ -1,0 +1,63 @@
+---
+title: Set up a gateway
+description: "Model your server-side GTM container, Segment, RudderStack or custom event pipeline in Avo by asking your AI agent to set it up through the Avo MCP."
+---
+
+import { Callout } from 'nextra/components'
+
+# Set up a gateway
+
+_Model your tag manager, CDP or event pipeline in Avo with your agent, through the Avo MCP._
+
+<Callout type="info" emoji="🚧">
+  Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
+</Callout>
+
+<Callout type="default" emoji="🤖">
+  Working with an AI agent? Connect it to the [Avo MCP](/reference/avo-mcp/overview) at `https://mcp.avo.app/mcp` and it can create this gateway for you on a branch, from your description or from your existing tags.
+</Callout>
+
+Gateways are created and changed through the [Avo MCP](/reference/avo-mcp/overview), so you set one up by asking your agent (Claude, Cursor, Codex or another MCP client) to do it on a branch. The app shows the gateway for review, and you merge the branch as usual.
+
+## Before you start
+
+- [Connect your agent to the Avo MCP](/reference/avo-mcp/overview).
+- Make sure the sources and destinations the gateway connects already exist in your tracking plan. Your agent can create missing ones in the same branch.
+- Start small: one gateway, the sources that feed it, and one output, such as Meta. You don't need your whole tracking plan in Avo first. Start with the events that pass through the gateway.
+
+{/* REVIEW before publish: product sign-off on "You don't need your whole tracking plan in Avo first". */}
+
+## 1. Create the gateway
+
+Ask your agent to create the gateway on a new branch, with an input for each source that feeds it and an output for each destination it sends to. For example:
+
+> On a new branch in Avo, create a gateway called "Server-side GTM" with the Web, iOS and Android sources as inputs and Meta, Google Ads and Pinterest as outputs.
+
+Avo gives each output an **output reference**, such as `meta-23ieql`. You'll paste it into your gateway setup later.
+
+## 2. Describe what the gateway changes
+
+Ask your agent to add the [transformations](/gateways/transformations) for each output. Describe them the way you'd explain your tags to a colleague:
+
+> At the Pinterest output, send `transaction_id` as `order_id`. At every ad platform output, stop sending `search_query`. At the Meta output, require `tier` on product views.
+
+Your agent can also read your existing setup and write the transformations for you. If it can reach your tag manager or CDP, for example through that tool's own MCP or API, or from an export of your container, ask it to compare what each tag sends with your tracking plan and describe the differences as transformations.
+
+{/* REVIEW before publish: test this two-way flow end to end (container to Avo, and Avo to tags) and name the GTM and Segment tools we recommend. */}
+
+## 3. Review and merge
+
+Open the branch in Avo. The gateway appears on the **Sources** page under **Gateways**, and the branch diff lists every transformation as a rule, before and after. Open the gateway's **Transformations** tab to check what each output will receive. When it looks right, merge the branch.
+
+## 4. Send events to Inspector
+
+Add Avo Inspector to your gateway so Avo can check what actually leaves each checkpoint. Follow [Send gateway events to Inspector](/gateways/connect-to-inspector) for your gateway type.
+
+## Keeping the gateway up to date
+
+When your tags change, update the gateway the same way: ask your agent to change the transformations on a branch. When the plan changes, your agent can read the new definitions through the Avo MCP and update your tags to match.
+
+## Limits during the closed beta
+
+- Gateways are created and edited through the Avo MCP only. The app shows them read-only.
+- Gateways are only available in workspaces in the closed beta. A write to a workspace without access returns an error.

@@ -55,6 +55,11 @@ const redirects = [
     basePath: false,
   },
   {
+    source: '/inspector/connect-inspector-to-segment-gateway',
+    destination: '/gateways/connect-to-inspector',
+    permanent: false,
+  },
+  {
     source: '/datascope/state-of-tracking',
     destination: '/inspector/start-using-inspector',
     permanent: true,
