@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
 import SignIn from './components/SignIn';
+import AgentNote from './components/AgentNote';
 
 interface LogoProps {
   width: number;
@@ -33,7 +34,8 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/avohq/docs/tree/main',
   head: function Head() {
-    const { title } = useConfig();
+    const { title, frontMatter } = useConfig();
+    const description: string | undefined = frontMatter?.description;
     const router = useRouter();
     const baseUrl = 'https://www.avo.app/docs';
     const fullUrl =
@@ -65,12 +67,26 @@ const config: DocsThemeConfig = {
         <meta name="twitter:creator" content="@avohq" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={fullUrl} />
+        {title && <meta property="og:title" content={title} />}
+        {description && <meta name="description" content={description} />}
+        {description && (
+          <meta property="og:description" content={description} />
+        )}
         <link rel="canonical" href={fullUrl} />
         <link rel="alternate" type="text/markdown" href={markdownUrl} />
         <meta property="twitter:image" content={ogUrl} />
         <meta property="og:image" content={ogUrl} />
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Avo Docs" />
+      </>
+    );
+  },
+  main: function Main({ children }) {
+    const { frontMatter } = useConfig();
+    return (
+      <>
+        {children}
+        <AgentNote task={frontMatter?.agentTask} />
       </>
     );
   },

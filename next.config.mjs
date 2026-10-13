@@ -60,6 +60,21 @@ const redirects = [
     permanent: true,
   },
   {
+    source: '/inspector/what-is-inspector',
+    destination: '/inspector/start-using-inspector',
+    permanent: true,
+  },
+  {
+    source: '/data-design/best-practices',
+    destination: '/data-design/best-practices/naming-conventions',
+    permanent: false,
+  },
+  {
+    source: '/reference/avo-mcp',
+    destination: '/reference/avo-mcp/overview',
+    permanent: false,
+  },
+  {
     source: '/datascope/state-of-tracking/android',
     destination: '/implementation/inspector/sdk/android',
     permanent: true,
