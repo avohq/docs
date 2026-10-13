@@ -1,4 +1,5 @@
 ---
+agentTask: "set up gateways, write transformations and tell you what any event looks like at each checkpoint"
 title: Gateways
 description: "Check what your tag manager, CDP or event pipeline sends to Meta, Google Ads and other destinations, and find out at which step an event broke."
 ---
@@ -11,10 +12,6 @@ _Bring your tag manager, CDP or event pipeline into your tracking plan, and chec
 
 <Callout type="info" emoji="🚧">
   Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
-</Callout>
-
-<Callout type="default" emoji="🤖">
-  Working with an AI agent? Connect it to the [Avo MCP](/reference/avo-mcp/overview) at `https://mcp.avo.app/mcp` and it can set up gateways, write transformations and tell you what any event looks like at each checkpoint.
 </Callout>
 
 Your tracking plan describes the events your sources send. Most events then pass through something before they reach a destination: a server-side Google Tag Manager container, a CDP such as Segment or RudderStack, or a service you built yourself. That system renames events, drops properties, adds others and sends a different version of each event to each destination.
@@ -36,7 +33,7 @@ flowchart LR
 ```
 
 - **Inputs** are the sources that send events into the gateway, such as your web and app sources.
-- **Outputs** are the destinations the gateway sends events to, such as Meta, Google Ads or Pinterest. Each output gets an **output reference**, a short id like `meta-23ieql` that you paste into your gateway setup so Avo knows which output an event left from.
+- **Outputs** are the destinations the gateway sends events to, such as Meta, Google Ads or Pinterest. Each output gets an **output reference**, a short id like `meta-7f3k2q` that you paste into your gateway setup so Avo knows which output an event left from.
 - **Checkpoints** are the points along that route where Avo can describe and check an event: each input, the gateway itself and each output.
 - **Transformations** describe what the gateway changes. They can sit on the gateway, on an input or on an output. For example, an output to Pinterest can send `transaction_id` as `order_id`, and an output to Meta can stop sending a property that holds personal data.
 
@@ -47,8 +44,6 @@ Read more in [Transformations](/gateways/transformations).
 - **Describes each checkpoint.** From your plan and the gateway's transformations, Avo works out what each checkpoint should receive: which events, which properties, and whether each property is always sent, sometimes sent or never sent. That's the contract for that checkpoint.
 - **Checks real traffic at each checkpoint.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something broke. See [Send gateway events to Inspector](/gateways/connect-to-inspector).
 - **Answers agents.** Through the [Avo MCP](/reference/avo-mcp/overview), an agent can ask what an event or property looks like at any checkpoint, and set up and change gateways on a branch.
-
-{/* REVIEW before publish: "raises issues at the checkpoint" depends on gateway issues being live for beta workspaces (quarantine lift). */}
 
 ## Where to find gateways in Avo
 

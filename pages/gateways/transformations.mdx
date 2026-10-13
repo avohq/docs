@@ -1,4 +1,5 @@
 ---
+agentTask: "write these transformations for you on a branch and tell you what an event looks like after them"
 title: Gateway transformations
 description: "Describe what your tag manager or CDP changes before each destination: renamed events, removed or required properties, pinned values and more."
 ---
@@ -11,10 +12,6 @@ _Describe what your gateway changes at each checkpoint, in the same terms as the
 
 <Callout type="info" emoji="🚧">
   Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
-</Callout>
-
-<Callout type="default" emoji="🤖">
-  Working with an AI agent? Connect it to the [Avo MCP](/reference/avo-mcp/overview) at `https://mcp.avo.app/mcp` and it can write these transformations for you on a branch and tell you what an event looks like after them.
 </Callout>
 
 A transformation records what a gateway does to events at one checkpoint. Avo applies the transformations in the order an event travels, so it can work out what each checkpoint should receive.
@@ -50,13 +47,22 @@ Every property rule says what it does to events that enter the checkpoint. The T
 
 | Rule | In the app | What it does |
 | --- | --- | --- |
-| **Add** | Added at this stage | The gateway adds the property to events that don't already send it. Use it for values the gateway fills in, such as a click id read from a cookie. |
-| **Tighten** | Tightened where already sent | Only constrains the property on events that already send it, for example by pinning a value or disallowing values. It never adds the property. |
-| **Require** | Required of every entering event | Every event entering the checkpoint must send the property. It never adds it, so the sources that feed the checkpoint have to. |
-
-{/* REVIEW before publish: rule intents (enrich, tighten, require) merged on 6 Oct; confirm the MCP describe_tool lists the `intent` field in production before publishing. */}
+| **Add** (`enrich` in the MCP) | Added at this stage | The gateway adds the property to events that don't already send it. Use it for values the gateway fills in, such as a click id read from a cookie. |
+| **Tighten** (`tighten`) | Tightened where already sent | Only constrains the property on events that already send it, for example by pinning a value or disallowing values. It never adds the property. |
+| **Require** (`require`) | Required of every entering event | Every event entering the checkpoint must send the property. It never adds it, so the sources that feed the checkpoint have to. |
 
 For example, if a Meta audience is built on `tier`, a Require rule on `tier` at the Meta output says that every product view reaching Meta must carry it. If one of the sources feeding the gateway doesn't send `tier`, that's the gap to fix at the source.
+
+## Send only the events and properties you list
+
+By default a checkpoint passes on every event and property it receives, apart from the ones a rule stops. For an output that should only receive a known set, such as an ad platform, switch the checkpoint to an allowlist:
+
+- **Events.** Only the events you list pass the checkpoint, and each listed event brings all its variants. An event added to the plan later doesn't reach the output until you list it. Renaming an event doesn't list it.
+- **Properties.** Only properties that a rule names, or that come in an attached bundle, pass the checkpoint. A Tighten rule with no constraints keeps a property on the events that already send it. A property added to the plan later is dropped until you list it.
+
+For example, ask your agent:
+
+> At the Meta output, only send `purchase`, `add_to_cart` and `ViewContent`. Only send `value`, `currency`, `contents` and `em`, and say that the gateway adds `event_id` to every event.
 
 ## Removing a property versus clearing a rule
 
@@ -64,6 +70,11 @@ These are different:
 
 - **Stop sending** a property at a checkpoint, and it's not sent from that checkpoint on.
 - **Clear** a property's rule at a checkpoint, and the checkpoint goes back to whatever it inherits from earlier on the path.
+
+## Limits during the closed beta
+
+- Inspector checks which events and properties reach a checkpoint, whether each property is present and its type. Pinned values, disallowed values and regex rules are part of the checkpoint's description, but Inspector doesn't check them at gateway checkpoints yet.
+- A property rule applies to every event at its checkpoint that carries the property. You can't yet make an exception for one event.
 
 ## Changing transformations
 
