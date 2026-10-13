@@ -36,7 +36,7 @@ Avo gives each output an **output reference**, such as `meta-7f3k2q`. You'll pas
 
 Ask your agent to add the [transformations](/gateways/transformations) for each output. Describe them the way you'd explain your tags to a colleague:
 
-> At the Pinterest output, send `transaction_id` as `order_id`. At every ad platform output, stop sending `search_query`. At the Meta output, require `tier` on product views.
+> At the Pinterest output, send `transaction_id` as `order_id`. Stop sending `search_query` to every ad platform. Require `tier` on product views sent to Meta.
 
 Your agent can also read your existing setup and write the transformations for you. If it can reach your tag manager or CDP, for example through that tool's own MCP or API, or from an export of your container, ask it to compare what each tag sends with your tracking plan and describe the differences as transformations.
 

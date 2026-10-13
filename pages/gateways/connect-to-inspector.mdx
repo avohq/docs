@@ -93,6 +93,8 @@ var inspector = new AvoInspector(new AvoInspectorOptions
     AppName = "my-gateway",
 });
 
+// eventProperties, gatewayProperties and transformedProperties are IDictionary<string, object?>
+
 // At the gateway: the event after the gateway's own transformation, before fan-out
 var originHint = eventProperties.TryGetValue("platform", out var platform) ? platform as string : null;
 var originAppVersion = eventProperties.TryGetValue("appVersion", out var appVersion) ? appVersion as string : null;

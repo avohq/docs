@@ -433,26 +433,58 @@ function transformTextSegment(text, slugSet) {
 /**
  * <Tabs items={['A', 'B']}> with one <Tabs.Tab> per item -> a "### A" / "### B"
  * heading per tab, so the markdown keeps each tab's label. Runs over the whole
- * body because a tab's content can span code fences.
+ * body because a tab's content can span code fences, but leaves tags inside a
+ * fenced block alone. The opener may wrap over several lines.
  */
 function tabsToHeadings(body) {
+  const out = [];
   let labels = [];
-  return body
-    .split('\n')
-    .map((line) => {
-      const open = line.match(/^\s*<Tabs\b[^>]*\bitems=\{\[([^\]]*)\]\}[^>]*>\s*$/);
-      if (open) {
-        labels = [...open[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]);
-        return '';
-      }
-      if (/^\s*<Tabs\.Tab\b[^>]*>\s*$/.test(line)) {
-        const label = labels.shift();
-        return label ? `### ${label}` : '';
-      }
-      if (/^\s*<\/Tabs(?:\.Tab)?>\s*$/.test(line)) return '';
-      return line;
-    })
-    .join('\n');
+  let opener = null; // lines of a <Tabs ...> opener that hasn't closed yet
+  let fence = null;
+
+  for (const line of body.split('\n')) {
+    const fenceMatch = line.match(/^\s*(```+|~~~+)/);
+    if (fence) {
+      if (fenceMatch && fenceMatch[1][0] === fence[0] && fenceMatch[1].length >= fence.length) fence = null;
+      out.push(line);
+      continue;
+    }
+    if (opener) {
+      opener.push(line);
+      if (!line.includes('>')) continue;
+      const items = opener.join(' ').match(/\bitems=\{\[([^\]]*)\]\}/);
+      labels = items ? [...items[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]) : [];
+      opener = null;
+      out.push('');
+      continue;
+    }
+    if (fenceMatch) {
+      fence = fenceMatch[1];
+      out.push(line);
+      continue;
+    }
+    if (/^\s*<Tabs(?:\s|>|$)/.test(line)) {
+      opener = [line];
+      if (!line.includes('>')) continue;
+      const items = line.match(/\bitems=\{\[([^\]]*)\]\}/);
+      labels = items ? [...items[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]) : [];
+      opener = null;
+      out.push('');
+      continue;
+    }
+    if (/^\s*<Tabs\.Tab\b[^>]*>\s*$/.test(line)) {
+      const label = labels.shift();
+      out.push(label ? `### ${label}` : '');
+      continue;
+    }
+    if (/^\s*<\/Tabs(?:\.Tab)?>\s*$/.test(line)) {
+      out.push('');
+      continue;
+    }
+    out.push(line);
+  }
+  if (opener) out.push(...opener); // unclosed opener: leave it as written
+  return out.join('\n');
 }
 
 /** Convert an MDX body to clean markdown, leaving fenced code blocks untouched. */
