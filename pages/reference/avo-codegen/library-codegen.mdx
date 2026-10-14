@@ -2,7 +2,7 @@
 
 Avo can emit generated code in two shapes for Kotlin, Swift, and TypeScript sources: the default **single-source** output (one file per source) and the **library mode** output that splits the runtime from the per-source types. Both modes are supported — they serve different use cases and you can generate either from the same source.
 
-Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types. If that library is shared between repositories, see [section 4](#4-sharing-one-library-interface-across-repositories) for how to stop each repo regenerating it.
+Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types. If that library is shared between repositories, see [section 4](#4-sharing-one-library-interface-across-repositories) for how to stop each repo regenerating it. If another module uses the Swift or Kotlin app file, see [section 5](#5-using-the-app-file-from-another-module).
 
 ---
 
@@ -319,6 +319,7 @@ try {
 4. **TypeScript: how custom destinations are wired.** Custom destinations are passed in the `destinations` map of the runtime config, keyed by `DestinationKey`, instead of as separate `Avo` constructor arguments. All-or-nothing — provide an implementation for every `DestinationKey`, or omit `destinations` entirely and fan out manually. The `AvoCustomDestination` interface itself has the same shape as the single-source custom destination.
 5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
 6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
+7. **Swift and Kotlin: the app file is `internal`.** The event types, `AvoTypes`, `AppSystemProperties`, `initAvo` and, in Kotlin, `AvoTrackingPlanConfig` are visible only inside the module the app file is compiled into. To use them from another module, see [section 5](#5-using-the-app-file-from-another-module).
 
 
 ---
@@ -376,3 +377,55 @@ In a monorepo with a single `avo.json`, put the same keys on the individual `sou
 - **`avo.json` conflicts:** if the two sides disagree on `libraryInterfaceFileFilter`, your current branch's value is kept and the discarded one is printed.
 - **Invalid values** are rejected by every command that reads `avo.json`.
 - **Which sources can share one interface:** the library file has no source-specific ids or keys, but its `AvoEnv` cases come from the source's destination environments — share it between repos pulling the same source, or sources with an identical set of destination environments.
+
+---
+
+## 5. Using the app file from another module
+
+In library mode, the Swift and Kotlin app file is generated `internal`. That covers the event types, the `AvoTypes` namespace, `AppSystemProperties`, the `initAvo` extension and, in Kotlin, `AvoTrackingPlanConfig`. `internal` means they're visible only inside the module the file is compiled into: a Swift module or target, or a Kotlin Gradle module. The library file isn't affected (`Avo`, `AvoEvent`, `AvoEnv` and the rest of the runtime stay public), and neither is TypeScript output.
+
+- **The app file and the code that tracks events are in the same module:** nothing changes.
+- **A host app imports two modules that each contain an app file:** their declarations no longer collide. Before, the host got `'AvoTypes' is ambiguous for type lookup` in Swift and `Overload resolution ambiguity` in Kotlin.
+- **Code in another module uses the app file**, for example a host app that constructs events from a feature module's app file: that code stops compiling after the next `avo pull`. List what it needs in `libraryInterfacePublicItems`.
+
+### Keeping chosen items public
+
+Add `libraryInterfacePublicItems` to the source's entry in `avo.json` (Avo CLI X.Y.Z+):
+
+```json
+{
+  "sources": [
+    {
+      "id": "...",
+      "name": "iOS",
+      "path": "Sources/Analytics/Avo.swift",
+      "actionId": "...",
+      "branchId": "...",
+      "updatedAt": "...",
+      "libraryInterfacePublicItems": ["LoginSuccessEvent", "AvoTypes.Platform", "AppSystemProperties", "initAvo"]
+    }
+  ]
+}
+```
+
+Each entry is a name exactly as it appears in the generated app file:
+
+| Entry | Makes public |
+|---|---|
+| An event type, e.g. `LoginSuccessEvent` | That event, so another module can construct it and pass it to `process` |
+| `AvoTypes.<Name>`, e.g. `AvoTypes.Platform` | One type inside `AvoTypes`, such as an allowed-values enum, an object or a property group |
+| `AppSystemProperties` | The system properties, so another module can call `configure(...)` |
+| `initAvo` | The `initAvo` extension, so another module can initialize Avo |
+
+You don't need to list the types a listed item uses. A public declaration can't use an internal type, so codegen also makes public every `AvoTypes` type in a listed item's signature, including types nested inside objects and property groups. For example, listing `LoginSuccessEvent` also makes public the enums and objects its properties use. Once anything inside `AvoTypes` is public, the namespace is public too, and the types inside it that nothing needs are generated `internal`.
+
+`initAvo` takes the system properties as parameters and configures `AppSystemProperties` itself, so listing `initAvo` is enough to initialize Avo from another module. List `AppSystemProperties` only if another module also calls `configure(...)` directly.
+
+### Good to know
+
+- **Names that match nothing** don't fail the pull. Each one prints `[avo] Warning: libraryInterfacePublicItems entry '<name>' for source "<source>" does not match any declaration in the generated app file and was ignored.` A type name without the `AvoTypes.` prefix, such as `Platform`, is one of these. A source with `libraryInterfaceFileFilter: "interface-only"` generates no app file, so it doesn't warn.
+- **Invalid values** (anything other than a list of non-empty strings) are rejected by every command that reads `avo.json`: `Invalid libraryInterfacePublicItems on source '<name>' — must be an array of non-empty strings`.
+- **Per source only.** The key is read from `sources` entries, not from the top level of `avo.json`, and `avo pull` has no flag for it.
+- **Older CLIs** don't send the key, so everything in the app file stays `internal`.
+- **Swift and Kotlin library mode only.** In single-source output and in TypeScript the key has no effect and produces no warning.
+- **Kotlin 1.x hosts.** Say a host file star-imports two library packages (`import com.acme.checkout.*`, `import com.acme.search.*`) and uses a name that is public in one and internal in the other. The Kotlin 1.x compiler reports `Unresolved reference`. Kotlin 2.0+ resolves the name to the public declaration, and explicit imports (`import com.acme.search.AvoTypes`) work with either compiler.
