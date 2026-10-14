@@ -41,7 +41,7 @@ An input transformation doesn't change what the source sends. The event on the s
 - require it to match a regex
 - stop sending it from this checkpoint on
 
-**Bundles.** Attach a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles) at a checkpoint to send its properties from there on, or detach one to stop sending them.
+**Bundles.** Attach a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles) at a checkpoint to send all its properties from there on, including ones no rule names, or detach one to stop sending them.
 
 ## What a property rule means
 
@@ -70,7 +70,7 @@ For example, ask your agent:
 
 These are different:
 
-- **Stop sending** a property at a checkpoint, and it's not sent from that checkpoint on.
+- **Stop sending** a property at a checkpoint, and it's not sent from that checkpoint on. That holds when the property arrives inside a bundle too: the bundle's other properties are still sent.
 - **Clear** a property's rule at a checkpoint, and the checkpoint goes back to whatever it inherits from earlier on the path.
 
 ## Limits during the closed beta
