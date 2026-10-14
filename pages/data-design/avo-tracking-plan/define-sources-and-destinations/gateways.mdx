@@ -37,12 +37,12 @@ flowchart LR
 - **Checkpoints** are the points along that route where Avo can describe and check an event: each input, the gateway itself and each output.
 - **Transformations** describe what the gateway changes. They can sit on the gateway, on an input or on an output. For example, an output to Pinterest can send `transaction_id` as `order_id`, and an output to Meta can stop sending a property that holds personal data.
 
-Read more in [Transformations](/gateways/transformations).
+Read more in [Transformations](/data-design/avo-tracking-plan/define-sources-and-destinations/gateways/transformations).
 
 ## What Avo does with a gateway
 
 - **Describes each checkpoint.** From your plan and the gateway's transformations, Avo works out what each checkpoint should receive: which events, which properties, and whether each property is always sent, sometimes sent or never sent. That's the contract for that checkpoint.
-- **Checks real traffic at each checkpoint.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something broke, so you know where it broke, not just that it broke. See [Send gateway events to Inspector](/gateways/connect-to-inspector).
+- **Checks real traffic at each checkpoint.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something broke, so you know where it broke, not just that it broke. See [Configuring Inspector Gateways](/inspector/configuring-inspector-sources/configuring-gateways).
 - **Answers agents.** Through the [Avo MCP](/reference/avo-mcp/overview), an agent can ask what an event or property looks like at any checkpoint, and set up and change gateways on a branch.
 
 ## Where to find gateways in Avo
@@ -57,6 +57,6 @@ Gateways are created and changed through the Avo MCP, by you or your agent. The 
 
 ## Get started
 
-1. [Set up a gateway](/gateways/set-up-a-gateway) with your agent through the Avo MCP.
-2. [Send gateway events to Inspector](/gateways/connect-to-inspector) from your server-side GTM container, web GTM container, Segment, RudderStack or C# service.
+1. [Set up a gateway](/data-design/avo-tracking-plan/define-sources-and-destinations/gateways/set-up-a-gateway) with your agent through the Avo MCP.
+2. [Configuring Inspector Gateways](/inspector/configuring-inspector-sources/configuring-gateways) from your server-side GTM container, web GTM container, Segment, RudderStack or C# service.
 3. Start with one output, such as Meta, and add the rest once events arrive.

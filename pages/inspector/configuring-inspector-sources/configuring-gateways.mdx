@@ -1,12 +1,12 @@
 ---
 agentTask: "look up each output's reference and tell you what every checkpoint should receive"
-title: Send gateway events to Inspector
+title: Configuring Inspector Gateways
 description: "Check what your server-side GTM, web GTM, Segment, RudderStack or C# gateway actually sends to each destination with Avo Inspector."
 ---
 
 import { Callout, Tabs } from 'nextra/components'
 
-# Send gateway events to Inspector
+# Configuring Inspector Gateways
 
 _Add Avo Inspector at the gateway and at each output, so Avo can check what each checkpoint actually receives._
 
@@ -19,7 +19,7 @@ Inspector checks that the events your gateway handles match the design in your t
 - **At the gateway**: one checkpoint that sees every event after the gateway's own transformations, before anything output-specific happens. Leave the output reference empty here.
 - **At each output**: one checkpoint per destination that sees the event after that output's transformations. Set the output reference to that output's reference, such as `meta-7f3k2q`.
 
-One Inspector API key covers the whole gateway. Find it in Avo on the **Sources** page, under **Gateways**: open the gateway and go to the **Inspector setup** tab. The tab also lists each output's reference and shows these steps for your gateway type.
+Start by [setting up the gateway](/data-design/avo-tracking-plan/define-sources-and-destinations/gateways/set-up-a-gateway) in your tracking plan. One Inspector API key covers the whole gateway. Find it in Avo on the **Sources** page, under **Gateways**: open the gateway and go to the **Inspector setup** tab. The tab also lists each output's reference and shows these steps for your gateway type.
 
 ## Tell Avo which source an event came from
 
