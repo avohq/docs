@@ -26,6 +26,8 @@ A transformation records what a gateway does to events at one checkpoint. Avo ap
 
 An event's shape at an output is the result of every transformation on its path: its source, then the input it entered through, then the gateway, then that output. A checkpoint with no transformation passes events through unchanged.
 
+An input transformation doesn't change what the source sends. The event on the source still says what developers should send. If a source should stop sending a property, change the event on that source instead of adding a rule at the input.
+
 ## What a transformation can change
 
 **Event names.** Send an event under a different name from a checkpoint on, for example `Order Completed` sent to Meta as `Purchase`. Renames are set per event.
