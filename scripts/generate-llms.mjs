@@ -445,7 +445,7 @@ function tabsToHeadings(body) {
   for (const line of body.split('\n')) {
     const fenceMatch = line.match(/^\s*(```+|~~~+)/);
     if (fence) {
-      if (fenceMatch && fenceMatch[1][0] === fence[0] && fenceMatch[1].length >= fence.length) fence = null;
+      if (closesFence(line, fence)) fence = null;
       out.push(line);
       continue;
     }
@@ -487,6 +487,12 @@ function tabsToHeadings(body) {
   return out.join('\n');
 }
 
+/** A closing fence uses the opening character, is at least as long, and has nothing after it. */
+function closesFence(line, fence) {
+  const m = line.match(/^\s*(`+|~+)\s*$/);
+  return Boolean(m) && m[1][0] === fence[0] && m[1].length >= fence.length;
+}
+
 /** Convert an MDX body to clean markdown, leaving fenced code blocks untouched. */
 function mdxBodyToMarkdown(body, slugSet) {
   const lines = tabsToHeadings(body).split('\n');
@@ -505,9 +511,9 @@ function mdxBodyToMarkdown(body, slugSet) {
     if (!inFence && m) {
       flush('text');
       inFence = true;
-      fence = m[2][0];
+      fence = m[2];
       buf.push(line);
-    } else if (inFence && line.trim().startsWith(fence)) {
+    } else if (inFence && closesFence(line, fence)) {
       buf.push(line);
       flush('code');
       inFence = false;
