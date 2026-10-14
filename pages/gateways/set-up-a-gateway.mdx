@@ -22,8 +22,6 @@ Gateways are created and changed through the [Avo MCP](/reference/avo-mcp/overvi
 - Make sure the sources and destinations the gateway connects already exist in your tracking plan. Your agent can create missing ones in the same branch.
 - Start small: one gateway, the sources that feed it, and one output, such as Meta. You don't need your whole tracking plan in Avo first. Start with the events that pass through the gateway.
 
-{/* REVIEW before publish: product sign-off on "You don't need your whole tracking plan in Avo first". */}
-
 ## 1. Create the gateway
 
 Ask your agent to create the gateway on a new branch, with an input for each source that feeds it and an output for each destination it sends to. For example:
@@ -38,9 +36,7 @@ Ask your agent to add the [transformations](/gateways/transformations) for each 
 
 > At the Pinterest output, send `transaction_id` as `order_id`. Stop sending `search_query` to every ad platform. Require `tier` on product views sent to Meta.
 
-Your agent can also read your existing setup and write the transformations for you. If it can reach your tag manager or CDP, for example through that tool's own MCP or API, or from an export of your container, ask it to compare what each tag sends with your tracking plan and describe the differences as transformations.
-
-{/* REVIEW before publish: test this two-way flow end to end (container to Avo, and Avo to tags) and name the GTM and Segment tools we recommend. */}
+Your agent can also write the transformations from your existing setup. Give it an export of your container (in GTM, **Admin** > **Export Container**), or access to your tag manager or CDP through that tool's own MCP or API. Ask it to compare what each tag sends with your tracking plan and describe the differences as transformations. Check the result on the branch before you merge.
 
 ## 3. Review and merge
 
@@ -52,7 +48,7 @@ Add Avo Inspector to your gateway so Avo can check what actually leaves each che
 
 ## Keeping the gateway up to date
 
-When your tags change, update the gateway the same way: ask your agent to change the transformations on a branch. When the plan changes, your agent can read the new definitions through the Avo MCP and update your tags to match.
+When your tags change, update the gateway the same way: ask your agent to change the transformations on a branch. When the plan changes, your agent can read the new definitions through the Avo MCP and tell you which tags to change, or change them itself if it can reach your tag manager.
 
 ## Limits during the closed beta
 

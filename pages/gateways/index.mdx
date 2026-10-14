@@ -8,7 +8,7 @@ import { Callout } from 'nextra/components'
 
 # Gateways
 
-_Bring your tag manager, CDP or event pipeline into your tracking plan, and check what each destination receives._
+_Bring your tag manager, CDP or event pipeline into your tracking plan, and check that what each destination receives matches the design._
 
 <Callout type="info" emoji="🚧">
   Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
@@ -42,7 +42,7 @@ Read more in [Transformations](/gateways/transformations).
 ## What Avo does with a gateway
 
 - **Describes each checkpoint.** From your plan and the gateway's transformations, Avo works out what each checkpoint should receive: which events, which properties, and whether each property is always sent, sometimes sent or never sent. That's the contract for that checkpoint.
-- **Checks real traffic at each checkpoint.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something broke. See [Send gateway events to Inspector](/gateways/connect-to-inspector).
+- **Checks real traffic at each checkpoint.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something broke, so you know where it broke, not just that it broke. See [Send gateway events to Inspector](/gateways/connect-to-inspector).
 - **Answers agents.** Through the [Avo MCP](/reference/avo-mcp/overview), an agent can ask what an event or property looks like at any checkpoint, and set up and change gateways on a branch.
 
 ## Where to find gateways in Avo

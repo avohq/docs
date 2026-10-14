@@ -14,10 +14,10 @@ _Add Avo Inspector at the gateway and at each output, so Avo can check what each
   Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
 </Callout>
 
-Inspector compares the events your gateway handles with your tracking plan. You add it in two kinds of places:
+Inspector checks that the events your gateway handles match the design in your tracking plan. You add it at two kinds of checkpoint:
 
-- **At the gateway**: one inspection point that sees every event after the gateway's own transformations, before anything output-specific happens. Leave the output reference empty here.
-- **At each output**: one inspection point per destination that sees the event after that output's transformations. Set the output reference to that output's reference, such as `meta-7f3k2q`.
+- **At the gateway**: one checkpoint that sees every event after the gateway's own transformations, before anything output-specific happens. Leave the output reference empty here.
+- **At each output**: one checkpoint per destination that sees the event after that output's transformations. Set the output reference to that output's reference, such as `meta-7f3k2q`.
 
 One Inspector API key covers the whole gateway. Find it in Avo on the **Sources** page, under **Gateways**: open the gateway and go to the **Inspector setup** tab. The tab also lists each output's reference and shows these steps for your gateway type.
 
@@ -56,7 +56,7 @@ Events sent while you test in GTM Preview are recorded as development.
 
 1. **Copy the key** from the Inspector setup tab.
 2. **Add the destination.** In Segment, add the **Avo Inspector v2** destination to each source that sends to this gateway. Paste the key into **Avo Inspector API Key** and choose the **Environment** (dev, staging or prod). Make sure **Gateway Support** is on. It's on by default for new destinations, so turn it on if you added the destination earlier.
-3. **Inspect at the gateway.** Keep one **Track Schema From Event** mapping and leave its **Output Reference** empty. This inspection point sees every track event as Segment receives it, before any destination's own mappings or filters.
+3. **Inspect at the gateway.** Keep one **Track Schema From Event** mapping and leave its **Output Reference** empty. This checkpoint sees every track event as Segment receives it, before any destination's own mappings or filters.
 4. **Set the origin hint.** On that mapping, set **Origin Hint** to a label that names this Segment source, such as `ios-app`. If one source carries events from several apps or platforms, map a path instead, such as `$.context.app.name`. Set **Origin App Version** to that source's version, such as `$.context.app.version`. Either field replaces the destination's **App Version Property** setting.
 
 <Callout type="info">
