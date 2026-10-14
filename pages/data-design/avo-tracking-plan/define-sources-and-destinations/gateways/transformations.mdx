@@ -73,6 +73,16 @@ These are different:
 - **Stop sending** a property at a checkpoint, and it's not sent from that checkpoint on.
 - **Clear** a property's rule at a checkpoint, and the checkpoint goes back to whatever it inherits from earlier on the path.
 
+## Say why a rule exists
+
+Any rule can carry a short reason: why the gateway does this, in words the next person to read it will understand. Hover a rule on the Transformations tab to read its reason, with who last updated it and when. A rule without one says so.
+
+Reasons are written through the [Avo MCP](/reference/avo-mcp/overview) on a branch, like the rules themselves, and the branch diff shows a changed reason word by word. For example, ask your agent:
+
+> At the Meta output, stop sending `content_category` and give the reason: Meta rejects it on server events.
+
+A reason is most useful on a rule that removes something, so nobody mistakes a deliberate drop for a mistake and adds the property back. A checkpoint can also carry one reason for the whole stage. It shows in the branch diff and in what your agent reads, but not on the Transformations tab yet.
+
 ## Limits during the closed beta
 
 - Inspector checks which events and properties reach a checkpoint, whether each property is present and its type. Pinned values, disallowed values and regex rules are part of the checkpoint's description, but Inspector doesn't check them at gateway checkpoints yet.
