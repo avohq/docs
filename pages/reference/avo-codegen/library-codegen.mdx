@@ -375,7 +375,7 @@ In a monorepo with a single `avo.json`, put the same `libraryInterface` object o
 - **Stale files are reported, never deleted.** After a filter change, `avo pull` warns `[avo] Warning: <file> is no longer generated here because of the current libraryInterfaceFileFilter…` for each file it used to write, on every pull until you remove it.
 - **`avo.json` conflicts:** if the two sides disagree on the file filter, your current branch's value is kept and the discarded one is printed.
 - **Invalid values** are rejected by every command that reads `avo.json`, and so are unknown keys inside `libraryInterface`.
-- **The flat keys from Avo CLI 3.6.0 still work.** Avo CLI 3.6.0 reads these settings as top-level or per-source `libraryInterfaceFileFilter` and `libraryInterfaceSharedModule`, and newer versions keep reading them. You can mix the two forms across levels (flat at the top level, `libraryInterface` on a source), but not at the same level: `Set either libraryInterface or libraryInterfaceFileFilter on source '<name>' in avo.json, not both`. The `libraryInterface` object needs Avo CLI X.Y.Z+.
+- **The flat keys from Avo CLI 3.6.0 still work.** Avo CLI 3.6.0 reads these settings as top-level or per-source `libraryInterfaceFileFilter` and `libraryInterfaceSharedModule`, and newer versions keep reading them. You can mix the two forms across levels (flat at the top level, `libraryInterface` on a source), but not at the same level: `Set either libraryInterface or libraryInterfaceFileFilter on source '<name>' in avo.json, not both`. The `libraryInterface` object needs Avo CLI 3.7.0+.
 - **Which sources can share one interface:** the library file has no source-specific ids or keys, but its `AvoEnv` cases come from the source's destination environments — share it between repos pulling the same source, or sources with an identical set of destination environments.
 
 ---
@@ -390,7 +390,7 @@ In library mode, the Swift and Kotlin app file is generated `internal`. That cov
 
 ### Keeping chosen items public
 
-Add `libraryInterface.publicItems` to the source's entry in `avo.json` (Avo CLI X.Y.Z+). It takes up to 1,000 names:
+Add `libraryInterface.publicItems` to the source's entry in `avo.json` (Avo CLI 3.7.0+). It takes up to 1,000 names:
 
 ```json
 {
