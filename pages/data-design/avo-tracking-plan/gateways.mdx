@@ -37,7 +37,7 @@ flowchart LR
 - **Checkpoints** are the points along that route where Avo can describe and check an event: each input, the gateway itself and each output.
 - **Transformations** describe what the gateway changes. They can sit on the gateway, on an input or on an output. For example, an output to Pinterest can send `transaction_id` as `order_id`, and an output to Meta can stop sending a property that holds personal data.
 
-Read more in [Transformations](/data-design/avo-tracking-plan/define-sources-and-destinations/gateways/transformations).
+Read more in [Transformations](/data-design/avo-tracking-plan/gateways/transformations).
 
 ## What Avo does with a gateway
 
@@ -57,6 +57,6 @@ Gateways are created and changed through the Avo MCP, by you or your agent. The 
 
 ## Get started
 
-1. [Set up a gateway](/data-design/avo-tracking-plan/define-sources-and-destinations/gateways/set-up-a-gateway) with your agent through the Avo MCP.
+1. [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway) with your agent through the Avo MCP.
 2. [Configuring Inspector Gateways](/inspector/configuring-inspector-sources/configuring-gateways) from your server-side GTM container, web GTM container, Segment, RudderStack or C# service.
 3. Start with one output, such as Meta, and add the rest once events arrive.
