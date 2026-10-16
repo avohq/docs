@@ -44,31 +44,29 @@ An input transformation doesn't change what the source sends. The event on the s
 
 ## What a transformation can change
 
+The **Transformations** tab shows the rules checkpoint by checkpoint, in the order they run: inputs, then the gateway, then outputs. At each checkpoint, rules are grouped by what they touch (events, properties or bundles) and by what they do: **Added**, **Required**, **Changed** or **Dropped**.
+
+Each checkpoint is set to **All sent** or **Allow list**, separately for events and properties. With **All sent** (the default), everything that arrives passes on, apart from what a rule drops. With **Allow list**, only what's on the list passes. See [Choose what passes through](/data-design/avo-tracking-plan/gateways/set-up-a-gateway#2-choose-what-passes-through).
+
 ### Events
 
-- **Rename.** Send an event under a different name from a checkpoint on, for example `Order Completed` sent to Meta as `Purchase`. Renames are set per event.
-- **Allow.** At a checkpoint that only lets listed events through, list the events that pass. See [Choose what passes through](/data-design/avo-tracking-plan/gateways/set-up-a-gateway#2-choose-what-passes-through).
+- **Changed.** The event is sent under a different name from this checkpoint on, for example `Order Completed` sent to Meta as `Purchase`.
+- **Dropped.** At a checkpoint set to **Allow list**, events that aren't on the list don't get through from here on. An event on the list keeps all its variants. Renaming an event doesn't put it on the list.
 
 ### Properties
 
-Each property rule applies to every event that passes through the checkpoint and carries the property. The Transformations tab shows what each rule does next to it.
+A property rule applies to every event at the checkpoint that carries the property.
 
-- **Add** (`enrich` in the MCP). The gateway adds the property to events that don't already send it. Use it for values the gateway fills in, such as a click id read from a cookie. Shown as "Added at this stage".
-- **Require** (`require`). Every event entering the checkpoint must send the property. It never adds it, so the sources that feed the checkpoint have to. For example, if a Meta audience is built on `tier`, a Require rule on `tier` at the Meta output says that every product view reaching Meta must carry it. If a source doesn't send `tier`, that's the gap to fix at the source. Shown as "Required of every entering event".
-- **Tighten** (`tighten`). Constrains the property only on events that already send it, for example by pinning a value or disallowing values. It never adds the property. At an allowlist checkpoint, a Tighten rule with no constraints keeps the property on the events that already send it. Shown as "Tightened where already sent".
-- **Rename.** Send the property under a different name, for example `transaction_id` sent as `order_id`.
-- **Set presence.** Say whether the property is always sent or sometimes sent from this checkpoint on. Always sent needs a Require rule.
-- **Pin a value.** Send the property with one fixed value.
-- **Disallow values.** Rule out values that the property otherwise allows.
-- **Match a regex.** Require the value to match a regular expression.
-- **Stop sending.** The property isn't sent from this checkpoint on. This is different from clearing the property's rule: clearing removes this checkpoint's change, so the property goes back to whatever it inherits from earlier on the path.
+- **Added** (`enrich` in the MCP). The gateway adds the property to every event, not only the ones that already send it. Use it for values the gateway fills in, such as a click id read from a cookie. It's always sent, unless you mark it sometimes sent.
+- **Required** (`require`). Every event that reaches this checkpoint must already carry the property. The gateway never adds it, so the sources that feed the checkpoint have to. For example, if a Meta audience is built on `tier`, requiring `tier` at the Meta output says that every product view reaching Meta must carry it. If a source doesn't send `tier`, that's the gap to fix at the source.
+- **Changed** (`tighten`). The property is modified only where it already arrives, and never added. A change can rename the property (`transaction_id` sent as `order_id`), pin it to one value, rule out values it otherwise allows, require a regex, or mark it sometimes sent. At a checkpoint set to **Allow list**, a property that's on the list with no change keeps arriving where it's already sent.
+- **Dropped.** The property doesn't get through from this checkpoint on. That's different from clearing a rule: clearing removes this checkpoint's rule, so the property goes back to what it inherits from earlier checkpoints.
+
+An Added, Required or Changed rule can rename the property and pin its value as well.
 
 ### Property bundles
 
-- **Attach.** Attach a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles) at a checkpoint to send its properties from there on.
-- **Stop sending.** Stop sending a bundle's properties from a checkpoint on. As with properties, this is different from clearing the bundle's rule, which goes back to what the checkpoint inherits.
+- **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so its properties are sent from here on.
+- **Dropped.** The bundle's properties don't get through from this checkpoint on.
 
-## Limits during the closed beta
-
-- Inspector checks which events and properties reach a checkpoint, whether each property is present and its type. Pinned values, disallowed values and regex rules are part of the checkpoint's description, but Inspector doesn't check them at gateway checkpoints yet.
-- A property rule applies to every event at its checkpoint that carries the property. You can't yet make an exception for one event.
+More transformation types are coming. If you're missing one, let us know at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app.
