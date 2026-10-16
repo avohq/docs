@@ -56,7 +56,7 @@ const redirects = [
   },
   {
     source: '/inspector/connect-inspector-to-segment-gateway',
-    destination: '/inspector/configuring-inspector-sources/configuring-gateways',
+    destination: '/inspector/configuring-inspector-gateways',
     permanent: false,
   },
   {

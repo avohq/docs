@@ -18,19 +18,17 @@ Your tracking plan describes the events your sources send. Most events then pass
 
 A **gateway** brings that step into your plan. You describe what the gateway does, Avo works out what each destination should receive, and Inspector checks the events as they actually leave the gateway.
 
+## Why add your gateway to Avo
+
+- **Know what each destination should receive.** From your plan and the gateway's transformations, Avo works out what each checkpoint should receive: which events, which properties, and whether each property is always sent, sometimes sent or never sent. That's the contract for that checkpoint.
+- **See where an event broke, not just that it broke.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something went wrong. See [Configuring Inspector Gateways](/inspector/configuring-inspector-gateways).
+- **Let your agent answer questions and make changes.** Through the [Avo MCP](/reference/avo-mcp/overview), an agent can ask what an event or property looks like at any checkpoint, and set up and change gateways on a branch.
+
 ## How a gateway is modelled
 
-A gateway sits between your sources and your destinations.
+A gateway sits between your sources and your destinations. Events start at your sources, the gateway transforms and enriches them, and your destinations use them.
 
-```mermaid
-flowchart LR
-  W[Web] --> G
-  I[iOS] --> G
-  A[Android] --> G
-  G[Gateway] --> M[Meta]
-  G --> GA[Google Ads]
-  G --> P[Pinterest]
-```
+![Sources such as iOS, Android, web and backend send events into a gateway, such as a CDP, GTM or a homegrown pipeline. The gateway sends them on to analytics, marketing and warehouse destinations. A pink dot marks each input and each output.](/images/gateways/gateway-checkpoints.png)
 
 - **Inputs** are the sources that send events into the gateway, such as your web and app sources.
 - **Outputs** are the destinations the gateway sends events to, such as Meta, Google Ads or Pinterest. Each output gets an **output reference**, a short id like `meta-7f3k2q` that you paste into your gateway setup so Avo knows which output an event left from.
@@ -38,12 +36,6 @@ flowchart LR
 - **Transformations** describe what the gateway changes. They can sit on the gateway, on an input or on an output. For example, an output to Pinterest can send `transaction_id` as `order_id`, and an output to Meta can stop sending a property that holds personal data.
 
 Read more in [Transformations](/data-design/avo-tracking-plan/gateways/transformations).
-
-## What Avo does with a gateway
-
-- **Describes each checkpoint.** From your plan and the gateway's transformations, Avo works out what each checkpoint should receive: which events, which properties, and whether each property is always sent, sometimes sent or never sent. That's the contract for that checkpoint.
-- **Checks real traffic at each checkpoint.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something broke, so you know where it broke, not just that it broke. See [Configuring Inspector Gateways](/inspector/configuring-inspector-sources/configuring-gateways).
-- **Answers agents.** Through the [Avo MCP](/reference/avo-mcp/overview), an agent can ask what an event or property looks like at any checkpoint, and set up and change gateways on a branch.
 
 ## Where to find gateways in Avo
 
@@ -58,5 +50,5 @@ Gateways are created and changed through the Avo MCP, by you or your agent. The 
 ## Get started
 
 1. [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway) with your agent through the Avo MCP.
-2. [Configuring Inspector Gateways](/inspector/configuring-inspector-sources/configuring-gateways) from your server-side GTM container, web GTM container, Segment, RudderStack or C# service.
+2. [Install Inspector on the gateway](/inspector/configuring-inspector-gateways) in your server-side GTM container, web GTM container, Segment, RudderStack or C# service.
 3. Start with one output, such as Meta, and add the rest once events arrive.

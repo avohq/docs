@@ -8,13 +8,13 @@ import { Callout } from 'nextra/components'
 
 # Set up a gateway
 
-_Model your tag manager, CDP or event pipeline in Avo with your agent, through the Avo MCP._
+_Model your tag manager, CDP or custom event pipeline in Avo with your agent, through the Avo MCP._
 
 <Callout type="info" emoji="🚧">
   Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
 </Callout>
 
-Gateways are created and changed through the [Avo MCP](/reference/avo-mcp/overview), so you set one up by asking your agent (Claude, Cursor, Codex or another MCP client) to do it on a branch. The app shows the gateway for review, and you merge the branch as usual.
+[Gateways](/data-design/avo-tracking-plan/gateways) are created and changed through the [Avo MCP](/reference/avo-mcp/overview), so you set one up by asking your agent (Claude, Cursor, Codex or another MCP client) to do it on a branch. The app shows the gateway for review, and you merge the branch as usual.
 
 ## Before you start
 
@@ -30,25 +30,46 @@ Ask your agent to create the gateway on a new branch, with an input for each sou
 
 Avo gives each output an **output reference**, such as `meta-7f3k2q`. You'll paste it into your gateway setup later.
 
-## 2. Describe what the gateway changes
+## 2. Choose what passes through
 
-Ask your agent to add the [transformations](/data-design/avo-tracking-plan/gateways/transformations) for each output. Describe them the way you'd explain your tags to a colleague:
+Decide, for events and for properties separately, whether each checkpoint passes on everything or only what you list:
 
-> At the Pinterest output, send `transaction_id` as `order_id`. Stop sending `search_query` to every ad platform. Require `tier` on product views sent to Meta.
+- **Pass everything** (the default). Every event and property the checkpoint receives flows on, apart from the ones a transformation stops.
+- **Allowlist.** Only the events and properties you list pass the checkpoint. Use it for an output that should only receive a known set, such as an ad platform.
+  - **Events.** Each listed event brings all its variants. An event added to the plan later doesn't pass until you list it. Renaming an event doesn't list it.
+  - **Properties.** Only properties that a transformation names, or that come in an attached bundle, pass. A property added to the plan later is dropped until you list it.
+
+For example:
+
+> At the Meta output, only send `purchase`, `add_to_cart` and `ViewContent`. Only send `value`, `currency`, `contents` and `em`, and say that the gateway adds `event_id` to every event.
+
+## 3. Describe what the gateway changes
+
+Ask your agent to add the [transformations](/data-design/avo-tracking-plan/gateways/transformations) for the gateway as a whole, for each output, or both. Describe them the way you'd explain your tags to a colleague:
+
+> At the Pinterest output, send `transaction_id` as `order_id`. Stop sending `search_query` to every ad platform output. Require `tier` on product views sent to Meta.
 
 Your agent can also write the transformations from your existing setup. Give it an export of your container (in GTM, **Admin** > **Export Container**), or access to your tag manager or CDP through that tool's own MCP or API. Ask it to compare what each tag sends with your tracking plan and describe the differences as transformations. Check the result on the branch before you merge.
 
-## 3. Review and merge
+## 4. Map origin hints to sources
 
-Open the branch in Avo. The gateway appears on the **Sources** page under **Gateways**, and the branch diff lists every transformation as a rule, before and after. Open the gateway's **Transformations** tab to check what each output will receive. When it looks right, merge the branch.
+Every event that reaches the gateway needs an origin hint, a value such as `web`, `ios` or `android` that names the source it came from. Without one, Avo can't check the event. On the same branch, open each source that feeds the gateway on the **Sources** page, go to its **Inspector setup** tab and add its value under **Origin hints**. Your agent can add them for you as well. See [Tell Avo which source an event came from](/inspector/configuring-inspector-gateways#tell-avo-which-source-an-event-came-from).
 
-## 4. Send events to Inspector
+## 5. Install Inspector before you merge
 
-Add Avo Inspector to your gateway so Avo can check what actually leaves each checkpoint. Follow [Configuring Inspector Gateways](/inspector/configuring-inspector-sources/configuring-gateways) for your gateway type.
+We recommend installing Inspector in development while the gateway is still on the branch. The gateway's Inspector API key works before you merge, so you can send test events through the gateway and check in the [Inspector Debugger](/inspector/inspector-debugger) that they arrive at each checkpoint. Avo starts checking events against the gateway's design, and mapping origin hints to sources, once the branch is merged.
+
+Follow [Configuring Inspector Gateways](/inspector/configuring-inspector-gateways) for your gateway type.
+
+## 6. Review and merge
+
+Open the branch in Avo. The gateway appears on the **Sources** page under **Gateways**, and the branch diff lists every transformation as a rule, before and after. Open the gateway's **Transformations** tab to check what each output will receive.
+
+[Ask a teammate to review the branch](/workflow/review#how-to-request-a-review), such as whoever owns the tags or the destination. When it looks right, merge the branch.
 
 ## Keeping the gateway up to date
 
-When your tags change, update the gateway the same way: ask your agent to change the transformations on a branch. When the plan changes, your agent can read the new definitions through the Avo MCP and tell you which tags to change, or change them itself if it can reach your tag manager.
+When your tags change, update the gateway the same way: ask your agent to change the transformations on a branch. When the plan changes, your agent can read the new definitions through the Avo MCP and tell you which tags to change. If your agent is also connected to your tag manager or CDP, for example through its MCP or API, it can make those changes there for you.
 
 ## Limits during the closed beta
 

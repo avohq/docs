@@ -23,7 +23,12 @@ Start by [setting up the gateway](/data-design/avo-tracking-plan/gateways/set-up
 
 ## Tell Avo which source an event came from
 
-A gateway usually receives events from several sources. Each setup below has an **origin hint**: a value that names the source an event came from, such as `web`, `ios` or `android`. Keep it to a few fixed values and map each value to a source in Avo. Send it on every event, even where the field is labelled optional: without an origin hint, Avo can't tell which source an event came from, so it doesn't check the event against your design. Set the **origin app version** to that source's app version as well. With an origin hint set, events without an origin app version are recorded without a version.
+A gateway usually receives events from several sources, so every event needs an **origin hint**: a value that names the source it came from, such as `web`, `ios` or `android`. Keep it to a few fixed values. Without an origin hint, Avo can't tell which source an event came from, so it doesn't check the event against your design.
+
+Set it up in two places:
+
+1. **In Avo, map each value to a source.** On the **Sources** page, open each source that feeds the gateway, go to its **Inspector setup** tab and add the value under **Origin hints**. Each value can belong to one source only, and the match is exact and case-sensitive.
+2. **In your Inspector setup, send the value on every event.** Each setup below has an origin hint field. Fill it in on every event, even where it's labelled optional. Set the **origin app version** to that source's app version as well. With an origin hint set, events without an origin app version are recorded without a version.
 
 ## Set up your gateway
 
