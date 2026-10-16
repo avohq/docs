@@ -425,7 +425,7 @@ If the source has system properties, `initAvo` takes them as parameters and conf
 
 ### Good to know
 
-- **Names that match nothing** don't fail the pull. Each one prints `[avo] Warning: libraryInterfacePublicItems entry '<name>' for source "<source>" does not match any declaration in the generated app file and was ignored.` A type name without the `AvoTypes.` prefix, such as `Platform`, is one of these. A source whose file filter is `interface-only` generates no app file, so it doesn't warn.
+- **Names that match nothing** don't fail the pull. Each one prints `[avo] Warning: libraryInterface.publicItems entry '<name>' for source "<source>" does not match any declaration in the generated app file and was ignored.` A type name without the `AvoTypes.` prefix, such as `Platform`, is one of these. A source whose file filter is `interface-only` generates no app file, so it doesn't warn.
 - **Invalid values** are rejected by every command that reads `avo.json`. The list must hold at most 1,000 strings, each non-empty and without leading or trailing spaces, and the error names the source and the bad entry, for example `Invalid libraryInterface.publicItems on source '<name>' in avo.json — lists 1001 entries; at most 1000 are allowed`.
 - **Per source only.** At the top level, `publicItems` is rejected: `Unknown key 'publicItems' in libraryInterface in avo.json — allowed keys are fileFilter, sharedModule`. `avo pull` has no flag for it.
 - **There is no flat form.** Unlike the settings in [section 4](#4-sharing-one-library-interface-across-repositories), a flat `libraryInterfacePublicItems` key is rejected: `libraryInterfacePublicItems on source '<name>' in avo.json is not supported — set libraryInterface.publicItems instead`.
