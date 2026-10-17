@@ -258,7 +258,9 @@ This is the method used by `trackSchemaFromEvent` internally. The event schema i
 inspector.enableLogging(enable: boolean): void;
 ```
 
-`enableLogging` controls printing of tracked event schemas and other helpful information to logcat. Enabled by default in development environments.
+`enableLogging` controls printing of tracked event schemas and other helpful information to the browser console. Enabled by default in development environments.
+
+Errors that affect data delivery are always printed, even with logging disabled. The setting applies to every Avo Inspector instance on the page, including instances created later.
 
 > #### Parameters:
 >
