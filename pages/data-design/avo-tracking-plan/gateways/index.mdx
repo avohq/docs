@@ -1,0 +1,53 @@
+---
+agentTask: "set up gateways, write transformations and tell you what any event looks like at each checkpoint"
+title: Gateways
+description: "Check what your tag manager, CDP or event pipeline sends to Meta, Google Ads and other destinations, and find out at which step an event broke."
+---
+
+import { Callout } from 'nextra/components'
+
+# Gateways
+
+_Bring your tag manager, CDP or event pipeline into your tracking plan, and check that what each destination receives matches the design._
+
+<Callout type="info" emoji="🚧">
+  Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
+</Callout>
+
+Your tracking plan describes the events your sources send. Most events then pass through something before they reach a destination: a server-side Google Tag Manager container, a CDP such as Segment or RudderStack, or a service you built yourself. That system renames events, drops properties, adds others and sends a different version of each event to each destination.
+
+A **gateway** brings that step into your plan. You describe what the gateway does, Avo works out what each destination should receive, and Inspector checks the events as they actually leave the gateway.
+
+## Why add your gateway to Avo
+
+- **Know what each destination should receive.** From your plan and the gateway's transformations, Avo works out what each checkpoint should receive: which events, which properties, and whether each property is always sent, sometimes sent or never sent. That's the contract for that checkpoint.
+- **See where an event broke, not just that it broke.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something went wrong. See [Configuring Inspector Gateways](/inspector/configuring-inspector-gateways).
+- **Know what lands downstream.** Each output's definition says which events and properties a destination receives, under which names, and where each one came from. Use it to define your warehouse tables, or to know which events and properties to query.
+
+## How a gateway is modelled
+
+A gateway sits between your sources and your destinations. Events start at your sources, the gateway transforms and enriches them, and your destinations use them. Along the way, Avo can describe and check an event at each **checkpoint**: each input, the gateway itself and each output.
+
+![Sources such as iOS, Android, web and backend send events into a gateway, such as a CDP, GTM or a homegrown pipeline. The gateway sends them on to analytics, marketing and warehouse destinations. A pink dot marks each input and each output.](/images/gateways/gateway-checkpoints.png)
+
+- **Inputs** are the sources that send events into the gateway, such as your web and app sources.
+- **Outputs** are the destinations the gateway sends events to, such as Meta, Google Ads or Pinterest. Each output gets an **output reference**, a short id like `meta-7f3k2q` that you paste into your gateway setup so Avo knows which output an event left from.
+- **Transformations** describe what the gateway changes. They can sit on the gateway, on an input or on an output. For example, an output to Pinterest can send `transaction_id` as `order_id`, and an output to Meta can drop a property that holds personal data.
+
+Read more in [Transformations](/data-design/avo-tracking-plan/gateways/transformations).
+
+## Where to find gateways in Avo
+
+Gateways live on the **Sources** page, in the **Gateways** tab. Open a gateway to see three tabs:
+
+- **Overview**: the gateway's inputs and outputs.
+- **Transformations**: what changes at each checkpoint.
+- **Inspector setup**: the gateway's Inspector API key and the setup steps for your gateway type.
+
+Gateways are created and changed through the Avo MCP, by you or your agent. The app shows the result for review, and branch changes to a gateway appear in the branch diff like any other change.
+
+## Get started
+
+1. [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway) with your agent through the Avo MCP.
+2. [Install Inspector on the gateway](/inspector/configuring-inspector-gateways) in your server-side GTM container, web GTM container, Segment, RudderStack or C# service.
+3. Start with one output, such as Meta, and add the rest once events arrive.

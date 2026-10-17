@@ -354,6 +354,9 @@ function imageToMarkdown(tag) {
 function transformTextSegment(text, slugSet) {
   let out = text;
 
+  // Strip MDX comments ({/* ... */}): editor notes, not page content.
+  out = out.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+
   // Strip ESM import/export statements (these only appear outside code fences).
   // Match only ESM-shaped imports (`import x from '...'` / `import '...'`) so a
   // prose line that merely starts with the word "import" isn't dropped.
@@ -427,9 +430,72 @@ function transformTextSegment(text, slugSet) {
   return out;
 }
 
+/**
+ * <Tabs items={['A', 'B']}> with one <Tabs.Tab> per item -> a "### A" / "### B"
+ * heading per tab, so the markdown keeps each tab's label. Runs over the whole
+ * body because a tab's content can span code fences, but leaves tags inside a
+ * fenced block alone. The opener may wrap over several lines.
+ */
+function tabsToHeadings(body) {
+  const out = [];
+  let labels = [];
+  let opener = null; // lines of a <Tabs ...> opener that hasn't closed yet
+  let fence = null;
+
+  for (const line of body.split('\n')) {
+    const fenceMatch = line.match(/^\s*(```+|~~~+)/);
+    if (fence) {
+      if (closesFence(line, fence)) fence = null;
+      out.push(line);
+      continue;
+    }
+    if (opener) {
+      opener.push(line);
+      if (!line.includes('>')) continue;
+      const items = opener.join(' ').match(/\bitems=\{\[([^\]]*)\]\}/);
+      labels = items ? [...items[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]) : [];
+      opener = null;
+      out.push('');
+      continue;
+    }
+    if (fenceMatch) {
+      fence = fenceMatch[1];
+      out.push(line);
+      continue;
+    }
+    if (/^\s*<Tabs(?:\s|>|$)/.test(line)) {
+      opener = [line];
+      if (!line.includes('>')) continue;
+      const items = line.match(/\bitems=\{\[([^\]]*)\]\}/);
+      labels = items ? [...items[1].matchAll(/['"]([^'"]+)['"]/g)].map((m) => m[1]) : [];
+      opener = null;
+      out.push('');
+      continue;
+    }
+    if (/^\s*<Tabs\.Tab\b[^>]*>\s*$/.test(line)) {
+      const label = labels.shift();
+      out.push(label ? `### ${label}` : '');
+      continue;
+    }
+    if (/^\s*<\/Tabs(?:\.Tab)?>\s*$/.test(line)) {
+      out.push('');
+      continue;
+    }
+    out.push(line);
+  }
+  if (opener) out.push(...opener); // unclosed opener: leave it as written
+  return out.join('\n');
+}
+
+/** A closing fence uses the opening character, is at least as long, and has nothing after it. */
+function closesFence(line, fence) {
+  const m = line.match(/^\s*(`+|~+)\s*$/);
+  return Boolean(m) && m[1][0] === fence[0] && m[1].length >= fence.length;
+}
+
 /** Convert an MDX body to clean markdown, leaving fenced code blocks untouched. */
 function mdxBodyToMarkdown(body, slugSet) {
-  const lines = body.split('\n');
+  const lines = tabsToHeadings(body).split('\n');
   const segments = [];
   let buf = [];
   let inFence = false;
@@ -445,9 +511,9 @@ function mdxBodyToMarkdown(body, slugSet) {
     if (!inFence && m) {
       flush('text');
       inFence = true;
-      fence = m[2][0];
+      fence = m[2];
       buf.push(line);
-    } else if (inFence && line.trim().startsWith(fence)) {
+    } else if (inFence && closesFence(line, fence)) {
       buf.push(line);
       flush('code');
       inFence = false;
