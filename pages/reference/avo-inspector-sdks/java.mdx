@@ -38,11 +38,13 @@ With Maven, add the JitPack repository and the dependency to the pom.xml:
   </repository>
 </repositories>
 
-<dependency>
-  <groupId>com.github.avohq</groupId>
-  <artifactId>java-avo-inspector</artifactId>
-  <version>TAG</version>
-</dependency>
+<dependencies>
+  <dependency>
+    <groupId>com.github.avohq</groupId>
+    <artifactId>java-avo-inspector</artifactId>
+    <version>TAG</version>
+  </dependency>
+</dependencies>
 ```
 
 Use the latest GitHub release tag (e.g. `2.0.0`) as `TAG` to get the latest version of the library.
@@ -54,6 +56,7 @@ import is.avo.inspector.AvoEventSchemaType;
 import is.avo.inspector.AvoInspector;
 import is.avo.inspector.AvoInspectorEnv;
 import is.avo.inspector.AvoInspectorOptions;
+import is.avo.inspector.InspectorEvent;
 ```
 
 ## Initialization
