@@ -60,13 +60,13 @@ A property rule applies to every event at the checkpoint that carries the proper
 - **Added** (`enrich` in the MCP). The gateway adds the property to every event, not only the ones that already send it. Use it for values the gateway fills in, such as a click id read from a cookie. It's always sent, unless you mark it sometimes sent.
 - **Required** (`require`). Every event that reaches this checkpoint must already carry the property. The gateway never adds it, so the sources that feed the checkpoint have to. For example, if a Meta audience is built on `tier`, requiring `tier` at the Meta output says that every product view reaching Meta must carry it. If a source doesn't send `tier`, that's the gap to fix at the source.
 - **Changed** (`tighten`). The property is modified only where it already arrives, and never added. A change can rename the property (`transaction_id` sent as `order_id`), pin it to one value, rule out values it otherwise allows, require a regex, or mark it sometimes sent. At a checkpoint set to **Allow list**, a property that's on the list with no change keeps arriving where it's already sent.
-- **Dropped.** The property doesn't get through from this checkpoint on. That's different from clearing a rule: clearing removes this checkpoint's rule, so the property goes back to what it inherits from earlier checkpoints.
+- **Dropped.** The property doesn't get through from this checkpoint on. This holds when the property arrives inside a bundle too, and the bundle's other properties are still sent. Dropping is different from clearing a rule: clearing removes this checkpoint's rule, so the property goes back to what it inherits from earlier checkpoints.
 
 An Added, Required or Changed rule can rename the property and pin its value as well.
 
 ### Property bundles
 
-- **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so its properties are sent from here on.
+- **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so all its properties are sent from here on, including ones no rule names.
 - **Dropped.** The bundle's properties don't get through from this checkpoint on.
 
 More transformation types are coming. If you're missing one, let us know at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app.
