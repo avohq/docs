@@ -40,11 +40,11 @@ See [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway)
 
 An event's shape at an output is the result of every transformation on its path: its source, then the input it entered through, then the gateway, then that output. A checkpoint with no transformation passes events through unchanged.
 
-An input transformation doesn't change what the source sends. The event on the source still says what developers should send. If a source should stop sending a property, change the event on that source instead of adding a rule at the input.
+An input transformation doesn't change what the source sends. It changes the event on the way into the gateway, and the event on the source still says what developers should send. Each input card on the **Transformations** tab says so. For a source called Web it reads "Changes on the way into the gateway. What Web sends is set on its events." If a source should stop sending a property, change the event on that source instead of adding a transformation at the input.
 
 ## What a transformation can change
 
-The **Transformations** tab shows the rules checkpoint by checkpoint, in the order they run: inputs, then the gateway, then outputs. At each checkpoint, rules are grouped by what they touch (events, properties or bundles) and by what they do: **Added**, **Required**, **Changed** or **Dropped**.
+The **Transformations** tab shows the transformations checkpoint by checkpoint, in the order they run: inputs, then the gateway, then outputs. At each checkpoint, they are grouped by what they touch (events, properties or bundles) and by what they do: **Added**, **Required**, **Changed** or **Dropped**.
 
 Each checkpoint is set to **All sent** or **Allow list**, separately for events and properties. With **All sent** (the default), everything that arrives passes on, apart from what a rule drops. With **Allow list**, only what's on the list passes. See [Choose what passes through](/data-design/avo-tracking-plan/gateways/set-up-a-gateway#2-choose-what-passes-through).
 
