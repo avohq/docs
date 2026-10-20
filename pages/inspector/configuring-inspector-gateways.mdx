@@ -78,7 +78,7 @@ If you don't see **Gateway Support** in the destination settings, Segment hasn't
 The Inspector setup tab generates one script for the gateway and one for each output. Every script already contains your key.
 
 1. **Inspect at the gateway.** In RudderStack, create a transformation from the gateway script and connect it to a destination you add only for Inspector, with no other transformation. That destination sees every event as received. It doesn't deliver events anywhere unless you set `AVO_DELIVER_EVENTS` to `true` in the script.
-2. **Inspect each output.** Add each output's script as the transformation on that output's destination. If the destination already has a transformation, move that code into the script's `applyYourTransformation` function. Avo inspects what it returns, so this checkpoint sees the event after that output's transformation. A script whose `AVO_OUTPUT_REFERENCE` is empty sends nothing to Avo until you paste the reference in.
+2. **Inspect each output.** Add each output's script as the transformation on that output's destination. If the destination already has a transformation, move that code into the script's `applyYourTransformation` function. Avo inspects what it returns, so this checkpoint sees the event after that output's transformation. An output script whose `AVO_OUTPUT_REFERENCE` is empty sends nothing to Avo until you paste the reference in.
 3. **Set the origin hint.** In every script, make `getOriginHint` return a value that names the source in a few fixed values, such as `event.context.library.name`, and make `getOriginAppVersion` return that source's app version, such as `event.context.app.version`.
 
 Pick the environment in the Inspector setup tab before copying the scripts.
@@ -93,7 +93,7 @@ Use the Avo Inspector C# SDK in the service that acts as your gateway. Create on
 var inspector = new AvoInspector(new AvoInspectorOptions
 {
     ApiKey  = "YOUR_GATEWAY_INSPECTOR_KEY",
-    Env     = AvoInspectorEnv.Prod,
+    Env     = AvoInspectorEnv.Dev,  // Dev, Staging or Prod
     Version = "1.0.0",  // your gateway's version
     AppName = "my-gateway",
 });
