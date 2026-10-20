@@ -34,7 +34,7 @@ Avo gives each output an **output reference**, such as `meta-7f3k2q`. You'll pas
 
 Decide, for events and for properties separately, whether each checkpoint sends everything or only what you list:
 
-- **All sent** (the default). Every event and property that arrives passes on, apart from what a transformation drops.
+- **All sent** (the default). Every event and property that arrives passes on, apart from properties a transformation drops.
 - **Allow list.** Only the events and properties on the list pass. Use it for an output that should only receive a known set, such as an ad platform.
   - **Events.** An event on the list keeps all its variants. An event added to the plan later doesn't pass until you put it on the list. Renaming an event doesn't put it on the list.
   - **Properties.** Only properties that a transformation names, or that come in an added bundle, pass. A property added to the plan later is dropped until you put it on the list.

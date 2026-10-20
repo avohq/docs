@@ -14,7 +14,7 @@ _Bring your tag manager, CDP or event pipeline into your tracking plan, and chec
   Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
 </Callout>
 
-Your tracking plan describes the events your sources send. Most events then pass through something before they reach a destination: a server-side Google Tag Manager container, a CDP such as Segment or RudderStack, or a service you built yourself. That system renames events, drops properties, adds others and sends a different version of each event to each destination.
+Your tracking plan describes the events your sources send. Most events then pass through something before they reach a destination: a Google Tag Manager container (web or server-side), a CDP such as Segment or RudderStack, or a service you built yourself. That system renames events, drops properties, adds others and sends a different version of each event to each destination.
 
 A **gateway** brings that step into your plan. You describe what the gateway does, Avo works out what each destination should receive, and Inspector checks the events as they actually leave the gateway.
 
@@ -44,7 +44,7 @@ Gateways live on the **Sources** page, in the **Gateways** tab. Open a gateway t
 - **Transformations**: what changes at each checkpoint.
 - **Inspector setup**: the gateway's Inspector API key and the setup steps for your gateway type.
 
-Gateways are created and changed through the Avo MCP, by you or your agent. The app shows the result for review, and branch changes to a gateway appear in the branch diff like any other change.
+Gateways are created and changed through the Avo MCP by your agent. The app shows the result for review, and branch changes to a gateway appear in the branch diff like any other change.
 
 ## Get started
 
