@@ -1,0 +1,134 @@
+---
+agentTask: "look up each output's reference and tell you what every checkpoint should receive"
+title: Configuring Inspector Gateways
+description: "Check what your server-side GTM, web GTM, Segment, RudderStack or C# gateway actually sends to each destination with Avo Inspector."
+---
+
+import { Callout, Tabs } from 'nextra/components'
+
+# Configuring Inspector Gateways
+
+_Add Avo Inspector at the gateway, at each output, or both, so Avo can check what each checkpoint actually receives._
+
+<Callout type="info" emoji="🚧">
+  Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
+</Callout>
+
+Inspector checks that the events your gateway handles match the design in your tracking plan. There are two kinds of checkpoint, and you can add Inspector at either or both:
+
+- **At the gateway**: one checkpoint that sees every event after the gateway's own transformations, before anything output-specific happens. Leave the output reference empty here.
+- **At each output**: one checkpoint per destination that sees the event after that output's transformations. Set the output reference to that output's reference, such as `meta-7f3k2q`.
+
+Start by [setting up the gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway) in your tracking plan. One Inspector API key covers the whole gateway. Find it in Avo on the **Sources** page, under **Gateways**: open the gateway and go to the **Inspector setup** tab. The tab also lists each output's reference and shows these steps for your gateway type.
+
+## Tell Avo which source an event came from
+
+A gateway usually receives events from several sources, so every event needs an **origin hint**: a value that names the source it came from, such as `web`, `ios` or `android`. Keep it to a few fixed values. Without an origin hint, Avo can't tell which source an event came from, so it doesn't check the event against your design.
+
+Set it up in two places:
+
+1. **In Avo, map each value to a source.** On the **Sources** page, open each source that feeds the gateway, go to its **Inspector setup** tab and add the value under **Origin hints**. Each value can belong to one source only, and the match is exact and case-sensitive.
+2. **In your Inspector setup, send the value on every event.** Each setup below has an origin hint field. Fill it in on every event, even where it's labelled optional. Set the **origin app version** to that source's app version as well. With an origin hint set, events without an origin app version are recorded without a version.
+
+## Set up your gateway
+
+<Tabs items={['Server-side GTM', 'Web GTM', 'Segment', 'RudderStack', 'C#']}>
+<Tabs.Tab>
+
+1. **Copy the key** from the Inspector setup tab.
+2. **Add the tag template.** In your server container, open **Templates**, choose **Search Gallery** under **Tag Templates** and add the Avo Inspector tag template. Paste the key into **Avo Inspector Key** and choose the **Environment** (development, staging or production).
+3. **Inspect at the gateway.** Add an Avo Inspector tag with **Output reference (optional)** left empty, fired by a **Custom Event** trigger whose event name matches the regex `.*` so it sees every event. In the tag's **Transformations** section, apply the gateway-level transformations and none of the output-specific ones. With no gateway-level transformation, inspect the event as received.
+4. **Inspect each output.** Add one Avo Inspector tag per destination with the same triggers as that destination's tag, and set **Output reference (optional)** to that output's reference. In the tag's **Transformations** section, apply the same transformations as the destination tag.
+5. **Set the origin hint.** On every Avo Inspector tag, set **Origin hint (optional)** to an Event Data variable that names the source, such as `{{Event Data - platform}}`. Set **Origin app version (optional)** to that source's app version.
+
+The environment is fixed per tag. Use a separate tag, or a lookup variable, if one container serves several environments. Events you send while testing in GTM Preview on a production container are recorded as production for now.
+
+{/* REVIEW: when AVO-3975 ships, say that GTM Preview traffic is recorded as development. */}
+
+</Tabs.Tab>
+<Tabs.Tab>
+
+1. **Copy the key** from the Inspector setup tab.
+2. **Add the tag template.** In your web container, open **Templates**, search the gallery for **Avo Inspector** by Avo and add it to the workspace. If it's already there, update it. Paste the key into **Inspector API Key**.
+3. **Inspect at the gateway.** Add one Avo Inspector tag on the **All Custom Events** trigger with **Output reference (optional)** left empty. If the gateway has its own transformations, apply them before pushing the event to the dataLayer so this tag reads the transformed event.
+4. **Inspect each output.** Add one more Avo Inspector tag per destination, firing on the same triggers as that destination's tag, and set **Output reference (optional)** to that output's reference. You don't need tag sequencing: the tag reads the same dataLayer event the destination tag fires on.
+5. **Set the origin hint.** On every Avo Inspector tag, set **Origin hint (optional)** to a Data Layer Variable that names the source in a few fixed values, and point **Origin app version (optional)** at that source's app version variable.
+
+Events sent while you test in GTM Preview are recorded as development.
+
+</Tabs.Tab>
+<Tabs.Tab>
+
+1. **Copy the key** from the Inspector setup tab.
+2. **Add the destination.** In Segment, add the **Avo Inspector v2** destination to each source that sends to this gateway. Paste the key into **Avo Inspector API Key** and choose the **Environment** (dev, staging or prod). Make sure **Gateway Support** is on. It's on by default for new destinations, so turn it on if you added the destination earlier.
+3. **Inspect at the gateway.** Keep one **Track Schema From Event** mapping and leave its **Output Reference** empty. This checkpoint sees every track event as Segment receives it, before any destination's own mappings or filters.
+4. **Set the origin hint.** On that mapping, set **Origin Hint** to a label that names this Segment source, such as `ios-app`. If one source carries events from several apps or platforms, map a path instead, such as `$.context.app.name`. Set **Origin App Version** to that source's version, such as `$.context.app.version`. Either field replaces the destination's **App Version Property** setting.
+
+<Callout type="info">
+  Inspecting each Segment output is coming soon. Avo will generate a Segment Insert Function for each output destination, so Inspector sees each event that reaches that output, after its destination filters and before its field mappings.
+</Callout>
+
+If you don't see **Gateway Support** in the destination settings, Segment hasn't rolled it out to your workspace yet. Contact us and we'll help you set up in the meantime.
+
+{/* REVIEW: remove the Gateway Support note once Segment has rolled it out everywhere (AVO-3898). */}
+
+</Tabs.Tab>
+<Tabs.Tab>
+
+The Inspector setup tab generates one script for the gateway and one for each output. Every script already contains your key.
+
+1. **Inspect at the gateway.** In RudderStack, create a transformation from the gateway script and connect it to a destination you add only for Inspector, with no other transformation. That destination sees every event as received. It doesn't deliver events anywhere unless you set `AVO_DELIVER_EVENTS` to `true` in the script.
+2. **Inspect each output.** Add each output's script as the transformation on that output's destination. If the destination already has a transformation, move that code into the script's `applyYourTransformation` function. Avo inspects what it returns, so this checkpoint sees the event after that output's transformation. An output script whose `AVO_OUTPUT_REFERENCE` is empty sends nothing to Avo until you paste the reference in.
+3. **Set the origin hint.** In every script, make `getOriginHint` return a value that names the source in a few fixed values, such as `event.context.library.name`, and make `getOriginAppVersion` return that source's app version, such as `event.context.app.version`.
+
+Pick the environment in the Inspector setup tab before copying the scripts.
+
+</Tabs.Tab>
+<Tabs.Tab>
+
+Use the Avo Inspector C# SDK in the service that acts as your gateway. Create one `AvoInspector` per gateway with the key, call `TrackSchemaFromEvent` once after the gateway's own transformation and once per output after that output's transformation, and flush before the process exits.
+
+```csharp
+// Once per gateway
+var inspector = new AvoInspector(new AvoInspectorOptions
+{
+    ApiKey  = "YOUR_GATEWAY_INSPECTOR_KEY",
+    Env     = AvoInspectorEnv.Dev,  // Dev, Staging or Prod
+    Version = "1.0.0",  // your gateway's version
+    AppName = "my-gateway",
+});
+
+// eventProperties, gatewayProperties and transformedProperties are IDictionary<string, object?>
+
+// At the gateway: the event after the gateway's own transformation, before fan-out
+var originHint = eventProperties.TryGetValue("platform", out var platform) ? platform as string : null;
+var originAppVersion = eventProperties.TryGetValue("appVersion", out var appVersion) ? appVersion as string : null;
+await inspector.TrackSchemaFromEvent(
+    eventName,
+    gatewayProperties,
+    outputReference: null,
+    originHint: originHint,
+    originAppVersion: originAppVersion);
+
+// At each output: the event after that output's transformation
+await inspector.TrackSchemaFromEvent(
+    eventName,
+    transformedProperties,
+    outputReference: "meta-7f3k2q",
+    originHint: originHint,
+    originAppVersion: originAppVersion);
+
+// Before the process or handler returns
+await inspector.Flush();
+```
+
+Replace `platform` and `appVersion` with the properties that name the source and carry its app version.
+
+</Tabs.Tab>
+</Tabs>
+
+## Check that events arrive
+
+Send a few test events through the gateway in development. Then open the [Inspector Debugger](/inspector/inspector-debugger) and filter on your gateway to see each event at each checkpoint. The Debugger doesn't check gateway events against their checkpoint yet. Issues at each checkpoint show up in the [Issues view](/inspector/inspector-issues-view).
+
+{/* REVIEW: when the Debugger checks gateway events (AVO-3846, AVO-4012), describe the pass or fail per event here. */}
