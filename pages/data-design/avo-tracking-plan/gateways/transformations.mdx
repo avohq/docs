@@ -1,0 +1,88 @@
+---
+agentTask: "write these transformations for you on a branch and tell you what an event looks like after them"
+title: Gateway transformations
+description: "Describe what your tag manager or CDP changes before each destination: renamed events, removed or required properties, pinned values and more."
+---
+
+import { Callout } from 'nextra/components'
+
+# Transformations
+
+_Describe what your gateway changes at each checkpoint, in the same terms as the rest of your tracking plan._
+
+<Callout type="info" emoji="🚧">
+  Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
+</Callout>
+
+A transformation records what a [gateway](/data-design/avo-tracking-plan/gateways) does to events at one checkpoint. Avo applies the transformations in the order an event travels, so it can work out what each checkpoint should receive.
+
+## Define and update transformations
+
+You write transformations through the [Avo MCP](/reference/avo-mcp/overview) on a branch, yourself or with your agent, and review and merge them like any other change. The branch diff shows each changed rule as before and after. Describe them the way you'd explain your tags to a colleague. For example:
+
+> At the Pinterest output, send `transaction_id` as `order_id`. Stop sending `search_query` to every ad platform output. Require `tier` on product views sent to Meta.
+
+> At the gateway, add `event_id` to every event.
+
+> Our Meta tag now sends `content_ids` instead of `contents`. Update the Meta output on a new branch.
+
+> Here's an export of our GTM container. Compare what each tag sends with our tracking plan and add the differences as transformations on a new branch.
+
+See [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway) for the full setup.
+
+## Where a transformation can sit
+
+| Checkpoint | Use it for | Example |
+| --- | --- | --- |
+| An input | What the gateway does to events from one source as they arrive | The Segment SDK adds properties such as the IP address to every event, and each SDK adds different ones, so they belong on that source's input |
+| The gateway | What happens to every event before it fans out to the outputs | The gateway adds an `event_id` to every event before sending it anywhere |
+| An output | What one destination receives | Meta receives `Order Completed` as `Purchase`, and Pinterest receives `transaction_id` as `order_id` |
+
+An event's shape at an output is the result of every transformation on its path: its source, then the input it entered through, then the gateway, then that output. A checkpoint with no transformation passes events through unchanged.
+
+An input transformation doesn't change what the source sends. It changes the event on the way into the gateway, and the event on the source still says what developers should send. If a source should stop sending a property, change the event on that source instead of adding a transformation at the input.
+
+## What a transformation can change
+
+The **Transformations** tab shows the transformations checkpoint by checkpoint, in the order they run: inputs, then the gateway, then outputs. At each checkpoint, they are grouped by what they touch (events, properties or bundles) and by what they do: **Added**, **Required**, **Changed** or **Dropped**.
+
+Each checkpoint is set to **All sent** or **Allow list**, separately for events and properties. With **All sent** (the default), everything that arrives passes on, apart from what a rule drops. With **Allow list**, only what's on the list passes. See [Choose what passes through](/data-design/avo-tracking-plan/gateways/set-up-a-gateway#2-choose-what-passes-through).
+
+### Events
+
+- **Changed.** The event is sent under a different name from this checkpoint on, for example `Order Completed` sent to Meta as `Purchase`.
+- **Dropped.** At a checkpoint set to **Allow list**, events that aren't on the list don't get through from here on. An event on the list keeps all its variants. Renaming an event doesn't put it on the list.
+
+### Properties
+
+A property rule applies to every event at the checkpoint that carries the property.
+
+- **Added** (`enrich` in the MCP). The gateway adds the property to every event, not only the ones that already send it. Use it for values the gateway fills in, such as a click id read from a cookie. It's always sent, unless you mark it sometimes sent.
+- **Required** (`require`). Every event that reaches this checkpoint must already carry the property. The gateway never adds it, so the sources that feed the checkpoint have to. For example, if a Meta audience is built on `tier`, requiring `tier` at the Meta output says that every product view reaching Meta must carry it. If a source doesn't send `tier`, that's the gap to fix at the source.
+- **Changed** (`tighten`). The property is modified only where it already arrives, and never added. At a checkpoint set to **Allow list**, a property that's on the list with no change keeps arriving where it's already sent. A change can:
+  - **Rename** the property, for example `transaction_id` sent as `order_id`.
+  - **Change its presence** by marking it sometimes sent.
+  - **Constrain its value**:
+    - **Pin** it to one value.
+    - **Refine its allowed values** by ruling out values it otherwise allows.
+    - **Require a regex.**
+- **Dropped.** The property doesn't get through from this checkpoint on. This holds when the property arrives inside a bundle too, and the bundle's other properties are still sent. Dropping is different from clearing a rule: clearing removes this checkpoint's rule, so the property goes back to what it inherits from earlier checkpoints.
+
+An Added, Required or Changed rule can rename the property and pin its value as well.
+
+### Property bundles
+
+- **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so all its properties are sent from here on, including ones no rule names.
+- **Dropped.** The bundle's properties don't get through from this checkpoint on.
+
+More transformation types are coming. If you're missing one, let us know at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app.
+
+## Describe why a transformation exists
+
+Any transformation can carry a short description: why the gateway does this, in words the next person to read it will understand. Hover a transformation on the **Transformations** tab to read its description, with who last updated it, when and on which branch. A transformation without one says so.
+
+Descriptions are written through the [Avo MCP](/reference/avo-mcp/overview) on a branch, like the transformations themselves, and the branch diff shows a changed description word by word. For example, ask your agent:
+
+> At the Meta output, stop sending `content_category` and describe why: Meta rejects it on server events.
+
+A description is most useful on a transformation that drops something, so nobody mistakes a deliberate drop for a mistake and adds the property back. A checkpoint can also carry one description of its own, shown at the top of its card on the **Transformations** tab, in the branch diff and in what your agent reads.
