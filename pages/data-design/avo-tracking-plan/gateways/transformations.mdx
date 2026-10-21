@@ -40,7 +40,7 @@ See [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway)
 
 An event's shape at an output is the result of every transformation on its path: its source, then the input it entered through, then the gateway, then that output. A checkpoint with no transformation passes events through unchanged.
 
-An input transformation doesn't change what the source sends. It changes the event on the way into the gateway, and the event on the source still says what developers should send. Each input card on the **Transformations** tab says so. For a source called Web it reads "Changes on the way into the gateway. What Web sends is set on its events." If a source should stop sending a property, change the event on that source instead of adding a transformation at the input.
+An input transformation doesn't change what the source sends. It changes the event on the way into the gateway, and the event on the source still says what developers should send. If a source should stop sending a property, change the event on that source instead of adding a transformation at the input.
 
 ## What a transformation can change
 
@@ -76,3 +76,13 @@ An Added, Required or Changed rule can rename the property and pin its value as 
 - **Dropped.** The bundle's properties don't get through from this checkpoint on.
 
 More transformation types are coming. If you're missing one, let us know at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app.
+
+## Describe why a transformation exists
+
+Any transformation can carry a short description: why the gateway does this, in words the next person to read it will understand. Hover a transformation on the **Transformations** tab to read its description, with who last updated it, when and on which branch. A transformation without one says so.
+
+Descriptions are written through the [Avo MCP](/reference/avo-mcp/overview) on a branch, like the transformations themselves, and the branch diff shows a changed description word by word. For example, ask your agent:
+
+> At the Meta output, stop sending `content_category` and describe why: Meta rejects it on server events.
+
+A description is most useful on a transformation that drops something, so nobody mistakes a deliberate drop for a mistake and adds the property back. A checkpoint can also carry one description of its own, shown at the top of its card on the **Transformations** tab, in the branch diff and in what your agent reads.
