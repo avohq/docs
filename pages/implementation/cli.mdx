@@ -120,7 +120,7 @@ info Looking for events in src/main/java/app/avo/musicplayerexample/Player.kt
 
 `avo status` runs from the folder that holds `avo.json` and never looks above it.
 
-- **Git lists the files.** `avo status` looks in the files `git status` would show: tracked files, plus untracked files that aren't ignored. It applies every ignore rule git does, including `.gitignore` files in parent folders, `.git/info/exclude` and your global `core.excludesFile`. Files in initialized submodules are listed by the same rules.
+- **Git lists the files.** `avo status` looks in every tracked file, plus every untracked file that isn't ignored. It applies every ignore rule git does, including `.gitignore` files in parent folders, `.git/info/exclude` and your global `core.excludesFile`. Files in initialized submodules are listed by the same rules.
 - **Without git it walks the folder.** Outside a git repo, when git isn't installed or fails, or when the folder itself is ignored by git, `avo status` walks the folder instead and applies only the `.gitignore` files inside it. It prints a warning saying why.
 - **Only files matching the source's glob are read.** By default that's every file with the source's language extensions. Set `analysis.glob` on a source in `avo.json` to narrow it:
 
