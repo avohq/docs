@@ -140,7 +140,7 @@ info Looking for events in src/main/java/app/avo/musicplayerexample/Player.kt
 `avo status` skips some files and prints one warning for each kind, with a count. Run `avo status --verbose` to list the files:
 
 - **Files over the 10 MiB size cap** are never read, for example `Skipped 3 files over the 10 MiB size cap; run with --verbose to list them.` An event whose only call is in one of those files is reported as missing.
-- **Tracked files that match an ignore rule** are skipped, as git ignores them too. You only get this warning when one of them matches the source's glob.
+- **Tracked files that match an ignore rule** are skipped. Git still tracks them, but `avo status` leaves them out, as it did before. You only get this warning when one of them matches the source's glob.
 
 Warnings never make `avo status` fail on their own. If a file you don't need keeps triggering one, leave it out with `analysis.glob`.
 
