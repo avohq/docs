@@ -24,6 +24,10 @@ You write transformations through the [Avo MCP](/reference/avo-mcp/overview) on 
 
 > At the gateway, add `event_id` to every event.
 
+> At the GA4 output, stop sending `product_id` and `variant_id` inside `items`.
+
+> At the Meta output, send `items` as `contents`, with `item_id` as `id` and `price` as `item_price`.
+
 > Our Meta tag now sends `content_ids` instead of `contents`. Update the Meta output on a new branch.
 
 > Here's an export of our GTM container. Compare what each tag sends with our tracking plan and add the differences as transformations on a new branch.
@@ -70,6 +74,30 @@ A property rule applies to every event at the checkpoint that carries the proper
 
 An Added, Required or Changed rule can rename the property and pin its value as well.
 
+### Keys inside an object
+
+A key rule changes one key inside an object property, such as `product_id` inside `items`. You name the object and then the key. When the object is a list of objects, the rule applies to every element of the list.
+
+- **Changed.** The key is sent under a different name from this checkpoint on, for example `price` inside `items` sent as `item_price`.
+- **Dropped.** The key doesn't get through from this checkpoint on. The object's other keys are still sent.
+
+A key rule changes that key in that object only. A top-level property with the same name, or the same key inside another object, is unchanged. Keys can sit at any depth, inside an object inside another object.
+
+Key rules work together with the other rules at a checkpoint:
+
+- **Renaming the object and its keys.** You can rename an object and some of its keys at the same checkpoint, for example `items` sent as `contents`, with `item_id` as `id` and `price` as `item_price`.
+- **A dropped key stays dropped.** A key dropped at one checkpoint can't come back at a later one, so a later rule on the same key has no effect.
+- **Dropping the whole object.** Dropping the object drops all its keys, so a key rule under it has no effect.
+- **Allow list.** At a checkpoint set to **Allow list**, an object on the list keeps all its keys, unless a key rule drops one.
+
+The **Transformations** tab shows a key rule by its path, with a dot between the object and the key, such as `items.product_id` or `items.price → items.item_price`. Paths use the names in your tracking plan. A key rule that has no effect is shown muted with the reason beneath it, for example "covered by the drop of items", and so is a key rule at a checkpoint where no event brings the object.
+
+A property that arrives at a checkpoint only inside an object can't be dropped or renamed at the top level there, because the event doesn't carry it at the top level. If you or your agent try, the [Avo MCP](/reference/avo-mcp/overview) rejects the change and names the key path to use instead, such as `items.product_id`. A rule that adds the property is the exception, since the gateway then sends it at the top level itself. A top-level rule written before key rules existed stays as it is, and the **Transformations** tab marks it "no effect here" with the path the property arrives on.
+
+Inspector checks each output against the object as the gateway sends it there. A dropped key is no longer reported missing at that output, and a renamed key is expected under its new name.
+
+A key rule can drop or rename a key. Other changes, such as pinning a key's value or requiring a key, apply to top-level properties only.
+
 ### Property bundles
 
 - **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so all its properties are sent from here on, including ones no rule names.
@@ -84,5 +112,9 @@ Any transformation can carry a short description: why the gateway does this, in 
 Descriptions are written through the [Avo MCP](/reference/avo-mcp/overview) on a branch, like the transformations themselves, and the branch diff shows a changed description word by word. For example, ask your agent:
 
 > At the Meta output, stop sending `content_category` and describe why: Meta rejects it on server events.
+
+A key rule takes a description like any other transformation:
+
+> At the GA4 output, stop sending `product_id` inside `items` and describe why: GA4 reads the product from `item_id`.
 
 A description is most useful on a transformation that drops something, so nobody mistakes a deliberate drop for a mistake and adds the property back. A checkpoint can also carry one description of its own, shown at the top of its card on the **Transformations** tab, in the branch diff and in what your agent reads.
