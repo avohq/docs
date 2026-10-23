@@ -51,7 +51,13 @@ window.avoConsent = (function () {
     );
     if (!m) return null;
     try {
-      return JSON.parse(decodeURIComponent(m[1])).purposes || REJECT_ALL;
+      var stored = JSON.parse(decodeURIComponent(m[1]));
+      if (stored.purposes) return stored.purposes;
+      // The banner before per-purpose consent stored only an overall flag, and iubenda
+      // applies it to every purpose; reading it as a Reject would anonymise old Accepts.
+      if (typeof stored.consent === 'boolean')
+        return { 4: stored.consent, 5: stored.consent };
+      return REJECT_ALL;
     } catch (e) {
       return REJECT_ALL;
     }

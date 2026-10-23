@@ -148,7 +148,7 @@ test('stored Reject: anonymous, analytics_storage denied by default', () => {
   assert.equal(consentCalls(ctx)[0].params.analytics_storage, 'denied');
 });
 
-test('a stored choice without purposes counts as Reject', () => {
+test('a stored choice with neither purposes nor an overall flag counts as Reject', () => {
   const ctx = load({
     cookie: `${IUBENDA_COOKIE}=${encodeURIComponent('{"timestamp":"x"}')}`,
   });
@@ -589,5 +589,28 @@ test('iubenda onPreferenceExpressed without purposes reads the choice it just st
   const ctx = load();
   ctx.document.cookie = storedChoice({ 4: false, 5: false });
   ctx._iub.csConfiguration.callback.onPreferenceExpressed({});
+  assert.equal(ctx.avoConsent.state.anonymous, true);
+});
+
+// The banner before per-purpose consent stored only an overall flag. iubenda migrates it
+// onto every purpose (migratePurposesPreferences) and treats it as a stored choice.
+const legacyChoice = (consent) =>
+  `${IUBENDA_COOKIE}=${encodeURIComponent(
+    JSON.stringify({
+      timestamp: '2025-01-01T00:00:00.000Z',
+      version: '1.60.0',
+      consent,
+      id: 91875699,
+    }),
+  )}`;
+
+test('an Accept stored by the old banner counts as Accept for every purpose', () => {
+  const ctx = load({ cookie: legacyChoice(true) });
+  assert.equal(ctx.avoConsent.state.anonymous, false);
+  assert.deepEqual(plain(ctx.avoConsent.state.purposes), { 4: true, 5: true });
+});
+
+test('a Reject stored by the old banner counts as Reject', () => {
+  const ctx = load({ cookie: legacyChoice(false) });
   assert.equal(ctx.avoConsent.state.anonymous, true);
 });
