@@ -1,8 +1,7 @@
 /*
  * Consent bootstrap for www.avo.app/docs.
  *
- * Port of the Webflow head bootstrap for www.avo.app (monorepo:
- * infrastructure/webflow/custom-header.html). Docs share the www origin, so the
+ * Mirrors the www.avo.app head bootstrap. Docs share the www origin, so the
  * iubenda choice cookie is one and the same and both hosts must enforce it the
  * same way. Differences from the head: the page-view allow-list, and the Segment /
  * Mixpanel instances are handed in by _app.tsx (the npm SDKs set no window globals).
@@ -24,7 +23,7 @@ window.avoConsent = (function () {
   var MIXPANEL_TOKEN = 'b22a20c38601eb0f14364e8cfdfaa415';
   var PAGE_VIEW_EVENTS = ['Docs Page Viewed'];
   // One shared id for every rejected visitor: a per-visitor id would need storage, and a
-  // fresh id per page view inflates unique-user counts and MTU billing.
+  // fresh id per page view inflates unique-user counts.
   var ANONYMOUS_ID = 'consent-rejected';
   var REJECT_ALL = { 4: false, 5: false };
   var state = {
@@ -34,6 +33,7 @@ window.avoConsent = (function () {
     marketingPushed: false,
   };
   var destinations = { analytics: null, mixpanel: null, reloadAnalytics: null };
+  var segmentSwitchPending = false;
 
   function getMixpanel() {
     return destinations.mixpanel || window.mixpanel;
@@ -115,8 +115,10 @@ window.avoConsent = (function () {
   }
   function purgeAnalyticsStorage() {
     deleteCookies(ANALYTICS_COOKIES);
-    [window.localStorage, window.sessionStorage].forEach(function (store) {
+    ['localStorage', 'sessionStorage'].forEach(function (name) {
       try {
+        // Reading the property throws when the browser blocks storage.
+        var store = window[name];
         Object.keys(store).forEach(function (k) {
           if (
             ANALYTICS_STORAGE_PREFIXES.some(function (prefix) {
@@ -159,13 +161,14 @@ window.avoConsent = (function () {
   // lands in ajs_anonymous_id until the next page load purges it.
   function switchSegment() {
     if (destinations.reloadAnalytics) {
-      destinations.analytics = destinations.reloadAnalytics();
-      attachSegmentMiddleware(destinations.analytics);
-      // The replaced instance keeps its retry-queue pagehide writer (analytics-next
-      // has no teardown) and it was registered after ours; listeners run in
-      // registration order, so move the purge back to the end.
-      window.removeEventListener('pagehide', onPageHide);
-      window.addEventListener('pagehide', onPageHide);
+      if (segmentSwitchPending) return;
+      // An instance still loading sends its queued events with the settings it was
+      // created with, so the swap waits for it and then follows the latest choice.
+      segmentSwitchPending = true;
+      whenLoaded(destinations.analytics, function () {
+        segmentSwitchPending = false;
+        replaceSegment();
+      });
       return;
     }
     var analytics = getAnalytics();
@@ -174,6 +177,25 @@ window.avoConsent = (function () {
       // Segment regenerates and stores a random id on the next event unless one is set.
       analytics.setAnonymousId(ANONYMOUS_ID);
     }
+  }
+  // analytics-next sends its queued calls in tasks it schedules before the load settles,
+  // so the swap goes one task later, after them.
+  function whenLoaded(analytics, fn) {
+    if (!analytics || !analytics.then || analytics.instance) return fn();
+    var later = function () {
+      setTimeout(fn, 0);
+    };
+    analytics.then(later, later);
+  }
+  function replaceSegment() {
+    destinations.analytics = destinations.reloadAnalytics();
+    attachSegmentMiddleware(destinations.analytics);
+    // The replaced instance stores its id when it sends its queued events.
+    if (state.anonymous) purgeAnalyticsStorage();
+    // It also keeps its pagehide writers (analytics-next has no teardown), registered
+    // after ours; listeners run in registration order, so move the purge back to the end.
+    window.removeEventListener('pagehide', onPageHide);
+    window.addEventListener('pagehide', onPageHide);
   }
   function setFullStory(on) {
     var FS = window.FS;
@@ -185,6 +207,12 @@ window.avoConsent = (function () {
       state.fsStarted = false;
       FS.shutdown ? FS.shutdown() : FS('shutdown');
     }
+  }
+
+  function purgeDeniedCookies(purposes) {
+    if (!purposes) return;
+    if (!measurementAccepted(purposes)) deleteCookies(REPLAY_COOKIES);
+    if (!marketingAccepted(purposes)) deleteCookies(MARKETING_COOKIES);
   }
 
   function apply(purposes) {
@@ -200,9 +228,7 @@ window.avoConsent = (function () {
     if (analyticsOn) goFull();
     else goAnonymous();
     setFullStory(measurementAccepted(purposes));
-    if (purposes && !measurementAccepted(purposes))
-      deleteCookies(REPLAY_COOKIES);
-    if (purposes && purposes['5'] === false) deleteCookies(MARKETING_COOKIES);
+    purgeDeniedCookies(purposes);
     if (marketingOn && !state.marketingPushed) {
       state.marketingPushed = true;
       dataLayer.push({ event: 'iubenda_marketing_consent_given' });
@@ -264,7 +290,10 @@ window.avoConsent = (function () {
       _avoFunctionTrackSchemaFromEvent: function () {
         if (state.anonymous) return undefined;
         if (!inspector) inspector = create();
-        return inspector._avoFunctionTrackSchemaFromEvent.apply(inspector, arguments);
+        return inspector._avoFunctionTrackSchemaFromEvent.apply(
+          inspector,
+          arguments,
+        );
       },
     };
   }
@@ -283,6 +312,8 @@ window.avoConsent = (function () {
   state.purposes = readStoredPurposes();
   state.anonymous = !analyticsAllowed(state.purposes);
   if (state.anonymous) purgeAnalyticsStorage();
+  // Here as well as in apply, so this also happens when iubenda loads late or not at all.
+  purgeDeniedCookies(state.purposes);
   function onPageHide() {
     if (state.anonymous) purgeAnalyticsStorage();
   }
@@ -443,7 +474,7 @@ loadScript('https://cs.iubenda.com/sync/1197126.js', function () {
   loadScript('https://cdn.iubenda.com/cs/iubenda_cs.js');
 });
 
-// Google Tag Manager - GTM-T2GMTSM (shared with www). Kept after the consent default.
+// Google Tag Manager, the container shared with www. Kept after the consent default.
 (function (w, d, s, l, i) {
   w[l] = w[l] || [];
   w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });

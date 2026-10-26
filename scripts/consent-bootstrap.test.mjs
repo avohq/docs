@@ -94,6 +94,24 @@ function fakeAnalytics() {
   };
 }
 
+// An AnalyticsBrowser still loading: analytics-next sets `instance` once loaded, and
+// `then` settles with the load. It sends its queued calls in tasks scheduled before
+// that, storing its id as it does (`onSend`).
+function loadingAnalytics() {
+  const analytics = fakeAnalytics();
+  let resolve;
+  const loaded = new Promise((r) => (resolve = r));
+  analytics.then = (...args) => loaded.then(...args);
+  analytics.finishLoading = (onSend = () => {}) => {
+    setTimeout(onSend, 0);
+    analytics.instance = {};
+    resolve([]);
+  };
+  return analytics;
+}
+
+const settle = () => new Promise((r) => setTimeout(r, 5));
+
 function fakeFullStory() {
   const calls = [];
   return {
@@ -103,7 +121,13 @@ function fakeFullStory() {
   };
 }
 
-function load({ cookie = '', gpc = false, localKeys = [], FS } = {}) {
+function load({
+  cookie = '',
+  gpc = false,
+  localKeys = [],
+  FS,
+  storageBlocked = false,
+} = {}) {
   const ctx = {
     console,
     navigator: { globalPrivacyControl: gpc },
@@ -111,6 +135,7 @@ function load({ cookie = '', gpc = false, localKeys = [], FS } = {}) {
     localStorage: fakeStorage(localKeys),
     sessionStorage: fakeStorage([]),
     listeners: {},
+    setTimeout,
     addEventListener(type, fn) {
       (ctx.listeners[type] = ctx.listeners[type] || []).push(fn);
     },
@@ -121,6 +146,19 @@ function load({ cookie = '', gpc = false, localKeys = [], FS } = {}) {
   ctx.window = ctx;
   if (FS) ctx.FS = FS;
   vm.createContext(ctx);
+  // A getter on the sandbox object is not seen through the context's global, so the
+  // blocked-storage getters are defined from inside it.
+  if (storageBlocked)
+    vm.runInContext(
+      `['localStorage', 'sessionStorage'].forEach((name) =>
+        Object.defineProperty(globalThis, name, {
+          get() {
+            throw new Error('SecurityError');
+          },
+        }),
+      );`,
+      ctx,
+    );
   vm.runInContext(source, ctx);
   return ctx;
 }
@@ -211,6 +249,36 @@ test('Accept keeps replay and marketing cookies', () => {
   const ctx = load({ cookie: 'fs_uid=a; _fbp=c' });
   ctx.avoConsent.apply({ 4: true, 5: true });
   assert.equal(ctx.document.cookie, 'fs_uid=a; _fbp=c');
+});
+
+test('Accept all with Global Privacy Control on deletes marketing cookies', () => {
+  const ctx = load({
+    cookie: '_gcl_au=a; _fbp=c; li_fat_id=d; keep=e',
+    gpc: true,
+  });
+  ctx.avoConsent.apply({ 4: true, 5: true });
+  assert.equal(ctx.document.cookie, 'keep=e');
+});
+
+test('a stored Reject deletes replay and marketing cookies even if iubenda never loads', () => {
+  const stored = storedChoice({ 4: false, 5: false });
+  const ctx = load({ cookie: `fs_uid=a; _fbp=c; keep=e; ${stored}` });
+  assert.equal(ctx.document.cookie, `keep=e; ${stored}`);
+});
+
+test('a stored Accept keeps replay and marketing cookies on load', () => {
+  const stored = storedChoice({ 4: true, 5: true });
+  const ctx = load({ cookie: `fs_uid=a; _fbp=c; ${stored}` });
+  assert.equal(ctx.document.cookie, `fs_uid=a; _fbp=c; ${stored}`);
+});
+
+test('with storage blocked, a stored Reject still deletes analytics cookies', () => {
+  const ctx = load({
+    cookie: `ajs_anonymous_id=x; ${storedChoice({ 4: false })}`,
+    storageBlocked: true,
+  });
+  assert.equal(ctx.avoConsent.state.anonymous, true);
+  assert.equal(ctx.document.cookie, storedChoice({ 4: false }));
 });
 
 test('a returning rejected visitor gets no second Mixpanel switch', () => {
@@ -319,6 +387,63 @@ test('after a Segment swap the purge still runs last on pagehide', () => {
     ctx.localStorage['persisted-queue:v1:4vJw:event-queue:items'] = '[…]';
   });
   ctx.avoConsent.apply({ 4: false, 5: false });
+  ctx.listeners.pagehide.forEach((fn) => fn());
+  assert.deepEqual(Object.keys(ctx.localStorage), []);
+});
+
+test('a Reject during the first Segment load swaps once that load has finished', async () => {
+  const ctx = load();
+  const first = loadingAnalytics();
+  const reloads = [];
+  ctx.avoConsent.bindDestinations({
+    analytics: first,
+    reloadAnalytics: () => {
+      reloads.push(plain(ctx.avoConsent.avoDestinationOptions().segment));
+      return fakeAnalytics();
+    },
+  });
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  await settle();
+  assert.deepEqual(reloads, []);
+  // The first instance sends its queued page view with the settings it was created with.
+  first.finishLoading(() => (ctx.localStorage.ajs_anonymous_id = 'random'));
+  await settle();
+  assert.deepEqual(reloads, [{ disableClientPersistence: true }]);
+  assert.equal(ctx.localStorage.ajs_anonymous_id, undefined);
+});
+
+test('two consent changes during the first Segment load swap once, to the latest choice', async () => {
+  const ctx = load();
+  const first = loadingAnalytics();
+  const reloads = [];
+  ctx.avoConsent.bindDestinations({
+    analytics: first,
+    reloadAnalytics: () => {
+      reloads.push(plain(ctx.avoConsent.avoDestinationOptions().segment));
+      return fakeAnalytics();
+    },
+  });
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  ctx.avoConsent.apply({ 4: true, 5: false });
+  first.finishLoading();
+  await settle();
+  assert.deepEqual(reloads, [{}]);
+});
+
+test('after a swap that waited for the first load, the purge runs last on pagehide', async () => {
+  const ctx = load();
+  const first = loadingAnalytics();
+  ctx.avoConsent.bindDestinations({
+    analytics: first,
+    reloadAnalytics: () => fakeAnalytics(),
+  });
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  // analytics-next registers its pagehide writers as it loads.
+  ctx.addEventListener('pagehide', () => {
+    ctx.localStorage['persisted-queue:v1:4vJw:event-queue:items'] = '[…]';
+  });
+  first.finishLoading();
+  await settle();
   ctx.listeners.pagehide.forEach((fn) => fn());
   assert.deepEqual(Object.keys(ctx.localStorage), []);
 });
