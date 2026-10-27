@@ -66,9 +66,26 @@ A property rule applies to every event at the checkpoint that carries the proper
     - **Pin** it to one value.
     - **Refine its allowed values** by ruling out values it otherwise allows.
     - **Require a regex.**
+  - **Change its type**, for example `contents` sent as a list of objects, or `value` sent as a string. See [Change a property's type](#change-a-propertys-type).
 - **Dropped.** The property doesn't get through from this checkpoint on. This holds when the property arrives inside a bundle too, and the bundle's other properties are still sent. Dropping is different from clearing a rule: clearing removes this checkpoint's rule, so the property goes back to what it inherits from earlier checkpoints.
 
 An Added, Required or Changed rule can rename the property and pin its value as well.
+
+### Change a property's type
+
+A **Changed** rule can send a property as a different type from its checkpoint on: another base type (`string`, `int`, `long`, `float`, `bool`, `object` or `any`), a list instead of a single value, or both. Later checkpoints receive the new type, and a later rule can change it again or back.
+
+Constraints are written for the type in your tracking plan, so they follow the type:
+
+- Where the property is sent as another base type, its allowed values, regex and min/max don't apply. They apply again at any checkpoint that sends it as the plan's type.
+- A list-only change keeps them.
+- An object sent as another type has no keys. Turning a property into an object doesn't give it keys yet, so when Inspector validates objects it flags every key it sees there.
+
+A pinned value has to fit the type it's sent as. Avo refuses a change that leaves a pinned property sent as a list, or as a type the pinned value doesn't fit, and names the pin. Remove the pin or clear the type change.
+
+The **Transformations** tab shows the type that arrives and the type that leaves, for example `object → list, object`. Ask your agent:
+
+> At the Meta output, send `contents` as a list.
 
 ### Property bundles
 
