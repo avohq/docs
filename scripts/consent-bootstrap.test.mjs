@@ -73,11 +73,26 @@ function fakeMixpanel() {
   };
 }
 
+// A loaded AnalyticsBrowser. Its `instance` holds the in-memory user, which identify()
+// sets before any middleware runs.
 function fakeAnalytics() {
   const calls = [];
   let middleware;
+  let userId = null;
+  const instance = {
+    user: () => ({
+      id(value) {
+        if (value !== undefined) userId = value;
+        return userId;
+      },
+    }),
+  };
   return {
     calls,
+    instance,
+    identify: (id) => {
+      userId = id;
+    },
     reset: () => calls.push(['reset']),
     setAnonymousId: (id) => calls.push(['setAnonymousId', id]),
     addSourceMiddleware: (fn) => {
@@ -91,20 +106,35 @@ function fakeAnalytics() {
       middleware({ payload: { obj }, next: (p) => (outcome = p.obj) });
       return outcome;
     },
+    // run(), then the Segment.io destination's normalize step, which fills a missing
+    // userId from the in-memory user.
+    send(event) {
+      const outcome = this.run(event);
+      if (outcome === 'dropped') return outcome;
+      outcome.userId = outcome.userId || instance.user().id() || undefined;
+      return outcome;
+    },
   };
 }
+
+const ANONYMOUS_SEGMENT_OPTIONS = {
+  disableClientPersistence: true,
+  useQueryString: false,
+};
 
 // An AnalyticsBrowser still loading: analytics-next sets `instance` once loaded, and
 // `then` settles with the load. It sends its queued calls in tasks scheduled before
 // that, storing its id as it does (`onSend`).
 function loadingAnalytics() {
   const analytics = fakeAnalytics();
+  const { instance } = analytics;
+  delete analytics.instance;
   let resolve;
   const loaded = new Promise((r) => (resolve = r));
   analytics.then = (...args) => loaded.then(...args);
   analytics.finishLoading = (onSend = () => {}) => {
     setTimeout(onSend, 0);
-    analytics.instance = {};
+    analytics.instance = instance;
     resolve([]);
   };
   return analytics;
@@ -267,6 +297,12 @@ test('with no stored choice, replay and marketing cookies are deleted on load', 
   assert.equal(ctx.document.cookie, 'keep=e');
 });
 
+test("stored Reject deletes Segment's legacy user cookie", () => {
+  const stored = storedChoice({ 4: false });
+  const ctx = load({ cookie: `ajs_user=%7B%22id%22%3A%22u%22%7D; ${stored}` });
+  assert.equal(ctx.document.cookie, stored);
+});
+
 test("stored Reject deletes Segment's stored referrer cookie", () => {
   const stored = storedChoice({ 4: false });
   const ctx = load({
@@ -382,7 +418,7 @@ test('Reject reloads Segment memory-only instead of resetting the old instance',
   });
   ctx.avoConsent.apply({ 4: false, 5: false });
   assert.deepEqual(first.calls, []);
-  assert.deepEqual(plain(optionsAtReload), { disableClientPersistence: true });
+  assert.deepEqual(plain(optionsAtReload), ANONYMOUS_SEGMENT_OPTIONS);
   assert.equal(
     second.run({ type: 'track', event: 'Docs Page Viewed', properties: {} })
       .anonymousId,
@@ -423,7 +459,7 @@ test('a Reject during the first Segment load swaps once that load has finished',
   // The first instance sends its queued page view with the settings it was created with.
   first.finishLoading(() => (ctx.localStorage.ajs_anonymous_id = 'random'));
   await settle();
-  assert.deepEqual(reloads, [{ disableClientPersistence: true }]);
+  assert.deepEqual(reloads, [ANONYMOUS_SEGMENT_OPTIONS]);
   assert.equal(ctx.localStorage.ajs_anonymous_id, undefined);
 });
 
@@ -520,7 +556,7 @@ test('anonymous Segment middleware passes the docs page view, anonymised', () =>
 // separates parameters, so the leading gclid must not take utm_source with it; a name
 // that does not decode stays.
 const CLICK_IDS =
-  'gclid=g1&gbraid=g2&wbraid=g3&dclid=d&fbclid=f&msclkid=m&li_fat_id=l&ttclid=t&twclid=tw&sccid=s&ko_click_id=k&yclid=y&srsltid=sr&epik=ep&rdt_cid=r&irclickid=ir&obclid=o&igshid=ig&s_kwcid=sk&mkt_tok=mk&_kx=kx&_gl=gl&btid=b&urid=u&_hsenc=h1&_hsmi=h2&hsa_acc=1&hsa_cam=2&mc_eid=e&ajs_uid=au&ajs_aid=aa&GCLID=up&%67clid=enc?gclid=again';
+  'gclid=g1&gbraid=g2&wbraid=g3&dclid=d&fbclid=f&msclkid=m&li_fat_id=l&ttclid=t&twclid=tw&sccid=s&ko_click_id=k&yclid=y&srsltid=sr&epik=ep&rdt_cid=r&irclickid=ir&obclid=o&igshid=ig&s_kwcid=sk&mkt_tok=mk&_kx=kx&_gl=gl&btid=b&urid=u&_hsenc=h1&_hsmi=h2&hsa_acc=1&hsa_cam=2&mc_eid=e&utm_gclid=ug&utm_hsa_acc=uh&ajs_uid=au&ajs_aid=aa&GCLID=up&%67clid=enc?gclid=again';
 const CLICK_SEARCH = `?gclid=first?utm_source=google&plan=team&%E0%A4%A=1&${CLICK_IDS}`;
 const CLICK_URL = `https://www.avo.app/docs/start${CLICK_SEARCH}#setup`;
 const CLEAN_SEARCH = '?utm_source=google&plan=team&%E0%A4%A=1';
@@ -542,7 +578,8 @@ function segmentPageWithClickIds() {
     context: {
       page: { ...page },
       referrer: { type: 'dataxu', id: 'b' },
-      campaign: { source: 'google' },
+      // analytics-next maps any utm_<name> to campaign.<name>.
+      campaign: { source: 'google', gclid: 'g' },
     },
   };
 }
@@ -615,6 +652,41 @@ test('in full mode, Mixpanel events keep their click ids', () => {
     properties: { ...properties },
   });
   assert.deepEqual(plain(event.properties), properties);
+});
+
+test('an identify made after Reject leaves no user id on later page views', () => {
+  const ctx = load({ cookie: storedChoice({ 4: false }) });
+  const analytics = fakeAnalytics();
+  ctx.avoConsent.bindDestinations({ analytics });
+  analytics.identify('customer-123');
+  const out = analytics.send({
+    type: 'page',
+    anonymousId: 'random',
+    properties: {},
+  });
+  assert.equal(out.anonymousId, 'consent-rejected');
+  assert.equal(out.userId, undefined);
+});
+
+test('a Reject clears the user id of the Segment instance it replaces', () => {
+  const ctx = load();
+  const old = fakeAnalytics();
+  ctx.avoConsent.bindDestinations({
+    analytics: old,
+    reloadAnalytics: () => fakeAnalytics(),
+  });
+  old.identify('customer-123');
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  assert.equal(old.instance.user().id(), null);
+});
+
+test('in full mode, an identify keeps the user id on later page views', () => {
+  const ctx = load();
+  const analytics = fakeAnalytics();
+  ctx.avoConsent.bindDestinations({ analytics });
+  analytics.identify('customer-123');
+  const out = analytics.send({ type: 'page', properties: {} });
+  assert.equal(out.userId, 'customer-123');
 });
 
 test('anonymous Segment middleware drops every other event', () => {
@@ -701,14 +773,10 @@ test('anonymous destination options disable persistence and IP', () => {
   const ctx = load({ cookie: storedChoice({ 4: false }) });
   const { mixpanel, segment } = ctx.avoConsent.avoDestinationOptions();
   assert.deepEqual(
-    [
-      mixpanel.disable_persistence,
-      mixpanel.batch_requests,
-      mixpanel.ip,
-      segment.disableClientPersistence,
-    ],
-    [true, false, false, true],
+    [mixpanel.disable_persistence, mixpanel.batch_requests, mixpanel.ip],
+    [true, false, false],
   );
+  assert.deepEqual(plain(segment), ANONYMOUS_SEGMENT_OPTIONS);
 });
 
 test('full-mode destination options keep persistence and IP', () => {

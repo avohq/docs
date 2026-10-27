@@ -85,6 +85,7 @@ window.avoConsent = (function () {
     'mp_' + MIXPANEL_TOKEN + '_mixpanel',
     'initialReferrer',
     's%3Acontext.referrer',
+    'ajs_user',
   ];
   // persisted-queue:v1: is analytics-next's retry queue, written on pagehide;
   // avoinspector is Avo Inspector's store (installation, stream and session ids,
@@ -156,6 +157,8 @@ window.avoConsent = (function () {
       name = decodeURIComponent(name);
     } catch (e) {}
     name = name.toLowerCase();
+    // analytics-next reads any utm_<name> as a campaign field, so utm_gclid counts too.
+    if (name.indexOf('utm_') === 0) name = name.slice(4);
     return (
       CLICK_ID_PARAMS.indexOf(name) !== -1 ||
       CLICK_ID_PREFIXES.some(function (prefix) {
@@ -187,6 +190,21 @@ window.avoConsent = (function () {
       if (typeof fields[key] === 'string')
         fields[key] = stripClickIds(fields[key]);
     });
+  }
+  function dropClickIdKeys(fields) {
+    if (!fields) return;
+    Object.keys(fields).forEach(function (key) {
+      if (isClickIdParam(key)) delete fields[key];
+    });
+  }
+  // The Segment.io destination fills a missing userId from the instance's in-memory user
+  // after the source middleware has run, and identify() sets that user before any
+  // middleware does, so deleting evt.userId alone does not keep it off the event.
+  // AnalyticsBrowser's own user() is async; its loaded `instance` answers directly.
+  function forgetSegmentUser() {
+    var analytics = getAnalytics();
+    var instance = analytics && analytics.instance;
+    if (instance && instance.user) instance.user().id(null);
   }
 
   function deleteCookies(names) {
@@ -270,6 +288,8 @@ window.avoConsent = (function () {
     analytics.then(later, later);
   }
   function replaceSegment() {
+    // The replaced instance keeps sending (retries, its own queue) with its own user.
+    if (state.anonymous) forgetSegmentUser();
     destinations.analytics = destinations.reloadAnalytics();
     attachSegmentMiddleware(destinations.analytics);
     // The replaced instance stores its id when it sends its queued events.
@@ -321,6 +341,7 @@ window.avoConsent = (function () {
     if (analytics && analytics.addSourceMiddleware) {
       analytics.addSourceMiddleware(function (ctx) {
         if (state.anonymous) {
+          forgetSegmentUser();
           var evt = ctx.payload.obj;
           // Returning without ctx.next is what drops an event in analytics-next;
           // ctx.next(null) would let it through unchanged.
@@ -329,6 +350,8 @@ window.avoConsent = (function () {
           evt.context.ip = '0.0.0.0';
           // analytics-next fills this from ?btid= / ?urid= or its s:context.referrer cookie.
           delete evt.context.referrer;
+          // It also maps any utm_<name> to campaign.<name>, so ?utm_gclid= lands here.
+          dropClickIdKeys(evt.context.campaign);
           stripClickIdFields(evt.context.page);
           evt.properties = evt.properties || {};
           stripClickIdFields(evt.properties);
@@ -394,9 +417,7 @@ window.avoConsent = (function () {
     delete props.$user_id;
     stripClickIdFields(props);
     // mixpanel-js copies click ids from the URL into properties of the same name.
-    Object.keys(props).forEach(function (key) {
-      if (isClickIdParam(key)) delete props[key];
-    });
+    dropClickIdKeys(props);
     return payload;
   }
 
@@ -443,7 +464,10 @@ window.avoConsent = (function () {
             },
           },
         },
-        segment: anon ? { disableClientPersistence: true } : {},
+        // useQueryString: false stops ?ajs_uid= and friends from identifying the visitor.
+        segment: anon
+          ? { disableClientPersistence: true, useQueryString: false }
+          : {},
         // The generated Fullstory.make ignores its options; FullStory is gated by
         // _fs_capture_on_startup below plus setFullStory, not by anything here.
         fullstory: {},
