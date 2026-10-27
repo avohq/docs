@@ -516,6 +516,107 @@ test('anonymous Segment middleware passes the docs page view, anonymised', () =>
   });
 });
 
+// Ad-click and referrer ids from the query string, before a fragment. A second "?" also
+// separates parameters, so the leading gclid must not take utm_source with it; a name
+// that does not decode stays.
+const CLICK_IDS =
+  'gclid=g1&gbraid=g2&wbraid=g3&dclid=d&fbclid=f&msclkid=m&li_fat_id=l&ttclid=t&twclid=tw&sccid=s&ko_click_id=k&yclid=y&srsltid=sr&epik=ep&rdt_cid=r&irclickid=ir&obclid=o&igshid=ig&s_kwcid=sk&mkt_tok=mk&_kx=kx&_gl=gl&btid=b&urid=u&_hsenc=h1&_hsmi=h2&hsa_acc=1&hsa_cam=2&mc_eid=e&ajs_uid=au&ajs_aid=aa&GCLID=up&%67clid=enc?gclid=again';
+const CLICK_SEARCH = `?gclid=first?utm_source=google&plan=team&%E0%A4%A=1&${CLICK_IDS}`;
+const CLICK_URL = `https://www.avo.app/docs/start${CLICK_SEARCH}#setup`;
+const CLEAN_SEARCH = '?utm_source=google&plan=team&%E0%A4%A=1';
+const CLEAN_URL = `https://www.avo.app/docs/start${CLEAN_SEARCH}#setup`;
+const CLICK_REFERRER = 'https://www.google.com/?gclid=x';
+const CLEAN_REFERRER = 'https://www.google.com/';
+
+function segmentPageWithClickIds() {
+  const page = {
+    path: '/docs/start',
+    url: CLICK_URL,
+    search: CLICK_SEARCH,
+    referrer: CLICK_REFERRER,
+  };
+  return {
+    type: 'page',
+    anonymousId: 'random',
+    properties: { ...page },
+    context: {
+      page: { ...page },
+      referrer: { type: 'dataxu', id: 'b' },
+      campaign: { source: 'google' },
+    },
+  };
+}
+
+test('anonymous Segment page views carry no ad-click or referrer ids from the URL', () => {
+  const ctx = load({ cookie: storedChoice({ 4: false }) });
+  const analytics = fakeAnalytics();
+  ctx.avoConsent.bindDestinations({ analytics });
+  const out = analytics.run(segmentPageWithClickIds());
+  const clean = {
+    path: '/docs/start',
+    url: CLEAN_URL,
+    search: CLEAN_SEARCH,
+    referrer: CLEAN_REFERRER,
+  };
+  assert.deepEqual(plain(out.properties), { ...clean, consent: 'rejected' });
+  assert.deepEqual(plain(out.context), {
+    page: clean,
+    campaign: { source: 'google' },
+    ip: '0.0.0.0',
+  });
+});
+
+test('in full mode, Segment page views keep the URL as it is', () => {
+  const ctx = load();
+  const analytics = fakeAnalytics();
+  ctx.avoConsent.bindDestinations({ analytics });
+  assert.deepEqual(
+    plain(analytics.run(segmentPageWithClickIds())),
+    segmentPageWithClickIds(),
+  );
+});
+
+test('anonymous Mixpanel page views carry no ad-click ids', () => {
+  const ctx = load({ cookie: storedChoice({ 4: false }) });
+  const { hooks } = ctx.avoConsent.avoDestinationOptions().mixpanel;
+  const pageView = hooks.before_send_events({
+    event: 'Docs Page Viewed',
+    properties: {
+      distinct_id: 'd',
+      $current_url: CLICK_URL,
+      $referrer: CLICK_REFERRER,
+      $initial_referrer: CLICK_REFERRER,
+      current_url_search: CLICK_SEARCH,
+      gclid: 'g1',
+      wbraid: 'g3',
+      fbclid: 'f',
+      ko_click_id: 'k',
+      utm_source: 'google',
+    },
+  });
+  assert.deepEqual(plain(pageView.properties), {
+    distinct_id: 'consent-rejected',
+    $device_id: 'consent-rejected',
+    consent: 'rejected',
+    $current_url: CLEAN_URL,
+    $referrer: CLEAN_REFERRER,
+    $initial_referrer: CLEAN_REFERRER,
+    current_url_search: CLEAN_SEARCH,
+    utm_source: 'google',
+  });
+});
+
+test('in full mode, Mixpanel events keep their click ids', () => {
+  const ctx = load();
+  const { hooks } = ctx.avoConsent.avoDestinationOptions().mixpanel;
+  const properties = { $current_url: CLICK_URL, gclid: 'g1' };
+  const event = hooks.before_send_events({
+    event: 'Docs Page Viewed',
+    properties: { ...properties },
+  });
+  assert.deepEqual(plain(event.properties), properties);
+});
+
 test('anonymous Segment middleware drops every other event', () => {
   const ctx = load({ cookie: storedChoice({ 4: false }) });
   const analytics = fakeAnalytics();

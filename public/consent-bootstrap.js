@@ -107,6 +107,87 @@ window.avoConsent = (function () {
     '__hssrc',
     '__hssc',
   ];
+  // Ad-click, linker and referrer ids that ride in a URL and identify the visit, and
+  // Segment's ajs_* query-string identity parameters. utm_* parameters stay, so page
+  // views keep their attribution.
+  var CLICK_ID_PARAMS = [
+    'gclid',
+    'gbraid',
+    'wbraid',
+    'dclid',
+    'fbclid',
+    'msclkid',
+    'li_fat_id',
+    'ttclid',
+    'twclid',
+    'sccid',
+    'ko_click_id',
+    'yclid',
+    'srsltid',
+    'epik',
+    'rdt_cid',
+    'irclickid',
+    'obclid',
+    'igshid',
+    's_kwcid',
+    'mkt_tok',
+    '_kx',
+    '_gl',
+    'btid',
+    'urid',
+    '_hsenc',
+    '_hsmi',
+    'mc_eid',
+  ];
+  var CLICK_ID_PREFIXES = ['hsa_', 'ajs_'];
+  // The URL-valued fields Segment (page context and page properties) and mixpanel-js add.
+  var URL_FIELDS = [
+    'url',
+    'search',
+    'referrer',
+    '$current_url',
+    '$referrer',
+    '$initial_referrer',
+    'current_url_search',
+  ];
+
+  function isClickIdParam(name) {
+    try {
+      name = decodeURIComponent(name);
+    } catch (e) {}
+    name = name.toLowerCase();
+    return (
+      CLICK_ID_PARAMS.indexOf(name) !== -1 ||
+      CLICK_ID_PREFIXES.some(function (prefix) {
+        return name.indexOf(prefix) === 0;
+      })
+    );
+  }
+  function stripClickIds(url) {
+    var start = url.indexOf('?');
+    if (start === -1) return url;
+    var end = url.indexOf('#', start);
+    if (end === -1) end = url.length;
+    // Both libraries read a second "?" as a separator too.
+    var kept = url
+      .slice(start + 1, end)
+      .split(/[&?]/)
+      .filter(function (pair) {
+        return pair && !isClickIdParam(pair.split('=')[0]);
+      });
+    return (
+      url.slice(0, start) +
+      (kept.length ? '?' + kept.join('&') : '') +
+      url.slice(end)
+    );
+  }
+  function stripClickIdFields(fields) {
+    if (!fields) return;
+    URL_FIELDS.forEach(function (key) {
+      if (typeof fields[key] === 'string')
+        fields[key] = stripClickIds(fields[key]);
+    });
+  }
 
   function deleteCookies(names) {
     names.forEach(function (c) {
@@ -246,7 +327,11 @@ window.avoConsent = (function () {
           if (evt.type !== 'page' && !isPageView(evt.event)) return;
           evt.context = evt.context || {};
           evt.context.ip = '0.0.0.0';
+          // analytics-next fills this from ?btid= / ?urid= or its s:context.referrer cookie.
+          delete evt.context.referrer;
+          stripClickIdFields(evt.context.page);
           evt.properties = evt.properties || {};
+          stripClickIdFields(evt.properties);
           evt.properties.consent = 'rejected';
           evt.anonymousId = ANONYMOUS_ID;
           delete evt.userId;
@@ -307,6 +392,11 @@ window.avoConsent = (function () {
     props.$device_id = ANONYMOUS_ID;
     props.consent = 'rejected';
     delete props.$user_id;
+    stripClickIdFields(props);
+    // mixpanel-js copies click ids from the URL into properties of the same name.
+    Object.keys(props).forEach(function (key) {
+      if (isClickIdParam(key)) delete props[key];
+    });
     return payload;
   }
 
