@@ -52,7 +52,8 @@ window.avoConsent = (function () {
     if (!m) return null;
     try {
       var stored = JSON.parse(decodeURIComponent(m[1]));
-      if (stored.purposes) return stored.purposes;
+      if (stored.purposes)
+        return isPurposeMap(stored.purposes) ? stored.purposes : REJECT_ALL;
       // The banner before per-purpose consent stored only an overall flag, and iubenda
       // applies it to every purpose; reading it as a Reject would anonymise old Accepts.
       if (typeof stored.consent === 'boolean')
@@ -61,6 +62,16 @@ window.avoConsent = (function () {
     } catch (e) {
       return REJECT_ALL;
     }
+  }
+  // iubenda stores a map of purpose id to boolean; any other shape would read as allowed.
+  function isPurposeMap(p) {
+    return (
+      typeof p === 'object' &&
+      !Array.isArray(p) &&
+      Object.keys(p).every(function (k) {
+        return typeof p[k] === 'boolean';
+      })
+    );
   }
   function analyticsAllowed(p) {
     return !p || p['4'] !== false;

@@ -236,6 +236,20 @@ test('in full mode, pagehide leaves analytics storage alone', () => {
   assert.deepEqual(Object.keys(ctx.localStorage), ['ajs_anonymous_id']);
 });
 
+test('a stored choice whose purposes are not a map of booleans counts as Reject', () => {
+  ['yes', [true], { 4: 'yes' }].forEach((purposes) => {
+    const ctx = load({ cookie: storedChoice(purposes) });
+    assert.equal(
+      ctx.avoConsent.state.anonymous,
+      true,
+      JSON.stringify(purposes),
+    );
+    const { mixpanel, segment } = ctx.avoConsent.avoDestinationOptions();
+    assert.equal(mixpanel.disable_persistence, true);
+    assert.equal(segment.disableClientPersistence, true);
+  });
+});
+
 test('an unparseable stored choice counts as Reject', () => {
   const ctx = load({ cookie: `${IUBENDA_COOKIE}=%7Bnot-json` });
   assert.equal(ctx.avoConsent.state.anonymous, true);
