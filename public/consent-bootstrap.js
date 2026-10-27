@@ -84,6 +84,7 @@ window.avoConsent = (function () {
     'ajs_group_id',
     'mp_' + MIXPANEL_TOKEN + '_mixpanel',
     'initialReferrer',
+    's%3Acontext.referrer',
   ];
   // persisted-queue:v1: is analytics-next's retry queue, written on pagehide;
   // avoinspector is Avo Inspector's store (installation, stream and session ids,
@@ -209,8 +210,8 @@ window.avoConsent = (function () {
     }
   }
 
+  // No stored choice accepts neither, so that case purges too.
   function purgeDeniedCookies(purposes) {
-    if (!purposes) return;
     if (!measurementAccepted(purposes)) deleteCookies(REPLAY_COOKIES);
     if (!marketingAccepted(purposes)) deleteCookies(MARKETING_COOKIES);
   }

@@ -237,27 +237,42 @@ test('stored Reject deletes analytics cookies on load', () => {
   assert.equal(ctx.document.cookie, storedChoice({ 4: false }));
 });
 
+// Cookies set during the page, after the load-time purge.
+const setCookies = (ctx, header) =>
+  header.split('; ').forEach((c) => (ctx.document.cookie = c));
+
 test('Reject deletes replay and marketing cookies', () => {
-  const ctx = load({
-    cookie: 'fs_uid=a; fs_lua=b; _fbp=c; li_fat_id=d; keep=e',
-  });
+  const ctx = load({ cookie: 'keep=e' });
+  setCookies(ctx, 'fs_uid=a; fs_lua=b; _fbp=c; li_fat_id=d');
   ctx.avoConsent.apply({ 4: false, 5: false });
   assert.equal(ctx.document.cookie, 'keep=e');
 });
 
 test('Accept keeps replay and marketing cookies', () => {
-  const ctx = load({ cookie: 'fs_uid=a; _fbp=c' });
+  const ctx = load();
+  setCookies(ctx, 'fs_uid=a; _fbp=c');
   ctx.avoConsent.apply({ 4: true, 5: true });
   assert.equal(ctx.document.cookie, 'fs_uid=a; _fbp=c');
 });
 
 test('Accept all with Global Privacy Control on deletes marketing cookies', () => {
-  const ctx = load({
-    cookie: '_gcl_au=a; _fbp=c; li_fat_id=d; keep=e',
-    gpc: true,
-  });
+  const ctx = load({ cookie: 'keep=e', gpc: true });
+  setCookies(ctx, '_gcl_au=a; _fbp=c; li_fat_id=d');
   ctx.avoConsent.apply({ 4: true, 5: true });
   assert.equal(ctx.document.cookie, 'keep=e');
+});
+
+test('with no stored choice, replay and marketing cookies are deleted on load', () => {
+  const ctx = load({ cookie: 'fs_uid=a; _gcl_au=b; hubspotutk=c; keep=e' });
+  assert.equal(ctx.document.cookie, 'keep=e');
+});
+
+test("stored Reject deletes Segment's stored referrer cookie", () => {
+  const stored = storedChoice({ 4: false });
+  const ctx = load({
+    cookie: `s%3Acontext.referrer=%7B%22id%22%3A%22x%22%7D; ${stored}`,
+  });
+  assert.equal(ctx.document.cookie, stored);
 });
 
 test('a stored Reject deletes replay and marketing cookies even if iubenda never loads', () => {
