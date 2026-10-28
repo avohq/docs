@@ -106,7 +106,7 @@ Semantic search is performed against the **main branch** only. The semantic inde
 
 Multiple values inside one array are OR'd; values across different filter keys are AND'd.
 
-`search` rejects a parameter it doesn't know. The error names it, for example `Unknown key(s) for search: branchId`.
+`search` rejects a parameter it doesn't know. The error names it and lists the parameters `search` accepts, for example `Unknown key(s) for search: branchId. search accepts: workspaceId, query, …`.
 
 ### Returns
 
@@ -238,7 +238,7 @@ Defaults to the main branch when no branch is specified.
 | `checkpoint` | No | Events and properties. Reads the item as one point in a [gateway](/data-design/avo-tracking-plan/gateways) pipeline receives it. One of `{"kind": "source", "sourceId": "<sourceId>"}`, `{"kind": "gatewayInput", "gatewayId": "<gatewayId>", "inputId": "<inputId>"}`, `{"kind": "gateway", "gatewayId": "<gatewayId>"}`, `{"kind": "gatewayOutput", "gatewayId": "<gatewayId>", "outputId": "<outputId>"}` or `{"kind": "destination", "destinationId": "<destinationId>"}`. See [An event as an output receives it](#an-event-as-an-output-receives-it). |
 | `includeCheckpointPaths` | No | Events with `checkpoint` only. When `true`, adds the full schema of every path into the checkpoint. `checkpointPathThroughSourceId`, `checkpointPathThroughInputId` and `checkpointPathThroughOutputId` narrow it to the paths through one source, input or output. |
 
-`get` rejects a parameter it doesn't know, so a misspelled `checkpoint` is an error, not an answer without the checkpoint. The error names it, for example `Unknown key(s) for get: lens`.
+`get` rejects a parameter it doesn't know, so a misspelled `checkpoint` is an error, not an answer without the checkpoint. The error names it and lists the parameters `get` accepts, for example `Unknown key(s) for get: lens. get accepts: type, id, …`.
 
 ### Returns
 
