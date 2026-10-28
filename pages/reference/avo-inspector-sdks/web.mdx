@@ -260,7 +260,11 @@ inspector.enableLogging(enable: boolean): void;
 
 `enableLogging` controls printing of tracked event schemas and other helpful information to the browser console. Enabled by default in development environments.
 
-Errors that affect data delivery are always printed, even with logging disabled. The setting applies to every Avo Inspector instance on the page, including instances created later.
+Errors that affect data delivery, and warnings about a missing or unsupported environment, are always printed, even with logging disabled.
+
+Since version `4.0.0`, the setting applies to every Avo Inspector instance created from the same copy of the SDK, including instances created later, and creating an instance no longer resets it. The lite build (`avo-inspector/lite`) keeps its own setting.
+
+**Upgrading to 4.0.0:** before 4.0.0, creating an Avo Inspector instance reset logging to the environment default, which cancelled any earlier `enableLogging(true)` call. From 4.0.0 that call stays in effect for the rest of the page. Before upgrading, remove any leftover `enableLogging(true)` calls, such as ones added while debugging, or production pages will keep printing logs to the console.
 
 > #### Parameters:
 >
