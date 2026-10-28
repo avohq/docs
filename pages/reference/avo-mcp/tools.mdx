@@ -235,7 +235,7 @@ Defaults to the main branch when no branch is specified.
 | `includePropertyDetails` | No | Events only. When `true`, includes full property definitions (type, constraints, allowed values). Defaults to `false`, which returns only property ID + name references. |
 | `includeArchived` | No | When `true` (default), includes archived items in results. When `false`, only active items. |
 | `workspaceId` | No | Workspace ID |
-| `checkpoint` | No | Events and properties. Reads the item as one point in a [gateway](/data-design/avo-tracking-plan/gateways) pipeline receives it. One of `{"kind": "source", "sourceId"}`, `{"kind": "gatewayInput", "gatewayId", "inputId"}`, `{"kind": "gateway", "gatewayId"}`, `{"kind": "gatewayOutput", "gatewayId", "outputId"}` or `{"kind": "destination", "destinationId"}`. See [An event as an output receives it](#an-event-as-an-output-receives-it). |
+| `checkpoint` | No | Events and properties. Reads the item as one point in a [gateway](/data-design/avo-tracking-plan/gateways) pipeline receives it. One of `{"kind": "source", "sourceId": "<sourceId>"}`, `{"kind": "gatewayInput", "gatewayId": "<gatewayId>", "inputId": "<inputId>"}`, `{"kind": "gateway", "gatewayId": "<gatewayId>"}`, `{"kind": "gatewayOutput", "gatewayId": "<gatewayId>", "outputId": "<outputId>"}` or `{"kind": "destination", "destinationId": "<destinationId>"}`. See [An event as an output receives it](#an-event-as-an-output-receives-it). |
 | `includeCheckpointPaths` | No | Events with `checkpoint` only. When `true`, adds the full schema of every path into the checkpoint. `checkpointPathThroughSourceId`, `checkpointPathThroughInputId` and `checkpointPathThroughOutputId` narrow it to the paths through one source, input or output. |
 
 `get` rejects a parameter it doesn't know, so a misspelled `checkpoint` is an error, not an answer without the checkpoint. The error names it, for example `Unknown key(s) for get: lens`.
@@ -358,12 +358,13 @@ Claude first lists the branch's journeys with [`search`](#search) (`itemType: "j
 
 **Prompt:** *"What does Pinterest receive for `Purchase` after our GTM gateway?"*
 
-Claude finds the gateway's output for Pinterest with `get` (`type: "gateway"`), then reads the event at that output.
+Claude finds the gateway's output for Pinterest with `get` (`type: "gateway"`), then reads the event at that output, with each property's type and allowed values.
 
 ```json
 {
   "type": "event",
   "name": "Purchase",
+  "includePropertyDetails": true,
   "checkpoint": {
     "kind": "gatewayOutput",
     "gatewayId": "gw-gtm…",
