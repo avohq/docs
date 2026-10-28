@@ -71,7 +71,7 @@ Find tracking plan items in one of two modes — the mode is selected automatica
 
 | Parameter | Required | Description |
 |---|---|---|
-| `itemType` | No | Filter by type: `event` (default), `property`, `metric`, `category`, `propertyBundle`, `eventVariant`, `source`, `destination`, `groupType`, or `journey`. The workspace-metadata types (`source` / `destination` / `groupType`) enumerate the workspace list and `journey` enumerates a branch's journeys. These enumerate-only types are valid in filter mode only (omit `query`) and accept just `branch` — plus `pageToken` for `journey`; content filters such as `tags` or `eventNames` are rejected. See [Listing journeys](#listing-journeys). |
+| `itemType` | No | Filter by type: `event` (default), `property`, `metric`, `category`, `propertyBundle`, `eventVariant`, `source`, `destination`, `groupType`, `gateway`, or `journey`. The workspace-metadata types (`source` / `destination` / `groupType` / `gateway`) enumerate the workspace list and `journey` enumerates a branch's journeys. These enumerate-only types are valid in filter mode only (omit `query`) and accept just `branch` — plus `pageToken` for `journey`; content filters such as `tags` or `eventNames` are rejected. See [Listing journeys](#listing-journeys). |
 | `maxResults` | No | Semantic mode: 1–20, default 10. Filter mode: 1–500, default 10. `itemType: "journey"` pages separately: 1–100, default 25. |
 | `workspaceId` | No | Workspace ID. |
 
