@@ -198,7 +198,7 @@ Claude resolves the branch name to an ID with [`list_branches`](#list_branches),
 
 - `query` and structural filters combined — rejected with an error (no HTTP status). Choose one mode.
 - `query` combined with `branch` or `pageToken` — rejected; those are filter-mode-only parameters.
-- `itemType: "journey"` (or `source` / `destination` / `groupType`) combined with `query` or with content filters such as `tags` or `eventNames` — rejected; these types enumerate a whole branch or workspace and take only `branch` (and `pageToken`).
+- `itemType: "journey"` (or `source` / `destination` / `groupType` / `gateway`) combined with `query` or with content filters such as `tags` or `eventNames` — rejected; these types enumerate a whole branch or workspace and take only `branch` (and `pageToken`).
 - `branch` passed as a name instead of an ID on a journey listing — the branch is not found; resolve the name with [`list_branches`](#list_branches) first.
 - Smart Search not enabled in the workspace — semantic mode fails; fall back to filter mode or `get`.
 - `Unknown key(s) for search: …` — a parameter name isn't one `search` accepts. `search` takes `branch`, not `branchId`.
@@ -225,7 +225,7 @@ Defaults to the main branch when no branch is specified.
 | Parameter | Required | Description |
 |---|---|---|
 | `type` | Yes | Item type. One of: `event`, `property`, `metric`, `category`, `propertyBundle`, `source`, `destination`, `groupType`, `gateway`, `eventVariant`, `journey`, `branch`, `workspaceConfig`. |
-| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `propertyBundle` unless `name` is provided. For `source`/`destination`/`groupType`, provide `id` or `name` — `get` is single-item only, so enumerate with [`search`](#search) instead. `eventVariant` uses `id` (the base event ID) **plus** `variantId`, not `name`. For `branch`, identify with `branchId`/`branchName` (`id`/`name` are not branch identifiers; omitting both errors). `journey` requires `id` — there is no name lookup. Not used by `workspaceConfig`. |
+| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `propertyBundle` unless `name` is provided. For `source`/`destination`/`groupType`/`gateway`, provide `id` or `name` — `get` is single-item only, so enumerate with [`search`](#search) instead. `eventVariant` uses `id` (the base event ID) **plus** `variantId`, not `name`. For `branch`, identify with `branchId`/`branchName` (`id`/`name` are not branch identifiers; omitting both errors). `journey` requires `id` — there is no name lookup. Not used by `workspaceConfig`. |
 | `name` | Varies by type | Exact name match. Alternative to `id` for most types (not accepted for `journey`). May return multiple matches for ambiguous names (especially properties) — use [`search`](#search) for fuzzy lookup. |
 | `variantId` | For `eventVariant` | The variant ID. Combined with `id` (the base event ID). |
 | `include` | For `branch` | Array of branch facets to return: `overview`, `all_changes`, `event_changes`, `property_changes`, `code_snippets`, `implementation_guide`. Defaults to `["overview"]`. Multiple values union. The deprecated value `changes` is accepted as an alias for `all_changes`. Unknown values are dropped with a warning. Combine `all_changes` and `code_snippets` (or use `implementation_guide`) for an implementer-ready picture of the branch. |
