@@ -260,7 +260,7 @@ inspector.enableLogging(enable: boolean): void;
 
 `enableLogging` controls printing of tracked event schemas and other helpful information to the browser console. Enabled by default in development environments.
 
-A few problems are printed even with logging disabled: unexpected internal errors, a property value that fails to encrypt, the first failure to save Inspector data in the browser's local storage, a placeholder API key in the HTML tag, and a missing or unsupported environment. Failed sends are printed only with logging enabled, since the SDK retries them.
+A few problems are printed even with logging disabled: unexpected internal errors, a property value that fails to encrypt, the first failure to save Inspector data in the browser's local storage, and a missing or unsupported environment. A failed send is normally printed only with logging enabled, since the SDK retries it.
 
 Since version `4.0.0`, the setting applies to every Avo Inspector instance created from the same copy of the SDK, including instances created later, and creating an instance no longer resets it. The lite build (`avo-inspector/lite`) has its own setting, which works the same way across lite instances.
 
