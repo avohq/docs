@@ -1142,7 +1142,7 @@ test('applying no choice keeps the full-mode default', () => {
 });
 
 test('a falsy purposes value from an iubenda callback counts as Reject, not as the stored Accept', () => {
-  for (const purposes of [false, null, 0, '']) {
+  for (const purposes of [false, null, 0, '', undefined]) {
     const expressed = load({
       cookie: storedChoice({ 1: true, 4: true, 5: true }),
     });
@@ -1161,6 +1161,17 @@ test('a falsy purposes value from an iubenda callback counts as Reject, not as t
       `onReady ${JSON.stringify(purposes)}`,
     );
   }
+});
+
+test('iubenda onPreferenceExpressed without purposes keeps a stored Accept', () => {
+  const ctx = load({ cookie: storedChoice({ 1: true, 4: true, 5: true }) });
+  ctx._iub.csConfiguration.callback.onPreferenceExpressed({});
+  assert.equal(ctx.avoConsent.state.anonymous, false);
+  assert.deepEqual(plain(ctx.avoConsent.state.purposes), {
+    1: true,
+    4: true,
+    5: true,
+  });
 });
 
 test('iubenda onReady on a first visit keeps the no-choice default', () => {
