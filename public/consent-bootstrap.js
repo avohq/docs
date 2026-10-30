@@ -504,11 +504,8 @@ _iub.csConfiguration = {
   preferenceCookie: { expireAfter: 177 },
   // Consent Mode is handled in avoConsent.apply
   googleConsentMode: false,
-  floatingPreferencesButtonDisplay: 'anchored-bottom-left',
-  floatingPreferencesButtonIcon: false,
-  floatingPreferencesButtonCaption: true,
-  floatingPreferencesButtonCaptionColor: '#191719',
-  floatingPreferencesButtonColor: '#FFFFFF29',
+  // Preferences reopen from the footer's "Your Privacy Choices" link.
+  floatingPreferencesButtonDisplay: false,
   emailMarketing: {
     styles: {
       backgroundColor: '#1E1A1E',
@@ -524,18 +521,25 @@ _iub.csConfiguration = {
     en: {
       banner: {
         dynamic: {
-          body: 'We use cookies for essential functions and, unless you reject, for product analytics. With your consent we also use them for session replay and personalised ads. Reject limits us to anonymous page-view counts — no cookies, no identifiers. Change your mind anytime via Privacy choices at the bottom of the page.',
+          body: 'We use cookies to run this site and, unless you reject, to measure how it\'s used. With your consent, we also use them for session recordings and for ads with Google and LinkedIn. If you reject, we only record page views, with no analytics cookies or tracking IDs. Change this anytime in Your Privacy Choices. <a href="https://www.avo.app/l/cookies" target="_blank" rel="noopener">Cookie policy</a>',
         },
       },
       per_purpose: {
         purposes: {
+          1: {
+            description:
+              'Needed to run the site securely and remember your privacy choices. Always on.',
+          },
           4: {
             description:
-              'Product analytics. On by default; switch off to be counted only as an anonymous page view. Session replay starts only if you switch this on yourself.',
+              "Product analytics (Mixpanel, Segment, Google Analytics). On unless you switch it off. When it's off, we only record page views, with no analytics cookies or tracking IDs. Session recordings (FullStory) start only if you choose Accept or save your choices with this on.",
           },
           5: {
             description:
-              "Advertising measurement and personalisation. Also honours your browser's Global Privacy Control.",
+              'Ads and ad measurement with Google and LinkedIn. Off unless you accept or switch it on. Keeping it off opts you out of sharing your personal information for targeted ads. Never runs while your browser sends Global Privacy Control, even if you accept.' +
+              (navigator.globalPrivacyControl === true
+                ? " Global Privacy Control detected: you're opted out of sharing for targeted ads."
+                : ''),
           },
         },
       },

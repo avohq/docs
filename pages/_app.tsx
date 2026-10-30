@@ -10,6 +10,7 @@ import { contentCopied } from '../AvoEvents/contentCopied';
 import { docsPageViewed } from '../AvoEvents/docsPageViewed';
 import useAvoPath from '../util/useAvoPath';
 import { getAvoConsent } from '../util/avoConsent';
+import '../styles/cookie-banner.css';
 
 const getAvoEnv = () => {
   switch (process.env.NEXT_PUBLIC_AVO_ENV) {

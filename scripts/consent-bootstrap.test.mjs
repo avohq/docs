@@ -832,6 +832,30 @@ test('the iubenda config exposes only the purposes the bootstrap enforces', () =
   assert.equal(ctx._iub.csConfiguration.googleConsentMode, false);
 });
 
+const marketingDescription = (ctx) =>
+  ctx._iub.csConfiguration.i18n.en.per_purpose.purposes[5].description;
+
+test('with Global Privacy Control on, the Marketing description says the visitor is opted out', () => {
+  assert.match(
+    marketingDescription(load({ gpc: true })),
+    / Global Privacy Control detected: you're opted out of sharing for targeted ads\.$/,
+  );
+});
+
+test('without Global Privacy Control, the Marketing description has no opt-out notice', () => {
+  assert.doesNotMatch(
+    marketingDescription(load()),
+    /Global Privacy Control detected/,
+  );
+});
+
+test("the footer's Your Privacy Choices link replaces iubenda's floating button", () => {
+  assert.equal(
+    load()._iub.csConfiguration.floatingPreferencesButtonDisplay,
+    false,
+  );
+});
+
 test('iubenda onPreferenceExpressed applies the expressed purposes', () => {
   const ctx = load();
   ctx._iub.csConfiguration.callback.onPreferenceExpressed({

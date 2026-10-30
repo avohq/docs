@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useConfig, DocsThemeConfig } from 'nextra-theme-docs';
 import SignIn from './components/SignIn';
 import AgentNote from './components/AgentNote';
+import PrivacyChoices from './components/PrivacyChoices';
 
 interface LogoProps {
   width: number;
@@ -92,17 +93,20 @@ const config: DocsThemeConfig = {
   },
   footer: {
     content: (
-      <Link href="/help/troubleshooting">
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <Image
-            alt="Rescue ring"
-            src="/docs/images/svg/faq.svg"
-            width={20}
-            height={20}
-          />
-          Support
-        </div>
-      </Link>
+      <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
+        <Link href="/help/troubleshooting">
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <Image
+              alt="Rescue ring"
+              src="/docs/images/svg/faq.svg"
+              width={20}
+              height={20}
+            />
+            Support
+          </div>
+        </Link>
+        <PrivacyChoices />
+      </div>
     ),
   },
   sidebar: {
