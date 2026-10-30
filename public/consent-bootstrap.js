@@ -78,6 +78,13 @@ window.avoConsent = (function () {
       })
     );
   }
+  // A purposes key in an iubenda callback that is present but not a purpose map (false,
+  // null) is a Reject, never a cue to use the fallback.
+  function purposesFrom(prefs, fallback) {
+    if (!prefs || !Object.prototype.hasOwnProperty.call(prefs, 'purposes'))
+      return fallback;
+    return isPurposeMap(prefs.purposes) ? prefs.purposes : REJECT_ALL;
+  }
   function analyticsAllowed(p) {
     return !p || p['4'] !== false;
   }
@@ -525,6 +532,7 @@ window.avoConsent = (function () {
     apply: apply,
     bindDestinations: bindDestinations,
     storedPurposes: readStoredPurposes,
+    purposesFrom: purposesFrom,
     gatedInspector: gatedInspector,
     avoDestinationOptions: function () {
       var anon = state.anonymous;
@@ -648,19 +656,17 @@ _iub.csConfiguration = {
         _iub.cs.api &&
         _iub.cs.api.getPreferences &&
         _iub.cs.api.getPreferences();
-      window.avoConsent.apply(
-        prefs && prefs.purposes
-          ? prefs.purposes
-          : window.avoConsent.state.purposes,
-      );
+      var consent = window.avoConsent;
+      consent.apply(consent.purposesFrom(prefs, consent.state.purposes));
     },
     onPreferenceExpressed: function (prefs) {
       // iubenda has written its cookie by now; it is fresher than the page-load state.
       var consent = window.avoConsent;
       consent.apply(
-        prefs && prefs.purposes
-          ? prefs.purposes
-          : consent.storedPurposes() || consent.state.purposes,
+        consent.purposesFrom(
+          prefs,
+          consent.storedPurposes() || consent.state.purposes,
+        ),
       );
     },
   },
