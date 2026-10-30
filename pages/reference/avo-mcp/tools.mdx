@@ -582,8 +582,8 @@ These workspace-metadata types also support `create` / `update` / `archive` / `u
 
 | Type | Fields |
 |---|---|
-| `source` | **Create:** `platform` (required — one of Avo's source platforms), `programmingLanguage`, `libraryName`, `libraryDestination`. **Update:** change these with `set.platform` / `set.programmingLanguage` / `set.libraryName` / `set.libraryDestination`. (A source's language can also be set via [`workflow`](#workflow) `action: "set_source_language"`.) Connect or disconnect destinations with the top-level `connectDestinations` / `disconnectDestinations` arrays. Connecting a destination also sends the source's existing events and variants to it, like the default in the Avo app, unless the destination has `disabledByDefault`. Disconnecting removes the destination from every event on the source. |
-| `destination` | **Create:** `analyticsTool` (the analytics platform), `includeUserPropsWithEventProps` (bool, default `false`), `disabledByDefault` (bool, default `false`; `true` turns off "Include by default", so adding a source to an event doesn't send that event to this destination, and connecting it to a source sends none of the source's existing events). **Update:** set or remove an API key with `apiKey: { kind: "set", env: "dev" \| "prod", value: "..." }` or `{ kind: "remove", env: "dev" \| "prod" }`. |
+| `source` | **Create:** `platform` (required — one of Avo's source platforms; `describe_tool` lists the accepted `platform` and `programmingLanguage` values), `programmingLanguage`, `libraryName`, `libraryDestination`. **Update:** change these with `set.platform` / `set.programmingLanguage` / `set.libraryName` / `set.libraryDestination`. (A source's language can also be set via [`workflow`](#workflow) `action: "set_source_language"`.) Connect or disconnect destinations with the top-level `connectDestinations` / `disconnectDestinations` arrays. Connecting a destination also sends the source's existing events and variants to it, like the default in the Avo app, unless the destination has `disabledByDefault`. Disconnecting removes the destination from every event on the source. |
+| `destination` | **Create:** `analyticsTool` (the analytics platform; `describe_tool` lists the accepted values, and an `update` changes it with `set.analyticsTool`), `includeUserPropsWithEventProps` (bool, default `false`), `disabledByDefault` (bool, default `false`; `true` turns off "Include by default", so adding a source to an event doesn't send that event to this destination, and connecting it to a source sends none of the source's existing events). **Update:** set or remove an API key with `apiKey: { kind: "set", env: "dev" \| "prod", value: "..." }` or `{ kind: "remove", env: "dev" \| "prod" }`. |
 | `groupType` | **Create:** `name` only (group types have no description). |
 
 The tool's per-field schema (the `describe` text on each parameter) is the authoritative reference for the full set of accepted fields.
@@ -751,7 +751,9 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 - `branchId is required` / `items is required` — malformed request.
 - `tempId is only valid on create items` — don't set `tempId` on `update` or `remove`.
 - `Duplicate tempId "<name>"` — each `tempId` must be unique across items in the batch.
+- `Duplicate <item> in the same batch: item N …` — two items in one call target the same thing. The message names the other item and says how to fix it, usually by merging the two items. Items created in the same call are named by their `$tmp:` reference.
 - `Unknown $tmp: reference` — a `$tmp:` ref names a tempId that wasn't declared.
+- `"platform" is not a top-level field on source updates: use "set.platform"` — on an `update`, change a source's `platform`, `programmingLanguage`, `libraryName` or `libraryDestination`, or a destination's `analyticsTool`, inside `set`.
 - `<idField> is required for <op> <entity> items` — missing `eventId` / `propertyId` / `baseEventId` / `variantId` / `propertyBundleId` / `metricId`.
 - `too many items (got N, max 50)` — batch is over the 50-item cap.
 - `NotYetImplemented` — one of the unsupported operations above.
