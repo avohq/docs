@@ -37,10 +37,19 @@ const PrivacyChoicesIcon = () => (
   </svg>
 );
 
+const COOKIE_POLICY_URL = 'https://www.avo.app/l/cookies';
+
+// iubenda is often blocked by filter lists; the link must still lead somewhere.
+const openPreferences = () => {
+  const api = window._iub?.cs?.api;
+  if (api?.openPreferences) api.openPreferences();
+  else window.location.assign(COOKIE_POLICY_URL);
+};
+
 const PrivacyChoices = () => (
   <button
     type="button"
-    onClick={() => window._iub?.cs?.api?.openPreferences?.()}
+    onClick={openPreferences}
     style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
   >
     Your Privacy Choices

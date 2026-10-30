@@ -169,7 +169,8 @@
   #iubenda-cs-banner#iubenda-cs-banner .iubenda-cs-accept-btn {
     padding: 0 10px !important;
   }
-  /* Customize becomes a 40px icon button. The text stays in the DOM as its accessible name. */
+  /* Customize becomes a 40px icon button. The label is pushed out of view, not shrunk to
+     font-size 0, which some screen readers skip, so it stays the accessible name. */
   #iubenda-cs-banner#iubenda-cs-banner
     .iubenda-cs-opt-group
     .iubenda-cs-customize-btn {
@@ -181,7 +182,8 @@
       url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23211F26' stroke-width='1.75' stroke-linecap='round'><path d='M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12'/><circle cx='16' cy='6' r='2'/><circle cx='10' cy='12' r='2'/><circle cx='18' cy='18' r='2'/></svg>")
       center / 18px 18px no-repeat !important;
     color: transparent !important;
-    font-size: 0 !important;
+    white-space: nowrap !important;
+    text-indent: 40px !important;
     text-decoration: none !important;
   }
   #iubenda-cs-banner#iubenda-cs-banner
@@ -189,8 +191,11 @@
     .iubenda-cs-customize-btn:hover {
     background-color: #eceaef !important;
   }
-  /* Hide Intercom's launcher while the banner is in the page (see section 6) */
-  body:has(#iubenda-cs-banner) #intercom_action {
+  /* The sheet covers the chat launcher's corner: www's own button, or Intercom's default
+     launcher on docs. iubenda removes the banner after a choice, which brings it back. */
+  body:has(#iubenda-cs-banner) #intercom_action,
+  body:has(#iubenda-cs-banner) .intercom-lightweight-app-launcher,
+  body:has(#iubenda-cs-banner) iframe.intercom-launcher-frame {
     display: none !important;
   }
 }
