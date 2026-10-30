@@ -14,6 +14,7 @@
 }
 
 /* >= 640px: card, bottom-left */
+/* iubenda clips this wrapper, which is exactly the card's width, so the shadow was cut off */
 #iubenda-cs-banner#iubenda-cs-banner.iubenda-cs-default-floating {
   top: auto !important;
   right: auto !important;
@@ -21,6 +22,7 @@
   left: 24px !important;
   width: 480px !important;
   max-width: calc(100vw - 48px) !important;
+  overflow: visible !important;
 }
 #iubenda-cs-banner#iubenda-cs-banner .iubenda-cs-container {
   background: #ffffff !important;
