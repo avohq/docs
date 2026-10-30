@@ -49,6 +49,14 @@ function fakeDocument(cookieHeader) {
       else cookies.set(name, pair.slice(pair.indexOf('=') + 1));
     },
     createElement: (tagName) => ({ tagName }),
+    elements: {},
+    clickListeners: [],
+    getElementById(id) {
+      return this.elements[id] || null;
+    },
+    addEventListener(type, fn, capture) {
+      if (type === 'click' && capture) this.clickListeners.push(fn);
+    },
     head: { appendChild: (el) => insertedScripts.push(el) },
     getElementsByTagName: () => [
       { parentNode: { insertBefore: (el) => insertedScripts.push(el) } },
@@ -155,15 +163,27 @@ function load({
   cookie = '',
   gpc = false,
   localKeys = [],
+  sessionKeys = [],
+  search = '',
   FS,
   storageBlocked = false,
 } = {}) {
   const ctx = {
     console,
+    location: { search, href: 'https://www.avo.app/docs/start' + search },
+    history: {
+      state: null,
+      replaced: [],
+      states: [],
+      replaceState(state, title, url) {
+        this.replaced.push(url);
+        this.states.push(state);
+      },
+    },
     navigator: { globalPrivacyControl: gpc },
     document: fakeDocument(cookie),
     localStorage: fakeStorage(localKeys),
-    sessionStorage: fakeStorage([]),
+    sessionStorage: fakeStorage(sessionKeys),
     listeners: {},
     setTimeout,
     addEventListener(type, fn) {
@@ -250,6 +270,42 @@ test('a stored choice whose purposes are not a map of booleans counts as Reject'
   });
 });
 
+// The shapes iubenda stores with purposes "1, 4, 5": every id present, boolean values.
+test('a stored iubenda purpose map with Necessary is read as stored', () => {
+  assert.equal(
+    load({ cookie: storedChoice({ 1: true, 4: true, 5: false }) }).avoConsent
+      .state.anonymous,
+    false,
+  );
+  assert.equal(
+    load({ cookie: storedChoice({ 1: true, 4: false, 5: false }) }).avoConsent
+      .state.anonymous,
+    true,
+  );
+});
+
+test('a stored purpose map with no analytics choice counts as Reject', () => {
+  [{}, { 5: true }, { 1: true, 5: true }].forEach((purposes) => {
+    const ctx = load({ cookie: storedChoice(purposes) });
+    assert.equal(
+      ctx.avoConsent.state.anonymous,
+      true,
+      JSON.stringify(purposes),
+    );
+  });
+});
+
+test('a present but invalid purposes value counts as Reject, not as the old overall flag', () => {
+  [false, null, 0, ''].forEach((purposes) => {
+    const cookie = `${IUBENDA_COOKIE}=${encodeURIComponent(JSON.stringify({ purposes, consent: true }))}`;
+    assert.equal(
+      load({ cookie }).avoConsent.state.anonymous,
+      true,
+      JSON.stringify(purposes),
+    );
+  });
+});
+
 test('an unparseable stored choice counts as Reject', () => {
   const ctx = load({ cookie: `${IUBENDA_COOKIE}=%7Bnot-json` });
   assert.equal(ctx.avoConsent.state.anonymous, true);
@@ -329,6 +385,179 @@ test('a stored Reject deletes replay and marketing cookies even if iubenda never
   const stored = storedChoice({ 4: false, 5: false });
   const ctx = load({ cookie: `fs_uid=a; _fbp=c; keep=e; ${stored}` });
   assert.equal(ctx.document.cookie, `keep=e; ${stored}`);
+});
+
+test('a stored Reject removes Google Ads and FullStory browser storage', () => {
+  const ctx = load({
+    cookie: storedChoice({ 4: false, 5: false }),
+    localKeys: ['_gcl_ls', 'theme'],
+    sessionKeys: ['_fs_tab_id', 'draft'],
+  });
+  assert.deepEqual(Object.keys(ctx.localStorage), ['theme']);
+  assert.deepEqual(Object.keys(ctx.sessionStorage), ['draft']);
+});
+
+test("Marketing off removes Google Ads storage but keeps FullStory's while Measurement is accepted", () => {
+  const ctx = load({
+    cookie: storedChoice({ 4: true, 5: false }),
+    localKeys: ['_gcl_ls'],
+    sessionKeys: ['_fs_tab_id'],
+  });
+  assert.deepEqual(Object.keys(ctx.localStorage), []);
+  assert.deepEqual(Object.keys(ctx.sessionStorage), ['_fs_tab_id']);
+});
+
+test('a stored Accept keeps Google Ads and FullStory browser storage', () => {
+  const ctx = load({
+    cookie: storedChoice({ 4: true, 5: true }),
+    localKeys: ['_gcl_ls'],
+    sessionKeys: ['_fs_tab_id'],
+  });
+  assert.deepEqual(Object.keys(ctx.localStorage), ['_gcl_ls']);
+  assert.deepEqual(Object.keys(ctx.sessionStorage), ['_fs_tab_id']);
+});
+
+test('a stored Reject strips ad-click ids from the address bar and keeps utm parameters', () => {
+  const ctx = load({
+    cookie: storedChoice({ 4: false, 5: false }),
+    search: '?gclid=G&utm_source=s&fbclid=F',
+  });
+  assert.deepEqual(ctx.history.replaced, [
+    'https://www.avo.app/docs/start?utm_source=s',
+  ]);
+});
+
+test('a Reject on the page strips ad-click ids from the address bar', () => {
+  const ctx = load({ search: '?gclid=G' });
+  assert.deepEqual(ctx.history.replaced, []);
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  assert.deepEqual(ctx.history.replaced, ['https://www.avo.app/docs/start']);
+});
+
+test("a Reject on the page also strips click ids from the router's history entry", () => {
+  const ctx = load({ search: '?gclid=G&utm_source=s' });
+  ctx.history.state = {
+    __N: true,
+    url: '/[[...slug]]?slug=start&gclid=G&utm_source=s',
+    as: '/docs/start?gclid=G&utm_source=s',
+    key: 'k',
+  };
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  assert.deepEqual(plain(ctx.history.states), [
+    {
+      __N: true,
+      url: '/[[...slug]]?slug=start&utm_source=s',
+      as: '/docs/start?utm_source=s',
+      key: 'k',
+    },
+  ]);
+});
+
+test('the address bar is left alone without a Reject or without click ids', () => {
+  assert.deepEqual(load({ search: '?gclid=G' }).history.replaced, []);
+  assert.deepEqual(
+    load({ cookie: storedChoice({ 4: true, 5: true }), search: '?gclid=G' })
+      .history.replaced,
+    [],
+  );
+  assert.deepEqual(
+    load({
+      cookie: storedChoice({ 4: false, 5: false }),
+      search: '?utm_source=s',
+    }).history.replaced,
+    [],
+  );
+});
+
+// A clicked element that matches the given selectors, as Element.closest sees it.
+const clicked = (...selectors) => ({
+  target: {
+    closest: (sel) =>
+      sel.split(',').some((s) => selectors.includes(s.trim())) ? {} : null,
+  },
+});
+const clickOn = (ctx, event) =>
+  ctx.document.clickListeners.forEach((fn) => fn(event));
+const panelWait = () => new Promise((r) => setTimeout(r, 150));
+const measurementBox = (checked) => ({
+  checked,
+  clicks: 0,
+  click() {
+    this.clicks++;
+    this.checked = !this.checked;
+  },
+});
+
+test('with no stored choice, Customize opens the panel with Measurement ticked', async () => {
+  const ctx = load();
+  clickOn(ctx, clicked('.iubenda-cs-customize-btn'));
+  const box = measurementBox(false);
+  ctx.document.elements['purpose-4'] = box;
+  await panelWait();
+  assert.equal(box.checked, true);
+  assert.equal(box.clicks, 1);
+});
+
+test('with no stored choice, the footer button opens the panel with Measurement ticked', async () => {
+  const ctx = load();
+  const box = measurementBox(false);
+  ctx.document.elements['purpose-4'] = box;
+  clickOn(ctx, clicked('.avo-privacy-choices'));
+  await panelWait();
+  assert.equal(box.checked, true);
+});
+
+test('a stored choice is shown as stored, never re-ticked', async () => {
+  const ctx = load({ cookie: storedChoice({ 4: false, 5: false }) });
+  const box = measurementBox(false);
+  ctx.document.elements['purpose-4'] = box;
+  clickOn(ctx, clicked('.iubenda-cs-customize-btn'));
+  await panelWait();
+  assert.equal(box.clicks, 0);
+});
+
+test('a Reject made on this page is not re-ticked when the panel reopens', async () => {
+  const ctx = load();
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  const box = measurementBox(false);
+  ctx.document.elements['purpose-4'] = box;
+  clickOn(ctx, clicked('.avo-privacy-choices'));
+  await panelWait();
+  assert.equal(box.clicks, 0);
+});
+
+test('an already ticked Measurement box is left alone, and other clicks do nothing', async () => {
+  const ctx = load();
+  const ticked = measurementBox(true);
+  ctx.document.elements['purpose-4'] = ticked;
+  clickOn(ctx, clicked('.iubenda-cs-customize-btn'));
+  await panelWait();
+  assert.equal(ticked.clicks, 0);
+  const box = measurementBox(false);
+  ctx.document.elements['purpose-4'] = box;
+  clickOn(ctx, clicked('.nextra-sidebar-link'));
+  await panelWait();
+  assert.equal(box.clicks, 0);
+});
+
+test('a Measurement box that renders after the panel wait is left alone', async () => {
+  const ctx = load();
+  clickOn(ctx, clicked('.iubenda-cs-customize-btn'));
+  await new Promise((r) => setTimeout(r, 3300));
+  const box = measurementBox(false);
+  ctx.document.elements['purpose-4'] = box;
+  await panelWait();
+  assert.equal(box.clicks, 0);
+});
+
+test('a choice made while the panel is rendering stops the tick', async () => {
+  const ctx = load();
+  clickOn(ctx, clicked('.iubenda-cs-customize-btn'));
+  ctx.avoConsent.apply({ 4: false, 5: false });
+  const box = measurementBox(false);
+  ctx.document.elements['purpose-4'] = box;
+  await panelWait();
+  assert.equal(box.clicks, 0);
 });
 
 test('a stored Accept keeps replay and marketing cookies on load', () => {
@@ -862,6 +1091,63 @@ test('iubenda onPreferenceExpressed applies the expressed purposes', () => {
     purposes: { 4: false, 5: false },
   });
   assert.equal(ctx.avoConsent.state.anonymous, true);
+});
+
+test('malformed purposes from an iubenda callback count as Reject', () => {
+  ['yes', [true], { 4: 'false' }, {}].forEach((purposes) => {
+    const ctx = load();
+    assert.equal(ctx.avoConsent.state.anonymous, false);
+    ctx._iub.csConfiguration.callback.onPreferenceExpressed({ purposes });
+    assert.equal(
+      ctx.avoConsent.state.anonymous,
+      true,
+      JSON.stringify(purposes),
+    );
+  });
+});
+
+test('an iubenda Accept with Necessary keeps full mode', () => {
+  const ctx = load({ cookie: storedChoice({ 4: false, 5: false }) });
+  ctx._iub.csConfiguration.callback.onPreferenceExpressed({
+    purposes: { 1: true, 4: true, 5: true },
+  });
+  assert.equal(ctx.avoConsent.state.anonymous, false);
+});
+
+test("iubenda onReady prefers iubenda's current purposes over the stored cookie", () => {
+  const ctx = load({ cookie: storedChoice({ 1: true, 4: true, 5: false }) });
+  ctx._iub.cs = {
+    api: {
+      getPreferences: () => ({ purposes: { 1: true, 4: false, 5: false } }),
+    },
+  };
+  ctx._iub.csConfiguration.callback.onReady();
+  assert.equal(ctx.avoConsent.state.anonymous, true);
+});
+
+test('iubenda onReady with malformed purposes counts as Reject', () => {
+  const ctx = load({ cookie: storedChoice({ 1: true, 4: true, 5: false }) });
+  assert.equal(ctx.avoConsent.state.anonymous, false);
+  ctx._iub.cs = { api: { getPreferences: () => ({ purposes: 'yes' }) } };
+  ctx._iub.csConfiguration.callback.onReady();
+  assert.equal(ctx.avoConsent.state.anonymous, true);
+});
+
+test('applying no choice keeps the full-mode default', () => {
+  const ctx = load({ cookie: storedChoice({ 4: false, 5: false }) });
+  ctx.avoConsent.apply({ 4: true, 5: false });
+  assert.equal(ctx.avoConsent.state.anonymous, false);
+  ctx.avoConsent.apply(null);
+  assert.equal(ctx.avoConsent.state.anonymous, false);
+});
+
+test('iubenda onReady on a first visit keeps the no-choice default', () => {
+  const ctx = load();
+  // What iubenda's getPreferences() returns before any choice.
+  ctx._iub.cs = { api: { getPreferences: () => ({}) } };
+  ctx._iub.csConfiguration.callback.onReady();
+  assert.equal(ctx.avoConsent.state.purposes, null);
+  assert.equal(ctx.avoConsent.state.anonymous, false);
 });
 
 test('iubenda onReady falls back to the stored choice when the API has none', () => {
