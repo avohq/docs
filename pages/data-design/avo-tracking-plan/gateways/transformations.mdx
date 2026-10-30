@@ -89,6 +89,7 @@ Key rules work together with the other rules at a checkpoint:
 - **A dropped key stays dropped.** A key dropped at one checkpoint can't come back at a later one, so a later rule on the same key has no effect.
 - **Dropping the whole object.** Dropping the object drops all its keys, so a key rule under it has no effect.
 - **Allow list.** At a checkpoint set to **Allow list**, an object on the list keeps all its keys, unless a key rule drops one.
+- **Two keys, one name.** Two keys of the same object can't be sent under the same name at a checkpoint. If a rename would do that, the [Avo MCP](/reference/avo-mcp/overview) rejects the change and names both keys.
 
 The **Transformations** tab shows a key rule by its path, with a dot between the object and the key, such as `items.product_id` or `items.price → items.item_price`. Paths use the names in your tracking plan. A key rule that has no effect is shown muted with the reason beneath it, for example "covered by the drop of items", and so is a key rule at a checkpoint where no event brings the object.
 
@@ -96,7 +97,7 @@ A property that arrives at a checkpoint only inside an object can't be dropped o
 
 Inspector checks each output against the object as the gateway sends it there. A dropped key is no longer reported missing at that output, and a renamed key is expected under its new name.
 
-A key rule can drop or rename a key. Other changes, such as pinning a key's value or requiring a key, apply to top-level properties only.
+Among gateway transformation rules, a key rule can only drop or rename a key. Other transformations, such as pinning a key's value or requiring a key, apply to top-level properties only.
 
 ### Property bundles
 
