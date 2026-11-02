@@ -21,7 +21,7 @@ When a source is an input of a [gateway](/data-design/avo-tracking-plan/gateways
 For a gateway called **GTM** with your Web source as an input:
 
 - `initAvo` takes a `GtmDestination` parameter, typed by the same `CustomDestination` interface as every custom destination.
-- Every event and variant the Web source sends calls it, under its name in the tracking plan.
+- Every event and variant the Web source sends to the gateway calls it, under its name in the tracking plan.
 - The destinations the gateway sends to, such as Google Analytics 4 or Meta, don't appear in the source's code once you disconnect them from the source. The gateway sends to them.
 
 ```typescript
@@ -38,12 +38,18 @@ Avo.initAvo({ env: AvoEnv.Prod }, {}, gtmDestination);
 
 Custom destinations are passed to `initAvo` in order, so check where the gateway's parameter sits after you pull.
 
+## Choose which events go to the gateway
+
+You pick the events a gateway gets the same way as for a destination. On an event, each source lists the gateways it feeds next to its destinations, marked **(gateway)**, and you turn each one on or off for that event. A variant can turn the gateway on or off for its source too, under its source overrides.
+
+When you connect a source to a gateway, every event the source sends is turned on for the gateway. Turn off the events the gateway shouldn't get, and they stay out of the gateway's calls in your source's code. An event turned off for the gateway also doesn't reach the gateway's checkpoints in Inspector.
+
 ## Move destinations behind a gateway
 
 When a gateway starts sending to destinations your source used to send to directly, set the plan up like this, on one branch:
 
 1. **Disconnect those destinations from the source**, in the source's settings. A destination still connected to the source gets its events directly from your code as well as from the gateway, so it receives them twice.
-2. **Connect the source to the gateway** as one of its inputs.
+2. **Connect the source to the gateway** as one of its inputs. Every event the source sends is turned on for the gateway, so turn off any it shouldn't get.
 3. **Connect the destinations to the gateway** as its outputs, such as Google Analytics 4 and Meta.
 4. **Pull the code** with `avo pull [--branch my-branch] [SourceName]`, then pass your gateway implementation to `initAvo` and remove the implementations of the destinations you disconnected.
 
