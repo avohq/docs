@@ -44,6 +44,8 @@ You pick the events a gateway gets the same way as for a destination. On an even
 
 When you connect a source to a gateway, every event the source sends is turned on for the gateway. Turn off the events the gateway shouldn't get, and they stay out of the gateway's calls in your source's code. An event turned off for the gateway also doesn't reach the gateway's checkpoints in Inspector.
 
+Like a destination, a gateway is **included by default**: when you add an event or a variant to a source, the gateways that source feeds are turned on for it. A gateway with **Include by default** off is left off, and you turn it on per event. The gateway's details show the setting.
+
 ## Move destinations behind a gateway
 
 When a gateway starts sending to destinations your source used to send to directly, set the plan up like this, on one branch:
