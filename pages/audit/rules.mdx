@@ -199,7 +199,7 @@ Checks that a property an output requires (a Require rule) arrives on every even
 
 #### How to resolve
 
-Add the property to the event, send it on every event the rule covers, or leave those events out of the rule.
+Add the property to the event, send it on every event the rule covers, remove the upstream rule that drops it, or leave those events out of the rule.
 
 ### Gateway sends a field that breaks the contract
 
@@ -207,7 +207,7 @@ Checks what leaves each input, gateway and output for fields that can't be sent 
 
 #### How to resolve
 
-Rename one of the clashing events or properties, or drop one of them, or change the pin or type so they fit.
+Rename one of the clashing events or properties, or drop one of them, or change the pin or type so they fit. When no allowed value gets through, allow at least one of the values that arrive, or loosen the restriction.
 
 ### Drop rule can never apply
 
