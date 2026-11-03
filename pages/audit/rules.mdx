@@ -187,6 +187,52 @@ Open the property details, click the PII pill in the header and mark the propert
 
 <Callout type="info" emoji="💡">**Best practice:** Declaring a PII status on every property makes it visible at a glance which events touch sensitive data and gives downstream consumers a reliable signal in [exports](/publishing/exporting).</Callout>
 
+## Gateway Rules
+
+These rules check the transformation rules of your [gateways](/data-design/avo-tracking-plan/gateways): what each input, the gateway itself and each output change about the events that pass through. They show in the branch audit for workspaces that use gateways. Each issue names the gateway and the input, gateway or output it's about, says what is wrong and gives the fix. Click it to open the gateway's transformations.
+
+By default, "Gateway sends a field that breaks the contract", "Drop rule can never apply" and "Inconsistent rules across gateway inputs" are enforced, and the other two are warnings. On a plan without enforcement they are all warnings.
+
+### Required property not met
+
+Checks that a property an output requires (a Require rule) arrives on every event the rule covers. It reports an event that doesn't have the property, never sends it, sends it only sometimes, or has it dropped by an input on the way.
+
+#### How to resolve
+
+Add the property to the event, send it on every event the rule covers, remove the upstream rule that drops it, or leave those events out of the rule.
+
+### Gateway sends a field that breaks the contract
+
+Checks what leaves each input, gateway and output for fields that can't be sent as configured: two events or two properties renamed to the same name, a pinned value that doesn't fit the type an input changes the property to, no allowed value left to send, and object keys that clash.
+
+#### How to resolve
+
+Rename one of the clashing events or properties, or drop one of them, or change the pin or type so they fit. When no allowed value gets through, allow at least one of the values that arrive, or loosen the restriction.
+
+### Drop rule can never apply
+
+Checks that the condition of each drop rule can be met where it sits. It reports a drop whose condition property isn't on the events it covers, is dropped before it gets there, or is archived. Drops with a "not one of" or "is not set" condition apply when the property is missing, so they're never reported.
+
+#### How to resolve
+
+Put the condition on a property that arrives at that input or output, or move the rule to where the property arrives.
+
+### Gateway rule has no effect
+
+Checks for rules that change nothing: a rule a removal always undoes or a later rule always overrides, a rule on an archived property, a rename of an event no output lets through, a disallowed value the property no longer allows, an output that lets no events through or isn't connected to a destination, and a key rule on a key the object no longer has.
+
+#### How to resolve
+
+Remove the rule, or change what undoes or overrides it. If the rule points at something that's gone, restore it or point the rule elsewhere: unarchive the property, let the event through to an output, allow the value again, or add the key back to the object. Connect an output that sends nothing to a destination, or let at least one event through.
+
+### Inconsistent rules across gateway inputs
+
+Checks that a gateway's inputs treat the same event and property the same way: its name, type and allowed values. It also reports a property bundle member that a rule changes on some of the events carrying the bundle and not on others. It blocks only at an output where an integration publishes, and is a warning elsewhere.
+
+#### How to resolve
+
+Apply the same rule on every input, or on none, or move it to the gateway itself.
+
 ## Audit Rule Configuration
 
 For new workspaces all rules are enabled by default, and casing rules default to the most common casing seen in the workspace. Workspaces on the Team and Enterprise plans are able to configure the audit to include or exclude each rule and manually set their casing rules for events and properties. 
