@@ -59,6 +59,10 @@ If you modelled your tag manager as a custom destination, such as a **Web Data L
 
 ### Name mappings
 
-A name mapping set for one destination, such as sending `Client` as `client_ga4` to Google Analytics 4 only, is applied by your source's code only while that destination is connected to the source. Once the gateway sends to it, add the rename as a [transformation](/data-design/avo-tracking-plan/gateways/transformations) on that output instead, so the destination keeps receiving the same name.
+A name mapping is the name your source's code sends. In the app it reads **Sent by the source as**, and it applies to every destination, to one destination, or to one gateway the source feeds.
 
-Your source sends the gateway the names from the tracking plan. A name mapping set for all destinations still applies, so the gateway receives the mapped name.
+- **For all destinations**: your source sends the mapped name to the gateway too.
+- **For the gateway**: pick the gateway, marked **(gateway)**, in the mapping's target list. Your source sends the gateway that name, so the gateway's input receives it. This mapping wins over one for all destinations.
+- **For one destination behind the gateway**: a mapping for a destination, such as sending `Client` as `client_ga4` to Google Analytics 4, is applied by your source's code only while that destination is connected to the source. Once the gateway sends to it, add the rename as a [transformation](/data-design/avo-tracking-plan/gateways/transformations) on that output instead, so the destination keeps receiving the same name.
+
+A rename that happens inside the gateway, at its input, the gateway itself or an output, is always a transformation, not a name mapping.
