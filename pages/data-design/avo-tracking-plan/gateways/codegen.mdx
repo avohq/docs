@@ -12,6 +12,8 @@ _A gateway is a destination of every source that feeds it. Your source sends its
 
 <Callout type="info" emoji="🚧">
   Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
+
+  Gateways in Codegen is turned on per workspace. Until it's on, your sources' code doesn't include gateways. Let us know when you start moving destinations behind a gateway, and we'll turn it on for your workspace.
 </Callout>
 
 When a source is an input of a [gateway](/data-design/avo-tracking-plan/gateways), [Avo Codegen](/implementation/avo-codegen-overview) adds the gateway to that source's generated code as a [custom destination](/reference/avo-codegen/destinations), named after the gateway. You implement it once, the same way as any other destination interface, to hand events to your gateway: a `dataLayer.push` for Google Tag Manager, `analytics.track` for Segment, or a request to your own pipeline.
