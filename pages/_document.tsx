@@ -7,6 +7,7 @@ import Document, {
   DocumentInitialProps,
   DocumentContext,
 } from 'next/document';
+import Script from 'next/script';
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -19,7 +20,18 @@ class MyDocument extends Document {
   render(): JSX.Element {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          {/*
+            Consent before tags: the bootstrap sets the Consent Mode default and
+            the iubenda config, then loads iubenda and GTM itself, all ahead of
+            the Next.js bundle that calls Avo.initAvo. beforeInteractive keeps
+            this order; _app.tsx fails closed if the file did not load.
+          */}
+          <Script
+            src="/docs/consent-bootstrap.js"
+            strategy="beforeInteractive"
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />

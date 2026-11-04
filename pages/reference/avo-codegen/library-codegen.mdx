@@ -2,7 +2,7 @@
 
 Avo can emit generated code in two shapes for Kotlin, Swift, and TypeScript sources: the default **single-source** output (one file per source) and the **library mode** output that splits the runtime from the per-source types. Both modes are supported — they serve different use cases and you can generate either from the same source.
 
-Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types. If that library is shared between repositories, see [section 4](#4-sharing-one-library-interface-across-repositories) for how to stop each repo regenerating it.
+Library mode is the better fit when you have multiple Avo sources sharing the same app, when you're building an internal tracking library reused across apps, or when you want the runtime code separated from the per-source event types. If that library is shared between repositories, see [section 4](#4-sharing-one-library-interface-across-repositories) for how to stop each repo regenerating it. If another module uses the Swift or Kotlin app file, see [section 5](#5-using-the-app-file-from-another-module).
 
 ---
 
@@ -319,13 +319,14 @@ try {
 4. **TypeScript: how custom destinations are wired.** Custom destinations are passed in the `destinations` map of the runtime config, keyed by `DestinationKey`, instead of as separate `Avo` constructor arguments. All-or-nothing — provide an implementation for every `DestinationKey`, or omit `destinations` entirely and fan out manually. The `AvoCustomDestination` interface itself has the same shape as the single-source custom destination.
 5. **System properties.** `setSystemProperties(...)` / `Avo.setSystemProperties(...)` becomes `AppSystemProperties.configure(...)` (Kotlin) or `AppSystemProperties.shared.configure({...})` (Swift, TypeScript). `verify()` and `process()` / `track()` throw `AvoVerificationError` with the message "AppSystemProperties.configure() must be called before sending events." if a tracked event needs system properties and `configure()` hasn't run.
 6. **Imports.** Add the library file to your build and import its types where you previously imported from the single file. In Swift this is `import Library` (if you packaged it that way); in Kotlin it's `import sh.avo.*` (or whatever package your source path resolves to); in TypeScript it's `import { ... } from './Avo'` (the app file re-exports the public library surface).
+7. **Swift and Kotlin: the app file is `internal`.** The event types, `AvoTypes`, `AppSystemProperties`, `initAvo` and, in Kotlin, `AvoTrackingPlanConfig` are visible only inside the module the app file is compiled into. To use them from another module, see [section 5](#5-using-the-app-file-from-another-module).
 
 
 ---
 
 ## 4. Sharing one library interface across repositories
 
-When one repository owns the library file and others only consume it, a plain `avo pull` on either side generates files that do not belong there. The `libraryInterfaceFileFilter` setting in `avo.json` (Avo CLI 3.6.0+) tells `avo pull` which side to generate. It only affects sources in library mode.
+When one repository owns the library file and others only consume it, a plain `avo pull` on either side generates files that do not belong there. The `libraryInterface.fileFilter` setting in `avo.json` tells `avo pull` which side to generate. It only affects sources in library mode.
 
 | Value | Generates | Use in |
 |---|---|---|
@@ -337,9 +338,9 @@ When one repository owns the library file and others only consume it, a plain `a
 
 ### Configuring it
 
-Add the keys to `avo.json` by hand — `avo init` does not prompt for them. A top-level key applies to every source; the same key on a `source` entry overrides it for that source. `avo pull --libraryInterfaceFileFilter <value>` overrides both for a single run without writing to `avo.json`. Each source resolves: flag → source key → top-level key → `all`.
+Add a `libraryInterface` object to `avo.json` by hand — `avo init` does not prompt for it. At the top level it applies to every source; on a `sources` entry it overrides the top level for that source. `avo pull --libraryInterfaceFileFilter <value>` overrides both for a single run without writing to `avo.json`. Each source resolves: flag → source → top level → `all`.
 
-Client repos also need **`libraryInterfaceSharedModule`** — the module the generated app files import the interface from, placed top-level or per-source the same way:
+Client repos also need **`libraryInterface.sharedModule`** — the module the generated app files import the interface from, placed top-level or per-source the same way:
 
 | Language | Value |
 |---|---|
@@ -353,7 +354,7 @@ Shared repo:
 
 ```json
 {
-  "libraryInterfaceFileFilter": "interface-only",
+  "libraryInterface": { "fileFilter": "interface-only" },
   "sources": [{ "id": "...", "name": "Web", "path": "src/Avo.ts", "actionId": "...", "branchId": "...", "updatedAt": "..." }]
 }
 ```
@@ -362,17 +363,72 @@ Each client repo:
 
 ```json
 {
-  "libraryInterfaceFileFilter": "events-only",
-  "libraryInterfaceSharedModule": "@acme/analytics",
+  "libraryInterface": { "fileFilter": "events-only", "sharedModule": "@acme/analytics" },
   "sources": [{ "id": "...", "name": "Web", "path": "src/Avo.ts", "actionId": "...", "branchId": "...", "updatedAt": "..." }]
 }
 ```
 
-In a monorepo with a single `avo.json`, put the same keys on the individual `sources` entries instead. `path` stays as usual: an `interface-only` source with `path: "src/Avo.ts"` writes only `src/AvoLibrary.ts`.
+In a monorepo with a single `avo.json`, put the same `libraryInterface` object on the individual `sources` entries instead. `path` stays as usual: an `interface-only` source with `path: "src/Avo.ts"` writes only `src/AvoLibrary.ts`.
 
 ### Good to know
 
 - **Stale files are reported, never deleted.** After a filter change, `avo pull` warns `[avo] Warning: <file> is no longer generated here because of the current libraryInterfaceFileFilter…` for each file it used to write, on every pull until you remove it.
-- **`avo.json` conflicts:** if the two sides disagree on `libraryInterfaceFileFilter`, your current branch's value is kept and the discarded one is printed.
-- **Invalid values** are rejected by every command that reads `avo.json`.
+- **`avo.json` conflicts:** if the two sides disagree on the file filter, your current branch's value is kept and the discarded one is printed.
+- **Invalid values** are rejected by every command that reads `avo.json`, and so are unknown keys inside `libraryInterface`.
+- **The flat keys from Avo CLI 3.6.0 still work.** Avo CLI 3.6.0 reads these settings as top-level or per-source `libraryInterfaceFileFilter` and `libraryInterfaceSharedModule`, and newer versions keep reading them. You can mix the two forms across levels (flat at the top level, `libraryInterface` on a source), but not at the same level: `Set either libraryInterface or libraryInterfaceFileFilter on source '<name>' in avo.json, not both`. The `libraryInterface` object needs Avo CLI 3.7.0+.
 - **Which sources can share one interface:** the library file has no source-specific ids or keys, but its `AvoEnv` cases come from the source's destination environments — share it between repos pulling the same source, or sources with an identical set of destination environments.
+
+---
+
+## 5. Using the app file from another module
+
+In library mode, the Swift and Kotlin app file is generated `internal`. That covers the event types, the `AvoTypes` namespace, `AppSystemProperties`, the `initAvo` extension and `AvoTrackingPlanConfig` (already internal in Swift; it can't be made public). `internal` means they're visible only inside the module the file is compiled into: a Swift module or target, or a Kotlin Gradle module. The library file isn't affected (`Avo`, `AvoEvent`, `AvoEnv` and the rest of the runtime stay public), and neither is TypeScript output.
+
+- **The app file and the code that tracks events are in the same module:** nothing changes.
+- **A host app imports two modules that each contain an app file:** their declarations no longer collide. Before, the host got `'AvoTypes' is ambiguous for type lookup` in Swift and, with star imports on Kotlin 2, `Overload resolution ambiguity`. In Kotlin, give each app file its own package; the package comes from the source path, and is `sh.avo` when the path isn't under `src/main/kotlin` or `src/main/java`. Kotlin 1.x hosts also need explicit imports, see [Good to know](#good-to-know-1).
+- **Code in another module uses the app file**, for example a host app that constructs events from a feature module's app file: that code stops compiling after the next `avo pull`. List what it needs in `libraryInterface.publicItems`.
+
+### Keeping chosen items public
+
+Add `libraryInterface.publicItems` to the source's entry in `avo.json` (Avo CLI 3.7.0+). It takes up to 1,000 names:
+
+```json
+{
+  "sources": [
+    {
+      "id": "...",
+      "name": "iOS",
+      "path": "Sources/Analytics/Avo.swift",
+      "actionId": "...",
+      "branchId": "...",
+      "updatedAt": "...",
+      "libraryInterface": {
+        "publicItems": ["LoginSuccessEvent", "AvoTypes.Platform", "AppSystemProperties", "initAvo"]
+      }
+    }
+  ]
+}
+```
+
+Each entry is a name exactly as it appears in the generated app file:
+
+| Entry | Makes public |
+|---|---|
+| An event type, e.g. `LoginSuccessEvent` | That event, so another module can construct it and pass it to `process` |
+| `AvoTypes.<Name>`, e.g. `AvoTypes.Platform` | One type directly inside `AvoTypes`: an allowed-values enum or an object. Property groups are listed together, as `AvoTypes.group` (Swift) or `AvoTypes.Group` (Kotlin), which makes all of them public |
+| `AppSystemProperties` | The system properties, so another module can call `configure(...)` |
+| `initAvo` | The `initAvo` extension, so another module can initialize Avo |
+
+You don't need to list the types a listed item uses. A public declaration can't use an internal type, so codegen also makes public every `AvoTypes` type in a listed item's signature, including types nested inside objects. For example, listing `LoginSuccessEvent` also makes public the enums and objects its properties use, and, if it has a property group, all property groups. Once anything inside `AvoTypes` is public, the namespace is public too, and the types directly inside it that nothing needs are generated `internal`.
+
+If the source has system properties, `initAvo` takes them as parameters and configures `AppSystemProperties` itself, so listing `initAvo` is enough to initialize Avo from another module. List `AppSystemProperties` only if another module also calls `configure(...)` directly. A source without system properties has no `AppSystemProperties`, so listing it prints the warning below.
+
+### Good to know
+
+- **Names that match nothing** don't fail the pull. Each one prints `[avo] Warning: libraryInterface.publicItems entry '<name>' for source "<source>" does not match any declaration in the generated app file and was ignored.` A type name without the `AvoTypes.` prefix, such as `Platform`, is one of these. A source whose file filter is `interface-only` generates no app file, so it doesn't warn.
+- **Invalid values** are rejected by every command that reads `avo.json`. The list must hold at most 1,000 strings, each non-empty and without leading or trailing spaces, and the error names the source and the bad entry, for example `Invalid libraryInterface.publicItems on source '<name>' in avo.json — lists 1001 entries; at most 1000 are allowed`.
+- **Per source only.** At the top level, `publicItems` is rejected: `Unknown key 'publicItems' in libraryInterface in avo.json — allowed keys are fileFilter, sharedModule`. `avo pull` has no flag for it.
+- **There is no flat form.** Unlike the settings in [section 4](#4-sharing-one-library-interface-across-repositories), a flat `libraryInterfacePublicItems` key is rejected: `libraryInterfacePublicItems on source '<name>' in avo.json is not supported — set libraryInterface.publicItems instead`.
+- **Older CLIs** don't send the list, so everything in the app file stays `internal`.
+- **Swift and Kotlin library mode only.** In single-source output and in TypeScript the list has no effect and produces no warning.
+- **Kotlin 1.x hosts.** Say a host file star-imports two library packages (`import com.acme.checkout.*`, `import com.acme.search.*`) and uses a name that is public in one and internal in the other. The Kotlin 1.x compiler reports `Unresolved reference`. Kotlin 2.0+ resolves the name to the public declaration, and explicit imports (`import com.acme.search.AvoTypes`) work with either compiler.

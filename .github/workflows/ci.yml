@@ -24,5 +24,7 @@ jobs:
           CI: true
       - name: Check spelling
         run: yarn spellcheck
+      - name: Run tests
+        run: yarn test
       - name: Check avo status
         run: yarn avo status

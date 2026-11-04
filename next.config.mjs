@@ -55,9 +55,29 @@ const redirects = [
     basePath: false,
   },
   {
+    source: '/inspector/connect-inspector-to-segment-gateway',
+    destination: '/inspector/configuring-inspector-gateways',
+    permanent: false,
+  },
+  {
     source: '/datascope/state-of-tracking',
     destination: '/inspector/start-using-inspector',
     permanent: true,
+  },
+  {
+    source: '/inspector/what-is-inspector',
+    destination: '/inspector/start-using-inspector',
+    permanent: true,
+  },
+  {
+    source: '/data-design/best-practices',
+    destination: '/data-design/best-practices/naming-conventions',
+    permanent: false,
+  },
+  {
+    source: '/reference/avo-mcp',
+    destination: '/reference/avo-mcp/overview',
+    permanent: false,
   },
   {
     source: '/datascope/state-of-tracking/android',

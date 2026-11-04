@@ -191,6 +191,7 @@ Find tracking plan items in one of two modes — the mode is selected automatica
 | `source` | ❌ | ✅ lists the workspace's sources | ❌ | `branch` |
 | `destination` | ❌ | ✅ lists the workspace's destinations | ❌ | `branch` |
 | `group_type` | ❌ | ✅ lists the workspace's group types | ❌ | `branch` |
+| `gateway` | ❌ | ✅ lists the workspace's [gateways](/data-design/avo-tracking-plan/gateways) | ❌ | `branch` |
 | `journey` | ❌ | ✅ lists the branch's journeys — see [Listing journeys](#listing-journeys) | ❌ | `branch`, `pageToken` |
 
 The camelCase spellings (`propertyBundle`, `eventVariant`, `groupType`) still work but are deprecated. Passing `query` or a content filter with one of the list-only types is rejected.
@@ -225,6 +226,8 @@ Semantic search is performed against the **main branch** only. The semantic inde
 | `pageToken` | No | Pagination token from a previous response. |
 
 Multiple values inside one array are OR'd; values across different filter keys are AND'd.
+
+`search` rejects a parameter it doesn't know. The error names it and lists the parameters `search` accepts, for example `Unknown key(s) for search: branchId. search accepts: workspaceId, query, …`.
 
 ### Returns
 
@@ -316,10 +319,11 @@ Claude resolves the branch name to an ID with [`list_branches`](#list_branches),
 
 - `query` and structural filters combined — rejected with an error (no HTTP status). Choose one mode.
 - `query` combined with `branch` or `pageToken` — rejected; those are filter-mode-only parameters.
-- `itemType: "journey"` (or `source` / `destination` / `group_type`) combined with `query` or with content filters such as `tags` or `eventNames` — rejected; these types enumerate a whole branch or workspace and take only `branch` (and `pageToken`).
+- `itemType: "journey"` (or `source` / `destination` / `group_type` / `gateway`) combined with `query` or with content filters such as `tags` or `eventNames` — rejected; these types enumerate a whole branch or workspace and take only `branch` (and `pageToken`).
 - `branch` passed as a name instead of an ID on a journey listing — the branch is not found; resolve the name with [`list_branches`](#list_branches) first.
 - Empty call (no `query`, no filter, no `branch`) — rejected.
 - Smart Search not enabled in the workspace — semantic mode fails; fall back to filter mode or `get`.
+- `Unknown key(s) for search: …` — a parameter name isn't one `search` accepts. `search` takes `branch`, not `branchId`.
 - Workspace access denied.
 
 ---
@@ -331,7 +335,7 @@ Claude resolves the branch name to an ID with [`list_branches`](#list_branches),
 Get item details for any of five type families:
 
 - **Tracking-plan items** — `event`, `property`, `metric`, `category`, `property_bundle`, `event_variant`. Look up by `id` or exact `name` — except `event_variant`, which is identified by the base event's `id` plus `variantId` (never by name). For events, `includePropertyDetails: true` returns each property's type, constraints, and allowed values inline, and any triggers on the event are returned with full context — see [Trigger context on events](#trigger-context-on-events). Event, property, and event-variant results also list their owner and stakeholders under a **Domain Stakeholders** section (the owner is suffixed `(owner)`); it is omitted when the item has no stakeholders.
-- **Workspace metadata** — `source`, `destination`, `group_type`. `get` returns a **single** item, so pass `id` or `name`. To enumerate the workspace list, use [`search`](#search) (`itemType: "source"` / `"destination"` / `"group_type"`).
+- **Workspace metadata** — `source`, `destination`, `group_type`, `gateway`. `get` returns a **single** item, so pass `id` or `name`. To enumerate the workspace list, use [`search`](#search) (`itemType: "source"` / `"destination"` / `"group_type"` / `"gateway"`).
 - **Workspace config** — `workspace_config` (takes no `id`). Naming/casing rules and event/property validation rules (with the enforcement point), custom-field definitions, the PII type list, and the workspace's tags and categories. Custom-field and PII-type names plug straight into [`search`'s](#search) `customField` and `pii` filters.
 - **Journeys** — `journey`. Look up by `id` only — journey names collide and are often blank, so there is no `name` lookup; find the ID with [`search`](#search) (`itemType: "journey"`). The response walks the journey screen by screen — each screen's triggers, the events they fire, the property conditions that gate them, and where each trigger leads — see [Journey graph](#journey-graph).
 - **Branches** — `branch`. Identify with `branchId` or `branchName`. Use `include` to pick content: `"overview"` (branch metadata + baseline status + resolved creator/reviewer/collaborator emails + impacted sources + comments/approvals stats), `"all_changes"` (full diff vs. main, like the web branch screen), `"event_changes"` (events + event variants only), `"property_changes"` (properties + property bundles + categories only), `"code_snippets"` (per-source generated code; requires `sourceId`), `"implementation_guide"` (numbered implementation steps + per-event codegen instructions). Multiple values union, and `event_changes` + `property_changes` equals `all_changes`. `include` defaults to `["overview"]`.
@@ -342,8 +346,8 @@ Defaults to the main branch when no branch is specified.
 
 | Parameter | Required | Description |
 |---|---|---|
-| `type` | Yes | Item type. One of: `event`, `property`, `metric`, `category`, `property_bundle`, `source`, `destination`, `group_type`, `event_variant`, `journey`, `branch`, `workspace_config`. camelCase aliases are accepted but deprecated. |
-| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `property_bundle` unless `name` is provided. For `source`/`destination`/`group_type`, provide `id` or `name` — `get` is single-item only, so enumerate with [`search`](#search) instead. `event_variant` uses `id` (the base event ID) **plus** `variantId`, not `name`. For `branch`, identify with `branchId`/`branchName` (`id`/`name` are not branch identifiers; omitting both errors). `journey` requires `id` — there is no name lookup. Not used by `workspace_config`. |
+| `type` | Yes | Item type. One of: `event`, `property`, `metric`, `category`, `property_bundle`, `source`, `destination`, `group_type`, `gateway`, `event_variant`, `journey`, `branch`, `workspace_config`. camelCase aliases are accepted but deprecated. |
+| `id` | Varies by type | The item's unique ID. Required for `event`, `property`, `metric`, `category`, `property_bundle` unless `name` is provided. For `source`/`destination`/`group_type`/`gateway`, provide `id` or `name` — `get` is single-item only, so enumerate with [`search`](#search) instead. `event_variant` uses `id` (the base event ID) **plus** `variantId`, not `name`. For `branch`, identify with `branchId`/`branchName` (`id`/`name` are not branch identifiers; omitting both errors). `journey` requires `id` — there is no name lookup. Not used by `workspace_config`. |
 | `name` | Varies by type | Exact name match. Alternative to `id` for most types (not accepted for `journey`). May return multiple matches for ambiguous names (especially properties) — use [`search`](#search) for fuzzy lookup. |
 | `variantId` | For `event_variant` | The variant ID. Combined with `id` (the base event ID). |
 | `include` | For `branch` | Array of branch facets to return: `overview`, `all_changes`, `event_changes`, `property_changes`, `code_snippets`, `implementation_guide`. Defaults to `["overview"]`. Multiple values union. The deprecated value `changes` is accepted as an alias for `all_changes`. Unknown values are dropped with a warning. Combine `all_changes` and `code_snippets` (or use `implementation_guide`) for an implementer-ready picture of the branch. |
@@ -353,6 +357,10 @@ Defaults to the main branch when no branch is specified.
 | `includePropertyDetails` | No | Events only. When `true`, includes full property definitions (type, constraints, allowed values). Defaults to `false`, which returns only property ID + name references. |
 | `includeArchived` | No | When `true` (default), includes archived items in results. When `false`, only active items. |
 | `workspaceId` | No | Workspace ID |
+| `checkpoint` | No | Events and properties. Reads the item as one point in a [gateway](/data-design/avo-tracking-plan/gateways) pipeline receives it. One of `{"kind": "source", "sourceId": "<sourceId>"}`, `{"kind": "gatewayInput", "gatewayId": "<gatewayId>", "inputId": "<inputId>"}`, `{"kind": "gateway", "gatewayId": "<gatewayId>"}`, `{"kind": "gatewayOutput", "gatewayId": "<gatewayId>", "outputId": "<outputId>"}` or `{"kind": "destination", "destinationId": "<destinationId>"}`. See [An event as an output receives it](#an-event-as-an-output-receives-it). |
+| `includeCheckpointPaths` | No | Events with `checkpoint` only. When `true`, adds the full schema of every path into the checkpoint. `checkpointPathThroughSourceId`, `checkpointPathThroughInputId` and `checkpointPathThroughOutputId` narrow it to the paths through one source, input or output. |
+
+`get` rejects a parameter it doesn't know, so a misspelled `checkpoint` is an error, not an answer without the checkpoint. The error names it and lists the parameters `get` accepts, for example `Unknown key(s) for get: lens. get accepts: type, id, …`.
 
 ### Returns
 
@@ -360,6 +368,7 @@ Full details for the item, shaped per item type.
 
 - `type: "event" \| "property" \| "metric" \| "category" \| "property_bundle" \| "event_variant"` — the item's full definition. Event results include a **Triggers** section with full trigger context — screen, connected event, gating conditions, screenshot — when the event has triggers; see [Trigger context on events](#trigger-context-on-events). For events, properties, and event variants this includes a **Domain Stakeholders** section listing the item's stakeholders by name, with the owner suffixed `(owner)` — the read side of [`save_items`](#save_items)'s `owner` / `stakeholders` fields. The section is omitted when the item has no stakeholders.
 - `type: "source" \| "destination" \| "group_type"` — a single entity; `id` or `name` is required (enumerate the workspace list with [`search`](#search)).
+- `type: "gateway"` — a single [gateway](/data-design/avo-tracking-plan/gateways), by `id` or exact `name` (an unnamed gateway is named `Untitled Gateway`). It lists the gateway's ID and Inspector API key, each input with its ID and source, each output with its ID, destination and output reference, and the transformation rules on the gateway, each input and each output. The input and output IDs are what a `checkpoint` takes.
 - `type: "branch"` — branch facets requested via `include`. `overview` returns resolved emails for the creator, reviewers, and collaborators, branch status, impacted source IDs, comments/approvals stats, and description. `all_changes` returns the full structured diff vs. main (new, modified, and deleted events and properties with their descriptions); `event_changes` and `property_changes` return just the event- or property-side of that diff. `code_snippets` returns per-event code diffs for the source named in `sourceId` — exact unified diffs for [Avo Codegen](/implementation/avo-codegen-overview) sources and illustrative pseudocode for manually-instrumented sources. `implementation_guide` returns numbered implementation steps plus per-event codegen instructions (scoped to `sourceId` when provided).
 - `type: "workspace_config"` — the workspace's event/property naming conventions and casing rules, the event and property **validation rules** (with their severities and the enforcement point — where Avo blocks), custom field definitions, the list of recognized PII types, and the workspace's **tags** and **categories** listings. Use this before proposing new events or properties so names match the workspace's audit rules.
 - `type: "journey"` — the journey rendered as a walkable graph: a header (name, description, entry screens), then one section per screen with its screenshot URL and each trigger leaving it — the trigger's name and description, its marker position, the event(s) it fires (with IDs), the property conditions per event, and the screen it leads to. See [Journey graph](#journey-graph).
@@ -468,10 +477,32 @@ Claude first lists the branch's journeys with [`search`](#search) (`itemType: "j
 }
 ```
 
+#### An event as an output receives it
+
+**Prompt:** *"What does Pinterest receive for `Purchase` after our GTM gateway?"*
+
+Claude finds the gateway's output for Pinterest with `get` (`type: "gateway"`), then reads the event at that output, with each property's type and allowed values.
+
+```json
+{
+  "type": "event",
+  "name": "Purchase",
+  "includePropertyDetails": true,
+  "checkpoint": {
+    "kind": "gatewayOutput",
+    "gatewayId": "gw-gtm…",
+    "outputId": "out-pinterest…"
+  }
+}
+```
+
+The event comes back under the name the output receives, with the plan name in the title, and with every rule on the way applied to its properties. A **Checkpoint:** line says whether the event reaches the output. If that line is missing, the checkpoint wasn't applied: check `kind` and its ids.
+
 ### Common errors
 
 - Item not found.
 - Ambiguous name (returns multiple matches — narrow by ID).
+- `Unknown key(s) for get: …` — a parameter name isn't one `get` accepts. Check the spelling against the table above.
 - `sourceId` missing when `include` contains `code_snippets`.
 - `type: "journey"` without `id` — rejected; journeys are looked up by ID only (find it with `search`, `itemType: "journey"`).
 - Journey ID not found on the branch — check the ID and the `branchId` / `branchName` you passed.
@@ -681,10 +712,10 @@ Category membership is managed from the member side: `addCategories` / `removeCa
 | Field | Ops | Notes |
 |---|---|---|
 | `sourceId` | all | Required on update / archive / unarchive. On create, supply `sourceId` or a `tempId`. |
-| `platform` | create (required) | The development platform this source runs on. Change later with `set.platform`. |
+| `platform` | create (required) | The development platform this source runs on; `describe_tool` lists the accepted `platform` and `programmingLanguage` values. Change later with `set.platform`. |
 | `programmingLanguage` | create | The source's programming language. Change later with `set.programmingLanguage` (or [`workflow`](#workflow) `set_source_language`). |
 | `libraryName` / `libraryDestination` | create | Codegen library name / output path. Change later via `set.*`. |
-| `connectDestinations` | update | Destination IDs (or `$tmp:`) to connect for codegen routing on the source. |
+| `connectDestinations` | update | Destination IDs (or `$tmp:`) to connect for codegen routing on the source. Connecting a destination also sends the source's existing events and variants to it, like the default in the Avo app, unless the destination has `disabledByDefault`. |
 | `disconnectDestinations` | update | Destination IDs to disconnect. **Destructive** — cascades to every event routing it on this source (and inheriting variants). |
 | `set.name`, `set.platform`, `set.programmingLanguage`, `set.libraryName`, `set.libraryDestination` | update | Scalar edits. |
 
@@ -695,9 +726,9 @@ A `create` for a source does not accept `description`.
 | Field | Ops | Notes |
 |---|---|---|
 | `destinationId` | all | Required on update / archive / unarchive. On create, supply `destinationId` or a `tempId`. |
-| `analyticsTool` | create (required) | The analytics platform this destination connects to. Change later with `set.analyticsTool`. |
+| `analyticsTool` | create (required) | The analytics platform this destination connects to; `describe_tool` lists the accepted values. Change later with `set.analyticsTool`. |
 | `includeUserPropsWithEventProps` | create/update | Boolean. Defaults to `false` on create. |
-| `disabledByDefault` | create/update | Boolean — new events are disabled for this destination by default. Defaults to `false` on create. |
+| `disabledByDefault` | create/update | Boolean, default `false`. `true` turns off "Include by default": adding a source to an event doesn't send that event to this destination, and connecting the destination to a source sends none of the source's existing events. |
 | `apiKey` | update | Set or remove an API key for an environment: `{ kind: "set", env: "dev" \| "prod", value: "…" }` or `{ kind: "remove", env: "dev" \| "prod" }`. |
 | `set.name`, `set.analyticsTool` | update | Scalar edits. |
 
@@ -770,7 +801,7 @@ To reference a newly-created item from another item in the same call, declare a 
 - `tempId` is **create-only** — setting it on an `update`, `archive`, or `unarchive` returns an error.
 - `tempId` names must be unique within a single `save_items` call and match `^[\w-]+$` (max 64 characters).
 - `$tmp:` references resolve within one call only. Across calls, use the real ID returned from the previous call.
-- `$tmp:` references are resolved in these `fields` arrays: `properties`, `addProperties`, `removeProperties`, `attachProperties`, `propertyBundles`, `addPropertyBundles`, `removePropertyBundles`, `attachToEvents`, `addSources`, `removeSources`, `bundleOverrides`, `connectDestinations`, `disconnectDestinations`; inside `overrides[].propertyId` / `addComponentOverrides[].propertyId`; within `eventConfigs[*].events.eventId` / `eventIds`; and within nested metric fields (`items[].metricId` / `eventId` / `baseEventId`, `cohortConditions[].eventId` / `propertyId`). These ID fields are ID-or-`$tmp:` only — a literal name is rejected. In `addCategories` / `removeCategories` / `addGroupTypes` / `removeGroupTypes`, a `$tmp:` ref instead rewrites to the sibling `create` item's **name** (those fields take names, not IDs). Sources, destinations, and group types can be created in the same batch and referenced by their `tempId` too.
+- `$tmp:` references are resolved in these `fields` arrays: `properties`, `addProperties`, `removeProperties`, `attachProperties`, `propertyBundles`, `addPropertyBundles`, `removePropertyBundles`, `attachToEvents`, `addSources`, `removeSources`, `bundleOverrides`, `connectDestinations`, `disconnectDestinations`; inside `overrides[].propertyId` / `addComponentOverrides[].propertyId`; within `eventConfigs[*].events.eventId` / `eventIds`; and within nested metric fields (`items[].metricId` / `eventId` / `baseEventId`, `cohortConditions[].eventId` / `propertyId`). These ID fields are ID-or-`$tmp:` only — a literal name is rejected. In `addCategories` / `removeCategories` / `addGroupTypes` / `removeGroupTypes`, a `$tmp:` ref instead rewrites to the sibling `create` item's **name** (those fields take names, not IDs). Sources, destinations, and group types can be created in the same batch and referenced by their `tempId` too, including in `connectDestinations` / `disconnectDestinations` and in the `sourceId` / `destinationId` of an `update` item, so one call can create a source or destination and then rename or connect it.
 - If a `$tmp:` ref names a tempId that wasn't declared on any item, the server returns a validation error.
 
 ### Returns
@@ -908,7 +939,9 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 - `name` missing on a `create`.
 - `tempId is only valid on create items` — don't set `tempId` on `update`, `archive`, or `unarchive`.
 - `Duplicate tempId "<name>"` — each `tempId` must be unique across items in the batch.
+- `Duplicate <item> in the same batch: item N …` — two items in one call target the same thing. The message names the other item and says how to fix it, usually by merging the two items. Items created in the same call are named by their `$tmp:` reference.
 - `Unknown $tmp: reference` — a `$tmp:` ref names a tempId that wasn't declared.
+- `"platform" is not a top-level field on source updates: use "set.platform"` — on an `update`, change a source's `name`, `platform`, `programmingLanguage`, `libraryName` or `libraryDestination`, or a destination's `name` or `analyticsTool`, inside `set`.
 - `<idField> is required for <op> <entity> items` — missing identity ID.
 - `id` and `fields.<idField>` both present with different values.
 - `too many items (got N, max 50)` — batch is over the 50-item cap.

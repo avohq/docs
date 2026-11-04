@@ -10,6 +10,7 @@
     "start": "next start",
     "spellcheck": "yarn cspell --no-progress --show-suggestions --show-context 'pages/**/*.mdx' --locale en-us",
     "lint": "next lint",
+    "test": "node --test scripts/*.test.mjs",
     "prepare": "husky"
   },
   "dependencies": {

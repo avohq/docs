@@ -2,6 +2,7 @@ export default {
   "start-using-inspector": "Quickstart: Get started with Inspector",
   "inspector-installation-overview": "Inspector Installation Overview",
   "configuring-inspector-sources": "Configuring Sources",
+  "configuring-inspector-gateways": "Configuring Gateways (closed beta)",
   "-": {
     "type": "separator"
   },
