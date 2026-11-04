@@ -75,7 +75,7 @@ const CURATED_SECTIONS = [
     title: 'Avo MCP (for AI assistants and agents)',
     entries: [
       { slug: 'reference/avo-mcp/overview', label: 'Avo MCP overview', desc: 'Connect Claude, Cursor, Codex, and other MCP clients to your Avo tracking plan to read the plan, design tracking for new features, and write changes on a branch. Remote server at https://mcp.avo.app/mcp.' },
-      { slug: 'reference/avo-mcp/tools', label: 'Avo MCP tools reference', desc: 'Full parameters and return shapes for the MCP tools (list_workspaces, search, get, save_items, workflow).' },
+      { slug: 'reference/avo-mcp/tools', label: 'Avo MCP tools reference', desc: 'Full parameters and return shapes for the MCP tools (list_workspaces, describe_tool, search, get, save_items, workflow, give_feedback, list_branches), including what a save_items item looks like and the fields each item type accepts.' },
       { slug: 'data-design/guides/agentic-data-design', label: 'Agentic data design', desc: 'How to design analytics tracking with AI agents while keeping events consistent and governed.' },
     ],
   },
