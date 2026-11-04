@@ -53,6 +53,7 @@ If a `save_items` item carries an unknown field or an invalid value, the error m
 | `source` | ✅ | ✅ | ✅ |
 | `destination` | ✅ | ✅ | ✅ |
 | `group_type` | ✅ | ✅ | ✅ |
+| `gateway` ([closed beta](/data-design/avo-tracking-plan/gateways)) | ✅ | ✅ | ✅ |
 | `journey` | ✅ | ✅ (by `id`) | ❌ read-only |
 | `workspace_config` | ❌ | ✅ (takes no `id`) | ❌ |
 | `branch` | ❌ | ✅ | ❌ |
@@ -122,7 +123,7 @@ Plain text, shaped by what you asked for:
 
 **Prompt:** *"Rename the `product_id` property and add two allowed values."*
 
-Before its first property write of the session, Claude fetches the list of fields a property update accepts and reads that renames go in `set.name` while allowed-value changes go in the top-level `addAllowedValues`.
+Before its first property write of the session, Claude fetches the list of fields a property update accepts and reads that renames go in `fields.set.name` while allowed-value changes go in `fields.addAllowedValues`.
 
 ```json
 {
@@ -146,6 +147,8 @@ Fields for property (op: update):
 Placement: scalar renames go in set.*; collection deltas at the item top level.
 Limits: up to 50 items per call; $tmp: refs resolve within one call.
 ```
+
+In that output, "item top level" means the top level of the item's `fields` object; see [Placement inside `fields`](#placement-inside-fields).
 
 #### Get an overview of every tool
 
@@ -583,9 +586,11 @@ Every item has the same six keys. The type-specific content goes inside `fields`
 | `group_type` | `groupTypeId` |
 | `event_variant` | `baseEventId` + `variantId` (both in `fields`, on every op) |
 
-**Inside `fields`, three placement rules apply to every type:**
+#### Placement inside `fields`
 
-- **Scalar edits go in `set`** (update only). `set` is a nested object with a closed key set: `name`, `description`, `nameSuffix`, `propertyType`, `sendAs`, `platform`, `programmingLanguage`, `libraryName`, `libraryDestination`, `analyticsTool`, `triggers`. Not every key applies to every type; unknown keys are rejected. `set.sendAs` is accepted only on create — a property's `sendAs` is immutable after creation.
+**Inside `fields`, three placement rules apply to every type** (metrics are the exception for scalar edits: rename and describe them with `setName` / `setDescription`):
+
+- **Scalar edits go in `set`** (update only). `set` is a nested object with a closed key set: `name`, `description`, `nameSuffix`, `propertyType`, `sendAs`, `platform`, `programmingLanguage`, `libraryName`, `libraryDestination`, `analyticsTool`, `triggers`. Not every key applies to every type; unknown keys are rejected. A property's `sendAs` is set on create with `fields.sendAs` and can't change afterwards: `set.sendAs` on an update returns `NotYetImplemented`.
 - **Collection changes stay at the top level of `fields`** — `addProperties` / `removeProperties`, `addCategories` / `removeCategories`, `addAllowedValues` / `removeAllowedValues`, and every other `add*` / `remove*` / `clear*` field.
 - **`description` is create-only**, and only for types whose create reads it: `event`, `property`, `event_variant`, `property_bundle`, `metric`, `category`. A `create` for a `source`, `destination`, or `group_type` that carries `description` is rejected. On update, use `set.description`.
 
@@ -593,7 +598,7 @@ Every item has the same six keys. The type-specific content goes inside `fields`
 
 ### Fields by item type
 
-The tables below match the `describe_tool(tool:"save_items", type:"<type>")` output at the time of writing for the nine item types. The live response is authoritative. Fields marked **create/update** are accepted on both ops; the identity ID field is required on `update` / `archive` / `unarchive`. `tempId` (create only) and `set` (update only) apply to every type and are omitted from the tables.
+The tables below match the `describe_tool(tool:"save_items", type:"<type>")` output at the time of writing for the nine item types. [Gateways](/data-design/avo-tracking-plan/gateways) (closed beta) are written with `save_items` too; get their fields from `describe_tool(tool:"save_items", type:"gateway")`. The live response is authoritative. Fields marked **create/update** are accepted on both ops; the identity ID field is required on `update` / `archive` / `unarchive`. `tempId` (create only) and `set` (update only) apply to every type and are omitted from the tables.
 
 #### `event`
 

@@ -180,7 +180,7 @@ The MCP exposes seven tools mapped to agent intents:
 
 Branch read flows are covered by `get` and `search`. One transitional tool — [`list_branches`](/reference/avo-mcp/tools#list_branches) — remains available while branch enumeration is folded into `search` (as `itemType: "branch"`). See the [Tools reference](/reference/avo-mcp/tools) for full parameters, return shapes, and examples per tool.
 
-Item types use one snake_case vocabulary across `search`, `get`, and `save_items` (`event`, `property`, `metric`, `event_variant`, `property_bundle`, `category`, `source`, `destination`, `group_type`, plus the read-only `journey` and `workspace_config`). The older camelCase spellings (`eventVariant`, `propertyBundle`, `groupType`, `workspaceConfig`) still work for now but are deprecated and will be removed.
+Item types use one snake_case vocabulary across `search`, `get`, and `save_items` (`event`, `property`, `metric`, `event_variant`, `property_bundle`, `category`, `source`, `destination`, `group_type`, `gateway` (closed beta), plus the read-only `journey` and `workspace_config`). The older camelCase spellings (`eventVariant`, `propertyBundle`, `groupType`, `workspaceConfig`) still work for now but are deprecated and will be removed.
 
 ## How writes work: branch only, human merge
 
