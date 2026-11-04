@@ -9,6 +9,8 @@ import { Callout } from 'nextra/components'
 
 Every tool except `list_workspaces` operates on a workspace. Pass `workspaceId` as a parameter; stdio clients can also set the `WORKSPACE_ID` environment variable.
 
+Every tool rejects a parameter it doesn't know instead of ignoring it, and so does every object nested inside a parameter. The error names the unknown key and, for parameters and `search` filters, lists the accepted ones, for example `Unknown key(s) for save_items: branch. save_items accepts: workspaceId, branchId, items, onReviewedBranch.` or `Unknown key(s) in nameMapping: name. nameMapping accepts: kind, names, includeNoMapping.` A client that adds a placeholder parameter to a tool that takes none (such as `random_string` on `list_workspaces`) gets this error too.
+
 <Callout type="info" emoji="🔒">
   Each tool lists the OAuth scope it requires. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
 </Callout>
@@ -36,7 +38,7 @@ List the Avo workspaces the authenticated user has access to. Call this first to
 
 ### Parameters
 
-None.
+None. Any parameter is rejected.
 
 ### Returns
 
@@ -753,6 +755,8 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 - `Duplicate tempId "<name>"` — each `tempId` must be unique across items in the batch.
 - `Duplicate <item> in the same batch: item N …` — two items in one call target the same thing. The message names the other item and says how to fix it, usually by merging the two items. Items created in the same call are named by their `$tmp:` reference.
 - `Unknown $tmp: reference` — a `$tmp:` ref names a tempId that wasn't declared.
+- `Unknown key(s) for save_items: …` — a parameter name isn't one `save_items` accepts. An unknown key inside an item, or inside an object in one (`pii`, `eventConfigs`, a metric's `where`, …), is rejected the same way, so a typo such as `typeIds` for `typeId` fails instead of saving the item without it.
+- `A metric item of kind Event does not read variantId, so it would be lost. …` — a metric item or cohort condition carries a key that belongs to another kind. The message lists the keys that kind takes. `where`, `groupBy` and `timeWindow` cannot be `null`: send a value. On `updateItems`, the `where` and `groupBy` you send replace the item's current ones, and leaving one out clears it.
 - `"platform" is not a top-level field on source updates: use "set.platform"` — on an `update`, change a source's `name`, `platform`, `programmingLanguage`, `libraryName` or `libraryDestination`, or a destination's `name` or `analyticsTool`, inside `set`.
 - `<idField> is required for <op> <entity> items` — missing `eventId` / `propertyId` / `baseEventId` / `variantId` / `propertyBundleId` / `metricId`.
 - `too many items (got N, max 50)` — batch is over the 50-item cap.
