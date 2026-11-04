@@ -14,7 +14,7 @@ npm install react-native-avo-inspector
 
 The SDK also needs these peer dependencies, depending on your platform and features.
 
-On Android, install `@react-native-async-storage/async-storage`. The SDK uses it to store its data; iOS uses the native `Settings` instead.
+Install `@react-native-async-storage/async-storage` on both platforms. On Android, the SDK stores its data in it. iOS uses the native `Settings` at runtime, but Metro still needs the package to build the iOS bundle.
 
 ```bash npm2yarn
 npm install @react-native-async-storage/async-storage
@@ -23,7 +23,13 @@ npm install @react-native-async-storage/async-storage
 If you pass a `publicEncryptionKey`, install `react-native-get-random-values` and import it at the very top of your entry file (`index.js`), before any other import. Hermes doesn't include `crypto.getRandomValues`, which encryption needs.
 
 ```bash npm2yarn
-npm install react-native-get-random-values
+npm install react-native-get-random-values@^1.1.0
+```
+
+Both packages include native code. On iOS, install their pods and then rebuild the app:
+
+```bash
+npx pod-install
 ```
 
 ## Import
@@ -158,7 +164,7 @@ This is the method used by `trackSchemaFromEvent` internally. The event schema i
 enableLogging(enable: boolean): void;
 ```
 
-`enableLogging` controls printing of tracked event schemas and other helpful information to the console (the Metro output, and logcat or the Xcode console on the device). Enabled by default in development environments. The same setting is the static `AvoInspector.shouldLog` property, which you can also set before creating an instance.
+`enableLogging` controls printing of tracked event schemas and other helpful information to the console (the Metro output, and logcat or the Xcode console on the device). Enabled by default in development environments. With logging enabled, the SDK prints the raw values of the event properties you track, not only their types, so don't leave it enabled where those values may contain personal or sensitive data. The same setting is the static `AvoInspector.shouldLog` property, which you can also set before creating an instance.
 
 A few problems are printed even with logging disabled: a missing or unsupported environment, a failure to set up storage, event spec validation or the anonymous ID, an unexpected internal error, an event that can't be prepared for sending, and a property value that fails to encrypt. Network failures and timeouts while sending events are printed only with logging enabled.
 
