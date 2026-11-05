@@ -191,7 +191,7 @@ Open the property details, click the PII pill in the header and mark the propert
 
 These rules check the transformation rules of your [gateways](/data-design/avo-tracking-plan/gateways): what each input, the gateway itself and each output change about the events that pass through. They show in the branch audit for workspaces that use gateways. Each issue names the gateway and the input, gateway or output it's about, says what is wrong and gives the fix. Click it to open the gateway's transformations.
 
-By default, "Gateway sends a field that breaks the contract", "Drop rule can never apply" and "Inconsistent rules across gateway inputs" are enforced, and the other two are warnings. On a plan without enforcement they are all warnings.
+All five are warnings by default. Like every other audit rule, a rule blocks only once you set it to enforced.
 
 ### Required property not met
 
@@ -227,7 +227,7 @@ Remove the rule, or change what undoes or overrides it. If the rule points at so
 
 ### Inconsistent rules across gateway inputs
 
-Checks that a gateway's inputs treat the same event and property the same way: its name, type and allowed values. It also reports a property bundle member that a rule changes on some of the events carrying the bundle and not on others. It blocks only at an output where an integration publishes, and is a warning elsewhere.
+Checks that a gateway's inputs treat the same event and property the same way: its name, type and allowed values. It also reports a property bundle member that a rule changes on some of the events carrying the bundle and not on others. It reports the gateway, and each output the difference reaches.
 
 #### How to resolve
 
