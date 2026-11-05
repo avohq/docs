@@ -201,31 +201,31 @@ Checks that a property an output requires (a Require rule) arrives on every even
 
 Add the property to the event, send it on every event the rule covers, remove the upstream rule that drops it, or leave those events out of the rule.
 
-### Gateway sends a field that breaks the contract
+### Gateway sends data that doesn't match the tracking plan
 
-Checks what leaves each input, gateway and output for fields that can't be sent as configured: two events or two properties renamed to the same name, a pinned value that doesn't fit the type an input changes the property to, no allowed value left to send, and object keys that clash.
+Checks that what leaves each input, gateway and output matches the tracking plan: two events or two properties renamed to the same name, a pinned value that doesn't fit the type an input changes the property to, no allowed value left to send, and object keys that clash.
 
 #### How to resolve
 
 Rename one of the clashing events or properties, or drop one of them, or change the pin or type so they fit. When no allowed value gets through, allow at least one of the values that arrive, or loosen the restriction.
 
-### Drop rule can never apply
+### Drop transformation can never apply
 
-Checks that the condition of each drop rule can be met where it sits. It reports a drop whose condition property isn't on the events it covers, is dropped before it gets there, or is archived. Drops with a "not one of" or "is not set" condition apply when the property is missing, so they're never reported.
+Checks that the condition of each drop transformation can be met where it sits. It reports a drop transformation whose condition property isn't on the events it covers, is dropped before it gets there, or is archived. Drops with a "not one of" or "is not set" condition apply when the property is missing, so they're never reported.
 
 #### How to resolve
 
-Put the condition on a property that arrives at that input or output, or move the rule to where the property arrives.
+Put the condition on a property that arrives at that input or output, or move the transformation to where the property arrives.
 
-### Gateway rule has no effect
+### Gateway transformation has no effect
 
-Checks for rules that change nothing: a rule a removal always undoes or a later rule always overrides, a rule on an archived property, a rename of an event no output lets through, a disallowed value the property no longer allows, an output that lets no events through or isn't connected to a destination, and a key rule on a key the object no longer has.
+Checks for transformations that change nothing: a rule a removal always undoes or a later rule always overrides, a Tighten rule with nothing set, a rule on an archived property, a rename of an event no output lets through, a disallowed value the property no longer allows, an output that lets no events through or isn't connected to a destination, and a key rule on a key the object no longer has.
 
 #### How to resolve
 
 Remove the rule, or change what undoes or overrides it. If the rule points at something that's gone, restore it or point the rule elsewhere: unarchive the property, let the event through to an output, allow the value again, or add the key back to the object. Connect an output that sends nothing to a destination, or let at least one event through.
 
-### Inconsistent rules across gateway inputs
+### Inconsistent transformations across gateway inputs
 
 Checks that a gateway's inputs treat the same event and property the same way: its name, type and allowed values. It also reports a property bundle member that a rule changes on some of the events carrying the bundle and not on others. It reports the gateway, and each output the difference reaches.
 
