@@ -52,7 +52,9 @@ window.avoConsent = (function () {
     if (!m) return null;
     try {
       var stored = JSON.parse(decodeURIComponent(m[1]));
-      if (stored.purposes)
+      // A purposes value that is present but invalid (false, {}) is a Reject, never a cue
+      // to fall back to the overall flag below.
+      if (Object.prototype.hasOwnProperty.call(stored, 'purposes'))
         return isPurposeMap(stored.purposes) ? stored.purposes : REJECT_ALL;
       // The banner before per-purpose consent stored only an overall flag, and iubenda
       // applies it to every purpose; reading it as a Reject would anonymise old Accepts.
@@ -63,15 +65,25 @@ window.avoConsent = (function () {
       return REJECT_ALL;
     }
   }
-  // iubenda stores a map of purpose id to boolean; any other shape would read as allowed.
+  // iubenda stores a map of purpose id to boolean that always includes Measurement (4);
+  // any other shape would read as allowed.
   function isPurposeMap(p) {
     return (
+      !!p &&
       typeof p === 'object' &&
       !Array.isArray(p) &&
+      typeof p['4'] === 'boolean' &&
       Object.keys(p).every(function (k) {
         return typeof p[k] === 'boolean';
       })
     );
+  }
+  // A purposes key in an iubenda callback that is present but not a purpose map (false,
+  // null) is a Reject, never a cue to use the fallback.
+  function purposesFrom(prefs, fallback) {
+    if (!prefs || !Object.prototype.hasOwnProperty.call(prefs, 'purposes'))
+      return fallback;
+    return isPurposeMap(prefs.purposes) ? prefs.purposes : REJECT_ALL;
   }
   function analyticsAllowed(p) {
     return !p || p['4'] !== false;
@@ -109,6 +121,8 @@ window.avoConsent = (function () {
     'mp_',
   ];
   var REPLAY_COOKIES = ['fs_uid', 'fs_lua', 'fs_cid'];
+  var REPLAY_STORAGE_PREFIXES = ['_fs_'];
+  var MARKETING_STORAGE_PREFIXES = ['_gcl_'];
   var MARKETING_COOKIES = [
     '_gcl_au',
     '_gcl_aw',
@@ -224,15 +238,14 @@ window.avoConsent = (function () {
       document.cookie = c + '=; Max-Age=0; path=/';
     });
   }
-  function purgeAnalyticsStorage() {
-    deleteCookies(ANALYTICS_COOKIES);
+  function removeStorageKeys(prefixes) {
     ['localStorage', 'sessionStorage'].forEach(function (name) {
       try {
         // Reading the property throws when the browser blocks storage.
         var store = window[name];
         Object.keys(store).forEach(function (k) {
           if (
-            ANALYTICS_STORAGE_PREFIXES.some(function (prefix) {
+            prefixes.some(function (prefix) {
               return k.indexOf(prefix) === 0;
             })
           )
@@ -240,6 +253,26 @@ window.avoConsent = (function () {
         });
       } catch (e) {}
     });
+  }
+  function purgeAnalyticsStorage() {
+    deleteCookies(ANALYTICS_COOKIES);
+    removeStorageKeys(ANALYTICS_STORAGE_PREFIXES);
+  }
+  // GA4 reads the page URL from the address bar, so ad-click ids would reach it there.
+  // Next's router keeps the URL in its history entry too and writes it back on Back, so
+  // that copy is cleaned as well.
+  function stripAddressBarClickIds() {
+    try {
+      var clean = stripClickIds(location.href);
+      if (clean === location.href) return;
+      var entry = history.state;
+      if (entry && entry.__N) {
+        entry = Object.assign({}, entry);
+        if (typeof entry.url === 'string') entry.url = stripClickIds(entry.url);
+        if (typeof entry.as === 'string') entry.as = stripClickIds(entry.as);
+      }
+      history.replaceState(entry, '', clean);
+    } catch (e) {}
   }
 
   // Reject: keep counting page views, but with no cookies, no identifiers and no IP.
@@ -255,6 +288,7 @@ window.avoConsent = (function () {
     }
     switchSegment();
     purgeAnalyticsStorage();
+    stripAddressBarClickIds();
   }
   function goFull() {
     if (!state.anonymous) return;
@@ -323,12 +357,20 @@ window.avoConsent = (function () {
   }
 
   // No stored choice accepts neither, so that case purges too.
-  function purgeDeniedCookies(purposes) {
-    if (!measurementAccepted(purposes)) deleteCookies(REPLAY_COOKIES);
-    if (!marketingAccepted(purposes)) deleteCookies(MARKETING_COOKIES);
+  function purgeDeniedStorage(purposes) {
+    if (!measurementAccepted(purposes)) {
+      deleteCookies(REPLAY_COOKIES);
+      removeStorageKeys(REPLAY_STORAGE_PREFIXES);
+    }
+    if (!marketingAccepted(purposes)) {
+      deleteCookies(MARKETING_COOKIES);
+      removeStorageKeys(MARKETING_STORAGE_PREFIXES);
+    }
   }
 
   function apply(purposes) {
+    // iubenda's callbacks hand over purposes unchecked; null is the no-choice default.
+    if (purposes !== null && !isPurposeMap(purposes)) purposes = REJECT_ALL;
     state.purposes = purposes;
     var analyticsOn = analyticsAllowed(purposes);
     var marketingOn = marketingAccepted(purposes);
@@ -341,7 +383,7 @@ window.avoConsent = (function () {
     if (analyticsOn) goFull();
     else goAnonymous();
     setFullStory(measurementAccepted(purposes));
-    purgeDeniedCookies(purposes);
+    purgeDeniedStorage(purposes);
     if (marketingOn && !state.marketingPushed) {
       state.marketingPushed = true;
       dataLayer.push({ event: 'iubenda_marketing_consent_given' });
@@ -434,13 +476,43 @@ window.avoConsent = (function () {
 
   state.purposes = readStoredPurposes();
   state.anonymous = !analyticsAllowed(state.purposes);
-  if (state.anonymous) purgeAnalyticsStorage();
+  if (state.anonymous) {
+    purgeAnalyticsStorage();
+    stripAddressBarClickIds();
+  }
   // Here as well as in apply, so this also happens when iubenda loads late or not at all.
-  purgeDeniedCookies(state.purposes);
+  purgeDeniedStorage(state.purposes);
   function onPageHide() {
     if (state.anonymous) purgeAnalyticsStorage();
   }
   window.addEventListener('pagehide', onPageHide);
+
+  // iubenda opens its panel with every optional purpose off, but with no stored choice
+  // Measurement is running, so the panel would misstate it. Ticking the box the way a
+  // visitor would also updates iubenda's own state, so Save stores what is shown.
+  // The footer opener differs from www's on purpose: docs has its own React button.
+  var PANEL_OPENERS = '.iubenda-cs-customize-btn, .avo-privacy-choices';
+  function tickRunningMeasurement(attemptsLeft) {
+    if (state.purposes !== null) return;
+    var box = document.getElementById('purpose-4');
+    if (box) {
+      if (!box.checked) box.click();
+    } else if (attemptsLeft > 0) {
+      setTimeout(function () {
+        tickRunningMeasurement(attemptsLeft - 1);
+      }, 100);
+    }
+  }
+  try {
+    document.addEventListener(
+      'click',
+      function (e) {
+        if (e.target && e.target.closest && e.target.closest(PANEL_OPENERS))
+          tickRunningMeasurement(30);
+      },
+      true,
+    );
+  } catch (e) {}
 
   // wait_for_update holds Google tags until iubenda reports; the stored choice covers the
   // case where iubenda is slow or blocked.
@@ -460,6 +532,7 @@ window.avoConsent = (function () {
     apply: apply,
     bindDestinations: bindDestinations,
     storedPurposes: readStoredPurposes,
+    purposesFrom: purposesFrom,
     gatedInspector: gatedInspector,
     avoDestinationOptions: function () {
       var anon = state.anonymous;
@@ -499,7 +572,8 @@ _iub.csConfiguration = {
   lang: 'en',
   perPurposeConsent: true,
   // Only the purposes avoConsent.apply acts on. Experience (3) services stay in the
-  // policy but get no toggle — the banner must not claim Reject blocks them.
+  // policy but get no toggle — the banner must not claim Reject blocks them. Keep 4 listed:
+  // isPurposeMap treats a stored choice without it as a Reject.
   purposes: '1, 4, 5',
   preferenceCookie: { expireAfter: 177 },
   // Consent Mode is handled in avoConsent.apply
@@ -582,19 +656,17 @@ _iub.csConfiguration = {
         _iub.cs.api &&
         _iub.cs.api.getPreferences &&
         _iub.cs.api.getPreferences();
-      window.avoConsent.apply(
-        prefs && prefs.purposes
-          ? prefs.purposes
-          : window.avoConsent.state.purposes,
-      );
+      var consent = window.avoConsent;
+      consent.apply(consent.purposesFrom(prefs, consent.state.purposes));
     },
     onPreferenceExpressed: function (prefs) {
       // iubenda has written its cookie by now; it is fresher than the page-load state.
       var consent = window.avoConsent;
       consent.apply(
-        prefs && prefs.purposes
-          ? prefs.purposes
-          : consent.storedPurposes() || consent.state.purposes,
+        consent.purposesFrom(
+          prefs,
+          consent.storedPurposes() || consent.state.purposes,
+        ),
       );
     },
   },
