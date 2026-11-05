@@ -55,6 +55,10 @@ Your agent can also write the transformations from your existing setup. Give it 
 
 Every event that reaches the gateway needs an origin hint, a value such as `web`, `ios` or `android` that names the source it came from. Without one, Avo can't check the event. On the same branch, open each source that feeds the gateway on the **Sources** page, go to its **Inspector setup** tab and add its value under **Origin hints**. Your agent can add them for you as well. See [Tell Avo which source an event came from](/inspector/configuring-inspector-gateways#tell-avo-which-source-an-event-came-from).
 
+## Update your sources' code
+
+If your sources use [Avo Codegen](/implementation/avo-codegen-overview), the gateway becomes a destination in each input source's generated code, and the destinations it sends to should be disconnected from those sources. See [Gateways in Avo Codegen](/data-design/avo-tracking-plan/gateways/codegen).
+
 ## 5. Install Inspector before you merge
 
 We recommend installing Inspector in development while the gateway is still on the branch. The gateway's Inspector API key works before you merge, so you can send test events through the gateway and check in the [Inspector Debugger](/inspector/inspector-debugger) that they arrive at each checkpoint. Avo starts checking events against the gateway's design, and mapping origin hints to sources, once the branch is merged.
