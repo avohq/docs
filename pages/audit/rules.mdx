@@ -197,6 +197,10 @@ All five are warnings by default. Like every other audit rule, a rule blocks onl
 
 Checks that a property an output requires (a Require rule) arrives on every event the rule covers. It reports an event that doesn't have the property, never sends it, sends it only sometimes, or has it dropped by an input on the way.
 
+Example: the "Mixpanel" output requires "plan" on every event, and "Order Completed" doesn't have it. The issue reads:
+
+- "plan" is required at output "Mixpanel" of gateway "Web gateway" but "Order Completed" doesn't have it
+
 #### How to resolve
 
 Add the property to the event, send it on every event the rule covers, remove the upstream rule that drops it, or leave those events out of the rule.
@@ -204,6 +208,11 @@ Add the property to the event, send it on every event the rule covers, remove th
 ### Gateway sends data that doesn't match the tracking plan
 
 Checks that what leaves each input, gateway and output matches the tracking plan: two events or two properties renamed to the same name, a pinned value that doesn't fit the type an input changes the property to, no allowed value left to send, and object keys that clash.
+
+Examples of issues this rule reports:
+
+- "Order Completed" and "Signup" are all sent as "Order Completed" at output "Mixpanel" of gateway "Web gateway". The output renames "Signup" to "Order Completed", so Mixpanel gets two different events under one name.
+- "amount" and "coupon" are all sent as "amount" on "Order Completed" at output "Mixpanel" of gateway "Web gateway". A rename makes two properties of one event arrive under the same name.
 
 #### How to resolve
 
@@ -213,6 +222,10 @@ Rename one of the clashing events or properties, or drop one of them, or change 
 
 Checks that the condition of each drop transformation can be met where it sits. It reports a drop transformation whose condition property isn't on the events it covers, is dropped before it gets there, or is archived. Drops with a "not one of" or "is not set" condition apply when the property is missing, so they're never reported.
 
+Example: the "Mixpanel" output drops "amount" when "plan" is "free", but "Order Completed" never has "plan", so "amount" is never dropped. The issue reads:
+
+- The drop of "amount" at output "Mixpanel" of gateway "Web gateway" can never apply: it only applies when "plan" is "free", and "Order Completed" doesn't have "plan"
+
 #### How to resolve
 
 Put the condition on a property that arrives at that input or output, or move the transformation to where the property arrives.
@@ -221,6 +234,10 @@ Put the condition on a property that arrives at that input or output, or move th
 
 Checks for transformations that change nothing: a rule a removal always undoes or a later rule always overrides, a Tighten rule with nothing set, a rule on an archived property, a rename of an event no output lets through, a disallowed value the property no longer allows, an output that lets no events through or isn't connected to a destination, and a key rule on a key the object no longer has.
 
+Example: a Tighten rule on "amount" with no allowed values, no pin and no regex. The issue reads:
+
+- The every-event rule on "amount" at output "Mixpanel" of gateway "Web gateway" is a Tighten with nothing set
+
 #### How to resolve
 
 Remove the rule, or change what undoes or overrides it. If the rule points at something that's gone, restore it or point the rule elsewhere: unarchive the property, let the event through to an output, allow the value again, or add the key back to the object. Connect an output that sends nothing to a destination, or let at least one event through.
@@ -228,6 +245,10 @@ Remove the rule, or change what undoes or overrides it. If the rule points at so
 ### Inconsistent transformations across gateway inputs
 
 Checks that a gateway's inputs treat the same event and property the same way: its name, type and allowed values. It also reports a property bundle member that a rule changes on some of the events carrying the bundle and not on others. It reports the gateway, and each output the difference reaches.
+
+Example: the "Web" input renames "Order Completed" and the "iOS" input doesn't, so the same event reaches the gateway under two names. The issue reads:
+
+- "Order Completed" is renamed on input "Web" but not on "iOS", so gateway "Web gateway" gets it both ways
 
 #### How to resolve
 
