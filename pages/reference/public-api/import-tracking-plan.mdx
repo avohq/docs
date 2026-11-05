@@ -179,7 +179,7 @@ The format produced by Avo's [JSON Schema export](/reference/public-api/export-t
 | `eventType` | string | — | Events with type `"variant"` are skipped with a warning |
 | `tags` | `string[]` | Event tags | |
 | `sources` | `{ name: string }[]` | Source names | Only the `name` field is extracted. `implementWithCodegen` is ignored — see [Include in Codegen](#include-in-codegen) for how the setting is decided |
-| `stakeholderDomains` | `{ name: string, isOwner: bool }[]` | Domain names + owner | The domain with `isOwner: true` becomes the event owner |
+| `stakeholderDomains` | `{ name: string, isOwner: bool }[]` | Domain names + owner | The domain with `isOwner: true` becomes the event owner. Names match existing stakeholder domains exactly (case-sensitive); a name that doesn't match creates a new domain on the workspace, outside branch review. An import that would create more domains than the workspace plan allows is rejected with a 403 before anything is imported |
 | `categories` | `string[]` | **Not imported** | Export contains goal IDs, not names — left empty to avoid phantom categories |
 | `rules.nameMapping` | `{ name, destinationId }[]` | Event name mapping | |
 | `rules.properties.properties` | object | Event properties | Standard JSON Schema format |
@@ -331,7 +331,7 @@ On success, the API returns a JSON object with the import results:
   - `newProperties`: Number of new properties created
   - `updatedProperties`: Number of existing properties that were updated
   - `newSources`: Number of new sources created
-  - `newStakeholderDomains`: Number of new stakeholder domains created
+  - `newStakeholderDomains`: Number of new stakeholder domains created. If a stakeholder domain can't be saved because of a write error, the import still succeeds and `warnings` says which one. Going past the plan's domain limit is not a warning: the import is rejected with a 403 before anything is imported
 - `warnings`: An array of warning strings about skipped or unsupported schema features. Present in both success and error responses.
 
 ### Error Responses
@@ -340,7 +340,7 @@ On success, the API returns a JSON object with the import results:
 | :-- | :-- |
 | 400 | Invalid Content-Type, unparsable body, invalid JSON Schema structure |
 | 401 | Authentication failure |
-| 403 | Protected main branch |
+| 403 | Protected main branch, or the import would go past a plan limit (for example, it creates more stakeholder domains than the workspace plan allows). Plan-limit errors carry `"code": "paywall_blocked"` |
 | 404 | Branch not found |
 | 409 | Branch merged/closed, or no prior actions on branch |
 | 500 | Unexpected error |
