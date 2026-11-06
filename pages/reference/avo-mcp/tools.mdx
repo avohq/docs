@@ -9,7 +9,7 @@ import { Callout } from 'nextra/components'
 
 Every tool except `list_workspaces` operates on a workspace. Pass `workspaceId` as a parameter; stdio clients can also set the `WORKSPACE_ID` environment variable.
 
-Every tool rejects a parameter it doesn't know instead of ignoring it, and so does every object nested inside a parameter. The error names the unknown key and, for parameters and `search` filters, lists the accepted ones, for example `Unknown key(s) for save_items: branch. save_items accepts: branchId, items, workspaceId, onReviewedBranch.` or `Unknown key(s) in nameMapping: name. nameMapping accepts: kind, names, includeNoMapping.` A client that adds a placeholder parameter to a tool that takes none (such as `random_string` on `list_workspaces`) gets this error too.
+Every tool rejects a parameter it doesn't know instead of ignoring it, and so does every object nested inside a parameter. The error names the unknown key and, for parameters, `search` filters, `onReviewedBranch` and `addSourceOverrides` entries, lists the accepted ones, for example `Unknown key(s) for save_items: branch. save_items accepts: branchId, items, workspaceId, onReviewedBranch.` or `Unknown key(s) in nameMapping: name. nameMapping accepts: kind, names, includeNoMapping.` A client that adds a placeholder parameter to a tool that takes none (such as `random_string` on `list_workspaces`) gets this error too.
 
 <Callout type="info" emoji="🔒">
   Each tool lists the OAuth scope it requires. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
