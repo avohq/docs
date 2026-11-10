@@ -362,8 +362,8 @@ Defaults to the main branch when no branch is specified.
 | `includePropertyDetails` | No | Events only. When `true`, includes full property definitions (type, constraints, allowed values). Defaults to `false`, which returns only property ID + name references. |
 | `includeArchived` | No | When `true` (default), includes archived items in results. When `false`, only active items. |
 | `workspaceId` | No | Workspace ID |
-| `checkpoint` | No | Events and properties. Reads the item as one point in a [gateway](/data-design/avo-tracking-plan/gateways) pipeline receives it. One of `{"kind": "source", "sourceId": "<sourceId>"}`, `{"kind": "gatewayInput", "gatewayId": "<gatewayId>", "inputId": "<inputId>"}`, `{"kind": "gateway", "gatewayId": "<gatewayId>"}`, `{"kind": "gatewayOutput", "gatewayId": "<gatewayId>", "outputId": "<outputId>"}` or `{"kind": "destination", "destinationId": "<destinationId>"}`. See [An event as an output receives it](#an-event-as-an-output-receives-it). |
-| `includeCheckpointPaths` | No | Events with `checkpoint` only. When `true`, adds the full schema of every path into the checkpoint. `checkpointPathThroughSourceId`, `checkpointPathThroughInputId` and `checkpointPathThroughOutputId` narrow it to the paths through one source, input or output. |
+| `checkpoint` | No | Events, event variants and properties. Reads the item as one point in a [gateway](/data-design/avo-tracking-plan/gateways) pipeline receives it. One of `{"kind": "source", "sourceId": "<sourceId>"}`, `{"kind": "gatewayInput", "gatewayId": "<gatewayId>", "inputId": "<inputId>"}`, `{"kind": "gateway", "gatewayId": "<gatewayId>"}`, `{"kind": "gatewayOutput", "gatewayId": "<gatewayId>", "outputId": "<outputId>"}` or `{"kind": "destination", "destinationId": "<destinationId>"}`. See [An event as an output receives it](#an-event-as-an-output-receives-it). |
+| `includeCheckpointPaths` | No | Events and event variants with `checkpoint` only. When `true`, adds the full schema of every path into the checkpoint. `checkpointPathThroughSourceId`, `checkpointPathThroughInputId` and `checkpointPathThroughOutputId` narrow it to the paths through one source, input or output. |
 
 `get` rejects a parameter it doesn't know, so a misspelled `checkpoint` is an error, not an answer without the checkpoint. The error names it and lists the parameters `get` accepts, for example `Unknown key(s) for get: lens. get accepts: type, id, …`.
 
@@ -504,6 +504,8 @@ Claude finds the gateway's output for Pinterest with `get` (`type: "gateway"`), 
 ```
 
 The event comes back under the name the output receives, with the plan name in the title, and with every rule on the way applied to its properties. A **Checkpoint:** line says whether the event reaches the output. If that line is missing, the checkpoint wasn't applied: check `kind` and its ids.
+
+An event variant takes the same `checkpoint`, with `type: "event_variant"`, the base event's `id` and `variantId`. The variant is read as its own traffic: only from the sources it is sent from, with its own overrides applied first. The answer adds whether the variant reaches the checkpoint, the sources it arrives from, the routes it takes (each named as the variant) and, when a rule renames it, the names it is sent under there.
 
 ### Common errors
 
