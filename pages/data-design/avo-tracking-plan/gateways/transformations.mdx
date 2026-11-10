@@ -104,6 +104,21 @@ Among gateway transformation rules, a key rule can only drop or rename a key. Ot
 - **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so all its properties are sent from here on, including ones no rule names.
 - **Dropped.** The bundle's properties don't get through from this checkpoint on.
 
+### Every PII property at once
+
+One rule can cover every property marked PII, every property of one PII type (such as Email), or every property not marked "not PII". It drops or pins each property it covers, at every event or only some, and can apply only when a condition holds. For example, ask your agent:
+
+> At the Meta output, when `consent` is `rejected`, drop every PII property.
+
+A property marked PII later is covered from then on, with no rule edited. You can name properties the rule leaves to their own rules, for example to drop all PII but keep a hashed email.
+
+- **Order.** The rule sits in the checkpoint's list of rules like any other. A drop wins wherever it sits. Between two pins on the same property, the later one wins.
+- **Pins that can't fit.** A covered property whose type can't hold the pinned value, or a list, is dropped instead, and the MCP warns you which ones.
+- **Objects.** A rule that applies at every event with no condition drops only the covered keys inside an object. A rule with a condition, or one that applies only at some events, drops the whole object. An object with more than 1,000 paths to covered keys, or nesting too large to check, is dropped whole by any rule, and the save warns which ones.
+- **Not marked "not PII".** This rule can only drop, and the MCP warns about properties nobody has reviewed for PII. Mark a property as not PII to keep it out.
+
+The Transformations tab doesn't show these rules yet. Your agent reads them with `get` on the gateway, which lists each one with the properties it reaches.
+
 More transformation types are coming. If you're missing one, let us know at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app.
 
 ## Describe why a transformation exists
