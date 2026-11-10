@@ -211,6 +211,7 @@ The example is abbreviated. Rules can also sit on the gateway itself, under its 
 - **Rules on every event** sit under `properties`, keyed by property id.
 - **Rules on some events** sit under `eventPropertyRules`, keyed by rule id, with `propertyId`, the property `name`, and the `on` or `except` scope (event ids).
 - **Object key rules** are listed under `objectKeys`, each with its `path` and an `action` of `remove` or `rename`.
+- A checkpoint's name styles are `eventNameStyle` and `propertyNameStyle`, written only when set, as the case name such as `snake_case`.
 - A type change writes `propertyType` and `isList` when the rule sets them.
 
 ## Governance fields

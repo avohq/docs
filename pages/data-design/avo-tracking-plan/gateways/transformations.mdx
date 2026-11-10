@@ -99,6 +99,18 @@ Inspector checks each output against the object as the gateway sends it there. A
 
 Among gateway transformation rules, a key rule can only drop or rename a key. Other transformations, such as pinning a key's value or requiring a key, apply to top-level properties only.
 
+### Name style
+
+A name style sends every event name, or every top-level property name, in one case from a checkpoint on, for example `Page URL` sent as `page_url`. Events and properties each have their own style. The cases are `snake_case`, `camelCase`, `PascalCase`, `CONSTANT_CASE` and `kebab-case`.
+
+- **It runs last.** The style applies after the checkpoint's other rules, which still find events and properties by what they are, not by their names. An allow list keeps what it keeps with or without a style.
+- **A rename wins.** An event or property renamed at the same checkpoint keeps the name you gave it.
+- **Words.** Names split into words at spaces, punctuation and changes of case, so `userID` becomes `user_id` and `HTTPStatus` becomes `http_status`. Digits stay with the word before them, so `GA4 Client ID` becomes `ga4_client_id`.
+- **Keys inside an object keep their names.** The style changes top-level property names only.
+- **Two names, one style.** If a style would send two properties of one event, or two events, under the same name, a destination keeps only one of them. The [Avo MCP](/reference/avo-mcp/overview) rejects a change that would do that and names both. If a change made elsewhere causes it, the **Transformations** tab and the MCP show the collision at each checkpoint it reaches. Rename one of them at that checkpoint to settle it.
+
+You set a name style with the [Avo MCP](/reference/avo-mcp/overview). The **Transformations** tab shows the style on each checkpoint that has one.
+
 ### Property bundles
 
 - **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so all its properties are sent from here on, including ones no rule names.
