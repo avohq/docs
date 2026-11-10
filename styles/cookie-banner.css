@@ -194,10 +194,28 @@
     background-color: #eceaef !important;
   }
   /* The sheet covers the chat launcher's corner: www's own button, or Intercom's default
-     launcher on docs. iubenda removes the banner after a choice, which brings it back. */
-  body:has(#iubenda-cs-banner) #intercom_action,
-  body:has(#iubenda-cs-banner) .intercom-lightweight-app-launcher,
-  body:has(#iubenda-cs-banner) iframe.intercom-launcher-frame {
+     launcher on docs, and Intercom's "Need help?" card would sit on top of the sheet's
+     buttons. Keyed on the visible state, so they come back after a choice even if iubenda
+     keeps the banner element in the page. */
+  body:has(#iubenda-cs-banner.iubenda-cs-visible) #intercom_action,
+  body:has(#iubenda-cs-banner.iubenda-cs-visible)
+    .intercom-lightweight-app-launcher,
+  body:has(#iubenda-cs-banner.iubenda-cs-visible)
+    iframe.intercom-launcher-frame,
+  body:has(#iubenda-cs-banner.iubenda-cs-visible)
+    iframe.intercom-launcher-discovery-frame {
     display: none !important;
+  }
+}
+/* Forced colours (e.g. Windows High Contrast) drop the icon's contrast, so show the label */
+@media (max-width: 639px) and (forced-colors: active) {
+  #iubenda-cs-banner#iubenda-cs-banner
+    .iubenda-cs-opt-group
+    .iubenda-cs-customize-btn {
+    width: auto !important;
+    padding: 0 12px !important;
+    text-indent: 0 !important;
+    background-image: none !important;
+    color: ButtonText !important;
   }
 }
