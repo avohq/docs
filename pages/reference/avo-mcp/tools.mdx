@@ -9,6 +9,8 @@ import { Callout } from 'nextra/components'
 
 Every tool except `list_workspaces` and `describe_tool` operates on a workspace. Pass `workspaceId` as a parameter; stdio clients can also set the `WORKSPACE_ID` environment variable.
 
+Every tool rejects a parameter it doesn't know instead of ignoring it, and so does every object nested inside a parameter. The error names the unknown key and, for parameters, `search` filters, `onReviewedBranch` and `addSourceOverrides` entries, lists the accepted ones, for example `Unknown key(s) for save_items: branch. save_items accepts: branchId, items, workspaceId, onReviewedBranch.` or `Unknown key(s) in nameMapping: name. nameMapping accepts: kind, names, includeNoMapping.` A client that adds a placeholder parameter to a tool that takes none (such as `random_string` on `list_workspaces`) gets this error too.
+
 <Callout type="info" emoji="🔒">
   Each tool lists the OAuth scope it requires. Write tools (`workflow`, `save_items`) require the `write` scope, which is requested as a separate consent step on first use.
 </Callout>
@@ -72,7 +74,7 @@ List the Avo workspaces the authenticated user has access to. Call this first to
 
 ### Parameters
 
-None.
+None. Any parameter is rejected.
 
 ### Returns
 
@@ -554,6 +556,7 @@ Batch create, update, archive, and unarchive events, properties, event variants,
 | `items` | Yes | Array of items to apply (see [Item shape](#item-shape)). |
 | `onReviewedBranch` | No | Acknowledgement for writing to a branch that is already in review. Omitted → the write is rejected so approvals aren't silently invalidated. `{ kind: "revertToDraft" }` reverts the branch to Draft and applies the edits; `{ kind: "reject" }` is the default. |
 | `workspaceId` | No | Workspace ID |
+| `onReviewedBranch` | No | For a branch that is in review on a workspace with protected main. Omitted or `{kind:"reject"}`, the write is rejected so approvals aren't silently invalidated. `{kind:"revertToDraft"}` moves the branch back to Draft and applies the write. |
 
 The request is capped at **50 items** per call.
 
@@ -948,6 +951,8 @@ Claude creates a `Funnel` metric whose `items` reference two existing events in 
 - `Duplicate tempId "<name>"` — each `tempId` must be unique across items in the batch.
 - `Duplicate <item> in the same batch: item N …` — two items in one call target the same thing. The message names the other item and says how to fix it, usually by merging the two items. Items created in the same call are named by their `$tmp:` reference.
 - `Unknown $tmp: reference` — a `$tmp:` ref names a tempId that wasn't declared.
+- `Unknown key(s) for save_items: …` — a parameter name isn't one `save_items` accepts. An unknown key inside an item, or inside an object in one (`pii`, `eventConfigs`, a metric's `where`, …), is rejected the same way, so a typo such as `typeIds` for `typeId` fails instead of saving the item without it.
+- `A metric item of kind Event does not read variantId, so it would be lost. …` — a metric item or cohort condition carries a key that belongs to another kind. The message lists the keys that kind takes. `where`, `groupBy` and `timeWindow` cannot be `null`: send a value. On `updateItems`, the `where` and `groupBy` you send replace the item's current ones, and leaving one out clears it.
 - `"platform" is not a top-level field on source updates: use "set.platform"` — on an `update`, change a source's `name`, `platform`, `programmingLanguage`, `libraryName` or `libraryDestination`, or a destination's `name` or `analyticsTool`, inside `set`.
 - `<idField> is required for <op> <entity> items` — missing identity ID.
 - `id` and `fields.<idField>` both present with different values.
