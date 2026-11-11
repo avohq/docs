@@ -263,14 +263,22 @@ To change "Include in Codegen" on an event that is already attached to a source,
 **Events:**
 - New events are created (matched by name)
 - Existing events receive new properties that aren't already on the event
-- Existing event fields are NOT overwritten (e.g. description and owner remain unchanged)
+- Existing event fields are NOT overwritten (e.g. the description remains unchanged)
 - New sources, tags, stakeholder domains, and name mappings are added to existing events
+- An existing event with no owner gets the owner the import names. An event whose owner domain is archived counts as having no owner
+- An existing event's owner is never changed. If the import names a different owner for an event that already has one, the whole import is rejected with a 400 that lists those events, and nothing is imported
+
+**Event variants:**
+- New variants are created
+- An existing variant is added to the stakeholder domains the import names that don't list it yet, and gets the import's owner if it has none (same rule as events). Nothing else on an existing variant changes
 
 **Properties:**
 - New properties are created
 - Existing properties are NOT modified (type, description, matches, presence, regex remain unchanged)
 
 Only additive operations are performed. Nothing already in the tracking plan is changed.
+
+In every import method, an empty owner never clears an owner: an event or variant imported without an owner keeps the owner it has.
 
 ### Add and Update
 
@@ -338,9 +346,9 @@ On success, the API returns a JSON object with the import results:
 
 | Status | Scenario |
 | :-- | :-- |
-| 400 | Invalid Content-Type, unparsable body, invalid JSON Schema structure |
+| 400 | Invalid Content-Type, unparsable body, invalid JSON Schema structure, or an `addOnly` import that would change the owner of an existing event or variant |
 | 401 | Authentication failure |
-| 403 | Protected main branch, or the import would go past a plan limit (for example, it creates more stakeholder domains than the workspace plan allows). Plan-limit errors carry `"code": "paywall_blocked"` |
+| 403 | Protected main branch, or the import would go past a plan limit (for example, it creates more stakeholder domains than the workspace plan allows). Going past the stakeholder domain limit carries `"code": "team_limit_reached"` |
 | 404 | Branch not found |
 | 409 | Branch merged/closed, or no prior actions on branch |
 | 500 | Unexpected error |
