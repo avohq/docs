@@ -88,6 +88,65 @@ Checks for events that do not belong to any category when the rule is enabled. C
 
 Add the event to one or more relevant categories. Learn more about [Categories](/data-design/guides/organizing-metrics-and-events#categories).
 
+### Variants must conform to base event
+
+Checks that every [event variant](/data-design/avo-tracking-plan/event-variants) keeps the properties its base event requires. A property is required when it is `always sent` on the base event. A variant breaks the rule when it:
+
+- **Removes a required property** that it inherits from the base event, whether the property is on the base event directly or comes from a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles) on the base event
+- **Changes a required property's presence** to `sometimes sent` or `never sent` on the variant
+- **Removes a property bundle** that is on the base event and contains at least one required property
+
+Everything else is allowed on a variant, for example:
+
+- Removing a property, or changing its presence, when it is `sometimes sent` on the base event
+- Setting a property to `always sent` on the variant, or clearing the variant's presence override so it uses the base event's presence again
+- Removing a property bundle from the variant when none of its properties are `always sent` on the base event
+- Adding properties and bundles to the variant, and removing or changing the ones only the variant has
+- Pinning property values and overriding allowed values
+
+The rule compares each variant with its base event as the base event is now, so a change to the base event can break a variant too. For example, making a property `always sent` on the base event breaks any variant that has it as `sometimes sent`.
+
+<Callout type="info" emoji="💡">If a property's presence on the base event differs between sources, the rule doesn't treat it as required.</Callout>
+
+#### Rule settings
+
+This rule has a single setting with four levels, instead of the enabled and enforced switches the other rules use. It is **Disabled** by default, for new and existing workspaces.
+
+| Setting | What it does |
+|---|---|
+| **Disabled** | The rule isn't checked. |
+| **Enabled** | Variants that break the rule show as warnings in the tracking plan audit and the branch audit. Nothing is blocked. |
+| **Enforced** | Variants that break the rule on a branch block it at your workspace's [enforcement point](#enforcement), _Request for review_ or _Branch merge_, like any other enforced rule. You can still make the change on the variant: the branch audit is what catches it. The [Avo MCP](/reference/avo-mcp/tools#save_items) saves the change and returns a warning. |
+| **Locked** | Everything Enforced does, and Avo also stops the change from being made. On the variant, removing a required property, changing its presence to `sometimes sent` or `never sent`, and removing a bundle that contains a required property are disabled, with a tooltip that explains why. The [Avo MCP](/reference/avo-mcp/tools#save_items) rejects a `save_items` write that would leave a variant breaking the rule, so nothing in that batch is saved. |
+
+Enforced and Locked are available on the Enterprise plan.
+
+Locked only disables changes made on the variant. A change to the base event that breaks a variant isn't disabled; it shows in the branch audit and blocks the branch, as it does with Enforced.
+
+#### How to resolve
+
+Each issue in the audit names the variant and links to it. Depending on the issue:
+
+- **Removed required property**: add the property back to the variant.
+- **Changed presence**: set the property back to `always sent` on the variant, or clear the variant's presence override.
+- **Removed property bundle**: add the bundle back to the variant.
+
+If the variant really does need to leave out the property, the change belongs on the base event: make the property `sometimes sent` on the base event, and agree it with the base event's owner first, since it changes the event for everyone who uses it.
+
+#### Branch vs. Tracking Plan behavior
+
+- **Branch Audit**: Only flags violations the branch introduces compared with main. A variant that already broke the rule on main doesn't block the branch.
+
+- **Tracking Plan Audit**: Lists every variant in the tracking plan that breaks the rule.
+
+<Callout type="info" emoji="💡">**Best practice:** Before you set the rule to Enforced or Locked, set it to Enabled and fix the variants the tracking plan audit lists.</Callout>
+
+#### Use case: team-owned variants of shared events
+
+This rule is useful when a central data team owns the base events and other teams own the variants for their part of the product, using [stakeholder teams](/data-design/avo-tracking-plan/stakeholder-domains) to set ownership. With the rule set to Locked, each team can extend its variants, for example by adding properties, pinning values or adding triggers, but can't drop or weaken what the central team requires on the base event.
+
+That gives you the core-and-extend model of [global and local workspaces](/data-design/guides/organizing-event-hierarchy#global-and-local-workspaces) inside a single workspace. Learn more about [event variants](/data-design/avo-tracking-plan/event-variants).
+
 ## Property Rules
 
 ### No conflicting properties
@@ -189,7 +248,7 @@ Open the property details, click the PII pill in the header and mark the propert
 
 ## Audit Rule Configuration
 
-For new workspaces all rules are enabled by default, and casing rules default to the most common casing seen in the workspace. Workspaces on the Team and Enterprise plans are able to configure the audit to include or exclude each rule and manually set their casing rules for events and properties. 
+For new workspaces all rules are enabled by default, and casing rules default to the most common casing seen in the workspace. The exception is [Variants must conform to base event](#variants-must-conform-to-base-event), which is Disabled by default. Workspaces on the Team and Enterprise plans are able to configure the audit to include or exclude each rule and manually set their casing rules for events and properties. 
 
 Additionally, workspaces on the Enterprise plan are able to define [advanced event naming rules](/audit/advanced-event-naming-rules) that include event name structure (such as “object action”) and hybrid casing conventions.
 
@@ -204,5 +263,7 @@ Depending on your team’s preferred workflow, you can set the enforcement to tw
 - **Branch merge**: Requires the branch to pass all enforced audit rules before it is merged to the main branch.
 
  <Callout type="info" emoji="💡"> Marking the branch status as `Request for review` will also block the branch from being merged if any changes where made after approval  </Callout>
+
+[Variants must conform to base event](#variants-must-conform-to-base-event) has one more level beyond enforced, Locked, which also stops the change from being made on the variant and over the Avo MCP. See [Rule settings](#rule-settings).
 
 ![Tracking Plan Audit Configuration](/images/audit/tracking-plan-audit-config.png)
