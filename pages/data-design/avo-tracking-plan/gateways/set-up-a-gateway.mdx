@@ -57,7 +57,7 @@ Every event that reaches the gateway needs an origin hint, a value such as `web`
 
 ## 5. Install Inspector before you merge
 
-We recommend installing Inspector in development while the gateway is still on the branch. The gateway's Inspector API key works before you merge, so you can send test events through the gateway and check in the [Inspector Debugger](/inspector/inspector-debugger) that they arrive at each checkpoint. Avo starts checking events against the gateway's design, and mapping origin hints to sources, once the branch is merged.
+We recommend installing Inspector in development while the gateway is still on the branch. The gateway's Inspector API key works before you merge, so you can send test events through the gateway and check in the [Inspector Debugger](/inspector/inspector-debugger) that they arrive at each checkpoint. The Debugger checks each event against the branch you're viewing, so you can see it pass or fail at its checkpoint before you merge. Inspector's issues use the gateway's design, and its origin hints, once the branch is merged.
 
 Follow [Configuring Inspector Gateways](/inspector/configuring-inspector-gateways) for your gateway type.
 
@@ -65,11 +65,15 @@ Follow [Configuring Inspector Gateways](/inspector/configuring-inspector-gateway
 
 Open the branch in Avo. The gateway appears on the **Sources** page under **Gateways**, and the branch diff lists every transformation as a rule, before and after. Open the gateway's **Transformations** tab to check what each output will receive.
 
+The branch's **Code Changes** tab lists each gateway with the number of checkpoints that need a configuration update in your tag manager or CDP. Open a gateway to see a card for each of those checkpoints, marked new, updated or removed, with its transformations as pseudocode, as steps or as YAML. Use it to update your tags.
+
 [Ask a teammate to review the branch](/workflow/review#how-to-request-a-review), such as whoever owns the tags or the destination. When it looks right, merge the branch.
 
 ## Keeping the gateway up to date
 
-When your tags change, update the gateway the same way: ask your agent to change the transformations on a branch. When the plan changes, your agent can read the new definitions through the Avo MCP and tell you which tags to change. If your agent is also connected to your tag manager or CDP, for example through its MCP or API, it can make those changes there for you.
+When your tags change, update the gateway the same way: ask your agent to change the transformations on a branch.
+
+When the plan changes, the branch's **Code Changes** tab also lists the gateways a change affects. For example, it flags a new property that an output's allow list would drop, with a note to list it if it should get through, and a renamed property that your gateway's configuration spells out. Your agent can read the new definitions and the branch's gateway changes through the Avo MCP and tell you which tags to change. If your agent is also connected to your tag manager or CDP, for example through its MCP or API, it can make those changes there for you.
 
 ## Limits during the closed beta
 

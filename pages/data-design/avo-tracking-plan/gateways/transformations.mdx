@@ -1,7 +1,7 @@
 ---
 agentTask: "write these transformations for you on a branch and tell you what an event looks like after them"
 title: Gateway transformations
-description: "Describe what your tag manager or CDP changes before each destination: renamed events, removed or required properties, pinned values and more."
+description: "Describe what your tag manager or CDP changes before each destination: renamed events, removed or required properties, changed types, consent rules and more."
 ---
 
 import { Callout } from 'nextra/components'
@@ -28,6 +28,10 @@ You write transformations through the [Avo MCP](/reference/avo-mcp/overview) on 
 
 > At the Meta output, send `items` as `contents`, with `item_id` as `id` and `price` as `item_price`.
 
+> At the Meta output, only send `coupon` on `purchase`.
+
+> At the Meta output, stop sending `email` when `consent` is `rejected`.
+
 > Our Meta tag now sends `content_ids` instead of `contents`. Update the Meta output on a new branch.
 
 > Here's an export of our GTM container. Compare what each tag sends with our tracking plan and add the differences as transformations on a new branch.
@@ -46,9 +50,20 @@ An event's shape at an output is the result of every transformation on its path:
 
 An input transformation doesn't change what the source sends. It changes the event on the way into the gateway, and the event on the source still says what developers should send. If a source should stop sending a property, change the event on that source instead of adding a transformation at the input.
 
-## What a transformation can change
+## Read the Transformations tab
 
-The **Transformations** tab shows the transformations checkpoint by checkpoint, in the order they run: inputs, then the gateway, then outputs. At each checkpoint, they are grouped by what they touch (events, properties or bundles) and by what they do: **Added**, **Required**, **Changed** or **Dropped**.
+The gateway's **Transformations** tab shows one card per checkpoint, in the order they run: inputs, then the gateway, then outputs. Each card has two parts:
+
+- **Events.** Whether the checkpoint lets every event through (**All sent**) or only the events on its list (**Allow list**, with the number of events on it), which events are sent under another name (**Rename**), and which events are dropped when a condition holds (**Drop event**).
+- **Properties.** Two columns: what **Arrives** at the checkpoint and what's sent on, such as **Sent to Meta** at an output. Each line reads like `"order_id": string · always`: the property, its type and whether it's always sent, sometimes sent or mixed, when that differs between events. Changes are coloured like a code diff. A changed line shows its old part on the left and its new part on the right, a dropped line is struck through, and a property the checkpoint adds is marked with a +.
+
+Under the columns, **Unconditional transformations** lists the rules for every event. **Conditional transformations** lists the rules for some events only, or for when a property has a value, with one numbered section per set of events or condition, in the order they apply. Lines no rule changes fold into **unchanged lines**, and properties an allow list stops fold into **disallowed properties**.
+
+Click a line to open its card. It shows the property before and after the checkpoint, whether it's sent on each event, and every transformation on it in the order they apply, with a note on any that doesn't apply and why. **View lineage** shows the property's path from your sources to this checkpoint.
+
+To find a transformation, type a property, bundle or event name in the filter box. The results list the matching transformations, grouped by what they do: **Added**, **Required**, **Changed** or **Dropped**.
+
+## What a transformation can change
 
 Each checkpoint is set to **All sent** or **Allow list**, separately for events and properties. With **All sent** (the default), everything that arrives passes on, apart from what a rule drops. With **Allow list**, only what's on the list passes. See [Choose what passes through](/data-design/avo-tracking-plan/gateways/set-up-a-gateway#2-choose-what-passes-through).
 
@@ -56,12 +71,13 @@ Each checkpoint is set to **All sent** or **Allow list**, separately for events 
 
 - **Changed.** The event is sent under a different name from this checkpoint on, for example `Order Completed` sent to Meta as `Purchase`.
 - **Dropped.** At a checkpoint set to **Allow list**, events that aren't on the list don't get through from here on. An event on the list keeps all its variants. Renaming an event doesn't put it on the list.
+- **Dropped when a condition holds.** At an output, a drop rule stops an event when one of its properties has a given value, for example every event sent while `consent` is `rejected`. You can limit a drop rule to some events. A drop rule always needs a condition: to stop an event at an output every time, set the output's events to **Allow list** and leave it off the list. See [Apply a transformation only when a property has a value](#apply-a-transformation-only-when-a-property-has-a-value).
 
 ### Properties
 
-A property rule applies to every event at the checkpoint that carries the property.
+A property rule applies to every event at the checkpoint that carries the property, unless you [limit it to some events](#apply-a-transformation-to-some-events-only) or [to when a property has a value](#apply-a-transformation-only-when-a-property-has-a-value).
 
-- **Added** (`enrich` in the MCP). The gateway adds the property to every event, not only the ones that already send it. Use it for values the gateway fills in, such as a click id read from a cookie. It's always sent, unless you mark it sometimes sent.
+- **Added** (`enrich` in the MCP). The gateway adds the property to every event the rule applies to, not only the ones that already send it. Use it for values the gateway fills in, such as a click id read from a cookie. It's always sent, unless you mark it sometimes sent.
 - **Required** (`require`). Every event that reaches this checkpoint must already carry the property. The gateway never adds it, so the sources that feed the checkpoint have to. For example, if a Meta audience is built on `tier`, requiring `tier` at the Meta output says that every product view reaching Meta must carry it. If a source doesn't send `tier`, that's the gap to fix at the source.
 - **Changed** (`tighten`). The property is modified only where it already arrives, and never added. At a checkpoint set to **Allow list**, a property that's on the list with no change keeps arriving where it's already sent. A change can:
   - **Rename** the property, for example `transaction_id` sent as `order_id`.
@@ -70,9 +86,26 @@ A property rule applies to every event at the checkpoint that carries the proper
     - **Pin** it to one value.
     - **Refine its allowed values** by ruling out values it otherwise allows.
     - **Require a regex.**
+  - **Change its type**, for example `contents` sent as a list. See [Change a property's type](#change-a-propertys-type).
 - **Dropped.** The property doesn't get through from this checkpoint on. This holds when the property arrives inside a bundle too, and the bundle's other properties are still sent. Dropping is different from clearing a rule: clearing removes this checkpoint's rule, so the property goes back to what it inherits from earlier checkpoints.
 
-An Added, Required or Changed rule can rename the property and pin its value as well.
+An Added, Required or Changed rule can rename the property, pin its value and change its type as well.
+
+### Change a property's type
+
+A property can be sent as a different type from a checkpoint on: another base type (`string`, `int`, `long`, `float`, `bool`, `object` or `any`), a list instead of a single value or a single value instead of a list, or both. Later checkpoints receive the new type, and a later rule can change it again or back. For example, ask your agent:
+
+> At the Meta output, send `contents` as a list.
+
+Constraints are written for the type in your tracking plan, so they follow the type:
+
+- Where the property is sent as another base type, its allowed values, regex and min and max don't apply. They apply again at any checkpoint that sends it as the plan's type.
+- A change between a single value and a list keeps them.
+- An object sent as `any` keeps the keys in your plan, and none of them is required.
+
+A pinned value has to fit the type it's sent as. Avo refuses a change that leaves a pinned property sent as a list, or as a type the pinned value doesn't fit, and names the pin. Remove the pin or clear the type change.
+
+On the **Transformations** tab, the line shows the type that arrives and the type that's sent, such as `"contents": list<object> · always`, and its card says that the property is sent as a list.
 
 ### Keys inside an object
 
@@ -91,7 +124,7 @@ Key rules work together with the other rules at a checkpoint:
 - **Allow list.** At a checkpoint set to **Allow list**, an object on the list keeps all its keys, unless a key rule drops one.
 - **Two keys, one name.** Two keys of the same object can't be sent under the same name at a checkpoint. If a rename would do that, the [Avo MCP](/reference/avo-mcp/overview) rejects the change and names both keys.
 
-The **Transformations** tab shows a key rule by its path, with a dot between the object and the key, such as `items.product_id` or `items.price → items.item_price`. Paths use the names in your tracking plan. A key rule that has no effect is shown muted with the reason beneath it, for example "covered by the drop of items", and so is a key rule at a checkpoint where no event brings the object.
+The **Transformations** tab lists key rules under the checkpoint's properties, each by its path, with a dot between the object and the key, such as `items.product_id` or `items.price → items.item_price`. Paths use the names in your tracking plan. A key rule that has no effect is shown muted with the reason beneath it, for example "covered by the drop of items", and so is a key rule at a checkpoint where no event brings the object.
 
 A property that arrives at a checkpoint only inside an object can't be dropped or renamed at the top level there, because the event doesn't carry it at the top level. If you or your agent try, the [Avo MCP](/reference/avo-mcp/overview) rejects the change and names the key path to use instead, such as `items.product_id`. A rule that adds the property is the exception, since the gateway then sends it at the top level itself. A top-level rule written before key rules existed stays as it is, and the **Transformations** tab marks it "no effect here" with the path the property arrives on.
 
@@ -104,11 +137,61 @@ Among gateway transformation rules, a key rule can only drop or rename a key. Ot
 - **Added.** This checkpoint adds a [property bundle](/data-design/avo-tracking-plan/properties#event-property-bundles), so all its properties are sent from here on, including ones no rule names.
 - **Dropped.** The bundle's properties don't get through from this checkpoint on.
 
-More transformation types are coming. If you're missing one, let us know at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app.
+If you're missing a transformation type, let us know at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app.
+
+## Apply a transformation to some events only
+
+A property rule, or a property drop, can apply to some events instead of every event at the checkpoint:
+
+- **Only on these events**, for example `coupon` sent only on `purchase`.
+- **On every event except these**, for example `search_query` dropped on every event except `search`. This also covers events added to the plan later.
+
+For example, ask your agent:
+
+> At the Meta output, send `transaction_id` as `order_id` on `purchase` and `refund` only.
+
+> At the Pinterest output, stop sending `user_agent` on every event except `checkout_started`.
+
+On those events, the rule is applied on top of the checkpoint's rule for every event on the same property: anything you leave out keeps that rule's value, and anything you set wins. A few things follow from that:
+
+- **A drop always wins.** No rule brings back a property another rule drops. So Avo refuses a rule on a property that the checkpoint drops on every event. To send a property on some events only, drop it on every event except those.
+- **A rule for some events can't loosen the rule for every event.** It can't make a property optional that the rule for every event marks always sent, or allow back a value that rule rules out. To lift those on some events, give the rule for every event an exception for those events instead.
+- **A rule names events in your tracking plan.** Use the plan's event name, not the name it's sent as. A rule on an event covers its variants.
+
+## Apply a transformation only when a property has a value
+
+A property rule, a property drop or an event drop can apply only when a property of the arriving event has a value, for example only when `consent` is `rejected`. A condition reads one `string` or `bool` property, an event property or a system property, and checks that it:
+
+- **is one of** a list of values, or **is not one of** them, from 1 to 50 values that match exactly, or
+- **is set** or **is not set**. A property that's missing, or `null`, is not set.
+
+Use it to keep consent-dependent and personal data out of an output. For example, ask your agent:
+
+> At the Meta output, stop sending `email` and `phone` when `consent` is `rejected`.
+
+> At the Google Ads output, drop every event when `marketing_opt_in` is `false`.
+
+> At the Pinterest output, stop sending `email` on `purchase` when `marketing_consent` is not set.
+
+A condition can be combined with a list of events, so the rule applies only on those events and only when the condition holds. Without a list of events, it applies on every event where the condition holds.
+
+A condition can't read a number, list, object, nested, user or group property, combine several properties with AND or OR, or match patterns such as contains.
+
+<Callout type="warning">
+  Inspector doesn't check condition values. If a property that a conditional rule drops is still sent, Inspector can't tell you, so no issue doesn't prove that the condition held.
+</Callout>
+
+## The order transformations apply in
+
+At each checkpoint, the rules for every event apply first. Then the rules for some events, and the conditional rules, apply in the numbered order the **Conditional transformations** table shows. Where several hold for an event, each is applied on top of the ones before it. A drop that holds wins wherever it sits in the order.
+
+A new rule joins the section with the same events and condition, or goes last. Your agent can move a section before another one, or to the end:
+
+> At the Meta output, move the rule for `purchase` before the consent rule.
 
 ## Describe why a transformation exists
 
-Any transformation can carry a short description: why the gateway does this, in words the next person to read it will understand. Hover a transformation on the **Transformations** tab to read its description, with who last updated it, when and on which branch. A transformation without one says so.
+Any transformation can carry a short description: why the gateway does this, in words the next person to read it will understand. To read a transformation's description, find it with the filter box on the **Transformations** tab and hover it. You'll see its description, with who last updated it, when and on which branch. A transformation without one says so.
 
 Descriptions are written through the [Avo MCP](/reference/avo-mcp/overview) on a branch, like the transformations themselves, and the branch diff shows a changed description word by word. For example, ask your agent:
 
@@ -117,5 +200,7 @@ Descriptions are written through the [Avo MCP](/reference/avo-mcp/overview) on a
 A key rule takes a description like any other transformation:
 
 > At the GA4 output, stop sending `product_id` inside `items` and describe why: GA4 reads the product from `item_id`.
+
+So do a rule for some events, a conditional rule and a drop rule. Your agent reads their descriptions with the gateway through the MCP.
 
 A description is most useful on a transformation that drops something, so nobody mistakes a deliberate drop for a mistake and adds the property back. A checkpoint can also carry one description of its own, shown at the top of its card on the **Transformations** tab, in the branch diff and in what your agent reads.
