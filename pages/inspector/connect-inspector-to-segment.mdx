@@ -4,6 +4,10 @@ import { Callout } from 'nextra/components';
 
 ## Use Avo Inspector as a Segment destination
 
+<Callout type="info" emoji="💡">
+  Is Segment modelled as a gateway in your Avo tracking plan? Follow [Inspect a Segment gateway](/inspector/connect-inspector-to-segment-gateway) to inspect events at the gateway and at each destination it sends to.
+</Callout>
+
 Stream your event schemas from Segment to Avo Inspector without adding any code to your codebase. Simply set up a Segment native destination powered by Segment actions and your data should be visible in Avo within a couple of seconds (in rare cases it can take up to 2 minutes).
 
 <Callout type="info" emoji="💡">
@@ -64,6 +68,10 @@ You can copy the API key from your source in Avo. The API key allows Avo to map 
 
 Environment describes which app environment the source is sent from, `Development | Staging | Production`.
 Avo only generates issues for events in the `Production` environment, but you can see the event shapes for staging and development environments to make sure they are implemented correctly.
+
+##### Gateway Support
+
+Turn `Gateway Support` off. It is on by default for new destinations and is only for Segment workspaces modelled as a gateway in Avo; see [Inspect a Segment gateway](/inspector/connect-inspector-to-segment-gateway). If your destination doesn't show this setting yet, there is nothing to change.
 
 ##### App Version Property
 
