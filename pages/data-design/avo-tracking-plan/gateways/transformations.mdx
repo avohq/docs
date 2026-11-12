@@ -143,7 +143,7 @@ If you're missing a transformation type, let us know at [support@avo.app](mailto
 
 A property rule, or a property drop, can apply to some events instead of every event at the checkpoint:
 
-- **Only on these events**, for example `coupon` sent only on `purchase`.
+- **Only on these events**, for example `transaction_id` sent as `order_id` only on `purchase`. On other events that carry `transaction_id`, it's still sent under its own name.
 - **On every event except these**, for example `search_query` dropped on every event except `search`. This also covers events added to the plan later.
 
 For example, ask your agent:
