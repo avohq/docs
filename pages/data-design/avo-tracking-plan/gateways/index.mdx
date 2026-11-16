@@ -23,6 +23,8 @@ A **gateway** brings that step into your plan. You describe what the gateway doe
 - **Know what each destination should receive.** From your plan and the gateway's transformations, Avo works out what each checkpoint should receive: which events, which properties, and whether each property is always sent, sometimes sent or never sent. That's the contract for that checkpoint.
 - **See where an event broke, not just that it broke.** When your gateway sends events to Inspector from the gateway and from each output, Avo compares them with that checkpoint's contract and raises issues at the checkpoint where something went wrong. See [Configuring Inspector Gateways](/inspector/configuring-inspector-gateways).
 - **Know what lands downstream.** Each output's definition says which events and properties a destination receives, under which names, and where each one came from. Use it to define your warehouse tables, or to know which events and properties to query.
+- **Keep consent-dependent and personal data out of an output.** Drop a property, or a whole event, at an output when consent isn't given, and keep that rule next to everything else the output receives.
+- **Know what to change in your gateway.** When a branch changes the plan, Avo lists the gateways whose configuration needs an update, before you merge.
 
 ## How a gateway is modelled
 
@@ -32,7 +34,7 @@ A gateway sits between your sources and your destinations. Events start at your 
 
 - **Inputs** are the sources that send events into the gateway, such as your web and app sources.
 - **Outputs** are the destinations the gateway sends events to, such as Meta, Google Ads or Pinterest. Each output gets an **output reference**, a short id like `meta-7f3k2q` that you paste into your gateway setup so Avo knows which output an event left from.
-- **Transformations** describe what the gateway changes. They can sit on the gateway, on an input or on an output. For example, an output to Pinterest can send `transaction_id` as `order_id`, and an output to Meta can drop a property that holds personal data.
+- **Transformations** describe what the gateway changes. They can sit on the gateway, on an input or on an output, and apply to every event, to some events only, or only when a property has a value, such as consent. For example, an output to Pinterest can send `transaction_id` as `order_id`, and an output to Meta can drop a property that holds personal data when consent is rejected.
 
 Read more in [Transformations](/data-design/avo-tracking-plan/gateways/transformations).
 
@@ -44,10 +46,15 @@ Gateways live on the **Sources** page, in the **Gateways** tab. Open a gateway t
 - **Transformations**: what changes at each checkpoint.
 - **Inspector setup**: the gateway's Inspector API key and the setup steps for your gateway type.
 
-Gateways are created and changed through the Avo MCP by your agent. The app shows the result for review, and branch changes to a gateway appear in the branch diff like any other change.
+Gateways are created and changed through the Avo MCP by your agent. The app shows the result for review, and branch changes to a gateway appear in the branch diff like any other change. A branch's **Code Changes** tab also lists the gateways whose configuration needs an update. See [Review and merge](/data-design/avo-tracking-plan/gateways/set-up-a-gateway#6-review-and-merge).
+
+You can also see your gateways from the events in your plan:
+
+- **Events view.** Pick a lens to see your tracking plan as one checkpoint receives it: a source, a gateway, a gateway output or a destination. The list narrows to the events that reach it, with their volume and issues from Inspector and what the transformations change.
+- **Event health.** In an event's details, the **Event health** tab maps the event's route from your sources through your gateways to your destinations, with Inspector's issues and when it was last seen at each checkpoint. **View transformations** opens the gateway's **Transformations** tab.
 
 ## Get started
 
 1. [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway) with your agent through the Avo MCP.
-2. [Install Inspector on the gateway](/inspector/configuring-inspector-gateways) in your server-side GTM container, web GTM container, Segment, RudderStack or C# service.
+2. [Install Inspector on the gateway](/inspector/configuring-inspector-gateways) in your server-side GTM container, web GTM container, Segment, RudderStack, or a C#, Node.js, Java or Go service.
 3. Start with one output, such as Meta, and add the rest once events arrive.
