@@ -73,9 +73,52 @@ When set to `true` (or `1`), only events that have source-impacting changes on t
 
 An event is considered "changed" when the change impacts a source. For example, a property being added to or removed from an event on a source counts as a change, but a property that is not attached to any event, or an event that is not attached to any source, will not appear as changed.
 
-- Only works on non-main branches. Returns HTTP 400 if used on the main branch.
+- Only works on non-main branches. Returns HTTP 400 if used on the main branch, because it needs a branch to diff against. This is unchanged, but it now also applies to requests through `api.avo.app/.../export/v2`.
+- With `checkpoint` on a non-main branch, the whole checkpoint view is returned instead (see [_checkpoint_](#--checkpoint-optional-early-access)).
 - When enabled, the response includes a `removedEvents` field containing an array of event names that were archived or lost their filtered sources on the branch. When disabled, this field is omitted.
 - Source-aware: when a source filter is applied, only changes relevant to that source are considered.
+
+### - _checkpoint_ (optional, early access)
+
+Exports the tracking plan **as it arrives at a gateway checkpoint**: an input, the gateway itself, or an output. The result is in the same format as publishing at a checkpoint sends, with every gateway rule on the way applied.
+
+Pass it **once**, as one URL-encoded JSON string. It is a typed reference:
+
+```Url
+checkpoint={"kind":"gatewayOutput","gatewayId":"gw_main","id":"out_meta"}
+```
+
+| `kind` | Checkpoint | Fields |
+|---|---|---|
+| `source` | A source, before any gateway | `id` |
+| `gatewayInput` | What leaves a gateway input, with the input's own rules applied | `gatewayId`, `id` |
+| `gateway` | The gateway | `id` (the gateway id) |
+| `gatewayOutput` | A gateway output | `gatewayId`, `id` |
+| `destination` | A destination | `id` |
+
+Extra keys are ignored, so you can copy a reference from the `gateways` section or from the top-level `checkpoint` key of a previous response.
+
+```bash
+curl -s -G -H "authorization: Basic <Base64 encoded token>" -H "Accept-Encoding: gzip" --compressed \
+  "https://api.avo.app/workspaces/$WORKSPACE_ID/branches/main/export/v2" \
+  --data-urlencode 'checkpoint={"kind":"gatewayOutput","gatewayId":"gw_main","id":"out_meta"}'
+```
+
+What to expect:
+
+- **JSON Schema only.** Any other `payloadFormat` returns HTTP 400.
+- **Early access.** The workspace needs the `PublishAtCheckpoint` feature on, otherwise the request returns HTTP 403. Ask Avo support to turn it on.
+- **Top-level `checkpoint` key.** The response carries the reference, so you can see what the export was taken at.
+- **Variants.** Each variant is its own entry under the base event's name. A variant's allowed-value override replaces the base event's allowed values for the values it names. Values the variant doesn't name keep the base event's state.
+- **Two events renamed to one name.** When a gateway renames two events to the same name (for example both to `page_view` for GTM), each stays its own entry under the shared name, keyed by its own event id, with its own properties, rules and allowed values.
+- **`changedEventsOnly`.** On a non-main branch, combined with `checkpoint`, it returns the whole checkpoint view and no `removedEvents`, as publishing at a checkpoint does. On `main` it still returns HTTP 400, as described under [_changedEventsOnly_](#--changedeventsonly-optional).
+
+| Status | When |
+|---|---|
+| 400 | `checkpoint` is malformed, has an unknown `kind`, or is repeated (including a bracketed form such as `checkpoint[kind]=...`); or `payloadFormat` isn't `jsonSchema` |
+| 403 | `PublishAtCheckpoint` is off for the workspace |
+| 404 | The gateway, input or output doesn't exist, is archived, isn't connected, or nothing arrives there |
+| 422 | The checkpoint can't be expressed as one schema (for example a property arriving under two names on one event). The error names the property or event |
 
 ## Per-source property presence
 
@@ -113,6 +156,62 @@ How to read it:
 - **`required` is unchanged.** It stays a single value per property across all covered sources; the breakdown decomposes it rather than replacing it. Where any covered source is `sometimesSent` or `neverSent`, the property is not required. One legacy configuration diverges: a property using the older "excluded sources" setting reports `neverSent` for an excluded source while still being listed as required.
 
 If you load the `ndjson` export into a warehouse with a fixed schema — for example a BigQuery load job with `ignoreUnknownValues=false` — an unexpected column makes the load fail. Widen your schema before the field is enabled for your workspace.
+
+## Gateways section
+
+When the `Gateways` feature is on for your workspace **and** the workspace has at least one gateway, the default JSON Schema export carries a top-level `gateways` section. Every other export is byte-for-byte what it was before: a missing `gateways` key only means the section is not included in this export (the feature is off, or the export is not the default JSON Schema format), not that the workspace has no gateways.
+
+The section is **configuration only**: the gateways, their inputs and outputs, and each rule. It does not say what a checkpoint receives. Use the [_checkpoint_](#--checkpoint-optional-early-access) parameter for that.
+
+```json
+"gateways": {
+  "gw_main": {
+    "id": "gw_main",
+    "name": "Segment gateway",
+    "inputs": {
+      "in_web": {
+        "id": "in_web",
+        "from": [{ "kind": "source", "id": "web" }],
+        "rules": {
+          "properties": {
+            "p_debug_flag": { "name": "Debug Flag", "action": "remove" }
+          }
+        }
+      }
+    },
+    "outputs": {
+      "out_meta": {
+        "id": "out_meta",
+        "outputReference": "meta",
+        "to": [{ "kind": "destination", "id": "d_meta" }],
+        "rules": {
+          "unlistedEvents": "remove",
+          "events": {
+            "e_purchase": { "name": "Purchase", "action": "keep" }
+          },
+          "eventPropertyRules": {
+            "r_1": {
+              "propertyId": "p_email",
+              "name": "Email",
+              "on": ["e_purchase"],
+              "action": "remove"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+The example is abbreviated. Rules can also sit on the gateway itself, under its own `rules` key.
+
+- Gateways, inputs and outputs are keyed by id and repeat it as `id`; a gateway's `name` is written only when it has one. `from` and `to` are arrays of typed references (the same shape `checkpoint` takes), `[]` when nothing is connected.
+- Rules are flat: `action`, override fields only when the rule sets them (a cleared override is `null`), `unlistedEvents` / `unlistedProperties`, and `description`. The `rules` key is left out when a checkpoint has no rules.
+- **Rules on every event** sit under `properties`, keyed by property id.
+- **Rules on some events** sit under `eventPropertyRules`, keyed by rule id, with `propertyId`, the property `name`, and the `on` or `except` scope (event ids).
+- **Object key rules** are listed under `objectKeys`, each with its `path` and an `action` of `remove` or `rename`.
+- A type change writes `propertyType` and `isList` when the rule sets them.
 
 ## Governance fields
 
@@ -2209,6 +2308,13 @@ $ curl -H "authorization: Basic <Base64 encoded token>" -X GET "https://api.avo.
 </details>
 
 ## Changelog
+
+### 4 November 2026
+
+#### New Features
+
+- `checkpoint` optional query parameter (early access): export the JSON Schema as it arrives at a gateway input, gateway or output.
+- `gateways` section in the default JSON Schema export for workspaces with gateways: configuration only.
 
 ### 4 March 2026
 

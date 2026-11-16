@@ -432,3 +432,70 @@ If the source has system properties, `initAvo` takes them as parameters and conf
 - **Older CLIs** don't send the list, so everything in the app file stays `internal`.
 - **Swift and Kotlin library mode only.** In single-source output and in TypeScript the list has no effect and produces no warning.
 - **Kotlin 1.x hosts.** Say a host file star-imports two library packages (`import com.acme.checkout.*`, `import com.acme.search.*`) and uses a name that is public in one and internal in the other. The Kotlin 1.x compiler reports `Unresolved reference`. Kotlin 2.0+ resolves the name to the public declaration, and explicit imports (`import com.acme.search.AvoTypes`) work with either compiler.
+
+---
+
+## 6. Making `AvoEvent` extend your own types
+
+The library file declares `AvoEvent` as a plain Kotlin interface or Swift protocol. If your code needs every generated event to also be one of your own types, for example an interface that an event-gate or logging layer accepts, list it in `libraryInterface.avoEventSupertypes` instead of editing `AvoLibraryInterface.kt` or `AvoLibraryInterface.swift` after every `avo pull`.
+
+Add the setting to the source's entry in `avo.json` (Avo CLI 3.8.0+). It takes up to 20 entries, each written as `Location.Type`: everything before the last `.` is where the type lives, and the last segment is the type.
+
+```json
+{
+  "sources": [
+    {
+      "id": "…",
+      "path": "shared/src/main/kotlin/com/acme/analytics/Avo.kt",
+      "libraryInterface": {
+        "fileFilter": "interface-only",
+        "avoEventSupertypes": ["com.acme.bridge.AvoEventBridge"]
+      }
+    }
+  ]
+}
+```
+
+### Kotlin
+
+The prefix is a package. Each entry with a package adds an `import` line, and the simple names go on the declaration:
+
+```kotlin
+import com.acme.bridge.AvoEventBridge
+
+interface AvoEvent : AvoEventBridge {
+    // …unchanged
+}
+```
+
+### Swift
+
+The prefix is a module and must be a single segment. Each distinct module adds a `public import`, and the type names go after `Sendable`. `public import` needs the Swift 6 compiler (Xcode 16 or later), in either Swift 5 or Swift 6 language mode. Entries without a module prefix add no import.
+
+```json
+"avoEventSupertypes": ["AcmeTypes.EventGateInfoTransformable"]
+```
+
+```swift
+public import AcmeTypes
+
+public protocol AvoEvent: Sendable, EventGateInfoTransformable {
+    // …unchanged
+}
+```
+
+### Good to know
+
+- **A bare name has no import.** `"AvoEventBridge"` means a type in the library's own Kotlin package or Swift module.
+- **Avo doesn't write method bodies.** Kotlin can't add a conformance from outside the declaration, so put the default bodies in your own bridge interface and list that interface. Swift can use a protocol extension.
+- **Members that clash.** If a supertype declares a member `AvoEvent` already has (`properties`, `eventName`, `eventId`, `eventHash`, `buildBaseProperties`, `collectViolations`, `verify`), Kotlin requires `override` and the generated file doesn't compile. Avo can't see your type's source, so it doesn't check for this.
+- **Output is unchanged without the setting.** An absent or empty list gives byte-identical output.
+- **Entries keep the order you list them in**, in both the imports and the inheritance list.
+- **Sources that share one library file must use the same list.** A source with a file filter of `all` or `interface-only` writes the library file with its own list. Sources that share an interface, as described in [section 4](#4-sharing-one-library-interface-across-repositories), need identical lists. An `events-only` source ignores its list and prints the warning below.
+- **Names to avoid.** The generated library file declares its own types, and a supertype with one of those names breaks the file. Kotlin: `Avo`, `AvoAssert`, `AvoAssertMax`, `AvoAssertMessage`, `AvoAssertMin`, `AvoDestinationEvent`, `AvoEnv`, `AvoEvent`, `AvoInvoke`, `AvoInvokeConfig`, `AvoResult` and `AvoVerificationError`. Swift: `Avo`, `AvoAssert`, `AvoAssertMessage`, `AvoDestinationEvent`, `AvoEnv`, `AvoEvent`, `AvoInvoke`, `AvoInvokeConfig`, `AvoSamplingRate`, `AvoVerificationError` and `Sendable`. Avo skips an entry with one of these type names, whatever its prefix, and prints an `[avo] Warning:`. Prefixing your own type with `Avo` is fine as long as the whole name differs, for example `AvoEventBridge`.
+- **Repeated or clashing entries.** A repeated entry, or two entries with the same type name from different packages or modules, is rejected. The CLI rejects that list before it is sent, so nothing is generated.
+- **Invalid values** are rejected by every command that reads `avo.json`: each entry must be a dotted identifier (`com.acme.Bridge` or `Bridge`), two entries can't share a type name, and the error names the source and the entry. Generics such as `Foo<Bar>` aren't supported.
+- **A Swift entry with a multi-segment module** (`A.B.Type`) is skipped with an `[avo] Warning:` and the other entries still apply.
+- **When the setting does nothing,** `avo pull` prints one `[avo] Warning: avoEventSupertypes has no effect for source "<source>" (<reason>).` This happens when the file filter is `events-only`, the source isn't in Kotlin or Swift library mode, or its language isn't Kotlin or Swift.
+- **Per source only.** At the top level of `avo.json` the setting is rejected, and there is no flat `libraryInterfaceAvoEventSupertypes` key. `avo pull` has no flag for it.
+- **Needs Avo CLI 3.8.0 or later.** Avo CLI 3.7.0 rejects `avoEventSupertypes` as an unknown key in a source's `libraryInterface`, and 3.6.0 and older ignore the `libraryInterface` object entirely. Upgrade every developer and CI job that reads this `avo.json` to 3.8.0 before you add the setting.
