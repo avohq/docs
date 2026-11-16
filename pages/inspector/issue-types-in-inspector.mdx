@@ -14,6 +14,7 @@ import { Callout } from 'nextra/components';
 - [Property unexpected on event](#property-unexpected-on-event)
 - [Required property sometimes missing from event](#required-property-sometimes-missing-from-event)
 - [Property value does not match constraints](#property-value-does-not-match-constraints)
+- [Gateway setup issues](#gateway-setup-issues)
 
 ## Event and property structure issues
 
@@ -98,6 +99,15 @@ Detects property values that don't match the [property constraints](/data-design
 - **Object property value does not match constraints** - Values within object properties are also validated against the same string, numerical, and object constraints as above
 
   _**Example:** Object property address has key "zip_code" with value "ABC" but expected to match regex pattern `^\d{5}$`_
+
+## Gateway setup issues
+
+If you inspect a [gateway](/data-design/avo-tracking-plan/gateways), Inspector checks each event against what its checkpoint should receive and raises the issues above there. It also raises two issues about the gateway's setup:
+
+- **Origin hint not mapped to a source** - Events reached the gateway with an origin hint that no source claims, or with none, so Avo can't check them against a source.
+- **Unknown gateway or gateway output** - Events arrived with an output reference that matches no output on the gateway, or for a gateway that isn't in your tracking plan.
+
+See [Fix gateway issues](/inspector/configuring-inspector-gateways#fix-gateway-issues) for how to fix each one.
 
 ## Upcoming Issue Types in Avo Inspector
 

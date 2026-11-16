@@ -33,7 +33,7 @@ See all events flowing through Inspector in real-time, organized chronologically
 - **Validation status** - Whether the event is valid according to the tracking plan on the branch that you are currently on or not
 - **Time** - Exact timestamp when the event was sent by the application
 - **Environment** - The environment the event was sent from (currently Development and Staging are supported)
-- **Source** - Which platform or application sent the event (e.g., Desktop, iOS, Android, Web)
+- **Source** - Which platform or application sent the event (e.g., Desktop, iOS, Android, Web). In a workspace with [gateways](/data-design/avo-tracking-plan/gateways), this column is **Checkpoint** and also shows events inspected at a gateway or one of its outputs. See [Check that events arrive](/inspector/configuring-inspector-gateways#check-that-events-arrive).
 - **Stream ID** - A unique identifier for each user stream session, color-coded for easy visual tracking
 
 ![Inspector Debugger event stream](/images/inspector/debugger/inspector-debugger-events.png)
