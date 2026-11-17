@@ -101,13 +101,13 @@ Among gateway transformation rules, a key rule can only drop or rename a key. Ot
 
 ### Name style
 
-A name style sends every event name, or every top-level property name, in one case from a checkpoint on, for example `Page URL` sent as `page_url`. Events and properties each have their own style. The cases are `snake_case`, `camelCase`, `PascalCase`, `CONSTANT_CASE` and `kebab-case`.
+A name style sends every event name, or every top-level property name, in one case from a checkpoint on, for example `Page URL` sent as `page_url`. Events and properties each have their own style, and keys inside objects can have one too. The cases are `snake_case`, `camelCase`, `PascalCase`, `CONSTANT_CASE` and `kebab-case`.
 
 - **It runs last.** The style applies after the checkpoint's other rules, which still find events and properties by what they are, not by their names. An allow list keeps what it keeps with or without a style.
 - **A rename wins.** An event or property renamed at the same checkpoint keeps the name you gave it.
 - **Words.** Names split into words at spaces, punctuation and changes of case, so `userID` becomes `user_id` and `HTTPStatus` becomes `http_status`. Digits stay with the word before them, so `GA4 Client ID` becomes `ga4_client_id`.
-- **Keys inside an object keep their names.** The style changes top-level property names only.
-- **Two names, one style.** If a style would send two properties of one event under the same name, the destination keeps only one of their values. If it would send two events under the same name, the destination can no longer tell them apart, so their counts and reports merge. The [Avo MCP](/reference/avo-mcp/overview) rejects a change that would do that and names both. If a change made elsewhere causes it, the **Transformations** tab and the MCP show the collision at each checkpoint it reaches. Rename one of them at that checkpoint to settle it.
+- **Keys inside objects keep their names unless you ask.** The property style changes top-level property names only. Nested keys often land in a JSON column in your warehouse, which doesn't need the table's naming scheme. When a destination needs them styled too, such as GA4's `items` or a BigQuery STRUCT column, set a style for keys inside objects at that checkpoint. It styles every key at every depth of every object the checkpoint sends, after the checkpoint's [key rules](#keys-inside-an-object); a key renamed at the same checkpoint keeps the name you gave it.
+- **Two names, one style.** If a style would send two properties of one event, or two keys of one object, under the same name, the destination keeps only one of their values. If it would send two events under the same name, the destination can no longer tell them apart, so their counts and reports merge. The [Avo MCP](/reference/avo-mcp/overview) rejects a change that would do that and names both. If a change made elsewhere causes it, the **Transformations** tab and the MCP show the collision at each checkpoint it reaches. Rename one of them at that checkpoint to settle it.
 
 You set a name style with the [Avo MCP](/reference/avo-mcp/overview). The **Transformations** tab shows the style on each checkpoint that has one.
 
