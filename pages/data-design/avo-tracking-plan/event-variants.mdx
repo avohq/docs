@@ -84,6 +84,10 @@ The event variant actions reflect the actions on the base event. An event varian
 
 On the Enterprise plan, [custom field](/data-design/avo-tracking-plan/governance/custom-fields) values are inherited from the base event and can't be overridden on a variant.
 
+#### Keeping variants consistent with the base event
+
+To make sure variants keep what the base event requires, turn on the [Variants must conform to base event](/audit/rules#variants-must-conform-to-base-event) audit rule. It flags variants that remove an `always sent` base event property, change its presence to `sometimes sent` or `never sent`, or remove a base event property bundle that contains one. Set to Locked, it also stops those changes from being made, which lets a central team own the base event while other teams own its variants.
+
 The variant overview in Event Details clearly shows all overrides at a glance, making it easy to understand what's different about each variant.
 
 ![Screenshot of variant overview showing overrides](/images/event-variants/variants-in-event-details.png)
