@@ -86,7 +86,7 @@ A property rule applies to every event at the checkpoint that carries the proper
     - **Pin** it to one value.
     - **Refine its allowed values** by ruling out values it otherwise allows.
     - **Require a regex.**
-  - **Change its type**, for example `contents` sent as a list. See [Change a property's type](#change-a-propertys-type).
+  - **Change its type**, for example `contents` sent as a list of objects, or `value` sent as a string. See [Change a property's type](#change-a-propertys-type).
 - **Dropped.** The property doesn't get through from this checkpoint on. This holds when the property arrives inside a bundle too, and the bundle's other properties are still sent. Dropping is different from clearing a rule: clearing removes this checkpoint's rule, so the property goes back to what it inherits from earlier checkpoints.
 
 An Added, Required or Changed rule can rename the property, pin its value and change its type as well.
