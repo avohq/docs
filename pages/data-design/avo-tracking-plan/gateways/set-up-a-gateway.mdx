@@ -65,6 +65,8 @@ Follow [Configuring Inspector Gateways](/inspector/configuring-inspector-gateway
 
 Open the branch in Avo. The gateway appears on the **Sources** page under **Gateways**, and the branch diff lists every transformation as a rule, before and after. Open the gateway's **Transformations** tab to check what each output will receive.
 
+The branch's audit also checks the gateway's transformations against your plan, and each issue it finds links to the transformations it's about. See [Gateway Rules](/audit/rules#gateway-rules) for what it checks and how to fix each issue.
+
 The branch's **Code Changes** tab lists each gateway with the number of checkpoints that need a configuration update in your tag manager or CDP. Open a gateway to see a card for each of those checkpoints, marked new, updated or removed, with its transformations as pseudocode, as steps or as YAML. Use it to update your tags.
 
 [Ask a teammate to review the branch](/workflow/review#how-to-request-a-review), such as whoever owns the tags or the destination. When it looks right, merge the branch.

@@ -25,6 +25,7 @@ A **gateway** brings that step into your plan. You describe what the gateway doe
 - **Know what lands downstream.** Each output's definition says which events and properties a destination receives, under which names, and where each one came from. Use it to define your warehouse tables, or to know which events and properties to query.
 - **Keep consent-dependent and personal data out of an output.** Drop a property, or a whole event, at an output when consent isn't given, and keep that rule next to everything else the output receives.
 - **Know what to change in your gateway.** When a branch changes the plan, Avo lists the gateways whose configuration needs an update, before you merge.
+- **Catch a transformation that breaks the plan before you merge.** The branch audit checks each gateway's transformations and flags, for example, a required property an event doesn't have, two properties sent under one name, a drop that can never apply, a transformation with no effect, and inputs that change the same event differently. See [Gateway Rules](/audit/rules#gateway-rules).
 
 ## How a gateway is modelled
 
