@@ -229,7 +229,7 @@ Rows also carry `eventKey` and `sourceKey`, which you can ignore.
 **`propertyNameSignature` holds the names the SDK actually sent, not your tracking plan's names.** Line them up before comparing, or you'll report differences that aren't real. Names that look like data are redacted and come back as `<Object redacted by Avo>`, `<ID string redacted by Avo>` or `<URL redacted by Avo>`.
 </Callout>
 
-`causingIssue` is `true` exactly when `issueIds` contains this issue. Use `issueIds` to tell a healthy shape (no open issues) apart from one that only has other issues. Resolved and ignored issues aren't listed.
+`causingIssue` is `true` exactly when `issueIds` contains this issue. Use `issueIds` to tell a healthy shape (no open issues) apart from one that only has other issues. Resolved and ignored issues aren't listed. An issue Inspector has only just found can be listed a moment before its details are available, so looking it up may briefly return not found.
 
 Nothing in the response says which event [variant](/data-design/avo-tracking-plan/event-variants) Inspector matched against.
 
