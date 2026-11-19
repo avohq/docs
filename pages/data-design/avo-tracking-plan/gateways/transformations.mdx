@@ -18,7 +18,7 @@ A transformation records what a [gateway](/data-design/avo-tracking-plan/gateway
 
 ## Define and update transformations
 
-You write transformations through the [Avo MCP](/reference/avo-mcp/overview) on a branch, yourself or with your agent, and review and merge them like any other change. The branch diff shows each changed rule as before and after. Describe them the way you'd explain your tags to a colleague. For example:
+You write transformations through the [Avo MCP](/reference/avo-mcp/overview) on a branch, yourself or with your agent, and review and merge them like any other change. The branch diff shows each changed rule as before and after, and the branch audit flags transformations that break the plan or have no effect (see [Gateway Rules](/audit/rules#gateway-rules)). Describe them the way you'd explain your tags to a colleague. For example:
 
 > At the Pinterest output, send `transaction_id` as `order_id`. Stop sending `search_query` to every ad platform output. Require `tier` on product views sent to Meta.
 
