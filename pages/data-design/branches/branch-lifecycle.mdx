@@ -1,0 +1,91 @@
+import { Callout } from 'nextra/components'
+
+# Branch lifecycle
+
+_Closing, reopening, deleting and undoing changes on a branch_
+
+This page explains what happens to a branch from the moment it's created until it's merged or closed, and how to undo changes along the way.
+
+### Overview
+
+Every branch starts as **Draft** when it's created from the main branch. While it's open it can move through the review statuses (**Ready for review**, **Changes requested**, **Approved**) described in [Branch status](/data-design/branches/approval-workflows#branch-status). A branch ends in one of two ways:
+
+- **Merged**: its changes are added to the main tracking plan.
+- **Closed**: its changes are discarded and never reach the main tracking plan.
+
+Both are final. A merged or closed branch is read-only and can't be reopened.
+
+Only **Admins** and **Editors** can create, merge and close branches. See [Members and roles](/workspace-management/members#roles).
+
+### Closing a branch
+
+Open the branch you want to close, click the triple-dot in the top right corner and click "Close Branch". After you confirm, you're taken back to the main branch.
+
+![Closing a branch](/images/delete-branch.png)
+
+- You can close a branch from inside the branch only. The Branches Overview doesn't have a close action.
+- You can close a branch with any open status (Draft, Ready for review, Changes requested or Approved). Merged branches can't be closed, and the main branch can't be closed.
+- Everything created or changed on the branch (events, properties, and other items) stays on the closed branch. **Nothing from a closed branch is added to the main tracking plan.**
+- Resetting the tracking plan (an Admin action in Workspace settings) also closes all open branches.
+
+<Callout type="info">
+Some places in Avo label a closed branch as **Deleted**, for example the status tag in the left sidebar. A "deleted" branch is a closed branch: it hasn't been permanently removed.
+</Callout>
+
+#### Where closed branches stay visible
+
+A closed branch is no longer listed in the branch picker in the left sidebar, which only shows the main branch and open branches. It stays available in two places:
+
+- **Branches Overview**: click the Avo logo in the top left, then switch from **Open** to **Closed** at the top of the list (**Merged** works the same way for merged branches). Click a branch to open it. On plans without full branch history, the Closed and Merged lists show only 3 branches; see [plans and pricing](https://www.avo.app/pricing).
+- **The branch itself**: members of your workspace can still open it, from the Branches Overview or with a link to the branch. It shows "Branch has been closed" with who closed it and when. You can still click "View changes" to see what was changed on the branch and leave comments, but you can't edit it.
+
+### Reopening a closed branch
+
+**Closed branches can't be reopened**, and neither can merged branches. If you try to edit a closed branch you'll see a "Branch locked" message.
+
+To continue the work, [create a new branch](/data-design/branches#creating-a-branch) and make the changes again there. You can open the closed branch and click "View changes" to see exactly what it contained.
+
+### Deleting a branch
+
+**Branches can't be permanently deleted.** Closing a branch is the way to remove it: it disappears from the active branches list and its changes never reach the main tracking plan, while its history stays available in the Branches Overview.
+
+### Undoing changes on a branch
+
+Avo doesn't have a "discard all changes" action for a branch. To throw away all the work on a branch, [close it](#closing-a-branch) and, if needed, create a new branch.
+
+To undo individual changes, use the steps below. You can check the result on the [Branch review screen](/data-design/branches/branch-changes): an item disappears from the branch's changes once it matches the main branch again.
+
+<Callout type="info">
+"Revert to Draft" is not a way to undo changes. It only changes the branch status back to Draft so the branch can be edited again, and removes existing approvals. The changes on the branch stay as they are. See [Protected main branch](/data-design/branches/approval-workflows#protected-main-branch).
+</Callout>
+
+#### Remove an item created on the branch
+
+To undo creating an event, property or other item on your branch, open the item and archive it (for example "Archive Event" from the event's menu). Because the item never existed on the main branch, archiving it removes it from the branch's changes, and it won't be added to main when the branch is merged.
+
+#### Restore an item archived on the branch
+
+If you archived an item from the main tracking plan on your branch, you can bring it back by unarchiving it:
+
+- On the Branch review screen, open the archived event's or property's menu and click "Restore Event" or "Restore Property".
+- Open the archived item and click "Unarchive".
+- In the activity log, click "Restore" on the activity where the item was archived.
+
+#### Get an edited item back to main's version
+
+There's no button to reset a single item to its version on the main branch. Edit the item back to match main (use the Branch review screen to see exactly what changed). Once it matches main, it no longer shows up as changed on the branch.
+
+"Pull Main Branch" doesn't undo your changes: it brings newer changes from main into your branch and keeps your branch changes.
+
+### Branches created through the Avo MCP
+
+The [Avo MCP](/reference/avo-mcp/overview) can create branches and edit items on them, but it can't close, merge or delete branches. Branches created through the MCP are regular branches: they show the person who used the MCP as the creator.
+
+To get rid of a branch you created by accident through the MCP, open it in the Avo web app and [close it](#closing-a-branch). To undo individual changes the MCP made on a branch, follow [Undoing changes on a branch](#undoing-changes-on-a-branch); the MCP's `save_items` tool can also archive and unarchive items.
+
+## What's next?
+
+- [Approval workflows for branches](/data-design/branches/approval-workflows)
+- [Branch review screen](/data-design/branches/branch-changes)
+- [Cross-branch data design](/data-design/branches/pulling-pushing-items-between-branches)
+- [Avo MCP tools](/reference/avo-mcp/tools)
