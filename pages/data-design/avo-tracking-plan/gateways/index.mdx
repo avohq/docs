@@ -41,9 +41,13 @@ Read more in [Transformations](/data-design/avo-tracking-plan/gateways/transform
 
 ## Where to find gateways in Avo
 
-Gateways live on the **Sources** page, in the **Gateways** tab. Open a gateway to see three tabs:
+Gateways live on the **Sources** page, in the **Gateways** tab. Each gateway is a row, wired to the sources that feed it on the left and the destinations it sends to on the right. Routes that skip every gateway run along the bottom. Hover a gateway to highlight its routes.
 
-- **Overview**: the gateway's inputs and outputs.
+On the **Sources & destinations** tab, each gateway appears once between your sources and destinations, as a point every route through it passes. Hover it to see its inputs, outputs and transformations.
+
+Open a gateway to see three tabs:
+
+- **Overview**: a diagram of the gateway's inputs and outputs. A filled dot on a line means that input or output has transformations, and a hollow dot means events pass through unchanged. Hover a dot to see its transformations. Below the diagram you can see whether Inspector receives events from the gateway.
 - **Transformations**: what changes at each checkpoint.
 - **Inspector setup**: the gateway's Inspector API key and the setup steps for your gateway type.
 
