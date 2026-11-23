@@ -93,10 +93,10 @@ Add the event to one or more relevant categories. Learn more about [Categories](
 Checks that every event includes each property a workspace admin has marked as [required on all events](/data-design/avo-tracking-plan/properties#default-properties-and-required-properties). The rule flags:
 
 - an event that does not include the property, directly or through a property bundle,
-- an event variant that removes the property from its base event,
+- an event variant that removes the property from its base event, or sets it to "Never sent",
 - an event where the property is set to "Never sent" on every source of the event.
 
-The rule has nothing to check until a property is marked as required, and it is a warning by default.
+The rule is inactive until a property is marked as required. From then on it is a warning by default.
 
 #### How to resolve
 

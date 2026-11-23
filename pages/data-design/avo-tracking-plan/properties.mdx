@@ -91,7 +91,7 @@ Some event properties belong on every event, for example an options object your 
 - **Make default property**: Avo adds the property to every event created from then on, in the web app, through import and through the Avo MCP. The property is added without a pinned value, so each event can pin its own value or remove the property. Events that already exist are not changed.
 - **Require on all events**: the [branch audit](/audit/rules#all-events-include-required-properties) flags every event and event variant that does not include the property.
 
-The two rules are independent, and most workspaces turn on both for the same property. Once a rule is on, the property details show it as a pill in the header and as a row under "Rules for events", where an admin can turn it off again. Editors see the rules but cannot change them.
+The two rules are independent, and most workspaces turn on both for the same property. Once a rule is on, the property details show it as a pill in the header and as a row under "Rules for events", where an admin can turn it off again. Editors see the rules but cannot change them. A change to a rule on a branch shows on the property in the branch changes.
 
 Only event properties can carry these rules. [System properties](#system-properties) are already sent with every event.
 
