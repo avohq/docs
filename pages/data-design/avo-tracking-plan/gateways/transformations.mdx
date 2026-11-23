@@ -126,6 +126,8 @@ Key rules work together with the other rules at a checkpoint:
 
 The **Transformations** tab lists key rules under the checkpoint's properties, each by its path, with a dot between the object and the key, such as `items.product_id` or `items.price → items.item_price`. Paths use the names in your tracking plan. A key rule that has no effect is shown muted with the reason beneath it, for example "covered by the drop of items", and so is a key rule at a checkpoint where no event brings the object.
 
+In the checkpoint's payload, an object whose keys the checkpoint renames or drops shows as changed, with how many keys changed on the side that's sent, such as `"items": object · always · 2 keys changed`. Its card names each key, for example "price is sent as item_price." and "sku is not sent." A key style counts the same way.
+
 A property that arrives at a checkpoint only inside an object can't be dropped or renamed at the top level there, because the event doesn't carry it at the top level. If you or your agent try, the [Avo MCP](/reference/avo-mcp/overview) rejects the change and names the key path to use instead, such as `items.product_id`. A rule that adds the property is the exception, since the gateway then sends it at the top level itself. A top-level rule written before key rules existed stays as it is, and the **Transformations** tab marks it "no effect here" with the path the property arrives on.
 
 Inspector checks each output against the object as the gateway sends it there. A dropped key is no longer reported missing at that output, and a renamed key is expected under its new name.
