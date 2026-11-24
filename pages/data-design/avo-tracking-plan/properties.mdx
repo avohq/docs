@@ -91,9 +91,9 @@ Some event properties belong on every event, for example an options object your 
 - **Make default property**: Avo adds the property to every event created from then on, in the web app, through import and through the Avo MCP. The property is added without a pinned value, so each event can pin its own value or remove the property. Events that already exist are not changed.
 - **Require on all events**: the [branch audit](/audit/rules#all-events-include-required-properties) flags every event and event variant that does not include the property.
 
-The two rules are independent, and most workspaces turn on both for the same property. Once a rule is on, the property details show it as a pill in the header and as a row under "Rules for events", where an admin can turn it off again. Editors see the rules but cannot change them. A change to a rule on a branch shows on the property in the branch changes.
+The two rules are independent, and most workspaces turn on both for the same property. Once a rule is on, the property details show it as a pill in the header and as a row in a rules card above the events list, where an admin can turn it off again. Editors see the rules but cannot change them. A change to a rule on a branch shows on the property in the branch changes.
 
-Only event properties can carry these rules. [System properties](#system-properties) are already sent with every event.
+Event properties and [event property bundles](#event-property-bundles) can carry these rules. [System properties](#system-properties) are already sent with every event.
 
 ## Group properties
 
@@ -206,6 +206,13 @@ An example event property bundle could be "Product" containing the following pro
 - Product Name
 - Product Price
 - Product Quantity
+
+### Default bundles and required bundles
+
+A workspace admin can set the same two rules on a bundle as on an event property, from the "..." menu in the bundle details:
+
+- **Make default bundle**: Avo attaches the bundle to every event created from then on. Events that already exist are not changed.
+- **Require on all events**: the [branch audit](/audit/rules#all-events-include-required-properties) flags every event and event variant that does not have the bundle attached. An event that has the bundle's properties one by one, without the bundle, is still flagged.
 
 ## Property types and constraints
 
