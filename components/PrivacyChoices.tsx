@@ -49,6 +49,7 @@ const openPreferences = () => {
 const PrivacyChoices = () => (
   <button
     type="button"
+    className="avo-privacy-choices"
     onClick={openPreferences}
     style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
   >
