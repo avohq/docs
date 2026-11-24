@@ -1,0 +1,76 @@
+---
+agentTask: "move your destinations behind a gateway and update your source's Codegen setup"
+title: Gateways in Avo Codegen
+description: "How a gateway shows up in your sources' generated code, and how to move destinations behind a gateway without breaking your tracking."
+---
+
+import { Callout } from 'nextra/components'
+
+# Gateways in Avo Codegen
+
+_A gateway is a destination of every source that feeds it. Your source sends its events to the gateway, and the gateway sends them on to its outputs._
+
+<Callout type="info" emoji="🚧">
+  Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
+
+  Gateways in Codegen is turned on per workspace. Until it's on, your sources' code doesn't include gateways. Let us know when you start moving destinations behind a gateway, and we'll turn it on for your workspace.
+</Callout>
+
+When a source is an input of a [gateway](/data-design/avo-tracking-plan/gateways), [Avo Codegen](/implementation/avo-codegen-overview) adds the gateway to that source's generated code as a [custom destination](/reference/avo-codegen/destinations) named after the gateway, with "Gateway" added: a gateway called **GTM** is **GTM Gateway**. You implement it once, the same way as any other destination interface, to hand events to your gateway: a `dataLayer.push` for Google Tag Manager, `analytics.track` for Segment, or a request to your own pipeline.
+
+## What your source's code gets
+
+For a gateway called **GTM** with your Web source as an input:
+
+- `initAvo` takes a `GTMGatewayDestination` parameter, typed by the same `CustomDestination` interface as every custom destination.
+- Every event and variant the Web source sends to the gateway calls it, under its name in the tracking plan.
+- The destinations the gateway sends to, such as Google Analytics 4 or Meta, don't appear in the source's code once you disconnect them from the source. The gateway sends to them.
+
+```typescript
+import Avo, { AvoEnv } from "./Avo";
+
+const gtmGatewayDestination = {
+  logEvent: (eventName: string, eventProperties: Record<string, any>) => {
+    window.dataLayer.push({ event: eventName, ...eventProperties });
+  },
+};
+
+Avo.initAvo({ env: AvoEnv.Prod }, {}, gtmGatewayDestination);
+```
+
+Custom destinations are passed to `initAvo` in order, so check where the gateway's parameter sits after you pull.
+
+The name depends only on the gateway's own name, so the parameter keeps its name when you change the source's other destinations. A gateway without a name is **Untitled Gateway**. If two gateways a source feeds, or a gateway and one of the source's destinations, would get the same name in code, `avo pull` stops and asks you to rename one of them.
+
+A source can have a gateway as its only destination. Once you disconnect its other destinations, `avo pull` still generates its code, with the gateway's parameter.
+
+## Choose which events go to the gateway
+
+You pick the events a gateway gets the same way as for a destination. On an event, each source lists the gateways it feeds next to its destinations, marked **(gateway)**, and you turn each one on or off for that event. A variant can turn the gateway on or off for its source too, under its source overrides.
+
+When you connect a source to a gateway, every event the source sends is turned on for the gateway. Turn off the events the gateway shouldn't get, and they stay out of the gateway's calls in your source's code. An event turned off for the gateway also doesn't reach the gateway's checkpoints in Inspector.
+
+Like a destination, a gateway is **included by default**: when you add an event or a variant to a source, the gateways that source feeds are turned on for it. A gateway with **Include by default** off is left off, and you turn it on per event. Change the setting in the gateway's details, on its **Overview** tab.
+
+## Move destinations behind a gateway
+
+When a gateway starts sending to destinations your source used to send to directly, set the plan up like this, on one branch:
+
+1. **Disconnect those destinations from the source**, in the source's settings. A destination still connected to the source gets its events directly from your code as well as from the gateway, so it receives them twice.
+2. **Connect the source to the gateway** as one of its inputs. Every event the source sends is turned on for the gateway, so turn off any it shouldn't get.
+3. **Connect the destinations to the gateway** as its outputs, such as Google Analytics 4 and Meta.
+4. **Pull the code** with `avo pull [--branch my-branch] [SourceName]`, then pass your gateway implementation to `initAvo` and remove the implementations of the destinations you disconnected.
+
+### Replacing a custom destination with a gateway
+
+If you modelled your tag manager as a custom destination, such as a **Web Data Layer** destination that pushes to `dataLayer`, the gateway takes its place. The interface is the same, so you can pass your existing implementation as the gateway's destination and remove the old destination from the plan.
+
+### Name mappings
+
+A name mapping is the name your source's code sends. In the app it reads **Sent by the source as**, and it applies to every destination, to one destination, or to one gateway the source feeds.
+
+- **For all destinations**: your source sends the mapped name to the gateway too.
+- **For the gateway**: pick the gateway, marked **(gateway)**, in the mapping's target list. Your source sends the gateway that name, so the gateway's input receives it. This mapping wins over one for all destinations.
+- **For one destination behind the gateway**: a mapping for a destination, such as sending `Client` as `client_ga4` to Google Analytics 4, is applied by your source's code only while that destination is connected to the source. Once the gateway sends to it, add the rename as a [transformation](/data-design/avo-tracking-plan/gateways/transformations) on that output instead, so the destination keeps receiving the same name.
+
+A rename that happens inside the gateway, at its input, the gateway itself or an output, is always a transformation, not a name mapping.
