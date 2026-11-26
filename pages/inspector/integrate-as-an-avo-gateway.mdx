@@ -116,7 +116,24 @@ Avo only receives each property's name and type, never its value. Each entry in 
 
 - `string`, `int`, `float`, `boolean` or `null`.
 - `object`, with a `children` array that holds the object's own properties in the same format.
-- `list(<type>)` for an array, named after the type of its first item, such as `list(string)` or `list(object)`. An empty array is `list(string)`.
+- `list(<type>)` for an array, named after the type of its first item, such as `list(string)` or `list(object)`. An empty array is `list(string)`. A list also has a `children` array with one entry per item: an object item's properties as an array of entries in the same format, or a primitive item's type, such as `"string"`, listed once.
+
+For example, a `products` list of objects:
+
+```json
+{
+  "propertyName": "products",
+  "propertyType": "list(object)",
+  "children": [
+    [
+      { "propertyName": "sku", "propertyType": "string" },
+      { "propertyName": "price", "propertyType": "float" }
+    ]
+  ]
+}
+```
+
+Without `children`, Avo can't check the properties inside an object or a list.
 
 A number with no fractional part is an `int`. The open source [Avo Inspector SDKs](/reference/avo-inspector-sdks/overview) extract the schema the same way, and you can follow their code.
 
