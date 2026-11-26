@@ -88,6 +88,21 @@ Checks for events that do not belong to any category when the rule is enabled. C
 
 Add the event to one or more relevant categories. Learn more about [Categories](/data-design/guides/organizing-metrics-and-events#categories).
 
+### All events include required properties
+
+Checks that every event includes each property and each property bundle a workspace admin has marked as [required on all events](/data-design/avo-tracking-plan/properties#default-properties-and-required-properties). The rule flags:
+
+- an event that does not include the property, directly or through a property bundle,
+- an event variant that removes the property from its base event, or sets it to "Never sent",
+- an event where the property is set to "Never sent" on every source of the event.
+- an event that does not have a required bundle attached, and an event variant that removes it. Having the bundle's properties one by one does not count.
+
+The rule is inactive until a property or a bundle is marked as required. From then on it is a warning by default.
+
+#### How to resolve
+
+Add the missing property or bundle to the event, or keep it on the event variant. If the property is on the event but set to "Never sent", change its presence so that at least one source of the event, or the variant, sends it. If it should not be required anymore, a workspace admin can turn off "Required on all events" in the property or bundle details.
+
 ## Property Rules
 
 ### No conflicting properties
