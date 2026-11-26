@@ -44,7 +44,7 @@ If your integration already sends events to Avo Inspector with a source's API ke
 | **Where you send from** | Once per event, as received | Once at the gateway, and once per destination after its transformations |
 | **Extra fields** | None | `originHint` on every event, and `outputReference` on output checkpoints |
 
-The payload is otherwise the same as today's: the same event objects, with the same property schema.
+The event objects are otherwise the same as today's, with the same property schema, except for three fields. On `/inspector/v1/track` each event carries `apiKey`, `env` and `samplingRate`. On v2 the API key and env come from the headers, and v2 doesn't sample, so leave all three out of the body. Avo ignores them there.
 
 <Callout type="warning" emoji="⚠️">
   The v1 endpoints reject gateway keys. A request whose API key is a gateway key, sent to `/inspector/v1/track` or to a partner v1 endpoint such as `/inspector/gtm/v1/track` or `/inspector/segment/v1/track`, gets HTTP 400 with `{"ok": false, "error": "gateway API key sent to a legacy endpoint; use /inspector/v2/track"}`, and none of its events are stored. The v1 endpoints can't carry the output reference or the origin hint, so Avo couldn't tell which checkpoint an event came from.
@@ -102,7 +102,7 @@ The body is a JSON array of event objects, so one request can carry a batch of e
 
 Omit a field rather than sending an empty string. An empty `outputReference` means the gateway checkpoint.
 
-Avo truncates an `outputReference` longer than 64 bytes and an `originHint` longer than 1024 bytes. A reference Avo minted is a lower-case slug (from the output's name unless the customer set one), a hyphen, and six lower-case letters or digits, such as `meta-7f3k2q`. Send it as the customer pasted it: a mistyped reference shows up as an issue in Avo, so the customer can fix it.
+Avo truncates an `outputReference` longer than 64 bytes and an `originHint` longer than 1024 bytes. A reference Avo minted is a lower-case slug (from the destination's name, unless the customer set a slug), a hyphen, and six lower-case letters or digits, such as `meta-7f3k2q`. Send it as the customer pasted it: a mistyped reference shows up as an issue in Avo, so the customer can fix it.
 
 ### Property schema
 
@@ -188,7 +188,7 @@ The second object is the event as the Meta output sends it: renamed to `purchase
 
 ### Responses
 
-Avo answers before it processes the events, so a success means the request was accepted, not that every event in it was valid. Check that events arrive in the [Inspector Debugger](/inspector/inspector-debugger).
+Avo answers before it processes the events, so a success means the request was accepted, not that every event in it was valid. Avo checks the body after it answers. A body that isn't a JSON array stores nothing. An event that's missing a required field, or has one of the wrong type, is dropped on its own, and the rest of the batch is stored. Both cases still answer 200 with `"success": true`, so check that events arrive in the [Inspector Debugger](/inspector/inspector-debugger).
 
 | Status | Body | Meaning |
 | --- | --- | --- |
