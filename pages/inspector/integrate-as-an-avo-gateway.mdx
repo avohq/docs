@@ -47,7 +47,7 @@ If your integration already sends events to Avo Inspector with a source's API ke
 The payload is otherwise the same as today's: the same event objects, with the same property schema.
 
 <Callout type="warning" emoji="⚠️">
-  The v1 endpoints reject gateway keys. A gateway key sent to `/inspector/v1/track` or to a partner v1 endpoint, such as `/inspector/gtm/v1/track` or `/inspector/segment/v1/track`, gets HTTP 400 with `{"ok": false, "error": "gateway API key sent to a legacy endpoint; use /inspector/v2/track"}`, and none of its events are stored. The v1 endpoints can't carry the output reference or the origin hint, so Avo couldn't tell which checkpoint an event came from.
+  The v1 endpoints reject gateway keys. A request whose API key is a gateway key, sent to `/inspector/v1/track` or to a partner v1 endpoint such as `/inspector/gtm/v1/track` or `/inspector/segment/v1/track`, gets HTTP 400 with `{"ok": false, "error": "gateway API key sent to a legacy endpoint; use /inspector/v2/track"}`, and none of its events are stored. The v1 endpoints can't carry the output reference or the origin hint, so Avo couldn't tell which checkpoint an event came from.
 </Callout>
 
 `/inspector/v2/track` accepts source keys too, so you can move every customer to it. One difference: v2 doesn't sample, so a workspace that samples its v1 traffic has every v2 event stored.
@@ -79,7 +79,7 @@ POST https://api.avo.app/inspector/v2/track
 | `content-type` | `application/json`. `text/plain` with a JSON string body also works. |
 | `X-Avo-Client` | Optional: your integration's name, the same value as `libPlatform`. |
 
-The body can be gzip-compressed with `content-encoding: gzip`, and can be up to 10 MB.
+The body can be gzip-compressed with `content-encoding: gzip`. It can be up to 10 MB after decompression, and each event in it up to about 180 KB once stored. Avo drops a larger event without saying so in the response, so keep batches well under the limit and property schemas reasonable.
 
 ### Body
 
@@ -97,12 +97,12 @@ The body is a JSON array of event objects, so one request can carry a batch of e
 | `originHint` | string | The source the event came from, such as `"web"`, `"ios"` or `"android"`. Send it on every event. |
 | `appVersion` | string or null | The app version of the source named by `originHint`. Omit it, or send `null`, when the event doesn't carry one. |
 | `outputReference` | string | The output's reference, such as `"meta-7f3k2q"`. Only on output checkpoints: omit it at the gateway checkpoint. |
-| `appName` | string | Optional. A name for the gateway, such as `"acme-cdp"`. |
+| `appName` | string | Optional. The name of the app the event came from, where the event carries one, such as its `context.app.name`. |
 | `streamId`, `sessionId` | string | Optional. Leave them out unless you already send them for a source integration. |
 
 Omit a field rather than sending an empty string. An empty `outputReference` means the gateway checkpoint.
 
-Avo truncates an `outputReference` longer than 64 bytes and an `originHint` longer than 1024 bytes. A reference Avo minted always looks like the output's name in lower case, a hyphen, and six letters or digits, such as `meta-7f3k2q`. Send it as the customer pasted it: a mistyped reference shows up as an issue in Avo, so the customer can fix it.
+Avo truncates an `outputReference` longer than 64 bytes and an `originHint` longer than 1024 bytes. A reference Avo minted is a lower-case slug (from the output's name unless the customer set one), a hyphen, and six lower-case letters or digits, such as `meta-7f3k2q`. Send it as the customer pasted it: a mistyped reference shows up as an issue in Avo, so the customer can fix it.
 
 ### Property schema
 
@@ -142,7 +142,7 @@ curl https://api.avo.app/inspector/v2/track \
       "createdAt": "2026-11-26T09:41:07.123Z",
       "libPlatform": "acme-cdp",
       "libVersion": "3.2.0",
-      "appName": "acme-cdp",
+      "appName": "Shop iOS",
       "originHint": "ios",
       "appVersion": "5.14.0"
     },
@@ -159,7 +159,7 @@ curl https://api.avo.app/inspector/v2/track \
       "createdAt": "2026-11-26T09:41:07.123Z",
       "libPlatform": "acme-cdp",
       "libVersion": "3.2.0",
-      "appName": "acme-cdp",
+      "appName": "Shop iOS",
       "originHint": "ios",
       "appVersion": "5.14.0",
       "outputReference": "meta-7f3k2q"
@@ -182,14 +182,15 @@ Avo answers before it processes the events, so a success means the request was a
 | 400 | `{"ok": false, "error": "Api key not found"}` | No workspace has this key. |
 | 400 | `{"ok": false, "error": "invalid or missing content header"}` | `content-type` isn't `application/json` or `text/plain`. |
 | 400 | `{"ok": false, "error": "invalid JSON body"}` | A `text/plain` body isn't valid JSON. |
+| 200 | `{"ok": false}` | The body couldn't be read: an `application/json` body that isn't valid JSON, or a body over 10 MB. Nothing was stored. |
 
-Don't retry a 400: it fails the same way again. Tell the customer instead, for example in your integration's logs or settings screen.
+Check the body as well as the status: a 200 with `"ok": false` or `"success": false` means nothing was stored. Don't retry a 400, or a 200 with `"ok": false`: it fails the same way again. Tell the customer instead, for example in your integration's logs or settings screen.
 
 ## Where to call Inspector
 
 - **Gateway checkpoint.** Call it once per event, after the processing your product applies to every event, and before any destination-specific mapping. If your product has no gateway-wide processing, send the event as received. Send one event per incoming event, not one per destination.
 - **Output checkpoints.** Call it once per destination the event is sent to, with the payload that destination receives. Call it after that destination's mappings, filters and transformations, so the names and properties are the ones the destination gets. Don't send an event to an output checkpoint that your product filtered out for that destination: Avo counts which events reach each output.
-- **Never let Avo block delivery.** Inspector observes your pipeline. Send to Avo in parallel with delivery or after it, with a short timeout (Avo's own scripts use a few seconds), and don't fail or retry the customer's event because a call to Avo failed. Batch where your product allows: one request can carry events from several checkpoints.
+- **Never let Avo block delivery.** Inspector observes your pipeline. Send to Avo in parallel with delivery or after it, with a short timeout (Avo's own scripts use one to five seconds), and don't fail or retry the customer's event because a call to Avo failed. Batch where your product allows: one request can carry events from several checkpoints.
 
 A customer can use the gateway checkpoint, the output checkpoints or both. Both give the full picture, because Avo can then tell a problem in the incoming event from a problem in one destination's mapping.
 
