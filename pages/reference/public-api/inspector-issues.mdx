@@ -211,19 +211,25 @@ The response is capped at 400 rows, and each shape produces one row per app vers
 | `causingIssue` | boolean | Whether this shape is one of the shapes causing the issue. |
 | `count` | number | Occurrences in the window. An estimate on sampled sources. |
 | `eventName` | string | The event name as sent. |
-| `sourceId` | string | The Avo Source ID. |
+| `sourceId` | string | The Avo Source ID, or the gateway's ID when `sourceKind` is `Gateway`. |
 | `schemaId` | string | Your workspace ID. |
 | `appVersion` | string \| null | |
 | `minCreatedAt` | string \| null | ISO 8601. |
 | `maxCreatedAt` | string \| null | ISO 8601. |
 | `propertyNameSignature` | string[] | The property names that were sent, sorted by name. |
 | `propertyTypeSignature` | string[] | Their types, in the same order, so `propertyTypeSignature[i]` is the type of `propertyNameSignature[i]`. |
+| `sourceKind` | string | `Source` or `Gateway`: where the payload was seen. On a gateway row, `sourceId` holds the gateway's ID. |
+| `originHint` | string \| null | The origin hint the payload arrived with at a gateway. `null` on source rows and on gateway payloads sent without one. |
+| `outputReference` | string \| null | The gateway output the payload was seen at. `null` on source rows and at the gateway's own checkpoint. |
+| `issueIds` | string[] | The open issues this shape is linked to, plus this issue when the shape causes it, whatever its status. Sorted. An empty list means the shape has no open issues and doesn't cause this one. |
 
 Rows also carry `eventKey` and `sourceKey`, which you can ignore.
 
 <Callout type="warning" emoji="⚠️">
 **`propertyNameSignature` holds the names the SDK actually sent, not your tracking plan's names.** Line them up before comparing, or you'll report differences that aren't real. Names that look like data are redacted and come back as `<Object redacted by Avo>`, `<ID string redacted by Avo>` or `<URL redacted by Avo>`.
 </Callout>
+
+`causingIssue` is `true` exactly when `issueIds` contains this issue. Use `issueIds` to tell a healthy shape (no open issues) apart from one that only has other issues. Other issues are listed only while they're open: resolved and ignored ones aren't. An issue can be listed before its details are recorded, or when recording them failed, so looking it up can return not found.
 
 Nothing in the response says which event [variant](/data-design/avo-tracking-plan/event-variants) Inspector matched against.
 
@@ -283,7 +289,11 @@ $ curl -H "authorization: Basic <Base64 encoded token>" \
       "eventKey": "a4e1c07b93d5f28601ab7c4e9d0f3b2586c1a97e4f0b3d8c25e6a1470bf9d3c8",
       "sourceKey": "hAtPI0dEsq-9Zq7YAo0R",
       "propertyNameSignature": ["currency", "payment_method", "revenue"],
-      "propertyTypeSignature": ["string", "string", "string"]
+      "propertyTypeSignature": ["string", "string", "string"],
+      "sourceKind": "Source",
+      "originHint": null,
+      "outputReference": null,
+      "issueIds": ["2f1c9b8e4d7a05c3e6b1a94f8d2c70b5e93a17d4c8f0b62a5d1e7c3948fb0a26"]
     },
     {
       "eventVariationKey": "e93c4a70b1d582f6047ae3c9128d5b0f76a2e841c30f9b57d6812ac4053e7fb9",
@@ -298,7 +308,11 @@ $ curl -H "authorization: Basic <Base64 encoded token>" \
       "eventKey": "a4e1c07b93d5f28601ab7c4e9d0f3b2586c1a97e4f0b3d8c25e6a1470bf9d3c8",
       "sourceKey": "hAtPI0dEsq-9Zq7YAo0R",
       "propertyNameSignature": ["currency", "payment_method", "revenue"],
-      "propertyTypeSignature": ["string", "string", "float"]
+      "propertyTypeSignature": ["string", "string", "float"],
+      "sourceKind": "Source",
+      "originHint": null,
+      "outputReference": null,
+      "issueIds": []
     }
   ],
   "variationsTruncated": false
