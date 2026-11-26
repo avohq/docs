@@ -188,7 +188,7 @@ The second object is the event as the Meta output sends it: renamed to `purchase
 
 ### Responses
 
-Avo answers before it processes the events, so a success means the request was accepted, not that every event in it was valid. Avo checks the body after it answers. A body that isn't a JSON array stores nothing. An event that's missing a required field, or has one of the wrong type, is dropped on its own, and the rest of the batch is stored. Both cases still answer 200 with `"success": true`, so check that events arrive in the [Inspector Debugger](/inspector/inspector-debugger).
+Avo answers before it processes the events, so a success means the request was accepted, not that every event in it was valid. Avo checks the body after it answers. A body that is valid JSON but isn't an array stores nothing. An event that's missing a required field, or has one of the wrong type, is dropped on its own, and the rest of the batch goes on through the other checks, such as the per-event size limit. Both cases still answer 200 with `"success": true`, so check that events arrive in the [Inspector Debugger](/inspector/inspector-debugger).
 
 | Status | Body | Meaning |
 | --- | --- | --- |
