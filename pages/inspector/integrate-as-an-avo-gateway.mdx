@@ -1,0 +1,228 @@
+---
+agentTask: "look up a gateway's outputs and their references, and tell you what each checkpoint should receive"
+title: Integrate as an Avo Gateway
+description: "For tag managers, CDPs and event pipelines that maintain their own Avo Inspector integration: send events from the gateway and from each output, so Avo can check what every destination receives."
+---
+
+import { Callout } from 'nextra/components'
+
+# Integrate as an Avo Gateway
+
+_For partners who build and maintain their own Avo Inspector integration: how to send events from your product as a gateway, so Avo can check what each of your customer's destinations receives._
+
+<Callout type="info" emoji="🚧">
+  Gateways are in closed beta. To build or test an integration, reach out at [support@avo.app](mailto:support@avo.app) and we'll turn gateways on for your test workspace.
+</Callout>
+
+This page is for teams that build a tag manager, a CDP or an event pipeline and maintain their own integration with Avo Inspector. If you're an Avo customer setting up a gateway that Avo already supports, follow [Configuring Inspector Gateways](/inspector/configuring-inspector-gateways) instead.
+
+## What a gateway is
+
+Your customers' sources (their web app, their iOS and Android apps, their backend) send events into your product. Your product changes those events and sends a different version of each one to each destination: it renames events, drops and adds properties, and fans out to Meta, Google Ads, a warehouse and so on.
+
+In Avo, that step is a [gateway](/data-design/avo-tracking-plan/gateways). The customer models it in their tracking plan:
+
+- **Inputs** are the sources that send events into the gateway.
+- **Outputs** are the destinations the gateway sends to. Each output has an **output reference**, a short id such as `meta-7f3k2q`.
+- **Transformations** describe what the gateway changes, on the gateway as a whole and on each output.
+
+From the plan and the transformations, Avo works out what each **checkpoint** should receive. Your integration's job is to send Avo the events as they actually are at those checkpoints. Avo then raises issues at the checkpoint where an event broke, not only at the source.
+
+There are two kinds of checkpoint your integration can send from:
+
+- **The gateway checkpoint**: every event after your product's own gateway-wide processing, before anything specific to one destination. Sent with no output reference.
+- **One output checkpoint per destination**: the event as your product sends it to that destination, after that destination's mappings, filters and transformations. Sent with that output's reference.
+
+## What changes from a source integration
+
+If your integration already sends events to Avo Inspector with a source's API key, three things change for a gateway:
+
+| | Source integration | Gateway integration |
+| --- | --- | --- |
+| **API key** | One key per Avo source | One key for the whole gateway, from the gateway's **Inspector setup** tab |
+| **Endpoint** | `/inspector/<partner>/v1/track` or `/inspector/v1/track` | `/inspector/v2/track` only |
+| **Where you send from** | Once per event, as received | Once at the gateway, and once per destination after its transformations |
+| **Extra fields** | None | `originHint` on every event, and `outputReference` on output checkpoints |
+
+The payload is otherwise the same as today's: the same event objects, with the same property schema.
+
+<Callout type="warning" emoji="⚠️">
+  The v1 endpoints reject gateway keys. A gateway key sent to `/inspector/v1/track` or to a partner v1 endpoint, such as `/inspector/gtm/v1/track` or `/inspector/segment/v1/track`, gets HTTP 400 with `{"ok": false, "error": "gateway API key sent to a legacy endpoint; use /inspector/v2/track"}`, and none of its events are stored. The v1 endpoints can't carry the output reference or the origin hint, so Avo couldn't tell which checkpoint an event came from.
+</Callout>
+
+`/inspector/v2/track` accepts source keys too, so you can move every customer to it. One difference: v2 doesn't sample, so a workspace that samples its v1 traffic has every v2 event stored.
+
+## What your customer configures
+
+Your integration's settings need these fields. The customer copies the values from Avo: on the **Sources** page, under **Gateways**, they open the gateway and go to its **Inspector setup** tab.
+
+- **Avo Inspector API key.** One per gateway. Every checkpoint uses the same key.
+- **Environment**: development, staging or production. It decides where the events show up in Avo.
+- **Output reference, per destination.** On each destination connection in your product, a field for that output's reference. Leave it empty on the gateway checkpoint. An output checkpoint with an empty reference should send nothing, because without a reference Avo records its events as the gateway checkpoint.
+- **Origin hint.** Which field of the incoming event names the source it came from, such as a platform or library name. See [Origin hint and app version](#origin-hint-and-app-version).
+- **Origin app version.** Which field carries that source's app version.
+
+Name the fields so customers can match them to Avo. Avo's own integrations use **Output reference**, **Origin hint** and **Origin app version**.
+
+## Send events
+
+```
+POST https://api.avo.app/inspector/v2/track
+```
+
+### Headers
+
+| Header | Value |
+| --- | --- |
+| `api-key` | The gateway's Inspector API key. Required. |
+| `env` | `dev`, `staging` or `prod`. Required. |
+| `content-type` | `application/json`. `text/plain` with a JSON string body also works. |
+| `X-Avo-Client` | Optional: your integration's name, the same value as `libPlatform`. |
+
+The body can be gzip-compressed with `content-encoding: gzip`, and can be up to 10 MB.
+
+### Body
+
+The body is a JSON array of event objects, so one request can carry a batch of events from any mix of checkpoints. Each object describes one event at one checkpoint:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `type` | string | Always `"event"`. Required. |
+| `eventName` | string | The event's name as it is at this checkpoint, after any renames. Required, and not blank. |
+| `eventProperties` | array | The event's property schema at this checkpoint. See [Property schema](#property-schema). Required. |
+| `messageId` | string | A unique id for this event. Use the event's own id where your product has one. Required. |
+| `createdAt` | string | When the event happened, in ISO 8601 UTC with fractional seconds, such as `2026-11-26T09:41:07.123Z`. Required. A time that's malformed or more than 10 days old is replaced with the time Avo received it. |
+| `libPlatform` | string | Your integration's name, such as `"acme-cdp"`. Required. |
+| `libVersion` | string | Your integration's version. Required. |
+| `originHint` | string | The source the event came from, such as `"web"`, `"ios"` or `"android"`. Send it on every event. |
+| `appVersion` | string or null | The app version of the source named by `originHint`. Omit it, or send `null`, when the event doesn't carry one. |
+| `outputReference` | string | The output's reference, such as `"meta-7f3k2q"`. Only on output checkpoints: omit it at the gateway checkpoint. |
+| `appName` | string | Optional. A name for the gateway, such as `"acme-cdp"`. |
+| `streamId`, `sessionId` | string | Optional. Leave them out unless you already send them for a source integration. |
+
+Omit a field rather than sending an empty string. An empty `outputReference` means the gateway checkpoint.
+
+Avo truncates an `outputReference` longer than 64 bytes and an `originHint` longer than 1024 bytes. A reference Avo minted always looks like the output's name in lower case, a hyphen, and six letters or digits, such as `meta-7f3k2q`. Send it as the customer pasted it: a mistyped reference shows up as an issue in Avo, so the customer can fix it.
+
+### Property schema
+
+Avo only receives each property's name and type, never its value. Each entry in `eventProperties` is:
+
+```json
+{ "propertyName": "value", "propertyType": "float" }
+```
+
+`propertyType` is one of:
+
+- `string`, `int`, `float`, `boolean` or `null`.
+- `object`, with a `children` array that holds the object's own properties in the same format.
+- `list(<type>)` for an array, named after the type of its first item, such as `list(string)` or `list(object)`. An empty array is `list(string)`.
+
+A number with no fractional part is an `int`. The open source [Avo Inspector SDKs](/reference/avo-inspector-sdks/overview) extract the schema the same way, and you can follow their code.
+
+### Example
+
+One `Purchase` event from the iOS app, inspected at the gateway and at the Meta output, in one request:
+
+```bash
+curl https://api.avo.app/inspector/v2/track \
+  -H 'api-key: YOUR_GATEWAY_INSPECTOR_KEY' \
+  -H 'env: dev' \
+  -H 'content-type: application/json' \
+  -d '[
+    {
+      "type": "event",
+      "eventName": "Purchase",
+      "eventProperties": [
+        { "propertyName": "order_id", "propertyType": "string" },
+        { "propertyName": "value", "propertyType": "float" },
+        { "propertyName": "currency", "propertyType": "string" }
+      ],
+      "messageId": "7b0c7d6e-4b8f-4a52-9d1e-2f0b6c1a9e01",
+      "createdAt": "2026-11-26T09:41:07.123Z",
+      "libPlatform": "acme-cdp",
+      "libVersion": "3.2.0",
+      "appName": "acme-cdp",
+      "originHint": "ios",
+      "appVersion": "5.14.0"
+    },
+    {
+      "type": "event",
+      "eventName": "purchase",
+      "eventProperties": [
+        { "propertyName": "transaction_id", "propertyType": "string" },
+        { "propertyName": "value", "propertyType": "float" },
+        { "propertyName": "currency", "propertyType": "string" },
+        { "propertyName": "event_id", "propertyType": "string" }
+      ],
+      "messageId": "7b0c7d6e-4b8f-4a52-9d1e-2f0b6c1a9e01",
+      "createdAt": "2026-11-26T09:41:07.123Z",
+      "libPlatform": "acme-cdp",
+      "libVersion": "3.2.0",
+      "appName": "acme-cdp",
+      "originHint": "ios",
+      "appVersion": "5.14.0",
+      "outputReference": "meta-7f3k2q"
+    }
+  ]'
+```
+
+The second object is the event as the Meta output sends it: renamed to `purchase`, with `order_id` sent as `transaction_id` and `event_id` added. Avo checks each object against what its own checkpoint should receive.
+
+### Responses
+
+Avo answers before it processes the events, so a success means the request was accepted, not that every event in it was valid. Check that events arrive in the [Inspector Debugger](/inspector/inspector-debugger).
+
+| Status | Body | Meaning |
+| --- | --- | --- |
+| 200 | `{"samplingRate": 1, "success": true}` | Accepted. |
+| 200 | `{"success": false}` | The workspace is over its Inspector limit, and the events were not stored. |
+| 400 | `{"ok": false, "error": "invalid or missing env header"}` | `env` is missing or isn't `dev`, `staging` or `prod`. |
+| 400 | `{"ok": false, "error": "invalid or missing Api-Key header"}` | `api-key` is missing. |
+| 400 | `{"ok": false, "error": "Api key not found"}` | No workspace has this key. |
+| 400 | `{"ok": false, "error": "invalid or missing content header"}` | `content-type` isn't `application/json` or `text/plain`. |
+| 400 | `{"ok": false, "error": "invalid JSON body"}` | A `text/plain` body isn't valid JSON. |
+
+Don't retry a 400: it fails the same way again. Tell the customer instead, for example in your integration's logs or settings screen.
+
+## Where to call Inspector
+
+- **Gateway checkpoint.** Call it once per event, after the processing your product applies to every event, and before any destination-specific mapping. If your product has no gateway-wide processing, send the event as received. Send one event per incoming event, not one per destination.
+- **Output checkpoints.** Call it once per destination the event is sent to, with the payload that destination receives. Call it after that destination's mappings, filters and transformations, so the names and properties are the ones the destination gets. Don't send an event to an output checkpoint that your product filtered out for that destination: Avo counts which events reach each output.
+- **Never let Avo block delivery.** Inspector observes your pipeline. Send to Avo in parallel with delivery or after it, with a short timeout (Avo's own scripts use a few seconds), and don't fail or retry the customer's event because a call to Avo failed. Batch where your product allows: one request can carry events from several checkpoints.
+
+A customer can use the gateway checkpoint, the output checkpoints or both. Both give the full picture, because Avo can then tell a problem in the incoming event from a problem in one destination's mapping.
+
+## Origin hint and app version
+
+A gateway receives events from several sources, so every event needs an **origin hint**: a value that names the source it came from. Without one, Avo can't tell which source's design to check the event against, so it doesn't check it.
+
+- Use a field of the incoming event with a few fixed values, such as `web`, `ios` and `android`, or a library or app name. Let the customer choose the field. Never use a user id or any other value with many values.
+- Send the same origin hint at every checkpoint for the same event.
+- The customer maps each value to a source in Avo, on that source's **Inspector setup** tab under **Origin hints**. The match is exact and case-sensitive, so don't change the value's case or spacing.
+- Send that source's app version as `appVersion`. With an origin hint set, an event without a version is recorded without one. Don't send your own integration's version there: that goes in `libVersion`.
+
+## Test your integration
+
+1. **Get a test workspace with gateways.** Ask us at [support@avo.app](mailto:support@avo.app) to turn on gateways for it.
+2. **Model a gateway.** Ask your agent, through the [Avo MCP](/reference/avo-mcp/overview), to create a gateway with a source or two as inputs and one destination as an output, on a branch. See [Set up a gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway). The gateway's key works before the branch is merged.
+3. **Map the origin hints.** On each input source's **Inspector setup** tab, add the values your test events send.
+4. **Send test events** with `env: dev`, at the gateway checkpoint and at the output checkpoint, from your product or with the request above.
+5. **Check them in the Debugger.** Open the [Inspector Debugger](/inspector/inspector-debugger) on the branch. The **Checkpoint** column shows the gateway's name for the gateway checkpoint, and the gateway and the destination, such as `Acme CDP → Meta`, for an output. Open an event to see its origin hint and whether it passed at its checkpoint.
+6. **Merge the branch and break it on purpose.** The Issues view checks events against the main branch, so merge the test gateway first. Then send an origin hint no source claims, and an output reference that matches no output. Each should raise a gateway issue in the [Issues view](/inspector/inspector-issues-view). See [Fix gateway issues](/inspector/configuring-inspector-gateways#fix-gateway-issues).
+
+Development events show up in Avo right away.
+
+## Go live
+
+Before you release your integration:
+
+- [ ] Gateway keys go to `/inspector/v2/track`, never to a v1 endpoint.
+- [ ] The customer can set the key, the environment, an output reference on each destination, and the fields for the origin hint and app version.
+- [ ] An output checkpoint with no reference sends nothing.
+- [ ] Every event carries an origin hint, and the same one at every checkpoint.
+- [ ] Output checkpoints send what the destination receives, after its transformations.
+- [ ] A failed or slow call to Avo never delays or fails delivery to the destination.
+- [ ] Your release notes or setup guide link to [Configuring Inspector Gateways](/inspector/configuring-inspector-gateways), so customers know where to find the key and the references in Avo.
+
+Tell us at [support@avo.app](mailto:support@avo.app) when it's released, so we can point customers who use your product to it.

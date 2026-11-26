@@ -21,6 +21,8 @@ Inspector checks that the events your gateway handles match the design in your t
 
 Start by [setting up the gateway](/data-design/avo-tracking-plan/gateways/set-up-a-gateway) in your tracking plan. One Inspector API key covers the whole gateway. Find it in Avo on the **Sources** page, under **Gateways**: open the gateway and go to the **Inspector setup** tab. The tab shows these steps for your gateway type, with your key and each output's reference already filled in. For each output, it gives you a snippet, script or function to copy with **Copy**. An output without a reference shows **No output reference set yet**.
 
+If your gateway is a product that maintains its own Avo integration, its builders can follow [Integrate as an Avo Gateway](/inspector/integrate-as-an-avo-gateway).
+
 ## Tell Avo which source an event came from
 
 A gateway usually receives events from several sources, so every event needs an **origin hint**: a value that names the source it came from, such as `web`, `ios` or `android`. Keep it to a few fixed values, and never use a user id. Without an origin hint, Avo can't tell which source an event came from, so it doesn't check the event against your design.
