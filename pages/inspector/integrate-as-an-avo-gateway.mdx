@@ -188,7 +188,7 @@ The second object is the event as the Meta output sends it: renamed to `purchase
 
 ### Responses
 
-Avo answers before it processes the events, so a success means the request was accepted, not that every event in it was valid. Avo checks the body after it answers. A body that is valid JSON but isn't an array stores nothing. An event that's missing a required field, or has one of the wrong type, is dropped on its own, and the rest of the batch goes on through the other checks, such as the per-event size limit. Both cases still answer 200 with `"success": true`, so check that events arrive in the [Inspector Debugger](/inspector/inspector-debugger).
+Avo answers before it processes the events, so a success means the request was accepted, not that every event in it was valid. Avo checks that the body is a JSON array before it answers, and checks each event in it afterwards. An event that's missing a required field, has a field of the wrong type, or has a `type` Avo doesn't know is dropped on its own, and the rest of the batch goes on through the other checks, such as the per-event size limit. The response is still 200 with `"success": true`, so check that events arrive in the [Inspector Debugger](/inspector/inspector-debugger).
 
 | Status | Body | Meaning |
 | --- | --- | --- |
@@ -198,10 +198,11 @@ Avo answers before it processes the events, so a success means the request was a
 | 400 | `{"ok": false, "error": "invalid or missing Api-Key header"}` | `api-key` is missing. |
 | 400 | `{"ok": false, "error": "Api key not found"}` | No workspace has this key. |
 | 400 | `{"ok": false, "error": "invalid or missing content header"}` | `content-type` isn't `application/json` or `text/plain`. |
-| 400 | `{"ok": false, "error": "invalid JSON body"}` | A `text/plain` body isn't valid JSON. |
-| 200 | `{"ok": false}` | The request failed in Avo. Most often the body couldn't be read: an `application/json` body that isn't valid JSON, or a body over 10 MB. It can also be a passing failure on Avo's side, such as a failed API key lookup. Nothing was stored. |
+| 400 | `{"ok": false, "error": "invalid JSON body"}` | The body isn't valid JSON. An `application/json` body must also be an object or an array: a bare number, string or `null` gets this answer too. |
+| 400 | `{"ok": false, "error": "body must be a JSON array of events"}` | The body is valid JSON but isn't an array, for example a single event object. Wrap events in an array, even when you send one. |
+| 200 | `{"ok": false}` | The request failed in Avo: the body was over 10 MB, or there was a passing failure on Avo's side, such as a failed API key lookup. Nothing was stored. |
 
-Check the body as well as the status: a 200 with `"ok": false` or `"success": false` means nothing was stored. Don't retry a 400: it fails the same way again. Tell the customer instead, for example in your integration's logs or settings screen. The body of a 200 with `"ok": false` doesn't say which cause it was, so check what you sent. If the body isn't valid JSON or is over 10 MB, sending it again fails the same way. If it's valid and within the limit, the failure was on Avo's side: you can retry it a few times with a backoff, off the customer's delivery path, then drop the batch.
+Check the body as well as the status: a 200 with `"ok": false` or `"success": false` means nothing was stored. Don't retry a 400: it fails the same way again. Tell the customer instead, for example in your integration's logs or settings screen. The body of a 200 with `"ok": false` doesn't say which cause it was, so check what you sent. If the body is over 10 MB, sending it again fails the same way: split the batch. If it's within the limit, the failure was on Avo's side: you can retry it a few times with a backoff, off the customer's delivery path, then drop the batch.
 
 ## Where to call Inspector
 
