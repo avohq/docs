@@ -3,6 +3,7 @@ export default {
   "inspector-installation-overview": "Inspector Installation Overview",
   "configuring-inspector-sources": "Configuring Sources",
   "configuring-inspector-gateways": "Configuring Gateways (closed beta)",
+  "integrate-as-an-avo-gateway": "Integrate as an Avo Gateway (partners)",
   "-": {
     "type": "separator"
   },
