@@ -4,15 +4,9 @@ title: Set up a gateway
 description: "Model your server-side GTM container, Segment, RudderStack or custom event pipeline in Avo by asking your AI agent to set it up through the Avo MCP."
 ---
 
-import { Callout } from 'nextra/components'
-
 # Set up a gateway
 
 _Model your tag manager, CDP or custom event pipeline in Avo with your agent, through the Avo MCP._
-
-<Callout type="info" emoji="🚧">
-  Gateways are in closed beta. Reach out at [support@avo.app](mailto:support@avo.app) or in the chat bubble in the app to request access and share feedback.
-</Callout>
 
 [Gateways](/data-design/avo-tracking-plan/gateways) are created and changed through the [Avo MCP](/reference/avo-mcp/overview), so you set one up by asking your agent (Claude, Cursor, Codex or another MCP client) to do it on a branch. The app shows the gateway for review, and you merge the branch as usual.
 
@@ -77,7 +71,8 @@ When your tags change, update the gateway the same way: ask your agent to change
 
 When the plan changes, the branch's **Code Changes** tab also lists the gateways a change affects. For example, it flags a new property that an output's allow list would drop, with a note to list it if it should get through, and a renamed property that your gateway's configuration spells out. Your agent can read the new definitions and the branch's gateway changes through the Avo MCP and tell you which tags to change. If your agent is also connected to your tag manager or CDP, for example through its MCP or API, it can make those changes there for you.
 
-## Limits during the closed beta
+## Limits
 
 - Gateways are created and edited through the Avo MCP only. The app shows them read-only.
-- Gateways are only available in workspaces in the closed beta. A write to a workspace without access returns an error.
+- How many gateways and transformation rules a workspace can have depends on its plan. A write that would go past a limit returns an error that names the limit.
+- Reading the plan at a destination, and publishing or exporting at a gateway or destination checkpoint, are paid. On a plan without them, the request returns an error that says so.

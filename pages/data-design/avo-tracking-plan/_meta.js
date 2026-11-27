@@ -5,7 +5,7 @@ export default {
   "properties": "Properties",
   "metrics": "Metrics",
   "define-sources-and-destinations": "Sources",
-  "gateways": "Gateways (closed beta)",
+  "gateways": "Gateways",
   "stakeholder-domains": "Stakeholders",
   "governance": "Governance",
   "implementation-status": "Implementation status",
