@@ -55,7 +55,7 @@ If a `save_items` item carries an unknown field or an invalid value, the error m
 | `source` | ✅ | ✅ | ✅ |
 | `destination` | ✅ | ✅ | ✅ |
 | `group_type` | ✅ | ✅ | ✅ |
-| `gateway` ([closed beta](/data-design/avo-tracking-plan/gateways)) | ✅ | ✅ | ✅ |
+| [`gateway`](/data-design/avo-tracking-plan/gateways) | ✅ | ✅ | ✅ |
 | `journey` | ✅ | ✅ (by `id`) | ❌ read-only |
 | `workspace_config` | ❌ | ✅ (takes no `id`) | ❌ |
 | `branch` | ❌ | ✅ | ❌ |
@@ -607,7 +607,7 @@ Every item has the same six keys. The type-specific content goes inside `fields`
 
 ### Fields by item type
 
-The tables below match the `describe_tool(tool:"save_items", type:"<type>")` output at the time of writing for the nine item types. [Gateways](/data-design/avo-tracking-plan/gateways) (closed beta) are written with `save_items` too; get their fields from `describe_tool(tool:"save_items", type:"gateway")`. The live response is authoritative. Fields marked **create/update** are accepted on both ops; the identity ID field is required on `update` / `archive` / `unarchive`. `tempId` (create only) and `set` (update only) apply to every type and are omitted from the tables.
+The tables below match the `describe_tool(tool:"save_items", type:"<type>")` output at the time of writing for the nine item types. [Gateways](/data-design/avo-tracking-plan/gateways) are written with `save_items` too; get their fields from `describe_tool(tool:"save_items", type:"gateway")`. The live response is authoritative. Fields marked **create/update** are accepted on both ops; the identity ID field is required on `update` / `archive` / `unarchive`. `tempId` (create only) and `set` (update only) apply to every type and are omitted from the tables.
 
 #### `event`
 
